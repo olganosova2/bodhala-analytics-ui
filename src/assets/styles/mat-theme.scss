@@ -1,0 +1,107 @@
+$bodhala-primary: (
+  50 : #fef2e4,
+  100 : #fddebc,
+  200 : #fbc98f,
+  300 : #f9b362,
+  400 : #f8a240,
+  500 : #f7921e,
+  600 : #f68a1a,
+  700 : #f57f16,
+  800 : #f37512,
+  900 : #f1630a,
+  A100 : #ffffff,
+  A200 : #ffefe7,
+  A400 : #ffceb4,
+  A700 : #ffbd9b,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #ffffff,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$bodhala-accent: (
+  50 : #e7f0f4,
+  100 : #c3d9e4,
+  200 : #9bc0d3,
+  300 : #72a7c1,
+  400 : #5494b3,
+  500 : #3681a6,
+  600 : #30799e,
+  700 : #296e95,
+  800 : #22648b,
+  900 : #16517b,
+  A100 : #b2ddff,
+  A200 : #7fc6ff,
+  A400 : #4cafff,
+  A700 : #32a4ff,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$bodhala-warn: (
+  50 : #fdeaea,
+  100 : #fbcbcb,
+  200 : #f8a8a8,
+  300 : #f58585,
+  400 : #f26a6a,
+  500 : #f05050,
+  600 : #ee4949,
+  700 : #ec4040,
+  800 : #e93737,
+  900 : #e52727,
+  A100 : #ffffff,
+  A200 : #ffeeee,
+  A400 : #ffbbbb,
+  A700 : #ffa1a1,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+
+$my-app-primary: mat-palette($bodhala-primary, 500, 900, A100);
+$my-app-accent:  mat-palette($bodhala-accent, 500, 900, A100);
+$my-app-warn:    mat-palette($bodhala-warn);
+
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+
+@include angular-material-theme($my-app-theme);

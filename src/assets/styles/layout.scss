@@ -1,0 +1,449 @@
+/* ========================================================================
+     Component: layout
+ ========================================================================== */
+
+//
+// Main layout
+// This file controls the presentation of all components
+//  .wrapper
+//    > section
+//      > .content-wrapper
+//    > .aside
+//
+// If modified or removed make sure to check the variable
+// shared with other components
+// -------------------------------------------------------------
+
+$aside-wd:                                200px;
+$aside-wd-collapsed:                      70px;
+$aside-wd-collapsed-text:                 90px;
+$aside-bg:                                #fff;
+
+$content-bg:                              $body-bg;
+$content-heading-bg:                      #fafbfc;
+$content-heading-border:                  #cfdbe2;
+$content-padding:                         20px;
+$content-header-left:                     200px;
+$content-header-expanded-left:            90px;
+$content-header-top:                      65px;
+$content-header-height:                   88px;
+
+$content-header-width-percent-webkit:     -webkit-calc(100% - 200px);
+$content-header-width-percent-moz:        -moz-calc(100% - 200px);
+$content-header-width-percent:            calc(100% - 200px);
+
+$content-header-width-percent-webkit-ex:   -webkit-calc(100% - 90px);
+$content-header-width-percent-moz-ex:      -moz-calc(100% - 90px);
+$content-header-width-percent-ex:           calc(100% - 90px);
+
+$content-header-expanded-width-percent:   97%;
+
+$footer-hg:                               60px;
+$inner-content-padding:                   70px;
+
+$boxed-max-width:                         1140px;
+$z-index-main-section:                    111;
+
+
+
+body {
+  font-size: 14px;
+  font-family: "Source Sans Pro", sans-serif;
+  margin:0;
+  color: #929292;
+  background-color: #f5f7fa;
+}
+
+.wrapper {
+  display:-ms-grid;
+  display: grid;
+
+  grid-template-areas:
+    "header header header"
+    "nav content content"
+    "nav footer footer";
+
+  -ms-grid-columns: 200px 2fr;
+  grid-template-columns: 200px 2fr;
+  grid-template-rows: auto 1fr auto;
+  grid-gap: 0px;
+
+  height: 100vh;
+  background-color: #f5f7fa;
+}
+.aside-collapsed .wrapper {
+  -ms-grid-columns: 70px 2fr;
+  grid-template-columns: 70px 2fr;
+
+}
+
+rfp-header {
+  height: 65px;
+  grid-area: header;
+  background-color: #2e373c;;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0 20px;
+  -ms-grid-row:1;
+  -ms-grid-column:1;
+  -ms-grid-column-span:3;
+}
+rfp-header a {
+  color: #FFF;
+}
+rfp-header a:hover {
+  color: #dedede;
+}
+.user-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.user-block-info {
+  font-size: 12px;
+  padding:0 40px 0 10px
+}
+
+rfp-side-bar {
+  width: 200px;
+  background-color: #FFF;
+  border-right: 1px solid #dedede;
+  list-style: none;
+  -ms-grid-row:2;
+  -ms-grid-column:1;
+  -ms-grid-row-span:2;
+  grid-area: nav;
+}
+
+
+main {
+  padding:15px;
+  -ms-grid-row:2;
+  -ms-grid-column:3;
+  -ms-grid-column-span:3;
+  grid-area: content;
+}
+
+footer {
+  height: 50px;
+  border-top: 1px solid #dedede;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px 20px;
+  -ms-grid-row:3;
+  -ms-grid-column:2;
+  -ms-grid-column-span:2;
+  grid-area: footer;
+}
+
+a {
+  outline: none !important;
+}
+a {
+  color: #5d9cec;
+  text-decoration: none;
+}
+
+rfp-side-bar ul{
+  list-style-type: none;
+}
+.nav {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+}
+.nav > li > a {
+  color: #515253;
+  position: relative;
+  display: block;
+  padding: 10px 24px;
+}
+.sidebar > .nav > li.active {
+  border-left-color: #2e373c;
+  background-color: #f5f7fa;
+}
+.sidebar > .nav > li {
+  border-left: 3px solid transparent;
+  -webkit-transition: border-left-color 0.4s ease;
+  -o-transition: border-left-color 0.4s ease;
+  transition: border-left-color 0.4s ease;
+  position: relative;
+  display: block;
+  /*padding: 20px 15px 12px 15px;*/
+}
+.sidebar > .nav > li.nav-heading {
+  padding: 20px 15px 12px 15px;
+}
+
+
+.content-heading {
+  position:fixed;
+  top:$content-header-top;
+  left:$content-header-left;
+  min-height: $content-header-height;
+
+  /* Firefox */
+  width: $content-header-width-percent-moz;
+  /* WebKit */
+  width: $content-header-width-percent-webkit;
+  /* Standard */
+  width: $content-header-width-percent;
+  z-index:2;
+
+  font-size: 1.5rem;
+  line-height: $headings-line-height;
+  color: #929292;
+  margin-bottom: 20px;
+  padding: 15px;
+  font-weight: normal;
+  background-color: $content-heading-bg;
+  border-bottom: 1px solid $content-heading-border;
+  > small {
+    display: block;
+    font-size: 12px;
+    color: $text-muted;
+  }
+
+  .mat-stepper-horizontal {
+    background-color:inherit;
+  }
+
+}
+.content-heading-expanded {
+  left:$content-header-expanded-left;
+  /* Firefox */
+  width: $content-header-width-percent-moz-ex;
+  /* WebKit */
+  width: $content-header-width-percent-webkit-ex;
+  /* Standard */
+  width: $content-header-width-percent-ex;
+}
+.content-body {
+ // margin-top: 140px;
+}
+.content-body-wrapper {
+  margin-top: 155px;
+}
+
+
+
+// Aside toggled layout
+// On mobile acts like offcanvas
+// -----------------------------
+
+
+@media only screen and (max-width: $mq-up-to-tablet) {
+  .wrapper {
+    > .aside {
+      margin-left: -$aside-wd;
+    }
+  }
+  .aside-toggled {
+    .wrapper {
+      > section,
+      > footer {
+        margin-left: $aside-wd;
+      }
+
+      > .aside {
+        margin-left: 0;
+      }
+    }
+  }
+
+  .csstransforms3d  {
+
+    .wrapper {
+        //@include backface-visibility(hidden);
+        > section,
+        > footer {
+          margin-left: 0;
+          //@include translate3d(0,0,0);
+          //@include transition-transform(.3s ease);
+        }
+        > .aside {
+          margin-left: 0;
+          //@include translate3d(-100%,0,0); // using % fixes chrome animation
+          //@include transition-transform(.3s ease);
+
+        }
+    }
+
+    .aside-toggled {
+      .wrapper {
+        > section,
+        > footer {
+          //@include translate3d($aside-wd,0,0);
+        }
+        > .aside {
+          //@include translate3d(0,0,0);
+        }
+      }
+    }
+
+  }
+
+}
+
+// Toggle and collapsed behavior overrides
+
+@media only screen and (max-width: $mq-up-to-tablet) {
+
+  .aside-collapsed .wrapper {
+    > .aside {
+      margin-left: -$aside-wd-collapsed;
+    }
+  }
+
+  .aside-collapsed.aside-toggled {
+    .wrapper {
+      > section,
+      > footer {
+        margin-left: $aside-wd-collapsed;
+      }
+
+      > .aside {
+        margin-left: 0;
+      }
+    }
+  }
+
+
+  .csstransforms3d  {
+
+    .aside-collapsed .wrapper {
+        //@include backface-visibility(hidden);
+        > section,
+        > footer {
+          margin-left: 0;
+          //@include translate3d(0,0,0);
+          //@include transition-transform(.3s ease);
+        }
+        > .aside {
+          margin-left: 0;
+          //@include translate3d(-$aside-wd-collapsed,0,0);
+          //@include transition-transform(.3s ease);
+
+        }
+    }
+
+    .aside-collapsed.aside-toggled {
+      .wrapper {
+        > section,
+        > footer {
+          //@include translate3d($aside-wd-collapsed,0,0);
+        }
+        > .aside {
+          //@include translate3d(0,0,0);
+        }
+      }
+    }
+
+  }
+
+}
+
+// Aside collapsed layout
+// -------------------------------
+
+// Aside status toggled via JS
+.aside-collapsed {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  .wrapper {
+    > .aside {
+      &, > .aside-inner {
+        width: $aside-wd-collapsed;
+      }
+      > .nav-floating {
+        margin-left: $aside-wd-collapsed;
+      }
+    }
+  }
+}
+
+// Margin only exists above tablet
+@media only screen and (min-width: $mq-tablet) {
+  // Aside status toggled via JS
+  .aside-collapsed {
+    .wrapper {
+      > section,
+      > footer {
+        margin-left: $aside-wd-collapsed;
+      }
+    }
+  }
+}
+
+// ------------------------------
+// Collapsed variation with text
+// ------------------------------
+
+@media only screen and (max-width: $mq-up-to-tablet) {
+
+  .aside-collapsed-text .wrapper {
+    > .aside {
+      margin-left: -$aside-wd-collapsed-text;
+    }
+  }
+
+  .aside-collapsed-text.aside-toggled {
+    .wrapper {
+      > section,
+      > footer {
+        margin-left: $aside-wd-collapsed-text;
+      }
+
+      > .aside {
+        margin-left: 0;
+      }
+    }
+  }
+
+}
+
+// Aside collapsed layout
+// -------------------------------
+
+// Aside status toggled via JS
+.aside-collapsed-text {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  .wrapper {
+    > .aside {
+      &, > .aside-inner {
+        width: $aside-wd-collapsed-text;
+      }
+      > .nav-floating {
+        margin-left: $aside-wd-collapsed-text;
+      }
+    }
+  }
+}
+
+// Margin only exists above tablet
+@media only screen and (min-width: $mq-tablet) {
+  // Aside status toggled via JS
+  .aside-collapsed-text {
+    .wrapper {
+      > section,
+      > footer {
+        margin-left: $aside-wd-collapsed-text;
+      }
+    }
+  }
+}
+
+// end collapsed variation with text
+// mixin to remove transformations
+@mixin disable-transform()
+{
+   -webkit-transform: none;
+   -moz-transform: none;
+   -opera-transform: none;
+   -ms-transform: none;
+   transform: none;
+}
+

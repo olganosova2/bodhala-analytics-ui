@@ -1,1 +1,298 @@
 /* You can add global styles to this file, and also import other style files */
+//@import "../node_modules/simple-line-icons/scss/simple-line-icons.min.scss";
+@import "./assets/styles/variables";
+@import "./assets/styles/media-queries.scss";
+@import "./assets/styles/spacings.scss";
+@import "./assets/styles/colors.scss";
+@import "./assets/styles/layout.scss";
+
+@import '~@angular/material/theming';
+@include mat-core();
+@import "./assets/styles/mat-theme.scss";
+@import "~material-icons/iconfont/material-icons.css";
+
+
+body {
+  font-family: "Source Sans Pro", sans-serif;
+  background-color: $body-bg;
+  color: $body-color;
+}
+.pointer-hand {
+  cursor: pointer;
+}
+.font-bold {
+  font-weight: 600;
+}
+.no-border {
+  border: none;
+}
+.visibility-hidden {
+  visibility: hidden;
+}
+//ICOND
+//.icon-arrow-down:before {
+//  content: "\e604";
+//}
+//.icon-arrow-left:before {
+//  content: "\e605";
+//}
+//.icon-arrow-right:before {
+//  content: "\e606";
+//}
+//.icon-arrow-up:before {
+//  content: "\e607";
+//}
+// COLORS
+.color-blue {
+  background-color: $brand-info;
+}
+.color-light-blue {
+  background-color: $brand-secondary-ltr;
+}
+.color-green-dark {
+  background-color: #0E7D4A;
+}
+.color-green {
+  background-color: $brand-success;
+}
+.color-orange {
+  background-color: $brand-primary;
+}
+.color-gray {
+  background-color: $medium-gray;
+}
+.color-pink {
+  background-color: $brand-pink;
+}
+.color-purple {
+   background-color: $brand-purple;
+ }
+.color-yellow {
+  background-color: $brand-yellow;
+}
+.color-inv {
+  background-color: $brand-inv;
+}
+.color-comp-dk {
+  background-color: $brand-comp-dk;
+}
+.color-primary-md {
+  background-color: $brand-primary-md;
+}
+
+
+.color-red {
+  color: $brand-danger;
+}
+
+.bg-orange {
+  background-color: $brand-primary;
+}
+.bg-light-green {
+  background-color: #c5ffbf;
+}
+.bg-light-gray {
+  background-color: #cccccc;
+}
+.form-controls {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+.font-body {
+  color: $body-color;
+}
+.font-red {
+  color: red !important;
+}
+.error {
+  color: red;
+  font-size: 10pt;
+}
+
+.clear-both {
+  clear: both;
+  float: none;
+}
+.pull-left{
+  float: left;
+}
+.pull-right{
+  float: right;
+}
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
+.align-top{
+  valign: top;
+}
+.center-screen {
+  margin: auto;
+}
+.inline-block{
+  display: block;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+.relative-pos {
+  position: relative;
+}
+
+.full-width {
+  width: 100%;
+}
+.left-right-align {
+  display: flex;
+  justify-content: space-between;
+}
+.href-link{
+  cursor: pointer;
+  color: $brand-primary-lt;
+  text-decoration: underline;
+}
+
+.content-heading .header, .content-heading .header figure {
+  justify-content: flex-start !important;
+}
+.content-heading .actions, .content-heading .actions figure {
+  justify-content: flex-end !important;
+  //font-size: 1.4rem;
+}
+.mat-card, .mat-flat-button, .mat-dialog-container {
+  color: $body-color;
+  //font-size: 1.4rem;
+}
+.mat-select-value {
+  color: $body-color;
+}
+
+.mat-card {
+  background-color: #fff;
+}
+.mat-card-title{
+  //font-size: 2.1rem;
+  margin-left: 20px;
+}
+.mat-progress-spinner circle, .mat-spinner circle,
+.mat-progress-spinner {
+  stroke: $light-gray;
+}
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 40px;
+  height: 40px;
+  z-index: 1234;
+  opacity: 1 !important;
+}
+
+.status-button {
+  color:#fff;
+  border-radius: 25px;
+  padding: 3px 10px;
+  min-width: 70px;
+  display:inline-block;
+  text-align: center;
+  font-size: smaller;
+}
+.bid-round-badge {
+  color:#fff;
+  border-radius: 7px;
+  padding: 7px 20px;
+  min-width: 110px;
+  width: 50%;
+  text-align: center;
+}
+
+.mat-flat-button.btn-grey {
+  background-color: $gray-lighter;
+  color: $body-color;
+}
+
+
+.panel-wrapper {
+  border: 1px solid rgba(0,0,0,.03);
+  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+  width: 100%;
+}
+.panel-title {
+  color: rgba(0,0,0,.54);
+  background: rgba(0,0,0,.03);
+  align-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-start;
+  padding: 8px 20px;
+}
+.panel-body {
+  padding: 30px;
+  background: #ffffff;
+}
+.text-sm {
+  font-size: .8em;
+}
+.justify.mat-grid-tile .mat-figure {
+  justify-content: flex-start !important ;
+  align-items: flex-start !important;
+}
+
+.grid-container {
+  display: grid;
+  grid-gap: 15px;
+}
+
+.no-input-pad {
+  .mat-form-field-wrapper {
+    padding: 0 !important;
+  }
+  .mat-form-field-prefix {
+    top: 0 !important;
+    color: $light-gray;
+  }
+}
+.mat-input-sm{
+  width: 120px;
+  height: 40px;
+
+  .mat-form-field-infix {
+    padding: .5em 0 .5em 0 !important;
+  }
+}
+.rate-panel{
+  .mat-expansion-panel-header{
+    background-color: $brand-secondary-ltr !important;
+    h4 {
+      color:#FFF;
+    }
+    &:hover {
+      background-color: $brand-secondary-ltr !important;
+    }
+  }
+
+}
+.common-info-column {
+  padding: 30px 50px;
+  background-color: $extra-light-gray;
+}
+h3.popover-header{
+  color:#000 !important;
+}
+button:focus {
+  outline: none;
+}
+.badge-help {
+  color: #000;
+  background-color: $blue-green;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
