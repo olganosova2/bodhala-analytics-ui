@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: '/ui-api/',
-  host: 'http://127.0.0.1:5000/',
+  apiUrl: 'https://int.bodhala.com/ui-api/',
+  host: 'https://int.bodhala.com/',
   IDLE_KEEPALIVE_CONFIG: {
-    timeOutSeconds:  5,
+    timeOutSeconds: 810,
     keepaliveSeconds: 60
   }
 };

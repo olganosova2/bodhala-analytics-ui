@@ -15,12 +15,16 @@ import {
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { BodhalaUiCommonModule } from 'bodhala-ui-common';
+import {HttpClientModule} from '@angular/common/http';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -48,9 +52,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MomentModule,
     NgIdleKeepaliveModule.forRoot(),
     MatBadgeModule,
-    MatDialogModule
+    MatDialogModule,
+    BodhalaUiCommonModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

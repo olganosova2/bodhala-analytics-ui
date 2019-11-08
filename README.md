@@ -1,6 +1,10 @@
 # BodhalaAnalyticsUi
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.2.2.
+#Install
+npm install
+#Install bodhala-ui-common
+npm install git+https://bodhala@bitbucket.org/bodhala/bodhala-ui-common.git#master
 
 ## Development server
 

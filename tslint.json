@@ -17,13 +17,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "rfp",
+      "bd",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "rfp",
+      "bd",
       "kebab-case"
     ],
     "import-blacklist": [
