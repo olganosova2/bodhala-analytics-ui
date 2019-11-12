@@ -10,7 +10,7 @@
 @include mat-core();
 @import "./assets/styles/mat-theme.scss";
 @import "~material-icons/iconfont/material-icons.css";
-
+@import '~bootstrap/scss/bootstrap';
 
 body {
   font-family: "Source Sans Pro", sans-serif;

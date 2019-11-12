@@ -7,7 +7,7 @@ export const environment = {
   apiUrl: '/ui-api/',
   host: 'http://127.0.0.1:5000/',
   IDLE_KEEPALIVE_CONFIG: {
-    timeOutSeconds:  5,
+    timeOutSeconds: 8100, // 5,
     keepaliveSeconds: 60
   }
 };

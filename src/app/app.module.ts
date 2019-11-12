@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,18 +15,33 @@ import {
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { BodhalaUiCommonModule } from 'bodhala-ui-common';
+import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
 import {HttpClientModule} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
+import * as CONFIG from './shared/services/config';
+import { LaunchpadComponent } from './launchpad/launchpad.component';
+import {RouterModule} from '@angular/router';
+import {appRouterConfig} from './app.routes';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
+
+export function initUser(config: UserService) {
+  return () => config.load();
+}
+export function initHttp(service: HttpService) {
+  return () => service.loadConfig(CONFIG);
+}
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LaunchpadComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
+    RouterModule.forRoot(appRouterConfig),
     BrowserAnimationsModule,
     MatTableModule,
     MatSortModule,
@@ -53,9 +68,23 @@ import {CookieService} from 'ngx-cookie-service';
     NgIdleKeepaliveModule.forRoot(),
     MatBadgeModule,
     MatDialogModule,
-    BodhalaUiCommonModule
+    BodhalaUiCommonModule,
+    FlexLayoutModule
   ],
-  providers: [CookieService],
+  providers: [CookieService,
+    UserService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initHttp,
+      deps: [HttpService],
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initUser,
+      deps: [UserService],
+      multi: true
+    }],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

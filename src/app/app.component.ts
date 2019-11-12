@@ -19,7 +19,7 @@ import {Keepalive} from '@ng-idle/keepalive';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnDestroy {
-  title = 'bodhala-rfp-ui';
+  title = 'bodhala-analytics-ui';
   progress: boolean = false;
   pendingRequest: Subscription;
   errorMessage: any;
