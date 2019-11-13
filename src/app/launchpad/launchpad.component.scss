@@ -1,0 +1,26 @@
+.content-body{
+  width: 100%;
+  margin-top: 10px;
+  margin-right: 20px;
+  display: inline-block;
+}
+.mat-grid-list {
+  min-height: 150vh;
+}
+.panel-body {
+  min-height: 260px;
+  overflow-y: auto;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+  flex: 50%;
+  max-width: 50%;
+  padding: 0 7px;
+}

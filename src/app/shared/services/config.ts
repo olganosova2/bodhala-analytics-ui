@@ -11,7 +11,7 @@ export const END_POINTS_URLS = {
   getUserSideBar: {url: BASE_URL + 'user-sidebar.json', showLoading: true},
   getMenuItems: {url: BASE_URL + 'user-sidebar.json', showLoading: false},
   keepAlive: {url: BASE_URL + 'keepalive', showLoading: false}
-}
+};
 
 
 export const uiTitleString = 'Bodhala Analytics';

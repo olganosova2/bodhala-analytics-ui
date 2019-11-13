@@ -23,6 +23,8 @@ import { LaunchpadComponent } from './launchpad/launchpad.component';
 import {RouterModule} from '@angular/router';
 import {appRouterConfig} from './app.routes';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {FiltersService} from './shared/services/filters.service';
+import {UserFiltersModel} from './shared/models/user-filters';
 
 
 export function initUser(config: UserService) {
@@ -84,7 +86,9 @@ export function initHttp(service: HttpService) {
       useFactory: initUser,
       deps: [UserService],
       multi: true
-    }],
+    },
+    FiltersService,
+    UserFiltersModel],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

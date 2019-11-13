@@ -6,6 +6,10 @@
     "start": "ng serve --proxy-config proxy.conf.json --port 4300",
     "build-dev": "ng build --base-href /analytics/",
     "build": "ng build",
+    "build-int": "ng build --configuration int --base-href /analytics/",
+    "build-develop": "ng build --configuration int --base-href /analytics/",
+    "build-stage": "ng build --base-href /analytics/ --configuration stage",
+    "build-prod": "ng build --base-href /analytics/ --configuration production",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
