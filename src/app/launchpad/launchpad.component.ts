@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AppStateService, HttpService} from 'bodhala-ui-common';
+import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {FiltersService} from '../shared/services/filters.service';
 
@@ -13,21 +13,22 @@ export class LaunchpadComponent implements OnInit {
   pendingRequest: Subscription;
   constructor(private httpService: HttpService,
               public filtersService: FiltersService,
+              public userService: UserService,
               public appStateService: AppStateService) { }
 
   ngOnInit() {
     this.load();
   }
   load(): void {
-    this.filtersService.getCurrentUserFilters();
-    // this.pendingRequest = this.httpService.makeGetRequest('getClientCounts').subscribe(
-    //   (data: any) => {
-    //     const x = data;
-    //   },
-    //   err => {
-    //     this.errorMessage = err;
-    //   }
-    // );
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    this.pendingRequest = this.httpService.makeGetRequest('getTopMatters', params).subscribe(
+      (data: any) => {
+        const x = data;
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
 
 }

@@ -12,6 +12,7 @@ import {KEEP_ALIVE_SEC} from './shared/services/config';
 import {Title} from '@angular/platform-browser';
 import {MatDialog} from '@angular/material';
 import {Keepalive} from '@ng-idle/keepalive';
+import {FiltersService} from './shared/services/filters.service';
 
 @Component({
   selector: 'bd-root',
@@ -30,9 +31,11 @@ export class AppComponent implements OnDestroy {
               public appStateService: AppStateService,
               public messageService: MessagingService,
               private titleService: Title,
+              public filtersService: FiltersService,
               private idle: Idle,
               private keepalive: Keepalive,
               public dialog: MatDialog) {
+    this.filtersService.setCurrentUserFilters();
     this.httpService.callInProgress.subscribe(value => {
       this.progress = value ? value : false;
     });
@@ -52,9 +55,9 @@ export class AppComponent implements OnDestroy {
 
     this.resetIdle();
 
-    this.saveInterval = setInterval(() => {
-      this.keepAlive();
-    }, KEEP_ALIVE_SEC);
+    // this.saveInterval = setInterval(() => {
+    //   this.keepAlive();
+    // }, KEEP_ALIVE_SEC);
 
   }
   resetIdle() {

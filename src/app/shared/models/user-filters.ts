@@ -1,3 +1,82 @@
+export interface ICommonFilters {
+  clientId: number;
+  startdate: string;
+  enddate: string;
+}
+export interface IDatesRange {
+  start: string;
+  end: string;
+}
+export interface IDataFilters {
+  matters: Array<string>;
+  practiceAreas: Array<string>;
+  firms: Array<string>;
+  threshold: number;
+  displayThreshold: number;
+  linesOfBusiness: Array<string>;
+  offices: Array<string>;
+  clientCounsels: Array<string>;
+  geographies: Array<string>;
+  firmSizes: Array<number>;
+  firmTypes: Array<string>;
+  cities: Array<string>;
+  states: Array<string>;
+  courtLocations: Array<string>;
+  courtTypes: Array<string>;
+  utbmsCodes: Array<string>;
+  excludeFirms: boolean;
+  excludeMatters: boolean;
+  excludePracticeAreas: boolean;
+  excludeLineOfBusiness: boolean;
+  excludeOffices: boolean;
+  excludeClientCounsel: boolean;
+  excludeGeography: boolean;
+  excludeFirmType: boolean;
+  excludeCourtLocations: boolean;
+  excludeCourtTypes: boolean;
+  excludeUtbmsCodes: boolean;
+  genericFilter1: Array<string>;
+  genericFilter2: Array<string>;
+  genericFilter3: Array<string>;
+  genericFilter4: Array<string>;
+  genericFilter5: Array<string>;
+  genericFilter6: Array<string>;
+  genericFilter7: Array<string>;
+  genericFilter8: Array<string>;
+  genericFilter9: Array<string>;
+  genericFilter10: Array<string>;
+  genericFilter11: Array<string>;
+  genericFilter12: Array<string>;
+  excludeGenericFilter1: boolean;
+  excludeGenericFilter2: boolean;
+  excludeGenericFilter3: boolean;
+  excludeGenericFilter4: boolean;
+  excludeGenericFilter5: boolean;
+  excludeGenericFilter6: boolean;
+  excludeGenericFilter7: boolean;
+  excludeGenericFilter8: boolean;
+  excludeGenericFilter9: boolean;
+  excludeGenericFilter10: boolean;
+  excludeGenericFilter11: boolean;
+  excludeGenericFilter12: boolean;
+  matterOpenDates: IDatesRange;
+  matterCloseDates: IDatesRange;
+  dayOfMatter: IDatesRange;
+  dayOfMatterRange: string;
+  opposingFirms: Array<string>;
+  firmMatterCounts: Array<number>;
+  rangeTagFilters: any;
+  selectTagFilters: any;
+  multiSelectTagFilters: any;
+  loadedFilters: Array<any>;
+  chosenFilters: Array<any>;
+  updatedOptions: any;
+  minFirmSize: number;
+  maxFirmSize: number;
+  minFirmMatterCount: number;
+  maxFirmMatterCount: number;
+  excludeOpposingFirms: boolean;
+}
 export class UserFiltersModel {
   getFirmSizes(sizes: Array<any>): Array<any> {
     if (!sizes || !sizes.length || sizes.length !== 2) {
@@ -41,8 +120,8 @@ export class UserFiltersModel {
     return sizes;
   }
 
-  create(obj: any): any {
-    obj = obj || {};
+  create(obj: IDataFilters): IDataFilters {
+    obj = obj || {} as any;
     return {
       matters: obj.matters || [],
       practiceAreas: obj.practiceAreas || [],
@@ -95,10 +174,10 @@ export class UserFiltersModel {
       excludeGenericFilter10: obj.excludeGenericFilter10 || false,
       excludeGenericFilter11: obj.excludeGenericFilter11 || false,
       excludeGenericFilter12: obj.excludeGenericFilter12 || false,
-      matterOpenDates: obj.matterOpenDates || false,
-      matterCloseDates: obj.matterCloseDates || false,
-      dayOfMatter: obj.dayOfMatter || false,
-      dayOfMatterRange: obj.dayOfMatterRange || false,
+      matterOpenDates: obj.matterOpenDates,
+      matterCloseDates: obj.matterCloseDates,
+      dayOfMatter: obj.dayOfMatter,
+      dayOfMatterRange: obj.dayOfMatterRange,
       opposingFirms: obj.opposingFirms || [],
       firmMatterCounts: this.getFirmMatterCounts(obj.firmMatterCounts),
       rangeTagFilters: obj.rangeTagFilters || {},
@@ -106,7 +185,12 @@ export class UserFiltersModel {
       multiSelectTagFilters: obj.multiSelectTagFilters || {},
       loadedFilters: [],
       chosenFilters: obj.chosenFilters || [],
-      updatedOptions: {}
+      updatedOptions: {},
+      minFirmSize: 1,
+      maxFirmSize: 501,
+      minFirmMatterCount: 1,
+      maxFirmMatterCount: 1001,
+      excludeOpposingFirms: obj.excludeOpposingFirms || false
     };
   }
 }
