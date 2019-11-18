@@ -7,9 +7,13 @@
 .mat-grid-list {
   min-height: 150vh;
 }
+.panel-wrapper {
+  position: relative;
+}
 .panel-body {
-  min-height: 260px;
+  height: 260px;
   overflow-y: auto;
+  padding-top:0;
 }
 
 .row {

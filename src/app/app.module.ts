@@ -25,6 +25,8 @@ import {appRouterConfig} from './app.routes';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {FiltersService} from './shared/services/filters.service';
 import {UserFiltersModel} from './shared/models/user-filters';
+import { TopMattersComponent } from './top-matters/top-matters.component';
+import {TopMattersService} from './top-matters/top-matters.service';
 
 
 export function initUser(config: UserService) {
@@ -37,7 +39,8 @@ export function initHttp(service: HttpService) {
 @NgModule({
   declarations: [
     AppComponent,
-    LaunchpadComponent
+    LaunchpadComponent,
+    TopMattersComponent
   ],
   imports: [
     HttpClientModule,
@@ -88,7 +91,8 @@ export function initHttp(service: HttpService) {
       multi: true
     },
     FiltersService,
-    UserFiltersModel],
+    UserFiltersModel,
+    TopMattersService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

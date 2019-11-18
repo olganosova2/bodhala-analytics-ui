@@ -12,6 +12,7 @@ export const END_POINTS_URLS = {
   getMenuItems: {url: BASE_URL + 'user-sidebar.json', showLoading: false},
   keepAlive: {url: BASE_URL + 'keepalive', showLoading: false},
   getTopMatters: {url: BASE_URL + 'analytics/getTopMatters', showLoading: true},
+  getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
 };
 
 
@@ -46,5 +47,8 @@ export const BODHALA_DATE_FORMATS = {
     dateA11yLabel: {year: 'numeric', month: 'long', day: 'numeric'},
     monthYearA11yLabel: {year: 'numeric', month: 'long'},
   }
+};
+export const outerAppLinks = {
+  viewMatter: '#/app/client-dashboard/matter/'
 };
 

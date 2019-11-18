@@ -194,25 +194,38 @@ body {
   z-index: 1234;
   opacity: 1 !important;
 }
+.spinner-card {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 20px;
+  height: 20px;
+  z-index: 1234;
+  opacity: 1 !important;
+}
 
-.status-button {
+.totals-badge {
   color:#fff;
+  background-color: $blue-green;
   border-radius: 25px;
   padding: 3px 10px;
   min-width: 70px;
   display:inline-block;
   text-align: center;
-  font-size: smaller;
 }
-.bid-round-badge {
-  color:#fff;
-  border-radius: 7px;
-  padding: 7px 20px;
-  min-width: 110px;
-  width: 50%;
+.partner-badge {
+  border-radius: 25px;
+  border: 1px solid $body-color;
+  padding: 3px 10px;
+  min-width: 120px;
+  display:inline-block;
   text-align: center;
 }
-
+.mat-table, .mat-cell {
+  color: $body-color !important;
+}
 .mat-flat-button.btn-grey {
   background-color: $gray-lighter;
   color: $body-color;
@@ -267,18 +280,7 @@ body {
     padding: .5em 0 .5em 0 !important;
   }
 }
-.rate-panel{
-  .mat-expansion-panel-header{
-    background-color: $brand-secondary-ltr !important;
-    h4 {
-      color:#FFF;
-    }
-    &:hover {
-      background-color: $brand-secondary-ltr !important;
-    }
-  }
 
-}
 .common-info-column {
   padding: 30px 50px;
   background-color: $extra-light-gray;

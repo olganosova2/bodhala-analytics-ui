@@ -10,6 +10,7 @@ const moment = _moment;
 })
 export class FiltersService {
   userFilters: IDataFilters;
+  includeExpenses: boolean =  false;
   startDate: string = '2019-01-01';  // only for debugging on localhost:4000, on the server it always will be overwritten
   endDate: string = '2019-06-24';  // only for debugging on localhost:4000, on the server it always will be overwritten
 
@@ -28,6 +29,10 @@ export class FiltersService {
     const serializedFilters = localStorage.getItem('filters_' + currentUser.id.toString());
     if (serializedFilters) {
       this.userFilters = Object.assign({}, JSON.parse(serializedFilters).dataFilters);
+    }
+    const serializedIncludeExpenses = localStorage.getItem('app.client-dashboard.overview_' + currentUser.id.toString());
+    if (serializedIncludeExpenses) {
+      this.includeExpenses = JSON.parse(serializedIncludeExpenses).includeExpenses || false;
     }
     this.userFilters = Object.assign({}, this.filtersHelper.create(this.userFilters));
     const dt = moment();
