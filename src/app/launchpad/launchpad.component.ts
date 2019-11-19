@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Subscription} from 'rxjs';
-import {TopMattersService} from '../top-matters/top-matters.service';
+import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'bd-launchpad',
@@ -8,10 +6,38 @@ import {TopMattersService} from '../top-matters/top-matters.service';
   styleUrls: ['./launchpad.component.scss']
 })
 export class LaunchpadComponent implements OnInit {
-  errorMessage: any;
-  pendingRequest: Subscription;
+
+  @ViewChild('launchpad', {static: false})
+  container: ElementRef;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  load(): void {
+
+    this.postLoad();
+  }
+
+  @HostListener('window:message', ['$event'])
+  onMessage(event) {
+    if (event.data.from !== 'child') {
+      this.receiveMessage(event);
+    }
+  }
+
+  receiveMessage(event) {
+    // event.data contains the filters from the angularjs app
+    // TODO - pass the filters to load() or set local storage
+    this.load();
+  }
+
+  postLoad() {
+    if (window.parent) {
+      setTimeout(() => {
+        window.parent.postMessage({height: this.container.nativeElement.offsetHeight, from: 'child'}, '*');
+      }, 100);
+    }
   }
 }
