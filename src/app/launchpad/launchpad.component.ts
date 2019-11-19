@@ -20,8 +20,9 @@ export class LaunchpadComponent implements OnInit {
   }
 
   load(): void {
-    this.topMatters.load();
-    this.postLoad();
+    this.topMatters.load().subscribe(() => {
+      this.postLoad();
+    });
   }
 
   @HostListener('window:message', ['$event'])
@@ -33,7 +34,6 @@ export class LaunchpadComponent implements OnInit {
 
   receiveMessage(event) {
     // event.data contains the filters from the angularjs app
-    // TODO - pass the filters to load() or set local storage
     this.filtersService.setCurrentUserFilters();
     this.load();
   }

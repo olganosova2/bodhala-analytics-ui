@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subscription, Observable} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../shared/services/filters.service';
 import {MatTable} from '@angular/material';
@@ -27,10 +27,11 @@ export class TopMattersComponent implements OnInit {
   ngOnInit() {
     this.load();
   }
-  load(): void {
+  load(): Observable<any> {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     this.isProgress = true;
-    this.pendingRequest = this.httpService.makeGetRequest('getTopMattersAndLeadPartners', params).subscribe(
+    const request = this.httpService.makeGetRequest('getTopMattersAndLeadPartners', params);
+    this.pendingRequest = request.subscribe(
       (data: any) => {
         this.topMatters = this.topMattersService.processTopMatters(data.result);
         this.isProgress = false;
@@ -41,6 +42,7 @@ export class TopMattersComponent implements OnInit {
         this.isProgress = false;
       }
     );
+    return request;
   }
   goToView(row: ITopMatter): void {
     window.location.href = environment.host + config.outerAppLinks.viewMatter + row.id;
