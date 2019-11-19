@@ -1,4 +1,6 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import {FiltersService} from '../shared/services/filters.service';
+import {TopMattersComponent} from '../top-matters/top-matters.component';
 
 @Component({
   selector: 'bd-launchpad',
@@ -10,13 +12,15 @@ export class LaunchpadComponent implements OnInit {
   @ViewChild('launchpad', {static: false})
   container: ElementRef;
 
-  constructor() { }
+  @ViewChild(TopMattersComponent, {static: true}) topMatters: TopMattersComponent;
+
+  constructor(private filtersService: FiltersService) { }
 
   ngOnInit() {
   }
 
   load(): void {
-
+    this.topMatters.load();
     this.postLoad();
   }
 
@@ -30,6 +34,7 @@ export class LaunchpadComponent implements OnInit {
   receiveMessage(event) {
     // event.data contains the filters from the angularjs app
     // TODO - pass the filters to load() or set local storage
+    this.filtersService.setCurrentUserFilters();
     this.load();
   }
 
