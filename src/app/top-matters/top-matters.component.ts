@@ -45,7 +45,8 @@ export class TopMattersComponent implements OnInit {
     return request;
   }
   goToView(row: ITopMatter): void {
-    window.location.href = environment.host + config.outerAppLinks.viewMatter + row.id;
+    const w = window.parent ? window.parent : window;
+    w.location.href = environment.host + config.outerAppLinks.viewMatter + row.id;
   }
 
 }
