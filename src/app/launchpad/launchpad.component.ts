@@ -20,9 +20,8 @@ export class LaunchpadComponent implements OnInit {
   }
 
   load(): void {
-    this.topMatters.load().subscribe(() => {
-      this.postLoad();
-    });
+    this.topMatters.load();
+    this.postLoad();
   }
 
   @HostListener('window:message', ['$event'])

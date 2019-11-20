@@ -27,13 +27,14 @@ export class TopMattersComponent implements OnInit {
   ngOnInit() {
     this.load();
   }
-  load(): Observable<any> {
+  load(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     this.isProgress = true;
     const request = this.httpService.makeGetRequest('getTopMattersAndLeadPartners', params);
     this.pendingRequest = request.subscribe(
       (data: any) => {
-        this.topMatters = this.topMattersService.processTopMatters(data.result);
+        // this.topMatters = this.topMattersService.processTopMatters(data.result);
+        this.topMatters = data.result;
         this.isProgress = false;
         // this.topMatters[0].bio_image_url = 'https://bodhala-assets.s3.amazonaws.com/img/firms/00064/profiles/0679e2dc-695a-11e7-a703-061c87c9764f.png';
       },
@@ -42,7 +43,6 @@ export class TopMattersComponent implements OnInit {
         this.isProgress = false;
       }
     );
-    return request;
   }
   goToView(row: ITopMatter): void {
     const w = window.parent ? window.parent : window;

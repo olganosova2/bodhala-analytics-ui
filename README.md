@@ -7,14 +7,19 @@ npm install
 npm install git+https://bodhala@bitbucket.org/bodhala/bodhala-ui-common.git#master
 
 ## Development server
+1) login to 127.0.0.1:5000 and become a client with matters
+2) 'npm start'    then open 127.0.0.1:4300
+On 127.0.0.1:4300 filters are set up only to default dates 2019-01-01 and 2019-06-24 and client_id of logged in 127.0.0.1:5000 user
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Build
+dev build run 'npm run build-dev' then refresh 127.0.0.1:5000 and navigate to http://127.0.0.1:5000/#/app/client-dashboard/launchpad
+
 
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
