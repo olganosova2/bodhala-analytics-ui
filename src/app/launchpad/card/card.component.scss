@@ -1,0 +1,24 @@
+.content-body{
+  width: 100%;
+  display: inline-block;
+}
+
+.panel-wrapper {
+  position: relative;
+}
+
+.panel-body {
+  height: 260px;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.partner-badge {
+  white-space: nowrap;
+  margin: 0 5px;
+  position: relative;
+  mat-icon {
+    position: absolute;
+    left: 0;
+  }
+}

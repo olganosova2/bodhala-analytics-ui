@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import {ITopMatter} from '../shared/models/top-matters';
-import {UtilService} from 'bodhala-ui-common';
+import { ITopMatter } from '../shared/models/top-matters';
+import { UtilService, HttpService } from 'bodhala-ui-common';
+import { FiltersService } from '../shared/services/filters.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,20 @@ import {UtilService} from 'bodhala-ui-common';
 export class TopMattersService {
   excludes: Array<string> = [];
   masterList: Array<ITopMatter> = [];
-  constructor(private utilService: UtilService) { }
+
+  constructor(
+    private util: UtilService,
+    private http: HttpService,
+    private filters: FiltersService
+  ) { }
+
+  fetch() {
+    const params = this.filters.getCurrentUserCombinedFilters();
+    return this.http.makeGetRequest('getTopMattersAndLeadPartners', params).pipe(
+      map(response => this.processTopMatters(response.result))
+    ).toPromise();
+  }
+
   processTopMatters(records: Array<ITopMatter>): Array<ITopMatter> {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
@@ -29,6 +44,6 @@ export class TopMattersService {
       }
       processedRecods.push(rec);
     }
-    return processedRecods.sort(this.utilService.dynamicSort('-total_spend')).slice(0, 10);
+    return processedRecods.sort(this.util.dynamicSort('-total_spend')).slice(0, 10);
   }
 }

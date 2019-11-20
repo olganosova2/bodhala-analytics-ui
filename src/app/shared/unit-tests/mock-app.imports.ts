@@ -41,7 +41,6 @@ import {LaunchpadComponent} from '../../launchpad/launchpad.component';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
-import {TopMattersComponent} from '../../top-matters/top-matters.component';
 import {TopMattersService} from '../../top-matters/top-matters.service';
 
 export const IMPORTS = [
@@ -82,8 +81,7 @@ export const IMPORTS = [
 
 export const DECLARATIONS = [
   AppComponent,
-  LaunchpadComponent,
-  TopMattersComponent
+  LaunchpadComponent
 ];
 
 export const PROVIDERS = [
