@@ -31,6 +31,11 @@ export class LaunchpadComponent implements OnInit {
     this.postLoad();
   }
 
+  // bubbled up from card/cell clicks
+  onClick(item) {
+    // TODO - optionally handle click scenarios here
+  }
+
   @HostListener('window:message', ['$event'])
   onMessage(event) {
     if (event.data.from !== 'child') {

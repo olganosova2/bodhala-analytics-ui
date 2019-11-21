@@ -6,30 +6,12 @@
     <div class="panel-body">
       <table mat-table [dataSource]="data" class="full-width"  #matterTable>
         <ng-container *ngFor="let col of columns" [matColumnDef]="col.field">
-          <th mat-header-cell *matHeaderCellDef>{{col.name}}</th>
-          <td mat-cell *matCellDef="let row">
-            <div *ngIf="col.format === 'currency'">
-              <span class="totals-badge totals-numbers">${{row[col.field] | number:'1.0-0'}}</span>
-            </div>
-            <div *ngIf="col.format === 'percent'">
-              <span class="totals-badge totals-percent">{{row[col.field] | number:'1.2-2'}}%</span>
-            </div>
-            <div *ngIf="col.format === 'link'">
-              <span class="href-link" (click)="onClick(row)">{{row[col.field]}}</span>
-            </div>
-            <div *ngIf="col.format === 'lawyer'">
-              <span class="partner-badge">
-                <!-- TODO - this avatar idea doesn't work well with long names -->
-                <!-- <img *ngIf="row[col.avatar]; else icon" [src]="row[col.avatar]"/>
-                <ng-template #icon>
-                  <mat-icon aria-hidden="false" aria-label="lawyer">person</mat-icon>
-                </ng-template> -->
-                {{row[col.field] ? row[col.field]: "N/A"}}
-              </span>
-            </div>
+          <th mat-header-cell *matHeaderCellDef class="card-header">{{col.name}}</th>
+          <td mat-cell *matCellDef="let row" class="card-cell">
+            <bd-cell [data]="row" [column]="col" (clicked)="onClick($event)"></bd-cell>
           </td>
         </ng-container>
-
+    
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>

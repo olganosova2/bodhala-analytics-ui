@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { EventEmitter } from 'events';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'bd-card',
@@ -18,7 +17,7 @@ export class CardComponent implements OnInit {
   request: Promise<any>;
 
   @Output()
-  selected: EventEmitter = new EventEmitter();
+  clicked: EventEmitter<any> = new EventEmitter();
 
   data: [];
   displayedColumns = [];
@@ -31,8 +30,8 @@ export class CardComponent implements OnInit {
     this.data = response.result || response;
   }
 
+  // bubbled up from cell clicks
   onClick(row) {
-    row.action(row);
-    this.selected.emit(row);
+    this.clicked.emit(row);
   }
 }

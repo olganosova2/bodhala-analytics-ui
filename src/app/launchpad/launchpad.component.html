@@ -1,4 +1,4 @@
 <div class="launchpad" #launchpad>
-  <bd-card *ngFor="let card of cards" [header]="card.header" [request]="requests[card.request]" [columns]="card.columns">
+  <bd-card *ngFor="let card of cards" [header]="card.header" [request]="requests[card.request]" [columns]="card.columns" (clicked)="onClick($event)">
   </bd-card>
 </div>
