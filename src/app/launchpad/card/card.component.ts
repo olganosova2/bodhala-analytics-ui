@@ -21,6 +21,7 @@ export class CardComponent implements OnInit {
 
   data: [];
   displayedColumns = [];
+  show = 'list';
 
   constructor() { }
 
@@ -33,5 +34,9 @@ export class CardComponent implements OnInit {
   // bubbled up from cell clicks
   onClick(row) {
     this.clicked.emit(row);
+  }
+
+  toggle(show) {
+    this.show = show;
   }
 }

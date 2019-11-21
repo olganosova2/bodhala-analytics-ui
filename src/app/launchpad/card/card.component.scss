@@ -29,3 +29,12 @@
 .card-cell {
   padding: 0 2px;
 }
+
+:host ::ng-deep {
+  .mat-button-toggle-group {
+    height: 36px;
+    .mat-button-toggle-label-content {
+      line-height: 32px;
+    }
+  }
+}

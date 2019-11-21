@@ -10,7 +10,7 @@ import {
   MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
   MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule
+  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule
 } from '@angular/material';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
@@ -83,7 +83,8 @@ export function initHttp(service: HttpService) {
     MatBadgeModule,
     MatDialogModule,
     BodhalaUiCommonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatButtonToggleModule
   ],
   providers: [CookieService,
     UserService,

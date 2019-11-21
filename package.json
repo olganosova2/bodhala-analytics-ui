@@ -37,6 +37,7 @@
     "material-icons": "^0.3.1",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
+    "ngx-charts": "^3.0.2",
     "ngx-cookie-service": "^2.2.0",
     "ngx-file-drop": "^8.0.7",
     "rxjs": "~6.4.0",

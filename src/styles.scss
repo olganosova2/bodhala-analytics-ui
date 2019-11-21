@@ -247,11 +247,11 @@ body {
 .panel-title {
   color: rgba(0,0,0,.54);
   background: rgba(0,0,0,.03);
-  align-content: flex-start;
-  align-items: flex-start;
   display: flex;
   justify-content: flex-start;
   padding: 8px 20px;
+  align-items: baseline;
+  justify-content: space-between;
 }
 .panel-body {
   padding: 30px;
