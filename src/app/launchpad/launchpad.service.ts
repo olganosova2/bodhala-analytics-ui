@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TopMattersService } from '../top-matters/top-matters.service';
+import { TopMattersFirmsService } from './services/top-matters-firms.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,12 +7,13 @@ import { TopMattersService } from '../top-matters/top-matters.service';
 export class LaunchPadService {
 
   constructor(
-    private topMattersService: TopMattersService
+    private topMattersFirmsService: TopMattersFirmsService
     ) { }
 
   fetchData() {
     const requests: any = {};
-    requests.topMatters = this.topMattersService.fetch();
+    requests.topMatters = this.topMattersFirmsService.fetchMatters();
+    requests.topFirms = this.topMattersFirmsService.fetchFirms();
     // TODO - add all requests here
     return requests;
   }

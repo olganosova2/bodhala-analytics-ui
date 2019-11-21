@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 
-import { ITopMatter } from '../shared/models/top-matters';
+import { ITopMatter } from '../../shared/models/top-matters';
 import { UtilService, HttpService } from 'bodhala-ui-common';
-import { FiltersService } from '../shared/services/filters.service';
+import { FiltersService } from '../../shared/services/filters.service';
 import { map } from 'rxjs/operators';
+import {ITopFirm} from '../../shared/models/top-firms';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class TopMattersService {
+export class TopMattersFirmsService {
   excludes: Array<string> = [];
   masterList: Array<ITopMatter> = [];
 
@@ -18,10 +20,16 @@ export class TopMattersService {
     private filters: FiltersService
   ) { }
 
-  fetch() {
+  fetchMatters() {
     const params = this.filters.getCurrentUserCombinedFilters();
     return this.http.makeGetRequest('getTopMattersAndLeadPartners', params).pipe(
       map(response => this.processTopMatters(response.result))
+    ).toPromise();
+  }
+  fetchFirms() {
+    const params = this.filters.getCurrentUserCombinedFilters();
+    return this.http.makeGetRequest('getTopFirms', params).pipe(
+      map(response => this.processTopFirms(response.result))
     ).toPromise();
   }
 
@@ -45,5 +53,13 @@ export class TopMattersService {
       processedRecods.push(rec);
     }
     return processedRecods.sort(this.util.dynamicSort('-total_spend')).slice(0, 10);
+  }
+  processTopFirms(records: Array<ITopFirm>): Array<ITopFirm> {
+    for (const rec of records) {
+      const sum = this.filters.includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
+      const total = this.filters.includeExpenses ? (rec.total_billed_all + rec.total_expenses_all) : rec.total_billed_all || 1;
+      rec.total_percent = sum / total * 100;
+    }
+    return records;
   }
 }

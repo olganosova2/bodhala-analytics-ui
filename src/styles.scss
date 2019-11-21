@@ -208,13 +208,20 @@ body {
 
 .totals-badge {
   color:#fff;
-  background-color: $blue-green;
   border-radius: 25px;
   padding: 3px 10px;
   min-width: 100px;
   display:inline-block;
   text-align: center;
 }
+.totals-numbers {
+  background-color: $blue-green !important;
+}
+.totals-percent {
+  color: $body-color;
+  background-color: $yellow;
+}
+
 .partner-badge {
   border-radius: 25px;
   border: 1px solid $body-color;

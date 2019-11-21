@@ -25,7 +25,7 @@ import {appRouterConfig} from './app.routes';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {FiltersService} from './shared/services/filters.service';
 import {UserFiltersModel} from './shared/models/user-filters';
-import {TopMattersService} from './top-matters/top-matters.service';
+import {TopMattersFirmsService} from './launchpad/services/top-matters-firms.service';
 import { CardComponent } from './launchpad/card/card.component';
 
 export function initUser(config: UserService) {
@@ -91,7 +91,7 @@ export function initHttp(service: HttpService) {
     },
     FiltersService,
     UserFiltersModel,
-    TopMattersService],
+    TopMattersFirmsService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
