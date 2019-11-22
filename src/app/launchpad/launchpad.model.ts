@@ -17,7 +17,7 @@ export const columns = {
   ],
   spendByPracticeArea: [
     { name: 'Practice Area', field: 'practice_area', component: LinkComponent },
-    { name: 'Spend', format: 'currency', field: 'total_billed' },
+    { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: 'Top Firm', field: 'firm_name', component: LinkComponent},
     { name: 'Top Matter', field: 'matter_name', component: LinkComponent},
   ]

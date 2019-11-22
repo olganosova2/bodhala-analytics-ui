@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TopMattersFirmsService } from './services/top-matters-firms.service';
-import {SpendByPracticeAreaService} from '../practice-area/spend-by-practice-area.service';
+import {SpendByPracticeAreaService} from './services/spend-by-practice-area.service';
 
 @Injectable({
   providedIn: 'root'

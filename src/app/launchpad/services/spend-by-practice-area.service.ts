@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
 import { UtilService, HttpService } from 'bodhala-ui-common';
-import { FiltersService } from '../shared/services/filters.service';
+import { FiltersService } from '../../shared/services/filters.service';
 import { map } from 'rxjs/operators';
-import {IPractice} from './practice';
+import {IPractice} from '../../shared/models/practice';
 
 @Injectable({
   providedIn: 'root'
