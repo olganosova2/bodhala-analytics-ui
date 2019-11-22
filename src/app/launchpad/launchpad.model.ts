@@ -14,13 +14,19 @@ export const columns = {
     { name: 'Firm', field: 'firm_name', component: LinkComponent },
     { name: 'Total Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: '% of Total Spend', format: 'percent', field: 'total_percent', component: PillComponent }
+  ],
+  spendByPracticeArea: [
+    { name: 'Practice Area', field: 'practice_area', component: LinkComponent },
+    { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
+    { name: 'Top Firm', field: 'firm_name', component: LinkComponent},
+    { name: 'Top Matter', field: 'matter_name', component: LinkComponent},
   ]
 };
 
 export const cards = [
   { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters },
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms },
-  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
+  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
