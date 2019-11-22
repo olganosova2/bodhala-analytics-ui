@@ -15,6 +15,7 @@ export const END_POINTS_URLS = {
   getTopFirms: {url: BASE_URL + 'analytics/getTopFirms', showLoading: true},
   getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
   spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
+  getTopLeadPartners: {url: BASE_URL + 'analytics/getTopLeadPartners', showLoading: true},
 };
 
 
