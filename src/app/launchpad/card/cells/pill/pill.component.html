@@ -2,7 +2,7 @@
     <span class="totals-badge totals-numbers">${{data[column.field] | number:'1.0-0'}}</span>
 </div>
 <div *ngIf="column.format === 'percent'">
-  <span class="totals-badge totals-percent">${{data[column.field] | number:'1.0-0'}}</span>
+  <span class="totals-badge totals-percent">${{data[column.field] | number:'1.2-2'}}</span>
 </div>
 <div *ngIf="column.format === 'lawyer'">
   <span class="partner-badge">

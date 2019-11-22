@@ -52,6 +52,8 @@ export const BODHALA_DATE_FORMATS = {
   }
 };
 export const outerAppLinks = {
-  viewMatter: '#/app/client-dashboard/matter/'
+  viewMatter: '#/app/client-dashboard/matter/',
+  viewPracticeArea: '#/app/client-dashboard/practiceArea',
+  viewFirm: '#/app/client-dashboard/firm/',
 };
 

@@ -18,6 +18,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
 import {HttpClientModule} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import * as highcharts from 'highcharts';
+import { ChartModule } from 'angular2-highcharts';
+
 import * as CONFIG from './shared/services/config';
 import { LaunchpadComponent } from './launchpad/launchpad.component';
 import {RouterModule} from '@angular/router';
@@ -30,6 +34,7 @@ import { PillComponent } from './launchpad/card/cells/pill/pill.component';
 import { CellComponent } from './launchpad/card/cells/cell.component';
 import { LinkComponent } from './launchpad/card/cells/link/link.component';
 import {TopMattersFirmsService} from './launchpad/services/top-matters-firms.service';
+import { TopPartnersChartComponent } from './launchpad/card/top-partners-chart/top-partners-chart.component';
 
 export function initUser(config: UserService) {
   return () => config.load();
@@ -37,7 +42,14 @@ export function initUser(config: UserService) {
 export function initHttp(service: HttpService) {
   return () => service.loadConfig(CONFIG);
 }
+export function highchartsFactory() {
+  // return highcharts;
+  const hc = require('highcharts');
+  const dd = require('highcharts/modules/exporting');
+  dd(hc);
 
+  return hc;
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +57,8 @@ export function initHttp(service: HttpService) {
     CardComponent,
     PillComponent,
     CellComponent,
-    LinkComponent
+    LinkComponent,
+    TopPartnersChartComponent
   ],
   entryComponents: [
     PillComponent,
@@ -84,7 +97,8 @@ export function initHttp(service: HttpService) {
     MatDialogModule,
     BodhalaUiCommonModule,
     FlexLayoutModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    ChartModule
   ],
   providers: [CookieService,
     UserService,
@@ -99,6 +113,10 @@ export function initHttp(service: HttpService) {
       useFactory: initUser,
       deps: [UserService],
       multi: true
+    },
+    {
+      provide: HighchartsStatic,
+      useFactory: highchartsFactory
     },
     FiltersService,
     UserFiltersModel,

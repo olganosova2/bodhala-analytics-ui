@@ -8,10 +8,10 @@ export const columns = {
     { name: 'Matter', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${id}' },
     { name: 'Spend', format: 'currency', field: 'total_spend', component: PillComponent },
     { name: 'Lead Partner', format: 'lawyer', field: 'lead_partner_name', avatar: 'bio_image_url', component: PillComponent },
-    { name: 'Practice Area', field: 'client_matter_type', component: LinkComponent }
+    { name: 'Practice Area', field: 'client_matter_type', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}` }
   ],
   topFirms: [
-    { name: 'Firm', field: 'firm_name', component: LinkComponent },
+    { name: 'Firm', field: 'firm_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${id}' },
     { name: 'Total Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: '% of Total Spend', format: 'percent', field: 'total_percent', component: PillComponent }
   ],

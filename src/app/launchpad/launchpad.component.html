@@ -1,4 +1,5 @@
 <div class="launchpad" #launchpad>
+<!--  <bd-top-partners-chart></bd-top-partners-chart>-->
   <bd-card *ngFor="let card of cards" [header]="card.header" [request]="requests[card.request]" [columns]="card.columns" (clicked)="onClick($event)">
   </bd-card>
 </div>

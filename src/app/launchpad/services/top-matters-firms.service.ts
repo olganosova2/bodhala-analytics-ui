@@ -37,18 +37,11 @@ export class TopMattersFirmsService {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
     for (const rec of records) {
-      if (this.excludes.indexOf(rec.id) > -1) {
-        continue;
+      if (rec.lead_partner_name instanceof Array) {
+        rec.lead_partner_name = rec.lead_partner_name[0] || 'N/A';
       }
-      const founds = this.masterList.filter(e => e.id === rec.id && e.lead_partner_id !== rec.lead_partner_id) || [];
-      for (const dup of founds) {
-        if (dup.hours > rec.hours) {
-          rec.lead_partner_name = dup.lead_partner_name;
-          rec.lead_partner_id = dup.lead_partner_id;
-        }
-        rec.total_spend += dup.total_spend;
-        rec.total_expenses += dup.total_expenses;
-        this.excludes.push(dup.id);
+      if (rec.bio_image_url instanceof Array) {
+        rec.bio_image_url = rec.bio_image_url[0] || '';
       }
       processedRecods.push(rec);
     }

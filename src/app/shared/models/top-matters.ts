@@ -4,9 +4,7 @@ export interface ITopMatter {
   client_matter_type: string;
   total_spend: number;
   total_expenses: number;
-  hours: number;
-  lead_partner_id: string;
-  lead_partner_name: string;
-  bio_image_url?: string;
+  lead_partner_name: string | Array<string>;
+  bio_image_url: string | Array<string>;
   multiple_partners?: string;
 }
