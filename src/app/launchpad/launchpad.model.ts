@@ -14,13 +14,19 @@ export const columns = {
     { name: 'Spend', format: 'currency', field: 'total_spend' },
     { name: 'Lead Partner', format: 'lawyer', field: 'lead_partner_name', avatar: 'bio_image_url'},
     { name: 'Practice Area', format: 'link', field: 'client_matter_type', action: (row) => actions.goToView(row)}
+  ],
+  spendByPracticeArea: [
+    { name: 'Practice Area', format: 'link', field: 'practice_area' },
+    { name: 'Spend', format: 'currency', field: 'total_billed' },
+    { name: 'Top Firm', format: 'link', field: 'firm_name'},
+    { name: 'Top Matter', format: 'link', field: 'matter_name'},
   ]
 };
 
 export const cards = [
   { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters },
   { header: 'Top Firms by Spend', request: 'topMatters', columns: columns.topMatters },
-  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
+  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },

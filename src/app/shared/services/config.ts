@@ -13,6 +13,7 @@ export const END_POINTS_URLS = {
   keepAlive: {url: BASE_URL + 'keepalive', showLoading: false},
   getTopMatters: {url: BASE_URL + 'analytics/getTopMatters', showLoading: true},
   getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
+  spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
 };
 
 
