@@ -41,7 +41,7 @@ import {LaunchpadComponent} from '../../launchpad/launchpad.component';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
-import {TopMattersService} from '../../top-matters/top-matters.service';
+import {TopMattersFirmsService} from '../../launchpad/services/top-matters-firms.service';
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -96,7 +96,7 @@ export const PROVIDERS = [
   MatNativeDateModule,
   RouterModule,
   UserFiltersModel,
-  TopMattersService,
+  TopMattersFirmsService,
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },

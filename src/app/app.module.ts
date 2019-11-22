@@ -10,7 +10,7 @@ import {
   MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
   MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule
+  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule
 } from '@angular/material';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
@@ -25,8 +25,11 @@ import {appRouterConfig} from './app.routes';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {FiltersService} from './shared/services/filters.service';
 import {UserFiltersModel} from './shared/models/user-filters';
-import {TopMattersService} from './top-matters/top-matters.service';
 import { CardComponent } from './launchpad/card/card.component';
+import { PillComponent } from './launchpad/card/cells/pill/pill.component';
+import { CellComponent } from './launchpad/card/cells/cell.component';
+import { LinkComponent } from './launchpad/card/cells/link/link.component';
+import {TopMattersFirmsService} from './launchpad/services/top-matters-firms.service';
 
 export function initUser(config: UserService) {
   return () => config.load();
@@ -39,7 +42,14 @@ export function initHttp(service: HttpService) {
   declarations: [
     AppComponent,
     LaunchpadComponent,
-    CardComponent
+    CardComponent,
+    PillComponent,
+    CellComponent,
+    LinkComponent
+  ],
+  entryComponents: [
+    PillComponent,
+    LinkComponent
   ],
   imports: [
     HttpClientModule,
@@ -73,7 +83,8 @@ export function initHttp(service: HttpService) {
     MatBadgeModule,
     MatDialogModule,
     BodhalaUiCommonModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatButtonToggleModule
   ],
   providers: [CookieService,
     UserService,
@@ -91,7 +102,7 @@ export function initHttp(service: HttpService) {
     },
     FiltersService,
     UserFiltersModel,
-    TopMattersService],
+    TopMattersFirmsService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
