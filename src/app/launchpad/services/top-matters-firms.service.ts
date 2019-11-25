@@ -4,6 +4,8 @@ import { ITopMatter } from '../../shared/models/top-matters';
 import { UtilService, HttpService } from 'bodhala-ui-common';
 import { FiltersService } from '../../shared/services/filters.service';
 import { map } from 'rxjs/operators';
+
+import * as config from '../../shared/services/config';
 import {ITopFirm} from '../../shared/models/top-firms';
 
 
@@ -45,7 +47,7 @@ export class TopMattersFirmsService {
       }
       processedRecods.push(rec);
     }
-    return processedRecods.sort(this.util.dynamicSort('-total_spend')).slice(0, 10);
+    return processedRecods.sort(this.util.dynamicSort('-total_spend')).slice(0, config.TOP_RECORDS_NUMBER);
   }
   processTopFirms(records: Array<ITopFirm>): Array<ITopFirm> {
     for (const rec of records) {

@@ -2,6 +2,7 @@ import { environment } from '../../environments/environment';
 import * as config from '../shared/services/config';
 import { PillComponent } from './card/cells/pill/pill.component';
 import { LinkComponent } from './card/cells/link/link.component';
+import {leadPartnerChartOptions} from '../shared/models/top-lead-partner';
 
 export const columns = {
   topMatters: [
@@ -33,7 +34,7 @@ export const cards = [
   { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters },
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms },
   { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea },
-  { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners },
+  { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions},
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },

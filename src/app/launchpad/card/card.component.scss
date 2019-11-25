@@ -8,9 +8,12 @@
 }
 
 .panel-body {
-  height: 260px;
+  height: 280px;
   overflow-y: auto;
   padding: 0;
+}
+.panel-body-expanded {
+  height:330px !important;
 }
 
 .partner-badge {

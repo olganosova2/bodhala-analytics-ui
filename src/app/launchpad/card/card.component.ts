@@ -15,6 +15,8 @@ export class CardComponent implements OnInit {
 
   @Input()
   request: Promise<any>;
+  @Input()
+  options: any;
 
   @Output()
   clicked: EventEmitter<any> = new EventEmitter();
@@ -22,6 +24,8 @@ export class CardComponent implements OnInit {
   data: [];
   displayedColumns = [];
   show = 'list';
+
+  chart: any = {};
 
   constructor() { }
 
@@ -38,5 +42,18 @@ export class CardComponent implements OnInit {
 
   toggle(show) {
     this.show = show;
+    if (show === 'chart' && this.options) {
+      setTimeout(() => {
+      this.reloadChart();
+      });
+    }
+  }
+
+  reloadChart(): void {
+    this.chart.series[0].setData(this.data);
+  }
+
+  saveInstance(chartInstance): void {
+    this.chart = chartInstance;
   }
 }
