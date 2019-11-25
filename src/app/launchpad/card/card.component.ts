@@ -21,10 +21,13 @@ export class CardComponent implements OnInit, OnChanges {
   @Output()
   clicked: EventEmitter<any> = new EventEmitter();
 
+  @Output()
+  loaded: EventEmitter<any> = new EventEmitter();
+
   data: [];
   displayedColumns = [];
   show = 'list';
-  loaded = false;
+  isLoaded = false;
 
   chart: any = {};
 
@@ -42,10 +45,11 @@ export class CardComponent implements OnInit, OnChanges {
   }
 
   async load() {
-    this.loaded = false;
+    this.isLoaded = false;
     const response =  await this.request;
     this.data = response.result || response;
-    this.loaded = true;
+    this.isLoaded = true;
+    this.loaded.emit(true);
   }
 
   // bubbled up from cell clicks

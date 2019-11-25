@@ -31,12 +31,12 @@ export const columns = {
 };
 
 export const cards = [
-  { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters },
-  { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms },
-  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea },
-  { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions},
-  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
-  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
-  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters },
-  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters }
+  { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters, span: 2 },
+  { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, span: 2 },
+  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, span: 4 },
+  { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2 },
+  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
+  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
+  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
+  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 }
 ];
