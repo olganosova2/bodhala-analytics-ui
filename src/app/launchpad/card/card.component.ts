@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'bd-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, OnChanges {
 
   @Input()
   header;
@@ -24,6 +24,7 @@ export class CardComponent implements OnInit {
   data: [];
   displayedColumns = [];
   show = 'list';
+  loaded = false;
 
   chart: any = {};
 
@@ -31,8 +32,20 @@ export class CardComponent implements OnInit {
 
   async ngOnInit() {
     this.displayedColumns = this.columns.map(col => col.field);
+    this.load();
+  }
+
+  async ngOnChanges(changes: SimpleChanges) {
+    if (changes.request && !changes.request.firstChange) {
+      this.load();
+    }
+  }
+
+  async load() {
+    this.loaded = false;
     const response =  await this.request;
     this.data = response.result || response;
+    this.loaded = true;
   }
 
   // bubbled up from cell clicks
