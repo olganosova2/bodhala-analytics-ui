@@ -1,10 +1,11 @@
 <div class="launchpad" #launchpad>
-<!--  <bd-top-partners-chart></bd-top-partners-chart>-->
   <bd-card *ngFor="let card of cards"
            [header]="card.header"
            [request]="requests[card.request]"
            [columns]="card.columns"
            [options]="card.options"
-           (clicked)="onClick($event)">
+           (clicked)="onClick($event)"
+           (loaded)="onCardLoaded($event)"
+           [ngStyle]="{'grid-column': 'span ' + card.span}">
   </bd-card>
 </div>

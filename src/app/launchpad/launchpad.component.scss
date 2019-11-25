@@ -1,5 +1,6 @@
+// set to a 4 column grid ( can be adjusted later if more refined sized columns needed )
 .launchpad {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 25% 25% 25% 25%;
   grid-gap: 10px;
 }

@@ -2,9 +2,16 @@ import { Injectable } from '@angular/core';
 import {HttpService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {map} from 'rxjs/operators';
+import { CurrencyPipe } from '@angular/common';
 
 import * as config from '../../shared/services/config';
 import {ITopLeadPartner} from '../../shared/models/top-lead-partner';
+
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2
+});
 
 @Injectable({
   providedIn: 'root'

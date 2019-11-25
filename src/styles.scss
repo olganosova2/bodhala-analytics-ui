@@ -5,8 +5,8 @@
 @import "./assets/styles/spacings.scss";
 @import "./assets/styles/colors.scss";
 @import "./assets/styles/layout.scss";
-
 @import '~@angular/material/theming';
+
 @include mat-core();
 @import "./assets/styles/mat-theme.scss";
 @import "~material-icons/iconfont/material-icons.css";
@@ -17,18 +17,23 @@ body {
   background-color: $body-bg;
   color: $body-color;
 }
+
 .pointer-hand {
   cursor: pointer;
 }
+
 .font-bold {
   font-weight: 600;
 }
+
 .no-border {
   border: none;
 }
+
 .visibility-hidden {
   visibility: hidden;
 }
+
 //ICOND
 //.icon-arrow-down:before {
 //  content: "\e604";
@@ -46,36 +51,47 @@ body {
 .color-blue {
   background-color: $brand-info;
 }
+
 .color-light-blue {
   background-color: $brand-secondary-ltr;
 }
+
 .color-green-dark {
   background-color: #0E7D4A;
 }
+
 .color-green {
   background-color: $brand-success;
 }
+
 .color-orange {
   background-color: $brand-primary;
 }
+
 .color-gray {
   background-color: $medium-gray;
 }
+
 .color-pink {
   background-color: $brand-pink;
 }
+
 .color-purple {
-   background-color: $brand-purple;
- }
+  background-color: $brand-purple;
+}
+
 .color-yellow {
   background-color: $brand-yellow;
 }
+
 .color-inv {
   background-color: $brand-inv;
 }
+
 .color-comp-dk {
   background-color: $brand-comp-dk;
 }
+
 .color-primary-md {
   background-color: $brand-primary-md;
 }
@@ -85,25 +101,35 @@ body {
   color: $brand-danger;
 }
 
+.bg-white {
+  backgorund-color: #fff;
+}
+
 .bg-orange {
   background-color: $brand-primary;
 }
+
 .bg-light-green {
   background-color: #c5ffbf;
 }
+
 .bg-light-gray {
   background-color: #cccccc;
 }
+
 .form-controls {
   margin-top: 25px;
   margin-bottom: 25px;
 }
+
 .font-body {
   color: $body-color;
 }
+
 .font-red {
   color: red !important;
 }
+
 .error {
   color: red;
   font-size: 10pt;
@@ -113,33 +139,43 @@ body {
   clear: both;
   float: none;
 }
-.pull-left{
+
+.pull-left {
   float: left;
 }
-.pull-right{
+
+.pull-right {
   float: right;
 }
+
 .text-right {
   text-align: right;
 }
+
 .text-left {
   text-align: left;
 }
-.align-top{
+
+.align-top {
   valign: top;
 }
+
 .center-screen {
   margin: auto;
 }
-.inline-block{
+
+.inline-block {
   display: block;
 }
+
 .text-center {
   text-align: center;
 }
+
 .text-right {
   text-align: right;
 }
+
 .relative-pos {
   position: relative;
 }
@@ -147,27 +183,33 @@ body {
 .full-width {
   width: 100%;
 }
+
 .left-right-align {
   display: flex;
   justify-content: space-between;
 }
-.href-link{
+
+.href-link {
   cursor: pointer;
   color: $brand-primary-lt;
   text-decoration: underline;
 }
 
+
 .content-heading .header, .content-heading .header figure {
   justify-content: flex-start !important;
 }
+
 .content-heading .actions, .content-heading .actions figure {
   justify-content: flex-end !important;
   //font-size: 1.4rem;
 }
+
 .mat-card, .mat-flat-button, .mat-dialog-container {
   color: $body-color;
   //font-size: 1.4rem;
 }
+
 .mat-select-value {
   color: $body-color;
 }
@@ -175,14 +217,17 @@ body {
 .mat-card {
   background-color: #fff;
 }
-.mat-card-title{
+
+.mat-card-title {
   //font-size: 2.1rem;
   margin-left: 20px;
 }
+
 .mat-progress-spinner circle, .mat-spinner circle,
 .mat-progress-spinner {
   stroke: $light-gray;
 }
+
 .spinner {
   position: fixed;
   top: 50%;
@@ -194,6 +239,7 @@ body {
   z-index: 1234;
   opacity: 1 !important;
 }
+
 .spinner-card {
   position: absolute;
   top: 55%;
@@ -207,16 +253,18 @@ body {
 }
 
 .totals-badge {
-  color:#fff;
+  color: #fff;
   border-radius: 25px;
   padding: 3px 10px;
   min-width: 100px;
-  display:inline-block;
+  display: inline-block;
   text-align: center;
 }
+
 .totals-numbers {
   background-color: $blue-green !important;
 }
+
 .totals-percent {
   color: $body-color;
   background-color: $yellow;
@@ -227,12 +275,14 @@ body {
   border: 1px solid $body-color;
   padding: 3px 10px;
   min-width: 160px;
-  display:inline-block;
+  display: inline-block;
   text-align: center;
 }
+
 .mat-table, .mat-cell {
   color: $body-color !important;
 }
+
 .mat-flat-button.btn-grey {
   background-color: $gray-lighter;
   color: $body-color;
@@ -240,28 +290,32 @@ body {
 
 
 .panel-wrapper {
-  border: 1px solid rgba(0,0,0,.03);
-  box-shadow: 0 2px 2px rgba(0,0,0,.24), 0 0 2px rgba(0,0,0,.12);
+  border: 1px solid rgba(0, 0, 0, .03);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
   width: 100%;
 }
+
 .panel-title {
-  color: rgba(0,0,0,.54);
-  background: rgba(0,0,0,.03);
+  color: rgba(0, 0, 0, .54);
+  background: rgba(0, 0, 0, .03);
   display: flex;
   justify-content: flex-start;
   padding: 8px 20px;
   align-items: baseline;
   justify-content: space-between;
 }
+
 .panel-body {
   padding: 30px;
   background: #ffffff;
 }
+
 .text-sm {
   font-size: .8em;
 }
+
 .justify.mat-grid-tile .mat-figure {
-  justify-content: flex-start !important ;
+  justify-content: flex-start !important;
   align-items: flex-start !important;
 }
 
@@ -274,12 +328,14 @@ body {
   .mat-form-field-wrapper {
     padding: 0 !important;
   }
+
   .mat-form-field-prefix {
     top: 0 !important;
     color: $light-gray;
   }
 }
-.mat-input-sm{
+
+.mat-input-sm {
   width: 120px;
   height: 40px;
 
@@ -292,19 +348,28 @@ body {
   padding: 30px 50px;
   background-color: $extra-light-gray;
 }
-h3.popover-header{
-  color:#000 !important;
+
+h3.popover-header {
+  color: #000 !important;
 }
+
 button:focus {
   outline: none;
 }
+
 .badge-help {
   color: #000;
   background-color: $blue-green;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 
 // Highcharts legend formatting

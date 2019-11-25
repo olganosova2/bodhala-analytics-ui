@@ -55,7 +55,7 @@ export const leadPartnerChartOptions = {
       dataLabels: {
         enabled: false
       },
-      showInLegend: true
+     showInLegend: true
     }
   },
   legend: {
@@ -69,11 +69,13 @@ export const leadPartnerChartOptions = {
     symbolHeight: .001,
     symbolWidth: .001,
     symbolRadius: .001,
+    /* tslint:disable */
     labelFormatter: function() {
       return '<div>' +
         '<span class="hc-partner-badge" style="color:#FFF; background-color: ' + this.color + ';"> ' + this.name +  ' </span>' +
         '</div>';
     },
+    /* tslint:enable */
     itemMarginBottom: 0
   },
   series: [{
