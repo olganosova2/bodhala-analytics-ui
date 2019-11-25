@@ -1,16 +1,26 @@
-export interface IPractice {
-  firm_id: number;
-  firm_name: string;
-  firm_total: number;
-  matter_id: string;
-  matter_name: string;
-  matter_total: number;
-  practice_area: string;
+export interface ITopLeadPartner {
+  id: string;
+  name: string;
+  img_url: string;
+  seniority: string;
   total_billed: number;
   total_expenses: number;
+  firm_id: number;
+  firm: string;
+  total_matters: number;
+  top_practice: string;
+  top_matter_id: string;
+  top_matter_name: string;
+  top_matter_total: number;
+  top_matter: {
+    id: string;
+    name: string;
+    total_billed: number;
+  };
   y: number;
 }
-export const practicePieChartOptions = {
+
+export const leadPartnerChartOptions = {
   chart: {
     height: 300,
     type: 'pie',
@@ -31,13 +41,11 @@ export const practicePieChartOptions = {
     shared: true,
     headerFormat: null,
     pointFormat: '<div style="width:250px;background-color:#f9b362;font-color:#fff;"><div><b>{series.name}</b><br /></div>' +
-      '<div class="mb10">{point.practice_area}</div></div>' +
+      '<div class="mb10">{point.name}</div></div>' +
       '<div>Spend</div></div>' +
       '<div class="mb10">${point.total_billed:,.0f}</div></div>' +
-      '<div>Top Firm</div></div>' +
-      '<div class="mb10">{point.firm_name}</div></div>' +
-      '<div>Top Matter</div></div>' +
-      '<div class="mb10">{point.matter_name}</div></div>'
+      '<div>Practice Area</div></div>' +
+      '<div class="mb10">{point.top_practice}</div></div>'
   },
   plotOptions: {
     pie: {
@@ -47,7 +55,7 @@ export const practicePieChartOptions = {
       dataLabels: {
         enabled: false
       },
-      showInLegend: true
+     showInLegend: true
     }
   },
   legend: {
@@ -65,14 +73,14 @@ export const practicePieChartOptions = {
     labelFormatter: function() {
       const bgcolor = this.options.visible===false ? "#ccc" : this.color;
       return '<div>' +
-        '<span class="hc-partner-badge" style="color:#FFF; background-color: ' + bgcolor + ';"> ' + this.practice_area +  ' </span>' +
+        '<span class="hc-partner-badge" style="color:#FFF; background-color: ' + bgcolor + ';"> ' + this.name +  ' </span>' +
         '</div>';
     },
     /* tslint:enable */
     itemMarginBottom: 0
   },
   series: [{
-    name: 'Practice Area',
+    name: 'Lead Partners',
     colorByPoint: true,
     data: []
   }]

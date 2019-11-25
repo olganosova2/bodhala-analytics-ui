@@ -31,6 +31,10 @@ export class LaunchpadComponent implements OnInit {
     this.postLoad();
   }
 
+  onCardLoaded() {
+    this.postLoad();
+  }
+
   // bubbled up from card/cell clicks
   onClick(item) {
     // TODO - optionally handle click scenarios here
@@ -50,9 +54,12 @@ export class LaunchpadComponent implements OnInit {
   }
 
   postLoad() {
+    // send messages back to the parent app
     if (window.parent) {
       setTimeout(() => {
-        window.parent.postMessage({height: this.container.nativeElement.offsetHeight, from: 'child'}, '*');
+        // send height of content to adjust iframe height
+        const height = this.container.nativeElement.offsetHeight;
+        window.parent.postMessage({height, from: 'child'}, '*');
       }, 100);
     }
   }

@@ -15,12 +15,14 @@ export const END_POINTS_URLS = {
   getTopFirms: {url: BASE_URL + 'analytics/getTopFirms', showLoading: true},
   getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
   spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
+  getTopLeadPartners: {url: BASE_URL + 'analytics/getTopLeadPartners', showLoading: true},
 };
 
 
 export const uiTitleString = 'Bodhala Analytics';
 export const EST_TIME_ZONE = 'America/New York';
 export const KEEP_ALIVE_SEC = 600000;
+export const TOP_RECORDS_NUMBER =  10;
 
 export const MAXIMUM_TEXT_CHARACTERS = 500;
 
@@ -51,6 +53,8 @@ export const BODHALA_DATE_FORMATS = {
   }
 };
 export const outerAppLinks = {
-  viewMatter: '#/app/client-dashboard/matter/'
+  viewMatter: '#/app/client-dashboard/matter/',
+  viewPracticeArea: '#/app/client-dashboard/practiceArea',
+  viewFirm: '#/app/client-dashboard/firm/',
 };
 
