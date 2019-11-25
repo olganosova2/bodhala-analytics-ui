@@ -34,7 +34,8 @@ import { PillComponent } from './launchpad/card/cells/pill/pill.component';
 import { CellComponent } from './launchpad/card/cells/cell.component';
 import { LinkComponent } from './launchpad/card/cells/link/link.component';
 import {TopMattersFirmsService} from './launchpad/services/top-matters-firms.service';
-import { TopPartnersChartComponent } from './launchpad/card/top-partners-chart/top-partners-chart.component';
+
+
 
 export function initUser(config: UserService) {
   return () => config.load();
@@ -57,8 +58,7 @@ export function highchartsFactory() {
     CardComponent,
     PillComponent,
     CellComponent,
-    LinkComponent,
-    TopPartnersChartComponent
+    LinkComponent
   ],
   entryComponents: [
     PillComponent,
