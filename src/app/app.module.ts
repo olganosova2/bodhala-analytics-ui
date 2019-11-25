@@ -46,6 +46,11 @@ export function highchartsFactory() {
   // return highcharts;
   const hc = require('highcharts');
   const dd = require('highcharts/modules/exporting');
+  hc.setOptions({
+    lang: {
+      thousandsSep: ','
+    }
+  });
   dd(hc);
 
   return hc;
