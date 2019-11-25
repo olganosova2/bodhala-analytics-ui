@@ -11,7 +11,7 @@ const moment = _moment;
 export class FiltersService {
   userFilters: IDataFilters;
   includeExpenses: boolean =  false;
-  startDate: string = '2015-01-01';  // only for debugging on localhost:4000, on the server it always will be overwritten
+  startDate: string = '2019-01-01';  // only for debugging on localhost:4000, on the server it always will be overwritten
   endDate: string = '2019-06-24';  // only for debugging on localhost:4000, on the server it always will be overwritten
 
   constructor(public userService: UserService,

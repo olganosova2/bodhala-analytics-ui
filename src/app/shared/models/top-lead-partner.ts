@@ -18,14 +18,16 @@ export interface ITopLeadPartner {
     total_billed: number;
   };
   y: number;
-  total_spend_formatted: string;
 }
+
 export const leadPartnerChartOptions = {
   chart: {
+    height: 300,
     type: 'pie',
-    width: 800,
     borderWidth: 0,
     marginLeft: 100,
+    marginTop: 0,
+    spacingTop: 0,
     spacingBottom: 15,
     spacingLeft: 10,
     spacingRight: 10,
@@ -37,29 +39,21 @@ export const leadPartnerChartOptions = {
   tooltip: {
     useHTML: true,
     shared: true,
-    backgroundColor: '#fff',
-    /* tslint:disable */
-    formatter: function() {
-      let result = '<div><div class="pb10">' +  this.point.name + '</div>';
-      result += '<div class="font-bold">Spend</div>';
-      result += '<div class="mb10">' + this.point.total_spend_formatted  + '</div>';
-      result += '<div class="font-bold">Practice Area</div>';
-      result += '<div class="mb10">' +  this.point.top_practice + '</div>';
-      result += '<div class="font-bold">Matter</div>';
-      result += '<div class="mb10">' +  this.point.top_matter_name + '</div></div>';
-      return result;
-    }
-    /* tslint:enable */
+    headerFormat: null,
+    pointFormat: '<div style="width:250px;background-color:#f9b362;font-color:#fff;"><div><b>{series.name}</b><br /></div>' +
+      '<div class="mb10">{point.name}</div></div>' +
+      '<div>Spend</div></div>' +
+      '<div class="mb10">${point.total_billed:,.0f}</div></div>' +
+      '<div>Practice Area</div></div>' +
+      '<div class="mb10">{point.top_practice}</div></div>'
   },
   plotOptions: {
     pie: {
       allowPointSelect: true,
       cursor: 'pointer',
-      size: 250,
       colors: ['#2748C2', '#1D70C2', '#26B8C2', '#26C277', '#84C2B9'],
       dataLabels: {
-        enabled: false,
-        // format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+        enabled: false
       },
      showInLegend: true
     }
@@ -69,24 +63,20 @@ export const leadPartnerChartOptions = {
     align: 'left',
     verticalAlign: 'top',
     layout: 'vertical',
-    width: '40%',
     x: 0,
-    y: 0,
-    padding: 3,
-    itemMarginTop: 5,
-    itemMarginBottom: 5,
-    itemStyle: {
-      fontSize: '14px',
-      fontWeight: 'normal',
-      color: '#888'
-    },
-    useHtml: true,
+    y: 20,
+    useHTML: true,
+    symbolHeight: .001,
+    symbolWidth: .001,
+    symbolRadius: .001,
     /* tslint:disable */
-    labelFormatter: function () {
-      let result = '<span class="mb20">' +  this.name + '</span>';
-      return result;
+    labelFormatter: function() {
+      return '<div>' +
+        '<span class="hc-partner-badge" style="color:#FFF; background-color: ' + this.color + ';"> ' + this.name +  ' </span>' +
+        '</div>';
     },
     /* tslint:enable */
+    itemMarginBottom: 0
   },
   series: [{
     name: 'Lead Partners',

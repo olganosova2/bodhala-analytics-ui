@@ -37,7 +37,6 @@ export class TopLeadPartnersService {
       rec.top_matter_name = rec.top_matter.name;
       rec.top_matter_total = rec.top_matter.total_billed;
       rec.y = Math.round(rec.total_billed);
-      rec.total_spend_formatted = (new CurrencyPipe('en-US')).transform(rec.total_billed, 'USD', 'symbol');
     }
     return records.slice(0, config.TOP_RECORDS_NUMBER);
   }
