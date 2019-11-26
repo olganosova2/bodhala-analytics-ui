@@ -36,7 +36,7 @@ export const columns = {
 export const cards = [
   { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters, options: mattersChartOptions, span: 2 },
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2 },
-  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, span: 4 },
+  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 4 },
   { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
