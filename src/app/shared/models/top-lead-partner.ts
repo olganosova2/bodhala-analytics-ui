@@ -25,8 +25,8 @@ export const leadPartnerChartOptions = {
     height: 300,
     type: 'pie',
     borderWidth: 0,
-    marginLeft: 100,
-    marginTop: 0,
+    marginLeft: 120,
+    marginTop: 10,
     spacingTop: 0,
     spacingBottom: 15,
     spacingLeft: 10,
@@ -64,15 +64,16 @@ export const leadPartnerChartOptions = {
     verticalAlign: 'top',
     layout: 'vertical',
     x: 0,
-    y: 20,
+    y: 15,
     useHTML: true,
     symbolHeight: .001,
     symbolWidth: .001,
     symbolRadius: .001,
     /* tslint:disable */
     labelFormatter: function() {
+      const bgcolor = this.options.visible===false ? "#ccc" : this.color;
       return '<div>' +
-        '<span class="hc-partner-badge" style="color:#FFF; background-color: ' + this.color + ';"> ' + this.name +  ' </span>' +
+        '<span class="hc-partner-badge" style="color:#FFF; background-color: ' + bgcolor + ';"> ' + this.name +  ' </span>' +
         '</div>';
     },
     /* tslint:enable */

@@ -3,6 +3,7 @@ import * as config from '../shared/services/config';
 import { PillComponent } from './card/cells/pill/pill.component';
 import { LinkComponent } from './card/cells/link/link.component';
 import {leadPartnerChartOptions} from '../shared/models/top-lead-partner';
+import {practicePieChartOptions} from '../shared/models/practice';
 import {mattersChartOptions} from '../shared/models/top-matters';
 import {firmsChartOptions} from '../shared/models/top-firms';
 
