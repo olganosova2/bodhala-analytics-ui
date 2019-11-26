@@ -1,3 +1,5 @@
+import {basePieChartOptions} from './base-chart';
+
 export interface ITopFirm {
   id: string;
   firm_name: string;
@@ -8,4 +10,37 @@ export interface ITopFirm {
   total_expenses_all: number;
   total_matters: number;
   total_percent: number;
+  name: string;
+  y: number;
 }
+const firmAdditionalOptions = {
+  chart: {
+    height: 300,
+    width: 850,
+    type: 'pie',
+    marginLeft: 200,
+    spacingTop: 10
+  },
+  tooltip : {
+    useHTML: true,
+    shared: true,
+    backgroundColor: 'white',
+    headerFormat: null,
+    padding: 0,
+    pointFormat: '<div class="highcharts-tooltip">' +
+      '<div class="mb10 font-bold">{point.name}</div>' +
+      '<div>Spend</div>' +
+      '<div class="mb10">${point.y:,.0f}</div>' +
+      '<div>% of Total Spend</div>' +
+      '<div class="mb10">{point.total_percent:.2f}%</div>'
+  },
+  series: [{
+    name: 'Top Firms',
+    colorByPoint: true,
+    data: []
+  }]
+};
+const deepBaseChartCopy = Object.assign({}, basePieChartOptions);
+export const firmsChartOptions = { ... deepBaseChartCopy, ... firmAdditionalOptions };
+
+

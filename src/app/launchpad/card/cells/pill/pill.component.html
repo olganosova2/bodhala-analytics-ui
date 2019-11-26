@@ -2,15 +2,15 @@
     <span class="totals-badge totals-numbers">${{data[column.field] | number:'1.0-0'}}</span>
 </div>
 <div *ngIf="column.format === 'percent'">
-  <span class="totals-badge totals-percent">${{data[column.field] | number:'1.2-2'}}</span>
+  <span class="totals-badge totals-percent">{{data[column.field] | number:'1.2-2'}}%  </span>
 </div>
 <div *ngIf="column.format === 'lawyer'">
-  <span class="partner-badge">
+  <span class="partner-badge lead-partner-badge">
     <!-- TODO - this avatar idea doesn't work well with long names -->
-    <!-- <img *ngIf="row[col.avatar]; else icon" [src]="row[col.avatar]"/>
+   <img *ngIf="data[column.avatar]; else icon" [src]="data[column.avatar]"/>
     <ng-template #icon>
       <mat-icon aria-hidden="false" aria-label="lawyer">person</mat-icon>
-    </ng-template> -->
+    </ng-template>
     {{data[column.field] ? data[column.field]: "N/A"}}
   </span>
 </div>

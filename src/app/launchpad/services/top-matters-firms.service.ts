@@ -45,7 +45,10 @@ export class TopMattersFirmsService {
       if (rec.bio_image_url instanceof Array) {
         rec.bio_image_url = rec.bio_image_url[0] || '';
       }
+      const sum = this.filters.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
+      rec.y = Math.round(sum);
       processedRecods.push(rec);
+      // processedRecods[0].bio_image_url = 'https://bodhala-assets.s3.amazonaws.com/img/firms/00001/profiles/aeea2542-6952-11e7-80bc-061c87c9764f.jpg';
     }
     return processedRecods.sort(this.util.dynamicSort('-total_spend')).slice(0, config.TOP_RECORDS_NUMBER);
   }
@@ -54,7 +57,9 @@ export class TopMattersFirmsService {
       const sum = this.filters.includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
       const total = this.filters.includeExpenses ? (rec.total_billed_all + rec.total_expenses_all) : rec.total_billed_all || 1;
       rec.total_percent = sum / total * 100;
+      rec.y = Math.round(sum);
+      rec.name = rec.firm_name;
     }
-    return records;
+    return records.slice(0, config.TOP_RECORDS_NUMBER);
   }
 }

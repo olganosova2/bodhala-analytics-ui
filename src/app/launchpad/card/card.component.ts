@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-
+export enum CardMode {
+  List = 'list',
+  Chart = 'chart'
+}
 @Component({
   selector: 'bd-card',
   templateUrl: './card.component.html',
@@ -25,9 +28,9 @@ export class CardComponent implements OnInit, OnChanges {
   loaded: EventEmitter<any> = new EventEmitter();
 
   data: [];
-  displayedColumns = [];
-  show = 'list';
-  isLoaded = false;
+  displayedColumns: Array<any> = [];
+  show: string  = CardMode.List;
+  isLoaded: boolean = false;
 
   chart: any = {};
 
@@ -49,17 +52,22 @@ export class CardComponent implements OnInit, OnChanges {
     const response =  await this.request;
     this.data = response.result || response;
     this.isLoaded = true;
+    if (this.show === CardMode.Chart && this.options) {
+      setTimeout(() => {
+        this.reloadChart();
+      });
+    }
     this.loaded.emit(true);
   }
 
   // bubbled up from cell clicks
-  onClick(row) {
+  onClick(row): void {
     this.clicked.emit(row);
   }
 
-  toggle(show) {
+  toggle(show): void {
     this.show = show;
-    if (show === 'chart' && this.options) {
+    if (show === CardMode.Chart && this.options) {
       setTimeout(() => {
       this.reloadChart();
       });
