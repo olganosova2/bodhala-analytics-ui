@@ -7,7 +7,7 @@ npm install
 npm install git+https://bodhala@bitbucket.org/bodhala/bodhala-ui-common.git#master
 
 ## Development server
-1) login to 127.0.0.1:5000 and become a client with matters
+1) login to 127.0.0.1:5000 and become a client with Analytics
 2) 'npm start'    then open 127.0.0.1:4300
 On 127.0.0.1:4300 filters are set up only to default dates 2019-01-01 and 2019-06-24 and client_id of logged in 127.0.0.1:5000 user
 

@@ -51,7 +51,7 @@ export const leadPartnerChartOptions = {
     pie: {
       allowPointSelect: true,
       cursor: 'pointer',
-      colors: ['#2748C2', '#1D70C2', '#26B8C2', '#26C277', '#84C2B9'],
+      colors: ['#1950A0', '#2660B3', '#316CC3', '#3C7BD3', '#4887E2', '#4F97E4', '#51A9DA', '#52BBD1', '#55CEC7', '#54DABA'],
       dataLabels: {
         enabled: false
       },

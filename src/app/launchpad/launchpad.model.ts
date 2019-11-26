@@ -4,6 +4,8 @@ import { PillComponent } from './card/cells/pill/pill.component';
 import { LinkComponent } from './card/cells/link/link.component';
 import {leadPartnerChartOptions} from '../shared/models/top-lead-partner';
 import {practicePieChartOptions} from '../shared/models/practice';
+import {mattersChartOptions} from '../shared/models/top-matters';
+import {firmsChartOptions} from '../shared/models/top-firms';
 
 export const columns = {
   topMatters: [
@@ -32,9 +34,9 @@ export const columns = {
 };
 
 export const cards = [
-  { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters, span: 2 },
-  { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, span: 2 },
-  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 4 },
+  { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters, options: mattersChartOptions, span: 2 },
+  { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2 },
+  { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, span: 4 },
   { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },

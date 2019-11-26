@@ -1,0 +1,33 @@
+@import "../../../../../assets/styles/colors.scss";
+.mat-icon {
+  font-size: 16px;
+}
+
+.partner-badge {
+  border-radius: 25px;
+  border: 1px solid $body-color;
+  padding: 3px 10px;
+  min-width: 160px;
+  display: inline-block;
+  text-align: left;
+  padding-left: 25px;
+}
+.lead-partner-badge {
+  white-space: nowrap;
+  margin: 0 5px;
+  position: relative;
+  mat-icon {
+    position: absolute;
+    left: 5px;
+    top: 5px;
+  }
+  img {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+  }
+}
+

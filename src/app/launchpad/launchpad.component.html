@@ -5,7 +5,7 @@
            [columns]="card.columns"
            [options]="card.options"
            (clicked)="onClick($event)"
-           (loaded)="onCardLoaded($event)"
+           (loaded)="onCardLoaded()"
            [ngStyle]="{'grid-column': 'span ' + card.span}">
   </bd-card>
 </div>
