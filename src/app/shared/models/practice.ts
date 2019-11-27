@@ -43,7 +43,7 @@ export const practicePieChartOptions = {
     pie: {
       allowPointSelect: true,
       cursor: 'pointer',
-      colors: ['#2748C2', '#1D70C2', '#26B8C2', '#26C277', '#84C2B9'],
+      colors: ['#9D02FE', '#6F00FF', '#4000FF', '#1102FF', '#0F1FFF', '#0C4CFF', '#037BFF', '#00AAFF', '#00C1FF', '#00D9FE'],
       dataLabels: {
         enabled: false
       },
