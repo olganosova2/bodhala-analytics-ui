@@ -37,7 +37,7 @@ const leadPartnerAdditionalOptions = {
       '<div class="mb10">{point.top_practice}</div></div>'
     },
     series: [{
-      name: 'Top Matters',
+      name: 'Top Lead Partners',
       colorByPoint: true,
       data: []
     }]
