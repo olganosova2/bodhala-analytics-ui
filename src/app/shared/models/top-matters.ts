@@ -33,5 +33,4 @@ const matterAdditionalOptions = {
     data: []
   }]
 };
-const deepBaseChartCopy = Object.assign({}, basePieChartOptions);
-export const mattersChartOptions = { ... deepBaseChartCopy, ... matterAdditionalOptions };
+export const mattersChartOptions = { ... basePieChartOptions, ... matterAdditionalOptions };

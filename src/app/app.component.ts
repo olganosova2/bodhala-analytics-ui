@@ -40,18 +40,18 @@ export class AppComponent implements OnDestroy {
       this.progress = value ? value : false;
     });
     titleService.setTitle(config.uiTitleString);
-    idle.setIdle(environment.IDLE_KEEPALIVE_CONFIG.timeOutSeconds);
-    idle.setTimeout(environment.IDLE_KEEPALIVE_CONFIG.keepaliveSeconds);
-    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-    idle.onIdleEnd.subscribe(() => {
-      titleService.setTitle(config.uiTitleString);
-    });
-    idle.onTimeout.subscribe(() => {
-      this.redirectToLogin();
-    });
-    idle.onIdleStart.subscribe(() => {
-      this.openDialog();
-    });
+    // idle.setIdle(environment.IDLE_KEEPALIVE_CONFIG.timeOutSeconds);
+    // idle.setTimeout(environment.IDLE_KEEPALIVE_CONFIG.keepaliveSeconds);
+    // idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+    // idle.onIdleEnd.subscribe(() => {
+    //   titleService.setTitle(config.uiTitleString);
+    // });
+    // idle.onTimeout.subscribe(() => {
+    //   this.redirectToLogin();
+    // });
+    // idle.onIdleStart.subscribe(() => {
+    //   this.openDialog();
+    // });
 
     this.resetIdle();
 
