@@ -16,6 +16,8 @@ describe('LinkComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LinkComponent);
     component = fixture.componentInstance;
+    component.column = {format: 'currency', avatar: 'avatar', field: 'test'};
+    component.data = {test: 1};
     fixture.detectChanges();
   });
 

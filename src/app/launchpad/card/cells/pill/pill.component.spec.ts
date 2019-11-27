@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../../shared/unit-tests/mock-app.imports';
 import { PillComponent } from './pill.component';
 
 describe('PillComponent', () => {
@@ -8,7 +8,10 @@ describe('PillComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PillComponent ]
+      imports: IMPORTS,
+      declarations: [...DECLARATIONS, PillComponent],
+      providers: PROVIDERS,
+      schemas: SCHEMAS
     })
     .compileComponents();
   }));
@@ -16,6 +19,8 @@ describe('PillComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PillComponent);
     component = fixture.componentInstance;
+    component.column = {format: 'currency', avatar: 'avatar', field: 'test'};
+    component.data = {test: 1};
     fixture.detectChanges();
   });
 

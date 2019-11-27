@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LaunchpadComponent } from './launchpad.component';
+import { LaunchPadService} from './launchpad.service';
+
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 
 import * as mockServices from '../shared/unit-tests/mock-services';
@@ -35,9 +37,13 @@ describe('LaunchpadComponent', () => {
       .compileComponents();
   }));
 
+  const mockRequests = {topMatters: Promise.resolve([])};
+
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchpadComponent);
     component = fixture.componentInstance;
+    const launchpadService = fixture.debugElement.injector.get(LaunchPadService);
+    spyOn(launchpadService, 'fetchData').and.returnValue(mockRequests);
     fixture.detectChanges();
   });
 
