@@ -19,7 +19,7 @@ const firmAdditionalOptions = {
     width: 850,
     type: 'pie',
     marginLeft: 200,
-    spacingTop: 10
+    spacingTop: 0
   },
   tooltip : {
     useHTML: true,
@@ -40,7 +40,6 @@ const firmAdditionalOptions = {
     data: []
   }]
 };
-const deepBaseChartCopy = Object.assign({}, basePieChartOptions);
-export const firmsChartOptions = { ... deepBaseChartCopy, ... firmAdditionalOptions };
+export const firmsChartOptions = { ... basePieChartOptions, ... firmAdditionalOptions };
 
 
