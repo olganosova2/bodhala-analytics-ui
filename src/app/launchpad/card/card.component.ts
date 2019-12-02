@@ -11,7 +11,7 @@ export enum CardMode {
 export class CardComponent implements OnInit, OnChanges {
 
   @Input()
-  header;
+  header: string;
 
   @Input()
   columns: Array<any>;

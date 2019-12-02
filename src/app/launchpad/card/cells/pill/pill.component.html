@@ -6,11 +6,10 @@
 </div>
 <div *ngIf="column.format === 'lawyer'">
   <span class="partner-badge lead-partner-badge">
-    <!-- TODO - this avatar idea doesn't work well with long names -->
-   <img *ngIf="data[column.avatar]; else icon" [src]="data[column.avatar]"/>
-    <ng-template #icon>
-      <mat-icon aria-hidden="false" aria-label="lawyer">person</mat-icon>
-    </ng-template>
+<!--   <img *ngIf="data[column.avatar]; else icon" [src]="data[column.avatar]"/>-->
+<!--    <ng-template #icon>-->
+<!--      <mat-icon aria-hidden="false" aria-label="lawyer">person</mat-icon>-->
+<!--    </ng-template>-->
     {{data[column.field] ? data[column.field]: "N/A"}}
   </span>
 </div>
