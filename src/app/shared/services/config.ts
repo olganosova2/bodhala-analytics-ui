@@ -56,5 +56,6 @@ export const outerAppLinks = {
   viewMatter: '#/app/client-dashboard/matter/',
   viewPracticeArea: '#/app/client-dashboard/practiceArea',
   viewFirm: '#/app/client-dashboard/firm/',
+  viewLeadPartner: '#/app/client-dashboard/lead-partner/',
 };
 

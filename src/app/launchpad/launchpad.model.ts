@@ -26,10 +26,10 @@ export const columns = {
     { name: 'Top Matter', field: 'matter_name', component: LinkComponent},
   ],
   topLeadPartners: [
-    { name: 'Lead Partner', field: 'name', component: LinkComponent },
+    { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${id}' + '/' + '${firm_id}'},
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
-    { name: 'Practice Area', field: 'top_practice', component: LinkComponent},
-    { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent},
+    { name: 'Practice Area', field: 'top_practice', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
+    { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'},
   ]
 };
 

@@ -29,11 +29,11 @@ const leadPartnerAdditionalOptions = {
     backgroundColor: 'white',
     headerFormat: null,
     padding: 0,
-    pointFormat: '<div style="width:250px;background-color:#f9b362;font-color:#fff;"><div><b>{series.name}</b><br /></div>' +
-      '<div class="mb10">{point.name}</div></div>' +
-      '<div>Spend</div></div>' +
-      '<div class="mb10">${point.total_billed:,.0f}</div></div>' +
-      '<div>Practice Area</div></div>' +
+    pointFormat: '<div class="highcharts-tooltip">' +
+      '<div class="mb10">{point.name}</div>' +
+      '<div>Spend</div>' +
+      '<div class="mb10">${point.total_billed:,.0f}</div>' +
+      '<div>Practice Area</div>' +
       '<div class="mb10">{point.top_practice}</div></div>'
     },
     series: [{
