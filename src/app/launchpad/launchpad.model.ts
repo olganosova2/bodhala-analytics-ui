@@ -20,10 +20,10 @@ export const columns = {
     { name: '% of Total Spend', format: 'percent', field: 'total_percent', component: PillComponent }
   ],
   spendByPracticeArea: [
-    { name: 'Practice Area', field: 'practice_area', component: LinkComponent },
+    { name: 'Practice Area', field: 'practice_area', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
-    { name: 'Top Firm', field: 'firm_name', component: LinkComponent},
-    { name: 'Top Matter', field: 'matter_name', component: LinkComponent},
+    { name: 'Top Firm', field: 'firm_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${firm_id}'},
+    { name: 'Top Matter', field: 'matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${matter_id}'},
   ],
   topLeadPartners: [
     { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${id}' + '/' + '${firm_id}'},

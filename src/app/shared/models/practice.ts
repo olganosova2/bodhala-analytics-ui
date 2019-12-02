@@ -1,6 +1,7 @@
 import {basePieChartOptions} from './base-chart';
 
 export interface IPractice {
+  name: string;
   firm_id: number;
   firm_name: string;
   firm_total: number;
@@ -20,13 +21,13 @@ const practiceAdditionalOptions = {
     backgroundColor: 'white',
     headerFormat: null,
     padding: 0,
-    pointFormat: '<div style="width:250px;background-color:#f9b362;font-color:#fff;"><div><b>{series.name}</b><br /></div>' +
-      '<div class="mb10">{point.practice_area}</div></div>' +
-      '<div>Spend</div></div>' +
-      '<div class="mb10">${point.total_billed:,.0f}</div></div>' +
-      '<div>Top Firm</div></div>' +
-      '<div class="mb10">{point.firm_name}</div></div>' +
-      '<div>Top Matter</div></div>' +
+    pointFormat: '<div class="highcharts-tooltip">' +
+      '<div class="mb10">{point.practice_area}</div>' +
+      '<div>Spend</div>' +
+      '<div class="mb10">${point.total_billed:,.0f}</div>' +
+      '<div>Top Firm</div>' +
+      '<div class="mb10">{point.firm_name}</div>' +
+      '<div>Top Matter</div>' +
       '<div class="mb10">{point.matter_name}</div></div>'
     },
     series: [{

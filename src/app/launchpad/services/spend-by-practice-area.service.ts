@@ -28,6 +28,7 @@ export class SpendByPracticeAreaService {
     this.practiceList =  Object.assign([], records);
     for (const rec of records) {
       rec.y = Math.round(rec.total_billed);
+      rec.name = rec.practice_area;
     }
     return this.practiceList.sort(this.util.dynamicSort('-total_billed'));
   }
