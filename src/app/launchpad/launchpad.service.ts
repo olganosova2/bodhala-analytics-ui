@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { TopMattersFirmsService } from './services/top-matters-firms.service';
 import {SpendByPracticeAreaService} from './services/spend-by-practice-area.service';
 import {TopLeadPartnersService} from './services/top-lead-partners.service';
+import {InvoiceIqService} from './services/invoice-iq.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class LaunchPadService {
   constructor(
     private topMattersFirmsService: TopMattersFirmsService,
     private practiceService: SpendByPracticeAreaService,
-    private leadPartnerService: TopLeadPartnersService
+    private leadPartnerService: TopLeadPartnersService,
+    private invoiceIqService: InvoiceIqService
 
   ) { }
 
@@ -21,6 +23,7 @@ export class LaunchPadService {
     requests.topFirms = this.topMattersFirmsService.fetchFirms();
     requests.spendByPractice = this.practiceService.fetch();
     requests.topLeadPartners = this.leadPartnerService.fetchLeadPartners();
+    requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
     // TODO - add all requests here
     return requests;
   }

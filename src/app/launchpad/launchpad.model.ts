@@ -6,6 +6,7 @@ import {leadPartnerChartOptions} from '../shared/models/top-lead-partner';
 import {practicePieChartOptions} from '../shared/models/practice';
 import {mattersChartOptions} from '../shared/models/top-matters';
 import {firmsChartOptions} from '../shared/models/top-firms';
+import {iqReportPieChartOptions} from '../shared/models/invoiceIq'
 
 export const columns = {
   topMatters: [
@@ -30,6 +31,10 @@ export const columns = {
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: 'Practice Area', field: 'top_practice', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
     { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'},
+  ],
+  invoiceIQReports: [
+    { name: 'Report', field: 'report_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewIQReport}` + '${id}' },
+    { name: 'Total Cost of Work', format: 'currency', field: 'total_billed', component: PillComponent }
   ]
 };
 
@@ -38,7 +43,7 @@ export const cards = [
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2 },
   { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 4 },
   { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2 },
-  { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
+  { header: 'Invoice IQ Reports', request: 'invoiceIQReports', columns: columns.invoiceIQReports,  options: iqReportPieChartOptions, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 }
