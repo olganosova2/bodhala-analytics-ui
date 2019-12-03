@@ -6,7 +6,7 @@ import {leadPartnerChartOptions} from '../shared/models/top-lead-partner';
 import {practicePieChartOptions} from '../shared/models/practice';
 import {mattersChartOptions} from '../shared/models/top-matters';
 import {firmsChartOptions} from '../shared/models/top-firms';
-import {iqReportPieChartOptions} from '../shared/models/invoiceIq'
+import {iqReportPieChartOptions} from '../shared/models/invoiceIq';
 
 export const columns = {
   topMatters: [
