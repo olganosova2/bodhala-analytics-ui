@@ -23,10 +23,14 @@ export class InvoiceIqService {
   }
 
   processIQReports(records: Array<IInvoiceIQ>): Array<IInvoiceIQ> {
+    const reports: Array<IInvoiceIQ> = [];
     for (const rec of records) {
-      rec.name = rec.report_name;
-      rec.y = Math.round(rec.total_billed);
+      if (rec.total_billed) {
+        rec.name = rec.report_name;
+        rec.y = Math.round(rec.total_billed);
+        reports.push(rec);
+      }
     }
-    return records.slice(0, config.TOP_RECORDS_NUMBER);
+    return reports.slice(0, config.TOP_RECORDS_NUMBER);
   }
 }
