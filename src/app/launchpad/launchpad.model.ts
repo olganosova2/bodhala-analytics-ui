@@ -6,6 +6,7 @@ import {leadPartnerChartOptions} from '../shared/models/top-lead-partner';
 import {practicePieChartOptions} from '../shared/models/practice';
 import {mattersChartOptions} from '../shared/models/top-matters';
 import {firmsChartOptions} from '../shared/models/top-firms';
+import { blockBillerChart } from '../shared/models/top-block-billers';
 import {iqReportPieChartOptions} from '../shared/models/invoiceIq';
 
 export const columns = {
@@ -30,7 +31,12 @@ export const columns = {
     { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${id}' + '/' + '${firm_id}'},
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: 'Practice Area', field: 'top_practice', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
-    { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'},
+    { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'}
+  ],
+  topBlockBillers: [
+    { name: 'Firm Name', field: 'law_firm', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${law_firm_id}' },
+    { name: '% Block Billed', format: 'percent', field: 'percent', component: PillComponent },
+    { name: 'Lead Partner', field: 'name', component: PillComponent, format: 'lawyer'}
   ],
   invoiceIQReports: [
     { name: 'Report', field: 'report_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewIQReport}` + '${id}' },
@@ -43,6 +49,7 @@ export const cards = [
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2 },
   { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 4 },
   { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2 },
+  { header: 'Top Block Billers', request: 'topBlockBillers', columns: columns.topBlockBillers, span: 2, options: blockBillerChart },
   { header: 'Invoice IQ Reports', request: 'invoiceIQReports', columns: columns.invoiceIQReports,  options: iqReportPieChartOptions, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },
   { header: 'Matters with Highest block billing', request: 'topMatters', columns: columns.topMatters, span: 2 },

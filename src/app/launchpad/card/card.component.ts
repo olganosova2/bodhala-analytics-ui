@@ -27,7 +27,7 @@ export class CardComponent implements OnInit, OnChanges {
   @Output()
   loaded: EventEmitter<any> = new EventEmitter();
 
-  data: [];
+  data: Array<any> = [];
   displayedColumns: Array<any> = [];
   show: string  = CardMode.List;
   isLoaded: boolean = false;
@@ -75,6 +75,9 @@ export class CardComponent implements OnInit, OnChanges {
   }
 
   reloadChart(): void {
+    if (this.options.chart.type === 'column') {
+      this.chart.xAxis[0].setCategories(this.data.map(d => d.category));
+    }
     this.chart.series[0].setData(this.data);
   }
 

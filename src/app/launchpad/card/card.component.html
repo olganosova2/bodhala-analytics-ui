@@ -24,7 +24,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      <div *ngIf="show === 'chart' && options">
+      <div *ngIf="show === 'chart' && options" class="chart-container">
         <chart [options]="options" (load)="saveInstance($event.context)"></chart>
       </div>
     </div>

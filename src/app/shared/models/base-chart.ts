@@ -50,3 +50,33 @@ export const basePieChartOptions = {
     itemMarginBottom: 0
   }
 };
+
+export const baseColumnChartOptions = {
+  chart: {
+    type: 'column',
+    spacingTop: 0
+  },
+  credits: {
+    enabled: false
+  },
+  title: {text: null},
+  plotOptions: {
+    column: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      colors: ['#9D02FE', '#6F00FF', '#4000FF', '#1102FF', '#0F1FFF', '#0C4CFF', '#037BFF', '#00AAFF', '#00C1FF', '#00D9FE'],
+      dataLabels: {
+        enabled: false
+      },
+      showInLegend: true,
+      borderRadiusTopLeft: 40,
+      borderRadiusTopRight: 40
+    },
+    series: {
+      pointPadding: 0.2,
+      groupPadding: 0,
+      borderWidth: 0,
+      shadow: false
+    }
+  }
+};

@@ -20,6 +20,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
+import borderRadius from 'highcharts-border-radius';
 import { ChartModule } from 'angular2-highcharts';
 
 import * as CONFIG from './shared/services/config';
@@ -46,6 +47,7 @@ export function initHttp(service: HttpService) {
 export function highchartsFactory() {
   // return highcharts;
   const hc = require('highcharts');
+  borderRadius(hc);
   const dd = require('highcharts/modules/exporting');
   hc.setOptions({
     lang: {

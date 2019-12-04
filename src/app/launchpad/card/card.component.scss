@@ -33,3 +33,11 @@
   }
 }
 
+.chart-container {
+  position: relative;
+  width: 100%;
+  chart {
+    display: block;
+    width: 100%;
+  }
+}
