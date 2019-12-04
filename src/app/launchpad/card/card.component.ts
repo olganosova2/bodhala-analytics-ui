@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef} from '@angular/core';
 export enum CardMode {
   List = 'list',
   Chart = 'chart'
@@ -20,6 +20,8 @@ export class CardComponent implements OnInit, OnChanges {
   request: Promise<any>;
   @Input()
   options: any;
+  @Input()
+  cardName: string;
 
   @Output()
   clicked: EventEmitter<any> = new EventEmitter();
@@ -27,6 +29,9 @@ export class CardComponent implements OnInit, OnChanges {
   @Output()
   loaded: EventEmitter<any> = new EventEmitter();
 
+  @ViewChild('panelBody', {static: false}) panelBody: ElementRef;
+
+  individualData: any;
   data: Array<any> = [];
   displayedColumns: Array<any> = [];
   show: string  = CardMode.List;
@@ -37,7 +42,7 @@ export class CardComponent implements OnInit, OnChanges {
   constructor() { }
 
   async ngOnInit() {
-    this.displayedColumns = this.columns.map(col => col.field);
+    this.displayedColumns = this.columns ? this.columns.map(col => col.field) : [];
     this.load();
   }
 
@@ -50,7 +55,10 @@ export class CardComponent implements OnInit, OnChanges {
   async load() {
     this.isLoaded = false;
     const response =  await this.request;
-    this.data = response.result || response;
+    this.data = response.data || response;
+    if (!this.columns) { // specific, not table card
+      this.individualData = response;
+    }
     this.isLoaded = true;
     if (this.show === CardMode.Chart && this.options) {
       setTimeout(() => {
@@ -75,7 +83,7 @@ export class CardComponent implements OnInit, OnChanges {
   }
 
   reloadChart(): void {
-    if (this.options.chart.type === 'column') {
+    if (this.cardName === 'topBlockBillers') {
       this.chart.xAxis[0].setCategories(this.data.map(d => d.category));
     }
     this.chart.series[0].setData(this.data);

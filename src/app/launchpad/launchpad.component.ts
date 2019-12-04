@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { LaunchPadService } from './launchpad.service';
 import { FiltersService } from '../shared/services/filters.service';
-import { columns, cards } from './launchpad.model';
+import { columns } from './launchpad.model';
 
 @Component({
   selector: 'bd-launchpad',
@@ -13,14 +13,16 @@ export class LaunchpadComponent implements OnInit {
   @ViewChild('launchpad', {static: false})
   container: ElementRef;
 
-  cards = cards;
+  cards: Array<any> = []; // cards;
   requests = {};
   columns = columns;
 
   constructor(
     private filtersService: FiltersService,
     private launchPadService: LaunchPadService
-    ) { }
+    ) {
+    this.cards = this.launchPadService.configureCards();
+  }
 
   ngOnInit() {
     this.load();

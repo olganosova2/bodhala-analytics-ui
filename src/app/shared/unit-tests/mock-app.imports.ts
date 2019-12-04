@@ -1,7 +1,7 @@
 import { HttpClient, HttpHandler } from '@angular/common/http';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import {APP_BASE_HREF, Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import {APP_BASE_HREF, DatePipe, Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {HttpService} from 'bodhala-ui-common';
@@ -97,6 +97,7 @@ export const PROVIDERS = [
   RouterModule,
   UserFiltersModel,
   TopMattersFirmsService,
+  DatePipe,
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },
@@ -111,6 +112,7 @@ export const SERVICE_PROVIDERS = [
     CookieService,
     HttpService,
     UserFiltersModel,
+    DatePipe,
     { provide: HttpClient, useClass: mockServices.HttpStub }
   ]
 ];

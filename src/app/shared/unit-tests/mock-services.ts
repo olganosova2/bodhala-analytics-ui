@@ -1,5 +1,7 @@
 import {CURRENT_USER} from './mock-data/user';
 import {Observable, of, throwError} from 'rxjs';
+import {TOP_MATTERS} from './mock-data/top-matters';
+import {TOP_FIRMS} from './mock-data/top-firms';
 
 export class UserStub {
   entitlements: [any];
@@ -9,6 +11,9 @@ export class UserStub {
   currentUser = CURRENT_USER.result.user;
   public load() {
     return of(this.currentUser);
+  }
+  public hasEntitlement(ent) {
+    return true;
   }
 }
 export class FiltersStub {
@@ -32,6 +37,10 @@ export class DataStub {
           return throwError({ errorStatus: 505 });
         }
         return of({});
+      case 'getTopMattersAndLeadPartners':
+        return of(TOP_MATTERS);
+      case 'getTopFirms':
+        return of(TOP_FIRMS);
       default:
         return of([]);
     }
@@ -84,5 +93,27 @@ export class HttpStub {
       return throwError({ errorStatus: 505 });
     }
     return of([]);
+  }
+}
+export class MattersAndFirmsServiceStub {
+ public fetchMatters() {
+   return Promise.resolve({result: []});
+ }
+  public fetchFirms() {
+    return Promise.resolve({result: []});
+  }
+  public fetchActiveSpend() {
+    return Promise.resolve({result: { data: []}});
+  }
+}
+
+export class PracticeServiceStub {
+  public fetch() {
+    return Promise.resolve({result: []});
+  }
+}
+export class LeadPracticeServiceStub {
+  public fetchLeadPartners() {
+    return Promise.resolve({result: []});
   }
 }

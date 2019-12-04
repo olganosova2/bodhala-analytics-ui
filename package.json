@@ -11,6 +11,7 @@
     "build-stage": "ng build --base-href /analytics-ui/ --configuration stage",
     "build-prod": "ng build --base-href /analytics-ui/ --configuration production",
     "test": "ng test",
+    "test1": "ng test --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

@@ -11,8 +11,9 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <div class="panel-body">
-      <table mat-table [dataSource]="data" class="full-width"  #matterTable *ngIf="show === 'list' && isLoaded">
+    <div class="panel-body" #panelBody>
+      <table mat-table [dataSource]="data" class="full-width" #matterTable
+             *ngIf="show === 'list' && columns && isLoaded">
         <ng-container *ngFor="let col of columns" [matColumnDef]="col.field">
           <th mat-header-cell *matHeaderCellDef class="card-header">{{col.name}}</th>
           <td mat-cell *matCellDef="let row" class="card-cell">
@@ -23,6 +24,11 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+
+
+      <div *ngIf="show === 'list' && cardName === 'activeSpend' && isLoaded">
+        <bd-active-spend [spendData]="individualData"></bd-active-spend>
+      </div>
 
       <div *ngIf="show === 'chart' && options" class="chart-container">
         <chart [options]="options" (load)="saveInstance($event.context)"></chart>

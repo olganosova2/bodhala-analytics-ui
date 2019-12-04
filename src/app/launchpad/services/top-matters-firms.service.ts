@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {DatePipe} from '@angular/common';
 
 import { ITopMatter } from '../../shared/models/top-matters';
 import { UtilService, HttpService } from 'bodhala-ui-common';
@@ -7,6 +8,7 @@ import { map } from 'rxjs/operators';
 
 import * as config from '../../shared/services/config';
 import {ITopFirm} from '../../shared/models/top-firms';
+import {IActiveSpend} from '../../shared/models/active-spend';
 
 
 @Injectable({
@@ -19,7 +21,8 @@ export class TopMattersFirmsService {
   constructor(
     private util: UtilService,
     private http: HttpService,
-    private filters: FiltersService
+    private filters: FiltersService,
+    private datePipe: DatePipe
   ) { }
 
   fetchMatters() {
@@ -35,6 +38,12 @@ export class TopMattersFirmsService {
     ).toPromise();
   }
 
+  fetchActiveSpend() {
+    const params = this.filters.getCurrentUserCombinedFilters();
+    return this.http.makeGetRequest('getActiveSpend', params).pipe(
+      map(response => this.processActiveSpend(response.result))
+    ).toPromise();
+  }
   processTopMatters(records: Array<ITopMatter>): Array<ITopMatter> {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
@@ -66,6 +75,29 @@ export class TopMattersFirmsService {
       rec.y = Math.round(sum);
       rec.name = rec.firm_name;
     }
-    return records.slice(0, config.TOP_RECORDS_NUMBER);
+    return records.sort(this.util.dynamicSort('-total_billed')).slice(0, config.TOP_RECORDS_NUMBER);
+  }
+  processActiveSpend(response: IActiveSpend): IActiveSpend {
+    const result = {} as IActiveSpend;
+    const processedRecods = [];
+    let accumulated = 0;
+    for (const rec of response.data) {
+        const sum = this.filters.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
+        accumulated += sum;
+        if (this.filters.includeExpenses) {
+          rec.total_spend = sum;
+        }
+        rec.y = Math.round(sum);
+        const label = this.datePipe.transform(rec.month, 'MMM yyyy');
+        processedRecods.push([label, rec.total_spend]);
+    }
+    result.data = Object.assign([], processedRecods.reverse());
+    const totals = this.filters.includeExpenses ? response.total_spend + response.total_expenses : response.total_spend;
+    const percent = totals ? accumulated / totals : 1;
+    result.total_spend = response.total_spend;
+    result.total_expenses = response.total_expenses;
+    result.active_spend = accumulated;
+    result.percent = percent * 100;
+    return result;
   }
 }

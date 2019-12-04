@@ -16,8 +16,10 @@ export const END_POINTS_URLS = {
   getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
   spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
   getTopLeadPartners: {url: BASE_URL + 'analytics/getTopLeadPartners', showLoading: true},
+  getActiveSpend: {url: BASE_URL + 'analytics/getActiveSpend', showLoading: true},
   getInvoiceIQReports: {url: BASE_URL + 'analytics/getInvoiceIQReportsAndTotals', showLoading: true},
 };
+
 
 export const uiTitleString = 'Bodhala Analytics';
 export const EST_TIME_ZONE = 'America/New York';
