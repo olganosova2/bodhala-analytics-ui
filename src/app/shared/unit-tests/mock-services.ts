@@ -52,6 +52,8 @@ export class DataStub {
         return of([]);
       case 'getCurrentUser':
         return of(CURRENT_USER);
+      case 'getTopLeadPartners':
+        return of([]);
       default:
         return of({});
     }
