@@ -50,7 +50,7 @@ export const commonCards = [
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2, order: 2 },
   { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2, order: 4 },
   { header: 'Matters with Highest Average Rate', request: 'topMatters', columns: columns.topMatters, span: 2, order: 6 },
-  { header: 'Active Spend vs. Closed Spend', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 },
+  { header: 'Active Spend', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 },
 ];
 export const practiceAreaCard = { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 2, order: 3 };
 export const topBillersCard = { header: 'Top Block Billers', request: 'topBlockBillers', columns: columns.topBlockBillers, span: 2, options: blockBillerChart, order: 5 };

@@ -36,8 +36,6 @@ export class FiltersService {
     }
     this.userFilters = Object.assign({}, this.filtersHelper.create(this.userFilters));
     const dt = moment();
-    // console.log(moment(dt).format('YYYY-MM-DD'));
-    // this.userFilters.firms.push('WORKERS COMP');  // TODO: remove later
   }
 
   getCurrentUserCombinedFilters(): any {
