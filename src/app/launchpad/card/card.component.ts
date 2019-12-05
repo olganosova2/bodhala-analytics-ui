@@ -83,6 +83,9 @@ export class CardComponent implements OnInit, OnChanges {
   }
 
   reloadChart(): void {
+    // TODO - this was meant to be generic for all column charts
+    // don't want to hard code card names here
+    // when transforming the data from the api add a category property
     if (this.cardName === 'topBlockBillers') {
       this.chart.xAxis[0].setCategories(this.data.map(d => d.category));
     }

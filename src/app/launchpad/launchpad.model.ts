@@ -29,7 +29,7 @@ export const columns = {
     { name: 'Top Matter', field: 'matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${matter_id}'},
   ],
   topLeadPartners: [
-    { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${id}' + '/' + '${firm_id}'},
+    { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${id}/${firm_id}'},
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: 'Practice Area', field: 'top_practice', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
     { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'}
@@ -37,7 +37,7 @@ export const columns = {
   topBlockBillers: [
     { name: 'Firm Name', field: 'law_firm', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${law_firm_id}' },
     { name: '% Block Billed', format: 'percent', field: 'percent', component: PillComponent },
-    { name: 'Lead Partner', field: 'name', component: PillComponent, format: 'lawyer'}
+    { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${timekeeper_id}/${law_firm_id}'}
   ],
   invoiceIQReports: [
     { name: 'Report', field: 'report_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewIQReport}` + '${id}' },
