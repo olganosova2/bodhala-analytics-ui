@@ -56,7 +56,7 @@ export class LaunchPadService {
   }
 
   async fetchTopBlockBillers() {
-    const response = await this.fetch('analytics/getBlockBillerSummary');
+    const response = await this.fetch('analytics/getBlockBillerSummary', {classifications: '["partner"]'});
     const summary = response.result;
     return summary.block_billers.map(biller =>
       ({...biller,
@@ -67,8 +67,9 @@ export class LaunchPadService {
       ));
   }
 
-  fetch(api) {
+  fetch(api, filters) {
     const params = this.filters.getCurrentUserCombinedFilters();
+    Object.assign(params, filters);
     return this.http.fetch(api, params);
   }
 }
