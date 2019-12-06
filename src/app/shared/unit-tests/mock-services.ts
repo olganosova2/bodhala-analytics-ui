@@ -3,6 +3,12 @@ import {Observable, of, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
 
+export const ngWindow = {
+  location: {
+    href: ''
+  }
+};
+
 export class UserStub {
   entitlements: [any];
   config: object;

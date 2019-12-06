@@ -145,4 +145,11 @@ describe('FiltersService', () => {
     const result = service.getQueryString();
     expect(service.userFilters.courtLocations.length).toBe(2);
   }));
+  it('should getQueryString when court_states not empty and excludeCourtLocations is true', inject([FiltersService], (service: FiltersService) => {
+    service.userFilters = Object.assign({}, FILTERS.dataFilters as any );
+    service.userFilters.courtLocations = ['1, ', '2, '];
+    service.userFilters.excludeCourtLocations = true;
+    const result = service.getQueryString();
+    expect(service.userFilters.courtLocations.length).toBe(2);
+  }));
 });

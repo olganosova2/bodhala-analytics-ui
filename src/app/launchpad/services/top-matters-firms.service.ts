@@ -21,7 +21,7 @@ export class TopMattersFirmsService {
   constructor(
     private util: UtilService,
     private http: HttpService,
-    private filters: FiltersService,
+    public filters: FiltersService,
     private datePipe: DatePipe
   ) { }
 
@@ -51,8 +51,11 @@ export class TopMattersFirmsService {
       if (rec.lead_partner_name instanceof Array) {
         rec.lead_partner_name = rec.lead_partner_name[0] || 'N/A';
       }
-      if (rec.bio_image_url instanceof Array) {
-        rec.bio_image_url = rec.bio_image_url[0] || '';
+      if (rec.lead_partner_id instanceof Array) {
+        rec.lead_partner_id = rec.lead_partner_id[0] || '';
+      }
+      if (rec.lawfirm_id instanceof Array) {
+        rec.lawfirm_id = rec.lawfirm_id[0] || '';
       }
       const sum = this.filters.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
       if (this.filters.includeExpenses) {
