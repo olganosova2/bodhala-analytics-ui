@@ -6,6 +6,7 @@ import {leadPartnerChartOptions} from '../shared/models/top-lead-partner';
 import {practicePieChartOptions} from '../shared/models/practice';
 import {mattersChartOptions} from '../shared/models/top-matters';
 import {firmsChartOptions} from '../shared/models/top-firms';
+import { mattersByHighestAverageRateChartOptions } from '../shared/models/top-average-matters';
 import { activeSpendChart } from '../shared/models/active-spend';
 import { blockBillerChart } from '../shared/models/top-block-billers';
 import {iqReportPieChartOptions} from '../shared/models/invoiceIq';
@@ -33,7 +34,13 @@ export const columns = {
     { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${id}/${firm_id}'},
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: 'Practice Area', field: 'top_practice', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
-    { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'}
+    { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'},
+  ],
+  mattersByHighestAverageRate: [
+    { name: 'Firm', field: 'firm_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewFirm}\${firm_id}` },
+    { name: 'Matter', field: 'matter_name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewMatter}\${matter_id}` },
+    { name: 'Blended Rate', format: 'currency', field: 'blended_rate', component: PillComponent },
+    { name: 'Top Timekeeper', format: 'lawyer', field: 'timekeeper_name', component: PillComponent }
   ],
   topBlockBillers: [
     { name: 'Firm Name', field: 'law_firm', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${law_firm_id}' },
@@ -50,7 +57,7 @@ export const commonCards = [
   { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters, options: mattersChartOptions, span: 2, order: 1 },
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2, order: 2 },
   { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2, order: 4 },
-  { header: 'Matters with Highest Average Rate', request: 'topMatters', columns: columns.topMatters, span: 2, order: 6 },
+  { header: 'Matters by Highest Average Rate', request: 'mattersByHighestAverageRate', columns: columns.mattersByHighestAverageRate, options: mattersByHighestAverageRateChartOptions, span: 2 },
   { header: 'Active Spend', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 },
 ];
 export const practiceAreaCard = { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 2, order: 3 };

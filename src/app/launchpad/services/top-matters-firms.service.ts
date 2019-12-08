@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {DatePipe} from '@angular/common';
 
 import { ITopMatter } from '../../shared/models/top-matters';
+import { ITopAverageMatter } from '../../shared/models/top-average-matters';
 import { UtilService, HttpService } from 'bodhala-ui-common';
 import { FiltersService } from '../../shared/services/filters.service';
 import { map } from 'rxjs/operators';
@@ -36,6 +37,13 @@ export class TopMattersFirmsService {
     return this.http.makeGetRequest('getTopFirms', params).pipe(
       map(response => this.processTopFirms(response.result))
     ).toPromise();
+  }
+
+  fetchMattersByHighestAverageRate() {
+    const params = this.filters.getCurrentUserCombinedFilters();
+    return this.http.makeGetRequest('getMattersByHighestAverageRate', params)
+      .pipe(map(({ result }) => this.processMattersByHighestAverageRate(result)))
+      .toPromise();
   }
 
   fetchActiveSpend() {
@@ -102,5 +110,13 @@ export class TopMattersFirmsService {
     result.active_spend = accumulated;
     result.percent = percent * 100;
     return result;
+  }
+
+  processMattersByHighestAverageRate(records: Array<ITopAverageMatter>): Array<ITopAverageMatter> {
+    return records.map((record: ITopAverageMatter): ITopAverageMatter => ({
+      ...record,
+      category: record.matter_name,
+      y: record.blended_rate
+    }));
   }
 }

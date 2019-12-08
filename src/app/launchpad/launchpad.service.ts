@@ -31,6 +31,9 @@ export class LaunchPadService {
       requests.spendByPractice = this.practiceService.fetch();
     }
     requests.topLeadPartners = this.leadPartnerService.fetchLeadPartners();
+    requests.mattersByHighestAverageRate = this.topMattersFirmsService.fetchMattersByHighestAverageRate();
+    requests.topBlockBillers = this.fetchTopBlockBillers();
+    requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
     requests.activeSpend = this.topMattersFirmsService.fetchActiveSpend();
     if (this.userService.hasEntitlement('analytics.block.billing')) {
       requests.topBlockBillers = this.fetchTopBlockBillers();

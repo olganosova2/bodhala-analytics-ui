@@ -113,6 +113,10 @@ export class MattersAndFirmsServiceStub {
   public fetchActiveSpend() {
     return Promise.resolve({result: { data: []}});
   }
+
+  public fetchMattersByHighestAverageRate() {
+    return Promise.resolve({ result: { data: [] }});
+  }
 }
 
 export class PracticeServiceStub {

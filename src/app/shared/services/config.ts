@@ -16,6 +16,7 @@ export const END_POINTS_URLS = {
   getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
   spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
   getTopLeadPartners: {url: BASE_URL + 'analytics/getTopLeadPartners', showLoading: true},
+  getMattersByHighestAverageRate: {url: `${BASE_URL}analytics/getMattersByHighestAverageRate`, showLoading: true},
   getActiveSpend: {url: BASE_URL + 'analytics/getActiveSpend', showLoading: true},
   getInvoiceIQReports: {url: BASE_URL + 'analytics/getInvoiceIQReportsAndTotals', showLoading: true},
 };

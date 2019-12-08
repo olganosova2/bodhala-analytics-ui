@@ -83,10 +83,15 @@ export class CardComponent implements OnInit, OnChanges {
   }
 
   reloadChart(): void {
+    const columnCharts = [
+      'mattersByHighestAverageRate',
+      'topBlockBillers',
+    ];
+
+    if (columnCharts.includes(this.cardName)) {
     // TODO - this was meant to be generic for all column charts
     // don't want to hard code card names here
     // when transforming the data from the api add a category property
-    if (this.cardName === 'topBlockBillers') {
       this.chart.xAxis[0].setCategories(this.data.map(d => d.category));
     }
     this.chart.series[0].setData(this.data);
