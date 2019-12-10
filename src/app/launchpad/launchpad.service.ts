@@ -36,7 +36,7 @@ export class LaunchPadService {
     requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
     requests.activeSpend = this.topMattersFirmsService.fetchActiveSpend();
     if (this.userService.hasEntitlement('analytics.block.billing')) {
-      requests.topBlockBillers = this.fetchTopBlockBillers();
+      // requests.topBlockBillers = this.fetchTopBlockBillers();
     }
     if (this.userService.hasEntitlement('analytics.reports')) {
       requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
@@ -49,9 +49,9 @@ export class LaunchPadService {
     if (this.userService.hasEntitlement('analytics.practice.areas')) {
       result.push(practiceAreaCard);
     }
-    // if (this.userService.hasEntitlement('analytics.block.billing')) {
+    if (this.userService.hasEntitlement('analytics.block.billing')) {
     //   result.push(topBillersCard);
-    // }
+    }
     if (this.userService.hasEntitlement('analytics.reports')) {
       result.push(invoiceIQCard);
     }

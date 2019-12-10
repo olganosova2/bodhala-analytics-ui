@@ -61,5 +61,5 @@ export const commonCards = [
   { header: 'Active Spend', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 },
 ];
 export const practiceAreaCard = { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 2, order: 3 };
-// export const topBillersCard = { header: 'Top Block Billers', request: 'topBlockBillers', columns: columns.topBlockBillers, span: 2, options: blockBillerChart, order: 5 };
+export const topBillersCard = { header: 'Top Block Billers', request: 'topBlockBillers', columns: columns.topBlockBillers, span: 2, options: blockBillerChart, order: 5 };
 export const invoiceIQCard =  { header: 'Invoice IQ Reports', request: 'invoiceIQReports', columns: columns.invoiceIQReports,  options: iqReportPieChartOptions, span: 2, order: 8 };
