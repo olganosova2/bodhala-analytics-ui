@@ -5,7 +5,7 @@ import { TopMattersFirmsService } from './services/top-matters-firms.service';
 import {SpendByPracticeAreaService} from './services/spend-by-practice-area.service';
 import {TopLeadPartnersService} from './services/top-lead-partners.service';
 import {InvoiceIqService} from './services/invoice-iq.service';
-import {commonCards, invoiceIQCard, practiceAreaCard, topBillersCard} from './launchpad.model';
+import {commonCards, invoiceIQCard, practiceAreaCard} from './launchpad.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +49,9 @@ export class LaunchPadService {
     if (this.userService.hasEntitlement('analytics.practice.areas')) {
       result.push(practiceAreaCard);
     }
-    if (this.userService.hasEntitlement('analytics.block.billing')) {
-      result.push(topBillersCard);
-    }
+    // if (this.userService.hasEntitlement('analytics.block.billing')) {
+    //   result.push(topBillersCard);
+    // }
     if (this.userService.hasEntitlement('analytics.reports')) {
       result.push(invoiceIQCard);
     }
