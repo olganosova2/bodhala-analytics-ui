@@ -57,7 +57,7 @@ export const commonCards = [
   { header: 'Top Matters by Spend', request: 'topMatters', columns: columns.topMatters, options: mattersChartOptions, span: 2, order: 1 },
   { header: 'Top Firms by Spend', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2, order: 2 },
   { header: 'Top Lead Partners', request: 'topLeadPartners', columns: columns.topLeadPartners, options: leadPartnerChartOptions, span: 2, order: 4 },
-  { header: 'Matters by Highest Average Rate', request: 'mattersByHighestAverageRate', columns: columns.mattersByHighestAverageRate, options: mattersByHighestAverageRateChartOptions, span: 2 },
+  { header: 'Matters by Highest Average Rate', request: 'mattersByHighestAverageRate', columns: columns.mattersByHighestAverageRate, options: mattersByHighestAverageRateChartOptions, span: 2, order: 6 },
   { header: 'Active Spend', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 },
 ];
 export const practiceAreaCard = { header: 'Spend By Practice Area', request: 'spendByPractice', columns: columns.spendByPracticeArea, options: practicePieChartOptions, span: 2, order: 3 };
