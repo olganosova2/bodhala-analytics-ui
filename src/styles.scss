@@ -189,9 +189,15 @@ body {
   justify-content: space-between;
 }
 
-.href-link {
+.href-link-primary {
   cursor: pointer;
-  color: $brand-primary-lt;
+  color: $primary-link;
+  text-decoration: underline;
+}
+
+.href-link-secondary {
+  cursor: pointer;
+  color: $secondary-link;
   text-decoration: underline;
 }
 

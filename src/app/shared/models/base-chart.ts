@@ -14,7 +14,7 @@ export const basePieChartOptions = {
     pie: {
       allowPointSelect: true,
       cursor: 'pointer',
-      colors: ['#9D02FE', '#6F00FF', '#4000FF', '#1102FF', '#0F1FFF', '#0C4CFF', '#037BFF', '#00AAFF', '#00C1FF', '#00D9FE'],
+   //   colors: ['#9D02FE', '#6F00FF', '#4000FF', '#1102FF', '#0F1FFF', '#0C4CFF', '#037BFF', '#00AAFF', '#00C1FF', '#00D9FE'],
       dataLabels: {
         enabled: false
       },
@@ -64,7 +64,7 @@ export const baseColumnChartOptions = {
     column: {
       allowPointSelect: true,
       cursor: 'pointer',
-      colors: ['#9D02FE', '#6F00FF', '#4000FF', '#1102FF', '#0F1FFF', '#0C4CFF', '#037BFF', '#00AAFF', '#00C1FF', '#00D9FE'],
+   //   colors: ['#9D02FE', '#6F00FF', '#4000FF', '#1102FF', '#0F1FFF', '#0C4CFF', '#037BFF', '#00AAFF', '#00C1FF', '#00D9FE'],
       dataLabels: {
         enabled: false
       },

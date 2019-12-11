@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { ICell } from '../cell.interface';
 import { BaseCell } from '../base-cell';
 
@@ -8,7 +8,6 @@ import { BaseCell } from '../base-cell';
   styleUrls: ['./link.component.scss']
 })
 export class LinkComponent extends BaseCell implements OnInit, ICell {
-
   ngOnInit() {
   }
 
