@@ -65,8 +65,8 @@ const chartOptions = {
       text: undefined
     },
     labels: {
-      formatter: function() {
-          return this.value + '%';
+      formatter: () => {
+        return this.value + '%';
       }
     }
   }],

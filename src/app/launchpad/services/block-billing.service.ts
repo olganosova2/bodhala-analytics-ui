@@ -20,7 +20,7 @@ export class BlockBillingService {
       map(response => this.processBlockBillingFirms(response.result))
     ).toPromise();
   }
-  
+
   processBlockBillingFirms(records: Array<IBlockBillingFirms>): Array<IBlockBillingFirms> {
     return records.map(biller =>
       ({...biller,
