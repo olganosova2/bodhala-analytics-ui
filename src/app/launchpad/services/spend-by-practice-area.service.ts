@@ -31,6 +31,6 @@ export class SpendByPracticeAreaService {
       rec.y = Math.round(rec.total_billed);
       rec.name = rec.practice_area;
     }
-    return this.practiceList.sort(this.util.dynamicSort('-total_billed')).slice(0, config.TOP_RECORDS_NUMBER);;
+    return this.practiceList.sort(this.util.dynamicSort('-total_billed')).slice(0, config.TOP_RECORDS_NUMBER);
   }
 }
