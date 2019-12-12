@@ -65,7 +65,8 @@ const chartOptions = {
       text: undefined
     },
     labels: {
-      formatter: () => {
+      /* tslint:disable */
+      formatter: function() {
         return this.value + '%';
       }
     }
