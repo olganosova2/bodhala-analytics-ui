@@ -27,6 +27,7 @@ export class BlockBillingService {
         percent: biller.pct_block_billed * 100,
         y: biller.pct_block_billed * 100,
         value: biller.total_block_billed,
+        category: biller.law_firm,
         name: biller.lead_partners[0].name,
         timekeeper_id: biller.lead_partners[0].timekeeper_id}
       ));
