@@ -5,7 +5,7 @@ import { TopMattersFirmsService } from './services/top-matters-firms.service';
 import {SpendByPracticeAreaService} from './services/spend-by-practice-area.service';
 import {TopLeadPartnersService} from './services/top-lead-partners.service';
 import {InvoiceIqService} from './services/invoice-iq.service';
-import {commonCards, invoiceIQCard, practiceAreaCard} from './launchpad.model';
+import {commonCards, invoiceIQCard, practiceAreaCard, topBillersCard} from './launchpad.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,11 +32,9 @@ export class LaunchPadService {
     }
     requests.topLeadPartners = this.leadPartnerService.fetchLeadPartners();
     requests.mattersByHighestAverageRate = this.topMattersFirmsService.fetchMattersByHighestAverageRate();
-    requests.topBlockBillers = this.fetchTopBlockBillers();
-    requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
     requests.activeSpend = this.topMattersFirmsService.fetchActiveSpend();
     if (this.userService.hasEntitlement('analytics.block.billing')) {
-      // requests.topBlockBillers = this.fetchTopBlockBillers();
+       requests.topBlockBillers = this.fetchTopBlockBillers();
     }
     if (this.userService.hasEntitlement('analytics.reports')) {
       requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
@@ -50,7 +48,7 @@ export class LaunchPadService {
       result.push(practiceAreaCard);
     }
     if (this.userService.hasEntitlement('analytics.block.billing')) {
-    //   result.push(topBillersCard);
+       result.push(topBillersCard);
     }
     if (this.userService.hasEntitlement('analytics.reports')) {
       result.push(invoiceIQCard);
@@ -59,14 +57,15 @@ export class LaunchPadService {
   }
 
   async fetchTopBlockBillers() {
-    const response = await this.fetch('analytics/getBlockBillerSummary', {classifications: '["partner"]'});
-    const summary = response.result;
-    return summary.block_billers.map(biller =>
+    const response = await this.fetch('analytics/getBlockBillingFirms', {});
+    return response.result.map(biller =>
       ({...biller,
-        percent: biller.total_block_billed / summary.total_billed_by_lawyers * 100,
+        percent: biller.pct_block_billed * 100,
         y: biller.total_block_billed,
         value: biller.total_block_billed,
-        category: biller.name}
+        category: biller.law_firm,
+        name: biller.lead_partners[0].name,
+        timekeeper_id: biller.lead_partners[0].timekeeper_id}
       ));
   }
 
