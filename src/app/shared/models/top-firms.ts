@@ -14,13 +14,6 @@ export interface ITopFirm {
   y: number;
 }
 const firmAdditionalOptions = {
-  chart: {
-    height: 300,
-    width: 850,
-    type: 'pie',
-    marginLeft: 200,
-    spacingTop: 0
-  },
   tooltip : {
     useHTML: true,
     shared: true,

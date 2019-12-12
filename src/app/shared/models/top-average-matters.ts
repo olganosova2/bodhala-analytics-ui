@@ -22,14 +22,6 @@ const tooltipTemplate = `
   </div>`;
 
 const chartOptions = {
-  chart: {
-    type: 'column',
-    spacingTop: 10,
-    spacingLeft: 15,
-    reflow: true,
-    width: null,
-    height: 320
-  },
   tooltip : {
     useHTML: true,
     shared: true,

@@ -32,14 +32,6 @@ const tooltipTemplate = `
 <div class="mb10">{point.percent:.2f}%</div>`;
 
 const chartOptions = {
-  chart: {
-    type: 'column',
-    spacingTop: 10,
-    spacingLeft: 15,
-    reflow: true,
-    width: null,
-    height: 290
-  },
   tooltip : {
     useHTML: true,
     shared: true,

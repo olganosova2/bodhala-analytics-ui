@@ -1,10 +1,10 @@
 export const basePieChartOptions = {
   chart: {
-    height: 300,
+    height: 290,
     width: null,
     type: 'pie',
     marginLeft: null,
-    spacingTop: 0
+    spacingTop: 10
   },
   credits: {
     enabled: false
@@ -54,7 +54,9 @@ export const basePieChartOptions = {
 export const baseColumnChartOptions = {
   chart: {
     type: 'column',
-    spacingTop: 0
+    spacingTop: 10,
+    width: null,
+    height: 290,
   },
   credits: {
     enabled: false
