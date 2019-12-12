@@ -19,6 +19,7 @@ export const END_POINTS_URLS = {
   getMattersByHighestAverageRate: {url: `${BASE_URL}analytics/getMattersByHighestAverageRate`, showLoading: true},
   getActiveSpend: {url: BASE_URL + 'analytics/getActiveSpend', showLoading: true},
   getInvoiceIQReports: {url: BASE_URL + 'analytics/getInvoiceIQReportsAndTotals', showLoading: true},
+  getBlockBillingFirms: {url: BASE_URL + 'analytics/getBlockBillingFirms', showLoading: true},
 };
 
 

@@ -3,6 +3,7 @@ import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../shared/services/filters.service';
 import { TopMattersFirmsService } from './services/top-matters-firms.service';
 import {SpendByPracticeAreaService} from './services/spend-by-practice-area.service';
+import {BlockBillingService} from './services/block-billing.service';
 import {TopLeadPartnersService} from './services/top-lead-partners.service';
 import {InvoiceIqService} from './services/invoice-iq.service';
 import {commonCards, invoiceIQCard, practiceAreaCard, topBillersCard} from './launchpad.model';
@@ -20,6 +21,7 @@ export class LaunchPadService {
     private practiceService: SpendByPracticeAreaService,
     private leadPartnerService: TopLeadPartnersService,
     private invoiceIqService: InvoiceIqService,
+    private blockBillingService: BlockBillingService,
     private util: UtilService
   ) { }
 
@@ -34,7 +36,7 @@ export class LaunchPadService {
     requests.mattersByHighestAverageRate = this.topMattersFirmsService.fetchMattersByHighestAverageRate();
     requests.activeSpend = this.topMattersFirmsService.fetchActiveSpend();
     if (this.userService.hasEntitlement('analytics.block.billing')) {
-      requests.topBlockBillers = this.fetchTopBlockBillers();
+      requests.topBlockBillers = this.blockBillingService.getBlockBillingFirms();
     }
     if (this.userService.hasEntitlement('analytics.reports')) {
       requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
@@ -54,24 +56,5 @@ export class LaunchPadService {
       result.push(invoiceIQCard);
     }
     return result.sort(this.util.dynamicSort('order'));
-  }
-
-  async fetchTopBlockBillers() {
-    const response = await this.fetch('analytics/getBlockBillingFirms', {});
-    return response.result.map(biller =>
-      ({...biller,
-        percent: biller.pct_block_billed * 100,
-        y: biller.total_block_billed,
-        value: biller.total_block_billed,
-        category: biller.law_firm,
-        name: biller.lead_partners[0].name,
-        timekeeper_id: biller.lead_partners[0].timekeeper_id}
-      ));
-  }
-
-  fetch(api, filters) {
-    const params = this.filters.getCurrentUserCombinedFilters();
-    Object.assign(params, filters);
-    return this.http.fetch(api, params);
   }
 }

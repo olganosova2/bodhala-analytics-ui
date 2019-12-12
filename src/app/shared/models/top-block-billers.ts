@@ -1,12 +1,33 @@
 import { baseColumnChartOptions } from './base-chart';
 
+export interface IBlockBillingTimekeeper {
+  timekeeper_id: string;
+  name: string;
+  total_billed: number;
+  total_block_billed: number;
+}
+
+export interface IBlockBillingFirms {
+  law_firm_id: string;
+  law_firm: string;
+  total_billed: number;
+  total_block_billed: number;
+  total_billed_by_lawyers: number;
+  pct_block_billed: number;
+  lead_partners: IBlockBillingTimekeeper | Array<IBlockBillingTimekeeper>;
+  name: string;
+  y: number;
+}
+
+
+
 const tooltipTemplate = `
 <div class="highcharts-tooltip">
 <div class="mb10 font-bold">
   {point.law_firm}
 </div>
 <div>Spend</div>
-<div class="mb10">\${point.y:,.0f}</div>
+<div class="mb10">\${point.value:,.0f}</div>
 <div>% of Total Spend</div>
 <div class="mb10">{point.percent:.2f}%</div>`;
 
@@ -17,7 +38,7 @@ const chartOptions = {
     spacingLeft: 15,
     reflow: true,
     width: null,
-    height: 320
+    height: 290
   },
   tooltip : {
     useHTML: true,
@@ -26,15 +47,7 @@ const chartOptions = {
     headerFormat: null,
     padding: 0,
     pointFormat: tooltipTemplate,
-    outside: true,
-    positioner: (labelWidth, labelHeight, point) => {
-      const tooltipX = point.plotX;
-      const tooltipY = point.plotY + 100;
-      return {
-          x: tooltipX,
-          y: tooltipY
-      };
-    }
+    outside: true
   },
   legend: {
     show: false,
@@ -50,6 +63,11 @@ const chartOptions = {
     title: {
       enabled: false,
       text: undefined
+    },
+    labels: {
+      formatter: function() {
+          return this.value + '%';
+      }
     }
   }],
   series: [{
