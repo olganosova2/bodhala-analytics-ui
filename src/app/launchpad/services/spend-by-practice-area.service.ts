@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { UtilService, HttpService } from 'bodhala-ui-common';
 import { FiltersService } from '../../shared/services/filters.service';
 import { map } from 'rxjs/operators';
+import * as config from '../../shared/services/config';
 import {IPractice} from '../../shared/models/practice';
 
 @Injectable({
@@ -30,6 +31,6 @@ export class SpendByPracticeAreaService {
       rec.y = Math.round(rec.total_billed);
       rec.name = rec.practice_area;
     }
-    return this.practiceList.sort(this.util.dynamicSort('-total_billed'));
+    return this.practiceList.sort(this.util.dynamicSort('-total_billed')).slice(0, config.TOP_RECORDS_NUMBER);;
   }
 }

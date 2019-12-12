@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from 'bodhala-ui-common';
 import { FiltersService } from '../../shared/services/filters.service';
 import { map } from 'rxjs/operators';
+import * as config from '../../shared/services/config';
 import {IBlockBillingFirms} from '../../shared/models/top-block-billers';
 
 @Injectable({
@@ -22,7 +23,7 @@ export class BlockBillingService {
   }
 
   processBlockBillingFirms(records: Array<IBlockBillingFirms>): Array<IBlockBillingFirms> {
-    return records.map(biller =>
+    return records.slice(0, config.TOP_RECORDS_NUMBER).map(biller =>
       ({...biller,
         percent: biller.pct_block_billed * 100,
         y: biller.pct_block_billed * 100,
