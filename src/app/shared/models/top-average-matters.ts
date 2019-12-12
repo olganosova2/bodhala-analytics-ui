@@ -37,15 +37,7 @@ const chartOptions = {
     headerFormat: null,
     padding: 0,
     pointFormat: tooltipTemplate,
-    outside: true,
-    positioner: (labelWidth, labelHeight, point) => {
-      const tooltipX = point.plotX;
-      const tooltipY = point.plotY + 100;
-      return {
-          x: tooltipX,
-          y: tooltipY
-      };
-    }
+    outside: true
   },
   legend: {
     show: false,
