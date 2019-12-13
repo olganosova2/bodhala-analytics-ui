@@ -14,7 +14,7 @@ export interface IBlockBillingFirms {
   total_block_billed: number;
   total_billed_by_lawyers: number;
   pct_block_billed: number;
-  lead_partners: IBlockBillingTimekeeper | Array<IBlockBillingTimekeeper>;
+  lead_partners: Array<IBlockBillingTimekeeper>;
   name: string;
   y: number;
 }
