@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   apiUrl: '/ui-api/',
-  host: 'https://int.bodhala.com/',
+  host: '/',
   IDLE_KEEPALIVE_CONFIG: {
     timeOutSeconds: 810,
     keepaliveSeconds: 60
