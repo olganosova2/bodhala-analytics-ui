@@ -14,18 +14,8 @@ export interface IActiveSpend {
   percent?: number;
 }
 export const additionalActiveSpendOptions = {
-  chart: {
-    type: 'column',
-    height: 320
-  },
   xAxis: {
     type: 'category',
-    labels: {
-      rotation: -45,
-      style: {
-        fontSize: '11px'
-      }
-    },
     title: {
       text: 'Date'
     }
