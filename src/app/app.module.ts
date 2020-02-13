@@ -37,6 +37,7 @@ import { LinkComponent } from './launchpad/card/cells/link/link.component';
 import {TopMattersFirmsService} from './launchpad/services/top-matters-firms.service';
 import { ActiveSpendComponent } from './launchpad/card/active-spend/active-spend.component';
 import {DatePipe} from '@angular/common';
+import { InsightsComponent } from './launchpad/insights/insights.component';
 
 
 
@@ -68,7 +69,8 @@ export function highchartsFactory() {
     PillComponent,
     CellComponent,
     LinkComponent,
-    ActiveSpendComponent
+    ActiveSpendComponent,
+    InsightsComponent
   ],
   entryComponents: [
     PillComponent,

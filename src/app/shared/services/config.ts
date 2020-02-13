@@ -20,6 +20,7 @@ export const END_POINTS_URLS = {
   getActiveSpend: {url: BASE_URL + 'analytics/getActiveSpend', showLoading: true},
   getInvoiceIQReports: {url: BASE_URL + 'analytics/getInvoiceIQReportsAndTotals', showLoading: true},
   getBlockBillingFirms: {url: BASE_URL + 'analytics/getBlockBillingFirms', showLoading: true},
+  getClientInsights: {url: BASE_URL + 'client/insights', showLoading: true},
 };
 
 
@@ -62,5 +63,6 @@ export const outerAppLinks = {
   viewFirm: '#/app/client-dashboard/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
+  viewBlockBilling: '#/app/client-dashboard/block-billing'
 };
 

@@ -1,0 +1,25 @@
+<div class="areas-panel" *ngIf="insights.length>0">
+  <div class="area-box">
+    <div class="left-block">
+      <div class="mb10">
+        <mat-icon class="icon-lamp">highlight</mat-icon>
+      </div>
+      <h5>Bodhala Insights</h5>
+      <div>Data driven advice from the<br/> expert team at Bodhala</div>
+    </div>
+    <div class="right-block">
+      <div class="right-block-content">
+        <h4>{{selectedInsight.title}}</h4>
+        <div>{{selectedInsight.description}}</div>
+        <div *ngIf="selectedInsight.insight_type === 'BB'" class="href-link-primary mt10" (click)="goToView('BB')">Go to
+          Block Billing
+        </div>
+      </div>
+      <div class="mt20 dots" *ngIf="insights.length >1">
+        <mat-icon [ngClass]="{'icon-selected': insights.indexOf(selectedInsight) === i}" (click)="selectInsight(i)"
+                  *ngFor="let insight of insights;let i = index">fiber_manual_record
+        </mat-icon>
+      </div>
+    </div>
+  </div>
+</div>

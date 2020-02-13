@@ -42,6 +42,7 @@ import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
 import {TopMattersFirmsService} from '../../launchpad/services/top-matters-firms.service';
+import {InsightsComponent} from '../../launchpad/insights/insights.component';
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -81,7 +82,8 @@ export const IMPORTS = [
 
 export const DECLARATIONS = [
   AppComponent,
-  LaunchpadComponent
+  LaunchpadComponent,
+  InsightsComponent
 ];
 
 export const PROVIDERS = [
