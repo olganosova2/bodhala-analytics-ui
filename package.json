@@ -10,7 +10,7 @@
     "build-develop": "ng build --configuration int --base-href /analytics-ui/",
     "build-stage": "ng build --base-href /analytics-ui/ --configuration stage",
     "build-prod": "ng build --base-href /analytics-ui/ --configuration production",
-    "test": "ng test",
+    "test": "ng test --browsers=ChromeHeadless",
     "test1": "ng test --code-coverage",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -65,6 +65,7 @@
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "karma-phantomjs-launcher": "^1.0.4",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",

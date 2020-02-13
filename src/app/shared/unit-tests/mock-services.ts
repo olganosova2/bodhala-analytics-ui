@@ -129,3 +129,20 @@ export class LeadPracticeServiceStub {
     return Promise.resolve({result: []});
   }
 }
+export class LaunchPadServiceStub {
+  public configureCards() {
+
+  }
+  public fetchData() {
+    return {
+      topMatters: Promise.resolve([]),
+      topFirms: Promise.resolve([]),
+      spendByPractice: Promise.resolve([]),
+      topLeadPartners: Promise.resolve([]),
+      mattersByHighestAverageRate: Promise.resolve([]),
+      activeSpend: Promise.resolve([]),
+      topBlockBillers: Promise.resolve([]),
+      invoiceIQReports: Promise.resolve([]),
+    };
+  }
+}
