@@ -13,6 +13,9 @@ export class LaunchpadComponent implements OnInit {
   @ViewChild('launchpad', {static: false})
   container: ElementRef;
 
+  @ViewChild('insights', {read: ElementRef, static: false})
+  insights: ElementRef;
+
   cards: Array<any> = []; // cards;
   requests = {};
   columns = columns;
@@ -54,13 +57,12 @@ export class LaunchpadComponent implements OnInit {
     this.filtersService.setCurrentUserFilters();
     this.load();
   }
-
   postLoad() {
     // send messages back to the parent app
     if (window.parent) {
       setTimeout(() => {
         // send height of content to adjust iframe height
-        const height = this.container.nativeElement.offsetHeight;
+        const height = this.container.nativeElement.offsetHeight + this.insights.nativeElement.offsetHeight;
         window.parent.postMessage({height, from: 'child'}, '*');
       }, 100);
     }

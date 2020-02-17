@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {HttpService, UtilService} from 'bodhala-ui-common';
 import {IInsight} from './models';
 import {Subscription} from 'rxjs';
@@ -15,6 +15,7 @@ export class InsightsComponent implements OnInit {
   selectedInsight: IInsight;
   pendingRequest: Subscription;
   errorMessage: any;
+  @Output() insightsLoaded: EventEmitter<any> = new EventEmitter<boolean>();
   constructor(private httpService: HttpService,
               public utilService: UtilService) { }
 
@@ -27,6 +28,9 @@ export class InsightsComponent implements OnInit {
         this.insights = data.result.sort(this.utilService.dynamicSort('insight_type'));
         if (this.insights.length > 0) {
           this.selectedInsight = this.insights[0];
+          setTimeout(() => {
+            this.insightsLoaded.emit(true);
+          });
         }
       },
       err => {
