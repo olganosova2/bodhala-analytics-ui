@@ -12,4 +12,5 @@ export class BaseCell {
 
   @Output()
   clicked: EventEmitter<any> = new EventEmitter();
+
 }
