@@ -401,3 +401,70 @@ body {
   opacity:1;
   z-index:9999 !important;
 }
+// elements
+.span-clear {
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 20px;
+}
+
+.border-bottom:not(:last-child) {
+  padding-bottom: 15px;
+  border-bottom: 1px $card-header-gray solid;
+}
+
+.small-title {
+  font-style: italic;
+  font-size: 1.4rem;
+}
+
+.filter-group-label {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 0 5px 0 10px;
+  margin: 10px 10px 10px 0;
+  cursor: pointer;
+  float: left;
+  position: relative;
+}
+
+.pill {
+  display: inline-block;
+  min-width: 10px;
+  margin: 9px 0;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: bold;
+  color: #fff;
+  // line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  background-color: $blue-color;
+  border-radius: 10px;
+}
+:host ::ng-deep {
+  .btn-group > .btn.active {
+    z-index: 1;
+  }
+}
+//
+
+
+.bh-date-range .md-drppicker{
+  width: 620px !important;
+  margin-top: 40px;
+}
+.filter-group-label.bh-date-range {
+  padding:0;
+  width:220px;
+}
+.error-class {
+  border: 2px solid red !important;
+}
+.error-mes-sm{
+  font-style: italic;
+  font-size:10pt;
+  color: red;
+}
+

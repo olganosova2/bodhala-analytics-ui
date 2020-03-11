@@ -38,12 +38,34 @@ export class FiltersService {
     const dt = moment();
   }
 
-  getCurrentUserCombinedFilters(): any {
+  getCurrentUserCombinedFiltersOld(): any {
     return {...this.getCommonFilters(), ...this.getQueryString()};
+  }
+
+  getCurrentUserCombinedFilters(): any {
+    const currentUser = { clientId: this.userService.currentUser.client_info_id };
+    return {...currentUser, ...this.parseLSQueryString()};
   }
 
   getCommonFilters(): ICommonFilters {
     return {clientId: this.userService.currentUser.client_info_id, startdate: this.startDate, enddate: this.endDate};
+  }
+
+  parseLSQueryString(): any {
+    const result = {};
+    const qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    if (!qs) {
+      return this.getCommonFilters();
+    }
+    const serializedQs = JSON.parse(qs).querystring.toString();
+    const pairs = serializedQs.split('&');
+    for (const pair of pairs) {
+      const keys = pair.split('=');
+      if (keys.length === 2) {
+        result[keys[0]] = decodeURI(keys[1]);
+      }
+    }
+    return result;
   }
 
   formatRange(filters: any): Array<number> {

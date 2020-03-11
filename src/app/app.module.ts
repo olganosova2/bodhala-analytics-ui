@@ -16,6 +16,7 @@ import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
+import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
 import {HttpClientModule} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
@@ -108,6 +109,7 @@ export function highchartsFactory() {
     MatBadgeModule,
     MatDialogModule,
     BodhalaUiCommonModule,
+    BodhalaUiElementsModule,
     FlexLayoutModule,
     MatButtonToggleModule,
     ChartModule

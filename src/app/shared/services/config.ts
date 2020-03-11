@@ -21,6 +21,14 @@ export const END_POINTS_URLS = {
   getInvoiceIQReports: {url: BASE_URL + 'analytics/getInvoiceIQReportsAndTotals', showLoading: true},
   getBlockBillingFirms: {url: BASE_URL + 'analytics/getBlockBillingFirms', showLoading: true},
   getClientInsights: {url: BASE_URL + 'client/insights', showLoading: true},
+
+  getOptionsForFilter: {url: BASE_URL + 'analytics/getOptionsForFilter?&threshold=4', showLoading: false},
+  getOptionsForTag: {url: BASE_URL + 'analytics/matter/tagtype/{id}/options', showLoading: false},
+  getFilters: {url: BASE_URL + 'analytics/getFilters', showLoading: true},
+  savedViews: {url: BASE_URL + 'analytics/view', showLoading: false},
+  deleteView: {url: BASE_URL + 'analytics/view/{id}', showLoading: false},
+  oldSavedViews: {url: BASE_URL + 'admin/savedviews', showLoading: false},
+  getDateRange: {url: BASE_URL + 'analytics/getMinMaxDates', showLoading: false}
 };
 
 
