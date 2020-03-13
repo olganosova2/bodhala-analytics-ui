@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {DatePipe} from '@angular/common';
+import { HttpParams, HttpClient } from '@angular/common/http';
 
 import { ITopMatter } from '../../shared/models/top-matters';
 import { ITopAverageMatter } from '../../shared/models/top-average-matters';
@@ -22,6 +23,7 @@ export class TopMattersFirmsService {
   constructor(
     private util: UtilService,
     private http: HttpService,
+    private httpClient: HttpClient,
     public filters: FiltersService,
     private datePipe: DatePipe
   ) { }

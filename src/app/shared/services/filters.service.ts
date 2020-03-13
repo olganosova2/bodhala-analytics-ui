@@ -62,7 +62,7 @@ export class FiltersService {
     for (const pair of pairs) {
       const keys = pair.split('=');
       if (keys.length === 2) {
-        result[keys[0]] = decodeURI(keys[1]);
+        result[keys[0]] = decodeURIComponent(keys[1]);
       }
     }
     return result;
