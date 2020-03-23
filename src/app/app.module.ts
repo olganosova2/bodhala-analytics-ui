@@ -4,6 +4,7 @@ import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   MatBadgeModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
   MatDialogModule,
@@ -39,6 +40,7 @@ import {TopMattersFirmsService} from './launchpad/services/top-matters-firms.ser
 import { ActiveSpendComponent } from './launchpad/card/active-spend/active-spend.component';
 import {DatePipe} from '@angular/common';
 import { InsightsComponent } from './launchpad/insights/insights.component';
+import { FirmComponent } from './firm/firm.component';
 
 
 
@@ -71,7 +73,8 @@ export function highchartsFactory() {
     CellComponent,
     LinkComponent,
     ActiveSpendComponent,
-    InsightsComponent
+    InsightsComponent,
+    FirmComponent
   ],
   entryComponents: [
     PillComponent,
@@ -82,6 +85,7 @@ export function highchartsFactory() {
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(appRouterConfig),
+    NgbModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatSortModule,

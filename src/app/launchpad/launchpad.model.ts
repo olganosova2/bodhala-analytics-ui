@@ -43,7 +43,7 @@ export const columns = {
     { name: 'Top Timekeeper', format: 'lawyer', field: 'timekeeper_name', component: PillComponent }
   ],
   topBlockBillers: [
-    { name: 'Firm', field: 'law_firm', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${law_firm_id}' },
+    { name: 'Firm', field: 'law_firm', component: LinkComponent, isPrimary: true, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${law_firm_id}' },
     { name: '% Block Billed by Firm', format: 'percent', field: 'percent', component: PillComponent },
     { name: 'Lead Partner', field: 'name', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${timekeeper_id}/${law_firm_id}'}
   ],

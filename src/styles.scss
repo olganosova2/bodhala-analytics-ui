@@ -16,6 +16,7 @@ body {
   font-family: "Source Sans Pro", sans-serif;
   background-color: $body-bg;
   color: $body-color;
+  font-size: 15px;
 }
 
 .pointer-hand {
@@ -222,6 +223,7 @@ body {
 
 .mat-card {
   background-color: #fff;
+  color: $body-color;
 }
 
 .mat-card-title {
@@ -234,6 +236,24 @@ body {
   stroke: $light-gray;
 }
 
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: $blue-color;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: $body-color;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: $blue-color;
+}
+
+.mat-calendar-body-selected {
+  background-color: $blue-color !important;
+}
+.mat-form-field {
+  width: 100% !important;
+}
 .spinner {
   position: fixed;
   top: 50%;
@@ -415,7 +435,10 @@ body {
 
 .small-title {
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 0.9rem;
+}
+.footer-collapsed {
+  margin-left:0 !important;
 }
 
 .filter-group-label {
@@ -467,4 +490,20 @@ body {
   font-size:10pt;
   color: red;
 }
-
+.filter-group-label {
+  max-height: 38px;
+}
+.btn-primary {
+  color: #fff;
+  background-color: #F7921E !important;
+  border: 1px solid transparent   !important;;
+  font-size: 13px !important;;
+}
+.user-block-name {
+  color: #b2b2b2 !important;
+}
+.form-control {
+  font-size: 0.9rem !important;
+  color: #929292 !important;
+  display: inline-block !important;
+}

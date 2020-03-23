@@ -7,8 +7,6 @@ import { RouterModule } from '@angular/router';
 import {HttpService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { appRouterConfig } from '../../app.routes';
 import { UtilService } from 'bodhala-ui-common';
@@ -48,7 +46,6 @@ export const IMPORTS = [
   ReactiveFormsModule,
   FormsModule,
   RouterModule.forRoot(appRouterConfig, { useHash: false }),
-  NgbModule,
   RouterTestingModule,
   HttpClientTestingModule,
   MatTableModule,
@@ -91,7 +88,6 @@ export const PROVIDERS = [
   HttpHandler,
   UtilService,
   HttpTestingController,
-  NgbActiveModal,
   CookieService,
   HttpService,
   MessagingService,

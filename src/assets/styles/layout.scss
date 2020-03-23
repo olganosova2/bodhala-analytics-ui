@@ -106,7 +106,7 @@ rfp-header a:hover {
 }
 
 rfp-side-bar {
-  width: 200px;
+  width: 180px;
   background-color: #FFF;
   border-right: 1px solid #dedede;
   list-style: none;
@@ -165,6 +165,7 @@ rfp-side-bar ul{
   background-color: #f5f7fa;
 }
 .sidebar > .nav > li {
+  font-size: 12px;
   border-left: 3px solid transparent;
   -webkit-transition: border-left-color 0.4s ease;
   -o-transition: border-left-color 0.4s ease;
@@ -196,7 +197,7 @@ rfp-side-bar ul{
   line-height: $headings-line-height;
   color: #929292;
   margin-bottom: 20px;
-  padding: 15px;
+  padding: 10px 15px 0 15px;
   font-weight: normal;
   background-color: $content-heading-bg;
   border-bottom: 1px solid $content-heading-border;
@@ -224,7 +225,7 @@ rfp-side-bar ul{
  // margin-top: 140px;
 }
 .content-body-wrapper {
- // margin-top: 155px;
+  margin-top: 120px;
 }
 
 

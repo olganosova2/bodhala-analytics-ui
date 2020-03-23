@@ -3,7 +3,7 @@ import { Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 
-import {AppStateService, TimeoutModalComponent} from 'bodhala-ui-common';
+import {AppStateService, TimeoutModalComponent, UtilService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
 import {HttpService} from 'bodhala-ui-common';
 import * as config from './shared/services/config';
@@ -25,20 +25,26 @@ export class AppComponent implements OnDestroy {
   pendingRequest: Subscription;
   errorMessage: any;
   private saveInterval: any;
+  ieVersion: string = '';
 
   constructor(public router: Router,
               private httpService: HttpService,
               public appStateService: AppStateService,
               public messageService: MessagingService,
               private titleService: Title,
+              public utilService: UtilService,
               public filtersService: FiltersService,
               private idle: Idle,
               private keepalive: Keepalive,
               public dialog: MatDialog) {
+    this.httpService.callInProgress.subscribe(value => {
+      this.progress = value ? value : false;
+    });
     this.filtersService.setCurrentUserFilters();
     this.httpService.callInProgress.subscribe(value => {
       this.progress = value ? value : false;
     });
+    this.ieVersion = this.utilService.getIEVersion();
     titleService.setTitle(config.uiTitleString);
     // idle.setIdle(environment.IDLE_KEEPALIVE_CONFIG.timeOutSeconds);
     // idle.setTimeout(environment.IDLE_KEEPALIVE_CONFIG.keepaliveSeconds);
@@ -87,6 +93,9 @@ export class AppComponent implements OnDestroy {
   }
   redirectToLogin(): void {
     this.appStateService.redirectToLogin();
+  }
+  close(): void {
+    this.ieVersion = '';
   }
   ngOnDestroy() {
     if (this.saveInterval) {
