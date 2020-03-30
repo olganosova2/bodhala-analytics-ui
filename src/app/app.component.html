@@ -4,7 +4,7 @@
   <!-- sidebar-->
   <rfp-side-bar class="aside"></rfp-side-bar>
   <!-- Main section-->
-  <main class="main">
+  <main class="main" [ngClass]="{'main-collapsed' : appStateService.layout.isCollapsed}">
     <!-- Page content-->
     <div class="spinner" [hidden]="!progress">
       <mat-spinner diameter="50" color="primary"></mat-spinner>
@@ -25,5 +25,5 @@
     </div>
   </main>
   <!-- Page footer-->
-<!--  <footer rfp-footer [ngClass]="{'footer-collapsed' : appStateService.layout.isCollapsed}"></footer>-->
+  <footer rfp-footer class="footer" [ngClass]="{'footer-collapsed' : appStateService.layout.isCollapsed}"></footer>
 </div>
