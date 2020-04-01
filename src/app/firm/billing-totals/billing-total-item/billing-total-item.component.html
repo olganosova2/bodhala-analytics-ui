@@ -1,0 +1,10 @@
+<div class="cell-item">
+  <div><em class="{{item.icon}}"></em></div>
+  <div class="font-bold mb10 mt10">
+    <span *ngIf="item?.format === 'currency'">${{ item.total | number:'1.0-0'}}</span>
+    <span *ngIf="item?.format === 'percent'">{{ item.total | number:'1.2-2'}}%</span>
+    <span *ngIf="item?.format === 'number'">{{ item.total | number:'1.2-2'}}</span>
+    <span *ngIf="!item?.format">{{ item.total | number:'1.0-0' }}</span>
+  </div>
+  <div class="cell-label">{{ item.name }}</div>
+</div>

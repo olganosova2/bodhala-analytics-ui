@@ -13,6 +13,7 @@ import {Title} from '@angular/platform-browser';
 import {MatDialog} from '@angular/material';
 import {Keepalive} from '@ng-idle/keepalive';
 import {FiltersService} from './shared/services/filters.service';
+import {CommonService} from './shared/services/common.service';
 
 @Component({
   selector: 'bd-root',
@@ -36,6 +37,7 @@ export class AppComponent implements OnDestroy {
               public filtersService: FiltersService,
               private idle: Idle,
               private keepalive: Keepalive,
+              public commonServ: CommonService,
               public dialog: MatDialog) {
     this.httpService.callInProgress.subscribe(value => {
       this.progress = value ? value : false;

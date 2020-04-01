@@ -1,1 +1,25 @@
-<p>firm works!</p>
+<div>
+  <div>
+    <lib-bd-filters
+      (sendFilters)="refreshData($event)"
+      [pageName]="pageName"
+      [pageType]="commonServ.pageTitle"
+      [firmId]="firmId"
+      [excludeFilters]="excludeFilters"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+  <div class="panel-wrapper full-width mb20">
+    <h4>{{ firm?.name }}</h4>
+  </div>
+  <bd-billing-totals  [firm]="firm" #billingTotals *ngIf="firm"></bd-billing-totals>
+
+  <div>
+    <div class="ui-g">
+      <div class="ui-md-12 ui-lg-9">Spend by Month</div>
+      <div class="ui-md-12 ui-lg-3">
+        <bd-top-timekeepers [firmId]="firmId" #topTKs *ngIf="firm"></bd-top-timekeepers>
+      </div>
+    </div>
+  </div>
+</div>

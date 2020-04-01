@@ -1,0 +1,44 @@
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {IFirm, ITimekeeper} from '../firm.model';
+import {Subscription} from 'rxjs';
+import {HttpService} from 'bodhala-ui-common';
+import {FiltersService} from '../../shared/services/filters.service';
+
+@Component({
+  selector: 'bd-top-timekeepers',
+  templateUrl: './top-timekeepers.component.html',
+  styleUrls: ['./top-timekeepers.component.scss']
+})
+export class TopTimekeepersComponent implements OnInit, OnDestroy {
+  errorMessage: any;
+  timekeepers: Array<ITimekeeper> = [];
+  @Input() firmId: number;
+  @Input() firm: IFirm;
+  pendingRequest: Subscription;
+  constructor(private httpService: HttpService,
+              public filtersService: FiltersService) { }
+
+  ngOnInit() {
+    this.getTimekeepers();
+  }
+
+  getTimekeepers(): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const arr = [];
+    arr.push(this.firmId.toString());
+    params.firms = JSON.stringify(arr);
+    this.pendingRequest = this.httpService.makeGetRequest('getTopTimekeepers', params).subscribe(
+      (data: any) => {
+        this.timekeepers = data.result;
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
+  }
+  ngOnDestroy() {
+    if (this.pendingRequest) {
+      this.pendingRequest.unsubscribe();
+    }
+  }
+}

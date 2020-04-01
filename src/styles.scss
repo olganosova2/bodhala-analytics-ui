@@ -312,6 +312,8 @@ body {
   border: 1px solid rgba(0, 0, 0, .03);
   box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
   width: 100%;
+  background-color: #fff;
+  color: $body-color;
 }
 
 .panel-title {
@@ -509,4 +511,8 @@ body {
 }
 .fa-navicon {
   color: #fff !important;
+}
+.filter-button {
+  .fa-save {
+  font-size: 24px !important}
 }

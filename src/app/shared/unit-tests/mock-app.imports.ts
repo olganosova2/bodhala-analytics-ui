@@ -41,6 +41,12 @@ import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
 import {TopMattersFirmsService} from '../../launchpad/services/top-matters-firms.service';
 import {InsightsComponent} from '../../launchpad/insights/insights.component';
+import {FirmComponent} from '../../firm/firm.component';
+import {CommonService} from '../services/common.service';
+import {BillingTotalsComponent} from '../../firm/billing-totals/billing-totals.component';
+import {BillingTotalItemComponent} from '../../firm/billing-totals/billing-total-item/billing-total-item.component';
+import {TopMattersComponent} from '../../firm/top-matters/top-matters.component';
+import {TopTimekeepersComponent} from '../../firm/top-timekeepers/top-timekeepers.component';
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -80,7 +86,12 @@ export const IMPORTS = [
 export const DECLARATIONS = [
   AppComponent,
   LaunchpadComponent,
-  InsightsComponent
+  InsightsComponent,
+  FirmComponent,
+  BillingTotalsComponent,
+  BillingTotalItemComponent,
+  TopMattersComponent,
+  TopTimekeepersComponent
 ];
 
 export const PROVIDERS = [
@@ -96,6 +107,7 @@ export const PROVIDERS = [
   UserFiltersModel,
   TopMattersFirmsService,
   DatePipe,
+  CommonService,
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },

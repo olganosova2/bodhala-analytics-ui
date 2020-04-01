@@ -20,7 +20,7 @@ export const columns = {
     { name: 'Practice Area', field: 'client_matter_type', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}` }
   ],
   topFirms: [
-    { name: 'Firm', field: 'firm_name', component: LinkComponent, isPrimary: true, href: `${environment.host}${config.outerAppLinks.viewFirm}` + '${id}' },
+    { name: 'Firm', field: 'firm_name', component: LinkComponent, isPrimary: true, route: `${config.outerAppLinks.viewFirm}`},
     { name: 'Total Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: '% of Total Spend', format: 'percent', field: 'total_percent', component: PillComponent }
   ],

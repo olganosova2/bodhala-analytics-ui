@@ -1,6 +1,9 @@
 import { Input, Output, EventEmitter } from '@angular/core';
+import {Router} from '@angular/router';
 
 export class BaseCell {
+  constructor(public router: Router) {
+  }
   @Input()
   data: any;
 

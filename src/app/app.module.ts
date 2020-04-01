@@ -41,6 +41,10 @@ import { ActiveSpendComponent } from './launchpad/card/active-spend/active-spend
 import {DatePipe} from '@angular/common';
 import { InsightsComponent } from './launchpad/insights/insights.component';
 import { FirmComponent } from './firm/firm.component';
+import { BillingTotalsComponent } from './firm/billing-totals/billing-totals.component';
+import { BillingTotalItemComponent } from './firm/billing-totals/billing-total-item/billing-total-item.component';
+import { TopTimekeepersComponent } from './firm/top-timekeepers/top-timekeepers.component';
+import { TopMattersComponent } from './firm/top-matters/top-matters.component';
 
 
 
@@ -74,7 +78,11 @@ export function highchartsFactory() {
     LinkComponent,
     ActiveSpendComponent,
     InsightsComponent,
-    FirmComponent
+    FirmComponent,
+    BillingTotalsComponent,
+    BillingTotalItemComponent,
+    TopTimekeepersComponent,
+    TopMattersComponent
   ],
   entryComponents: [
     PillComponent,

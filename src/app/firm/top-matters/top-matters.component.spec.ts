@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FirmComponent } from './firm.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../shared/unit-tests/mock-app.imports';
-import {InsightsComponent} from '../launchpad/insights/insights.component';
+import { TopMattersComponent } from './top-matters.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
+import {BillingTotalsComponent} from '../billing-totals/billing-totals.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
-import {FiltersService} from '../shared/services/filters.service';
-import * as mockServices from '../shared/unit-tests/mock-services';
+import {FiltersService} from '../../shared/services/filters.service';
+import * as mockServices from '../../shared/unit-tests/mock-services';
 
-describe('FirmComponent', () => {
-  let component: FirmComponent;
-  let fixture: ComponentFixture<FirmComponent>;
+describe('TopMattersComponent', () => {
+  let component: TopMattersComponent;
+  let fixture: ComponentFixture<TopMattersComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -22,7 +22,7 @@ describe('FirmComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(FirmComponent, {
+    }).overrideComponent(TopMattersComponent, {
       set: {
         providers: [
           AppStateService,
@@ -36,12 +36,12 @@ describe('FirmComponent', () => {
       .compileComponents();
   }));
   beforeEach(() => {
-    fixture = TestBed.createComponent(FirmComponent);
+    fixture = TestBed.createComponent(TopMattersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create FirmComponent', () => {
+  it('should create TopMattersComponent', () => {
     expect(component).toBeTruthy();
   });
 });

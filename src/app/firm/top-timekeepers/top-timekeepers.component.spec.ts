@@ -1,17 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FirmComponent } from './firm.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../shared/unit-tests/mock-app.imports';
-import {InsightsComponent} from '../launchpad/insights/insights.component';
+import { TopTimekeepersComponent } from './top-timekeepers.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
+import {TopMattersComponent} from '../top-matters/top-matters.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
-import {FiltersService} from '../shared/services/filters.service';
-import * as mockServices from '../shared/unit-tests/mock-services';
+import {FiltersService} from '../../shared/services/filters.service';
+import * as mockServices from '../../shared/unit-tests/mock-services';
 
-describe('FirmComponent', () => {
-  let component: FirmComponent;
-  let fixture: ComponentFixture<FirmComponent>;
-
+describe('TopTimekeepersComponent', () => {
+  let component: TopTimekeepersComponent;
+  let fixture: ComponentFixture<TopTimekeepersComponent>;
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
@@ -22,7 +21,7 @@ describe('FirmComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(FirmComponent, {
+    }).overrideComponent(TopTimekeepersComponent, {
       set: {
         providers: [
           AppStateService,
@@ -36,12 +35,12 @@ describe('FirmComponent', () => {
       .compileComponents();
   }));
   beforeEach(() => {
-    fixture = TestBed.createComponent(FirmComponent);
+    fixture = TestBed.createComponent(TopTimekeepersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create FirmComponent', () => {
+  it('should create TopTimekeepersComponent', () => {
     expect(component).toBeTruthy();
   });
 });

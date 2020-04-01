@@ -28,7 +28,12 @@ export const END_POINTS_URLS = {
   savedViews: {url: BASE_URL + 'analytics/view', showLoading: false},
   deleteView: {url: BASE_URL + 'analytics/view/{id}', showLoading: false},
   oldSavedViews: {url: BASE_URL + 'admin/savedviews', showLoading: false},
-  getDateRange: {url: BASE_URL + 'analytics/getMinMaxDates', showLoading: false}
+  getDateRange: {url: BASE_URL + 'analytics/getMinMaxDates', showLoading: false},
+
+  getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: true},
+  getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: true},
+  getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: true},
+  spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: true},
 };
 
 
@@ -68,7 +73,8 @@ export const BODHALA_DATE_FORMATS = {
 export const outerAppLinks = {
   viewMatter: '#/app/client-dashboard/matter/',
   viewPracticeArea: '#/app/client-dashboard/practiceArea',
-  viewFirm: '#/app/client-dashboard/firm/',
+ // viewFirm: '#/app/client-dashboard/firm/',
+  viewFirm: '/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
   viewBlockBilling: '#/app/client-dashboard/block-billing'

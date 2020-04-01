@@ -1,6 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { ICell } from '../cell.interface';
 import { BaseCell } from '../base-cell';
+import {ActivatedRoute} from '@angular/router';
+import {HttpService} from 'bodhala-ui-common';
+import {FiltersService} from '../../../../shared/services/filters.service';
+import {CommonService} from '../../../../shared/services/common.service';
 
 @Component({
   selector: 'bd-link',
@@ -12,7 +16,9 @@ export class LinkComponent extends BaseCell implements OnInit, ICell {
   }
 
   onClick(data) {
-    if (this.column.href) {
+    if (this.column.route) {
+      this.router.navigate([this.column.route, data.id]);
+    } else if (this.column.href) {
       this.goToView(this.column.href, data);
     }
     if (this.column.action) {
