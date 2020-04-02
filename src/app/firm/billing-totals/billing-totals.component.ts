@@ -45,13 +45,13 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     this.totals.push({ icon: 'icon-clock', total: this.totalsRaw.percent_block_billed, name: 'Total Block Billed', format: 'percent'});
     this.totals.push({ icon: 'icon-energy', total: this.totalsRaw.partner_tks_per_matter.avg, name: 'Avg. Partners / Matter', format: 'number'});
     this.totals.push({ icon: 'icon-users', total: this.totalsRaw.associate_tks_per_matter.avg, name: 'Avg. Assoc. / Matter', format: 'number'});
-    this.totals.push({ icon: 'icon-calendar', total: this.totalsRaw.avg_matter_duration.avg_duration, name: 'Matter Duration (days)'});
+    this.totals.push({ icon: 'icon-calendar', total: this.totalsRaw.avg_matter_duration.avg_duration, name: 'Matter Duration (days)', lastCell: true});
 
     this.totals.push({ icon: 'icon-energy', total: this.totalsRaw.avg_partner_rate, name: 'Avg. Partner Rate', format: 'currency'});
     this.totals.push({ icon: 'icon-users', total: this.totalsRaw.avg_associate_rate, name: 'Avg. Assoc. Rate', format: 'currency'});
     this.totals.push({ icon: 'icon-briefcase', total: this.totalsRaw.avg_paralegal_legal_assistant_rate, name: 'Avg. Paralegal Rate', format: 'currency'});
     this.totals.push({ icon: 'icon-picture', total: this.totalsRaw.avg_blended_rate, name: 'Blended Rate', format: 'currency'});
-    this.totals.push({ icon: 'icon-bar-chart', total: this.totalsRaw.bodhala_price_index, name: 'BPI', format: 'currency'});
+    this.totals.push({ icon: 'icon-bar-chart', total: this.totalsRaw.bodhala_price_index, name: 'BPI', format: 'currency', lastCell: true});
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

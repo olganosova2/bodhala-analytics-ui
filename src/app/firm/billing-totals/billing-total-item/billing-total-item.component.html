@@ -1,4 +1,4 @@
-<div class="cell-item">
+<div class="cell-item" [ngClass]="{'cell-last': isLastCell}">
   <div><em class="{{item.icon}}"></em></div>
   <div class="font-bold mb10 mt10">
     <span *ngIf="item?.format === 'currency'">${{ item.total | number:'1.0-0'}}</span>

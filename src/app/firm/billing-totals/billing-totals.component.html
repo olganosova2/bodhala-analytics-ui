@@ -1,12 +1,12 @@
 <div class="panel-wrapper full-width">
   <div class="flex-container">
     <div *ngFor="let item of totals.slice(0, 6);let i=$index;" class="flex-item">
-      <bd-billing-total-item [item]="item"></bd-billing-total-item>
+      <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
     </div>
   </div>
   <div class="flex-container second-row">
     <div *ngFor="let item of totals.slice(6);let i=$index;" class="flex-item">
-      <bd-billing-total-item [item]="item"></bd-billing-total-item>
+      <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
     </div>
   </div>
 

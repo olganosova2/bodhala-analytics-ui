@@ -16,9 +16,16 @@
 
   <div>
     <div class="ui-g">
-      <div class="ui-md-12 ui-lg-9">Spend by Month</div>
-      <div class="ui-md-12 ui-lg-3">
+      <div class="ui-md-12 ui-lg-8">Spend by Month</div>
+      <div class="ui-md-12 ui-lg-4">
         <bd-top-timekeepers [firmId]="firmId" #topTKs *ngIf="firm"></bd-top-timekeepers>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="ui-g">
+      <div class="ui-md-12 ui-lg-4">
+        <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firm"></bd-top-matters>
       </div>
     </div>
   </div>

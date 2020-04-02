@@ -1,0 +1,31 @@
+@import "../../../assets/styles/colors.scss";
+
+.ui-g-3, .ui-g-4 {
+  text-align: center;
+}
+.ui-g-3-header {
+  text-align: left;
+}
+.table-title {
+ font-size: 0.8rem;
+}
+.table-pill-1 {
+  font-size: 0.8rem;
+  border-radius: 25px;
+  border: 1px solid $body-color;
+  padding: 3px 10px;
+  // min-width: 160px;
+  display: inline-block;
+  text-align: center;
+}
+.table-pill-2 {
+  min-width: 100px;
+  border-color: $very-light-blue;
+  background-color: $very-light-blue;
+}
+.table-row {
+  border-bottom: 1px solid $very-light-blue;
+}
+.tk-cell {
+  min-width: 170px;
+}

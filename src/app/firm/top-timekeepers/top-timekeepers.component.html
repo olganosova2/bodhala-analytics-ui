@@ -1,7 +1,20 @@
 <div class="panel-wrapper">
-  <div class="ui-g">
-    <div class="ui-g-5">Col1</div>
-    <div class="ui-g-3">Col2</div>
-    <div class="ui-g-4">Col3</div>
+  <h4>Top Timekeepers
+    <span class="badge badge-help ml5" placement="right-bottom"
+          [ngbPopover]="helpText"
+          [openDelay]="100"
+          [closeDelay]="2000"
+          triggers="mouseenter:mouseleave"> ?
+        </span>
+  </h4>
+  <div class="ui-g table-title">
+    <div class="ui-g-5">Timekeeper</div>
+    <div class="ui-g-3">Hourly</div>
+    <div class="ui-g-4">Total</div>
+  </div>
+  <div class="ui-g table-row" *ngFor="let tk of timekeepers">
+    <div class="ui-g-5"><span class="table-pill-1 tk-cell">{{tk.name}}</span></div>
+    <div class="ui-g-3"><span class="table-pill-1 table-pill-2">${{tk.current_rate}}</span></div>
+    <div class="ui-g-4"><span class="table-pill-1 table-pill-2">${{tk.total | number:'1.0-0'}}</span></div>
   </div>
 </div>

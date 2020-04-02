@@ -44,6 +44,7 @@ export interface IBillingTotalItem {
   total_expenses?: number;
   name: string;
   format?: string;
+  lastCell?: boolean;
 }
 export interface ITimekeeper {
   id: string;

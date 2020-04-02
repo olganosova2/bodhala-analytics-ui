@@ -12,6 +12,7 @@ import {FiltersService} from '../../shared/services/filters.service';
 export class TopTimekeepersComponent implements OnInit, OnDestroy {
   errorMessage: any;
   timekeepers: Array<ITimekeeper> = [];
+  helpText: string = 'Hourly rates for each timekeeper display the most current rate for the time period selected.';
   @Input() firmId: number;
   @Input() firm: IFirm;
   pendingRequest: Subscription;

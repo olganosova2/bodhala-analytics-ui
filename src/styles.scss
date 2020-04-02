@@ -378,11 +378,6 @@ button:focus {
   outline: none;
 }
 
-.badge-help {
-  color: #000;
-  background-color: $blue-green;
-}
-
 html, body {
   height: 100%;
 }
@@ -392,6 +387,9 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.panel-wrapper {
+  padding: 20px 10px;
+}
 
 // Highcharts legend formatting
 .hc-partner-badge {
@@ -515,4 +513,10 @@ body {
 .filter-button {
   .fa-save {
   font-size: 24px !important}
+}
+.badge-help {
+  font-size: 1rem;
+  cursor: pointer;
+  color: $body-color;
+  border: 1px $light-gray solid;
 }

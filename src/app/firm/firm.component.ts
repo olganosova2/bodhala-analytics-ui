@@ -7,6 +7,7 @@ import {FiltersService} from '../shared/services/filters.service';
 import {IFirm} from './firm.model';
 import {BillingTotalsComponent} from './billing-totals/billing-totals.component';
 import {TopTimekeepersComponent} from './top-timekeepers/top-timekeepers.component';
+import {TopMattersComponent} from './top-matters/top-matters.component';
 
 @Component({
   selector: 'bd-firm',
@@ -22,6 +23,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   @ViewChild(BillingTotalsComponent, {static: false}) billingTotals: BillingTotalsComponent;
   @ViewChild(TopTimekeepersComponent, {static: false}) topTKs: TopTimekeepersComponent;
+  @ViewChild(TopMattersComponent, {static: false}) topMatters: TopMattersComponent;
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
               public appStateService: AppStateService,
@@ -55,6 +57,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   refreshData(evt: any): void {
     this.billingTotals.loadTotals();
     this.topTKs.getTimekeepers();
+    this.topMatters.getMatters();
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

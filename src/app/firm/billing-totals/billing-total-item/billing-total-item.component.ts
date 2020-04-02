@@ -7,6 +7,7 @@ import {IBillingTotalItem} from '../../firm.model';
   styleUrls: ['./billing-total-item.component.scss']
 })
 export class BillingTotalItemComponent implements OnInit {
+  @Input() isLastCell: boolean = false;
   @Input() item: IBillingTotalItem;
   @Input() includeExpenses: boolean = false;
 
