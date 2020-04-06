@@ -47,6 +47,7 @@ import {BillingTotalsComponent} from '../../firm/billing-totals/billing-totals.c
 import {BillingTotalItemComponent} from '../../firm/billing-totals/billing-total-item/billing-total-item.component';
 import {TopMattersComponent} from '../../firm/top-matters/top-matters.component';
 import {TopTimekeepersComponent} from '../../firm/top-timekeepers/top-timekeepers.component';
+import {SpendByMonthComponent} from '../../firm/spend-by-month/spend-by-month.component';
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -91,7 +92,8 @@ export const DECLARATIONS = [
   BillingTotalsComponent,
   BillingTotalItemComponent,
   TopMattersComponent,
-  TopTimekeepersComponent
+  TopTimekeepersComponent,
+  SpendByMonthComponent
 ];
 
 export const PROVIDERS = [

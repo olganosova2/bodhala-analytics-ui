@@ -3,6 +3,7 @@ import {IFirm} from '../firm.model';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
+import {ITopMatter} from '../../shared/models/top-matters';
 
 @Component({
   selector: 'bd-top-matters',
@@ -11,7 +12,7 @@ import {FiltersService} from '../../shared/services/filters.service';
 })
 export class TopMattersComponent implements OnInit, OnDestroy {
   errorMessage: any;
-  matters: Array<any> = [];
+  matters: Array<ITopMatter> = [];
   @Input() firmId: number;
   @Input() firm: IFirm;
   pendingRequest: Subscription;
@@ -28,12 +29,16 @@ export class TopMattersComponent implements OnInit, OnDestroy {
     params.firms = JSON.stringify(arr);
     this.pendingRequest = this.httpService.makeGetRequest('getTopMatters', params).subscribe(
       (data: any) => {
-        this.matters = data.result;
+        this.matters = data.result || [];
+        this.matters = this.matters.slice(0, 10);
       },
       err => {
         this.errorMessage = err;
       }
     );
+  }
+  goToView(href: string, id: string): void {
+    window.location.href = href + id;
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

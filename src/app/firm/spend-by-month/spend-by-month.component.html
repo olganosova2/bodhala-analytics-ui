@@ -1,0 +1,3 @@
+<div *ngIf="options" class="panel-wrapper" #spendByMonthDiv>
+  <chart [options]="options" (load)="saveInstance($event.context)" width="100%"></chart>
+</div>

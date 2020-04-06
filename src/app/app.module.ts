@@ -45,6 +45,7 @@ import { BillingTotalsComponent } from './firm/billing-totals/billing-totals.com
 import { BillingTotalItemComponent } from './firm/billing-totals/billing-total-item/billing-total-item.component';
 import { TopTimekeepersComponent } from './firm/top-timekeepers/top-timekeepers.component';
 import { TopMattersComponent } from './firm/top-matters/top-matters.component';
+import { SpendByMonthComponent } from './firm/spend-by-month/spend-by-month.component';
 
 
 
@@ -82,7 +83,8 @@ export function highchartsFactory() {
     BillingTotalsComponent,
     BillingTotalItemComponent,
     TopTimekeepersComponent,
-    TopMattersComponent
+    TopMattersComponent,
+    SpendByMonthComponent
   ],
   entryComponents: [
     PillComponent,

@@ -14,17 +14,19 @@
   </div>
   <bd-billing-totals  [firm]="firm" #billingTotals *ngIf="firm"></bd-billing-totals>
 
-  <div>
+  <div class="mt5">
     <div class="ui-g">
-      <div class="ui-md-12 ui-lg-8">Spend by Month</div>
-      <div class="ui-md-12 ui-lg-4">
+      <div class="ui-md-12 ui-lg-8 no-left-padding">
+        <bd-spend-by-month [firmId]="firmId" #spendByMonth *ngIf="firm"></bd-spend-by-month>
+      </div>
+      <div class="ui-md-12 ui-lg-4 no-right-padding">
         <bd-top-timekeepers [firmId]="firmId" #topTKs *ngIf="firm"></bd-top-timekeepers>
       </div>
     </div>
   </div>
   <div>
     <div class="ui-g">
-      <div class="ui-md-12 ui-lg-4">
+      <div class="ui-md-12 ui-lg-5 ui-xl-4 no-left-padding">
         <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firm"></bd-top-matters>
       </div>
     </div>

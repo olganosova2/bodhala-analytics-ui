@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { ICell } from '../cell.interface';
 import { BaseCell } from '../base-cell';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../../shared/services/filters.service';
 import {CommonService} from '../../../../shared/services/common.service';
@@ -12,6 +12,9 @@ import {CommonService} from '../../../../shared/services/common.service';
   styleUrls: ['./link.component.scss']
 })
 export class LinkComponent extends BaseCell implements OnInit, ICell {
+  constructor(public router: Router) {
+    super(router);
+  }
   ngOnInit() {
   }
 

@@ -58,3 +58,53 @@ export interface ITimekeeper {
   total_afa: number;
   current_rate: number;
 }
+export const spendByMonthChartOptions = {
+  chart: {
+    type: 'line',
+    marginLeft: null,
+    marginRight: 10,
+    marginTop: 10,
+    spacingTop: 10,
+    zoomType: 'xy'
+  },
+  credits: {
+    enabled: false
+  },
+  title: {text: null},
+  plotOptions: {
+    series: {
+      events: {
+        click(event) {
+          const x = event;
+        }
+      }
+    }
+  },
+  tooltip: {
+    headerFormat: '<b></b><br>',
+    pointFormat: '{point.x: %b %Y}: ${point.y:,.2f}'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+      month: '%b %Y',
+      year: '%b'
+    },
+    title: {
+      text: 'Date'
+    }
+
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: '$ (dollars)'
+    }
+
+  },
+  series: [{
+    showInLegend: false,
+    name: '',
+    data: []
+  }]
+};
