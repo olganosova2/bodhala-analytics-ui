@@ -31,11 +31,17 @@ export class TopMattersComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.matters = data.result || [];
         this.matters = this.matters.slice(0, 10);
+        this.processMatters();
       },
       err => {
         this.errorMessage = err;
       }
     );
+  }
+  processMatters(): void {
+    for (const rec of this.matters) {
+      rec.sum = this.filtersService.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
+    }
   }
   goToView(href: string, id: string): void {
     window.location.href = href + id;

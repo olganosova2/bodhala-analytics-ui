@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as _moment from 'moment';
 import {ITopMatter} from '../../shared/models/top-matters';
-import {IFirm, spendByMonthChartOptions} from '../firm.model';
+import {IFirm, spendByMonthOptions} from '../firm.model';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -32,7 +32,7 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
    this.resizeChart();
   }
   ngOnInit() {
-    this.options = Object.assign({},  spendByMonthChartOptions);
+    this.options = Object.assign({},  spendByMonthOptions);
     this.getSpendByMonth();
   }
   getSpendByMonth(): void {
@@ -54,7 +54,7 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
     const result = [];
     for (const rec of this.spend) {
       const date = moment(rec.month).valueOf();
-      const row = [date, this.includeExpenses ? rec.total + rec.expenses : rec.total];
+      const row = [date, this.filtersService.includeExpenses ? rec.total + rec.expenses : rec.total];
       result.push(row);
     }
     setTimeout(() => {
@@ -67,15 +67,14 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
     const height = this.spendByMonthDiv.nativeElement.offsetHeight - 10;
     this.chart.setSize(width, height, false);
   }
+
+  saveInstance(chartInstance): void {
+    this.chart = chartInstance;
+  }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }
   }
-
-  saveInstance(chartInstance): void {
-    this.chart = chartInstance;
-  }
-
 }
 

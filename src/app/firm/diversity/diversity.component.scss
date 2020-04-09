@@ -1,0 +1,18 @@
+@import "../../../assets/styles/colors.scss";
+.diversity {
+  background-color: #fff;
+  .banner{
+    padding:0;
+    background-color: #2e373c;
+    color: #fff;
+    text-align: center;
+    min-width: 200px;
+    padding-top: 40px;
+  }
+  .chart-key {
+    color: $body-color;
+    text-align: center !important;
+    margin:-10px 0 10px 0;
+  }
+}
+

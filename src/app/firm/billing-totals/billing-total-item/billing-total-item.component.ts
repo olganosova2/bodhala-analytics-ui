@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IBillingTotalItem} from '../../firm.model';
+import {FiltersService} from '../../../shared/services/filters.service';
 
 @Component({
   selector: 'bd-billing-total-item',
@@ -11,7 +12,7 @@ export class BillingTotalItemComponent implements OnInit {
   @Input() item: IBillingTotalItem;
   @Input() includeExpenses: boolean = false;
 
-  constructor() {
+  constructor(public filtersService: FiltersService) {
   }
 
   ngOnInit() {

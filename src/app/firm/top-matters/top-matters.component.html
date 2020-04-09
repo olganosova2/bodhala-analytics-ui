@@ -2,7 +2,7 @@
   <h4>Matters</h4>
   <div class="table-row mb5" *ngFor="let matter of matters">
     <div class="pull-left"><span class="href-link-primary mr5" (click)="goToView('/#/app/client-dashboard/matter/', matter.id)">{{matter.name}}</span> ({{matter.id}})</div>
-    <div class="pull-right">${{matter?.total_billed | number:'1.0-0'}}</div>
+    <div class="pull-right">${{matter?.sum | number:'1.0-0'}}</div>
     <div class="clear-both"></div>
   </div>
 </div>

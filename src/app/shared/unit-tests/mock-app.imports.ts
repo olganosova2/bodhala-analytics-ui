@@ -48,6 +48,9 @@ import {BillingTotalItemComponent} from '../../firm/billing-totals/billing-total
 import {TopMattersComponent} from '../../firm/top-matters/top-matters.component';
 import {TopTimekeepersComponent} from '../../firm/top-timekeepers/top-timekeepers.component';
 import {SpendByMonthComponent} from '../../firm/spend-by-month/spend-by-month.component';
+import {DiversityComponent} from '../../firm/diversity/diversity.component';
+import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bodhala-chart-legend.component';
+import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -93,7 +96,10 @@ export const DECLARATIONS = [
   BillingTotalItemComponent,
   TopMattersComponent,
   TopTimekeepersComponent,
-  SpendByMonthComponent
+  SpendByMonthComponent,
+  DiversityComponent,
+  BodhalaChartLegendComponent,
+  ScoreTrendComponent
 ];
 
 export const PROVIDERS = [

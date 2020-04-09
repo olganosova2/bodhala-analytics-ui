@@ -46,7 +46,9 @@ import { BillingTotalItemComponent } from './firm/billing-totals/billing-total-i
 import { TopTimekeepersComponent } from './firm/top-timekeepers/top-timekeepers.component';
 import { TopMattersComponent } from './firm/top-matters/top-matters.component';
 import { SpendByMonthComponent } from './firm/spend-by-month/spend-by-month.component';
-
+import { DiversityComponent } from './firm/diversity/diversity.component';
+import { BodhalaChartLegendComponent } from './shared/components/bodhala-chart-legend/bodhala-chart-legend.component';
+import { ScoreTrendComponent } from './firm/score-trend/score-trend.component';
 
 
 export function initUser(config: UserService) {
@@ -84,7 +86,10 @@ export function highchartsFactory() {
     BillingTotalItemComponent,
     TopTimekeepersComponent,
     TopMattersComponent,
-    SpendByMonthComponent
+    SpendByMonthComponent,
+    DiversityComponent,
+    BodhalaChartLegendComponent,
+    ScoreTrendComponent
   ],
   entryComponents: [
     PillComponent,

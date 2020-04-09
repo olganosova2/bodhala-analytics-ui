@@ -48,24 +48,24 @@ export class AppComponent implements OnDestroy {
     });
     this.ieVersion = this.utilService.getIEVersion();
     titleService.setTitle(config.uiTitleString);
-    // idle.setIdle(environment.IDLE_KEEPALIVE_CONFIG.timeOutSeconds);
-    // idle.setTimeout(environment.IDLE_KEEPALIVE_CONFIG.keepaliveSeconds);
-    // idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-    // idle.onIdleEnd.subscribe(() => {
-    //   titleService.setTitle(config.uiTitleString);
-    // });
-    // idle.onTimeout.subscribe(() => {
-    //   this.redirectToLogin();
-    // });
-    // idle.onIdleStart.subscribe(() => {
-    //   this.openDialog();
-    // });
+    idle.setIdle(environment.IDLE_KEEPALIVE_CONFIG.timeOutSeconds);
+    idle.setTimeout(environment.IDLE_KEEPALIVE_CONFIG.keepaliveSeconds);
+    idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+    idle.onIdleEnd.subscribe(() => {
+      titleService.setTitle(config.uiTitleString);
+    });
+    idle.onTimeout.subscribe(() => {
+      this.appStateService.redirectToLogin();
+    });
+    idle.onIdleStart.subscribe(() => {
+      this.openDialog();
+    });
 
     this.resetIdle();
 
-    // this.saveInterval = setInterval(() => {
-    //   this.keepAlive();
-    // }, KEEP_ALIVE_SEC);
+    this.saveInterval = setInterval(() => {
+      this.keepAlive();
+    }, KEEP_ALIVE_SEC);
 
   }
   resetIdle() {
@@ -80,7 +80,7 @@ export class AppComponent implements OnDestroy {
         this.keepAlive();
         this.resetIdle();
       } else {
-        this.redirectToLogin();
+        this.appStateService.redirectToLogin();
       }
     });
   }
@@ -92,9 +92,6 @@ export class AppComponent implements OnDestroy {
         this.errorMessage = err;
       }
     );
-  }
-  redirectToLogin(): void {
-    this.appStateService.redirectToLogin();
   }
   close(): void {
     this.ieVersion = '';
