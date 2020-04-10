@@ -16,6 +16,7 @@ body {
   font-family: "Source Sans Pro", sans-serif;
   background-color: $body-bg;
   color: $body-color;
+  font-size: 15px;
 }
 
 .pointer-hand {
@@ -222,6 +223,7 @@ body {
 
 .mat-card {
   background-color: #fff;
+  color: $body-color;
 }
 
 .mat-card-title {
@@ -234,6 +236,24 @@ body {
   stroke: $light-gray;
 }
 
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background-color: $blue-color;
+}
+
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: $body-color;
+}
+
+.mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: $blue-color;
+}
+
+.mat-calendar-body-selected {
+  background-color: $blue-color !important;
+}
+.mat-form-field {
+  width: 100% !important;
+}
 .spinner {
   position: fixed;
   top: 50%;
@@ -292,6 +312,8 @@ body {
   border: 1px solid rgba(0, 0, 0, .03);
   box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
   width: 100%;
+  background-color: #fff;
+  color: $body-color;
 }
 
 .panel-title {
@@ -342,6 +364,9 @@ body {
     padding: .5em 0 .5em 0 !important;
   }
 }
+.mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+  background-color: $blue-color;
+}
 
 .common-info-column {
   padding: 30px 50px;
@@ -356,13 +381,9 @@ button:focus {
   outline: none;
 }
 
-.badge-help {
-  color: #000;
-  background-color: $blue-green;
-}
-
 html, body {
   height: 100%;
+  font-size: 15px;
 }
 
 body {
@@ -370,7 +391,15 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-
+.panel-wrapper-blank {
+  padding: 20px 10px;
+}
+.no-right-padding {
+  padding-right: 0;
+}
+.no-left-padding {
+  padding-left: 0;
+}
 // Highcharts legend formatting
 .hc-partner-badge {
   border-radius: 25px;
@@ -415,7 +444,10 @@ body {
 
 .small-title {
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 0.9rem;
+}
+.footer-collapsed {
+  margin-left:0 !important;
 }
 
 .filter-group-label {
@@ -466,5 +498,62 @@ body {
   font-style: italic;
   font-size:10pt;
   color: red;
+}
+.filter-group-label {
+  max-height: 38px;
+}
+.btn-primary {
+  color: #fff;
+  background-color: #F7921E !important;
+  border: 1px solid transparent   !important;;
+  font-size: 13px !important;;
+}
+.user-block-name {
+  color: #b2b2b2 !important;
+}
+.form-control {
+  font-size: 0.9rem !important;
+  color: #929292 !important;
+  display: inline-block !important;
+}
+.fa-navicon {
+  color: #fff !important;
+}
+.filter-button {
+  .fa-save {
+  font-size: 24px !important}
+}
+.badge-help {
+  font-size: 1rem;
+  cursor: pointer;
+  color: $body-color;
+  border: 1px $light-gray solid;
+}
+.table-row {
+  border-bottom: 1px solid $very-light-blue;
+}
+.score-badge {
+  display: inline-block;
+  min-width: 100px;
+  margin: 0 0 15px 0;
+  padding: 3px 7px;
+  font-size: 12px;
+  color: #fff;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  background: $excelent-color;
+  border-radius: 41px;
+}
+.score-badge-poor {
+  background: $red-color;
+}
+.score-badge-fair {
+  background: $fair-color;
+}
+.score-badge-blank {
+  background: #fff;
+  border: 1px solid $excelent-color;
+  color: $excelent-color;
 }
 

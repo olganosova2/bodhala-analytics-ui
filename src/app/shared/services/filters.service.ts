@@ -30,9 +30,9 @@ export class FiltersService {
     if (serializedFilters) {
       this.userFilters = Object.assign({}, JSON.parse(serializedFilters).dataFilters);
     }
-    const serializedIncludeExpenses = localStorage.getItem('app.client-dashboard.overview_' + currentUser.id.toString());
+    const serializedIncludeExpenses = localStorage.getItem('include_expenses_' + currentUser.id.toString());
     if (serializedIncludeExpenses) {
-      this.includeExpenses = JSON.parse(serializedIncludeExpenses).includeExpenses || false;
+      this.includeExpenses = JSON.parse(serializedIncludeExpenses) || false;
     }
     this.userFilters = Object.assign({}, this.filtersHelper.create(this.userFilters));
     const dt = moment();

@@ -4,6 +4,7 @@ import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
   MatBadgeModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
   MatDialogModule,
@@ -39,7 +40,15 @@ import {TopMattersFirmsService} from './launchpad/services/top-matters-firms.ser
 import { ActiveSpendComponent } from './launchpad/card/active-spend/active-spend.component';
 import {DatePipe} from '@angular/common';
 import { InsightsComponent } from './launchpad/insights/insights.component';
-
+import { FirmComponent } from './firm/firm.component';
+import { BillingTotalsComponent } from './firm/billing-totals/billing-totals.component';
+import { BillingTotalItemComponent } from './firm/billing-totals/billing-total-item/billing-total-item.component';
+import { TopTimekeepersComponent } from './firm/top-timekeepers/top-timekeepers.component';
+import { TopMattersComponent } from './firm/top-matters/top-matters.component';
+import { SpendByMonthComponent } from './firm/spend-by-month/spend-by-month.component';
+import { DiversityComponent } from './firm/diversity/diversity.component';
+import { BodhalaChartLegendComponent } from './shared/components/bodhala-chart-legend/bodhala-chart-legend.component';
+import { ScoreTrendComponent } from './firm/score-trend/score-trend.component';
 
 
 export function initUser(config: UserService) {
@@ -71,7 +80,16 @@ export function highchartsFactory() {
     CellComponent,
     LinkComponent,
     ActiveSpendComponent,
-    InsightsComponent
+    InsightsComponent,
+    FirmComponent,
+    BillingTotalsComponent,
+    BillingTotalItemComponent,
+    TopTimekeepersComponent,
+    TopMattersComponent,
+    SpendByMonthComponent,
+    DiversityComponent,
+    BodhalaChartLegendComponent,
+    ScoreTrendComponent
   ],
   entryComponents: [
     PillComponent,
@@ -82,6 +100,7 @@ export function highchartsFactory() {
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(appRouterConfig),
+    NgbModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatSortModule,

@@ -1,0 +1,22 @@
+@import "../../../../assets/styles/colors.scss";
+.cell-item {
+  color: $body-color;
+  margin:0;
+  padding: 20px 30px;
+  border-right: $light-gray 1px solid;
+  text-align: center;
+  display: inline-block;
+  width: 100%
+}
+em {
+  color: $blue-color;
+}
+span {
+  display: inline-block;
+}
+.cell-label {
+  font-size: 0.8rem;
+}
+.cell-last {
+  border-right: none;
+}

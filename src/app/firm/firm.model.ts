@@ -1,0 +1,310 @@
+import {basePieChartOptions} from '../shared/models/base-chart';
+
+export interface ITag {
+  modified_on: string;
+  deleted_on: string;
+  created_on: string;
+  created_by: string;
+  active: boolean;
+  name: string;
+  modified_by: string;
+  deleted_by: string;
+  description: string;
+  type: string;
+  id: number;
+}
+
+export interface IFirm {
+  id: number;
+  name: string;
+  rank: string;
+  url: string;
+  active: boolean;
+  boutique: string;
+  crawl_id: number;
+  crawlable: string;
+  is_javascript: boolean;
+  is_sitemap: boolean;
+  is_proxy_crawl: boolean;
+  bio_config_file: string;
+  news_config_file: string;
+  leverage: number;
+  average_partner_rate: number;
+  average_associate_rate: number;
+  estimated_number_lawyers: number;
+  rate_source: string;
+  letterhead: boolean;
+  synonym_primary_id: number;
+  json_config: string;
+  logo_url: string;
+  lawfirm_harvest: string;
+  tags: Array<ITag>;
+  yearly_stats: Array<any>;
+}
+
+export interface IBillingTotalItem {
+  icon: string;
+  total: number;
+  total_expenses?: number;
+  name: string;
+  format?: string;
+  lastCell?: boolean;
+}
+
+export interface ITimekeeper {
+  id: string;
+  name: string;
+  seniority: string;
+  bio_image_url: string;
+  firm: string;
+  lawfirm_id: number;
+  total: number;
+  total_billed: number;
+  total_afa: number;
+  current_rate: number;
+}
+
+export interface IFirmData {
+  percent_partners: number;
+  percent_associates: number;
+  num_locations: number;
+  num_attorneys_range: string;
+  firmographic_leverage: number;
+  url: string;
+}
+
+export interface IDiversityData {
+  percentFemale: number;
+  percentFemalePartners: number;
+  industryFemale: number;
+  similarFemale: number;
+  percentEthnic: number;
+  percentEthnicPartners: number;
+  industryEthnic: number;
+  similarEthnic: number;
+}
+export const lineChartOptions = {
+  chart: {
+    type: 'line',
+    marginLeft: null,
+    marginRight: 10,
+    marginTop: 10,
+    spacingTop: 10,
+    zoomType: 'xy'
+  },
+  exporting: {
+    enabled: false
+  },
+  credits: {
+    enabled: false
+  },
+  title: {text: null},
+  plotOptions: {
+    series: {
+      events: {
+        click(event) {
+          const x = event;
+        }
+      }
+    }
+  },
+  tooltip: {
+    headerFormat: '<b></b><br>',
+    pointFormat: '{point.x: %b %Y}: ${point.y:,.2f}'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+      month: '%b %Y',
+      year: '%b'
+    },
+    title: {
+      text: 'Date'
+    }
+
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: '$ (dollars)'
+    }
+
+  },
+  series: []
+};
+
+export const spendByMonthChartAdditionalOptions = {
+  plotOptions: {
+    series: {
+      events: {
+        click(event) {
+          const x = event;
+        }
+      }
+    }
+  },
+  tooltip: {
+    headerFormat: '<b></b><br>',
+    pointFormat: '{point.x: %b %Y}: ${point.y:,.2f}'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+      month: '%b %Y',
+      year: '%b'
+    },
+    title: {
+      text: 'Date'
+    }
+
+  },
+  yAxis: {
+    min: 0,
+    title: {
+      text: '$ (dollars)'
+    }
+
+  },
+  series: [{
+    showInLegend: false,
+    name: '',
+    data: []
+  }]
+};
+export const trendChart = {
+  chart: {
+    type: 'line',
+    width: 800,
+    // height: 600,
+    marginLeft: null,
+    marginRight: 10,
+    marginTop: 10,
+    spacingTop: 10,
+    zoomType: 'xy'
+  },
+  exporting: {   enabled: false  },
+  credits: { enabled: false },
+  title: { text: null },
+  tooltip: {
+    headerFormat: '<b></b><br>',
+    pointFormat: '{point.x: %Y}: {point.y:,.2f}'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+      month: '%Y',
+      year: '%Y'
+    }
+  },
+  yAxis: {
+    title: {
+      text: 'Avg'
+    }
+  },
+  legend: {
+    layout: 'horizontal',
+    align: 'right',
+    verticalAlign: 'top'
+  },
+  plotOptions: {
+    line: {
+      colors: ['#9D02FE', '#6F00FF'],
+    },
+    series: {
+      label: {
+        connectorAllowed: false
+      }
+    }
+  },
+  series: [{
+    name: 'Firm Averages',
+   // color: '#FF0000',
+    data: []
+  }, {
+    name: 'Client Averages',
+    color: '#000',
+    data: []
+  }]
+};
+export const pieDonut = {
+  chart: {
+    type: 'pie',
+    height: 140,
+    width: 200,
+    spacing: [0, 0, 0, 0],
+    margin: [0, 0, 0, 0]
+
+  },
+  exporting: {
+    enabled: false
+  },
+  plotOptions: {
+    pie: {
+      shadow: false,
+      center: ['50%', '50%'],
+      animation: {
+        duration: 2000
+      },
+      dataLabels: {
+        verticalAlign: 'top',
+        distance: 20,
+        y: -10,
+        style: {
+          width: '200px'
+        }
+      }
+    }
+  },
+  tooltip: {
+    shared: true,
+    useHTML: true,
+    formatter() {
+      return '<div>' + this.key + ':<b> ' + Math.round(this.percentage * 10) / 10 + '%</b></div>';
+    }
+  },
+  title: {
+    text: null
+  },
+  credits: {enabled: false},
+  series: []
+};
+export const genderAdditionalOptions = {
+  series: [{
+    name: 'Female',
+    data: [],
+    size: '60%',
+    dataLabels: {
+      enabled: false
+    }
+  }, {
+    name: 'Female Partners',
+    data: [],
+    size: '80%',
+    innerSize: '60%',
+    dataLabels: {
+      enabled: false
+    }
+  }]
+};
+export const minorityAdditionalOptions = {
+  series: [{
+    name: 'All Minority Attorneys',
+    data: [],
+    size: '60%',
+    dataLabels: {
+      enabled: false
+    }
+  }, {
+    name: 'Minority Partners',
+    data: [],
+    size: '80%',
+    innerSize: '60%',
+    dataLabels: {
+      enabled: false
+    }
+  }]
+};
+
+export const spendByMonthOptions = { ... lineChartOptions, ...spendByMonthChartAdditionalOptions};
+export const genderChartOptions = {...pieDonut, ...genderAdditionalOptions};
+export const minorityChartOptions = {...pieDonut, ...minorityAdditionalOptions};

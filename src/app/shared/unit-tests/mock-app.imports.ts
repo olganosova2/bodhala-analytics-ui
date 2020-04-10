@@ -7,8 +7,6 @@ import { RouterModule } from '@angular/router';
 import {HttpService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { appRouterConfig } from '../../app.routes';
 import { UtilService } from 'bodhala-ui-common';
@@ -43,12 +41,21 @@ import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
 import {TopMattersFirmsService} from '../../launchpad/services/top-matters-firms.service';
 import {InsightsComponent} from '../../launchpad/insights/insights.component';
+import {FirmComponent} from '../../firm/firm.component';
+import {CommonService} from '../services/common.service';
+import {BillingTotalsComponent} from '../../firm/billing-totals/billing-totals.component';
+import {BillingTotalItemComponent} from '../../firm/billing-totals/billing-total-item/billing-total-item.component';
+import {TopMattersComponent} from '../../firm/top-matters/top-matters.component';
+import {TopTimekeepersComponent} from '../../firm/top-timekeepers/top-timekeepers.component';
+import {SpendByMonthComponent} from '../../firm/spend-by-month/spend-by-month.component';
+import {DiversityComponent} from '../../firm/diversity/diversity.component';
+import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bodhala-chart-legend.component';
+import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
 
 export const IMPORTS = [
   ReactiveFormsModule,
   FormsModule,
   RouterModule.forRoot(appRouterConfig, { useHash: false }),
-  NgbModule,
   RouterTestingModule,
   HttpClientTestingModule,
   MatTableModule,
@@ -83,7 +90,16 @@ export const IMPORTS = [
 export const DECLARATIONS = [
   AppComponent,
   LaunchpadComponent,
-  InsightsComponent
+  InsightsComponent,
+  FirmComponent,
+  BillingTotalsComponent,
+  BillingTotalItemComponent,
+  TopMattersComponent,
+  TopTimekeepersComponent,
+  SpendByMonthComponent,
+  DiversityComponent,
+  BodhalaChartLegendComponent,
+  ScoreTrendComponent
 ];
 
 export const PROVIDERS = [
@@ -91,7 +107,6 @@ export const PROVIDERS = [
   HttpHandler,
   UtilService,
   HttpTestingController,
-  NgbActiveModal,
   CookieService,
   HttpService,
   MessagingService,
@@ -100,6 +115,7 @@ export const PROVIDERS = [
   UserFiltersModel,
   TopMattersFirmsService,
   DatePipe,
+  CommonService,
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },
