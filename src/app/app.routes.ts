@@ -6,7 +6,9 @@ export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
   {path: 'launchpad', component: LaunchpadComponent},
   {path: 'firm/:id', component: FirmComponent},
+  {path: 'analytics-ui/firm/:id', component: FirmComponent},
   {path: 'firm', component: FirmComponent},
-  {path: 'analytics.html', component: LaunchpadComponent},
-  {path: '**', redirectTo: 'launchpad'}
+  {path: 'analytics-ui/firm', component: FirmComponent},
+  // {path: 'analytics.html', component: LaunchpadComponent},
+  {path: '**',  component: LaunchpadComponent}
   ];

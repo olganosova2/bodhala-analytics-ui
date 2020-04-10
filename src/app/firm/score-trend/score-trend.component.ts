@@ -14,6 +14,11 @@ export enum TrendChart  {
   PARTNER_RATE = 'PARTNER_RATE',
   ASSOCIATE_RATE = 'ASSOCIATE_RATE',
 }
+export const COLORS = {
+  poor: '#FC615A',
+  excellent: '#87E184',
+  fair: '#FC615A'
+}
 
 @Component({
   selector: 'bd-score-trend',
@@ -65,6 +70,11 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     this.pendingRequestTrends = this.httpService.makeGetRequest('getFirmTrends', params).subscribe(
       (data: any) => {
         this.trends = data.result;
+        if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
+          this.trends.firm_trends = Object.assign([], this.trends.peer_trends);
+        } else {
+          this.trends.client_trends = [];
+        }
         this.renderChart();
       },
       err => {
@@ -85,12 +95,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     if (this.firm) {
       this.chart.series[0].name = this.firm.name;
     }
-    if (this.selectedChart !== TrendChart.LEVERAGE) {
-     // this.chart.yAxis.title.text = 'dollars';
-      this.chart.yAxis[0].setTitle({ text: 'dollars' });
-    }
+    this.setUpChart();
     result = [];
-    if (!this.trends.client_trends) {
+    if (!this.trends.client_trends ) {
+      // this.chart.series.splice(1, 1);
       this.chart.series[1].setData(result);
       return;
     }
@@ -98,6 +106,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
       result.push(this.buildChartItem(rec));
     }
     this.chart.series[1].name = this.userService.currentUser.client_info.org.name + ' Averages';
+    if (this.trends.client_trends.length === 0) {
+      this.chart.series[1].options.showInLegend = false;
+      this.chart.series[1].update(this.chart.series[1].options);
+    }
     this.chart.series[1].setData(result);
     setTimeout(() => {
       this.resizeChart();
@@ -120,7 +132,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         result = [year, rec.avg_matter_cost];
         break;
       case TrendChart.BLOCK_BILLING:
-        result = [year, rec.avg_block_billed];
+        result = [year, rec.avg_block_billed_pct];
         break;
       case TrendChart.PARTNER_RATE:
         result = [year, rec.avg_partner_rate];
@@ -141,6 +153,24 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   changeViewMode(type: TrendChart): void {
       this.selectedChart = type;
       this.renderChart();
+  }
+  setUpChart(): void {
+    let result = '';
+    let color = COLORS.excellent;
+    switch (this.selectedChart) {
+      case TrendChart.LEVERAGE:
+        result = 'Avg';
+        break;
+      case TrendChart.BLOCK_BILLING:
+        result = 'percent';
+        break;
+      default:
+        result = 'dollars';
+        break;
+    }
+    this.chart.yAxis[0].setTitle({ text: result });
+    // this.chart.series[0].options.color = '#008800';
+    // this.chart.series[0].update(this.chart.series[0].options);
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

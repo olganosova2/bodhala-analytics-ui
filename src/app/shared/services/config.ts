@@ -79,7 +79,8 @@ export const outerAppLinks = {
   viewMatter: '#/app/client-dashboard/matter/',
   viewPracticeArea: '#/app/client-dashboard/practiceArea',
  // viewFirm: '#/app/client-dashboard/firm/',
-  viewFirm: '/firm/',
+  // viewFirm: '/firm',
+  viewFirm: '/analytics-ui/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
   viewBlockBilling: '#/app/client-dashboard/block-billing'

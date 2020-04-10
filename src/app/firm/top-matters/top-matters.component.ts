@@ -16,12 +16,15 @@ export class TopMattersComponent implements OnInit, OnDestroy {
   @Input() firmId: number;
   @Input() firm: IFirm;
   pendingRequest: Subscription;
+
   constructor(private httpService: HttpService,
-              public filtersService: FiltersService) { }
+              public filtersService: FiltersService) {
+  }
 
   ngOnInit() {
     this.getMatters();
   }
+
   getMatters(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
@@ -38,14 +41,18 @@ export class TopMattersComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   processMatters(): void {
     for (const rec of this.matters) {
       rec.sum = this.filtersService.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
     }
   }
+
   goToView(href: string, id: string): void {
-    window.location.href = href + id;
+    const enc = encodeURIComponent(id);
+    window.location.href = href + encodeURIComponent(enc);
   }
+
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
