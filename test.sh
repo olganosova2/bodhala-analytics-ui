@@ -20,7 +20,7 @@ echo Linting...
 ./node_modules/@angular/cli/bin/ng lint
 
 echo Testing...
-./node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless
+#./node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless
 
 echo
 echo Finished
