@@ -30,9 +30,9 @@ export const END_POINTS_URLS = {
   oldSavedViews: {url: BASE_URL + 'admin/savedviews', showLoading: false},
   getDateRange: {url: BASE_URL + 'analytics/getMinMaxDates', showLoading: false},
 
-  getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: true},
-  getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: true},
-  getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: true},
+  getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: false},
+  getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: false},
+  getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: false},
   spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
   getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: false},
   getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},

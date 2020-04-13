@@ -14,6 +14,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   totalsRaw: any;
   totals: Array<IBillingTotalItem> = [];
   pendingRequest: Subscription;
+  isLoaded: boolean = false;
   @Input() firm: IFirm;
 
   constructor(private httpService: HttpService,
@@ -29,13 +30,16 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     const arr = [];
     arr.push(this.firm.id.toString());
     params.firms = JSON.stringify(arr);
+    this.isLoaded = false;
     this.pendingRequest = this.httpService.makeGetRequest('getBillingTotals', params).subscribe(
       (data: any) => {
         this.totalsRaw = data.result;
         this.formatItems();
+        this.isLoaded = true;
       },
       err => {
         this.errorMessage = err;
+        this.isLoaded = true;
       }
     );
   }

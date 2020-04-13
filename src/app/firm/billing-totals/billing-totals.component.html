@@ -9,7 +9,9 @@
       <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
     </div>
   </div>
-
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
 </div>
 
 

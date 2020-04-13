@@ -96,6 +96,9 @@ export class AppComponent implements OnDestroy {
   close(): void {
     this.ieVersion = '';
   }
+  onActivate(evt): void {
+    window.scroll(0, 0);
+  }
   ngOnDestroy() {
     if (this.saveInterval) {
       clearInterval(this.saveInterval);

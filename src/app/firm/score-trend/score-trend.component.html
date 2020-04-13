@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  <div class="ui-g-9  no-left-padding no-right-padding">
+  <div class="ui-g-9  no-left-padding no-right-padding chart-panel">
     <div class="panel-wrapper full-width" #trendsDiv>
       <div class="tabs-panel mb10" >
       <span class="tab-button" [ngClass]="{'tab-button-selected': selectedChart === chartTypes.LEVERAGE }"
@@ -68,6 +68,10 @@
 
       </div>
       <chart [options]="options" (load)="saveInstance($event.context)"></chart>
+    </div>
+
+    <div class="spinner-card" [hidden]="isLoaded">
+      <mat-spinner diameter="50" color="primary"></mat-spinner>
     </div>
   </div>
 </div>

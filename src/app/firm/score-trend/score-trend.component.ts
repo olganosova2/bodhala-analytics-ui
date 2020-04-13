@@ -35,6 +35,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   helpText: string = 'Text goes here';
   selectedChart: TrendChart = TrendChart.LEVERAGE;
   chartTypes: any = TrendChart;
+  isLoaded: boolean = false;
   @Input() firmId: number;
   @Input() firm: IFirm;
   pendingRequest: Subscription;
@@ -55,7 +56,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     this.getFirmTrends();
   }
   setUpChartOptions(): void {
-    window.scroll(0, 0);
     this.options = Object.assign({},  trendChart);
     this.options.series[0].data = [];
     this.options.series[1].data = [];
@@ -72,6 +72,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     );
   }
   getFirmTrends(): void {
+    this.isLoaded = false;
     const params = { clientId: this.userService.currentUser.client_info.id, id: this.firmId };
     this.pendingRequestTrends = this.httpService.makeGetRequest('getFirmTrends', params).subscribe(
       (data: any) => {
@@ -82,8 +83,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
           this.trends.client_trends = [];
         }
         this.renderChart();
+        this.isLoaded = true;
       },
       err => {
+        this.isLoaded = true;
         this.errorMessage = err;
       }
     );
