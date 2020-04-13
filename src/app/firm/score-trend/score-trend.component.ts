@@ -50,9 +50,15 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     this.resizeChart();
   }
   ngOnInit() {
-    this.options = Object.assign({},  trendChart);
+    this.setUpChartOptions();
     this.getFirmScore();
     this.getFirmTrends();
+  }
+  setUpChartOptions(): void {
+    window.scroll(0, 0);
+    this.options = Object.assign({},  trendChart);
+    this.options.series[0].data = [];
+    this.options.series[1].data = [];
   }
   getFirmScore(): void {
     const params = { clientId: this.userService.currentUser.client_info.id, id: this.firmId };

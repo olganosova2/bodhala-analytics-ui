@@ -64,8 +64,8 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
   }
   resizeChart(): void {
     const width = this.spendByMonthDiv.nativeElement.offsetWidth - 5;
-    const height = this.spendByMonthDiv.nativeElement.offsetHeight - 10;
-    this.chart.setSize(width, height, false);
+    // const height = this.spendByMonthDiv.nativeElement.offsetHeight - 10;
+    this.chart.setSize(width, 450, false);
   }
 
   saveInstance(chartInstance): void {

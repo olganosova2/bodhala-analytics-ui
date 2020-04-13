@@ -33,11 +33,11 @@ export const END_POINTS_URLS = {
   getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: true},
   getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: true},
   getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: true},
-  spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: true},
-  getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: true},
-  getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: true},
-  getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}', showLoading: true},
-  getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: true},
+  spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
+  getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: false},
+  getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
+  getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}', showLoading: false},
+  getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
   // playbook/firm/4377/trends?clientId=110
 };
 
