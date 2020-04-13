@@ -88,15 +88,18 @@
   <div>
 
     <div class="ui-g">
-      <div class="no-left-padding" #diversity>
-        <bd-diversity [firmId]="firmId" *ngIf="userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
-      </div>
+<!--      <div class="no-left-padding" #diversity>-->
+<!--        <bd-diversity [firmId]="firmId" *ngIf="userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>-->
+<!--      </div>-->
     </div>
   </div>
   <div>
     <div class="ui-g">
       <div class="ui-md-12 ui-lg-5 ui-xl-4 no-left-padding">
         <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firm"></bd-top-matters>
+      </div>
+      <div class="ui-md-12 ui-lg-7 ui-xl-5 no-right-padding" #diversity>
+        <bd-diversity [firmId]="firmId" *ngIf="userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
       </div>
     </div>
   </div>

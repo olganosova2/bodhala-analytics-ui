@@ -24,6 +24,7 @@ export class DiversityComponent implements OnInit, OnDestroy {
   optionsMinority: any;
   chartGender: any = {};
   chartMinority: any = {};
+  loaded: boolean = false;
   @Input() firmId: number;
   constructor(private httpService: HttpService,
               public filtersService: FiltersService) { }
@@ -142,6 +143,7 @@ export class DiversityComponent implements OnInit, OnDestroy {
     this.chartMinority.series[1].setData(minorityPartnersData);
     console.log("GENDER", this.chartGender);
     console.log("GENDER OPTIONS: ", this.optionsGender);
+    this.loaded = true;
   }
   saveInstanceGender(chartInstance): void {
     this.chartGender = chartInstance;

@@ -33,13 +33,13 @@ export const END_POINTS_URLS = {
   getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: true},
   getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: true},
   getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: true},
-  spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: true},
-  getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: true},
-  getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: true},
-  getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: true},
-  getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: true},
-  getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}', showLoading: true},
-  getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: true},
+  spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
+  getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: false},
+  getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
+  getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}', showLoading: false},
+  getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
+  getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
+  getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
   // playbook/firm/4377/trends?clientId=110
 };
 
@@ -81,7 +81,8 @@ export const outerAppLinks = {
   viewMatter: '#/app/client-dashboard/matter/',
   viewPracticeArea: '#/app/client-dashboard/practiceArea',
  // viewFirm: '#/app/client-dashboard/firm/',
-  viewFirm: '/firm/',
+  // viewFirm: '/firm',
+  viewFirm: '/analytics-ui/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
   viewBlockBilling: '#/app/client-dashboard/block-billing'

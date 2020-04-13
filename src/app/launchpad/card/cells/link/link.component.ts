@@ -20,7 +20,7 @@ export class LinkComponent extends BaseCell implements OnInit, ICell {
 
   onClick(data) {
     if (this.column.route) {
-      this.router.navigate([this.column.route, data.id]);
+      this.router.navigate([this.column.route, data[this.column.route_params]]);
     } else if (this.column.href) {
       this.goToView(this.column.href, data);
     }
@@ -31,6 +31,10 @@ export class LinkComponent extends BaseCell implements OnInit, ICell {
   }
 
   goToView(hrefTemplate, data): void {
+    if (data.id) {
+      const enc = encodeURIComponent(data.id)
+      data.id = encodeURIComponent(enc);
+    }
     const href = this.inject(hrefTemplate, data);
     const w = window.parent ? window.parent : window;
     w.location.href = href;

@@ -200,6 +200,10 @@ export const trendChart = {
   exporting: {   enabled: false  },
   credits: { enabled: false },
   title: { text: null },
+  tooltip: {
+    headerFormat: '<b></b><br>',
+    pointFormat: '{point.x: %Y}: {point.y:,.2f}'
+  },
   xAxis: {
     type: 'datetime',
     dateTimeLabelFormats: {
