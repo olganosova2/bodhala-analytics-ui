@@ -100,5 +100,10 @@
       </div>
     </div>
   </div>
+  <div class="ui-g">
+    <div class="no-left-padding" #utbms>
+      <bd-utbms [firmId]="firmId" *ngIf="userService.hasEntitlement('analytics.utbms.codes')"></bd-utbms>
+    </div>
+  </div>
 </div>
 

@@ -31,6 +31,7 @@ export class DiversityComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.optionsGender = Object.assign({},  genderChartOptions);
     this.optionsMinority = Object.assign({},  minorityChartOptions);
+    console.log("optionsG: ", this.optionsGender);
     this.getDiversity();
   }
   getDiversity(): void {
@@ -134,10 +135,13 @@ export class DiversityComponent implements OnInit, OnDestroy {
       y: 100 - this.chartData.percentEthnic,
       color: '#EEEEEE'
     }];
+    // console.log("GBEFORE: ", this.chartGender);
     this.chartGender.series[0].setData(femaleData);
     this.chartGender.series[1].setData(femalePartnersData);
     this.chartMinority.series[0].setData(minorityData);
     this.chartMinority.series[1].setData(minorityPartnersData);
+    console.log("GENDER", this.chartGender);
+    console.log("GENDER OPTIONS: ", this.optionsGender);
   }
   saveInstanceGender(chartInstance): void {
     this.chartGender = chartInstance;

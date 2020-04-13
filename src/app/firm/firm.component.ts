@@ -11,6 +11,7 @@ import {TopMattersComponent} from './top-matters/top-matters.component';
 import {SpendByMonthComponent} from './spend-by-month/spend-by-month.component';
 import {DiversityComponent} from './diversity/diversity.component';
 import {ScoreTrendComponent} from './score-trend/score-trend.component';
+import {UtbmsComponent} from './utbms/utbms.component';
 
 @Component({
   selector: 'bd-firm',
@@ -33,6 +34,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   @ViewChild(TopMattersComponent, {static: false}) topMatters: TopMattersComponent;
   @ViewChild(SpendByMonthComponent, {static: false}) spendByMonth: SpendByMonthComponent;
   @ViewChild(DiversityComponent, {static: false}) diversity: DiversityComponent;
+  @ViewChild(UtbmsComponent, {static: false}) utbms: UtbmsComponent;
   @ViewChild(ScoreTrendComponent, {static: false}) scoreAndTrend: ScoreTrendComponent;
 
   constructor(private route: ActivatedRoute,
@@ -89,6 +91,9 @@ export class FirmComponent implements OnInit, OnDestroy {
     this.spendByMonth.getSpendByMonth();
     if (this.diversity && this.userService.hasEntitlement('data.analytics.diversity')) {
       this.diversity.getDiversity();
+    }
+    if (this.utbms && this.userService.hasEntitlement('analytics.utbms.codes')) {
+      this.utbms.getUTBMS();
     }
   }
 

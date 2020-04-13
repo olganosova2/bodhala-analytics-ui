@@ -83,6 +83,21 @@ export interface IDiversityData {
   industryEthnic: number;
   similarEthnic: number;
 }
+
+export interface IUTBMSData {
+  // code: string;
+  // description: string;
+  // subcodes: string[];
+  // total_billed: number;
+  // total_hours: number;
+  // activitydata: any[];
+  // taskdata: any[];
+  activitydatautbms: any[];
+  taskdatautbms: any[];
+  // activitydatataxonomy: any[];
+  // taskdatataxonomy: any[];
+}
+
 export const lineChartOptions = {
   chart: {
     type: 'line',
@@ -300,7 +315,44 @@ export const minorityAdditionalOptions = {
     }
   }]
 };
+export const UTBMSAdditionalOptions = {
+  series: [{
+    name: 'Task',
+    data: [],
+    size: '60%'
+  },
+  {
+    name: 'Activity',
+    data: [],
+    size: '70%',
+    innerSize: '60%',
+    dataLabels: {
+        enabled: false
+    }
+  }]
+};
+export const taxonomyAdditionalOptions = {
+  series: [{
+    name: 'Task',
+    data: [],
+    size: '60%'
+  },
+  {
+    name: 'Activity',
+    data: [],
+    size: '70%',
+    innerSize: '60%',
+    dataLabels: {
+        enabled: false
+    }
+  }]
+};
 
 export const spendByMonthOptions = { ... lineChartOptions, ...spendByMonthChartAdditionalOptions};
 export const genderChartOptions = {...pieDonut, ...genderAdditionalOptions};
 export const minorityChartOptions = {...pieDonut, ...minorityAdditionalOptions};
+export const UTBMSChartOptions = {...pieDonut, ...UTBMSAdditionalOptions};
+export const taxonomyChartOptions = {...pieDonut, ...taxonomyAdditionalOptions};
+// export const UTBMSChartOptions = {...pieDonut};
+// export const taxonomyChartOptions = {...pieDonut};
+
