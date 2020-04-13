@@ -25,7 +25,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   excludeFilters = ['firms', 'treshold'];
   firmData: IFirmData;
   rightColsCount: number = 12;
-  helpText: string = 'help text goes here';
+  helpText: string = 'The data points included below show current firmographic information on this law firm';
   pendingRequest: Subscription;
   pendingRequestFirm: Subscription;
   @ViewChild(BillingTotalsComponent, {static: false}) billingTotals: BillingTotalsComponent;
