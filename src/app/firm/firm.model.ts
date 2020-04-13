@@ -92,10 +92,13 @@ export interface IUTBMSData {
   // total_hours: number;
   // activitydata: any[];
   // taskdata: any[];
-  activitydatautbms: any[];
-  taskdatautbms: any[];
-  // activitydatataxonomy: any[];
-  // taskdatataxonomy: any[];
+  activitydata: any[];
+  taskdata: any[];
+}
+
+export interface ITaxonomyData {
+  phasedata: any[];
+  subphasedata: any[];
 }
 
 export const lineChartOptions = {
@@ -283,6 +286,93 @@ export const pieDonut = {
   credits: {enabled: false},
   series: []
 };
+
+export const utbmsPieDonut = {
+  chart: {
+    type: 'pie',
+    height: 400,
+    width: 732.5,
+    spacing: [0, 0, 0, 0],
+    margin: [0, 0, 0, 0]
+
+  },
+  exporting: {
+    enabled: false
+  },
+  plotOptions: {
+    pie: {
+      shadow: false,
+      center: ['50%', '50%'],
+      animation: {
+        duration: 2000
+      },
+      dataLabels: {
+        verticalAlign: 'top',
+        distance: 20,
+        y: -10,
+        style: {
+          width: '200px'
+        }
+      }
+    }
+  },
+  tooltip: {
+    shared: true,
+    useHTML: true,
+    formatter() {
+      return '<div>' + this.key + ':<b> ' + Math.round(this.percentage * 10) / 10 + '%</b></div>' + '<div>Total Hours: '+ Intl.NumberFormat().format(Math.round(this.point.y)) +'</div><div>Total Billed: $' + Intl.NumberFormat('us-US', { minimumFractionDigits: 0, maximumFractionDigits:0 }).format(this.point.total_billed) +'</div>';
+    }
+  },
+  title: {
+    text: "Raw/Inaccurate Data"
+  },
+  credits: {enabled: false},
+  series: []
+};
+
+export const taxonomyPieDonut = {
+  chart: {
+    type: 'pie',
+    height: 400,
+    width: 732.5,
+    spacing: [0, 0, 0, 0],
+    margin: [0, 0, 0, 0]
+
+  },
+  exporting: {
+    enabled: false
+  },
+  plotOptions: {
+    pie: {
+      shadow: false,
+      center: ['50%', '50%'],
+      animation: {
+        duration: 2000
+      },
+      dataLabels: {
+        verticalAlign: 'top',
+        distance: 20,
+        y: -10,
+        style: {
+          width: '200px'
+        }
+      }
+    }
+  },
+  tooltip: {
+    shared: true,
+    useHTML: true,
+    formatter() {
+      return '<div>' + this.key + ':<b> ' + Math.round(this.percentage * 10) / 10 + '%</b></div>' + '<div>Total Hours: '+ Intl.NumberFormat().format(Math.round(this.point.y)) +'</div><div>Total Billed: $' + Intl.NumberFormat('us-US', { minimumFractionDigits: 0, maximumFractionDigits:0 }).format(this.point.total_billed) +'</div>';
+    }
+  },
+  title: {
+    text: "Bodhala AI Phase Taxonomy"
+  },
+  credits: {enabled: false},
+  series: []
+};
+
 export const genderAdditionalOptions = {
   series: [{
     name: 'Female',
@@ -355,8 +445,8 @@ export const taxonomyAdditionalOptions = {
 export const spendByMonthOptions = { ... lineChartOptions, ...spendByMonthChartAdditionalOptions};
 export const genderChartOptions = {...pieDonut, ...genderAdditionalOptions};
 export const minorityChartOptions = {...pieDonut, ...minorityAdditionalOptions};
-export const UTBMSChartOptions = {...pieDonut, ...UTBMSAdditionalOptions};
-export const taxonomyChartOptions = {...pieDonut, ...taxonomyAdditionalOptions};
+export const UTBMSChartOptions = {...utbmsPieDonut, ...UTBMSAdditionalOptions};
+export const taxonomyChartOptions = {...taxonomyPieDonut, ...taxonomyAdditionalOptions};
 // export const UTBMSChartOptions = {...pieDonut};
 // export const taxonomyChartOptions = {...pieDonut};
 
