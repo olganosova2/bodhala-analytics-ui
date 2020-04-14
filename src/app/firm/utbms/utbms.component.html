@@ -1,16 +1,16 @@
 <div class="ui-g">
     <div class="panel-heading" style="display: inline">
         Spend by Utbms Code
-        <a href ="javascript:void(0)" id="collapse" *ngIf="isCollapsed" (click)="isCollapsed = !isCollapsed">-</a>
-        <a href ="javascript:void(0)" id="collapse" *ngIf="!isCollapsed" (click)="isCollapsed = !isCollapsed">+</a>
+        <span class="collapse" *ngIf="isCollapsed" (click)="isCollapsed = !isCollapsed">-</span>
+        <span class="collapse" *ngIf="!isCollapsed" (click)="isCollapsed = !isCollapsed">+</span>
     </div>
-    <div class="ui-md-12 ui-lg-6 no-left-padding" id="left" *ngIf="isCollapsed">
+    <div class="ui-md-12 ui-lg-6 no-left-padding left" *ngIf="isCollapsed">
         <div *ngIf="userService.hasEntitlement('analytics.utbms.codes')">
             <chart [options]="optionsUTBMS" (load)="saveInstanceUTBMS($event.context)" width="100%"></chart>
         </div>
 
     </div>
-    <div class="ui-md-12 ui-lg-6 no-right-padding" id="right" *ngIf="isCollapsed">
+    <div class="ui-md-12 ui-lg-6 no-right-padding right" *ngIf="isCollapsed">
         <div *ngIf="userService.hasEntitlement('analytics.phase.taxonomy')">
             <chart [options]="optionsTaxonomy" (load)="saveInstanceTaxonomy($event.context)" width="100%"></chart>
         </div>

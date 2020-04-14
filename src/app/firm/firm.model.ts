@@ -291,7 +291,7 @@ export const utbmsPieDonut = {
   chart: {
     type: 'pie',
     height: 400,
-    width: 732.5,
+    width: 720,
     spacing: [0, 0, 0, 0],
     margin: [0, 0, 0, 0]
 
@@ -320,11 +320,11 @@ export const utbmsPieDonut = {
     shared: true,
     useHTML: true,
     formatter() {
-      return '<div>' + this.key + ':<b> ' + Math.round(this.percentage * 10) / 10 + '%</b></div>' + '<div>Total Hours: '+ Intl.NumberFormat().format(Math.round(this.point.y)) +'</div><div>Total Billed: $' + Intl.NumberFormat('us-US', { minimumFractionDigits: 0, maximumFractionDigits:0 }).format(this.point.total_billed) +'</div>';
+      return '<div>' + this.key + ':<b> ' + Math.round(this.percentage * 10) / 10 + '%</b></div>' + '<div>Total Hours: ' + Intl.NumberFormat().format(Math.round(this.point.y)) + '</div><div>Total Billed: $' + Intl.NumberFormat('us-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}).format(this.point.total_billed) + ' </div>';
     }
   },
   title: {
-    text: "Raw/Inaccurate Data"
+    text: 'Raw/Inaccurate Data'
   },
   credits: {enabled: false},
   series: []
@@ -334,7 +334,7 @@ export const taxonomyPieDonut = {
   chart: {
     type: 'pie',
     height: 400,
-    width: 732.5,
+    width: 720,
     spacing: [0, 0, 0, 0],
     margin: [0, 0, 0, 0]
 
@@ -363,11 +363,11 @@ export const taxonomyPieDonut = {
     shared: true,
     useHTML: true,
     formatter() {
-      return '<div>' + this.key + ':<b> ' + Math.round(this.percentage * 10) / 10 + '%</b></div>' + '<div>Total Hours: '+ Intl.NumberFormat().format(Math.round(this.point.y)) +'</div><div>Total Billed: $' + Intl.NumberFormat('us-US', { minimumFractionDigits: 0, maximumFractionDigits:0 }).format(this.point.total_billed) +'</div>';
+      return '<div>' + this.key + ':<b> ' + Math.round(this.percentage * 10) / 10 + '%</b></div>' + '<div>Total Hours: ' + Intl.NumberFormat().format(Math.round(this.point.y)) + '</div><div>Total Billed: $' + Intl.NumberFormat('us-US', { minimumFractionDigits: 0, maximumFractionDigits: 0}).format(this.point.total_billed) + '</div>';
     }
   },
   title: {
-    text: "Bodhala AI Phase Taxonomy"
+    text: 'Bodhala AI Phase Taxonomy'
   },
   credits: {enabled: false},
   series: []
