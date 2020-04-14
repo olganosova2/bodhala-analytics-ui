@@ -103,5 +103,8 @@
       </div>
     </div>
   </div>
+  <div class="ui-g">
+      <bd-utbms [firmId]="firmId" *ngIf="userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
+  </div>
 </div>
 

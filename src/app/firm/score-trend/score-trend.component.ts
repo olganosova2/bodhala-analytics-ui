@@ -18,7 +18,7 @@ export const COLORS = {
   poor: '#FC615A',
   excellent: '#87E184',
   fair: '#FC615A'
-}
+};
 
 @Component({
   selector: 'bd-score-trend',
@@ -165,7 +165,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   }
   setUpChart(): void {
     let result = '';
-    let color = COLORS.excellent;
+    const color = COLORS.excellent;
     switch (this.selectedChart) {
       case TrendChart.LEVERAGE:
         result = 'Avg';

@@ -38,6 +38,8 @@ export const END_POINTS_URLS = {
   getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
   getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}', showLoading: false},
   getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
+  getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
+  getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
   // playbook/firm/4377/trends?clientId=110
 };
 

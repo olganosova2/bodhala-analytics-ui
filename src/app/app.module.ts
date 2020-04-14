@@ -49,7 +49,7 @@ import { SpendByMonthComponent } from './firm/spend-by-month/spend-by-month.comp
 import { DiversityComponent } from './firm/diversity/diversity.component';
 import { BodhalaChartLegendComponent } from './shared/components/bodhala-chart-legend/bodhala-chart-legend.component';
 import { ScoreTrendComponent } from './firm/score-trend/score-trend.component';
-
+import { UtbmsComponent } from './firm/utbms/utbms.component';
 
 export function initUser(config: UserService) {
   return () => config.load();
@@ -89,7 +89,8 @@ export function highchartsFactory() {
     SpendByMonthComponent,
     DiversityComponent,
     BodhalaChartLegendComponent,
-    ScoreTrendComponent
+    ScoreTrendComponent,
+    UtbmsComponent
   ],
   entryComponents: [
     PillComponent,
