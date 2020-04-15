@@ -176,7 +176,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
 
   setUpChart(): void {
     let result = '';
-    const color = COLORS.excellent;
+    let color = COLORS.excellent;
     switch (this.selectedChart) {
       case TrendChart.LEVERAGE:
         result = 'Avg';

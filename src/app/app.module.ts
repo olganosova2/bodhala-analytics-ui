@@ -92,8 +92,7 @@ export function highchartsFactory() {
     DiversityComponent,
     BodhalaChartLegendComponent,
     ScoreTrendComponent,
-    UtbmsComponent
-    ScoreTrendComponent,
+    UtbmsComponent,
     ScoreBadgeComponent
   ],
   entryComponents: [
