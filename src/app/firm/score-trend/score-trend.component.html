@@ -1,5 +1,5 @@
 <div class="ui-g  no-left-padding">
-  <div class="ui-g-3  no-left-padding">
+  <div *ngIf="rightColsCount !== 12" class="ui-g-{{12-rightColsCount}}  no-left-padding">
     <div class="panel-wrapper panel-wrapper-blank">
       <div class="pull-left">
         <h4>Score
@@ -12,43 +12,43 @@
         </h4>
       </div>
       <div class="pull-right">
-        <span class="score-badge score-badge-blank">Excellent</span>
+        <bd-score-badge [percentale]="scoreAvg" [bpr]="true"></bd-score-badge>
       </div>
       <div class="clear-both"></div>
 
       <div class="table-row mb5">
         <div class="pull-left">Leverage (Per Partner)</div>
-        <div class="pull-right"><span class="score-badge">Excellent</span></div>
+        <div class="pull-right"><bd-score-badge [percentale]="score.client_hourly_leverage_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row mb5">
         <div class="pull-left">Block Billing</div>
-        <div class="pull-right"><span class="score-badge score-badge-poor">Poor</span></div>
+        <div class="pull-right"><bd-score-badge [percentale]="score.client_block_billing_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row mb5">
         <div class="pull-left">Matter Cost</div>
-        <div class="pull-right"><span class="score-badge score-badge-fair">Fair</span></div>
+        <div class="pull-right"><bd-score-badge [percentale]="score.client_matter_cost_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row mb5">
         <div class="pull-left">Average Partner Rate</div>
-        <div class="pull-right"><span class="score-badge">Excellent</span></div>
+        <div class="pull-right"><bd-score-badge [percentale]="score.client_partner_rate_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row mb5">
         <div class="pull-left">Average Associate Rate</div>
-        <div class="pull-right"><span class="score-badge">Excellent</span></div>
+        <div class="pull-right"><bd-score-badge [percentale]="score.client_associate_rate_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
-      <div class="table-row mb5">
-        <div class="pull-left">Average Non-Lawyer Rate</div>
-        <div class="pull-right"><span class="score-badge">Excellent</span></div>
-        <div class="clear-both"></div>
-      </div>
+<!--      <div class="table-row mb5">-->
+<!--        <div class="pull-left">Average Non-Lawyer Rate</div>-->
+<!--        <div class="pull-right"><bd-score-badge [percentale]="score.client_nonlawyer_rate_percentile"></bd-score-badge></div>-->
+<!--        <div class="clear-both"></div>-->
+<!--      </div>-->
     </div>
   </div>
-  <div class="ui-g-9  no-left-padding no-right-padding chart-panel">
+  <div class="ui-g-{{rightColsCount}}  no-left-padding no-right-padding chart-panel">
     <div class="panel-wrapper full-width" #trendsDiv>
       <div class="tabs-panel mb10" >
       <span class="tab-button" [ngClass]="{'tab-button-selected': selectedChart === chartTypes.LEVERAGE }"

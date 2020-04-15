@@ -50,6 +50,8 @@ import { DiversityComponent } from './firm/diversity/diversity.component';
 import { BodhalaChartLegendComponent } from './shared/components/bodhala-chart-legend/bodhala-chart-legend.component';
 import { ScoreTrendComponent } from './firm/score-trend/score-trend.component';
 import { UtbmsComponent } from './firm/utbms/utbms.component';
+import { ScoreBadgeComponent } from './firm/score-trend/score-badge/score-badge.component';
+
 
 export function initUser(config: UserService) {
   return () => config.load();
@@ -91,6 +93,8 @@ export function highchartsFactory() {
     BodhalaChartLegendComponent,
     ScoreTrendComponent,
     UtbmsComponent
+    ScoreTrendComponent,
+    ScoreBadgeComponent
   ],
   entryComponents: [
     PillComponent,

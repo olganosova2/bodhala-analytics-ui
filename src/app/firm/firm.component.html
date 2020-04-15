@@ -63,7 +63,7 @@
       </div>
     </div>
     <div class="ui-g-{{rightColsCount}} no-right-padding no-left-padding">
-      <bd-billing-totals [firm]="firm" #billingTotals *ngIf="firm"></bd-billing-totals>
+      <bd-billing-totals [firm]="firm" #billingTotals *ngIf="firmId && firm"></bd-billing-totals>
     </div>
 
   </div>
@@ -71,17 +71,17 @@
   <!--Score and Trend-->
   <div>
     <div class="no-left-padding">
-      <bd-score-trend [firmId]="firmId" [firm]="firm" #scoreAndTrend></bd-score-trend>
+      <bd-score-trend [firmId]="firmId" [firm]="firmId && firm" #scoreAndTrend></bd-score-trend>
     </div>
   </div>
 
   <div>
     <div class="ui-g">
       <div class="ui-md-12 ui-lg-8 no-left-padding">
-        <bd-spend-by-month [firmId]="firmId" #spendByMonth *ngIf="firm"></bd-spend-by-month>
+        <bd-spend-by-month [firmId]="firmId" #spendByMonth *ngIf="firmId && firm"></bd-spend-by-month>
       </div>
       <div class="ui-md-12 ui-lg-4 no-right-padding">
-        <bd-top-timekeepers [firmId]="firmId"  #topTKs *ngIf="firm"></bd-top-timekeepers>
+        <bd-top-timekeepers [firmId]="firmId"  #topTKs *ngIf="firmId && firm"></bd-top-timekeepers>
       </div>
     </div>
   </div>
@@ -96,10 +96,10 @@
   <div>
     <div class="ui-g">
       <div class="ui-md-12 ui-lg-5 ui-xl-4 no-left-padding">
-        <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firm"></bd-top-matters>
+        <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firmId && firm"></bd-top-matters>
       </div>
       <div class="ui-md-12 ui-lg-7 ui-xl-5 no-right-padding" #diversity>
-        <bd-diversity [firmId]="firmId" *ngIf="userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
+        <bd-diversity [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
       </div>
     </div>
   </div>

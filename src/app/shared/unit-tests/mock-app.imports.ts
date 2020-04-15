@@ -51,6 +51,27 @@ import {SpendByMonthComponent} from '../../firm/spend-by-month/spend-by-month.co
 import {DiversityComponent} from '../../firm/diversity/diversity.component';
 import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bodhala-chart-legend.component';
 import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
+import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { ChartModule } from 'angular2-highcharts';
+import borderRadius from 'highcharts-border-radius';
+import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
+
+export function highchartsFactory() {
+  // return highcharts;
+  const hc = require('highcharts');
+  borderRadius(hc);
+  const dd = require('highcharts/modules/exporting');
+  hc.setOptions({
+    lang: {
+      thousandsSep: ','
+    }
+  });
+  dd(hc);
+
+  return hc;
+}
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -84,7 +105,10 @@ export const IMPORTS = [
   MatProgressBarModule,
   MatExpansionModule,
   MatAutocompleteModule,
-  MatStepperModule
+  MatStepperModule,
+  BodhalaUiElementsModule,
+  NgbModule,
+  ChartModule
 ];
 
 export const DECLARATIONS = [
@@ -99,7 +123,8 @@ export const DECLARATIONS = [
   SpendByMonthComponent,
   DiversityComponent,
   BodhalaChartLegendComponent,
-  ScoreTrendComponent
+  ScoreTrendComponent,
+  ScoreBadgeComponent
 ];
 
 export const PROVIDERS = [
@@ -116,6 +141,10 @@ export const PROVIDERS = [
   TopMattersFirmsService,
   DatePipe,
   CommonService,
+  {
+    provide: HighchartsStatic,
+    useFactory: highchartsFactory
+  },
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },

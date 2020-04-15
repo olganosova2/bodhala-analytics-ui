@@ -1,17 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FirmComponent } from './firm.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../shared/unit-tests/mock-app.imports';
-import {InsightsComponent} from '../launchpad/insights/insights.component';
+import { ScoreBadgeComponent } from './score-badge.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
+import {ScoreTrendComponent} from '../score-trend.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
-import {FiltersService} from '../shared/services/filters.service';
-import * as mockServices from '../shared/unit-tests/mock-services';
-import {MOCK_FIRM, MOCK_FIRM_DATA} from '../shared/unit-tests/mock-data/firm';
+import {FiltersService} from '../../../shared/services/filters.service';
+import * as mockServices from '../../../shared/unit-tests/mock-services';
 
-describe('FirmComponent', () => {
-  let component: FirmComponent;
-  let fixture: ComponentFixture<FirmComponent>;
+describe('ScoreBadgeComponent', () => {
+  let component: ScoreBadgeComponent;
+  let fixture: ComponentFixture<ScoreBadgeComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -23,7 +22,7 @@ describe('FirmComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(FirmComponent, {
+    }).overrideComponent(ScoreBadgeComponent, {
       set: {
         providers: [
           AppStateService,
@@ -36,16 +35,14 @@ describe('FirmComponent', () => {
     })
       .compileComponents();
   }));
+
   beforeEach(() => {
-    fixture = TestBed.createComponent(FirmComponent);
+    fixture = TestBed.createComponent(ScoreBadgeComponent);
     component = fixture.componentInstance;
-    component.firm =  MOCK_FIRM;
-    component.firmId = '1';
-    component.firmData = MOCK_FIRM_DATA;
     fixture.detectChanges();
   });
 
-  it('should create FirmComponent', () => {
+  it('should create ScoreBadgeComponent', () => {
     expect(component).toBeTruthy();
   });
 });

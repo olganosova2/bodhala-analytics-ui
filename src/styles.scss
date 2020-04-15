@@ -532,28 +532,7 @@ body {
 .table-row {
   border-bottom: 1px solid $very-light-blue;
 }
-.score-badge {
-  display: inline-block;
-  min-width: 100px;
-  margin: 0 0 15px 0;
-  padding: 3px 7px;
-  font-size: 12px;
-  color: #fff;
-  vertical-align: middle;
-  white-space: nowrap;
-  text-align: center;
-  background: $excelent-color;
-  border-radius: 41px;
-}
-.score-badge-poor {
-  background: $red-color;
-}
-.score-badge-fair {
-  background: $fair-color;
-}
-.score-badge-blank {
-  background: #fff;
-  border: 1px solid $excelent-color;
-  color: $excelent-color;
-}
+
+
+
 
