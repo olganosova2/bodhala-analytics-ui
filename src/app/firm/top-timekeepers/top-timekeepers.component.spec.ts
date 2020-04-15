@@ -7,6 +7,7 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
 import {FiltersService} from '../../shared/services/filters.service';
 import * as mockServices from '../../shared/unit-tests/mock-services';
+import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
 
 describe('TopTimekeepersComponent', () => {
   let component: TopTimekeepersComponent;
@@ -37,6 +38,8 @@ describe('TopTimekeepersComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TopTimekeepersComponent);
     component = fixture.componentInstance;
+    component.firm =  MOCK_FIRM;
+    component.firmId = 1;
     fixture.detectChanges();
   });
 

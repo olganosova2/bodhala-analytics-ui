@@ -7,6 +7,8 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
 import {FiltersService} from '../../shared/services/filters.service';
 import * as mockServices from '../../shared/unit-tests/mock-services';
+import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
+import {IFirm} from '../firm.model';
 
 describe('BillingTotalsComponent', () => {
   let component: BillingTotalsComponent;
@@ -38,6 +40,7 @@ describe('BillingTotalsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BillingTotalsComponent);
     component = fixture.componentInstance;
+    component.firm = MOCK_FIRM as IFirm;
     fixture.detectChanges();
   });
 

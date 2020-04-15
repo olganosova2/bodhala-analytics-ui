@@ -39,6 +39,7 @@ describe('DiversityComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DiversityComponent);
     component = fixture.componentInstance;
+    component.firmId = 1;
     fixture.detectChanges();
   });
 

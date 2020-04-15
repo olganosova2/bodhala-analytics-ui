@@ -1,0 +1,38 @@
+@import "../../../../assets/styles/colors.scss";
+.score-badge {
+  display: inline-block;
+  min-width: 100px;
+  margin: 0 0 15px 0;
+  padding: 3px 7px;
+  font-size: 12px;
+  color: #fff;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  background: $light-gray;
+  border-radius: 41px;
+}
+.score-badge-excellent {
+  background: $excelent-color;
+}
+.score-badge-poor {
+  background: $red-color;
+}
+.score-badge-fair {
+  background: $fair-color;
+}
+.score-badge-excellent-blank {
+  background: #fff;
+  border: 1px solid $excelent-color;
+  color: $excelent-color;
+}
+.score-badge-fair-blank {
+  background: #fff;
+  border: 1px solid $fair-color;
+  color: $fair-color;
+}
+.score-badge-poor-blank {
+  background: #fff;
+  border: 1px solid $red-color;
+  color: $red-color;
+}

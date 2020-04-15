@@ -17,7 +17,7 @@ export interface ITag {
 export interface IFirm {
   id: number;
   name: string;
-  rank: string;
+  rank: number;
   url: string;
   active: boolean;
   boutique: string;
