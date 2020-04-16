@@ -7,6 +7,7 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
 import {FiltersService} from '../../shared/services/filters.service';
 import * as mockServices from '../../shared/unit-tests/mock-services';
+import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
 
 describe('UtbmsComponent', () => {
   let component: UtbmsComponent;
@@ -39,10 +40,12 @@ describe('UtbmsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UtbmsComponent);
     component = fixture.componentInstance;
+    component.firmId = 1;
     fixture.detectChanges();
   });
 
   it('should create UtbmsComponent', () => {
+    component.firmId = 1;
     expect(component).toBeTruthy();
   });
 });

@@ -31,7 +31,7 @@ export const COLORS = {
 export class ScoreTrendComponent implements OnInit, OnDestroy {
   errorMessage: any;
   score: any = {};
-  trends: any;
+  trends: any = {};
   includeExpenses: boolean = false;
   chart: any = {};
   options: any;
@@ -108,6 +108,9 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     let result = [];
     for (const rec of this.trends.firm_trends) {
       result.push(this.buildChartItem(rec));
+    }
+    if (!this.chart.series || this.chart.series.length !== 2) {
+      return;
     }
     this.chart.series[0].setData(result);
     if (this.firm) {

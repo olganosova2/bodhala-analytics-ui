@@ -12,6 +12,7 @@ export const END_POINTS_URLS = {
   getMenuItems: {url: BASE_URL + 'user-sidebar.json', showLoading: false},
   keepAlive: {url: BASE_URL + 'keepalive', showLoading: false},
   getTopMatters: {url: BASE_URL + 'analytics/getTopMatters', showLoading: true},
+  getTopMattersForFirm: {url: BASE_URL + 'analytics/getTopMatters', showLoading: false},
   getTopFirms: {url: BASE_URL + 'analytics/getTopFirms', showLoading: true},
   getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
   spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},

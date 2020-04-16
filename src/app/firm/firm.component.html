@@ -30,32 +30,32 @@
 
         <div class="table-row mb10">
           <div class="pull-left">Total Attorneys</div>
-          <div class="pull-right font-bold">{{firmData.num_attorneys_range}}</div>
+          <div class="pull-right font-bold">{{firmData?.num_attorneys_range}}</div>
           <div class="clear-both"></div>
         </div>
         <div class="table-row mb10">
           <div class="pull-left">Partner %</div>
-          <div class="pull-right font-bold">{{firmData.percent_partners | number:'1.0-0'}}%</div>
+          <div class="pull-right font-bold">{{firmData?.percent_partners | number:'1.0-0'}}%</div>
           <div class="clear-both"></div>
         </div>
         <div class="table-row mb10">
           <div class="pull-left">Associate %</div>
-          <div class="pull-right font-bold">{{firmData.percent_associates | number:'1.0-0'}}%</div>
+          <div class="pull-right font-bold">{{firmData?.percent_associates | number:'1.0-0'}}%</div>
           <div class="clear-both"></div>
         </div>
         <div class="table-row mb10">
           <div class="pull-left">Number of Offices</div>
-          <div class="pull-right font-bold">{{firmData.num_locations | number:'1.0-0'}}</div>
+          <div class="pull-right font-bold">{{firmData?.num_locations | number:'1.0-0'}}</div>
           <div class="clear-both"></div>
         </div>
         <div class="table-row mb10">
           <div class="pull-left">Leverage</div>
-          <div class="pull-right font-bold">{{firmData.firmographic_leverage | number:'1.0-2'}}</div>
+          <div class="pull-right font-bold">{{firmData?.firmographic_leverage | number:'1.0-2'}}</div>
           <div class="clear-both"></div>
         </div>
         <div class="table-row mb10">
           <div class="pull-left">URL</div>
-          <div class="pull-right font-bold"><a href="http://{{firmData.url}}" target="_blank">{{firmData.url}}</a></div>
+          <div class="pull-right font-bold"><a href="http://{{firmData?.url}}" target="_blank">{{firmData?.url}}</a></div>
           <div class="clear-both"></div>
         </div>
 
@@ -88,9 +88,6 @@
   <div>
 
     <div class="ui-g">
-<!--      <div class="no-left-padding" #diversity>-->
-<!--        <bd-diversity [firmId]="firmId" *ngIf="userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>-->
-<!--      </div>-->
     </div>
   </div>
   <div>
@@ -104,7 +101,7 @@
     </div>
   </div>
   <div class="ui-g">
-      <bd-utbms [firmId]="firmId" *ngIf="userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
+      <bd-utbms [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
   </div>
 </div>
 

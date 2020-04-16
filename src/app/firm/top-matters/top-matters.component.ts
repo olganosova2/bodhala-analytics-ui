@@ -30,7 +30,7 @@ export class TopMattersComponent implements OnInit, OnDestroy {
     const arr = [];
     arr.push(this.firmId.toString());
     params.firms = JSON.stringify(arr);
-    this.pendingRequest = this.httpService.makeGetRequest('getTopMatters', params).subscribe(
+    this.pendingRequest = this.httpService.makeGetRequest('getTopMattersForFirm', params).subscribe(
       (data: any) => {
         this.matters = data.result || [];
         this.matters = this.matters.slice(0, 10);

@@ -42,6 +42,10 @@ describe('ScoreTrendComponent', () => {
     component = fixture.componentInstance;
     component.firm =  MOCK_FIRM;
     component.firmId = 1;
+    component.trends = {};
+    component.trends.peer_trends = [];
+    component.trends.client_trends = [];
+    component.trends.firm_trends = [];
     fixture.detectChanges();
   });
 

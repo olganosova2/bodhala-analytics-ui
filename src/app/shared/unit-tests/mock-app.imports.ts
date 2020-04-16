@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {APP_BASE_HREF, DatePipe, Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
 
 
@@ -57,6 +57,8 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { ChartModule } from 'angular2-highcharts';
 import borderRadius from 'highcharts-border-radius';
 import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
+import {LinkComponent} from '../../launchpad/card/cells/link/link.component';
+import {UtbmsComponent} from '../../firm/utbms/utbms.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -106,7 +108,6 @@ export const IMPORTS = [
   MatExpansionModule,
   MatAutocompleteModule,
   MatStepperModule,
-  BodhalaUiElementsModule,
   NgbModule,
   ChartModule
 ];
@@ -115,6 +116,7 @@ export const DECLARATIONS = [
   AppComponent,
   LaunchpadComponent,
   InsightsComponent,
+  LinkComponent,
   FirmComponent,
   BillingTotalsComponent,
   BillingTotalItemComponent,
@@ -124,7 +126,8 @@ export const DECLARATIONS = [
   DiversityComponent,
   BodhalaChartLegendComponent,
   ScoreTrendComponent,
-  ScoreBadgeComponent
+  ScoreBadgeComponent,
+  UtbmsComponent
 ];
 
 export const PROVIDERS = [
@@ -149,6 +152,7 @@ export const PROVIDERS = [
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },
   { provide: MAT_DIALOG_DATA, useValue: [] },
+  { provide: UserService, useClass: mockServices.UserStub }
 ];
 
 export const SERVICE_PROVIDERS = [
@@ -160,7 +164,8 @@ export const SERVICE_PROVIDERS = [
     HttpService,
     UserFiltersModel,
     DatePipe,
-    { provide: HttpClient, useClass: mockServices.HttpStub }
+    { provide: HttpClient, useClass: mockServices.HttpStub },
+    { provide: UserService, useClass: mockServices.UserStub }
   ]
 ];
 export const SCHEMAS =  [

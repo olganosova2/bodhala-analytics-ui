@@ -34,4 +34,24 @@ export const MOCK_FIRM_DATA = {
   num_attorneys_range: '>1000',
   firmographic_leverage: 2,
   url: ''
-}
+};
+export const BILLING_TOTAL_ITEM = {
+  icon: 'fa-users',
+  total: 100,
+  total_expenses: 90,
+  name: 'All',
+  format: 'percent',
+  lastCell: false
+};
+export const MOCK_DIVERSITY_DATA =  {
+  total_hours: 2351.9845,
+  total_lawyer_hours: 2137.5862,
+  male_partner_hours: 0,
+  female_partner_hours: 0,
+  male_associate_hours: 0,
+  female_associate_hours: 0,
+  non_ethnic_partner_hours: 0,
+  ethnic_partner_hours: 0,
+  non_ethnic_associate_hours: 0,
+  ethnic_associate_hours: 0
+};

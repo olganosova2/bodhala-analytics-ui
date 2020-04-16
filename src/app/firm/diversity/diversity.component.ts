@@ -135,6 +135,9 @@ export class DiversityComponent implements OnInit, OnDestroy {
       y: 100 - this.chartData.percentEthnic,
       color: '#EEEEEE'
     }];
+    if (!this.chartGender.series || this.chartGender.series.length !== 2) {
+      return;
+    }
     this.chartGender.series[0].setData(femaleData);
     this.chartGender.series[1].setData(femalePartnersData);
     this.chartMinority.series[0].setData(minorityData);

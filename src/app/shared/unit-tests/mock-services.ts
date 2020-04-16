@@ -2,6 +2,9 @@ import {CURRENT_USER} from './mock-data/user';
 import {Observable, of, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
+import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA} from './mock-data/firm';
+import {convertToParamMap} from '@angular/router';
+import {MOCK_BILLING_TOTALS} from './mock-data/billing-totals';
 
 export const ngWindow = {
   location: {
@@ -55,13 +58,29 @@ export class DataStub {
   public makeGetRequest(url: string, request?: any): Observable<any> {
     switch (url) {
       case 'getTopMatters':
-        return of([]);
+        return of(TOP_MATTERS);
+      case 'getTopMattersForFirm':
+        return of(TOP_MATTERS);
       case 'getCurrentUser':
         return of(CURRENT_USER);
       case 'getTopLeadPartners':
         return of([]);
+      case 'getFirmTrends':
+        return of({result: { firm_trends: [], client_trends: [], peer_trends: []}});
+      case 'getFirmScore':
+        return of({result: { report_cards: [], rank: []}});
+      case 'getFirmographicInfo':
+        return of({result: MOCK_FIRM_DATA});
+      case 'getDiversityData':
+        return of({result: MOCK_DIVERSITY_DATA});
+      case 'getFirm':
+        return of({result: [ MOCK_FIRM ]});
+      case 'getBillingTotals':
+        return of(MOCK_BILLING_TOTALS);
+      case 'spendByMonth':
+        return of({result: []});
       default:
-        return of({});
+        return of([]);
     }
     return of({});
   }
@@ -145,4 +164,10 @@ export class LaunchPadServiceStub {
       invoiceIQReports: Promise.resolve([]),
     };
   }
+}
+export class ActivatedRouteMock {
+  public paramMap = of(convertToParamMap({
+    id: '123',
+    anotherId: 'd31e8b48-7309-4c83-9884-4142efdf7271',
+  }));
 }
