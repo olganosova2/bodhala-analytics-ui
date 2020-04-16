@@ -52,6 +52,18 @@ export class TopMattersComponent implements OnInit, OnDestroy {
     const enc = encodeURIComponent(id);
     window.location.href = href + encodeURIComponent(enc);
   }
+  formatMatterName(name: string): string {
+    let result = '';
+    if (!name) {
+      return result;
+    }
+    if (name.length > 50) {
+      result = name.substring(0, 50) + '...';
+    } else {
+      result = name;
+    }
+    return result;
+  }
 
   ngOnDestroy() {
     if (this.pendingRequest) {

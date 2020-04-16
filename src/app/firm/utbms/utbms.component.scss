@@ -4,6 +4,7 @@
     background: #E4EAEC;
     padding: 10px 15px;
     font-size: 18px;
+    color: $body-color;
 }
 
 .left {
@@ -17,5 +18,5 @@
 .collapse {
     float: right;
     font-size: 18px;
-    color: #444444;
+    color: $body-color;
 }
