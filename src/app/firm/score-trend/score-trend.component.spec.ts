@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 import {FiltersService} from '../../shared/services/filters.service';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
+import {QueryList} from '@angular/core';
+import {ScoreBadgeComponent} from './score-badge/score-badge.component';
 
 describe('ScoreTrendComponent', () => {
   let component: ScoreTrendComponent;
@@ -46,6 +48,7 @@ describe('ScoreTrendComponent', () => {
     component.trends.peer_trends = [];
     component.trends.client_trends = [];
     component.trends.firm_trends = [];
+    component.scoreBadges = [] as unknown as QueryList<ScoreBadgeComponent>;
     fixture.detectChanges();
   });
 

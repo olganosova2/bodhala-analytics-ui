@@ -68,11 +68,13 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
           this.rightColsCount = 9;
           this.score = Object.assign({}, reportCards[0]);
           this.calculateScoreAvg();
-          this.scoreBadges.forEach(e => {
-            setTimeout(() => {
-              e.formatCard();
+          if (this.scoreBadges && this.scoreBadges.length > 0) {
+            this.scoreBadges.forEach(e => {
+              setTimeout(() => {
+                e.formatCard();
+              });
             });
-          });
+          }
         }
       }
       this.trends = data[1].result;

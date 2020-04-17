@@ -111,7 +111,7 @@ export const lineChartOptions = {
     zoomType: 'xy'
   },
   exporting: {
-    enabled: false
+    enabled: true
   },
   credits: {
     enabled: false
