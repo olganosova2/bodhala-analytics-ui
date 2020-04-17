@@ -16,7 +16,7 @@ const moment = _moment;
 export class SpendByMonthComponent implements OnInit, OnDestroy {
   errorMessage: any;
   spend: Array<any> = [];
-  includeExpenses: boolean =  false;
+  includeExpenses: boolean = false;
   chart: any = {};
   options: any;
   @Input() firmId: number;
@@ -25,16 +25,19 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
   @ViewChild('spendByMonthDiv', {static: false}) spendByMonthDiv: ElementRef<HTMLElement>;
 
   constructor(private httpService: HttpService,
-              public filtersService: FiltersService) { }
+              public filtersService: FiltersService) {
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-   this.resizeChart();
+    this.resizeChart();
   }
+
   ngOnInit() {
-    this.options = Object.assign({},  spendByMonthOptions);
+    this.options = Object.assign({}, spendByMonthOptions);
     this.getSpendByMonth();
   }
+
   getSpendByMonth(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
@@ -50,6 +53,7 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   renderChart(): void {
     const result = [];
     for (const rec of this.spend) {
@@ -62,15 +66,20 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
       this.resizeChart();
     });
   }
+
   resizeChart(): void {
     const width = this.spendByMonthDiv.nativeElement.offsetWidth - 5;
     // const height = this.spendByMonthDiv.nativeElement.offsetHeight - 10;
+    if (!this.chart || width <= 0) {
+      return;
+    }
     this.chart.setSize(width, 450, false);
   }
 
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
   }
+
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
