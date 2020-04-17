@@ -297,7 +297,7 @@ export const utbmsPieDonut = {
 
   },
   exporting: {
-    enabled: false
+    enabled: true
   },
   plotOptions: {
     pie: {
@@ -340,7 +340,7 @@ export const taxonomyPieDonut = {
 
   },
   exporting: {
-    enabled: false
+    enabled: true
   },
   plotOptions: {
     pie: {
