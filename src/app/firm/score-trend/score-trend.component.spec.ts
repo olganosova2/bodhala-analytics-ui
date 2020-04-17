@@ -10,7 +10,10 @@ import * as mockServices from '../../shared/unit-tests/mock-services';
 import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
 import {QueryList} from '@angular/core';
 import {ScoreBadgeComponent} from './score-badge/score-badge.component';
+import {trendChart} from '../firm.model';
 
+
+const chart = Object.assign({}, trendChart);
 describe('ScoreTrendComponent', () => {
   let component: ScoreTrendComponent;
   let fixture: ComponentFixture<ScoreTrendComponent>;
@@ -48,6 +51,9 @@ describe('ScoreTrendComponent', () => {
     component.trends.peer_trends = [];
     component.trends.client_trends = [];
     component.trends.firm_trends = [];
+    // component.chart = chart;
+    // tslint:disable-next-line:only-arrow-functions
+    // component.chart.setData = function(data) {};
     component.scoreBadges = [] as unknown as QueryList<ScoreBadgeComponent>;
     fixture.detectChanges();
   });
