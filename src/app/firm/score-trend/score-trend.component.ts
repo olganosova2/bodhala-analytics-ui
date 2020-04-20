@@ -20,7 +20,7 @@ export const COLORS = {
   default: '#2f7ed8',
   poor: '#FC615A',
   excellent: '#87E184',
-  fair: '#FC615A'
+  fair: '#FFDF35'
 };
 
 @Component({
