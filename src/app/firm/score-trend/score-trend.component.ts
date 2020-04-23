@@ -1,10 +1,11 @@
 import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {HttpService, UserService} from 'bodhala-ui-common';
+import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {IFirm, trendChart} from '../firm.model';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 import {ScoreBadgeComponent} from './score-badge/score-badge.component';
+import {MOCK_TRENDS_FIRM} from '../../shared/unit-tests/mock-data/score-trend';
 
 const moment = _moment;
 
@@ -50,6 +51,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
 
 
   constructor(private httpService: HttpService,
+              public utilServ: UtilService,
               public filtersService: FiltersService,
               public userService: UserService) {
   }
@@ -78,14 +80,18 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         }
       }
       this.trends = data[1].result;
+      // this.trends = MOCK_TRENDS_FIRM.result;
       if (this.trends) {
         if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
           this.trends.firm_trends = Object.assign([], this.trends.peer_trends);
+          this.trends.firm_trends = this.trends.firm_trends.sort(this.utilServ.dynamicSort('year'));
+          this.trends.client_trends = this.trends.client_trends.sort(this.utilServ.dynamicSort('year'));
         } else {
           // TODO remove
           // this.trends.firm_trends = Object.assign([], this.trends.client_trends);
           this.trends.client_trends = [];
         }
+        // result.sort(this.util.dynamicSort('order'));
         this.renderChart();
       }
       this.isLoaded = true;
