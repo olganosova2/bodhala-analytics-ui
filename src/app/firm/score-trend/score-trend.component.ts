@@ -84,14 +84,13 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
       if (this.trends) {
         if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
           this.trends.firm_trends = Object.assign([], this.trends.peer_trends);
-          this.trends.firm_trends = this.trends.firm_trends.sort(this.utilServ.dynamicSort('year'));
-          this.trends.client_trends = this.trends.client_trends.sort(this.utilServ.dynamicSort('year'));
         } else {
           // TODO remove
           // this.trends.firm_trends = Object.assign([], this.trends.client_trends);
           this.trends.client_trends = [];
         }
-        // result.sort(this.util.dynamicSort('order'));
+        this.trends.firm_trends = this.trends.firm_trends.sort(this.utilServ.dynamicSort('year'));
+        this.trends.client_trends = this.trends.client_trends.sort(this.utilServ.dynamicSort('year'));
         this.renderChart();
       }
       this.isLoaded = true;

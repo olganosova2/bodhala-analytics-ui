@@ -108,7 +108,7 @@ export const lineChartOptions = {
     marginRight: 10,
     marginTop: 10,
     spacingTop: 10,
-    zoomType: 'xy'
+    zoomType: false
   },
   exporting: {
     enabled: true
@@ -198,7 +198,7 @@ export const trendChart = {
     marginRight: 10,
     marginTop: 10,
     spacingTop: 10,
-    zoomType: 'xy'
+    zoomType: false,
   },
   exporting: {   enabled: false  },
   credits: { enabled: false },
