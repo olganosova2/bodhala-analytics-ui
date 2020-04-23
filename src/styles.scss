@@ -203,13 +203,21 @@ body {
 }
 
 
-.content-heading .header, .content-heading .header figure {
-  justify-content: flex-start !important;
+//.content-heading .header, .content-heading .header figure {
+//  justify-content: flex-start !important;
+//}
+//
+//.content-heading .actions, .content-heading .actions figure {
+//  justify-content: flex-end !important;
+//  //font-size: 1.4rem;
+//}
+// .content-heading
+.content-heading {
+  padding-left: 5px !important;
 }
-
-.content-heading .actions, .content-heading .actions figure {
-  justify-content: flex-end !important;
-  //font-size: 1.4rem;
+.filter-group-label.bh-date-range {
+  width: 190px !important;
+ // height: 38px;
 }
 
 .mat-card, .mat-flat-button, .mat-dialog-container {
@@ -498,9 +506,6 @@ body {
   font-style: italic;
   font-size:10pt;
   color: red;
-}
-.filter-group-label {
-  max-height: 38px;
 }
 .btn-primary {
   color: #fff;

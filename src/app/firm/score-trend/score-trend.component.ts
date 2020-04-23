@@ -17,7 +17,7 @@ export enum TrendChart {
 }
 
 export const COLORS = {
-  default: '#2f7ed8',
+  default: '#7CB5EC',
   poor: '#FC615A',
   excellent: '#87E184',
   fair: '#FFDF35'
@@ -63,10 +63,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     this.setUpChartOptions();
     this.load().subscribe(data => {
       if (data[0].result) {
-        const reportCards = data[0].result.report_cards || [];
-        if (reportCards.length > 0) {
+        const reportCard = data[0].result;
+        if (reportCard && reportCard.group_id) {
           this.rightColsCount = 9;
-          this.score = Object.assign({}, reportCards[0]);
+          this.score = Object.assign({}, reportCard);
           this.calculateScoreAvg();
           if (this.scoreBadges && this.scoreBadges.length > 0) {
             this.scoreBadges.forEach(e => {
@@ -78,12 +78,16 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         }
       }
       this.trends = data[1].result;
-      if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
-        this.trends.firm_trends = Object.assign([], this.trends.peer_trends);
-      } else {
-        this.trends.client_trends = [];
+      if (this.trends) {
+        if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
+          this.trends.firm_trends = Object.assign([], this.trends.peer_trends);
+        } else {
+          // TODO remove
+          // this.trends.firm_trends = Object.assign([], this.trends.client_trends);
+          this.trends.client_trends = [];
+        }
+        this.renderChart();
       }
-      this.renderChart();
       this.isLoaded = true;
     }, err => {
       this.errorMessage = err;
@@ -148,19 +152,19 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     const year = moment(yearStr).valueOf();
     switch (this.selectedChart) {
       case TrendChart.LEVERAGE:
-        result = [year, rec.avg_hourly_leverage];
+        result = [year, rec.leverage_by_hours];
         break;
       case TrendChart.MATTER_COST:
         result = [year, rec.avg_matter_cost];
         break;
       case TrendChart.BLOCK_BILLING:
-        result = [year, rec.avg_block_billed_pct];
+        result = [year, rec.block_billed_pct];
         break;
       case TrendChart.PARTNER_RATE:
-        result = [year, rec.avg_partner_rate];
+        result = [year, rec.partner_rate];
         break;
       case TrendChart.ASSOCIATE_RATE:
-        result = [year, rec.avg_associate_rate];
+        result = [year, rec.associate_rate];
         break;
       default:
         break;
@@ -188,23 +192,23 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     switch (this.selectedChart) {
       case TrendChart.LEVERAGE:
         result = 'Avg';
-        color = this.getChartColor(this.score.client_hourly_leverage_percentile);
+        color = this.getChartColor(this.score.peer_hourly_leverage_percentile);
         break;
       case TrendChart.MATTER_COST:
         result = 'dollars';
-        color = this.getChartColor(this.score.client_matter_cost_percentile);
+        color = this.getChartColor(this.score.peer_matter_cost_percentile);
         break;
       case TrendChart.BLOCK_BILLING:
         result = 'percent';
-        color = this.getChartColor(this.score.client_block_billing_percentile);
+        color = this.getChartColor(this.score.peer_block_billing_percentile);
         break;
       case TrendChart.PARTNER_RATE:
         result = 'dollars';
-        color = this.getChartColor(this.score.client_partner_rate_percentile);
+        color = this.getChartColor(this.score.peer_partner_rate_percentile);
         break;
       case TrendChart.ASSOCIATE_RATE:
         result = 'dollars';
-        color = this.getChartColor(this.score.client_associate_rate_percentile);
+        color = this.getChartColor(this.score.peer_associate_rate_percentile);
         break;
       default:
         break;
@@ -230,8 +234,8 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     return result;
   }
   calculateScoreAvg(): void {
-    this.scoreAvg = (this.score.client_hourly_leverage_percentile + this.score.client_block_billing_percentile + this.score.client_matter_cost_percentile +
-      this.score.client_partner_rate_percentile + this.score.client_associate_rate_percentile) / 5;
+    this.scoreAvg = (this.score.peer_hourly_leverage_percentile + this.score.peer_block_billing_percentile + this.score.peer_matter_cost_percentile +
+      this.score.peer_partner_rate_percentile + this.score.peer_associate_rate_percentile) / 5;
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

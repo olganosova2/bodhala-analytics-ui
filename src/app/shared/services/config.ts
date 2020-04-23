@@ -37,7 +37,7 @@ export const END_POINTS_URLS = {
   spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
   getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: false},
   getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
-  getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}', showLoading: false},
+  getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}/scores', showLoading: false},
   getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
   getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
   getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
