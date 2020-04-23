@@ -2,6 +2,8 @@ import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular
 import { LaunchPadService } from './launchpad.service';
 import { FiltersService } from '../shared/services/filters.service';
 import { columns } from './launchpad.model';
+import {AppStateService} from 'bodhala-ui-common';
+import {CommonService} from '../shared/services/common.service';
 
 @Component({
   selector: 'bd-launchpad',
@@ -9,7 +11,7 @@ import { columns } from './launchpad.model';
   styleUrls: ['./launchpad.component.scss']
 })
 export class LaunchpadComponent implements OnInit {
-
+  pageName = 'app.client-dashboard.launchpad';
   @ViewChild('launchpad', {static: false})
   container: ElementRef;
 
@@ -22,9 +24,12 @@ export class LaunchpadComponent implements OnInit {
 
   constructor(
     private filtersService: FiltersService,
-    private launchPadService: LaunchPadService
+    private launchPadService: LaunchPadService,
+    public appStateService: AppStateService,
+    public commonServ: CommonService
     ) {
     this.cards = this.launchPadService.configureCards();
+    this.commonServ.pageTitle = 'Launchpad';
   }
 
   ngOnInit() {

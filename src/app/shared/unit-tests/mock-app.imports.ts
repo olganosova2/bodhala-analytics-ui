@@ -4,11 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {APP_BASE_HREF, DatePipe, Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { appRouterConfig } from '../../app.routes';
 import { UtilService } from 'bodhala-ui-common';
@@ -43,12 +41,44 @@ import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
 import {TopMattersFirmsService} from '../../launchpad/services/top-matters-firms.service';
 import {InsightsComponent} from '../../launchpad/insights/insights.component';
+import {FirmComponent} from '../../firm/firm.component';
+import {CommonService} from '../services/common.service';
+import {BillingTotalsComponent} from '../../firm/billing-totals/billing-totals.component';
+import {BillingTotalItemComponent} from '../../firm/billing-totals/billing-total-item/billing-total-item.component';
+import {TopMattersComponent} from '../../firm/top-matters/top-matters.component';
+import {TopTimekeepersComponent} from '../../firm/top-timekeepers/top-timekeepers.component';
+import {SpendByMonthComponent} from '../../firm/spend-by-month/spend-by-month.component';
+import {DiversityComponent} from '../../firm/diversity/diversity.component';
+import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bodhala-chart-legend.component';
+import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
+import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { ChartModule } from 'angular2-highcharts';
+import borderRadius from 'highcharts-border-radius';
+import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
+import {LinkComponent} from '../../launchpad/card/cells/link/link.component';
+import {UtbmsComponent} from '../../firm/utbms/utbms.component';
+
+export function highchartsFactory() {
+  // return highcharts;
+  const hc = require('highcharts');
+  borderRadius(hc);
+  const dd = require('highcharts/modules/exporting');
+  hc.setOptions({
+    lang: {
+      thousandsSep: ','
+    }
+  });
+  dd(hc);
+
+  return hc;
+}
 
 export const IMPORTS = [
   ReactiveFormsModule,
   FormsModule,
   RouterModule.forRoot(appRouterConfig, { useHash: false }),
-  NgbModule,
   RouterTestingModule,
   HttpClientTestingModule,
   MatTableModule,
@@ -77,13 +107,27 @@ export const IMPORTS = [
   MatProgressBarModule,
   MatExpansionModule,
   MatAutocompleteModule,
-  MatStepperModule
+  MatStepperModule,
+  NgbModule,
+  ChartModule
 ];
 
 export const DECLARATIONS = [
   AppComponent,
   LaunchpadComponent,
-  InsightsComponent
+  InsightsComponent,
+  LinkComponent,
+  FirmComponent,
+  BillingTotalsComponent,
+  BillingTotalItemComponent,
+  TopMattersComponent,
+  TopTimekeepersComponent,
+  SpendByMonthComponent,
+  DiversityComponent,
+  BodhalaChartLegendComponent,
+  ScoreTrendComponent,
+  ScoreBadgeComponent,
+  UtbmsComponent
 ];
 
 export const PROVIDERS = [
@@ -91,7 +135,6 @@ export const PROVIDERS = [
   HttpHandler,
   UtilService,
   HttpTestingController,
-  NgbActiveModal,
   CookieService,
   HttpService,
   MessagingService,
@@ -100,10 +143,16 @@ export const PROVIDERS = [
   UserFiltersModel,
   TopMattersFirmsService,
   DatePipe,
+  CommonService,
+  {
+    provide: HighchartsStatic,
+    useFactory: highchartsFactory
+  },
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },
   { provide: MAT_DIALOG_DATA, useValue: [] },
+  { provide: UserService, useClass: mockServices.UserStub }
 ];
 
 export const SERVICE_PROVIDERS = [
@@ -115,7 +164,8 @@ export const SERVICE_PROVIDERS = [
     HttpService,
     UserFiltersModel,
     DatePipe,
-    { provide: HttpClient, useClass: mockServices.HttpStub }
+    { provide: HttpClient, useClass: mockServices.HttpStub },
+    { provide: UserService, useClass: mockServices.UserStub }
   ]
 ];
 export const SCHEMAS =  [

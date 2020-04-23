@@ -1,0 +1,23 @@
+@import "../../../assets/styles/colors.scss";
+.tab-button {
+  background-color: $card-header-gray;
+  border-bottom: none;
+  padding: 10px 20px;
+  color: $body-color;
+  display: table-cell;
+  text-align:center;
+  vertical-align: middle;
+  cursor:pointer;
+}
+.tab-button-selected{
+  background-color: #fff;
+}
+.tabs-panel{
+  background-color: $card-header-gray;
+}
+.trends-panel {
+  max-height: 500px;
+}
+.chart-panel {
+  position: relative;
+}

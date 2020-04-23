@@ -1,0 +1,22 @@
+@import "../../../assets/styles/colors.scss";
+.panel-heading {
+    width: 100%;
+    background: #E4EAEC;
+    padding: 10px 15px;
+    font-size: 18px;
+    color: $body-color;
+}
+
+.left {
+    background: white;
+    padding-top: 10px;
+}
+.right {
+    background: white;
+    padding-top: 10px;
+}
+.collapse {
+    float: right;
+    font-size: 18px;
+    color: $body-color;
+}

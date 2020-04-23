@@ -1,13 +1,14 @@
 <div class="areas-panel" *ngIf="insights.length>0">
   <div class="area-box">
-    <div class="left-block">
+    <div class="ui-g">
+    <div class="ui-g-3 left-column">
       <div class="mb5">
         <img src="assets/images/light.png" />
       </div>
       <h5>Bodhala Insights</h5>
       <div>Data-driven advice from Hercules,<br/>Bodhala's intelligence engine</div>
     </div>
-    <div class="right-block">
+    <div class="ui-g-9 right-column">
       <div class="right-block-content">
         <h4>{{selectedInsight.title}}</h4>
         <div>{{selectedInsight.description}}</div>
@@ -21,5 +22,28 @@
         </mat-icon>
       </div>
     </div>
+    </div>
+
+<!--    <div class="left-block">-->
+<!--      <div class="mb5">-->
+<!--        <img src="assets/images/light.png" />-->
+<!--      </div>-->
+<!--      <h5>Bodhala Insights</h5>-->
+<!--      <div>Data-driven advice from Hercules,<br/>Bodhala's intelligence engine</div>-->
+<!--    </div>-->
+<!--    <div class="right-block">-->
+<!--      <div class="right-block-content">-->
+<!--        <h4>{{selectedInsight.title}}</h4>-->
+<!--        <div>{{selectedInsight.description}}</div>-->
+<!--        <div *ngIf="selectedInsight.insight_type === 'BB'" class="href-link-primary mt10" (click)="goToView('BB')">Go to-->
+<!--          Block Billing-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="mt20 dots" *ngIf="insights.length >1">-->
+<!--        <mat-icon [ngClass]="{'icon-selected': insights.indexOf(selectedInsight) === i}" (click)="selectInsight(i)"-->
+<!--                  *ngFor="let insight of insights;let i = index">fiber_manual_record-->
+<!--        </mat-icon>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </div>

@@ -12,6 +12,7 @@ export const END_POINTS_URLS = {
   getMenuItems: {url: BASE_URL + 'user-sidebar.json', showLoading: false},
   keepAlive: {url: BASE_URL + 'keepalive', showLoading: false},
   getTopMatters: {url: BASE_URL + 'analytics/getTopMatters', showLoading: true},
+  getTopMattersForFirm: {url: BASE_URL + 'analytics/getTopMatters', showLoading: false},
   getTopFirms: {url: BASE_URL + 'analytics/getTopFirms', showLoading: true},
   getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
   spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
@@ -28,7 +29,19 @@ export const END_POINTS_URLS = {
   savedViews: {url: BASE_URL + 'analytics/view', showLoading: false},
   deleteView: {url: BASE_URL + 'analytics/view/{id}', showLoading: false},
   oldSavedViews: {url: BASE_URL + 'admin/savedviews', showLoading: false},
-  getDateRange: {url: BASE_URL + 'analytics/getMinMaxDates', showLoading: false}
+  getDateRange: {url: BASE_URL + 'analytics/getMinMaxDates', showLoading: false},
+
+  getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: false},
+  getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: false},
+  getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: false},
+  spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
+  getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: false},
+  getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
+  getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}/scores', showLoading: false},
+  getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
+  getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
+  getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
+  // playbook/firm/4377/trends?clientId=110
 };
 
 
@@ -68,7 +81,9 @@ export const BODHALA_DATE_FORMATS = {
 export const outerAppLinks = {
   viewMatter: '#/app/client-dashboard/matter/',
   viewPracticeArea: '#/app/client-dashboard/practiceArea',
-  viewFirm: '#/app/client-dashboard/firm/',
+ // viewFirm: '#/app/client-dashboard/firm/',
+  // viewFirm: '/firm',
+  viewFirm: '/analytics-ui/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
   viewBlockBilling: '#/app/client-dashboard/block-billing'

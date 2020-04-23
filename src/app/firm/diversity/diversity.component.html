@@ -1,0 +1,27 @@
+<div class="ui-g diversity mb5">
+  <div class="ui-g-4 banner">
+    <em class="fa fa-users fa-2x mt30 mb10"></em><br/>
+    <div class="text-uppercase font-bold">DIVERSITY</div>
+  </div>
+  <div class="ui-g-4">
+    <div *ngIf="optionsGender">
+      <chart [options]="optionsGender" (load)="saveInstanceGender($event.context)" width="100%"></chart>
+      <div chart-key text-center mt5 *ngIf="loaded" style="text-align: center">
+        <bd-bodhala-chart-legend [label]="chartGender?.series[0].data[0].name" [color]="chartGender?.series[0].data[0].color"></bd-bodhala-chart-legend>
+        <bd-bodhala-chart-legend [label]="chartGender?.series[1]?.data[0]?.name" [color]="chartGender?.series[1]?.data[0]?.color"></bd-bodhala-chart-legend>
+      </div>
+    </div>
+
+  </div>
+  <div class="ui-g-4">
+    <div *ngIf="optionsMinority">
+      <chart [options]="optionsMinority" (load)="saveInstanceMinority($event.context)" width="100%"></chart>
+    </div>
+    <div chart-key text-center mt5 *ngIf="loaded" style="text-align: center">
+      <bd-bodhala-chart-legend [label]="chartMinority?.series[0].data[0].name" [color]="chartMinority?.series[0].data[0].color"></bd-bodhala-chart-legend>
+      <bd-bodhala-chart-legend [label]="chartMinority?.series[1]?.data[0]?.name" [color]="chartMinority?.series[1]?.data[0]?.color"></bd-bodhala-chart-legend>
+    </div>
+  </div>
+
+</div>
+

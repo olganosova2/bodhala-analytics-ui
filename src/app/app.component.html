@@ -1,17 +1,29 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div>
+<div class="wrapper">
+  <!-- top navbar-->
+  <rfp-header [title]="commonServ.pageTitle" [subtitle]="commonServ.pageSubtitle" class="topnavbar-wrapper"></rfp-header>
+  <!-- sidebar-->
+  <rfp-side-bar class="aside" [homeLink]="'launchpad'" [baseHref]="'analytics-ui/'"></rfp-side-bar>
   <!-- Main section-->
-  <main>
+  <main class="main" [ngClass]="{'main-collapsed' : appStateService.layout.isCollapsed}">
     <!-- Page content-->
-
-
-      <div class="content-body-wrapper">
-        <div *ngIf="messageService.messages.length>0" class="content-body">
-          <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
-            <bd-message-item [alert]="message" [index]="i"></bd-message-item>
-          </div>
-        </div>
-        <router-outlet></router-outlet>
+    <div class="spinner" [hidden]="!progress">
+      <mat-spinner diameter="50" color="primary"></mat-spinner>
+    </div>
+    <div class="content-body-wrapper">
+      <div *ngIf="ieVersion" class="content-body">
+<!--        <ngb-alert type="warning" (close)="close()">-->
+<!--          Your web browser (Internet Explorer {{ ieVersion }}) is out of date. Please update your browser for a better-->
+<!--          user experience.-->
+<!--        </ngb-alert>-->
       </div>
+      <div *ngIf="messageService.messages.length>0" class="content-body">
+        <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
+          <bd-message-item [alert]="message" [index]="i"></bd-message-item>
+        </div>
+      </div>
+      <router-outlet (activate)="onActivate($event)"></router-outlet>
+    </div>
   </main>
+  <!-- Page footer-->
+  <footer rfp-footer class="footer" [ngClass]="{'footer-collapsed' : appStateService.layout.isCollapsed}"></footer>
 </div>

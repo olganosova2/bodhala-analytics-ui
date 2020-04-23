@@ -1,5 +1,12 @@
+<div>
+  <!--      [excludeFilters] = "['firms','threshold']"-->
+    <lib-bd-filters
+      (sendFilters)="receiveMessage($event)"
+      [pageName]="pageName"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+</div>
 <div #insights style="display: block">
-<!--  <lib-filters></lib-filters>-->
 <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
 </div>
 <div class="launchpad" #launchpad>

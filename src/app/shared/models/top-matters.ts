@@ -12,6 +12,7 @@ export interface ITopMatter {
   bio_image_url: string | Array<string>;
   multiple_partners?: string;
   y: number;
+  sum?: number;
 }
 const matterAdditionalOptions = {
   tooltip : {

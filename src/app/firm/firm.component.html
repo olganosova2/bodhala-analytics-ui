@@ -1,0 +1,107 @@
+<div>
+  <div>
+    <lib-bd-filters
+      (sendFilters)="refreshData($event)"
+      [pageName]="pageName"
+      [pageType]="commonServ.pageTitle"
+      [firmId]="firmId"
+      [excludeFilters]="excludeFilters"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+  <div class="panel-wrapper full-width mb10">
+    <h4>{{ firm?.name }}</h4>
+  </div>
+  <div class="mb10">
+    <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()">Include Expenses
+    </mat-slide-toggle>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-{{12-rightColsCount}} no-left-padding">
+      <div class="panel-wrapper panel-wrapper-blank firm-data" *ngIf="firmData && firmData.num_attorneys_range">
+        <h4>Firm Data
+          <span class="badge badge-help ml5" placement="right-bottom"
+                [ngbPopover]="helpText"
+                [openDelay]="100"
+                [closeDelay]="2000"
+                triggers="mouseenter:mouseleave"> ?
+          </span>
+        </h4>
+
+        <div class="table-row mb10">
+          <div class="pull-left">Total Attorneys</div>
+          <div class="pull-right font-bold">{{firmData?.num_attorneys_range}}</div>
+          <div class="clear-both"></div>
+        </div>
+        <div class="table-row mb10">
+          <div class="pull-left">Partner %</div>
+          <div class="pull-right font-bold">{{firmData?.percent_partners | number:'1.0-0'}}%</div>
+          <div class="clear-both"></div>
+        </div>
+        <div class="table-row mb10">
+          <div class="pull-left">Associate %</div>
+          <div class="pull-right font-bold">{{firmData?.percent_associates | number:'1.0-0'}}%</div>
+          <div class="clear-both"></div>
+        </div>
+        <div class="table-row mb10">
+          <div class="pull-left">Number of Offices</div>
+          <div class="pull-right font-bold">{{firmData?.num_locations | number:'1.0-0'}}</div>
+          <div class="clear-both"></div>
+        </div>
+        <div class="table-row mb10">
+          <div class="pull-left">Leverage</div>
+          <div class="pull-right font-bold">{{firmData?.firmographic_leverage | number:'1.0-2'}}</div>
+          <div class="clear-both"></div>
+        </div>
+        <div class="table-row mb10">
+          <div class="pull-left">URL</div>
+          <div class="pull-right font-bold"><a href="http://{{firmData?.url}}" target="_blank">{{firmData?.url}}</a></div>
+          <div class="clear-both"></div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="ui-g-{{rightColsCount}} no-right-padding no-left-padding">
+      <bd-billing-totals [firm]="firm" #billingTotals *ngIf="firmId && firm"></bd-billing-totals>
+    </div>
+
+  </div>
+
+  <!--Score and Trend-->
+  <div>
+    <div class="no-left-padding">
+      <bd-score-trend [firmId]="firmId" [firm]="firmId && firm" #scoreAndTrend></bd-score-trend>
+    </div>
+  </div>
+
+  <div>
+    <div class="ui-g">
+      <div class="ui-md-12 ui-lg-8 no-left-padding">
+        <bd-spend-by-month [firmId]="firmId" #spendByMonth *ngIf="firmId && firm"></bd-spend-by-month>
+      </div>
+      <div class="ui-md-12 ui-lg-4 no-right-padding">
+        <bd-top-timekeepers [firmId]="firmId"  #topTKs *ngIf="firmId && firm"></bd-top-timekeepers>
+      </div>
+    </div>
+  </div>
+  <div>
+
+    <div class="ui-g">
+    </div>
+  </div>
+  <div>
+    <div class="ui-g">
+      <div class="ui-md-12 ui-lg-5 ui-xl-4 no-left-padding">
+        <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firmId && firm"></bd-top-matters>
+      </div>
+      <div class="ui-md-12 ui-lg-7 ui-xl-5 no-right-padding" #diversity>
+        <bd-diversity [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
+      </div>
+    </div>
+  </div>
+  <div class="ui-g">
+      <bd-utbms [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
+  </div>
+</div>
+

@@ -1,20 +1,39 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LinkComponent } from './link.component';
-import {PROVIDERS, SERVICE_PROVIDERS} from '../../../../shared/unit-tests/mock-app.imports';
-import {HttpService, UserService} from 'bodhala-ui-common';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS, SERVICE_PROVIDERS} from '../../../../shared/unit-tests/mock-app.imports';
+import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import * as mockServices from '../../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../../shared/services/filters.service';
 import {ngWindow} from '../../../../shared/unit-tests/mock-services';
+import {TopMattersComponent} from '../../../../firm/top-matters/top-matters.component';
+import {Router} from '@angular/router';
 
 describe('LinkComponent', () => {
   let component: LinkComponent;
   let fixture: ComponentFixture<LinkComponent>;
+  const mockRouter = {
+    navigate: jasmine.createSpy('navigate')
+  };
   beforeEach(async(() => {
+
     TestBed.configureTestingModule({
-      declarations: [ LinkComponent ]
+      imports: IMPORTS,
+      declarations: DECLARATIONS,
+      providers: PROVIDERS,
+      schemas: SCHEMAS
+    }).overrideComponent(LinkComponent, {
+      set: {
+        providers: [
+          AppStateService,
+          { provide: Router, useValue: mockRouter},
+          { provide: FiltersService, useClass: mockServices.FiltersStub },
+          { provide: HttpService, useClass: mockServices.DataStub },
+          { provide: UserService, useClass: mockServices.UserStub }
+        ]
+      }
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
