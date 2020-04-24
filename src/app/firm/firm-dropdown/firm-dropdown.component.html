@@ -1,0 +1,11 @@
+
+<div class="firm_dropdown">
+    <!-- <select *ngModel="this.firmsList" *ngFor="#firm of this.firmsList"></select> -->
+    <!-- <select [(ngModel)]="this.firmsList"> -->
+        View Firm Detail: 
+    <select class="dropdown" [(ngModel)]="selectedFirm" (change)="getFirm(selectedFirm)">
+        <option [value]="none" selected>Choose a law firm</option>
+        <option *ngFor="let firm of this.firmsList" [label]="firm.law_firm_name" [value]="firm.id"></option>
+    </select> 
+</div>
+

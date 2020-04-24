@@ -59,6 +59,8 @@ import borderRadius from 'highcharts-border-radius';
 import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
 import {LinkComponent} from '../../launchpad/card/cells/link/link.component';
 import {UtbmsComponent} from '../../firm/utbms/utbms.component';
+import {FirmDropdownComponent} from '../../firm/firm-dropdown/firm-dropdown.component';
+
 
 export function highchartsFactory() {
   // return highcharts;
@@ -127,7 +129,8 @@ export const DECLARATIONS = [
   BodhalaChartLegendComponent,
   ScoreTrendComponent,
   ScoreBadgeComponent,
-  UtbmsComponent
+  UtbmsComponent,
+  FirmDropdownComponent
 ];
 
 export const PROVIDERS = [

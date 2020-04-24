@@ -51,6 +51,7 @@ import { BodhalaChartLegendComponent } from './shared/components/bodhala-chart-l
 import { ScoreTrendComponent } from './firm/score-trend/score-trend.component';
 import { UtbmsComponent } from './firm/utbms/utbms.component';
 import { ScoreBadgeComponent } from './firm/score-trend/score-badge/score-badge.component';
+import { FirmDropdownComponent } from './firm/firm-dropdown/firm-dropdown.component';
 
 
 export function initUser(config: UserService) {
@@ -93,7 +94,8 @@ export function highchartsFactory() {
     BodhalaChartLegendComponent,
     ScoreTrendComponent,
     UtbmsComponent,
-    ScoreBadgeComponent
+    ScoreBadgeComponent,
+    FirmDropdownComponent
   ],
   entryComponents: [
     PillComponent,

@@ -9,12 +9,13 @@
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
   </div>
-  <div class="panel-wrapper full-width mb10">
+  <!-- <div class="panel-wrapper full-width mb10">
     <h4>{{ firm?.name }}</h4>
-  </div>
+  </div> -->
   <div class="mb10">
     <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()">Include Expenses
     </mat-slide-toggle>
+    <bd-firm-dropdown></bd-firm-dropdown>
   </div>
   <div class="ui-g">
     <div class="ui-g-{{12-rightColsCount}} no-left-padding">
