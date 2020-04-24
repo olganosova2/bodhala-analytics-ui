@@ -82,14 +82,14 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
       this.trends = data[1].result;
       // this.trends = MOCK_TRENDS_FIRM.result;
       if (this.trends) {
+        this.trends.firm_trends = this.trends.firm_trends.sort(this.utilServ.dynamicSort('year'));
         if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
-          this.trends.firm_trends = Object.assign([], this.trends.peer_trends);
+          this.trends.client_trends = Object.assign([], this.trends.peer_trends);
         } else {
           // TODO remove
           // this.trends.firm_trends = Object.assign([], this.trends.client_trends);
           this.trends.client_trends = [];
         }
-        this.trends.firm_trends = this.trends.firm_trends.sort(this.utilServ.dynamicSort('year'));
         this.trends.client_trends = this.trends.client_trends.sort(this.utilServ.dynamicSort('year'));
         this.renderChart();
       }
@@ -124,9 +124,9 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
       return;
     }
     this.chart.series[0].setData(result);
-    if (this.firm) {
-      this.chart.series[0].name = this.firm.name;
-    }
+    // if (this.firm) {
+    //   this.chart.series[0].name = this.firm.name;
+    // }
     this.setUpChart();
     result = [];
     if (!this.trends.client_trends) {
@@ -136,7 +136,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     for (const rec of this.trends.client_trends) {
       result.push(this.buildChartItem(rec));
     }
-    this.chart.series[1].name = this.userService.currentUser.client_info.org.name + ' Averages';
+    // this.chart.series[1].name = this.userService.currentUser.client_info.org.name + ' Averages';
     if (this.trends.client_trends.length === 0) {
       this.chart.series[1].options.showInLegend = false;
       this.chart.series[1].update(this.chart.series[1].options);

@@ -235,11 +235,11 @@ export const trendChart = {
     }
   },
   series: [{
-    name: 'Firm Averages',
+    name: 'Firm',
    // color: '#FF0000',
     data: []
   }, {
-    name: 'Client Averages',
+    name: 'Peer Group',
     color: '#000',
     data: []
   }]

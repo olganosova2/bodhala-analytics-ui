@@ -52,7 +52,7 @@ export class AppComponent implements OnDestroy {
       titleService.setTitle(config.uiTitleString);
     });
     idle.onTimeout.subscribe(() => {
-      this.appStateService.redirectToLogin();
+      this.appStateService.redirectToLogout();
     });
     idle.onIdleStart.subscribe(() => {
       this.openDialog();
@@ -77,7 +77,7 @@ export class AppComponent implements OnDestroy {
         this.keepAlive();
         this.resetIdle();
       } else {
-        this.appStateService.redirectToLogin();
+        this.appStateService.redirectToLogout();
       }
     });
   }
