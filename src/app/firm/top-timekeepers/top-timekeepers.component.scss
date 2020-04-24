@@ -23,7 +23,15 @@
   border-color: $very-light-blue;
   background-color: $very-light-blue;
 }
-
+.table-pill-3{
+  min-width: 90px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  border-color: $primary-link;
+  background-color: $primary-link;
+  display: inline-block;
+}
 .tk-cell {
   min-width: 150px;
 }
