@@ -24,7 +24,7 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
 import borderRadius from 'highcharts-border-radius';
 import { ChartModule } from 'angular2-highcharts';
-
+import { DropdownModule } from 'primeng/dropdown';
 import * as CONFIG from './shared/services/config';
 import { LaunchpadComponent } from './launchpad/launchpad.component';
 import {RouterModule} from '@angular/router';
@@ -51,6 +51,7 @@ import { BodhalaChartLegendComponent } from './shared/components/bodhala-chart-l
 import { ScoreTrendComponent } from './firm/score-trend/score-trend.component';
 import { UtbmsComponent } from './firm/utbms/utbms.component';
 import { ScoreBadgeComponent } from './firm/score-trend/score-badge/score-badge.component';
+import { FirmDropdownComponent } from './firm/firm-dropdown/firm-dropdown.component';
 
 
 export function initUser(config: UserService) {
@@ -93,7 +94,8 @@ export function highchartsFactory() {
     BodhalaChartLegendComponent,
     ScoreTrendComponent,
     UtbmsComponent,
-    ScoreBadgeComponent
+    ScoreBadgeComponent,
+    FirmDropdownComponent,
   ],
   entryComponents: [
     PillComponent,
@@ -135,7 +137,8 @@ export function highchartsFactory() {
     BodhalaUiElementsModule,
     FlexLayoutModule,
     MatButtonToggleModule,
-    ChartModule
+    ChartModule,
+    DropdownModule
   ],
   providers: [CookieService,
     UserService,
