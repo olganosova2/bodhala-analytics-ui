@@ -44,6 +44,11 @@ export const END_POINTS_URLS = {
   // playbook/firm/4377/trends?clientId=110
 };
 
+export const ROUTES = [
+  {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
+   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/'},
+];
+
 
 export const uiTitleString = 'Bodhala Analytics';
 export const EST_TIME_ZONE = 'America/New York';
@@ -81,8 +86,6 @@ export const BODHALA_DATE_FORMATS = {
 export const outerAppLinks = {
   viewMatter: '#/app/client-dashboard/matter/',
   viewPracticeArea: '#/app/client-dashboard/practiceArea',
- // viewFirm: '#/app/client-dashboard/firm/',
-  // viewFirm: '/firm',
   viewFirm: '/analytics-ui/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
