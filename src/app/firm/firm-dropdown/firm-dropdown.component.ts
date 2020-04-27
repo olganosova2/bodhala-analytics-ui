@@ -1,5 +1,6 @@
 import {Component, Input, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CommonService} from '../../shared/services/common.service';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -28,12 +29,14 @@ export class FirmDropdownComponent implements OnInit {
   pendingRequest: Subscription;
   errorMessage: any;
   firmOptions: SelectItem[];
+  currentFirmName: string;
 
   constructor(private httpService: HttpService,
               public filtersService: FiltersService,
               public router: Router,
               public userService: UserService,
-              public dropdownModule: DropdownModule) { }
+              public dropdownModule: DropdownModule,
+              public commonServ: CommonService) { }
 
   ngOnInit() {
     this.getFirmsList();
@@ -53,7 +56,7 @@ export class FirmDropdownComponent implements OnInit {
         for (const firm of this.firmsList) {
           this.firmOptions.push({label: firm.law_firm_name, value: firm.id});
         }
-        return this.firmOptions;
+        this.currentFirmName = this.commonServ.pageSubtitle;
       },
       err => {
         this.errorMessage = err;
