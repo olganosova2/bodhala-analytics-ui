@@ -1,6 +1,6 @@
 
 <div class="firm_dropdown">
     View Firm Detail: 
-    <p-dropdown class="dropdown" [options]="firmOptions" [(ngModel)]="selectedFirm" ngDefaultControl (onChange)="getFirm(selectedFirm)" placeholder="Choose a law firm" [style]="{'width': '325px'}"></p-dropdown>
+    <p-dropdown class="dropdown" [options]="firmOptions" [(ngModel)]="selectedFirm" ngDefaultControl (onChange)="getFirm(selectedFirm)" placeholder="{{currentFirmName}}" [style]="{'width': '325px'}"></p-dropdown>
 </div>
 
