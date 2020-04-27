@@ -528,9 +528,11 @@ body {
   border-bottom: 1px solid $very-light-blue;
 }
 .page_description {
-  padding-left: 37px !important;
+  padding-left: 35px !important;
 }
-
+.sidebar>.nav>li.active {
+  border-left-color: #2e373c !important;
+}
 
 
 

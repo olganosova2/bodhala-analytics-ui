@@ -30,6 +30,7 @@ export class LaunchpadComponent implements OnInit {
     ) {
     this.cards = this.launchPadService.configureCards();
     this.commonServ.pageTitle = 'Launchpad';
+    commonServ.pageSubtitle = '';
   }
 
   ngOnInit() {

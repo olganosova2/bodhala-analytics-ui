@@ -55,7 +55,7 @@
         </div>
         <div class="table-row mb10">
           <div class="pull-left">URL</div>
-          <div class="pull-right font-bold"><a href="https://{{firmData?.url}}" target="_blank">{{firmData?.url}}</a></div>
+          <div class="pull-right font-bold"><a href="{{firmData?.url}}" target="_blank">{{firmData?.url}}</a></div>
           <div class="clear-both"></div>
         </div>
 
@@ -70,13 +70,13 @@
 
   <!--Score and Trend-->
   <div>
-    <div class="no-left-padding mt5">
+    <div class="no-left-padding mt15">
       <bd-score-trend [firmId]="firmId" [firm]="firmId && firm" #scoreAndTrend></bd-score-trend>
     </div>
   </div>
 
   <div>
-    <div class="ui-g mt5">
+    <div class="ui-g mt15">
       <div class="ui-md-12 ui-lg-8 no-left-padding">
         <bd-spend-by-month [firmId]="firmId" #spendByMonth *ngIf="firmId && firm"></bd-spend-by-month>
       </div>
@@ -91,7 +91,7 @@
     </div>
   </div>
   <div>
-    <div class="ui-g mt5">
+    <div class="ui-g mt15">
       <div class="ui-md-12 ui-lg-5 ui-xl-4 no-left-padding">
         <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firmId && firm"></bd-top-matters>
       </div>
@@ -100,7 +100,7 @@
       </div>
     </div>
   </div>
-  <div class="ui-g mt10">
+  <div class="ui-g mt15">
       <bd-utbms [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
   </div>
 </div>
