@@ -60,7 +60,7 @@ import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badg
 import {LinkComponent} from '../../launchpad/card/cells/link/link.component';
 import {UtbmsComponent} from '../../firm/utbms/utbms.component';
 import {FirmDropdownComponent} from '../../firm/firm-dropdown/firm-dropdown.component';
-
+import { DropdownModule } from 'primeng/dropdown';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -111,7 +111,8 @@ export const IMPORTS = [
   MatAutocompleteModule,
   MatStepperModule,
   NgbModule,
-  ChartModule
+  ChartModule,
+  DropdownModule
 ];
 
 export const DECLARATIONS = [

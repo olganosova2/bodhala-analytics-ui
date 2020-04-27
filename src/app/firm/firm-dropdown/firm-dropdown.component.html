@@ -1,9 +1,6 @@
 
 <div class="firm_dropdown">
-        View Firm Detail: 
-    <select class="dropdown" [(ngModel)]="selectedFirm" (change)="getFirm(selectedFirm)">
-        <option [value]="none" selected>Choose a law firm</option>
-        <option *ngFor="let firm of this.firmsList" [label]="firm.law_firm_name" [value]="firm.id"></option>
-    </select> 
+    View Firm Detail: 
+    <p-dropdown class="dropdown" [options]="firmOptions" [(ngModel)]="selectedFirm" ngDefaultControl (onChange)="getFirm(selectedFirm)" placeholder="Choose a law firm" [style]="{'width': '325px'}"></p-dropdown>
 </div>
 
