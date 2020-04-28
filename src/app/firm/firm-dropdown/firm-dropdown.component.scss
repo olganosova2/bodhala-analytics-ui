@@ -1,7 +1,8 @@
 @import "../../../assets/styles/colors.scss";
 
 .firm_dropdown {
-    display: inline-block;
-    position: absolute;
-    right: 15px;
+  color: $body-color;
+  display: inline-block;
+  position: absolute;
+  right: 15px;
 }
