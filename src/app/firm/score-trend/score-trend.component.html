@@ -1,7 +1,7 @@
 <div class="ui-g  no-left-padding">
   <div *ngIf="rightColsCount !== 12" class="ui-g-{{12-rightColsCount}}  no-left-padding">
-    <div class="panel-wrapper panel-wrapper-blank">
-      <div class="pull-left">
+    <div class="panel-wrapper panel-wrapper-blank pt10">
+      <div class="pull-left mt20">
         <h4>Score
           <span class="badge badge-help ml5" placement="right-bottom"
                 [ngbPopover]="helpText"
@@ -11,41 +11,37 @@
           </span>
         </h4>
       </div>
-      <div class="pull-right">
+      <div class="pull-right mt20">
         <bd-score-badge [percentale]="scoreAvg" [bpr]="true"></bd-score-badge>
       </div>
-      <div class="clear-both"></div>
+      <div class="clear-both mb20"></div>
 
-      <div class="table-row mb5">
+      <div class="table-row">
         <div class="pull-left">Leverage (Per Partner)</div>
         <div class="pull-right"><bd-score-badge [percentale]="score.peer_hourly_leverage_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
-      <div class="table-row mb5">
+      <div class="table-row">
         <div class="pull-left">Block Billing</div>
         <div class="pull-right"><bd-score-badge [percentale]="score.peer_block_billing_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
-      <div class="table-row mb5">
+      <div class="table-row">
         <div class="pull-left">Matter Cost</div>
         <div class="pull-right"><bd-score-badge [percentale]="score.peer_matter_cost_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
-      <div class="table-row mb5">
+      <div class="table-row">
         <div class="pull-left">Average Partner Rate</div>
         <div class="pull-right"><bd-score-badge [percentale]="score.peer_partner_rate_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
-      <div class="table-row mb5">
+      <div class="table-row last-row">
         <div class="pull-left">Average Associate Rate</div>
         <div class="pull-right"><bd-score-badge [percentale]="score.peer_associate_rate_percentile"></bd-score-badge></div>
         <div class="clear-both"></div>
       </div>
-<!--      <div class="table-row mb5">-->
-<!--        <div class="pull-left">Average Non-Lawyer Rate</div>-->
-<!--        <div class="pull-right"><bd-score-badge [percentale]="score.client_nonlawyer_rate_percentile"></bd-score-badge></div>-->
-<!--        <div class="clear-both"></div>-->
-<!--      </div>-->
+
     </div>
   </div>
   <div class="ui-g-{{rightColsCount}}  no-left-padding no-right-padding chart-panel">

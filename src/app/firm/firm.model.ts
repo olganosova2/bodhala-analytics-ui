@@ -196,7 +196,7 @@ export const trendChart = {
     // height: 600,
     marginLeft: null,
     marginRight: 10,
-    marginTop: 10,
+    marginTop: 15,
     spacingTop: 10,
     zoomType: false,
   },
@@ -239,7 +239,7 @@ export const trendChart = {
    // color: '#FF0000',
     data: []
   }, {
-    name: 'Peer Group',
+    name: 'Firm Averages',
     color: '#000',
     data: []
   }]

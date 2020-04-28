@@ -106,6 +106,8 @@ export class FirmComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.commonServ.pageSubtitle = '';
+    this.commonServ.pageTitle = '';
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }

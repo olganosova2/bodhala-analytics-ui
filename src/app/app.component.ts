@@ -39,6 +39,7 @@ export class AppComponent implements OnDestroy {
               private keepalive: Keepalive,
               public commonServ: CommonService,
               public dialog: MatDialog) {
+    this.appStateService.loadRoutes(config.ROUTES);
     this.filtersService.setCurrentUserFilters();
     this.httpService.callInProgress.subscribe(value => {
       this.progress = value ? value : false;

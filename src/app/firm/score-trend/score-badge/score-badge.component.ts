@@ -22,7 +22,7 @@ export class ScoreBadgeComponent implements OnInit {
     }
     if (this.percentale >= .7) {
       this.calculatedClass = this.bpr ? 'score-badge-excellent-blank' : 'score-badge-excellent';
-      this.label = 'Excellent';
+      this.label = 'Good';
     }
     if (this.percentale >= .3 && this.percentale < .7) {
       this.calculatedClass = this.bpr ? 'score-badge-fair-blank' :  'score-badge-fair';

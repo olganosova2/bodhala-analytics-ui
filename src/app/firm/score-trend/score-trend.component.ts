@@ -124,9 +124,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
       return;
     }
     this.chart.series[0].setData(result);
-    // if (this.firm) {
-    //   this.chart.series[0].name = this.firm.name;
-    // }
+    if (this.firm) {
+      this.chart.series[0].options.name = this.firm.name;
+      this.chart.series[0].update(this.chart.series[0].options);
+    }
     this.setUpChart();
     result = [];
     if (!this.trends.client_trends) {
@@ -138,7 +139,9 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     }
     // this.chart.series[1].name = this.userService.currentUser.client_info.org.name + ' Averages';
     if (this.trends.client_trends.length === 0) {
+      this.chart.series[0].options.showInLegend = false;
       this.chart.series[1].options.showInLegend = false;
+      this.chart.series[0].update(this.chart.series[0].options);
       this.chart.series[1].update(this.chart.series[1].options);
     }
     this.chart.series[1].setData(result);
@@ -179,7 +182,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
 
   resizeChart(): void {
     const width = this.trendsDiv.nativeElement.offsetWidth - 10;
-    const height = 460; // this.trendsDiv.nativeElement.offsetHeight;
+    const height = 400; // this.trendsDiv.nativeElement.offsetHeight;
     if (!this.chart || width <= 0) {
       return;
     }

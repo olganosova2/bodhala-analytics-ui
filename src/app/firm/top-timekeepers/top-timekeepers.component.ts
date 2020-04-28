@@ -37,6 +37,9 @@ export class TopTimekeepersComponent implements OnInit, OnDestroy {
       }
     );
   }
+  goToView(): void {
+    window.location.href = '/#/app/client-dashboard/timekeepers?firmId=' + this.firmId.toString();
+  }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
