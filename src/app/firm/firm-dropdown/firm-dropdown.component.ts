@@ -30,6 +30,7 @@ export class FirmDropdownComponent implements OnInit {
   errorMessage: any;
   firmOptions: SelectItem[];
   currentFirmName: string;
+  dropdownWidth: any = {};
 
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
@@ -62,6 +63,16 @@ export class FirmDropdownComponent implements OnInit {
           if (firm.id === Number(this.firmId)) {
             this.currentFirmName = firm.law_firm_name;
           }
+        }
+
+        if (this.currentFirmName.length <= 45) {
+          this.dropdownWidth['width'] = '325px';
+        }
+        else if (this.currentFirmName.length > 45 && this.currentFirmName.length <= 55){
+          this.dropdownWidth['width'] = '425px';
+        }
+        else {
+          this.dropdownWidth['width'] = '525px';
         }
       },
       err => {

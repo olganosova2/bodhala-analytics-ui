@@ -6,3 +6,13 @@
   position: absolute;
   right: 15px;
 }
+
+:host {
+    ::ng-deep .ui-inputtext
+    {
+        background: inherit;
+    }
+    ::ng-deep .ui-dropdown > .ui-dropdown-trigger{
+        background: border-box;
+    }
+} 
