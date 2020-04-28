@@ -57,6 +57,7 @@ export class FirmDropdownComponent implements OnInit {
         }
         this.firmsList = data.result;
         this.firmOptions = [];
+        const key = 'width';
         for (const firm of this.firmsList) {
           this.firmOptions.push({label: firm.law_firm_name, value: firm.id});
 
@@ -66,13 +67,11 @@ export class FirmDropdownComponent implements OnInit {
         }
 
         if (this.currentFirmName.length <= 45) {
-          this.dropdownWidth['width'] = '325px';
-        }
-        else if (this.currentFirmName.length > 45 && this.currentFirmName.length <= 55){
-          this.dropdownWidth['width'] = '425px';
-        }
-        else {
-          this.dropdownWidth['width'] = '525px';
+          this.dropdownWidth[key] = '325px';
+        } else if (this.currentFirmName.length > 45 && this.currentFirmName.length <= 55) {
+          this.dropdownWidth[key] = '425px';
+        } else {
+          this.dropdownWidth[key] = '525px';
         }
       },
       err => {
