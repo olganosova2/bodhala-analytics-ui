@@ -25,13 +25,14 @@ import {SelectItem} from 'primeng/api';
 })
 export class FirmDropdownComponent implements OnInit {
   firmsList: any;
-  @Input() firmId: number;
+  @Input() firmId: string;
   pendingRequest: Subscription;
   errorMessage: any;
   firmOptions: SelectItem[];
   currentFirmName: string;
 
-  constructor(private httpService: HttpService,
+  constructor(private route: ActivatedRoute,
+              private httpService: HttpService,
               public filtersService: FiltersService,
               public router: Router,
               public userService: UserService,
@@ -40,6 +41,9 @@ export class FirmDropdownComponent implements OnInit {
 
   ngOnInit() {
     this.getFirmsList();
+    this.route.paramMap.subscribe(params => {
+      this.firmId = params.get('id');
+    });
   }
 
   getFirmsList(): any {
@@ -50,13 +54,15 @@ export class FirmDropdownComponent implements OnInit {
         if (!data.result) {
           return;
         }
-
         this.firmsList = data.result;
         this.firmOptions = [];
         for (const firm of this.firmsList) {
           this.firmOptions.push({label: firm.law_firm_name, value: firm.id});
+
+          if (firm.id === Number(this.firmId)) {
+            this.currentFirmName = firm.law_firm_name;
+          }
         }
-        this.currentFirmName = this.commonServ.pageSubtitle;
       },
       err => {
         this.errorMessage = err;
