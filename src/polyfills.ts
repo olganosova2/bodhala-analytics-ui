@@ -65,12 +65,3 @@ import 'core-js/es/reflect';
 import '@webcomponents/webcomponentsjs/custom-elements-es5-adapter.js';
 import '@webcomponents/custom-elements/custom-elements.min';
 import '@webcomponents/custom-elements/src/native-shim';
-
-
-
-
-if (!window['customElements']) {
-  const script = document.createElement('script');
-  script.src = './assets/webcomponentsjs/bundles/webcomponents-sd-ce.js';
-  document.writeln(script.outerHTML);
-}
