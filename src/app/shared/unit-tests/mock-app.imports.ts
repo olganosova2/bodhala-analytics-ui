@@ -61,6 +61,7 @@ import {LinkComponent} from '../../launchpad/card/cells/link/link.component';
 import {UtbmsComponent} from '../../firm/utbms/utbms.component';
 import {FirmDropdownComponent} from '../../firm/firm-dropdown/firm-dropdown.component';
 import { DropdownModule } from 'primeng/dropdown';
+import {BenchmarksEntryComponent} from '../../benchmarks/benchmarks-entry/benchmarks-entry.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -131,7 +132,8 @@ export const DECLARATIONS = [
   ScoreTrendComponent,
   ScoreBadgeComponent,
   UtbmsComponent,
-  FirmDropdownComponent
+  FirmDropdownComponent,
+  BenchmarksEntryComponent
 ];
 
 export const PROVIDERS = [

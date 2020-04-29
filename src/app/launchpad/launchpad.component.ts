@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { LaunchPadService } from './launchpad.service';
 import { FiltersService } from '../shared/services/filters.service';
 import { columns } from './launchpad.model';
@@ -10,7 +10,7 @@ import {CommonService} from '../shared/services/common.service';
   templateUrl: './launchpad.component.html',
   styleUrls: ['./launchpad.component.scss']
 })
-export class LaunchpadComponent implements OnInit {
+export class LaunchpadComponent implements OnInit, OnDestroy {
   pageName = 'app.client-dashboard.launchpad';
   @ViewChild('launchpad', {static: false})
   container: ElementRef;
@@ -72,5 +72,8 @@ export class LaunchpadComponent implements OnInit {
         window.parent.postMessage({height, from: 'child'}, '*');
       }, 100);
     }
+  }
+  ngOnDestroy() {
+    this.commonServ.clearTitles();
   }
 }
