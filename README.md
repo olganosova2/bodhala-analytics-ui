@@ -11,6 +11,7 @@ On 127.0.0.1:4300 filters are set up only to default dates 2019-01-01 and 2019-0
 
 ## Build
 dev build run 'npm run build-dev' then refresh 127.0.0.1:5000 and navigate to http://127.0.0.1:5000/ select Launchpad from the side menu
+BODHALA_ANALYTICS_UI_PATH  path to your analytics-ui directory in bodhala-config.cfg should be added
 
 
 ## Code scaffolding
