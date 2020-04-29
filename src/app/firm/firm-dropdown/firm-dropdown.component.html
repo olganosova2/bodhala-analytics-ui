@@ -1,6 +1,6 @@
 
 <div class="firm_dropdown">
     View Firm Detail:
-    <p-dropdown class="dropdown ml5" [options]="firmOptions" [(ngModel)]="selectedFirm" ngDefaultControl (onChange)="getFirm(selectedFirm)" placeholder="{{currentFirmName}}" [style]="dropdownWidth"></p-dropdown>
+    <p-dropdown class="dropdown ml5" [options]="firmOptions" [(ngModel)]="firmId" ngDefaultControl (onChange)="getFirm()" placeholder="{{currentFirmName}}" [style]="dropdownWidth"></p-dropdown>
 </div>
 
