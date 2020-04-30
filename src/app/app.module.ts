@@ -53,6 +53,7 @@ import { UtbmsComponent } from './firm/utbms/utbms.component';
 import { ScoreBadgeComponent } from './firm/score-trend/score-badge/score-badge.component';
 import { FirmDropdownComponent } from './firm/firm-dropdown/firm-dropdown.component';
 import { BenchmarksEntryComponent } from './benchmarks/benchmarks-entry/benchmarks-entry.component';
+import { BenchmarkOverviewComponent } from './benchmarks/benchmark-overview/benchmark-overview.component';
 
 
 export function initUser(config: UserService) {
@@ -98,6 +99,7 @@ export function highchartsFactory() {
     ScoreBadgeComponent,
     FirmDropdownComponent,
     BenchmarksEntryComponent,
+    BenchmarkOverviewComponent,
   ],
   entryComponents: [
     PillComponent,

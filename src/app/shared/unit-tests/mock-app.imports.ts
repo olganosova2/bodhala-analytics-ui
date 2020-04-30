@@ -62,6 +62,7 @@ import {UtbmsComponent} from '../../firm/utbms/utbms.component';
 import {FirmDropdownComponent} from '../../firm/firm-dropdown/firm-dropdown.component';
 import { DropdownModule } from 'primeng/dropdown';
 import {BenchmarksEntryComponent} from '../../benchmarks/benchmarks-entry/benchmarks-entry.component';
+import {BenchmarkOverviewComponent} from '../../benchmarks/benchmark-overview/benchmark-overview.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -133,7 +134,8 @@ export const DECLARATIONS = [
   ScoreBadgeComponent,
   UtbmsComponent,
   FirmDropdownComponent,
-  BenchmarksEntryComponent
+  BenchmarksEntryComponent,
+  BenchmarkOverviewComponent
 ];
 
 export const PROVIDERS = [

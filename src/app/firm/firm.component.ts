@@ -114,5 +114,4 @@ export class FirmComponent implements OnInit, OnDestroy {
       this.pendingRequestFirm.unsubscribe();
     }
   }
-
 }
