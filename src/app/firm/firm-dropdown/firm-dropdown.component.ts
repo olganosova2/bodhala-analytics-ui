@@ -80,9 +80,9 @@ export class FirmDropdownComponent implements OnInit {
     );
   }
 
-  getFirm(firmId): void {
+  getFirm(): void {
     this.router.navigateByUrl('/', {skipLocationChange: true})
-      .then(() => this.router.navigate(['/analytics-ui/firm/', firmId]));
+      .then(() => this.router.navigate(['/analytics-ui/firm/', this.firmId]));
 
   }
 
