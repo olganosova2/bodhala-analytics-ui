@@ -177,6 +177,9 @@ body {
   text-align: right;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
 .relative-pos {
   position: relative;
 }
@@ -526,6 +529,9 @@ body {
 }
 .table-row {
   border-bottom: 1px solid $very-light-blue;
+}
+.bm-border-bottom {
+  border-bottom: 1px solid  $very-light-gray;
 }
 .page_description {
   padding-left: 35px !important;

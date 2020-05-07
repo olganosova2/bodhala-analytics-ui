@@ -1,0 +1,65 @@
+<div class="ui-g full-width bm-table"
+     [ngClass]="{'bm-border-bottom': !dataRow.isChild, 'child-panel': dataRow.isChild}">
+  <div class="ui-g-2">
+    <ng-container>
+      <span class="pointer-hand mr10" (click)="openGroup(dataRow)" *ngIf="!dataRow.isChild && isFirmDetail">
+        <i class="fa fa-chevron-right" *ngIf="!dataRow.isExpanded"></i>
+        <i class="fa fa-chevron-down" *ngIf="dataRow.isExpanded"></i>
+      </span>
+    </ng-container>
+    <span class="font-bold"
+          [ngClass]="{'pl10': !isFirmDetail, 'pl20': dataRow.isChild, 'text-underline': !dataRow.isChild && !isFirmDetail, 'pointer-hand': !dataRow.isChild}"
+          (click)="showFirm()">{{ dataRow?.name}}</span>
+  </div>
+  <div class="ui-g-2 text-center">
+    <span class="status-badge"
+          [ngStyle]="{'background-color': bmService.getStatusColor(dataRow)}">{{ dataRow.status }}</span>
+  </div>
+  <div class="ui-g-1">
+    <span *ngIf="dataRow?.avg_associate_rate else nulls"> ${{ dataRow?.avg_associate_rate | number:'1.0-0' }} </span>
+  </div>
+  <div class="ui-g-1">
+    <span *ngIf="dataRow?.associate_delta else nulls"
+          [ngClass]="{'color-red-span': dataRow?.associate_delta < 0, 'color-green-span': dataRow?.associate_delta > 0}">{{ formatDelta(dataRow?.associate_delta) }}</span>
+  </div>
+  <div class="ui-g-1">
+    <span *ngIf="dataRow?.avg_partner_rate else nulls"> ${{ dataRow?.avg_partner_rate | number:'1.0-0' }}</span>
+  </div>
+  <div class="ui-g-1">
+    <span *ngIf="dataRow?.partner_delta else nulls"
+          [ngClass]="{'color-red-span': dataRow?.partner_delta < 0, 'color-green-span': dataRow?.partner_delta > 0}">{{ formatDelta(dataRow?.partner_delta) }}</span>
+  </div>
+  <div class="ui-g-1">
+    {{ dataRow?.tier }}
+  </div>
+  <div class="ui-g-1">
+    {{ dataRow?.avg_practice_area_discount | number:'1.2-2'  }}%
+  </div>
+  <div class="ui-g-1">
+    {{ dataRow?.avg_yoy_rate_increase | number:'1.2-2'  }}%
+  </div>
+  <div class="ui-g-1" *ngIf="dataRow.peers">
+    <span class="text-underline pointer-hand" (mouseenter)="showPeers($event, op3)" (mouseleave)="showPeers($event, op3)">{{ dataRow.peers.length }}
+      Firms</span>
+  </div>
+</div>
+<div *ngIf="dataRow.isExpanded && dataRow.childrenRates">
+  <ng-container *ngIf="!bmService.showChart">
+    <ng-container *ngFor="let row of dataRow.childrenRates">
+      <bd-benchmark-row [dataRow]="row"></bd-benchmark-row>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="bmService.showChart">
+    <bd-two-bars *ngFor="let row of dataRow.childrenRates" [dataRow]="row" [highestRate]="dataRow.highestChildrenRate"></bd-two-bars>
+  </ng-container>
+</div>
+<p-overlayPanel [dismissable]="false" [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'" #op3>
+  <ng-template pTemplate>
+    <div class="peers-pop">
+      <div class="peers-badge mr5 mb5" *ngFor="let peer of dataRow.peers">{{ peer }}</div>
+    </div>
+  </ng-template>
+</p-overlayPanel>
+<ng-template #nulls>
+  <span class="col-2">-</span>
+</ng-template>

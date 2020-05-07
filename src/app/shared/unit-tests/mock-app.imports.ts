@@ -63,6 +63,11 @@ import {FirmDropdownComponent} from '../../firm/firm-dropdown/firm-dropdown.comp
 import { DropdownModule } from 'primeng/dropdown';
 import {BenchmarksEntryComponent} from '../../benchmarks/benchmarks-entry/benchmarks-entry.component';
 import {BenchmarkOverviewComponent} from '../../benchmarks/benchmark-overview/benchmark-overview.component';
+import {BenchmarkRowComponent} from '../../benchmarks/benchmark-row/benchmark-row.component';
+import {BenchmarksGridComponent} from '../../benchmarks/benchmarks-grid/benchmarks-grid.component';
+import {TwoBarsComponent} from '../../benchmarks/two-bars/two-bars.component';
+import {OverlayPanelModule} from 'primeng';
+import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -114,7 +119,8 @@ export const IMPORTS = [
   MatStepperModule,
   NgbModule,
   ChartModule,
-  DropdownModule
+  DropdownModule,
+  OverlayPanelModule
 ];
 
 export const DECLARATIONS = [
@@ -135,7 +141,11 @@ export const DECLARATIONS = [
   UtbmsComponent,
   FirmDropdownComponent,
   BenchmarksEntryComponent,
-  BenchmarkOverviewComponent
+  BenchmarkOverviewComponent,
+  BenchmarkRowComponent,
+  BenchmarksGridComponent,
+  TwoBarsComponent,
+  BenchmarkFirmDetailComponent
 ];
 
 export const PROVIDERS = [

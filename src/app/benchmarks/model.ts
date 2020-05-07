@@ -17,15 +17,20 @@ export interface IBenchmarkRate {
 }
 
 export interface IBenchmark {
+  id: number;
   name: string;
   tier: string;
+  practice_area?: string;
   peers: Array<string>;
   rates: IBenchmarkRate;
 }
 export interface IBenchmarkOverviewRow {
-  firm_id?: number;
-  firm_name: string;
+  id?: number;
+  name: string;
   status: string;
+  street?: number;
+  low?: number;
+  high?: number;
   avg_associate_rate: number;
   associate_delta: number;
   avg_partner_rate: number;
@@ -33,4 +38,17 @@ export interface IBenchmarkOverviewRow {
   tier: string;
   avg_practice_area_discount: number;
   avg_yoy_rate_increase: number;
+  peers?: Array<string>;
+  rates?: IBenchmarkRate;
+  childrenRates: Array<IBenchmarkOverviewRow>;
+  isExpanded?: boolean;
+  isChild?: boolean;
+  nonEmptyAssociate?: number;
+  nonEmptyPartner?: number;
+  highestChildrenRate?: number;
+}
+export enum RateStatuses  {
+  Poor = 'Poor',
+  Fair = 'Fair',
+  Excellent = 'Excellent'
 }

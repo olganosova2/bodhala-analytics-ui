@@ -1,3 +1,13 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables.scss";
 .benchmark-overview {
   margin-top: -40px;
 }
+.benchmark-card {
+  color: $body-color;
+  background-color: #fff;
+}
+.dd-class {
+ //  background-color: $very-light-gray !important;
+}
+
