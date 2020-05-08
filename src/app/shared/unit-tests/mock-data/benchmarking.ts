@@ -7,7 +7,7 @@ export const MOCK_YEARS = [
   {value: '2020', label: '2020'}
 ];
 export const BM_MOCK_FIRMS = [
-  {value: '3937', label: 'Walker Daly LLP Comparison'},
+  {value: '3937', label: 'Walker Daly LLP'},
   {value: '87', label: 'Lewis, Brisbois, Bisgaard & Smith'}
 ];
 
@@ -73,7 +73,7 @@ export const MOCK_BM_FIRMS = [
   },
   {
     id: 3937,
-    name: 'Walker Daly LLP Comparison',
+    name: 'Walker Daly LLP',
     tier: '$$$',
     peers: [
       'Some Law Firm 2',
