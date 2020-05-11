@@ -36,7 +36,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   includeExpenses: boolean = false;
   chart: any = {};
   options: any;
-  helpText: string = 'The scores below indicate how this firm is performing relative to the average of the firms in its peer group across several key metrics. A “poor” score in red means the firm is in the bottom 30% for the metric. A “good” score in green means it is in the top 30%, and a “fair” score of yellow means it is in the middle 40% of the distribution.';
+  helpText: string = 'The health indicators below indicate how this firm is performing relative to the average of the firms in its peer group across several key metrics. A “poor” health indicator in red means the firm is in the bottom 30% for the metric. A “good” health indicator in green means it is in the top 30%, and a “fair” health indicator of yellow means it is in the middle 40% of the distribution.';
   selectedChart: TrendChart = TrendChart.LEVERAGE;
   chartTypes: any = TrendChart;
   isLoaded: boolean = false;
