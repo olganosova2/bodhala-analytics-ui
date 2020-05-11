@@ -42,7 +42,6 @@ export const END_POINTS_URLS = {
   getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
   getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
   getFirmsListByClient: {url: BASE_URL + 'analytics/getFirmListByClient', showLoading: false},
-  getMaxMatterCost: {url: BASE_URL + 'analytics/getMaxMatterCost', showLoading: false},
   // playbook/firm/4377/trends?clientId=110
 };
 
