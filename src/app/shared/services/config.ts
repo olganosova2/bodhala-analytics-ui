@@ -49,7 +49,7 @@ export const END_POINTS_URLS = {
 
 export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
-  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/'},
+  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
 ];
 

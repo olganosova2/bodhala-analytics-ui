@@ -38,8 +38,8 @@
   <div class="ui-g-1">
     {{ dataRow?.avg_yoy_rate_increase | number:'1.2-2'  }}%
   </div>
-  <div class="ui-g-1" *ngIf="dataRow.peers">
-    <span class="text-underline pointer-hand" (mouseenter)="showPeers($event, op3)" (mouseleave)="showPeers($event, op3)">{{ dataRow.peers.length }}
+  <div class="ui-g-1" *ngIf="isFirmDetail && dataRow.peers">
+    <span class="text-underline pointer-hand"  *ngIf="dataRow.peers.length > 0" (mouseenter)="showPeers($event, op3)" (mouseleave)="showPeers($event, op3)">{{ dataRow.peers.length }}
       Firms</span>
   </div>
 </div>
@@ -53,7 +53,7 @@
     <bd-two-bars *ngFor="let row of dataRow.childrenRates" [dataRow]="row" [highestRate]="dataRow.highestChildrenRate"></bd-two-bars>
   </ng-container>
 </div>
-<p-overlayPanel [dismissable]="false" [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'" #op3>
+<p-overlayPanel  [dismissable]="false" [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'" #op3>
   <ng-template pTemplate>
     <div class="peers-pop">
       <div class="peers-badge mr5 mb5" *ngFor="let peer of dataRow.peers">{{ peer }}</div>

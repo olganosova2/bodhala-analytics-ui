@@ -1,7 +1,8 @@
 <div class="benchmark-overview">
   <div class="pull-left">
-    <p-dropdown styleClass="firm-dd" [options]="firmsOptions" (onChange)="changeFirm()" [(ngModel)]="firmId"></p-dropdown>
-    <p-dropdown class="ml20" panelStyleClass="dd-class" [options]="yearOptions" [(ngModel)]="year"></p-dropdown>
+    <p-dropdown  panelStyleClass="dd-class" [options]="yearOptions" [(ngModel)]="year" (onChange)="getFirms(false)" ></p-dropdown>
+    <p-dropdown class="ml20" styleClass="firm-dd" [options]="firmsOptions" (onChange)="buildBenchmarks()" [(ngModel)]="firmId"></p-dropdown>
+
   </div>
   <div class="pull-right">
     <mat-button-toggle-group name="pick" aria-label="pick" value="list">

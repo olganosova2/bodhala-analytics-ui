@@ -18,14 +18,26 @@ export interface IBenchmarkRate {
 
 export interface IBenchmark {
   id: number;
+  year?: string;
   name: string;
   tier: string;
   practice_area?: string;
   peers: Array<string>;
   rates: IBenchmarkRate;
 }
+export interface IRowBenchmark {
+  benchmark_id: number;
+  year: string;
+  firm_id: number;
+  firm_name: string;
+  name: string;
+  tier: string;
+  peers: Array<string>;
+  rates: IBenchmarkRate;
+}
 export interface IBenchmarkOverviewRow {
   id?: number;
+  year?: string;
   name: string;
   status: string;
   street?: number;

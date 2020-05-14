@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IBenchmark, IBenchmarkMetrics, IBenchmarkOverviewRow, IBenchmarkRate, RateStatuses} from './model';
+import {IBenchmark, IBenchmarkMetrics, IBenchmarkOverviewRow, IBenchmarkRate, IRowBenchmark, RateStatuses} from './model';
 import {of, throwError} from 'rxjs';
 import {TOP_MATTERS} from '../shared/unit-tests/mock-data/top-matters';
 import {TOP_FIRMS} from '../shared/unit-tests/mock-data/top-firms';
@@ -24,6 +24,7 @@ export class BenchmarkService {
     for (const bm of benchmarks) {
       const bmRow = {} as IBenchmarkOverviewRow;
       bmRow.id = bm.id;
+      bmRow.year = bm.year;
       bmRow.name = bm.name;
       bmRow.tier = bm.tier;
       bmRow.peers = Object.assign([], bm.peers) || [];
@@ -115,6 +116,17 @@ export class BenchmarkService {
       this.highestBarAvg = highestRow;
     }
   }
+  cleanUpData(records: Array<IRowBenchmark>): void {
+    for (const rec of records) {
+      const rates = rec.rates || {};
+      const keys = Object.keys(rates);
+      for (const key of keys) {
+        if (!rates[key].client_rate) {
+          rec.rates[key] = this.getEmptyRate();
+        }
+      }
+    }
+  }
   handleMissingRates(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
     let missingAssociateRates = 0;
     let missingPartnerRates = 0;
@@ -153,6 +165,9 @@ export class BenchmarkService {
     rates[propName].practice_area_discount = 0;
     rates[propName].yoy_rate_increase = 0;
     rates[propName].street = 0;
+  }
+  getEmptyRate(): IBenchmarkMetrics {
+    return { client_rate: 0, high: 0, low: 0,  practice_area_discount: 0, yoy_rate_increase: 0, street: 0 };
   }
   getRateName(key: string): string {
     let result = '';
@@ -229,5 +244,16 @@ export class BenchmarkService {
         break;
     }
     return result;
+  }
+  getYears(benchmarks: Array<IRowBenchmark>): Array<any> {
+    const records = Object.assign([], benchmarks);
+    const years = [];
+    for (const bm of records) {
+      const dupe = years.find(r => r.value === bm.year);
+      if (!dupe) {
+        years.push({ value: bm.year, label: bm.year});
+      }
+    }
+    return years;
   }
 }

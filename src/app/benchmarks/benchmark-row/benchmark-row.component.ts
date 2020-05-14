@@ -40,6 +40,6 @@ export class BenchmarkRowComponent implements OnInit {
     if (this.dataRow.isChild || this.isFirmDetail) {
       return;
     }
-    this.router.navigate(['/analytics-ui/benchmarking/firm', this.dataRow.id]);
+    this.router.navigate(['/analytics-ui/benchmarking/firm', this.dataRow.id], { queryParams: { year: this.dataRow.year }});
   }
 }
