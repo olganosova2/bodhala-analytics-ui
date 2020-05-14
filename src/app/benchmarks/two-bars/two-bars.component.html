@@ -1,0 +1,37 @@
+<div class="ui-g full-width bm-border-bottom">
+  <div class="ui-g-2 left-panel-title">
+    <div class="font-bold mb10">{{dataRow.name}}</div>
+  </div>
+  <div class="ui-g-10">
+    &nbsp;
+  </div>
+  <div class="ui-g-2 left-panel" >
+
+    <div class="labels mb10">{{ labelTop }}</div>
+    <div class="labels mb5">{{ labelBottom }}</div>
+  </div>
+  <div class="ui-g-10 right-panel" #chartPanel>
+    <div *ngIf="dataRow.isChild" #bmPanel class="bm-panel pointer-hand" [ngStyle]="{'left': floatDivX, 'width': floatDivWidth}"
+         (mouseenter)="showInfo($event, op3)" (mouseleave)="showInfo($event, op3)"></div>
+    <div class="bar-div" [ngStyle]="{'background-color': topBarColor, 'width': topBarWidth}" >
+      ${{topBarDollars | number:'1.0-0'}}</div>
+    <div class="bar-div" [ngClass]="{'bar-div-gray': dataRow.isChild}" [ngStyle]="{'background-color': bottomBarColor, 'width': bottomBarWidth}">
+      ${{bottomBarDollars | number:'1.0-0'}}</div>
+<!--    <span class="badge badge-help ml5" > ?-->
+<!--          </span>-->
+  </div>
+</div>
+<p-overlayPanel [dismissable]="false" [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"  #op3>
+  <ng-template pTemplate>
+    <div class="info-pop">
+      <div><span class="child-badge">{{dataRow.name}}</span></div>
+      <div class="info-pop-label">Benchmark</div>
+      <div>${{ dataRow?.low | number:'1.0-0' }} - ${{ dataRow?.high | number:'1.0-0' }}</div>
+      <div class="info-pop-label">You Pay</div>
+      <div *ngIf="dataRow.name.toLowerCase().indexOf('associate') >= 0">${{ dataRow?.avg_associate_rate | number:'1.0-0' }}</div>
+      <div *ngIf="dataRow.name.toLowerCase().indexOf('partner') >= 0">${{ dataRow?.avg_partner_rate | number:'1.0-0' }}</div>
+      <div class="info-pop-label">Street Rate</div>
+      <div>${{ dataRow?.street | number:'1.0-0' }}</div>
+    </div>
+  </ng-template>
+</p-overlayPanel>

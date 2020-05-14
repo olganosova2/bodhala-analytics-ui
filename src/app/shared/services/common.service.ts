@@ -8,4 +8,8 @@ export class CommonService {
   pageSubtitle: string = '';
 
   constructor() { }
+  clearTitles(): void {
+    this.pageSubtitle = '';
+    this.pageTitle = '';
+  }
 }
