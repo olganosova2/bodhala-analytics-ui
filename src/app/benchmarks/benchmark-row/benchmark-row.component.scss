@@ -1,0 +1,39 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables.scss";
+
+.ui-g-1, .ui-g-2{
+  color: $body-color;
+  font-size: 14px;
+  padding: 10px;
+}
+.color-red-span {
+  color: $red-color;
+}
+.color-green-span {
+  color: $excelent-color;
+}
+.status-badge {
+  color: #fff;
+  border-radius: 25px;
+  padding: 3px 15px;
+  width: 90px;
+  display: inline-block;
+  text-align: center;
+}
+.peers-badge {
+  color: $body-color;
+  border-radius: 25px;
+  font-size: 12px;
+  padding: 3px 10px;
+  display: inline-block;
+  text-align: center;
+  background-color: $very-light-gray;
+}
+.child-panel {
+  background-color: #F5F7FA;
+}
+.peers-pop {
+  max-width: 154px;
+  // min-height: 200px;
+}
+

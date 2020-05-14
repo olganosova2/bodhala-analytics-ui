@@ -1,0 +1,15 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables.scss";
+.benchmark-overview {
+  margin-top: -40px;
+}
+.benchmark-card {
+  color: $body-color;
+  background-color: #fff;
+  margin-top: 30px;
+  margin-right: 15px;
+}
+.dd-class {
+ //  background-color: $very-light-gray !important;
+}
+
