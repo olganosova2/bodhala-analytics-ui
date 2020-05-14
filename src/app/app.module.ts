@@ -52,6 +52,13 @@ import { ScoreTrendComponent } from './firm/score-trend/score-trend.component';
 import { UtbmsComponent } from './firm/utbms/utbms.component';
 import { ScoreBadgeComponent } from './firm/score-trend/score-badge/score-badge.component';
 import { FirmDropdownComponent } from './firm/firm-dropdown/firm-dropdown.component';
+import { BenchmarksEntryComponent } from './benchmarks/benchmarks-entry/benchmarks-entry.component';
+import { BenchmarkOverviewComponent } from './benchmarks/benchmark-overview/benchmark-overview.component';
+import { BenchmarkRowComponent } from './benchmarks/benchmark-row/benchmark-row.component';
+import { BenchmarksGridComponent } from './benchmarks/benchmarks-grid/benchmarks-grid.component';
+import { TwoBarsComponent } from './benchmarks/two-bars/two-bars.component';
+import {OverlayPanelModule} from 'primeng';
+import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 
 
 export function initUser(config: UserService) {
@@ -96,6 +103,12 @@ export function highchartsFactory() {
     UtbmsComponent,
     ScoreBadgeComponent,
     FirmDropdownComponent,
+    BenchmarksEntryComponent,
+    BenchmarkOverviewComponent,
+    BenchmarkRowComponent,
+    BenchmarksGridComponent,
+    TwoBarsComponent,
+    BenchmarkFirmDetailComponent,
   ],
   entryComponents: [
     PillComponent,
@@ -138,7 +151,8 @@ export function highchartsFactory() {
     FlexLayoutModule,
     MatButtonToggleModule,
     ChartModule,
-    DropdownModule
+    DropdownModule,
+    OverlayPanelModule
   ],
   providers: [CookieService,
     UserService,

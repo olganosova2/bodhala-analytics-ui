@@ -1,0 +1,18 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables.scss";
+.mat-card {
+  width: 50%;
+  margin: auto;
+  min-height: 400px;
+  @media screen and (max-width: $screen-md) {
+    width: 100%;
+  }
+  h2 {
+    font-weight: normal;
+  }
+  h4 {
+    color: $medium-gray;
+    font-weight: normal;
+  }
+}
+

@@ -1,0 +1,15 @@
+<div class="benchmark-overview">
+  <div>
+    <p-dropdown  panelStyleClass="dd-class" [options]="yearOptions" [(ngModel)]="year" (onChange)="getPAs()"></p-dropdown>
+    <p-dropdown class="ml20" panelStyleClass="dd-class" [options]="areasOptions" [(ngModel)]="practiceAreaId" (onChange)="buildBenchmarks()"></p-dropdown>
+
+  </div>
+  <div class="benchmark-card pt20">
+    <h4 class="mb10 ml10 mb10">Benchmark Overview</h4>
+    <bd-benchmarks-grid [dataRows]="benchmarksRows"></bd-benchmarks-grid>
+  </div>
+  <div class="benchmark-card pt20" >
+    <h4 class="mb10 pl10 mb10 pb10 bm-border-bottom">Benchmark Comparison</h4>
+    <bd-two-bars [dataRow]="row" *ngFor="let row of benchmarksRows"></bd-two-bars>
+  </div>
+</div>
