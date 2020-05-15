@@ -48,8 +48,7 @@ export class BenchmarkFirmDetailComponent implements OnInit, OnDestroy {
   getBenchmarks(): void {
     this.pendingRequest = this.httpService.makeGetRequest('getBenchmarks').subscribe(
       (data: any) => {
-        this.allBenchmarks = data.result;
-        this.benchmarkServ.cleanUpData(this.allBenchmarks);
+        this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result);
         this.processBenchmarks();
       },
       err => {
