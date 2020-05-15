@@ -1,6 +1,6 @@
 <div class="ui-g full-width bm-table"
      [ngClass]="{'bm-border-bottom': !dataRow.isChild, 'child-panel': dataRow.isChild}">
-  <div class="ui-g-2">
+  <div class="ui-g-2" [ngClass]="{'pl10': !isFirmDetail}">
     <ng-container>
       <span class="pointer-hand mr10" (click)="openGroup(dataRow)" *ngIf="!dataRow.isChild && isFirmDetail">
         <i class="fa fa-chevron-right" *ngIf="!dataRow.isExpanded"></i>
@@ -8,7 +8,7 @@
       </span>
     </ng-container>
     <span class="font-bold"
-          [ngClass]="{'pl10': !isFirmDetail, 'pl20': dataRow.isChild, 'text-underline': !dataRow.isChild && !isFirmDetail, 'pointer-hand': !dataRow.isChild}"
+          [ngClass]="{'pl20': dataRow.isChild, 'text-underline': !dataRow.isChild && !isFirmDetail, 'pointer-hand': !dataRow.isChild}"
           (click)="showFirm()">{{ dataRow?.name}}</span>
   </div>
   <div class="ui-g-2 text-center">
