@@ -1,23 +1,25 @@
-<div>
-  <!--      [excludeFilters] = "['firms','threshold']"-->
+<div class="content-body-inner-wrapper">
+  <div>
+    <!--      [excludeFilters] = "['firms','threshold']"-->
     <lib-bd-filters
       (sendFilters)="receiveMessage($event)"
       [pageName]="pageName"
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
-</div>
-<div #insights style="display: block">
-<bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
-</div>
-<div class="launchpad" #launchpad>
-  <bd-card *ngFor="let card of cards"
-           [header]="card.header"
-           [request]="requests[card.request]"
-           [cardName]="card.request"
-           [columns]="card.columns"
-           [options]="card.options"
-           (clicked)="onClick($event)"
-           (loaded)="onCardLoaded()"
-           [ngStyle]="{'grid-column': 'span ' + card.span}">
-  </bd-card>
+  </div>
+  <div #insights style="display: block">
+    <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
+  </div>
+  <div class="launchpad" #launchpad>
+    <bd-card *ngFor="let card of cards"
+             [header]="card.header"
+             [request]="requests[card.request]"
+             [cardName]="card.request"
+             [columns]="card.columns"
+             [options]="card.options"
+             (clicked)="onClick($event)"
+             (loaded)="onCardLoaded()"
+             [ngStyle]="{'grid-column': 'span ' + card.span}">
+    </bd-card>
+  </div>
 </div>

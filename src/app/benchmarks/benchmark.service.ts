@@ -116,16 +116,23 @@ export class BenchmarkService {
       this.highestBarAvg = highestRow;
     }
   }
-  cleanUpData(records: Array<IRowBenchmark>): void {
+  cleanUpData(records: Array<IRowBenchmark>): Array<IRowBenchmark> {
+    const result = [];
     for (const rec of records) {
+      let emptyCount = 0;
       const rates = rec.rates || {};
       const keys = Object.keys(rates);
       for (const key of keys) {
         if (!rates[key].client_rate) {
           rec.rates[key] = this.getEmptyRate();
+          emptyCount++;
         }
       }
+      if (emptyCount < 6) {
+        result.push(rec);
+      }
     }
+    return result;
   }
   handleMissingRates(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
     let missingAssociateRates = 0;

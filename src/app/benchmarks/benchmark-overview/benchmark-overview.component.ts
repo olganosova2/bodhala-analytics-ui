@@ -42,8 +42,7 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
     const params = { clientId: this.userService.currentUser.id, year: this.year, practiceArea: this.practiceAreaId};
     this.pendingRequest = this.httpService.makeGetRequest('getBenchmarks').subscribe(
       (data: any) => {
-        this.allBenchmarks = data.result;
-        this.benchmarkServ.cleanUpData(this.allBenchmarks);
+        this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result);
         this.processBenchmarks();
       },
       err => {
