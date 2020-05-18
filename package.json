@@ -37,7 +37,7 @@
     "angular2-highcharts": "^0.5.5",
     "angular2-moment": "^1.9.0",
     "bodhala-ui-common": "git+ssh://git@bitbucket.org/bodhala/bodhala-ui-common.git#develop4",
-    "bodhala-ui-elements": "git+ssh://git@bitbucket.org/bodhala/bodhala-ui-elements.git#develop11",
+    "bodhala-ui-elements": "git+ssh://git@bitbucket.org/bodhala/bodhala-ui-elements.git#develop12",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.3",
     "classlist.js": "^1.1.20150312",
