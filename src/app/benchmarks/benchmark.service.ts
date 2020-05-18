@@ -88,23 +88,19 @@ export class BenchmarkService {
       return;
     }
     this.handleMissingRates(row, rates);
-    row.avg_associate_rate = (rates.junior_associate.client_rate + rates.mid_associate.client_rate + rates.senior_associate.client_rate) / row.nonEmptyAssociate;
-    row.avg_partner_rate = (rates.junior_partner.client_rate + rates.mid_partner.client_rate + rates.senior_partner.client_rate) / row.nonEmptyPartner;
-    const highAssociate = (rates.junior_associate.high + rates.mid_associate.high + rates.senior_associate.high) / row.nonEmptyAssociate;
-    const lowAssociate = (rates.junior_associate.low + rates.mid_associate.low + rates.senior_associate.low) / row.nonEmptyAssociate;
-    const medianAssociate = (lowAssociate + highAssociate ) / 2 || 1;
-    row.associate_delta = 100 - (row.avg_associate_rate * 100 / medianAssociate);
-    const highPartner = (rates.junior_partner.high + rates.mid_partner.high + rates.senior_partner.high) / row.nonEmptyPartner;
-    const lowPartner = (rates.junior_partner.low + rates.mid_partner.low + rates.senior_partner.low) / row.nonEmptyPartner;
-    const medianPartner = (lowPartner + highPartner) / 2 || 1;
-    row.partner_delta = 100 - (row.avg_partner_rate * 100  / medianPartner);
+    this.processAssociate(row, rates);
+    this.processPartner(row, rates);
     row.avg_practice_area_discount = (rates.junior_associate.practice_area_discount + rates.mid_associate.practice_area_discount + rates.senior_associate.practice_area_discount +
       rates.junior_partner.practice_area_discount + rates.mid_partner.practice_area_discount + rates.senior_partner.practice_area_discount) / (row.nonEmptyPartner + row.nonEmptyAssociate);
     row.avg_yoy_rate_increase = (rates.junior_associate.yoy_rate_increase + rates.mid_associate.yoy_rate_increase + rates.senior_associate.yoy_rate_increase +
       rates.junior_partner.yoy_rate_increase + rates.mid_partner.yoy_rate_increase + rates.senior_partner.yoy_rate_increase) / (row.nonEmptyPartner + row.nonEmptyAssociate);
     const associateColor = this.getAvgBarColor('associate', row);
     const partnerColor = this.getAvgBarColor('partner', row);
-    if (associateColor === BM_COLORS.Excellent && partnerColor === BM_COLORS.Excellent) {
+    if (partnerColor === BM_COLORS.Default) {
+      row.status = this.mapColorToStatus(associateColor);
+    } else if (associateColor === BM_COLORS.Default) {
+      row.status = this.mapColorToStatus(partnerColor);
+    } else if (associateColor === BM_COLORS.Excellent && partnerColor === BM_COLORS.Excellent) {
       row.status = RateStatuses.Excellent;
     } else if (associateColor === BM_COLORS.Poor && partnerColor === BM_COLORS.Poor) {
       row.status = RateStatuses.Poor;
@@ -115,6 +111,30 @@ export class BenchmarkService {
     if (highestRow > this.highestBarAvg) {
       this.highestBarAvg = highestRow;
     }
+  }
+  processAssociate(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
+    if (row.nonEmptyAssociate === 0) {
+      row.avg_associate_rate = 0;
+      row.associate_delta = 0;
+      return;
+    }
+    row.avg_associate_rate = (rates.junior_associate.client_rate + rates.mid_associate.client_rate + rates.senior_associate.client_rate) / row.nonEmptyAssociate;
+    const highAssociate = (rates.junior_associate.high + rates.mid_associate.high + rates.senior_associate.high) / row.nonEmptyAssociate;
+    const lowAssociate = (rates.junior_associate.low + rates.mid_associate.low + rates.senior_associate.low) / row.nonEmptyAssociate;
+    const medianAssociate = (lowAssociate + highAssociate ) / 2 || 1;
+    row.associate_delta = 100 - (row.avg_associate_rate * 100 / medianAssociate);
+  }
+  processPartner(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
+    if (row.nonEmptyPartner === 0) {
+      row.avg_partner_rate = 0;
+      row.partner_delta = 0;
+      return;
+    }
+    row.avg_partner_rate = (rates.junior_partner.client_rate + rates.mid_partner.client_rate + rates.senior_partner.client_rate) / row.nonEmptyPartner;
+    const highPartner = (rates.junior_partner.high + rates.mid_partner.high + rates.senior_partner.high) / row.nonEmptyPartner;
+    const lowPartner = (rates.junior_partner.low + rates.mid_partner.low + rates.senior_partner.low) / row.nonEmptyPartner;
+    const medianPartner = (lowPartner + highPartner) / 2 || 1;
+    row.partner_delta = 100 - (row.avg_partner_rate * 100  / medianPartner);
   }
   cleanUpData(records: Array<IRowBenchmark>): Array<IRowBenchmark> {
     const result = [];
@@ -218,6 +238,9 @@ export class BenchmarkService {
     let result = BM_COLORS.Default;
     const rates = row.rates;
     const avgRate = bar === 'associate' ? row.avg_associate_rate : row.avg_partner_rate;
+    if (avgRate === 0) {
+      return result;
+    }
     let highRate = (rates.junior_associate.high + rates.mid_associate.high + rates.senior_associate.high) / row.nonEmptyAssociate;
     let lowRate = (rates.junior_associate.low + rates.mid_associate.low + rates.senior_associate.low) / row.nonEmptyAssociate;
     if (bar === 'partner') {
@@ -262,5 +285,20 @@ export class BenchmarkService {
       }
     }
     return years;
+  }
+  mapColorToStatus(color: string): RateStatuses {
+    let result = RateStatuses.Fair;
+    switch (color) {
+      case BM_COLORS.Excellent:
+        result = RateStatuses.Excellent;
+        break;
+      case BM_COLORS.Poor:
+        result = RateStatuses.Poor;
+        break;
+      default:
+        result = RateStatuses.Fair;
+        break;
+    }
+    return result;
   }
 }
