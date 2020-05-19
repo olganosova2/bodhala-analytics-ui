@@ -62,5 +62,5 @@ export interface IBenchmarkOverviewRow {
 export enum RateStatuses  {
   Poor = 'Poor',
   Fair = 'Fair',
-  Excellent = 'Excellent'
+  Excellent = 'Good'
 }
