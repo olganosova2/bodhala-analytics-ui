@@ -263,7 +263,7 @@ export class BenchmarkService {
       case 'Poor':
         result = BM_COLORS.Poor;
         break;
-      case 'Excellent':
+      case 'Good':
         result = BM_COLORS.Excellent;
         break;
       case 'Fair':
