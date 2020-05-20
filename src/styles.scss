@@ -177,6 +177,9 @@ body {
   text-align: right;
 }
 
+.text-underline {
+  text-decoration: underline;
+}
 .relative-pos {
   position: relative;
 }
@@ -293,7 +296,7 @@ body {
 }
 
 .totals-percent {
-  color: $body-color;
+  color: #fff;
   background-color: $yellow;
 }
 
@@ -389,7 +392,8 @@ html, body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
+ // font-family: "Sharp Sans Display", sans-serif !important;
 }
 
 .panel-wrapper-blank {
@@ -526,6 +530,9 @@ body {
 }
 .table-row {
   border-bottom: 1px solid $very-light-blue;
+}
+.bm-border-bottom {
+  border-bottom: 1px solid  $very-light-gray;
 }
 .page_description {
   padding-left: 35px !important;
