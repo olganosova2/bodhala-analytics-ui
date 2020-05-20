@@ -24,6 +24,7 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
   benchmarks: Array<IBenchmark> = [];
   benchmarksRows: Array<IBenchmarkOverviewRow> = [];
   pendingRequest: Subscription;
+  noRecords: boolean = false;
   constructor(private route: ActivatedRoute,
               public router: Router,
               private httpService: HttpService,
@@ -42,7 +43,8 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
     const params = { clientId: this.userService.currentUser.id, year: this.year, practiceArea: this.practiceAreaId};
     this.pendingRequest = this.httpService.makeGetRequest('getBenchmarks').subscribe(
       (data: any) => {
-        this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result);
+        this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result) || [];
+        this.noRecords = this.allBenchmarks.length === 0;
         this.processBenchmarks();
       },
       err => {
