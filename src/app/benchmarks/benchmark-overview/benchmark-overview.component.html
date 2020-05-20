@@ -4,6 +4,7 @@
     <p-dropdown class="ml20" panelStyleClass="dd-class" [options]="areasOptions" [(ngModel)]="practiceAreaId" (onChange)="buildBenchmarks()"></p-dropdown>
 
   </div>
+  <h4 class="mt20" *ngIf="noRecords">No benchmarks found.</h4>
   <div class="benchmark-card pt20">
     <h4 class="mb10 ml10 mb10">Benchmark Overview</h4>
     <bd-benchmarks-grid [dataRows]="benchmarksRows"></bd-benchmarks-grid>
