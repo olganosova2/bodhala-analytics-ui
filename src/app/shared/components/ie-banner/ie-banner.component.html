@@ -1,0 +1,6 @@
+<div *ngIf="ieVersion" class="content-body">
+  <ngb-alert type="warning" (close)="this.ieVersion = ''">
+    Your web browser (Internet Explorer {{ ieVersion }}) is out of date. Please update your browser for a better
+    user experience.
+  </ngb-alert>
+</div>

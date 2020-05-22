@@ -68,6 +68,8 @@ import {BenchmarksGridComponent} from '../../benchmarks/benchmarks-grid/benchmar
 import {TwoBarsComponent} from '../../benchmarks/two-bars/two-bars.component';
 import {OverlayPanelModule} from 'primeng';
 import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
+import {IeBannerComponent} from '../components/ie-banner/ie-banner.component';
+import {ErrorMessagesComponent} from '../components/error-messages/error-messages.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -145,7 +147,9 @@ export const DECLARATIONS = [
   BenchmarkRowComponent,
   BenchmarksGridComponent,
   TwoBarsComponent,
-  BenchmarkFirmDetailComponent
+  BenchmarkFirmDetailComponent,
+  IeBannerComponent,
+  ErrorMessagesComponent
 ];
 
 export const PROVIDERS = [

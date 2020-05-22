@@ -8,6 +8,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {MOCK_BM_ROW} from '../../shared/unit-tests/mock-data/benchmarking';
+import {IBenchmarkOverviewRow} from '../model';
 
 describe('TwoBarsComponent', () => {
   let component: TwoBarsComponent;
@@ -41,10 +43,22 @@ describe('TwoBarsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TwoBarsComponent);
     component = fixture.componentInstance;
+    component.dataRow = MOCK_BM_ROW;
     fixture.detectChanges();
   });
 
   it('should create TwoBarsComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should create calculateChartMetrics', () => {
+    component.dataRow.isChild = true;
+    component.calculateChartMetrics();
+    expect(component.dataRow.isChild).toBeTruthy();
+  });
+  it('should create calculateChartMetrics for associate', () => {
+    component.dataRow.isChild = true;
+    component.dataRow.name = 'associate';
+    component.calculateChartMetrics();
+    expect(component.dataRow.isChild).toBeTruthy();
   });
 });

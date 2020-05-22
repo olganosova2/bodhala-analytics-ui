@@ -61,4 +61,7 @@ describe('ScoreTrendComponent', () => {
   it('should create ScoreTrendComponent', () => {
     expect(component).toBeTruthy();
   });
+  // it('should setUpChart', () => {
+  //   expect(component).toBeTruthy();
+  // });
 });

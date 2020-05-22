@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {MOCK_BENCHMARKS} from '../../shared/unit-tests/mock-data/benchmarking';
 
 describe('BenchmarkFirmDetailComponent', () => {
   let component: BenchmarkFirmDetailComponent;
@@ -41,6 +42,9 @@ describe('BenchmarkFirmDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BenchmarkFirmDetailComponent);
     component = fixture.componentInstance;
+    component.year = 2020;
+    component.firmId = '123';
+    component.allBenchmarks = MOCK_BENCHMARKS.result;
     fixture.detectChanges();
   });
 

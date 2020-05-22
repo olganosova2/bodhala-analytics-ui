@@ -31,7 +31,6 @@ export class AppComponent implements OnDestroy {
   constructor(public router: Router,
               private httpService: HttpService,
               public appStateService: AppStateService,
-              public messageService: MessagingService,
               private titleService: Title,
               public utilService: UtilService,
               public filtersService: FiltersService,
@@ -90,9 +89,6 @@ export class AppComponent implements OnDestroy {
         this.errorMessage = err;
       }
     );
-  }
-  close(): void {
-    this.ieVersion = '';
   }
   onActivate(evt): void {
     window.scroll(0, 0);
