@@ -1,4 +1,5 @@
 <div class="benchmark-overview">
+  <bd-error-messages></bd-error-messages>
   <div class="pull-left">
     <p-dropdown  panelStyleClass="dd-class" [options]="yearOptions" [(ngModel)]="year" (onChange)="getFirms(false)" ></p-dropdown>
     <p-dropdown class="ml20" styleClass="firm-dd" [options]="firmsOptions" (onChange)="buildBenchmarks()" [(ngModel)]="firmId"></p-dropdown>
@@ -6,11 +7,11 @@
   </div>
   <div class="pull-right">
     <mat-button-toggle-group name="pick" aria-label="pick" value="list">
-      <mat-button-toggle value="list" (click)="benchmarkServ.showChart = false">
-        <mat-icon>list</mat-icon>
-      </mat-button-toggle>
       <mat-button-toggle value="chart" (click)="benchmarkServ.showChart = true">
         <mat-icon>pie_chart</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="list" (click)="benchmarkServ.showChart = false">
+        <mat-icon>list</mat-icon>
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>

@@ -2,11 +2,12 @@ import {CURRENT_USER} from './mock-data/user';
 import {Observable, of, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
-import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA} from './mock-data/firm';
+import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS} from './mock-data/firm';
 import {convertToParamMap} from '@angular/router';
 import {MOCK_BILLING_TOTALS} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
+import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
 
 export const ngWindow = {
   location: {
@@ -97,6 +98,10 @@ export class DataStub {
         return of({result: { data: []}});
       case 'getClientInsights':
         return of(MOCK_INSIGHTS);
+      case 'getBenchmarks':
+        return of(MOCK_BENCHMARKS);
+      case 'getFirmsListByClient':
+        return of(MOCK_FIRMS);
       default:
         return of([]);
     }
@@ -185,7 +190,15 @@ export class LaunchPadServiceStub {
 }
 export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
-    id: '123',
+    id: '4702',
     anotherId: 'd31e8b48-7309-4c83-9884-4142efdf7271',
   }));
+  queryParams = new Observable(observer => {
+    const urlParams = {
+      year: '2020',
+      param2: 'params'
+    };
+    observer.next(urlParams);
+    observer.complete();
+  });
 }

@@ -14,7 +14,8 @@ describe('BenchmarkOverviewComponent', () => {
   let fixture: ComponentFixture<BenchmarkOverviewComponent>;
 
   const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
+    navigate: jasmine.createSpy('navigate'),
+    url: 'benchmarking/firm'
   };
   beforeEach(async(() => {
 
@@ -44,7 +45,7 @@ describe('BenchmarkOverviewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create BenchmarkOverviewComponent', () => {
     expect(component).toBeTruthy();
   });
 });

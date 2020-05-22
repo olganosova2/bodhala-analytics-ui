@@ -59,6 +59,8 @@ import { BenchmarksGridComponent } from './benchmarks/benchmarks-grid/benchmarks
 import { TwoBarsComponent } from './benchmarks/two-bars/two-bars.component';
 import {OverlayPanelModule} from 'primeng';
 import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
+import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
+import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
 
 
 export function initUser(config: UserService) {
@@ -109,6 +111,8 @@ export function highchartsFactory() {
     BenchmarksGridComponent,
     TwoBarsComponent,
     BenchmarkFirmDetailComponent,
+    IeBannerComponent,
+    ErrorMessagesComponent,
   ],
   entryComponents: [
     PillComponent,

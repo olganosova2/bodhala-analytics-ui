@@ -65,7 +65,9 @@ export class FirmDropdownComponent implements OnInit {
             this.currentFirmName = firm.law_firm_name;
           }
         }
-
+        if (!this.currentFirmName) {
+          return;
+        }
         if (this.currentFirmName.length <= 45) {
           this.dropdownWidth[key] = '325px';
         } else if (this.currentFirmName.length > 45 && this.currentFirmName.length <= 55) {

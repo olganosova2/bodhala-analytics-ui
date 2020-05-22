@@ -2,7 +2,7 @@ import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from 
 import { LaunchPadService } from './launchpad.service';
 import { FiltersService } from '../shared/services/filters.service';
 import { columns } from './launchpad.model';
-import {AppStateService} from 'bodhala-ui-common';
+import {AppStateService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
 
 @Component({

@@ -55,3 +55,21 @@ export const MOCK_DIVERSITY_DATA =  {
   non_ethnic_associate_hours: 0,
   ethnic_associate_hours: 0
 };
+export const MOCK_FIRMS = {
+  "result": [{
+    "id": 4702,
+    "crawl_id": 4693,
+    "law_firm_name": " Langley & Banack, Inc",
+    "logo_url": null
+  }, {
+    "id": 27710,
+    "crawl_id": 27358,
+    "law_firm_name": "Kirkland Kirkland Kirkland Kirkland Kirkland Kirkland",
+    "logo_url": null
+  }, {
+    "id": 8299,
+    "crawl_id": 7930,
+    "law_firm_name": "Kirkland Kirkland Kirkland Kirkland Kirkland Kirkland Kirkland Kirkland Kirkland Kirkland Kirkland",
+    "logo_url": null
+  }]
+};

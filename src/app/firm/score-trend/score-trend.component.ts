@@ -86,8 +86,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
           this.trends.client_trends = Object.assign([], this.trends.peer_trends);
         } else {
-          // TODO remove
-          // this.trends.firm_trends = Object.assign([], this.trends.client_trends);
           this.trends.client_trends = [];
         }
         this.trends.client_trends = this.trends.client_trends.sort(this.utilServ.dynamicSort('year'));
