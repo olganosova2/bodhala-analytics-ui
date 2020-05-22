@@ -39,8 +39,8 @@
     {{ dataRow?.avg_yoy_rate_increase | number:'1.2-2'  }}%
   </div>
   <div class="ui-g-1" *ngIf="isFirmDetail && dataRow.peers">
-    <span class="text-underline pointer-hand"  *ngIf="dataRow.peers.length > 0" (mouseenter)="showPeers($event, op3)" (mouseleave)="showPeers($event, op3)">{{ dataRow.peers.length }}
-      Firms</span>
+    <span class="text-underline pointer-hand"  *ngIf="dataRow.peers.length > 0" (mouseenter)="showPeers($event, op3)" (mouseleave)="showPeers($event, op3)">
+      See Firms</span>
   </div>
 </div>
 <div *ngIf="dataRow.isExpanded && dataRow.childrenRates">

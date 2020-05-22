@@ -42,12 +42,23 @@ describe('FirmComponent', () => {
     fixture = TestBed.createComponent(FirmComponent);
     component = fixture.componentInstance;
     component.firm =  MOCK_FIRM;
-    component.firmId = '1';
+    component.firmId = '4702';
     component.firmData = MOCK_FIRM_DATA;
     fixture.detectChanges();
   });
 
   it('should create FirmComponent', () => {
+    expect(component).toBeTruthy();
+  });
+  it('should toggleExpenses', () => {
+    component.filtersService.includeExpenses =  false;
+    component.toggleExpenses();
+    const test = component.filtersService.includeExpenses;
+    component.toggleExpenses();
+    expect(test).toBe(true);
+  });
+  it('should refreshData', () => {
+    component.refreshData(null);
     expect(component).toBeTruthy();
   });
 });

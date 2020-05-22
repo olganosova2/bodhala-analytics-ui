@@ -14,7 +14,7 @@ export enum BM_COLORS  {
 })
 export class BenchmarkService {
   highestBarAvg: number;
-  showChart: boolean = false;
+  showChart: boolean = true;
   constructor() {
   }
 
@@ -28,6 +28,7 @@ export class BenchmarkService {
       bmRow.name = bm.name;
       bmRow.tier = bm.tier;
       bmRow.peers = Object.assign([], bm.peers) || [];
+      bmRow.peers.push('And Others');
       bmRow.rates = Object.assign({}, bm.rates);
       bmRow.highestChildrenRate = 0;
       bmRow.childrenRates = this.formatChildRates(bmRow, bm.rates);
