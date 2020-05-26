@@ -7,6 +7,7 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
 import {FiltersService} from '../../shared/services/filters.service';
 import * as mockServices from '../../shared/unit-tests/mock-services';
+import {MOCK_INSIGHTS} from '../../shared/unit-tests/mock-data/insights';
 
 describe('InsightsComponent', () => {
   let component: InsightsComponent;
@@ -44,4 +45,13 @@ describe('InsightsComponent', () => {
   it('should create InsightsComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should selectInsight', () => {
+    component.insights = MOCK_INSIGHTS.result;
+    component.selectInsight(0);
+    expect(component.selectedInsight).toBeTruthy();
+  });
+  // it('should goToView', () => {
+  //   component.goToView('BB');
+  //   expect(component).toBeTruthy();
+  // });
 });
