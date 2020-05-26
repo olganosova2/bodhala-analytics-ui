@@ -45,4 +45,37 @@ describe('ScoreBadgeComponent', () => {
   it('should create ScoreBadgeComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should create format Card when > 0.7', () => {
+    component.percentale = 0.8;
+    component.formatCard();
+    expect(component.label).toBe('Good');
+  });
+  it('should create format Card when > 0.7 and bpr', () => {
+    component.percentale = 0.8;
+    component.bpr = true;
+    component.formatCard();
+    expect(component.calculatedClass).toBe('score-badge-excellent-blank');
+  });
+  it('should create format Card when > 0.5', () => {
+    component.percentale = 0.5;
+    component.formatCard();
+    expect(component.label).toBe('Fair');
+  });
+  it('should create format Card when > 0.5 and bpr', () => {
+    component.percentale = 0.5;
+    component.bpr = true;
+    component.formatCard();
+    expect(component.calculatedClass).toBe('score-badge-fair-blank');
+  });
+  it('should create format Card when = 0.2', () => {
+    component.percentale = 0.2;
+    component.formatCard();
+    expect(component.calculatedClass).toBe('score-badge-poor');
+  });
+  it('should create format Card when = 0.2 and bpr', () => {
+    component.percentale = 0.2;
+    component.bpr = true;
+    component.formatCard();
+    expect(component.calculatedClass).toBe('score-badge-poor-blank');
+  });
 });
