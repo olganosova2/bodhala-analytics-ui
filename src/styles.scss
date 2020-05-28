@@ -12,6 +12,15 @@
 @import "~material-icons/iconfont/material-icons.css";
 @import '~bootstrap/scss/bootstrap';
 
+@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
+@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+
+.ag-theme-alpine {
+  @include ag-theme-alpine((
+    odd-row-background-color: #ffffff
+  ));
+}
+
 body {
   font-family: "Source Sans Pro", sans-serif;
   background-color: $body-bg;
@@ -541,6 +550,14 @@ body {
   border-left-color: #2e373c !important;
   background-color: #fcfcfc;
 }
-
+.ag-theme-alpine .ag-root-wrapper {
+  border: none !important;
+  //border-color: #babfc7;
+  //border-color: var(--ag-border-color, #babfc7);
+  //border-radius: 3px;
+}
+.ag-theme-alpine .ag-header {
+  background-color: #fff !important;
+}
 
 

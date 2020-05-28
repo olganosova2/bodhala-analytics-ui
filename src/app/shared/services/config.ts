@@ -45,6 +45,7 @@ export const END_POINTS_URLS = {
   getMinMaxMatterCost: {url: BASE_URL + 'analytics/getMinMaxMatterCost', showLoading: false},
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
+  getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
   // playbook/firm/4377/trends?clientId=110
 };
 

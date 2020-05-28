@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {AgGridModule} from 'ag-grid-angular';
+import 'ag-grid-enterprise';
 import {
   MatBadgeModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
   MatDialogModule,
@@ -61,6 +63,8 @@ import {OverlayPanelModule} from 'primeng';
 import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
+import { MattersComponent } from './matters/matters.component';
+import { LeadAttorneyComponent } from './lead-attorney/lead-attorney.component';
 
 
 export function initUser(config: UserService) {
@@ -113,6 +117,8 @@ export function highchartsFactory() {
     BenchmarkFirmDetailComponent,
     IeBannerComponent,
     ErrorMessagesComponent,
+    MattersComponent,
+    LeadAttorneyComponent,
   ],
   entryComponents: [
     PillComponent,
@@ -156,7 +162,8 @@ export function highchartsFactory() {
     MatButtonToggleModule,
     ChartModule,
     DropdownModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    AgGridModule.withComponents([])
   ],
   providers: [CookieService,
     UserService,
