@@ -8,7 +8,9 @@
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
   </div>
-  <div class="font-bold mb10">Total Records: {{totalRecords}}</div>
+  <div class="font-bold mb10 pull-left">Total Records: {{totalRecords}}</div>
+  <div class="pull-right"><button (click)="resetGrid()">RESET</button></div>
+  <div class="clear-both"></div>
   <div class="card-wrapper">
     <ag-grid-angular
         #agGrid

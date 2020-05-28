@@ -20,6 +20,7 @@ export class LeadAttorneyComponent implements OnInit {
   attorneys: Array<any> = [];
   sideBarConfig: any = defaultSideBar;
   totalRecords: number = 0;
+  defaultState: any;
 
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
@@ -36,6 +37,7 @@ export class LeadAttorneyComponent implements OnInit {
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
     this.load();
+    // this.gridOptions.onGridColumnsChanged.
   }
   load(): void {
     this.totalRecords = 0;
@@ -60,17 +62,17 @@ export class LeadAttorneyComponent implements OnInit {
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      { headerName: 'Lead Attorney', field: 'name', ... defaultColumn, flex: 1.5 },
-      { headerName: 'Classification', field: 'bh_classification', ... defaultColumn },
-      {headerName: 'Firm', field: 'firm', ... defaultColumn, flex: 1.5 },
+      { headerName: 'Lead Attorney', field: 'name', ... defaultColumn, width: 150, cellRenderer: this.leadAttorneyCellRenderer },
+      { headerName: 'Classification', headerTooltip: 'Classification', field: 'bh_classification', ... defaultColumn },
+      {headerName: 'Firm', field: 'firm', ... defaultColumn, width: 180 },
       {headerName: 'Leverage', field: 'leverage', ... defaultColumn },
       {headerName: 'Matters', field: 'total_matters', ... defaultColumn },
-      {headerName: 'Avg. Matter Cost', field: 'avg_matter_cost', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
-      {headerName: 'Blended Rate', field: 'blended_rate', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
-      {headerName: 'Bodhala Price Index', field: 'bpi', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
-      {headerName: '# of Partners', field: 'avg_partners', cellRenderer: this.agGridService.roundToOneNumberCellRenderer, ... defaultColumn},
-      {headerName: '# of Associates', field: 'avg_associates', cellRenderer: this.agGridService.roundToOneNumberCellRenderer, ... defaultColumn},
-      {headerName: 'Partner Hours', field: 'avg_partner_hours', cellRenderer: this.agGridService.roundNumberCellRenderer, ... defaultColumn},
+      {headerName: 'Avg. Matter Cost',  headerTooltip: 'Avg. Matter Cost', field: 'avg_matter_cost', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
+      {headerName: 'Blended Rate', headerTooltip: 'Blended Rate', field: 'blended_rate', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
+      {headerName: 'Bodhala Price Index', headerTooltip: 'Bodhala Price Index', field: 'bpi', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
+      {headerName: '# of Partners', headerTooltip: '# of Partners',  field: 'avg_partners', cellRenderer: this.agGridService.roundToOneNumberCellRenderer, ... defaultColumn},
+      {headerName: '# of Associates', headerTooltip: '# of Associates',  field: 'avg_associates', cellRenderer: this.agGridService.roundToOneNumberCellRenderer, ... defaultColumn},
+      {headerName: 'Partner Hours', headerTooltip: 'Partner Hours', field: 'avg_partner_hours', cellRenderer: this.agGridService.roundNumberCellRenderer, ... defaultColumn},
       {headerName: 'Associate Hours', field: 'avg_associate_hours', cellRenderer: this.agGridService.roundNumberCellRenderer, ... defaultColumn},
       {headerName: 'Partner % Billed by $', field: 'avg_ptnr_pct_billed', cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ... defaultColumn},
       {headerName: 'Associate % Billed by $', field: 'avg_ass_pct_billed', cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ... defaultColumn},
@@ -83,6 +85,7 @@ export class LeadAttorneyComponent implements OnInit {
     }
     this.gridOptions.api.setRowData(this.attorneys);
     // this.rowData = Object.assign([], this.attorneys);
+    this.defaultState = this.gridOptions.columnApi.getColumnState();
   }
   processData(): void {
     for (const rec of this.attorneys) {
@@ -128,5 +131,18 @@ export class LeadAttorneyComponent implements OnInit {
     }
     result = (rec.total_associate_billed - rec.total_associate_writeoff) / totalBilled * 100;
     return result;
+  }
+  leadAttorneyCellRenderer(params: any) {
+    const id = params.node.data.id;
+    const firmId = params.node.data.firm_id;
+    const value = '<a class="href-link-primary" href="/#/app/client-dashboard/lead-attorneys/' + id + '/' + firmId + '">' + params.value + '</a>';
+
+    return value;
+  }
+  resetGrid(): void {
+    if (!this.defaultState) {
+      return;
+    }
+    this.gridOptions.columnApi.setColumnState(this.defaultState);
   }
 }
