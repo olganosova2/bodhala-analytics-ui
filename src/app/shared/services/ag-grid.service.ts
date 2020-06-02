@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {SideBarDef} from 'ag-grid-community/dist/lib/entities/sideBar';
 
 export const defaultColumn = {
-  sortable: true,  filter: true, resizable: true, width: 100
+  sortable: true,  filter: 'agNumberColumnFilter', resizable: true, minWidth: 130
 };
 export const defaultSideBar = {
   toolPanels: [
@@ -28,6 +28,7 @@ export const defaultSideBar = {
     }
   ],
   position: 'right',
+  // colResizeDefault: 'shift',
   defaultToolPanel: ''
 };
 
@@ -41,7 +42,7 @@ export class AgGridService {
   getDefaultGridOptions() {
     return {
       rowHeight: 50,
-      // headerHeight: 80
+      headerHeight: 80
     };
   }
 

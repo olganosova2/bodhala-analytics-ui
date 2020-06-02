@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
+import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../shared/services/filters.service';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
@@ -12,7 +12,7 @@ import {AgGridService, defaultColumn, defaultSideBar} from '../shared/services/a
   templateUrl: './lead-attorney.component.html',
   styleUrls: ['./lead-attorney.component.scss']
 })
-export class LeadAttorneyComponent implements OnInit {
+export class LeadAttorneyComponent implements OnInit, OnDestroy {
   pageName = 'app.client-dashboard.lead-partners';
   pendingRequest: Subscription;
   errorMessage: any;
@@ -21,19 +21,24 @@ export class LeadAttorneyComponent implements OnInit {
   sideBarConfig: any = defaultSideBar;
   totalRecords: number = 0;
   defaultState: any;
+  savedState: any;
 
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
               public appStateService: AppStateService,
               public filtersService: FiltersService,
               public userService: UserService,
+              public utilServ: UtilService,
               public agGridService: AgGridService,
               public commonServ: CommonService) {
     this.commonServ.pageTitle = 'Lead Attorneys';
   }
 
   ngOnInit() {
-
+    const saved = localStorage.getItem('LeadAttorneyGrid_' + this.userService.currentUser.id.toString());
+    if (saved) {
+      this.savedState = JSON.parse(saved);
+    }
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
     this.load();
@@ -62,11 +67,11 @@ export class LeadAttorneyComponent implements OnInit {
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      { headerName: 'Lead Attorney', field: 'name', ... defaultColumn, width: 150, cellRenderer: this.leadAttorneyCellRenderer },
-      { headerName: 'Classification', headerTooltip: 'Classification', field: 'bh_classification', ... defaultColumn },
-      {headerName: 'Firm', field: 'firm', ... defaultColumn, width: 180 },
+      { headerName: 'Lead Attorney', field: 'name', ... defaultColumn, width: 150, cellRenderer: this.leadAttorneyCellRenderer, filter: 'text' },
+      { headerName: 'Classification', headerTooltip: 'Classification', field: 'bh_classification', ... defaultColumn, filter: 'text' },
+      {headerName: 'Firm', field: 'firm', ... defaultColumn, width: 180, filter: 'text' },
       {headerName: 'Leverage', field: 'leverage', ... defaultColumn },
-      {headerName: 'Matters', field: 'total_matters', ... defaultColumn },
+      {headerName: 'Matters', field: 'total_matters', ... defaultColumn,  filter: 'agNumberColumnFilter' },
       {headerName: 'Avg. Matter Cost',  headerTooltip: 'Avg. Matter Cost', field: 'avg_matter_cost', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
       {headerName: 'Blended Rate', headerTooltip: 'Blended Rate', field: 'blended_rate', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
       {headerName: 'Bodhala Price Index', headerTooltip: 'Bodhala Price Index', field: 'bpi', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... defaultColumn},
@@ -86,6 +91,7 @@ export class LeadAttorneyComponent implements OnInit {
     this.gridOptions.api.setRowData(this.attorneys);
     // this.rowData = Object.assign([], this.attorneys);
     this.defaultState = this.gridOptions.columnApi.getColumnState();
+    this.restoreGrid();
   }
   processData(): void {
     for (const rec of this.attorneys) {
@@ -95,6 +101,7 @@ export class LeadAttorneyComponent implements OnInit {
       rec.avg_ass_pct_billed = this.calcAvgTKPctAssociateBilledPerMatter(rec);
       rec.total_billed_and_afa = rec.total_billed + rec.total_afa;
     }
+    this.attorneys = this.attorneys.sort(this.utilServ.dynamicSort('-total_billed_and_afa'));
   }
   calcBlendedRate(rec: any): number {
     const result = 0;
@@ -140,9 +147,31 @@ export class LeadAttorneyComponent implements OnInit {
     return value;
   }
   resetGrid(): void {
+   // this.gridOptions.columnApi.resetColumnState();
     if (!this.defaultState) {
       return;
     }
     this.gridOptions.columnApi.setColumnState(this.defaultState);
+    this.gridOptions.api.setFilterModel(null);
+  }
+  restoreGrid(): void {
+    if (!this.savedState) {
+      return;
+    }
+    this.gridOptions.columnApi.setColumnState(this.savedState);
+  }
+  sizeToFit(): void {
+    this.gridOptions.api.sizeColumnsToFit();
+  }
+  saveGridConfig(evt: any): void {
+    const state = evt;
+    const currentState = this.gridOptions.columnApi.getColumnState();
+    localStorage.setItem('LeadAttorneyGrid_' + this.userService.currentUser.id.toString(), JSON.stringify(currentState));
+    setTimeout(() => {
+     this.sizeToFit();
+    });
+  }
+  ngOnDestroy() {
+    this.commonServ.clearTitles();
   }
 }

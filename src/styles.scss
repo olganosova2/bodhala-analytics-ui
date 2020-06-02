@@ -560,8 +560,16 @@ body {
   background-color: #fff !important;
 }
 .ag-theme-alpine .ag-header-cell {
-  //padding-left: 5px;
-  //padding-right: 0;
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.ag-header-cell-text {
+  vertical-align: top;
+  max-width: 100px;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  white-space: normal !important;
 }
 
 
