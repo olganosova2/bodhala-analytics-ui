@@ -3,13 +3,14 @@
   color: $body-color;
   margin:0;
   padding: 20px 30px;
-  border-right: $light-gray 1px solid;
+  border-right: $gray-blue-bg 1px solid;
   text-align: center;
   display: inline-block;
   width: 100%
 }
 em {
-  color: $blue-color;
+  color: $body-color;
+  font-size: 1.2rem;
 }
 span {
   display: inline-block;

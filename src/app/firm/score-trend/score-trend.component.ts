@@ -179,7 +179,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   }
 
   resizeChart(): void {
-    const width = this.trendsDiv.nativeElement.offsetWidth - 10;
+    const width = this.trendsDiv.nativeElement.offsetWidth - 40;
     const height = 400; // this.trendsDiv.nativeElement.offsetHeight;
     if (!this.chart || width <= 0) {
       return;

@@ -35,7 +35,6 @@ export class FiltersService {
       this.includeExpenses = JSON.parse(serializedIncludeExpenses) || false;
     }
     this.userFilters = Object.assign({}, this.filtersHelper.create(this.userFilters));
-    const dt = moment();
   }
 
   getCurrentUserCombinedFiltersOld(): any {

@@ -51,7 +51,7 @@ body {
   font-family: "Source Sans Pro", sans-serif;
   margin:0;
   color: #929292;
-  background-color: #f5f7fa;
+  background-color: $body-bg;
 }
 
 .wrapper {
@@ -69,7 +69,7 @@ body {
   grid-gap: 0px;
 
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: $body-bg;
 }
 .aside-collapsed .wrapper {
   -ms-grid-columns: 70px 2fr;
@@ -93,7 +93,7 @@ rfp-header a {
   color: #FFF;
 }
 rfp-header a:hover {
-  color: #dedede;
+  color: #fff;
 }
 .user-block {
   display: flex;
@@ -107,7 +107,7 @@ rfp-header a:hover {
 
 rfp-side-bar {
   width: 180px;
-  background-color: #FFF;
+  background-color: #F5F8F9;
   border-right: 1px solid #dedede;
   list-style: none;
   -ms-grid-row:2;
@@ -162,7 +162,7 @@ rfp-side-bar ul{
 }
 .sidebar > .nav > li.active {
   border-left-color: #2e373c;
-  background-color: #f5f7fa;
+  background-color: $body-bg;
 }
 .sidebar > .nav > li {
   font-size: 12px;

@@ -12,4 +12,11 @@ export class CommonService {
     this.pageSubtitle = '';
     this.pageTitle = '';
   }
+  formatTkName(tkName: string): string {
+    let result = tkName;
+    if (result && result.length > 12) {
+      result = result.substring(0, 12) + '...';
+    }
+    return result;
+  }
 }

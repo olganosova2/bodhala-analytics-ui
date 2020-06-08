@@ -3,6 +3,7 @@ import {IFirm, ITimekeeper} from '../firm.model';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
+import {CommonService} from '../../shared/services/common.service';
 
 @Component({
   selector: 'bd-top-timekeepers',
@@ -17,6 +18,7 @@ export class TopTimekeepersComponent implements OnInit, OnDestroy {
   @Input() firm: IFirm;
   pendingRequest: Subscription;
   constructor(private httpService: HttpService,
+              public commonServ: CommonService,
               public filtersService: FiltersService) { }
 
   ngOnInit() {

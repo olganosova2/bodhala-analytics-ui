@@ -45,6 +45,7 @@ export const END_POINTS_URLS = {
   getMinMaxMatterCost: {url: BASE_URL + 'analytics/getMinMaxMatterCost', showLoading: false},
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
+  getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
   // playbook/firm/4377/trends?clientId=110
 };
 
@@ -52,6 +53,7 @@ export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
+  // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
 
 

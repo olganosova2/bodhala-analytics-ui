@@ -1,7 +1,7 @@
 @import "../../../assets/styles/colors.scss";
 @import "../../../assets/styles/variables.scss";
 .ui-g {
-  border-bottom: 1px solid  $very-light-gray;
+  border-bottom: 1px solid  $gray-blue-bg;
   color: $body-color;
   .left-panel{
     text-align: right;
@@ -40,11 +40,11 @@
     top: -10px;
     height: 90px;
     border-radius: 5px;
-    background-color: $very-light-gray;
+    background-color: $gray-blue-bg;
     background: repeating-linear-gradient(
         135deg,
-        $very-light-gray,
-        $very-light-gray 5px,
+        $gray-blue-bg,
+        $gray-blue-bg 5px,
         #ffffff 5px,
         #ffffff 10px
     );
