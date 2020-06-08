@@ -90,7 +90,7 @@ $brand-yellow-dark:            darken($brand-yellow, $amountOfLight);
 //## Settings for some of the most global styles.
 
 //** Background color for `<body>`.
-$body-bg:               #f5f7fa;
+$body-bg:               #E9F1F4; //#f5f7fa;
 //** Global text color on `<body>`.
 $text-color:            #515253;
 
@@ -851,5 +851,7 @@ $page-header-border-color:    $gray-lighter;
 $dl-horizontal-offset:        $component-offset-horizontal;
 //** Horizontal line color.
 $hr-border:                   $gray-lighter;
+
+$card-panel-radius: 8px;
 
 

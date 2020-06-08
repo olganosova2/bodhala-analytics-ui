@@ -15,12 +15,12 @@
   <div class="card-wrapper">
     <ag-grid-angular
         #agGrid
-        style="width: 100%; height: 500px;"
+        style="width: 100%; height:629px"
         class="ag-theme-alpine"
         [sideBar]="sideBarConfig"
         (displayedColumnsChanged)="saveGridConfig($event);"
-    [paginationAutoPageSize]="true"
-    [pagination]="true"
+        [paginationPageSize]="paginationPageSize"
+        [pagination]="true"
         [gridOptions]="gridOptions">
     </ag-grid-angular>
   </div>

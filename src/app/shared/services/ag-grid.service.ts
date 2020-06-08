@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {SideBarDef} from 'ag-grid-community/dist/lib/entities/sideBar';
 
 export const defaultColumn = {
-  sortable: true,  filter: 'agNumberColumnFilter', resizable: true, minWidth: 130
+  sortable: true,  filter: 'agNumberColumnFilter', resizable: true, width: 130
 };
 export const defaultSideBar = {
   toolPanels: [

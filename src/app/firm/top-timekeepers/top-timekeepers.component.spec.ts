@@ -46,4 +46,8 @@ describe('TopTimekeepersComponent', () => {
   it('should create TopTimekeepersComponent', () => {
     expect(component).toBeTruthy();
   });
+  // it('should create format name', () => {
+  //   const result = component.formatTkName('Elizabeth A. Vanderlinde');
+  //   expect(result).toBe('Elizabeth A....');
+  // });
 });

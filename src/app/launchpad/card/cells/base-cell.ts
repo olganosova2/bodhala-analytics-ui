@@ -1,8 +1,10 @@
 import { Input, Output, EventEmitter } from '@angular/core';
 import {Router} from '@angular/router';
+import {CommonService} from '../../../shared/services/common.service';
 
 export class BaseCell {
-  constructor(public router: Router) {
+  constructor(public router: Router,
+              public commonServ: CommonService) {
   }
   @Input()
   data: any;

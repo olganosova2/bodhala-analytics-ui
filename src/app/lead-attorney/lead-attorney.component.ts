@@ -22,6 +22,7 @@ export class LeadAttorneyComponent implements OnInit, OnDestroy {
   totalRecords: number = 0;
   defaultState: any;
   savedState: any;
+  paginationPageSize: any = 10;
 
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
@@ -168,7 +169,7 @@ export class LeadAttorneyComponent implements OnInit, OnDestroy {
     const currentState = this.gridOptions.columnApi.getColumnState();
     localStorage.setItem('LeadAttorneyGrid_' + this.userService.currentUser.id.toString(), JSON.stringify(currentState));
     setTimeout(() => {
-     this.sizeToFit();
+     // this.sizeToFit();
     });
   }
   ngOnDestroy() {
