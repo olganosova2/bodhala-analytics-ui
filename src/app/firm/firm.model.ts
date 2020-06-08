@@ -239,7 +239,7 @@ export const trendChart = {
    // color: '#FF0000',
     data: []
   }, {
-    name: 'Firm Averages',
+    name: 'Peer Firm Avg.',
     color: '#000',
     data: []
   }]
