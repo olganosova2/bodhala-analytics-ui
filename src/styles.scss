@@ -12,11 +12,29 @@
 @import "~material-icons/iconfont/material-icons.css";
 @import '~bootstrap/scss/bootstrap';
 
+/* sharpsans */
+@font-face {
+  font-family: 'Sharp Sans';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Sharp Sans'), local('Sharp Sans'), url(src/assets/fonts/sharpsans/SharpSans-Medium.woff2) format('woff2');
+}
+/* sharpsans display bold */
+@font-face {
+  font-family: 'Sharp Sans Display';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Sharp Sans Display'), local('Sharp Sans Display'), url(src/assets/fonts/sharpsansdisplay/SharpSansDispNo1-Bold.woff2) format('woff2');
+}
+
 body {
   font-family: "Source Sans Pro", sans-serif;
   background-color: $body-bg;
   color: $body-color;
   font-size: 15px;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Sharp Sans Display", sans-serif !important;
 }
 
 .pointer-hand {
@@ -536,6 +554,10 @@ body {
 }
 .page_description {
   padding-left: 35px !important;
+  font-family: 'Sharp Sans';
+}
+.subtitle {
+  font-family: 'Sharp Sans';
 }
 .sidebar>.nav>li.active {
   border-left-color: #2e373c !important;
