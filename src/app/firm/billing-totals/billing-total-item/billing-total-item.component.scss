@@ -2,7 +2,7 @@
 .cell-item {
   color: $body-color;
   margin:0;
-  padding: 20px 30px;
+  padding: 10px 30px 10px 30px;
   border-right: $gray-blue-bg 1px solid;
   text-align: center;
   display: inline-block;
@@ -20,4 +20,7 @@ span {
 }
 .cell-last {
   border-right: none;
+}
+.img-div {
+  min-height: 33px;
 }

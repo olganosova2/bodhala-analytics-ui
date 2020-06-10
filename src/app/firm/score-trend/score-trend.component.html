@@ -3,11 +3,12 @@
     <div class="panel-wrapper">
       <div class="pull-left">
         <h4>Health
-          <span class="badge badge-help ml5" placement="right-bottom"
+          <span class="ml10 pointer-hand" placement="right-bottom"
                 [ngbPopover]="helpText"
                 [openDelay]="100"
                 [closeDelay]="2000"
-                triggers="mouseenter:mouseleave"> ?
+                triggers="mouseenter:mouseleave">
+          <img src="assets/images/question.svg" alt="Hint"/>
           </span>
         </h4>
       </div>
@@ -56,7 +57,8 @@
   </div>
   <div class="ui-g-{{rightColsCount}}  no-left-padding no-right-padding chart-panel">
     <div class="tabs-panel">
-        <span class="tab-button tab-button-first" [ngClass]="{'tab-button-selected-first': selectedChart === chartTypes.LEVERAGE }"
+        <span class="tab-button tab-button-first"
+              [ngClass]="{'tab-button-selected-first': selectedChart === chartTypes.LEVERAGE }"
               (click)="changeViewMode(chartTypes.LEVERAGE)">Leverage</span>
       <span class="tab-button"
             [ngClass]="{'tab-button-selected': selectedChart === chartTypes.MATTER_COST}"

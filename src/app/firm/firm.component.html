@@ -23,12 +23,13 @@
     <div class="ui-g-{{12-rightColsCount}} no-left-padding pr20">
       <div class="panel-wrapper firm-data" *ngIf="firmData && firmData.num_attorneys_range">
         <h4>Firm Data
-          <span class="badge badge-help ml5" placement="right-bottom"
+          <span class="ml10 pointer-hand" placement="right-bottom"
                 [ngbPopover]="helpText"
                 [openDelay]="100"
                 [closeDelay]="2000"
-                triggers="mouseenter:mouseleave"> ?
-          </span>
+                triggers="mouseenter:mouseleave">
+          <img src="assets/images/question.svg" alt="Hint"/>
+        </span>
         </h4>
 
         <div class="table-row">

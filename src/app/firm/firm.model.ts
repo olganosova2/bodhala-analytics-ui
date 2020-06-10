@@ -44,6 +44,7 @@ export interface IFirm {
 
 export interface IBillingTotalItem {
   icon: string;
+  svg?: string;
   total: number;
   total_expenses?: number;
   name: string;

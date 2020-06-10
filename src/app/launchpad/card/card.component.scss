@@ -21,6 +21,8 @@
 .card-header {
   padding: 0 2px;
   background-color: #fff !important;
+  font-family: "Sharp Sans", sans-serif;
+  color: inherit;
 }
 .mat-header-cell {
   font-size: 14px !important;
@@ -39,6 +41,12 @@
   .highcharts-credits {
     font-size: 1px;
   }
+  td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type, th.mat-header-cell:first-of-type {
+    padding-left: 0 !important;
+  }
+  //.td.mat-cell:first-of-type {
+  //  padding-left: 0 !important;
+  //}
 }
 
 .chart-container {
