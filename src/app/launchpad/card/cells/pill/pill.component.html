@@ -5,11 +5,7 @@
   <span class="totals-badge totals-percent">{{data[column.field] | number:'1.2-2'}}%  </span>
 </div>
 <div *ngIf="column.format === 'lawyer'">
-  <span class="partner-badge lead-partner-badge">
-<!--   <img *ngIf="data[column.avatar]; else icon" [src]="data[column.avatar]"/>-->
-<!--    <ng-template #icon>-->
-<!--      <mat-icon aria-hidden="false" aria-label="lawyer">person</mat-icon>-->
-<!--    </ng-template>-->
-    {{data[column.field] ? data[column.field]: "N/A"}}
+  <span class="primary-pill partner-badge">
+    {{data[column.field] ? commonServ.formatTkName(data[column.field]): "N/A"}}
   </span>
 </div>

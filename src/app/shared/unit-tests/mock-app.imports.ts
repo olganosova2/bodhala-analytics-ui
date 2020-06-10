@@ -70,6 +70,9 @@ import {OverlayPanelModule} from 'primeng';
 import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import {IeBannerComponent} from '../components/ie-banner/ie-banner.component';
 import {ErrorMessagesComponent} from '../components/error-messages/error-messages.component';
+import {MattersComponent} from '../../matters/matters.component';
+import {AgGridModule} from 'ag-grid-angular';
+import {LeadAttorneyComponent} from '../../lead-attorney/lead-attorney.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -122,7 +125,8 @@ export const IMPORTS = [
   NgbModule,
   ChartModule,
   DropdownModule,
-  OverlayPanelModule
+  OverlayPanelModule,
+  AgGridModule.withComponents([])
 ];
 
 export const DECLARATIONS = [
@@ -149,7 +153,9 @@ export const DECLARATIONS = [
   TwoBarsComponent,
   BenchmarkFirmDetailComponent,
   IeBannerComponent,
-  ErrorMessagesComponent
+  ErrorMessagesComponent,
+  MattersComponent,
+  LeadAttorneyComponent
 ];
 
 export const PROVIDERS = [
