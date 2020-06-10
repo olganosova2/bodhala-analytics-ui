@@ -1,4 +1,6 @@
 <div class="benchmark-overview">
+  <bd-ie-banner></bd-ie-banner>
+  <bd-error-messages></bd-error-messages>
   <div>
     <p-dropdown  panelStyleClass="dd-class" [options]="yearOptions" [(ngModel)]="year" (onChange)="getPAs()"></p-dropdown>
     <p-dropdown class="ml20" panelStyleClass="dd-class" [options]="areasOptions" [(ngModel)]="practiceAreaId" (onChange)="buildBenchmarks()"></p-dropdown>

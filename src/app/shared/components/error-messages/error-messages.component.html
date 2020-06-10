@@ -1,0 +1,5 @@
+<div *ngIf="messageService.messages.length>0" class="content-body">
+  <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
+    <bd-message-item [alert]="message" [index]="i"></bd-message-item>
+  </div>
+</div>

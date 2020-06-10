@@ -8,13 +8,15 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock } from '../../shared/unit-tests/mock-services';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {MOCK_BM_ROW} from '../../shared/unit-tests/mock-data/benchmarking';
 
 describe('BenchmarkRowComponent', () => {
   let component: BenchmarkRowComponent;
   let fixture: ComponentFixture<BenchmarkRowComponent>;
 
   const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
+    navigate: jasmine.createSpy('navigate'),
+    url: 'benchmarking/firm'
   };
   beforeEach(async(() => {
 
@@ -41,10 +43,36 @@ describe('BenchmarkRowComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BenchmarkRowComponent);
     component = fixture.componentInstance;
+    component.dataRow = MOCK_BM_ROW;
     fixture.detectChanges();
   });
 
   it('should create BenchmarkRowComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should openGroup', () => {
+    const row = MOCK_BM_ROW;
+    component.openGroup(row);
+    expect(row.isExpanded).toBe(true);
+  });
+  it('should showFirm when Child', () => {
+   component.dataRow.isChild = true;
+   component.showFirm();
+   expect(component.dataRow.isChild).toBe(true);
+  });
+  it('should showFirm when NOT Child', () => {
+    component.dataRow.isChild = false;
+    component.showFirm();
+    expect(component.dataRow.isChild).toBe(false);
+  });
+  it('should showFirm when NOT Child and isFirmDetail is true', () => {
+    component.dataRow.isChild = false;
+    component.showFirm();
+    component.isFirmDetail = false;
+    expect(component.dataRow.isChild).toBe(false);
+  });
+  it('should formatDelta', () => {
+    const formatted = component.formatDelta(5);
+    expect(formatted).toBe('-5%');
   });
 });

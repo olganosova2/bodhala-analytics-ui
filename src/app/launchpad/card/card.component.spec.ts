@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS } from '../../shared/unit-tests/mock-app.imports';
-import { CardComponent } from './card.component';
+import {CardComponent, CardMode} from './card.component';
 import { ChartModule } from 'angular2-highcharts';
 
 describe('CardComponent', () => {
@@ -25,7 +25,20 @@ describe('CardComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create CardComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should create call onClick', () => {
+    spyOn(component.clicked, 'emit');
+    component.onClick(null);
+    expect(component.clicked).toBeTruthy();
+  });
+  it('should create call toggle', () => {
+    component.toggle(true);
+    expect(component).toBeTruthy();
+  });
+  it('should create saveInstance', () => {
+    component.saveInstance({});
+    expect(component.chart).toBeTruthy();
   });
 });
