@@ -24,7 +24,7 @@ const tooltipTemplate = `
 const chartOptions = {
   tooltip : {
     useHTML: true,
-    shared: true,
+    shared: false,
     backgroundColor: 'white',
     headerFormat: null,
     padding: 0,
