@@ -14,8 +14,8 @@ pipelines:
                 AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: 'us-east-2'
-                S3_BUCKET: 'bodhala-analytics-ui/$BITBUCKET_BRANCH'
-                LOCAL_PATH: '$(pwd)'
+                S3_BUCKET: 'bodhala-analytics-ui/$BITBUCKET_BRANCH/dist/'
+                LOCAL_PATH: '$(pwd)/dist/'
                 ACL: 'public-read'          
           
   pull-requests:
