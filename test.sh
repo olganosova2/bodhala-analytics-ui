@@ -22,5 +22,19 @@ echo Linting...
 echo Testing...
 ./node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless
 
+BODHALA_RFP_NG_TARGET=production
+
+case $BITBUCKET_BRANCH in
+    develop)
+	BODHALA_RFP_NG_TARGET=int
+	;;
+    release)
+	BODHALA_RFP_NG_TARGET=stage
+	;;
+esac
+echo Final build target=$BODHALA_RFP_NG_TARGET...
+
+./node_modules/@angular/cli/bin/ng build --configuration $BODHALA_RFP_NG_TARGET --base-href /analytics-ui/
+
 echo
 echo Finished
