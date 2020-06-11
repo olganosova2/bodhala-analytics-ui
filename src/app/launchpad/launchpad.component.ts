@@ -4,6 +4,10 @@ import { FiltersService } from '../shared/services/filters.service';
 import { columns } from './launchpad.model';
 import {AppStateService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import html2canvas from 'html2canvas';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'bd-launchpad',
@@ -21,6 +25,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   cards: Array<any> = []; // cards;
   requests = {};
   columns = columns;
+  launchpadImage = null;
 
   constructor(
     private filtersService: FiltersService,
@@ -35,6 +40,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.load();
+    // this.generatePDF();
   }
 
   load(): void {
@@ -44,6 +50,20 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 
   onCardLoaded() {
     this.postLoad();
+  }
+
+  generatePDF() {
+    html2canvas(document.getElementById('launchpadtest')).then(canvas => {
+      this.launchpadImage = canvas.toDataURL();
+      const documentDefinition = { 
+        content: [{
+          image: this.launchpadImage,
+          width: 500,
+        }]
+      };
+      console.log("asynchronous nature");
+      pdfMake.createPdf(documentDefinition).download();
+    });
   }
 
   // bubbled up from card/cell clicks

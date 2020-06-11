@@ -12,7 +12,8 @@
   <div #insights style="display: block">
     <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
   </div>
-  <div class="launchpad" #launchpad>
+  <button (click)="generatePDF()">Generate PDF</button>
+  <div class="launchpad" #launchpad id="launchpadtest">
     <bd-card *ngFor="let card of cards"
              [header]="card.header"
              [request]="requests[card.request]"
