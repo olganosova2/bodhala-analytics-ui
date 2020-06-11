@@ -1,5 +1,6 @@
 <div class="cell-item" [ngClass]="{'cell-last': isLastCell}">
-  <div><em class="{{item.icon}}"></em></div>
+  <div *ngIf="!item.svg"><em class="{{item.icon}}"></em></div>
+  <div *ngIf="item.svg" class="img-div"><img src="assets/images/{{item.svg}}.svg" alt="icon"/></div>
   <div class="font-bold mb10 mt10">
     <span *ngIf="item?.format === 'currency'">${{ item.total | number:'1.0-0'}}</span>
     <span *ngIf="item?.format === 'percent'">{{ item.total | number:'1.2-2'}}%</span>

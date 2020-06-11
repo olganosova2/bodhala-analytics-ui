@@ -2,15 +2,12 @@
   <div class="panel-wrapper">
     <div class="panel-title">
       <h5>{{header}}</h5>
-      <mat-button-toggle-group name="pick" aria-label="pick" value="list">
-        <mat-button-toggle value="list" (click)="toggle('list')">
-          <mat-icon>list</mat-icon>
-        </mat-button-toggle>
-        <mat-button-toggle value="chart" (click)="toggle('chart')">
-          <mat-icon>pie_chart</mat-icon>
-        </mat-button-toggle>
-      </mat-button-toggle-group>
+      <div class="pull-right pointer-hand">
+        <img *ngIf="show === 'list'" src="assets/images/toggle_right.svg" alt="icon" (click)="toggle('chart')"/>
+        <img *ngIf="show === 'chart'" src="assets/images/toggle_left.svg" alt="icon" (click)="toggle('list')"/>
+      </div>
     </div>
+    <div class="clear-both"></div>
     <div class="panel-body" #panelBody>
       <table mat-table [dataSource]="data" class="full-width" #matterTable
              *ngIf="show === 'list' && columns && isLoaded">

@@ -12,8 +12,8 @@ import {CommonService} from '../../../../shared/services/common.service';
   styleUrls: ['./link.component.scss']
 })
 export class LinkComponent extends BaseCell implements OnInit, ICell {
-  constructor(public router: Router) {
-    super(router);
+  constructor(public router: Router, public commonServ: CommonService) {
+    super(router, commonServ);
   }
   ngOnInit() {
   }

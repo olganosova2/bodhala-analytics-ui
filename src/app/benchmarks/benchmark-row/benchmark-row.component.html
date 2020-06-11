@@ -1,5 +1,5 @@
 <div class="ui-g full-width bm-table"
-     [ngClass]="{'bm-border-bottom': !dataRow.isChild, 'child-panel': dataRow.isChild}">
+     [ngClass]="{'bm-border-bottom': !dataRow.isChild }">
   <div class="ui-g-2" [ngClass]="{'pl10': !isFirmDetail}">
     <ng-container>
       <span class="pointer-hand mr10" (click)="openGroup(dataRow)" *ngIf="!dataRow.isChild && isFirmDetail">

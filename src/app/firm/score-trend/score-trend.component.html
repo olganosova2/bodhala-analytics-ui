@@ -1,71 +1,82 @@
 <div class="ui-g  no-left-padding">
-  <div *ngIf="rightColsCount !== 12" class="ui-g-{{12-rightColsCount}}  no-left-padding">
-    <div class="panel-wrapper panel-wrapper-blank pt10">
-      <div class="pull-left mt20">
+  <div *ngIf="rightColsCount !== 12" class="ui-g-{{12-rightColsCount}}  no-left-padding pr20">
+    <div class="panel-wrapper">
+      <div class="pull-left">
         <h4>Health
-          <span class="badge badge-help ml5" placement="right-bottom"
+          <span class="ml10 pointer-hand" placement="right-bottom"
                 [ngbPopover]="helpText"
                 [openDelay]="100"
                 [closeDelay]="2000"
-                triggers="mouseenter:mouseleave"> ?
+                triggers="mouseenter:mouseleave">
+          <img src="assets/images/question.svg" alt="Hint"/>
           </span>
         </h4>
       </div>
-      <div class="pull-right mt20">
+      <div class="pull-right">
         <bd-score-badge [percentale]="scoreAvg" [bpr]="true"></bd-score-badge>
       </div>
-      <div class="clear-both mb20"></div>
+      <div class="clear-both mb10"></div>
 
       <div class="table-row">
         <div class="pull-left">Leverage (Per Partner)</div>
-        <div class="pull-right"><bd-score-badge [percentale]="score.peer_hourly_leverage_percentile"></bd-score-badge></div>
+        <div class="pull-right">
+          <bd-score-badge [percentale]="score.peer_hourly_leverage_percentile"></bd-score-badge>
+        </div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row">
         <div class="pull-left">Block Billing</div>
-        <div class="pull-right"><bd-score-badge [percentale]="score.peer_block_billing_percentile"></bd-score-badge></div>
+        <div class="pull-right">
+          <bd-score-badge [percentale]="score.peer_block_billing_percentile"></bd-score-badge>
+        </div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row">
         <div class="pull-left">Matter Cost</div>
-        <div class="pull-right"><bd-score-badge [percentale]="score.peer_matter_cost_percentile"></bd-score-badge></div>
+        <div class="pull-right">
+          <bd-score-badge [percentale]="score.peer_matter_cost_percentile"></bd-score-badge>
+        </div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row">
         <div class="pull-left">Average Partner Rate</div>
-        <div class="pull-right"><bd-score-badge [percentale]="score.peer_partner_rate_percentile"></bd-score-badge></div>
+        <div class="pull-right">
+          <bd-score-badge [percentale]="score.peer_partner_rate_percentile"></bd-score-badge>
+        </div>
         <div class="clear-both"></div>
       </div>
       <div class="table-row last-row">
         <div class="pull-left">Average Associate Rate</div>
-        <div class="pull-right"><bd-score-badge [percentale]="score.peer_associate_rate_percentile"></bd-score-badge></div>
+        <div class="pull-right">
+          <bd-score-badge [percentale]="score.peer_associate_rate_percentile"></bd-score-badge>
+        </div>
         <div class="clear-both"></div>
       </div>
 
     </div>
   </div>
   <div class="ui-g-{{rightColsCount}}  no-left-padding no-right-padding chart-panel">
-    <div class="panel-wrapper full-width" #trendsDiv>
-      <div class="tabs-panel mb10" >
-      <span class="tab-button" [ngClass]="{'tab-button-selected': selectedChart === chartTypes.LEVERAGE }"
-            (click)="changeViewMode(chartTypes.LEVERAGE)">Leverage</span>
-        <span class="tab-button"
-              [ngClass]="{'tab-button-selected': selectedChart === chartTypes.MATTER_COST}"
-              (click)="changeViewMode(chartTypes.MATTER_COST)">Matter Cost</span>
-        <span class="tab-button"
-              [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BLOCK_BILLING}"
-              (click)="changeViewMode(chartTypes.BLOCK_BILLING)">Block Billing</span>
-        <span class="tab-button"
-              [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARTNER_RATE}"
-              (click)="changeViewMode(chartTypes.PARTNER_RATE)">Partner Rate</span>
-        <span class="tab-button"
-              [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_RATE}"
-              (click)="changeViewMode(chartTypes.ASSOCIATE_RATE)">Associate Rate</span>
+    <div class="tabs-panel">
+        <span class="tab-button tab-button-first"
+              [ngClass]="{'tab-button-selected-first': selectedChart === chartTypes.LEVERAGE }"
+              (click)="changeViewMode(chartTypes.LEVERAGE)">Leverage</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.MATTER_COST}"
+            (click)="changeViewMode(chartTypes.MATTER_COST)">Matter Cost</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BLOCK_BILLING}"
+            (click)="changeViewMode(chartTypes.BLOCK_BILLING)">Block Billing</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARTNER_RATE}"
+            (click)="changeViewMode(chartTypes.PARTNER_RATE)">Partner Rate</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_RATE}"
+            (click)="changeViewMode(chartTypes.ASSOCIATE_RATE)">Associate Rate</span>
 
-      </div>
+    </div>
+    <div class="panel-wrapper-chart full-width" #trendsDiv>
       <chart [options]="options" (load)="saveInstance($event.context)"></chart>
     </div>
-
     <div class="spinner-card" [hidden]="isLoaded">
       <mat-spinner diameter="50" color="primary"></mat-spinner>
     </div>
