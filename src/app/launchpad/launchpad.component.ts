@@ -4,6 +4,7 @@ import { FiltersService } from '../shared/services/filters.service';
 import { columns } from './launchpad.model';
 import {AppStateService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
+import {UserService} from 'bodhala-ui-common';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import html2canvas from 'html2canvas';
@@ -26,11 +27,13 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   requests = {};
   columns = columns;
   launchpadImage = null;
+  logoImage = null;
 
   constructor(
     private filtersService: FiltersService,
     private launchPadService: LaunchPadService,
     public appStateService: AppStateService,
+    public userService: UserService,
     public commonServ: CommonService
     ) {
     this.cards = this.launchPadService.configureCards();
@@ -53,17 +56,70 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   }
 
   generatePDF() {
-    html2canvas(document.getElementById('launchpadtest')).then(canvas => {
-      this.launchpadImage = canvas.toDataURL();
-      const documentDefinition = { 
-        content: [{
-          image: this.launchpadImage,
-          width: 500,
-        }]
-      };
-      console.log("asynchronous nature");
-      pdfMake.createPdf(documentDefinition).download();
-    });
+
+    pdfMake.fonts = {
+      sharpSansDisplay: {
+        normal: 'SharpSansDispNo1-Bold.ttf'
+      }
+    }
+    let clientName = this.userService.currentUser.client_info.org.name;
+    clientName += ' Executive Summary';
+
+    let logoDiv = document.createElement('div');
+    logoDiv.style.height = '40.67px';
+    logoDiv.style.width = '198.83px';
+    logoDiv.id = 'logoDiv';
+    let logoImg = document.createElement('img');
+    logoImg.style.height = '40.67px';
+    logoImg.style.width = '198.83px';
+    logoImg.src = 'assets/images/new_logo.png';
+    logoDiv.appendChild(logoImg);
+    document.body.append(logoDiv);
+    html2canvas(document.getElementById('logoDiv')).then(canvas => {
+      
+      this.logoImage = canvas.toDataURL();
+
+      document.body.removeChild(logoDiv);
+
+      html2canvas(document.getElementById('launchpadtest')).then(canvas => {
+
+        this.launchpadImage = canvas.toDataURL();
+
+        const documentDefinition = { 
+          pageMargins: [40, 100, 40, 60],
+          header: {
+            margin: 8,
+            columns: [
+              {
+                table: {
+                  widths: ['50%', '50%'],
+                  body: [
+                    [
+                      { 
+                        image: this.logoImage, alignment: 'center',
+                        width: 200, height: 45,
+                      },
+                      { 
+                        text: clientName, font: 'sharpSansDisplay', fontSize: 24, alignment: 'center',
+                        width: 80, height: 100,
+                      }
+                    ]
+                  ]
+                },
+                layout: 'noBorders',
+                background: 'light gray'
+              }
+            ],
+          },
+          content: [{
+            image: this.launchpadImage,
+            width: 500,
+          }]
+        };
+
+        pdfMake.createPdf(documentDefinition).download();
+      });
+   });
   }
 
   // bubbled up from card/cell clicks
