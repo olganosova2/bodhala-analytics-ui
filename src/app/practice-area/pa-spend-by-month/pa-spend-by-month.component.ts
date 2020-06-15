@@ -1,30 +1,34 @@
 import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as _moment from 'moment';
-import {IFirm, spendByMonthOptions} from '../firm.model';
-import {Subscription} from 'rxjs';
+import {ITopMatter} from '../../shared/models/top-matters';
+import {IPracticeArea, spendByMonthOptions} from '../practice-area.model';
+import {Subscription, fromEventPattern} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
+import {PracticeAreaComponent} from '../practice-area.component'
+import { FromUtcPipe } from 'angular2-moment';
 
 const moment = _moment;
 
 @Component({
-  selector: 'bd-spend-by-month',
-  templateUrl: './spend-by-month.component.html',
-  styleUrls: ['./spend-by-month.component.scss']
+  selector: 'bd-pa-spend-by-month',
+  templateUrl: './pa-spend-by-month.component.html',
+  styleUrls: ['./pa-spend-by-month.component.scss']
 })
-export class SpendByMonthComponent implements OnInit, OnDestroy {
+export class PaSpendByMonthComponent implements OnInit {
   errorMessage: any;
   spend: Array<any> = [];
   includeExpenses: boolean = false;
   chart: any = {};
   options: any;
-  @Input() firmId: number;
-  @Input() firm: IFirm;
+  @Input() clientMatterType: string;
+  @Input() practiceArea: IPracticeArea;
   pendingRequest: Subscription;
-  @ViewChild('spendByMonthDiv', {static: false}) spendByMonthDiv: ElementRef<HTMLElement>;
+  @ViewChild('paSpendByMonthDiv', {static: false}) spendByMonthDiv: ElementRef<HTMLElement>;
 
   constructor(private httpService: HttpService,
-              public filtersService: FiltersService) {
+              public filtersService: FiltersService,
+              public practiceAreaComponent: PracticeAreaComponent) {
   }
 
   @HostListener('window:resize', ['$event'])
@@ -40,13 +44,13 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
   getSpendByMonth(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
-    arr.push(this.firmId.toString());
-    params.firms = JSON.stringify(arr);
+    arr.push(this.practiceAreaComponent.clientMatterType);
+    params.practiceAreas = JSON.stringify(arr);
     console.log("PARAMS: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('spendByMonth', params).subscribe(
       (data: any) => {
         this.spend = data.result;
-        console.log("res firms: ", data);
+        console.log("res call: ", data);
         this.renderChart();
       },
       err => {
@@ -87,5 +91,5 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
       this.pendingRequest.unsubscribe();
     }
   }
-}
 
+}

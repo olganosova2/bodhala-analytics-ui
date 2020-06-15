@@ -1,0 +1,12 @@
+<div class="full-width">
+    <div class="panel-wrapper flex-container">
+      <div *ngFor="let item of totals.slice(0, 6);let i=$index;" class="flex-item">
+        <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
+      </div>
+    </div>
+    <div class="mt10 panel-wrapper flex-container">
+      <div *ngFor="let item of totals.slice(6);let i=$index;" class="flex-item">
+        <bd-billing-total-item-pa [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item-pa>
+      </div>
+    </div>
+  </div>

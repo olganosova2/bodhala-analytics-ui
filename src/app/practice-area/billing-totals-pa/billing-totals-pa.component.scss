@@ -1,0 +1,11 @@
+@import "../../../assets/styles/colors.scss";
+
+.flex-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.flex-item {
+  text-align: center;
+  flex-basis: 100%;
+}

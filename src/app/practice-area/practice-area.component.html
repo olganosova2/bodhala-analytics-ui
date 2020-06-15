@@ -1,0 +1,52 @@
+<div class="content-body-inner-wrapper">
+    <bd-ie-banner></bd-ie-banner>
+    <bd-error-messages></bd-error-messages>
+    <div>
+      <lib-bd-filters
+        (sendFilters)="refreshData($event)"
+        [pageName]="pageName"
+        [pageType]="pageType"
+        [firmId]="firmId"
+        [excludeFilters]="excludeFilters"
+        [collapsed]="appStateService.layout.isCollapsed"
+      ></lib-bd-filters>
+    </div>
+    <div class="mb10">
+        <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()">Include Expenses
+        </mat-slide-toggle>
+        <bd-practice-area-dropdown></bd-practice-area-dropdown>
+    </div>
+
+    <div class="ui-g">
+
+        <div class="ui-g-{{rightColsCount}} no-right-padding no-left-padding">
+            <bd-billing-totals-pa [practiceArea]="practiceArea" #billingTotals *ngIf="clientMatterType && practiceArea"></bd-billing-totals-pa>
+        </div>
+
+    </div>
+
+    <!-- Trend charts -->
+    <div>
+       <div class="no-left-padding mt15">
+          <!-- <bd-pa-score-trend [firmId]="firmId" [firm]="firmId && firm" #trend></bd-pa-score-trend> -->
+        </div>
+    </div>
+
+    <!-- Spend by Month and Top TKs -->
+    <div>
+        <div class="ui-g mt15">
+          <div class="ui-md-12 ui-lg-8 no-left-padding pr15">
+            <bd-pa-spend-by-month [practiceArea]="practiceArea" #paSpendByMonthDiv *ngIf="clientMatterType && practiceArea"></bd-pa-spend-by-month>
+          </div>
+          <div class="ui-md-12 ui-lg-4 no-right-padding">
+            <!-- <bd-top-timekeepers [practiceArea]="practiceArea"  #topTKs *ngIf="clientMatterType && practiceArea"></bd-top-timekeepers> -->
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+</div>
