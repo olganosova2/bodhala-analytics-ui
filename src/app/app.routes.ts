@@ -6,6 +6,7 @@ import {BenchmarkOverviewComponent} from './benchmarks/benchmark-overview/benchm
 import {BenchmarkFirmDetailComponent} from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import {MattersComponent} from './matters/matters.component';
 import {LeadAttorneyComponent} from './lead-attorney/lead-attorney.component';
+import {FirmRateCardComponent} from './firm/firm-rate-card/firm-rate-card.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -22,6 +23,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/lead-attorney', component: LeadAttorneyComponent},
   {path: 'analytics-ui/benchmarking/firm/:id', component: BenchmarkFirmDetailComponent},
   {path: 'benchmarking/firm/:id', component: BenchmarkFirmDetailComponent},
+  {path: 'analytics-ui/firm/report-card/:id', component: FirmRateCardComponent},
+  {path: 'firm/report-card/:id', component: FirmRateCardComponent},
   // {path: 'analytics.html', component: LaunchpadComponent},
   {path: '**',  component: LaunchpadComponent}
   ];

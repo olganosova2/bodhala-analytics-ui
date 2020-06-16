@@ -65,6 +65,7 @@ import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.compo
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
 import { MattersComponent } from './matters/matters.component';
 import { LeadAttorneyComponent } from './lead-attorney/lead-attorney.component';
+import { FirmRateCardComponent } from './firm/firm-rate-card/firm-rate-card.component';
 
 
 export function initUser(config: UserService) {
@@ -119,6 +120,7 @@ export function highchartsFactory() {
     ErrorMessagesComponent,
     MattersComponent,
     LeadAttorneyComponent,
+    FirmRateCardComponent,
   ],
   entryComponents: [
     PillComponent,
