@@ -49,8 +49,6 @@ export const END_POINTS_URLS = {
   
   getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
   getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
-  // adding in another here as the practice area filter was not applying correctly if I used the previous route
-  paSpendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
   // playbook/firm/4377/trends?clientId=110
 };
 

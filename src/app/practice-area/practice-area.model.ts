@@ -36,6 +36,13 @@ export interface IPracticeArea {
     yearly_stats: Array<any>;
 }
 
+export interface IFirmData {
+    id: string;
+    name: string;
+    total_billed: number;
+    per_of_spend: number;
+}
+
 export interface IPracticeAreaData {
     percent_partners: number;
     percent_associates: number;
@@ -54,6 +61,39 @@ export interface IBillingTotalItem {
     format?: string;
     lastCell?: boolean;
 }
+
+export interface ILeadPartner {
+    id: string;
+    name: string;
+    firm: string;
+    lawfirm_id: number;
+    total: number;
+    total_billed: number;
+    total_afa: number;
+    bpi: number;
+    associate_hours: number;
+    partner_hours: number;
+    associate_billed: number;
+    partner_billed: number;
+    associate_writeoff: number;
+    associate_writeoff_hours: number;
+    partner_writeoff: number;
+    partner_writeoff_hours: number;
+
+}
+
+// export interface ILeadPartner {
+//     id: string;
+//     name: string;
+//     seniority: string;
+//     bio_image_url: string;
+//     firm: string;
+//     lawfirm_id: number;
+//     total: number;
+//     total_billed: number;
+//     total_afa: number;
+//     current_rate: number;
+// }
 
 export const trendChart = {
     chart: {

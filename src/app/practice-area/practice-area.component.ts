@@ -6,6 +6,8 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../shared/services/filters.service';
 import {IPracticeArea, IPracticeAreaData} from './practice-area.model';
 import {BillingTotalsPaComponent} from './billing-totals-pa/billing-totals-pa.component';
+import {PaSpendByMonthComponent} from './pa-spend-by-month/pa-spend-by-month.component';
+
 
 
 @Component({
@@ -25,6 +27,7 @@ export class PracticeAreaComponent implements OnInit {
   pendingRequest: Subscription;
   pendingRequestFirm: Subscription;
   @ViewChild(BillingTotalsPaComponent, {static: false}) paBillingTotals: BillingTotalsPaComponent;
+  @ViewChild(PaSpendByMonthComponent, {static: false}) paSpendByMonth: PaSpendByMonthComponent;
 
 
   constructor(private route: ActivatedRoute,
@@ -68,7 +71,7 @@ export class PracticeAreaComponent implements OnInit {
     this.paBillingTotals.loadTotals();
     // this.topTKs.getTimekeepers();
     // this.topMatters.getMatters();
-    // this.spendByMonth.getSpendByMonth();
+    this.paSpendByMonth.getSpendByMonth();
     // if (this.diversity && this.userService.hasEntitlement('data.analytics.diversity')) {
     //   this.diversity.getDiversity();
     // }

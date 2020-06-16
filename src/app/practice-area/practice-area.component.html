@@ -39,10 +39,21 @@
             <bd-pa-spend-by-month [practiceArea]="practiceArea" #paSpendByMonthDiv *ngIf="clientMatterType && practiceArea"></bd-pa-spend-by-month>
           </div>
           <div class="ui-md-12 ui-lg-4 no-right-padding">
-            <!-- <bd-top-timekeepers [practiceArea]="practiceArea"  #topTKs *ngIf="clientMatterType && practiceArea"></bd-top-timekeepers> -->
+            <bd-pa-top-firms [practiceArea]="practiceArea"  #topFirms *ngIf="clientMatterType && practiceArea"></bd-pa-top-firms>
           </div>
         </div>
-      </div>
+    </div>
+
+    <div>
+        <div class="ui-g mt15">
+          <div class="ui-md-12 ui-lg-5 ui-xl-6 no-left-padding">
+            <bd-pa-top-matters [practiceArea]="practiceArea" #paTopMatters *ngIf="clientMatterType && practiceArea"></bd-pa-top-matters>
+          </div>
+          <div class="ui-md-12 ui-lg-5 ui-xl-6 no-right-padding" #paTopLeadPartners>
+            <bd-pa-top-lead-partners [practiceArea]="practiceArea" *ngIf="clientMatterType && practiceArea"></bd-pa-top-lead-partners>
+          </div>
+        </div>
+    </div>
 
 
 

@@ -42,11 +42,10 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
     const arr = [];
     arr.push(this.firmId.toString());
     params.firms = JSON.stringify(arr);
-    console.log("PARAMS: ", params);
+
     this.pendingRequest = this.httpService.makeGetRequest('spendByMonth', params).subscribe(
       (data: any) => {
         this.spend = data.result;
-        console.log("res firms: ", data);
         this.renderChart();
       },
       err => {

@@ -71,6 +71,9 @@ import { BillingTotalItemPaComponent } from './practice-area/billing-totals-pa/b
 import { PaScoreTrendComponent } from './practice-area/pa-score-trend/pa-score-trend.component';
 import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dropdown/practice-area-dropdown.component';
 import { PaSpendByMonthComponent } from './practice-area/pa-spend-by-month/pa-spend-by-month.component';
+import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
+import { PaTopMattersComponent } from './practice-area/pa-top-matters/pa-top-matters.component';
+import { PaTopLeadPartnersComponent } from './practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
 
 
 export function initUser(config: UserService) {
@@ -131,6 +134,9 @@ export function highchartsFactory() {
     PaScoreTrendComponent,
     PracticeAreaDropdownComponent,
     PaSpendByMonthComponent,
+    PaTopFirmsComponent,
+    PaTopMattersComponent,
+    PaTopLeadPartnersComponent,
   ],
   entryComponents: [
     PillComponent,

@@ -1,0 +1,17 @@
+<div class="panel-wrapper" style="height: 100%">
+    <h4 class="mb10">Matters</h4>
+    <div class="table-row mb5" *ngFor="let matter of matters">
+      <div class="ui-g">
+        <div class="ui-g-10">
+        <div class="pull-left"><span class="href-link-primary mr5"
+                                     (click)="goToView('/#/app/client-dashboard/matter/', matter.id)">{{formatMatterName(matter.name)}}</span>
+          ({{matter.id}})
+        </div>
+        </div>
+        <div class="ui-g-2">
+        <div class="text-right">${{matter?.sum | number:'1.0-0'}}</div>
+        </div>
+        <div class="clear-both"></div>
+      </div>
+    </div>
+</div>

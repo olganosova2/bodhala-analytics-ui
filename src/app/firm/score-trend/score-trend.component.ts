@@ -107,8 +107,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     const params = {clientId: this.userService.currentUser.client_info.id, id: this.firmId};
     const response1 = this.httpService.makeGetRequest('getFirmScore', params);
     const response2 = this.httpService.makeGetRequest('getFirmTrends', params);
-    console.log("resp1: ", response1);
-    console.log("resp2: ", response2);
     return forkJoin([response1, response2]);
   }
 

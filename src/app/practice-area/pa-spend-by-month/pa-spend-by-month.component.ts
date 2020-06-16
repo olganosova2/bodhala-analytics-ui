@@ -1,11 +1,11 @@
-import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild, ɵConsole} from '@angular/core';
 import * as _moment from 'moment';
-import {ITopMatter} from '../../shared/models/top-matters';
+import {ActivatedRoute} from '@angular/router';
 import {IPracticeArea, spendByMonthOptions} from '../practice-area.model';
 import {Subscription, fromEventPattern} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
-import {PracticeAreaComponent} from '../practice-area.component'
+// import {PracticeAreaComponent} from '../practice-area.component'
 import { FromUtcPipe } from 'angular2-moment';
 
 const moment = _moment;
@@ -26,9 +26,9 @@ export class PaSpendByMonthComponent implements OnInit {
   pendingRequest: Subscription;
   @ViewChild('paSpendByMonthDiv', {static: false}) spendByMonthDiv: ElementRef<HTMLElement>;
 
-  constructor(private httpService: HttpService,
-              public filtersService: FiltersService,
-              public practiceAreaComponent: PracticeAreaComponent) {
+  constructor(private route: ActivatedRoute,
+              private httpService: HttpService,
+              public filtersService: FiltersService) {
   }
 
   @HostListener('window:resize', ['$event'])
@@ -37,20 +37,21 @@ export class PaSpendByMonthComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.options = Object.assign({}, spendByMonthOptions);
-    this.getSpendByMonth();
+    this.route.paramMap.subscribe(params => {
+      this.clientMatterType = params.get('client_matter_type');
+      this.options = Object.assign({}, spendByMonthOptions);
+      this.getSpendByMonth();
+    });
   }
 
   getSpendByMonth(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
-    arr.push(this.practiceAreaComponent.clientMatterType);
+    arr.push(this.clientMatterType);
     params.practiceAreas = JSON.stringify(arr);
-    console.log("PARAMS: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('spendByMonth', params).subscribe(
       (data: any) => {
         this.spend = data.result;
-        console.log("res call: ", data);
         this.renderChart();
       },
       err => {
@@ -74,7 +75,6 @@ export class PaSpendByMonthComponent implements OnInit {
 
   resizeChart(): void {
     const width = this.spendByMonthDiv.nativeElement.offsetWidth - 50;
-    // const height = this.spendByMonthDiv.nativeElement.offsetHeight - 10;
     try {
       this.chart.setSize(width, 450, false);
     } catch (err) {

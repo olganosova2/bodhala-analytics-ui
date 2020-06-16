@@ -25,6 +25,7 @@ export const appRouterConfig: Routes = [
   {path: 'benchmarking/firm/:id', component: BenchmarkFirmDetailComponent},
   {path: 'analytics-ui/practice-area/:client_matter_type', component: PracticeAreaComponent},
   {path: 'analytics-ui/practice-area/', component: PracticeAreaComponent},
+  {path: 'practice-area/', component: PracticeAreaComponent},
   // {path: 'analytics.html', component: LaunchpadComponent},
   {path: '**',  component: LaunchpadComponent}
   ];
