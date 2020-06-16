@@ -74,6 +74,7 @@ import { PaSpendByMonthComponent } from './practice-area/pa-spend-by-month/pa-sp
 import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
 import { PaTopMattersComponent } from './practice-area/pa-top-matters/pa-top-matters.component';
 import { PaTopLeadPartnersComponent } from './practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
+import { FirmRateCardComponent } from './firm/firm-rate-card/firm-rate-card.component';
 
 
 export function initUser(config: UserService) {
@@ -137,6 +138,7 @@ export function highchartsFactory() {
     PaTopFirmsComponent,
     PaTopMattersComponent,
     PaTopLeadPartnersComponent,
+    FirmRateCardComponent,
   ],
   entryComponents: [
     PillComponent,

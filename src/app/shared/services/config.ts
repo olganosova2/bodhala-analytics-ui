@@ -1,4 +1,5 @@
 import {environment} from '../../../environments/environment';
+import {Input} from '@angular/core';
 
 export const BASE_URL = environment.apiUrl;
 export const IS_LOCAL = false; // (window.location.href.indexOf('localhost:4200') > 0 || window.location.href.indexOf('127.0.0.1:4200')) > 0 ? true : false;
@@ -49,7 +50,6 @@ export const END_POINTS_URLS = {
   
   getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
   getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
-  // playbook/firm/4377/trends?clientId=110
 };
 
 export const ROUTES = [
