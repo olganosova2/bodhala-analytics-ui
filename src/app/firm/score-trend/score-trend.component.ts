@@ -2,6 +2,7 @@ import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, QueryList
 import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {IFirm, trendChart} from '../firm.model';
+import {IPracticeArea, paTrendChart} from '../../practice-area/practice-area.model';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 import {ScoreBadgeComponent} from './score-badge/score-badge.component';
@@ -44,6 +45,8 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   scoreAvg: number = 0;
   @Input() firmId: number;
   @Input() firm: IFirm;
+  @Input() clientMatterType: string;
+  @Input() practiceArea: IPracticeArea;
   pendingRequest: Subscription;
   pendingRequestTrends: Subscription;
   @ViewChild('trendsDiv', {static: false}) trendsDiv: ElementRef<HTMLElement>;
@@ -98,16 +101,30 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   }
 
   setUpChartOptions(): void {
-    this.options = Object.assign({}, trendChart);
+    if (this.firmId) {
+      this.options = Object.assign({}, trendChart);
+    }
+    if (this.clientMatterType) {
+      this.options = Object.assign({}, paTrendChart);
+    }
     this.options.series[0].data = [];
     this.options.series[1].data = [];
   }
 
   load(): Observable<any> {
-    const params = {clientId: this.userService.currentUser.client_info.id, id: this.firmId};
-    const response1 = this.httpService.makeGetRequest('getFirmScore', params);
-    const response2 = this.httpService.makeGetRequest('getFirmTrends', params);
-    return forkJoin([response1, response2]);
+    let params = {};
+    if (this.firmId) {
+      params = {clientId: this.userService.currentUser.client_info.id, id: this.firmId};
+      const response1 = this.httpService.makeGetRequest('getFirmScore', params);
+      const response2 = this.httpService.makeGetRequest('getFirmTrends', params);
+      return forkJoin([response1, response2]);
+    }
+    if (this.clientMatterType) {
+      params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
+      const response1 = this.httpService.makeGetRequest('getPracticeAreaScore', params);
+      const response2 = this.httpService.makeGetRequest('getPracticeAreaTrends', params);
+      return forkJoin([response1, response2]);
+    }
   }
 
   renderChart(): void {
@@ -124,6 +141,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     this.chart.series[0].setData(result);
     if (this.firm) {
       this.chart.series[0].options.name = this.firm.name;
+      this.chart.series[0].update(this.chart.series[0].options);
+    }
+    if (this.clientMatterType) {
+      this.chart.series[0].options.name = this.clientMatterType;
       this.chart.series[0].update(this.chart.series[0].options);
     }
     this.setUpChart();
@@ -181,6 +202,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   resizeChart(): void {
     const width = this.trendsDiv.nativeElement.offsetWidth - 40;
     const height = 400; // this.trendsDiv.nativeElement.offsetHeight;
+
     if (!this.chart || width <= 0) {
       return;
     }

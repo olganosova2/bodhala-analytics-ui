@@ -26,17 +26,23 @@ export class PaTopLeadPartnersComponent implements OnInit {
 
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.clientMatterType = params.get('client_matter_type');
-      this.getLeadPartners();
-    });
+    this.getLeadPartners();
   }
 
   getLeadPartners(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
+    
     const arr = [];
-    arr.push(this.clientMatterType);
+    arr.push(this.practiceArea.client_matter_type);
     params.practiceAreas = JSON.stringify(arr);
+
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+  });
+
     this.pendingRequest = this.httpService.makeGetRequest('getTopLeadPartners', params).subscribe(
       (data: any) => {
         this.leadPartners = data.result;
@@ -49,7 +55,12 @@ export class PaTopLeadPartnersComponent implements OnInit {
             const associate_rate = (this.leadPartners[i].associate_billed - this.leadPartners[i].associate_writeoff) / (this.leadPartners[i].associate_hours - this.leadPartners[i].associate_writeoff_hours);
             const partner_rate = (this.leadPartners[i].partner_billed - this.leadPartners[i].partner_writeoff) / (this.leadPartners[i].partner_hours - this.leadPartners[i].partner_writeoff_hours);
             const bpi = partner_rate + (leverage * associate_rate);
-            this.leadPartners[i].bpi = bpi;
+            if (bpi > 0) {
+              this.leadPartners[i].bpi = formatter.format(bpi);
+            }
+            else {
+              this.leadPartners[i].bpi = "--"
+            }
           }
         }
       },

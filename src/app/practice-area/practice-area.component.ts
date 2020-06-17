@@ -5,8 +5,14 @@ import {Subscription} from 'rxjs';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../shared/services/filters.service';
 import {IPracticeArea, IPracticeAreaData} from './practice-area.model';
-import {BillingTotalsPaComponent} from './billing-totals-pa/billing-totals-pa.component';
-import {PaSpendByMonthComponent} from './pa-spend-by-month/pa-spend-by-month.component';
+import {BillingTotalsComponent} from '../firm/billing-totals/billing-totals.component';
+import {SpendByMonthComponent} from '../firm/spend-by-month/spend-by-month.component';
+import {TopMattersComponent} from '../firm/top-matters/top-matters.component';
+import {ScoreTrendComponent} from '../firm/score-trend/score-trend.component';
+import {DiversityComponent} from '../firm/diversity/diversity.component';
+import {UtbmsComponent} from '../firm/utbms/utbms.component';
+import {PaTopFirmsComponent} from './pa-top-firms/pa-top-firms.component';
+import {PaTopLeadPartnersComponent} from './pa-top-lead-partners/pa-top-lead-partners.component';
 
 
 
@@ -25,9 +31,16 @@ export class PracticeAreaComponent implements OnInit {
   practiceAreaData: IPracticeAreaData;
   rightColsCount: number = 12;
   pendingRequest: Subscription;
-  pendingRequestFirm: Subscription;
-  @ViewChild(BillingTotalsPaComponent, {static: false}) paBillingTotals: BillingTotalsPaComponent;
-  @ViewChild(PaSpendByMonthComponent, {static: false}) paSpendByMonth: PaSpendByMonthComponent;
+  pendingRequestPracticeArea: Subscription;
+  @ViewChild(BillingTotalsComponent, {static: false}) billingTotals: BillingTotalsComponent;
+  @ViewChild(SpendByMonthComponent, {static: false}) spendByMonth: SpendByMonthComponent;
+  @ViewChild(TopMattersComponent, {static: false}) topMatters: TopMattersComponent;
+  @ViewChild(ScoreTrendComponent, {static: false}) scoreTrend: ScoreTrendComponent;
+  @ViewChild(DiversityComponent, {static: false}) diversity: DiversityComponent;
+  @ViewChild(UtbmsComponent, {static: false}) utbms: UtbmsComponent;
+
+  @ViewChild(PaTopLeadPartnersComponent, {static: false}) topLeadPartners: PaTopLeadPartnersComponent;
+  @ViewChild(PaTopFirmsComponent, {static: false}) topFirms: PaTopFirmsComponent;
 
 
   constructor(private route: ActivatedRoute,
@@ -48,7 +61,7 @@ export class PracticeAreaComponent implements OnInit {
 
   loadPracticeArea(): void {
     const params = {client_matter_type: this.clientMatterType};
-    this.pendingRequestFirm = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
+    this.pendingRequestPracticeArea = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
         if (practiceAreas && practiceAreas.length > 0) {
@@ -68,16 +81,17 @@ export class PracticeAreaComponent implements OnInit {
   }
 
   refreshData(evt: any): void {
-    this.paBillingTotals.loadTotals();
-    // this.topTKs.getTimekeepers();
-    // this.topMatters.getMatters();
-    this.paSpendByMonth.getSpendByMonth();
-    // if (this.diversity && this.userService.hasEntitlement('data.analytics.diversity')) {
-    //   this.diversity.getDiversity();
-    // }
-    // if (this.utbms && this.userService.hasEntitlement('analytics.utbms.codes')) {
-    //   this.utbms.getUTBMS();
-    // }
+    this.billingTotals.loadTotals();
+    this.topLeadPartners.getLeadPartners();
+    this.topMatters.getMatters();
+    this.spendByMonth.getSpendByMonth();
+    this.topFirms.getTopFirms();
+    if (this.diversity && this.userService.hasEntitlement('data.analytics.diversity')) {
+      this.diversity.getDiversity();
+    }
+    if (this.utbms && this.userService.hasEntitlement('analytics.utbms.codes')) {
+      this.utbms.getUTBMS();
+    }
   }
 
 
@@ -87,10 +101,9 @@ export class PracticeAreaComponent implements OnInit {
   toggleExpenses(): void {
     this.filtersService.includeExpenses = !this.filtersService.includeExpenses;
     localStorage.setItem('include_expenses_' + this.userService.currentUser.id.toString(), this.filtersService.includeExpenses.toString());
-    //REPLACE THESE WITH FUNCTION CALLS ON PA PAGE
-    // this.billingTotals.formatItems();
-    // this.topMatters.processMatters();
-    // this.spendByMonth.renderChart();
+    this.billingTotals.formatItems();
+    this.topMatters.processMatters();
+    this.spendByMonth.renderChart();
   }
 
   
@@ -99,8 +112,8 @@ export class PracticeAreaComponent implements OnInit {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }
-    if (this.pendingRequestFirm) {
-      this.pendingRequestFirm.unsubscribe();
+    if (this.pendingRequestPracticeArea) {
+      this.pendingRequestPracticeArea.unsubscribe();
     }
   }
 }

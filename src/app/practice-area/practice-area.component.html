@@ -20,7 +20,7 @@
     <div class="ui-g">
 
         <div class="ui-g-{{rightColsCount}} no-right-padding no-left-padding">
-            <bd-billing-totals-pa [practiceArea]="practiceArea" #billingTotals *ngIf="clientMatterType && practiceArea"></bd-billing-totals-pa>
+            <bd-billing-totals [practiceArea]="practiceArea" #billingTotals *ngIf="clientMatterType && practiceArea"></bd-billing-totals>
         </div>
 
     </div>
@@ -28,7 +28,7 @@
     <!-- Trend charts -->
     <div>
        <div class="no-left-padding mt15">
-          <!-- <bd-pa-score-trend [firmId]="firmId" [firm]="firmId && firm" #trend></bd-pa-score-trend> -->
+          <bd-score-trend [clientMatterType]="clientMatterType" [practiceArea]="clientMatterType && practiceArea" #trend></bd-score-trend>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
     <div>
         <div class="ui-g mt15">
           <div class="ui-md-12 ui-lg-8 no-left-padding pr15">
-            <bd-pa-spend-by-month [practiceArea]="practiceArea" #paSpendByMonthDiv *ngIf="clientMatterType && practiceArea"></bd-pa-spend-by-month>
+            <bd-spend-by-month [practiceArea]="practiceArea" #spendByMonthDiv *ngIf="clientMatterType && practiceArea"></bd-spend-by-month>
           </div>
           <div class="ui-md-12 ui-lg-4 no-right-padding">
             <bd-pa-top-firms [practiceArea]="practiceArea"  #topFirms *ngIf="clientMatterType && practiceArea"></bd-pa-top-firms>
@@ -47,7 +47,7 @@
     <div>
         <div class="ui-g mt15">
           <div class="ui-md-12 ui-lg-5 ui-xl-6 no-left-padding">
-            <bd-pa-top-matters [practiceArea]="practiceArea" #paTopMatters *ngIf="clientMatterType && practiceArea"></bd-pa-top-matters>
+            <bd-top-matters [practiceArea]="practiceArea" #paTopMatters *ngIf="clientMatterType && practiceArea"></bd-top-matters>
           </div>
           <div class="ui-md-12 ui-lg-5 ui-xl-6 no-right-padding" #paTopLeadPartners>
             <bd-pa-top-lead-partners [practiceArea]="practiceArea" *ngIf="clientMatterType && practiceArea"></bd-pa-top-lead-partners>
@@ -55,9 +55,17 @@
         </div>
     </div>
 
+    <div>
+        <div class="ui-g mt15">
+          <div class="ui-md-12 ui-lg-7 ui-xl-5 no-left-padding" #diversity>
+            <bd-diversity [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
+          </div>
+        </div>
+    </div>
 
-
-
+    <div class="ui-g mt15">
+        <bd-utbms [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
+    </div>
 
 
 </div>

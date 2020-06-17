@@ -66,11 +66,7 @@ import { ErrorMessagesComponent } from './shared/components/error-messages/error
 import { MattersComponent } from './matters/matters.component';
 import { LeadAttorneyComponent } from './lead-attorney/lead-attorney.component';
 import { PracticeAreaComponent } from './practice-area/practice-area.component';
-import { BillingTotalsPaComponent } from './practice-area/billing-totals-pa/billing-totals-pa.component';
-import { BillingTotalItemPaComponent } from './practice-area/billing-totals-pa/billing-total-item-pa/billing-total-item-pa.component';
-import { PaScoreTrendComponent } from './practice-area/pa-score-trend/pa-score-trend.component';
 import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dropdown/practice-area-dropdown.component';
-import { PaSpendByMonthComponent } from './practice-area/pa-spend-by-month/pa-spend-by-month.component';
 import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
 import { PaTopMattersComponent } from './practice-area/pa-top-matters/pa-top-matters.component';
 import { PaTopLeadPartnersComponent } from './practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
@@ -130,11 +126,7 @@ export function highchartsFactory() {
     MattersComponent,
     LeadAttorneyComponent,
     PracticeAreaComponent,
-    BillingTotalsPaComponent,
-    BillingTotalItemPaComponent,
-    PaScoreTrendComponent,
     PracticeAreaDropdownComponent,
-    PaSpendByMonthComponent,
     PaTopFirmsComponent,
     PaTopMattersComponent,
     PaTopLeadPartnersComponent,

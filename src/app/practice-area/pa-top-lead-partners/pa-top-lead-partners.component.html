@@ -24,7 +24,7 @@
     </div>
     <div class="ui-g table-row" *ngFor="let partner of leadPartners">
       <div class="ui-g-5"><span class="primary-pill">{{commonServ.formatLeadPartnerName(partner.name)}}</span></div>
-      <div class="ui-g-3"><span class="primary-pill table-pill-2">${{partner.bpi | number:'1.2-2'}}</span></div>
+      <div class="ui-g-3"><span class="primary-pill table-pill-2">{{partner.bpi}}</span></div>
       <div class="ui-g-4"><span class="primary-pill table-pill-2">${{partner.total_billed | number:'1.0-0'}}</span></div>
     </div>
   </div>

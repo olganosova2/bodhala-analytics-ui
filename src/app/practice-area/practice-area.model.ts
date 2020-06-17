@@ -1,3 +1,5 @@
+
+
 export interface ITag {
     modified_on: string;
     deleted_on: string;
@@ -70,7 +72,7 @@ export interface ILeadPartner {
     total: number;
     total_billed: number;
     total_afa: number;
-    bpi: number;
+    bpi: string;
     associate_hours: number;
     partner_hours: number;
     associate_billed: number;
@@ -95,7 +97,7 @@ export interface ILeadPartner {
 //     current_rate: number;
 // }
 
-export const trendChart = {
+export const paTrendChart = {
     chart: {
       type: 'line',
       width: 800,
@@ -141,15 +143,15 @@ export const trendChart = {
       }
     },
     series: [{
-      name: 'Firm',
+      name: 'Practice Area',
      // color: '#FF0000',
       data: []
     }, {
-      name: 'Peer Firm Avg.',
+      name: 'Average',
       color: '#000',
       data: []
     }]
-};
+  };
 
 export const lineChartOptions = {
     chart: {

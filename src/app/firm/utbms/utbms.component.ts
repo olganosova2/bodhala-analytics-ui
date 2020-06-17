@@ -9,6 +9,7 @@ import {
   utbmsPieDonut,
   ITaxonomyData,
 } from '../firm.model';
+import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -35,6 +36,8 @@ export class UtbmsComponent implements OnInit {
   loadedTaxonomy: boolean = false;
   isCollapsed: boolean = true;
   @Input() firmId: number;
+  @Input() practiceArea: IPracticeArea;
+
 
   utbmsColors = {
     L100: '#7cb5ec',
@@ -82,11 +85,18 @@ export class UtbmsComponent implements OnInit {
     getUTBMS(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     let arr = [];
-    arr.push(this.firmId.toString());
-    params.firms = JSON.stringify(arr);
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firms = JSON.stringify(arr);
+    }
+    if (this.practiceArea) {
+      arr.push(this.practiceArea.client_matter_type);
+      params.practiceAreas = JSON.stringify(arr);
+    }
+    console.log("params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getSpendByUtbmsCodes', params).subscribe(
       (data: any) => {
-
+        console.log("utbms data: ", data);
         if (!data.result) {
           return;
         }
@@ -101,10 +111,18 @@ export class UtbmsComponent implements OnInit {
     );
 
     arr = [];
-    arr.push(params.clientId.toString());
-    params.clientId = JSON.stringify(arr);
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firms = JSON.stringify(arr);
+    }
+    if (this.practiceArea) {
+      arr.push(this.practiceArea.client_matter_type);
+      params.practiceAreas = JSON.stringify(arr);
+    }
+    console.log("params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getPhaseTaxonomySpend', params).subscribe(
       (data: any) => {
+        console.log("phase taxonomy data: ", data);
         if (!data.result) {
           return;
         }

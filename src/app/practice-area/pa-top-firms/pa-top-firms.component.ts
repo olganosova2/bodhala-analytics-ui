@@ -51,9 +51,9 @@ export class PaTopFirmsComponent implements OnInit {
       }
     );
   }
-  // goToView(): void {
-  //   window.location.href = '/analytics-ui/' + this.firmId.toString();
-  // }
+  goToView(): void {
+    window.location.href = '/#/app/client-dashboard/firm?practiceAreas=' + this.clientMatterType;
+  }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();

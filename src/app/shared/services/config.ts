@@ -40,6 +40,8 @@ export const END_POINTS_URLS = {
   getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
   getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}/scores', showLoading: false},
   getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
+  getPracticeAreaScore: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/scores', showLoading: false},
+  getPracticeAreaTrends: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/trends', showLoading: false},
   getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
   getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
   getFirmsListByClient: {url: BASE_URL + 'analytics/getFirmListByClient', showLoading: false},
@@ -56,6 +58,7 @@ export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
+  {name: 'app.client-dashboard.practiceArea', routePath: null, fragment: 'analytics-ui/practiceArea/'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
 
@@ -99,6 +102,7 @@ export const outerAppLinks = {
   viewFirm: '/analytics-ui/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
-  viewBlockBilling: '#/app/client-dashboard/block-billing'
+  viewBlockBilling: '#/app/client-dashboard/block-billing',
+  viewPracticeAreaDetail: '/analytics-ui/practiceArea/'
 };
 

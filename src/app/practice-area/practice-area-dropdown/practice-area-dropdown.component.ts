@@ -84,7 +84,7 @@ export class PracticeAreaDropdownComponent implements OnInit {
 
   getPracticeArea(): void {
     this.router.navigateByUrl('/', {skipLocationChange: true})
-      .then(() => this.router.navigate(['/analytics-ui/practice-area/', this.clientMatterType]));
+      .then(() => this.router.navigate(['/analytics-ui/practiceArea/', this.clientMatterType]));
 
   }
 
