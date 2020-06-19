@@ -28,7 +28,32 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    this.getDateRange();
     this.getTopFirms();
+  }
+
+  getDateRange(): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const arr = [];
+    arr.push(this.practiceArea.client_matter_type);
+    params.practiceAreas = JSON.stringify(arr);
+    this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
+      (data: any) => {
+        if (data) {
+          const minDate = data.result.min;
+          const newMinDate = new Date(minDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric' });
+          const maxDate = data.result.max;
+          const newMaxDate = new Date(maxDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric'});
+          const dateRange = document.getElementsByClassName('min-max-range min-max-range-width');
+          dateRange[0].firstChild.textContent = 'Active Data Range: ' + newMinDate.toString() + ' - ' + newMaxDate.toString();
+        }
+
+
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
 
   getTopFirms(): void {
