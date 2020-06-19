@@ -40,7 +40,6 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
       (data: any) => {
         if (data) {
-          console.log("data: ", data);
           const minDate = data.result.min;
           const maxDate = data.result.max;
           const tempMinDate = new Date(minDate);
