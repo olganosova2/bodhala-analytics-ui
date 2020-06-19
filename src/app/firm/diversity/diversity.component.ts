@@ -7,6 +7,7 @@ import {
   minorityChartOptions,
   pieDonut
 } from '../firm.model';
+import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -26,6 +27,7 @@ export class DiversityComponent implements OnInit, OnDestroy {
   chartMinority: any = {};
   loaded: boolean = false;
   @Input() firmId: number;
+  @Input() practiceArea: IPracticeArea;
   constructor(private httpService: HttpService,
               public filtersService: FiltersService) { }
 
@@ -37,8 +39,14 @@ export class DiversityComponent implements OnInit, OnDestroy {
   getDiversity(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
-    arr.push(this.firmId.toString());
-    params.firms = JSON.stringify(arr);
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firms = JSON.stringify(arr);
+    }
+    if (this.practiceArea) {
+      arr.push(this.practiceArea.client_matter_type);
+      params.practiceAreas = JSON.stringify(arr);
+    }
     this.pendingRequest = this.httpService.makeGetRequest('getDiversityData', params).subscribe(
       (data: any) => {
         if (!data.result || !data.result.total_lawyer_hours) {

@@ -1,0 +1,11 @@
+<div>
+  <div class="pull-right">
+    <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
+  </div>
+  <div class="clear-both"></div>
+  <div *ngFor="let pa of practiceAreas" class="mb20">
+    <h4 class="mb20"><span *ngIf="!pa">Overall Spend</span><span *ngIf="pa">{{pa}}</span></h4>
+    <bd-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
+                       *ngIf="firmId && firm"></bd-billing-totals>
+  </div>
+</div>

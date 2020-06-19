@@ -1,0 +1,18 @@
+@import "../../../assets/styles/colors.scss";
+
+.practice_area_dropdown {
+  color: $body-color;
+  display: inline-block;
+  position: absolute;
+  right: 15px;
+}
+
+:host {
+    ::ng-deep .ui-inputtext
+    {
+        background: inherit;
+    }
+    ::ng-deep .ui-dropdown > .ui-dropdown-trigger{
+        background: border-box;
+    }
+} 

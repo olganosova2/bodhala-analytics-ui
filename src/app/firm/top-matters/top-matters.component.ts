@@ -4,6 +4,7 @@ import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {ITopMatter} from '../../shared/models/top-matters';
+import {IPracticeArea} from '../../practice-area/practice-area.model';
 
 @Component({
   selector: 'bd-top-matters',
@@ -13,6 +14,7 @@ import {ITopMatter} from '../../shared/models/top-matters';
 export class TopMattersComponent implements OnInit, OnDestroy {
   errorMessage: any;
   matters: Array<ITopMatter> = [];
+  @Input() practiceArea: IPracticeArea;
   @Input() firmId: number;
   @Input() firm: IFirm;
   pendingRequest: Subscription;
@@ -28,8 +30,16 @@ export class TopMattersComponent implements OnInit, OnDestroy {
   getMatters(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
-    arr.push(this.firmId.toString());
-    params.firms = JSON.stringify(arr);
+    // arr.push(this.firmId.toString());
+    // params.firms = JSON.stringify(arr);
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firms = JSON.stringify(arr);
+    }
+    if (this.practiceArea) {
+      arr.push(this.practiceArea.client_matter_type);
+      params.practiceAreas = JSON.stringify(arr);
+    }
     this.pendingRequest = this.httpService.makeGetRequest('getTopMattersForFirm', params).subscribe(
       (data: any) => {
         this.matters = data.result || [];

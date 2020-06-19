@@ -1,8 +1,10 @@
 import {environment} from '../../../environments/environment';
+import {Input} from '@angular/core';
 
 export const BASE_URL = environment.apiUrl;
 export const IS_LOCAL = false; // (window.location.href.indexOf('localhost:4200') > 0 || window.location.href.indexOf('127.0.0.1:4200')) > 0 ? true : false;
 export const HOST = environment.host;
+export const SAVED_FILTERS_NAME = 'ELEMENTS_dataFilters_';
 
 export const END_POINTS_URLS = {
   errorStub: {url: BASE_URL + 'errorStub', showLoading: false},
@@ -39,6 +41,8 @@ export const END_POINTS_URLS = {
   getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
   getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}/scores', showLoading: false},
   getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
+  getPracticeAreaScore: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/scores', showLoading: false},
+  getPracticeAreaTrends: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/trends', showLoading: false},
   getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
   getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
   getFirmsListByClient: {url: BASE_URL + 'analytics/getFirmListByClient', showLoading: false},
@@ -46,13 +50,16 @@ export const END_POINTS_URLS = {
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
-  // playbook/firm/4377/trends?clientId=110
+
+  getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
+  getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
 };
 
 export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: 'analytics-ui/practiceArea/'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
 
@@ -92,10 +99,11 @@ export const BODHALA_DATE_FORMATS = {
 };
 export const outerAppLinks = {
   viewMatter: '#/app/client-dashboard/matter/',
-  viewPracticeArea: '#/app/client-dashboard/practiceArea',
+  viewPracticeArea: '#/app/client-dashboard/practice-area',
   viewFirm: '/analytics-ui/firm/',
   viewLeadPartner: '#/app/client-dashboard/lead-partner/',
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
-  viewBlockBilling: '#/app/client-dashboard/block-billing'
+  viewBlockBilling: '#/app/client-dashboard/block-billing',
+  viewPracticeAreaDetail: '/analytics-ui/practiceArea/'
 };
 
