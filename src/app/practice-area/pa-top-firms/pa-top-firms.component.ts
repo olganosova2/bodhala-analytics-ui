@@ -40,10 +40,15 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
       (data: any) => {
         if (data) {
+          console.log("data: ", data);
           const minDate = data.result.min;
-          const newMinDate = new Date(minDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric' });
           const maxDate = data.result.max;
-          const newMaxDate = new Date(maxDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric'});
+          const tempMinDate = new Date(minDate);
+          tempMinDate.setDate(tempMinDate.getDate() + 1);
+          const tempMaxDate = new Date(maxDate);
+          tempMaxDate.setDate(tempMaxDate.getDate() + 1);
+          const newMinDate = new Date(tempMinDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric' });
+          const newMaxDate = new Date(tempMaxDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric'});
           const dateRange = document.getElementsByClassName('min-max-range min-max-range-width');
           dateRange[0].firstChild.textContent = 'Active Data Range: ' + newMinDate.toString() + ' - ' + newMaxDate.toString();
         }
