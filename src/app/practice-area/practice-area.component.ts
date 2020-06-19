@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild, ɵCompiler_compileModuleSync__POST_R3__} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
@@ -15,13 +15,12 @@ import {PaTopFirmsComponent} from './pa-top-firms/pa-top-firms.component';
 import {PaTopLeadPartnersComponent} from './pa-top-lead-partners/pa-top-lead-partners.component';
 
 
-
 @Component({
   selector: 'bd-practice-area',
   templateUrl: './practice-area.component.html',
   styleUrls: ['./practice-area.component.scss']
 })
-export class PracticeAreaComponent implements OnInit {
+export class PracticeAreaComponent implements OnInit, OnDestroy {
   errorMessage: any;
   clientMatterType: string;
   practiceArea: IPracticeArea;
@@ -41,7 +40,6 @@ export class PracticeAreaComponent implements OnInit {
 
   @ViewChild(PaTopLeadPartnersComponent, {static: false}) topLeadPartners: PaTopLeadPartnersComponent;
   @ViewChild(PaTopFirmsComponent, {static: false}) topFirms: PaTopFirmsComponent;
-
 
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
@@ -65,13 +63,12 @@ export class PracticeAreaComponent implements OnInit {
       (data: any) => {
         const practiceAreas = data.result;
         if (practiceAreas && practiceAreas.length > 0) {
-          for (let pa of practiceAreas) {
+          for (const pa of practiceAreas) {
             if (pa.client_matter_type === this.clientMatterType) {
               this.practiceArea = pa;
               this.commonServ.pageSubtitle = this.clientMatterType;
             }
           }
-
         }
       },
       err => {
@@ -94,10 +91,6 @@ export class PracticeAreaComponent implements OnInit {
     }
   }
 
-
-
-
-
   toggleExpenses(): void {
     this.filtersService.includeExpenses = !this.filtersService.includeExpenses;
     localStorage.setItem('include_expenses_' + this.userService.currentUser.id.toString(), this.filtersService.includeExpenses.toString());
@@ -106,7 +99,6 @@ export class PracticeAreaComponent implements OnInit {
     this.spendByMonth.renderChart();
   }
 
-  
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {

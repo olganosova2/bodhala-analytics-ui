@@ -93,10 +93,8 @@ export class UtbmsComponent implements OnInit {
       arr.push(this.practiceArea.client_matter_type);
       params.practiceAreas = JSON.stringify(arr);
     }
-    console.log("params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getSpendByUtbmsCodes', params).subscribe(
       (data: any) => {
-        console.log("utbms data: ", data);
         if (!data.result) {
           return;
         }
@@ -119,10 +117,8 @@ export class UtbmsComponent implements OnInit {
       arr.push(this.practiceArea.client_matter_type);
       params.practiceAreas = JSON.stringify(arr);
     }
-    console.log("params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getPhaseTaxonomySpend', params).subscribe(
       (data: any) => {
-        console.log("phase taxonomy data: ", data);
         if (!data.result) {
           return;
         }

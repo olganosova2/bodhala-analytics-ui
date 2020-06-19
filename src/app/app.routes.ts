@@ -29,7 +29,7 @@ export const appRouterConfig: Routes = [
   // {path: 'practice-area/', component: PracticeAreaComponent},
   {path: 'analytics-ui/practiceArea/:client_matter_type', component: PracticeAreaComponent},
   {path: 'analytics-ui/practiceArea/', component: PracticeAreaComponent},
-  {path: 'practiceArea/', component: PracticeAreaComponent},
+  {path: 'practiceArea', component: PracticeAreaComponent},
   {path: 'analytics-ui/firm/report-card/:id', component: FirmRateCardComponent},
   {path: 'firm/report-card/:id', component: FirmRateCardComponent},
   // {path: 'analytics.html', component: LaunchpadComponent},

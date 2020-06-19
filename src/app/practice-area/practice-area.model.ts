@@ -13,7 +13,7 @@ export interface ITag {
     type: string;
     id: number;
 }
-  
+
 export interface IPracticeArea {
     client_matter_type: string;
     // rank: number;
@@ -191,18 +191,18 @@ export const lineChartOptions = {
       title: {
         text: 'Date'
       }
-  
+
     },
     yAxis: {
       min: 0,
       title: {
         text: '$ (dollars)'
       }
-  
+
     },
     series: []
 };
-  
+
 export const spendByMonthChartAdditionalOptions = {
     plotOptions: {
       series: {
@@ -226,14 +226,14 @@ export const spendByMonthChartAdditionalOptions = {
       title: {
         text: 'Date'
       }
-  
+
     },
     yAxis: {
       min: 0,
       title: {
         text: '$ (dollars)'
       }
-  
+
     },
     series: [{
       showInLegend: false,
@@ -241,7 +241,7 @@ export const spendByMonthChartAdditionalOptions = {
       data: []
     }]
 };
-  
+
 export const spendByMonthOptions = { ... lineChartOptions, ...spendByMonthChartAdditionalOptions};
 
 

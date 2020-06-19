@@ -37,7 +37,6 @@ export class TopMattersComponent implements OnInit, OnDestroy {
       params.firms = JSON.stringify(arr);
     }
     if (this.practiceArea) {
-      const arr = [];
       arr.push(this.practiceArea.client_matter_type);
       params.practiceAreas = JSON.stringify(arr);
     }
