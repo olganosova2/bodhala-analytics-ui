@@ -52,15 +52,16 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
           if (this.leadPartners.length > 10) {
             this.leadPartners = this.leadPartners.slice(0, 10);
           }
-          for (let i = 0; i < this.leadPartners.length; i++) {
-            const leverage = this.leadPartners[i].associate_hours / this.leadPartners[i].partner_hours;
-            const associateRate = (this.leadPartners[i].associate_billed - this.leadPartners[i].associate_writeoff) / (this.leadPartners[i].associate_hours - this.leadPartners[i].associate_writeoff_hours);
-            const partnerRate = (this.leadPartners[i].partner_billed - this.leadPartners[i].partner_writeoff) / (this.leadPartners[i].partner_hours - this.leadPartners[i].partner_writeoff_hours);
+
+          for (const lp of this.leadPartners) {
+            const leverage = lp.associate_hours / lp.partner_hours;
+            const associateRate = (lp.associate_billed - lp.associate_writeoff) / (lp.associate_hours - lp.associate_writeoff_hours);
+            const partnerRate = (lp.partner_billed - lp.partner_writeoff) / (lp.partner_hours - lp.partner_writeoff_hours);
             const bpi = partnerRate + (leverage * associateRate);
             if (bpi > 0) {
-              this.leadPartners[i].bpi = formatter.format(bpi);
+              lp.bpi = formatter.format(bpi);
             } else {
-              this.leadPartners[i].bpi = '--';
+              lp.bpi = '--';
             }
           }
         }
@@ -71,20 +72,20 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
     );
   }
   goToView(): void {
-    let qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    const qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
     let serializedQs = JSON.parse(qs).querystring.toString();
-    let temp_qs = JSON.parse(qs);
-    temp_qs.querystring = serializedQs
+    const tempQs = JSON.parse(qs);
+    tempQs.querystring = serializedQs;
     serializedQs += '&practiceAreas=["' + encodeURIComponent(this.practiceArea.client_matter_type) + '"]';
-    temp_qs.querystring = serializedQs
+    tempQs.querystring = serializedQs;
 
-    for (let i = 0; i < temp_qs.dataFilters.length; i++) {
-      if (temp_qs.dataFilters[i].fieldName === 'practiceAreas') {
-        temp_qs.dataFilters[i].value = [{id: this.practiceArea.client_matter_type, name: this.practiceArea.client_matter_type, sortField: this.practiceArea.client_matter_type}];
+    for (const filter of tempQs.dataFilters) {
+      if (filter.fieldName === 'practiceAreas') {
+        filter.value = [{id: this.practiceArea.client_matter_type, name: this.practiceArea.client_matter_type, sortField: this.practiceArea.client_matter_type}];
         break;
       }
     }
-    localStorage.setItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id, JSON.stringify(temp_qs));
+    localStorage.setItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id, JSON.stringify(tempQs));
 
     window.location.href = '/#/app/client-dashboard/lead-attorneys?practiceArea=' + this.practiceArea.client_matter_type;
   }

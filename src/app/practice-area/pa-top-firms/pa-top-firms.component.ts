@@ -50,20 +50,20 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
     );
   }
   goToView(): void {
-    let qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    const qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
     let serializedQs = JSON.parse(qs).querystring.toString();
-    let temp_qs = JSON.parse(qs);
-    temp_qs.querystring = serializedQs
+    const tempQs = JSON.parse(qs);
+    tempQs.querystring = serializedQs;
     serializedQs += '&practiceAreas=["' + encodeURIComponent(this.practiceArea.client_matter_type) + '"]';
-    temp_qs.querystring = serializedQs
+    tempQs.querystring = serializedQs;
 
-    for (let i = 0; i < temp_qs.dataFilters.length; i++) {
-      if (temp_qs.dataFilters[i].fieldName === 'practiceAreas') {
-        temp_qs.dataFilters[i].value = [{id: this.practiceArea.client_matter_type, name: this.practiceArea.client_matter_type, sortField: this.practiceArea.client_matter_type}];
+    for (const filter of tempQs.dataFilters) {
+      if (filter.fieldName === 'practiceAreas') {
+        filter.value = [{id: this.practiceArea.client_matter_type, name: this.practiceArea.client_matter_type, sortField: this.practiceArea.client_matter_type}];
         break;
       }
     }
-    localStorage.setItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id, JSON.stringify(temp_qs));
+    localStorage.setItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id, JSON.stringify(tempQs));
 
     window.location.href = '/#/app/client-dashboard/firm?practiceArea=' + this.practiceArea.client_matter_type;
   }
