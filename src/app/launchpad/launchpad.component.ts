@@ -1,9 +1,15 @@
 import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { LaunchPadService } from './launchpad.service';
 import { FiltersService } from '../shared/services/filters.service';
+import {DatePipe} from '@angular/common';
 import { columns } from './launchpad.model';
 import {AppStateService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
+import {UserService} from 'bodhala-ui-common';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import html2canvas from 'html2canvas';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'bd-launchpad',
@@ -21,12 +27,16 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   cards: Array<any> = []; // cards;
   requests = {};
   columns = columns;
+  launchpadImage = null;
+  logoImage = null;
 
   constructor(
     private filtersService: FiltersService,
     private launchPadService: LaunchPadService,
     public appStateService: AppStateService,
-    public commonServ: CommonService
+    public userService: UserService,
+    public commonServ: CommonService,
+    private datePipe: DatePipe
     ) {
     this.cards = this.launchPadService.configureCards();
     this.commonServ.pageTitle = 'Launchpad';
@@ -35,6 +45,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.load();
+    // this.generatePDF();
   }
 
   load(): void {
@@ -44,6 +55,96 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 
   onCardLoaded() {
     this.postLoad();
+  }
+
+  generatePDF() {
+
+    pdfMake.fonts = {
+      sharpSansDisplay: {
+        normal: 'SharpSansDispNo1-Bold.ttf'
+      }
+    }
+    let clientName = this.userService.currentUser.client_info.org.name;
+
+    let dateRange = "";
+
+    let logoDiv = document.createElement('div');
+    logoDiv.style.height = '120px';
+    logoDiv.style.width = '600px';
+    logoDiv.style.alignContent = 'middle';
+    logoDiv.id = 'logoDiv';
+    logoDiv.style.textAlign = 'center';
+
+    let logoImg = document.createElement('img');
+    logoImg.style.height = '20px';
+    logoImg.style.width = '99.42px';
+    logoImg.style.top = '30px';
+    logoImg.style.display = 'inline';
+    logoImg.src = 'assets/images/new_logo.png';
+
+    let clientText = document.createElement('div');
+    clientText.textContent = clientName + ' - Executive Summary';
+    clientText.style.fontFamily = 'Sharp Sans Display';
+    clientText.style.fontSize = '18px';
+    clientText.style.textAlign = 'center';
+
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    console.log("params: ", params);
+    const startDate = this.datePipe.transform(params['startdate'], 'MMMM yyyy');
+    const endDate = this.datePipe.transform(params['enddate'], 'MMMM yyyy');
+    console.log("dates: ", startDate, endDate);
+    let dateText = document.createElement('div');
+    dateText.style.fontFamily = 'Sharp Sans';
+    dateText.style.fontSize = '12px';
+    dateText.textContent = 'Active Date Range: ' + startDate + ' - ' + endDate;
+
+    //  const label = this.datePipe.transform(rec.month, 'MMM yyyy');
+
+    logoDiv.appendChild(logoImg);
+    // logoDiv.appendChild(esText);
+    logoDiv.appendChild(clientText);
+    logoDiv.appendChild(dateText);
+    document.body.append(logoDiv);
+    html2canvas(document.getElementById('logoDiv')).then(canvas => {
+      
+      this.logoImage = canvas.toDataURL();
+
+      // document.body.removeChild(logoDiv);
+
+      html2canvas(document.getElementById('launchpadtest')).then(canvas => {
+
+        this.launchpadImage = canvas.toDataURL();
+
+        const documentDefinition = { 
+          pageMargins: [40, 100, 40, 60],
+          header: {
+            margin: 8,
+            columns: [
+              {
+                table: {
+                  widths: ['100%'],
+                  body: [
+                    [
+                      { 
+                        image: this.logoImage,
+                        width: 600, height: 120, alignment: 'center'
+                      }
+                    ]
+                  ]
+                },
+                layout: 'noBorders'
+              }
+            ],
+          },
+          content: [{
+            image: this.launchpadImage,
+            width: 500,
+          }]
+        };
+
+        pdfMake.createPdf(documentDefinition).download();
+      });
+   });
   }
 
   // bubbled up from card/cell clicks
@@ -77,3 +178,27 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
     this.commonServ.clearTitles();
   }
 }
+
+// header: {
+//   margin: 8,
+//   columns: [
+//     {
+//       table: {
+//         widths: ['50%', '50%'],
+//         body: [
+//           [
+//             { 
+//               image: this.logoImage, alignment: 'center',
+//               width: 200, height: 45,
+//             },
+//             { 
+//               text: clientName, font: 'sharpSansDisplay', fontSize: 24, alignment: 'center',
+//               width: 80, height: 100,
+//             }
+//           ]
+//         ]
+//       },
+//       layout: 'noBorders'
+//     }
+//   ],
+// },

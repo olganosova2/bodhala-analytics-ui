@@ -12,7 +12,11 @@
   <div #insights style="display: block">
     <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
   </div>
-  <div class="launchpad" #launchpad>
+  <button (click)="generatePDF()">Generate PDF</button>
+  <!-- <div id="giveitashot" style="height: 40.67px; width: 198.83px;">
+    <img src="assets/images/new_logo.png" style="height: 40.67px; width: 198.83px;" id="giveitashot">
+  </div> -->
+  <div class="launchpad" #launchpad id="launchpadtest">
     <bd-card *ngFor="let card of cards"
              [header]="card.header"
              [request]="requests[card.request]"
