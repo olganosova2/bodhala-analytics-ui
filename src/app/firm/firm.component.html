@@ -15,8 +15,9 @@
     <h4>{{ firm?.name }}</h4>
   </div> -->
   <div class="mb10">
-    <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()">Include Expenses
+    <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()" class="pt10">Include Expenses
     </mat-slide-toggle>
+    <button class="primary-button ml20" (click)="viewReportCard()">View Report Card</button>
     <bd-firm-dropdown></bd-firm-dropdown>
   </div>
   <div class="ui-g">

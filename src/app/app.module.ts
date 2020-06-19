@@ -65,6 +65,11 @@ import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.compo
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
 import { MattersComponent } from './matters/matters.component';
 import { LeadAttorneyComponent } from './lead-attorney/lead-attorney.component';
+import { PracticeAreaComponent } from './practice-area/practice-area.component';
+import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dropdown/practice-area-dropdown.component';
+import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
+import { PaTopLeadPartnersComponent } from './practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
+import { FirmRateCardComponent } from './firm/firm-rate-card/firm-rate-card.component';
 
 
 export function initUser(config: UserService) {
@@ -119,6 +124,11 @@ export function highchartsFactory() {
     ErrorMessagesComponent,
     MattersComponent,
     LeadAttorneyComponent,
+    PracticeAreaComponent,
+    PracticeAreaDropdownComponent,
+    PaTopFirmsComponent,
+    PaTopLeadPartnersComponent,
+    FirmRateCardComponent,
   ],
   entryComponents: [
     PillComponent,

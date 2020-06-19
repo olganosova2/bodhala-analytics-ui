@@ -73,6 +73,7 @@ import {ErrorMessagesComponent} from '../components/error-messages/error-message
 import {MattersComponent} from '../../matters/matters.component';
 import {AgGridModule} from 'ag-grid-angular';
 import {LeadAttorneyComponent} from '../../lead-attorney/lead-attorney.component';
+import {FirmRateCardComponent} from '../../firm/firm-rate-card/firm-rate-card.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -155,7 +156,8 @@ export const DECLARATIONS = [
   IeBannerComponent,
   ErrorMessagesComponent,
   MattersComponent,
-  LeadAttorneyComponent
+  LeadAttorneyComponent,
+  FirmRateCardComponent
 ];
 
 export const PROVIDERS = [
