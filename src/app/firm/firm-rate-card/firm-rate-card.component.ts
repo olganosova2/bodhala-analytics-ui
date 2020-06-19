@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {Subscription} from 'rxjs';
+import * as _moment from 'moment';
+const moment = _moment;
 import {HttpService, UtilService} from 'bodhala-ui-common';
 import {IFirm} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -18,7 +20,10 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   errorMessage: any;
   pendingRequestFirm: Subscription;
   pendingRequestPAs: Subscription;
+  pendingRequestSummary: Subscription;
   practiceAreas: Array<string> = [];
+  enddate: string;
+  startdate: string;
   constructor(public commonServ: CommonService,
               private route: ActivatedRoute,
               private httpService: HttpService,
@@ -28,7 +33,9 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.commonServ.pageTitle = 'Firms > Report Card';
   }
   ngOnInit() {
-    this.practiceAreas.push(this.selectedPracticeArea);
+    const dates = this.filtersService.parseLSDateString();
+    this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
+    this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
       this.loadFirm();
@@ -51,10 +58,15 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     );
   }
   loadPAs(): void {
+    this.practiceAreas = [];
     const combined = this.filtersService.getCurrentUserCombinedFilters(true);
+    const arr = [];
+    arr.push(this.firmId.toString());
+    combined.firms = JSON.stringify(arr);
     const params = { ... combined,  filter_name: 'practiceAreas', limit: 100 };
     this.pendingRequestPAs = this.httpService.makeGetRequest('getOptionsForFilter', params).subscribe(
       (data: any) => {
+        this.practiceAreas.push(this.selectedPracticeArea);
         let pas = data.result.map(e => e.id) || [];
         pas = pas.sort();
         this.practiceAreas = [ ...this.practiceAreas, ... pas];
@@ -64,16 +76,23 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   editReportCard(): void {
     this.router.navigate(['/analytics-ui/firm/', this.firmId]);
+  }
+  export(): void {
+
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequestFirm) {
       this.pendingRequestFirm.unsubscribe();
     }
-    if (this.pendingRequestFirm) {
+    if (this.pendingRequestPAs) {
       this.pendingRequestPAs.unsubscribe();
+    }
+    if (this.pendingRequestSummary) {
+      this.pendingRequestSummary.unsubscribe();
     }
   }
 

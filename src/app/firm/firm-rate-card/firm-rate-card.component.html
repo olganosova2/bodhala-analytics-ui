@@ -1,11 +1,24 @@
-<div>
-  <div class="pull-right">
-    <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
+<div class="rate-card-div">
+  <div>
+    <div class="pull-left">
+      <h2>{{commonServ.pageSubtitle}}</h2>
+      <div class="font-bold">Timeframe: {{startdate}} - {{enddate}}</div>
+    </div>
+    <div class="pull-right">
+      <button class="primary-button ml20" (click)="export()">Export
+        <img src="assets/images/Downloads.svg" alt="icon"/>
+      </button>
+      <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
+    </div>
   </div>
+
   <div class="clear-both"></div>
-  <div *ngFor="let pa of practiceAreas" class="mb20">
-    <h4 class="mb20"><span *ngIf="!pa">Overall Spend</span><span *ngIf="pa">{{pa}}</span></h4>
+  <hr/>
+  <div *ngFor="let pa of practiceAreas" class="mb30 mt40">
+    <h4 class="mb10"><span *ngIf="!pa">Overall Spend</span><span *ngIf="pa">{{pa}}</span></h4>
     <bd-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
                        *ngIf="firmId && firm"></bd-billing-totals>
+    <bd-rate-card-tables [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
+    <hr/>
   </div>
 </div>

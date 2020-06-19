@@ -47,6 +47,7 @@ export const END_POINTS_URLS = {
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
+  getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
 };
 
 export const ROUTES = [

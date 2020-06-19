@@ -74,14 +74,14 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       format: 'currency',
       svg: 'avg_matter_cost'
     });
-    this.totals.push({
-      icon: 'icon-clock',
-      total: this.totalsRaw.percent_block_billed,
-      name: 'Total Block Billed',
-      format: 'percent',
-      svg: 'total_bb'
-    });
     if (!this.isReportCard) {
+      this.totals.push({
+        icon: 'icon-clock',
+        total: this.totalsRaw.percent_block_billed,
+        name: 'Total Block Billed',
+        format: 'percent',
+        svg: 'total_bb'
+      });
       this.totals.push({
         icon: 'icon-energy',
         total: this.totalsRaw.partner_tks_per_matter.avg,
@@ -155,7 +155,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   }
 
   calculateHoursPercentage(totalsRaw: any): void {
-    const totalHrs = totalsRaw.total_partner_hours + totalsRaw.total_associate_hours || 1;
+    const totalHrs = totalsRaw.total_hours || 1;
     totalsRaw.total_partner_hours_prct = (totalsRaw.total_partner_hours * 100 / totalHrs);
     totalsRaw.total_associate_hours_prct = (totalsRaw.total_associate_hours * 100 / totalHrs);
   }
