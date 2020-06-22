@@ -517,22 +517,14 @@ h1, h2, h3, h4, h5, h6 {
 .apply-button {
   padding: 10px 20px;
 }
-
-//.pill {
-//  display: inline-block;
-//  min-width: 10px;
-//  margin: 9px 0;
-//  padding: 3px 7px;
-//  font-size: 11px;
-//  font-weight: bold;
-//  color: #fff;
-//  // line-height: 1;
-//  vertical-align: middle;
-//  white-space: nowrap;
-//  text-align: center;
-//  background-color: $body-color;
-//  border-radius: 10px;
-//}
+.primary-button {
+  background-color: $body-color;
+  color: #fff;
+  font-family: "Sharp Sans";
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
 :host ::ng-deep {
   .btn-group > .btn.active {
     z-index: 1;
