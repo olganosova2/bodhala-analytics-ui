@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import * as _moment from 'moment';
-import {ITopMatter} from '../../shared/models/top-matters';
 import {IFirm, spendByMonthOptions} from '../firm.model';
+import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -19,6 +19,7 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
   includeExpenses: boolean = false;
   chart: any = {};
   options: any;
+  @Input() practiceArea: IPracticeArea;
   @Input() firmId: number;
   @Input() firm: IFirm;
   pendingRequest: Subscription;
@@ -41,8 +42,14 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
   getSpendByMonth(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
-    arr.push(this.firmId.toString());
-    params.firms = JSON.stringify(arr);
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firms = JSON.stringify(arr);
+    }
+    if (this.practiceArea) {
+      arr.push(this.practiceArea.client_matter_type);
+      params.practiceAreas = JSON.stringify(arr);
+    }
     this.pendingRequest = this.httpService.makeGetRequest('spendByMonth', params).subscribe(
       (data: any) => {
         this.spend = data.result;

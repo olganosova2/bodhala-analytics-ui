@@ -1,5 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IBillingTotalItem, IFirm} from '../firm.model';
+import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -16,7 +17,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   isLoaded: boolean = false;
   itemTopRowCount: number = 6;
-  @Input() practiceArea: string;
+  @Input() practiceArea: IPracticeArea;
   @Input() isReportCard: boolean = false;
   @Input() firm: IFirm;
 
@@ -38,7 +39,12 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     }
     if (this.practiceArea) {
       const arr = [];
-      arr.push(this.practiceArea.toString());
+      if (this.practiceArea.client_matter_type === null || this.practiceArea.client_matter_type === undefined) {
+        arr.push(this.practiceArea);
+      } else {
+        arr.push(this.practiceArea.client_matter_type);
+      }
+      // arr.push(this.practiceArea.client_matter_type);
       params.practiceAreas = JSON.stringify(arr);
     }
     this.isLoaded = false;
