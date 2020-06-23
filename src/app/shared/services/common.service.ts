@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,7 @@ export class CommonService {
   pageTitle: string = '';
   pageSubtitle: string = '';
   exportImage = null;
+  pdfLoading: boolean = false;
 
   constructor() { }
   clearTitles(): void {
@@ -61,7 +62,7 @@ export class CommonService {
       canvas.getContext('2d');
       this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
   
-      let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeight]);
+      let pdf = new jspdf('p', 'pt', [pdfWidth, pdfHeight]);
       pdf.setFillColor('#FFFFFF');
       pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
       pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
@@ -83,4 +84,10 @@ export class CommonService {
   
   }
   
+  capitalize(word: string): string {
+    if (!word) {
+      return '';
+    }
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
 }

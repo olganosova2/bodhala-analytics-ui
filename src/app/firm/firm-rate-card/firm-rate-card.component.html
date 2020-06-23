@@ -1,11 +1,26 @@
-<div>
-  <div class="pull-right">
-    <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
+<div class="rate-card-div" id="pdfDiv" #pdfDiv>
+  <div>
+    <div class="pull-left">
+      <h2>{{commonServ.pageSubtitle}}</h2>
+      <div class="font-bold">Timeframe: {{startdate}} - {{enddate}}</div>
+      <div class="font-bold">Rank: {{percentOfTotal * 100 | number:'1.2-2'}}% of Total</div>
+    </div>
+    <div class="pull-right">
+      <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+        <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
+      </button>
+      <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
+    </div>
   </div>
+  <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
+
   <div class="clear-both"></div>
-  <div *ngFor="let pa of practiceAreas" class="mb20">
-    <h4 class="mb20"><span *ngIf="!pa">Overall Spend</span><span *ngIf="pa">{{pa}}</span></h4>
+  <hr/>
+  <div *ngFor="let pa of practiceAreas;let i= index" class="mb30 mt40">
+    <h4 class="mb10"><span *ngIf="!pa">Overall Spend</span><span *ngIf="pa">{{pa}}</span></h4>
     <bd-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
                        *ngIf="firmId && firm"></bd-billing-totals>
+    <bd-rate-card-tables [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
+    <hr id="hrEnd_{{i}}"/>
   </div>
 </div>

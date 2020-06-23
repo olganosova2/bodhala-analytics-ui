@@ -70,6 +70,7 @@ import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dro
 import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
 import { PaTopLeadPartnersComponent } from './practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
 import { FirmRateCardComponent } from './firm/firm-rate-card/firm-rate-card.component';
+import { RateCardTablesComponent } from './firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
 
 
 export function initUser(config: UserService) {
@@ -129,6 +130,7 @@ export function highchartsFactory() {
     PaTopFirmsComponent,
     PaTopLeadPartnersComponent,
     FirmRateCardComponent,
+    RateCardTablesComponent,
   ],
   entryComponents: [
     PillComponent,
