@@ -25,28 +25,6 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   columns = columns;
   launchpadImage = null;
   logoImage = null;
-  dummyContent = [
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5'],
-    ['column1', 'column2', 'column3', 'column4', 'column5']
-  ];
 
   constructor(
     private filtersService: FiltersService,
@@ -63,7 +41,6 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.load();
-    // this.generatePDF();
   }
 
   load(): void {
