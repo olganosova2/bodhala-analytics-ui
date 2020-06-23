@@ -1,4 +1,4 @@
-<div class="full-width">
+<div class="full-width relative-pos">
   <div class="panel-wrapper flex-container" [ngClass]="{ 'black-border' : isReportCard }">
     <div *ngFor="let item of totals.slice(0, itemTopRowCount);let i=$index;" class="flex-item">
       <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
@@ -9,8 +9,8 @@
       <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
     </div>
   </div>
-<!--  <div class="spinner-card" [hidden]="isLoaded">-->
-<!--    <mat-spinner diameter="50" color="primary"></mat-spinner>-->
-<!--  </div>-->
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
 </div>
 

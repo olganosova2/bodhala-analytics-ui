@@ -43,10 +43,12 @@ describe('RateCardTablesComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RateCardTablesComponent);
     component = fixture.componentInstance;
+    component.practiceArea = 'WORKERS COMP (AFA) HO SPECIFIC';
+    component.firmId = '87';
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create RateCardTablesComponent', () => {
     expect(component).toBeTruthy();
   });
 });

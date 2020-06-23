@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
@@ -32,10 +32,19 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   practiceAreas: Array<string> = [];
   enddate: string;
   startdate: string;
-  launchpadImage: any;
-  logoImage: any;
+  showToTop: boolean = false;
   percentOfTotal: number;
   @ViewChild('pdfDiv', {static: false}) pdfDiv: ElementRef<HTMLElement>;
+
+  @HostListener('window:scroll', ['$event'])
+  onWindowScroll() {
+    const pageScroll = window.pageYOffset;
+    if (pageScroll > 500) {
+      this.showToTop = true;
+    } else {
+      this.showToTop = false;
+    }
+  }
 
   constructor(public commonServ: CommonService,
               private route: ActivatedRoute,
@@ -116,6 +125,9 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
 
   export(): void {
+  }
+  goToTop(): void {
+    window.scroll(0, 0);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
