@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
 
@@ -11,11 +11,14 @@ export class CommonService {
   exportImage = null;
   pdfLoading: boolean = false;
 
-  constructor() { }
+  constructor() {
+  }
+
   clearTitles(): void {
     this.pageSubtitle = '';
     this.pageTitle = '';
   }
+
   formatTkName(tkName: string): string {
     let result = tkName;
     if (result && result.length > 12) {
@@ -23,6 +26,7 @@ export class CommonService {
     }
     return result;
   }
+
   formatFirmName(firmName: string): string {
     let result = firmName;
     if (result && result.length > 15) {
@@ -30,6 +34,7 @@ export class CommonService {
     }
     return result;
   }
+
   formatLeadPartnerName(firmName: string): string {
     let result = firmName;
     if (result && result.length > 25) {
@@ -37,15 +42,10 @@ export class CommonService {
     }
     return result;
   }
-  generatePDF(firm) {
-    let docName = '';
-    if (firm.firm_name) {
-      docName = firm.firm_name + ' Report Card.pdf';
-    } else {
-      docName = 'Firm Report Card.pdf';
-    }
-
-    const exportElement = document.getElementById('pdfDiv');
+  generatePDF(title: string, divId: string) {
+    this.pdfLoading = true;
+    const docName = title ? title : 'Export PDF';
+    const exportElement = document.getElementById(divId);
 
     const htmlWidth = exportElement.offsetWidth;
     const htmlHeight = exportElement.offsetHeight;
@@ -66,17 +66,18 @@ export class CommonService {
 
       const pdf = new jspdf('p', 'pt', [pdfWidth, pdfHeight]);
       pdf.setFillColor('#FFFFFF');
-      pdf.addImage(this.exportImage , 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
+      pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
       pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
 
       for (let i = 1; i <= totalPDFPages; i++) {
         pdf.addPage(pdfWidth, pdfHeight);
-        pdf.addImage(this.exportImage , 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (6 * i)), canvasImageWidth, canvasImageHeight);
+        pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (6 * i)), canvasImageWidth, canvasImageHeight);
         pdf.setFillColor('#FFFFFF');
         pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
         pdf.rect(0, 0, pdfWidth, (topLeftMargin * 3), 'F');
       }
       pdf.save(docName);
+      this.pdfLoading = false;
     });
 
 
