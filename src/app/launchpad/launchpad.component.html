@@ -12,10 +12,7 @@
   <div #insights style="display: block">
     <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
   </div>
-  <button (click)="generatePDF()">Generate PDF</button>
-  <!-- <div id="giveitashot" style="height: 40.67px; width: 198.83px;">
-    <img src="assets/images/new_logo.png" style="height: 40.67px; width: 198.83px;" id="giveitashot">
-  </div> -->
+  <button (click)="commonServ.generatePDF()">Generate PDF</button>
   <div class="launchpad" #launchpad id="launchpadtest">
     <bd-card *ngFor="let card of cards"
              [header]="card.header"
@@ -27,5 +24,407 @@
              (loaded)="onCardLoaded()"
              [ngStyle]="{'grid-column': 'span ' + card.span}">
     </bd-card>
+
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div id="heregoesnothing" style="grid-column: span 4 / auto; padding-left: 25px;">
+      <table style="width: 100%" >
+        <tr>
+          <th>COLUMN 1</th>
+          <th>COLUMN 2</th>
+          <th>COLUMN 3</th>
+          <th>COLUMN 4</th>
+          <th>COLUMN 5</th>
+        </tr>
+        <tr *ngFor="let row of dummyContent">
+          <td>{{row[0]}}</td>
+          <td>{{row[1]}}</td>
+          <td>{{row[2]}}</td>
+          <td>{{row[3]}}</td>
+          <td>{{row[4]}}</td>
+        </tr>
+
+      </table>
+    </div>
+
   </div>
 </div>

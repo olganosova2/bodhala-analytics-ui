@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +8,7 @@ import { Injectable } from '@angular/core';
 export class CommonService {
   pageTitle: string = '';
   pageSubtitle: string = '';
+  exportImage = null;
 
   constructor() { }
   clearTitles(): void {
@@ -33,4 +36,51 @@ export class CommonService {
     }
     return result;
   }
+  generatePDF() {
+    // let startTime = performance.now();
+  
+    let exportElement = document.getElementById('launchpadtest');
+  
+    let htmlWidth = exportElement.offsetWidth;
+    let htmlHeight = exportElement.offsetHeight;
+    let topLeftMargin = 15;
+    let pdfWidth = htmlWidth + (topLeftMargin * 2);
+    let pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
+    let canvasImageWidth = htmlWidth;
+    let canvasImageHeight = htmlHeight;
+  
+    let totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
+  
+  
+    html2canvas(document.getElementById('launchpadtest'), {
+      logging: true,
+      width: htmlWidth,
+      height: htmlHeight
+    }).then(canvas => {
+  
+      canvas.getContext('2d');
+      this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
+  
+      let pdf = new jsPDF('p', 'pt', [pdfWidth, pdfHeight]);
+      pdf.setFillColor('#FFFFFF');
+      pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
+      pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
+  
+      for (let i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(pdfWidth, pdfHeight);
+        pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * 6.5), canvasImageWidth, canvasImageHeight);
+        pdf.setFillColor('#FFFFFF');
+        pdf.rect(0, 0, pdfWidth, (topLeftMargin * 3), 'F');
+        pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
+      }
+  
+      pdf.save('htmlDoc.pdf')
+  
+      // let endTime = performance.now();
+      // console.log("TIME: ", ((endTime - startTime) / 1000) + " seconds");
+    });
+  
+  
+  }
+  
 }
