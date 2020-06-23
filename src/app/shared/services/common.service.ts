@@ -37,53 +37,51 @@ export class CommonService {
     }
     return result;
   }
-  generatePDF() {
-    // let startTime = performance.now();
-  
-    let exportElement = document.getElementById('launchpadtest');
-  
-    let htmlWidth = exportElement.offsetWidth;
-    let htmlHeight = exportElement.offsetHeight;
-    let topLeftMargin = 15;
-    let pdfWidth = htmlWidth + (topLeftMargin * 2);
-    let pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
-    let canvasImageWidth = htmlWidth;
-    let canvasImageHeight = htmlHeight;
-  
-    let totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
-  
-  
-    html2canvas(document.getElementById('launchpadtest'), {
-      logging: true,
+  generatePDF(firm) {
+    let docName = '';
+    if (firm.firm_name) {
+      docName = firm.firm_name + ' Report Card.pdf';
+    } else {
+      docName = 'Firm Report Card.pdf';
+    }
+
+    const exportElement = document.getElementById('pdfDiv');
+
+    const htmlWidth = exportElement.offsetWidth;
+    const htmlHeight = exportElement.offsetHeight;
+    const topLeftMargin = 15;
+    const pdfWidth = htmlWidth + (topLeftMargin * 2);
+    const pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
+    const canvasImageWidth = htmlWidth;
+    const canvasImageHeight = htmlHeight;
+    const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
+
+    html2canvas(document.getElementById('pdfDiv'), {
       width: htmlWidth,
       height: htmlHeight
     }).then(canvas => {
-  
+
       canvas.getContext('2d');
       this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
-  
-      let pdf = new jspdf('p', 'pt', [pdfWidth, pdfHeight]);
+
+      const pdf = new jspdf('p', 'pt', [pdfWidth, pdfHeight]);
       pdf.setFillColor('#FFFFFF');
-      pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
+      pdf.addImage(this.exportImage , 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
       pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
-  
+
       for (let i = 1; i <= totalPDFPages; i++) {
         pdf.addPage(pdfWidth, pdfHeight);
-        pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * 6.5), canvasImageWidth, canvasImageHeight);
+        pdf.addImage(this.exportImage , 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (6 * i)), canvasImageWidth, canvasImageHeight);
         pdf.setFillColor('#FFFFFF');
-        pdf.rect(0, 0, pdfWidth, (topLeftMargin * 3), 'F');
         pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
+        pdf.rect(0, 0, pdfWidth, (topLeftMargin * 3), 'F');
       }
-  
-      pdf.save('htmlDoc.pdf')
-  
-      // let endTime = performance.now();
-      // console.log("TIME: ", ((endTime - startTime) / 1000) + " seconds");
+      pdf.save(docName);
     });
-  
-  
+
+
   }
-  
+
   capitalize(word: string): string {
     if (!word) {
       return '';

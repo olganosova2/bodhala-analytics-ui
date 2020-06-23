@@ -3,15 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
-
 const moment = _moment;
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts.js';
-import * as jspdf from 'jspdf';
-import html2canvas from 'html2canvas';
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-
 import {HttpService, UtilService} from 'bodhala-ui-common';
 import {IFirm} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';

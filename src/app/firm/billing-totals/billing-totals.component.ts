@@ -39,7 +39,12 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     }
     if (this.practiceArea) {
       const arr = [];
-      arr.push(this.practiceArea.client_matter_type);
+      if (this.practiceArea.client_matter_type === null || this.practiceArea.client_matter_type === undefined) {
+        arr.push(this.practiceArea);
+      } else {
+        arr.push(this.practiceArea.client_matter_type);
+      }
+      // arr.push(this.practiceArea.client_matter_type);
       params.practiceAreas = JSON.stringify(arr);
     }
     this.isLoaded = false;
