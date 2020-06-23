@@ -26,9 +26,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   startdate: string;
   showToTop: boolean = false;
   percentOfTotal: number;
-  @ViewChild('pdfDiv', {static: false}) pdfDiv: ElementRef<HTMLElement>;
 
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll', [])
   onWindowScroll() {
     const pageScroll = window.pageYOffset;
     if (pageScroll > 500) {
@@ -114,9 +113,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
 
   editReportCard(): void {
     this.router.navigate(['/analytics-ui/firm/', this.firmId]);
-  }
-
-  export(): void {
   }
   goToTop(): void {
     window.scroll(0, 0);
