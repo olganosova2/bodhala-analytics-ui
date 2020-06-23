@@ -64,36 +64,36 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
         normal: 'SharpSansDispNo1-Bold.ttf'
       }
     }
-    let clientName = this.userService.currentUser.client_info.org.name;
+    const clientName = this.userService.currentUser.client_info.org.name;
 
-    let dateRange = "";
+    const dateRange = '';
 
-    let logoDiv = document.createElement('div');
+    const logoDiv = document.createElement('div');
     logoDiv.style.height = '120px';
     logoDiv.style.width = '600px';
     logoDiv.style.alignContent = 'middle';
     logoDiv.id = 'logoDiv';
     logoDiv.style.textAlign = 'center';
 
-    let logoImg = document.createElement('img');
+    const logoImg = document.createElement('img');
     logoImg.style.height = '20px';
     logoImg.style.width = '99.42px';
     logoImg.style.top = '30px';
     logoImg.style.display = 'inline';
     logoImg.src = 'assets/images/new_logo.png';
 
-    let clientText = document.createElement('div');
+    const clientText = document.createElement('div');
     clientText.textContent = clientName + ' - Executive Summary';
     clientText.style.fontFamily = 'Sharp Sans Display';
     clientText.style.fontSize = '18px';
     clientText.style.textAlign = 'center';
 
     const params = this.filtersService.getCurrentUserCombinedFilters();
-    console.log("params: ", params);
-    const startDate = this.datePipe.transform(params['startdate'], 'MMMM yyyy');
-    const endDate = this.datePipe.transform(params['enddate'], 'MMMM yyyy');
-    console.log("dates: ", startDate, endDate);
-    let dateText = document.createElement('div');
+    // console.log('params: ', params);
+    const startDate = this.datePipe.transform(params.startdate, 'MMMM yyyy');
+    const endDate = this.datePipe.transform(params.enddate, 'MMMM yyyy');
+    console.log('dates: ', startDate, endDate);
+    const dateText = document.createElement('div');
     dateText.style.fontFamily = 'Sharp Sans';
     dateText.style.fontSize = '12px';
     dateText.textContent = 'Active Date Range: ' + startDate + ' - ' + endDate;
@@ -106,7 +106,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
     logoDiv.appendChild(dateText);
     document.body.append(logoDiv);
     html2canvas(document.getElementById('logoDiv')).then(canvas => {
-      
+
       this.logoImage = canvas.toDataURL();
 
       // document.body.removeChild(logoDiv);
@@ -115,8 +115,8 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 
         this.launchpadImage = canvas.toDataURL();
 
-        const documentDefinition = { 
-          pageMargins: [40, 100, 40, 60],
+        const documentDefinition = {
+          pageMargins: [40, 0, 40, 60],
           header: {
             margin: 8,
             columns: [
@@ -125,7 +125,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
                   widths: ['100%'],
                   body: [
                     [
-                      { 
+                      {
                         image: this.logoImage,
                         width: 600, height: 120, alignment: 'center'
                       }
@@ -187,11 +187,11 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 //         widths: ['50%', '50%'],
 //         body: [
 //           [
-//             { 
+//             {
 //               image: this.logoImage, alignment: 'center',
 //               width: 200, height: 45,
 //             },
-//             { 
+//             {
 //               text: clientName, font: 'sharpSansDisplay', fontSize: 24, alignment: 'center',
 //               width: 80, height: 100,
 //             }

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import html2canvas from 'html2canvas';
+import * as jspdf from 'jspdf';
 
 @Injectable({
   providedIn: 'root'
@@ -6,6 +8,7 @@ import { Injectable } from '@angular/core';
 export class CommonService {
   pageTitle: string = '';
   pageSubtitle: string = '';
+  pdfLoading: boolean = false;
 
   constructor() { }
   clearTitles(): void {
