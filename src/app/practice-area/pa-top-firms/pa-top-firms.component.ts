@@ -49,10 +49,10 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
           const newMinDate = new Date(tempMinDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric' });
           const newMaxDate = new Date(tempMaxDate).toLocaleString('en-us', { month: 'short', day: 'numeric', year: 'numeric'});
           const dateRange = document.getElementsByClassName('min-max-range min-max-range-width');
-          dateRange[0].firstChild.textContent = 'Active Data Range: ' + newMinDate.toString() + ' - ' + newMaxDate.toString();
+          if (dateRange &&  dateRange[0]) {
+            dateRange[0].firstChild.textContent = 'Active Data Range: ' + newMinDate.toString() + ' - ' + newMaxDate.toString();
+          }
         }
-
-
       },
       err => {
         this.errorMessage = err;

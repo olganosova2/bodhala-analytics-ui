@@ -75,6 +75,10 @@ import {AgGridModule} from 'ag-grid-angular';
 import {LeadAttorneyComponent} from '../../lead-attorney/lead-attorney.component';
 import {FirmRateCardComponent} from '../../firm/firm-rate-card/firm-rate-card.component';
 import {RateCardTablesComponent} from '../../firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
+import {PracticeAreaComponent} from '../../practice-area/practice-area.component';
+import {PaTopLeadPartnersComponent} from '../../practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
+import {PracticeAreaDropdownComponent} from '../../practice-area/practice-area-dropdown/practice-area-dropdown.component';
+import {PaTopFirmsComponent} from '../../practice-area/pa-top-firms/pa-top-firms.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -159,7 +163,11 @@ export const DECLARATIONS = [
   MattersComponent,
   LeadAttorneyComponent,
   FirmRateCardComponent,
-  RateCardTablesComponent
+  RateCardTablesComponent,
+  PracticeAreaComponent,
+  PaTopLeadPartnersComponent,
+  PracticeAreaDropdownComponent,
+  PaTopFirmsComponent
 ];
 
 export const PROVIDERS = [
