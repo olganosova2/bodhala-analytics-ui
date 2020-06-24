@@ -41,7 +41,7 @@ body {
   color: $body-color;
   font-size: 15px;
 }
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6, th {
   font-family: "Sharp Sans Display", sans-serif !important;
 }
 
@@ -213,6 +213,9 @@ h1, h2, h3, h4, h5, h6 {
 .full-width {
   width: 100%;
 }
+.button-disabled {
+  background-color: $medium-gray !important;
+}
 
 .left-right-align {
   display: flex;
@@ -362,6 +365,9 @@ body .ui-dropdown, .ui-inputtext {
   color: $body-color;
   border: 1px solid #fff;
   border-radius: $card-panel-radius;
+}
+.black-border {
+  border-color: $body-color;
 }
 
 .panel-title {

@@ -1,9 +1,11 @@
 import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { LaunchPadService } from './launchpad.service';
 import { FiltersService } from '../shared/services/filters.service';
+import {DatePipe} from '@angular/common';
 import { columns } from './launchpad.model';
 import {AppStateService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
+import {UserService} from 'bodhala-ui-common';
 
 @Component({
   selector: 'bd-launchpad',
@@ -21,12 +23,16 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   cards: Array<any> = []; // cards;
   requests = {};
   columns = columns;
+  launchpadImage = null;
+  logoImage = null;
 
   constructor(
     private filtersService: FiltersService,
     private launchPadService: LaunchPadService,
     public appStateService: AppStateService,
-    public commonServ: CommonService
+    public userService: UserService,
+    public commonServ: CommonService,
+    private datePipe: DatePipe
     ) {
     this.cards = this.launchPadService.configureCards();
     this.commonServ.pageTitle = 'Launchpad';
@@ -45,7 +51,6 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   onCardLoaded() {
     this.postLoad();
   }
-
   // bubbled up from card/cell clicks
   onClick(item) {
     // TODO - optionally handle click scenarios here
@@ -85,3 +90,4 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
     this.commonServ.clearTitles();
   }
 }
+
