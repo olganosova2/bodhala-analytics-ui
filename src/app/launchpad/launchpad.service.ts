@@ -55,6 +55,7 @@ export class LaunchPadService {
     if (this.userService.hasEntitlement('analytics.reports')) {
       result.push(invoiceIQCard);
     }
+    console.log("lp res: ", result);
     return result.sort(this.util.dynamicSort('order'));
   }
 }

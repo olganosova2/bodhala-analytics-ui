@@ -54,6 +54,16 @@ export class TopMattersFirmsService {
       map(response => this.processActiveSpend(response.result))
     ).toPromise();
   }
+  
+  fetchESMatters(janOne, today) {
+    const params = this.filters.getCurrentUserCombinedFilters();
+    params.startdate = janOne;
+    params.enddate = today;
+    console.log("params: ", params);
+    return this.http.makeGetRequest('getESMatters', params)
+      .pipe(map(({ result }) => this.processESMatters(result)))
+      .toPromise();
+  }
   processTopMatters(records: Array<ITopMatter>): Array<ITopMatter> {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
@@ -120,5 +130,9 @@ export class TopMattersFirmsService {
       category: record.matter_name,
       y: record.blended_rate
     }));
+  }
+
+  processESMatters(records: Array<any>): void {
+    console.log("records: ", records)
   }
 }

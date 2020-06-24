@@ -13,7 +13,7 @@ import {
   MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
   MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule
+  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule
 } from '@angular/material';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
@@ -70,6 +70,9 @@ import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dro
 import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
 import { PaTopLeadPartnersComponent } from './practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
 import { FirmRateCardComponent } from './firm/firm-rate-card/firm-rate-card.component';
+import { ExecutiveSummaryComponent } from './launchpad/executive-summary/executive-summary.component';
+import { SpendOverviewComponent } from './launchpad/executive-summary/spend-overview/spend-overview.component';
+import { EsTotalItemComponent } from './launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
 
 
 export function initUser(config: UserService) {
@@ -129,6 +132,9 @@ export function highchartsFactory() {
     PaTopFirmsComponent,
     PaTopLeadPartnersComponent,
     FirmRateCardComponent,
+    ExecutiveSummaryComponent,
+    SpendOverviewComponent,
+    EsTotalItemComponent,
   ],
   entryComponents: [
     PillComponent,
@@ -170,6 +176,7 @@ export function highchartsFactory() {
     BodhalaUiElementsModule,
     FlexLayoutModule,
     MatButtonToggleModule,
+    MatTabsModule,
     ChartModule,
     DropdownModule,
     OverlayPanelModule,

@@ -47,6 +47,8 @@ export const END_POINTS_URLS = {
   getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
   getFirmsListByClient: {url: BASE_URL + 'analytics/getFirmListByClient', showLoading: false},
   getMinMaxMatterCost: {url: BASE_URL + 'analytics/getMinMaxMatterCost', showLoading: false},
+  getESMatters: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
+  // ui-api/analytics/getFirmTopSummary
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
@@ -68,6 +70,7 @@ export const uiTitleString = 'Bodhala Analytics';
 export const EST_TIME_ZONE = 'America/New York';
 export const KEEP_ALIVE_SEC = 600000;
 export const TOP_RECORDS_NUMBER = 10;
+export const TOP_RECORDS_NUMBER_ES = 5;
 
 export const MAXIMUM_TEXT_CHARACTERS = 500;
 
