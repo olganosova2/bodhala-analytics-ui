@@ -31,7 +31,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
 
   loadTotals(): void {
     this.totals = Object.assign([], []);
-    const params = this.filtersService.getCurrentUserCombinedFilters(this.isReportCard);
+    const params = this.filtersService.getCurrentUserCombinedFilters();
     if (this.firm) {
       const arr = [];
       arr.push(this.firm.id.toString());

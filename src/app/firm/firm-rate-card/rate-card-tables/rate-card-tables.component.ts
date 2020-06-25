@@ -28,7 +28,7 @@ export class RateCardTablesComponent implements OnInit, OnDestroy {
   }
   getFirmTopSummary(): void {
     this.isLoaded = false;
-    const params = this.filtersService.getCurrentUserCombinedFilters(true);
+    const params = this.filtersService.getCurrentUserCombinedFilters();
     let arr = [];
     arr.push(this.firmId.toString());
     params.firms = JSON.stringify(arr);

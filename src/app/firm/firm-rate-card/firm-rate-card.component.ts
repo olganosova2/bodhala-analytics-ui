@@ -93,7 +93,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
 
   loadPAs(): void {
     this.practiceAreas = [];
-    const combined = this.filtersService.getCurrentUserCombinedFilters(true);
+    const combined = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
     arr.push(this.firmId.toString());
     combined.firms = JSON.stringify(arr);

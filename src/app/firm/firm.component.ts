@@ -23,7 +23,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   firmId: string;
   firm: IFirm;
   pageName: string = 'app.client-dashboard.firm-detail';
-  pageType: string = 'Firm';
+  pageType: string = 'Firms';
   excludeFilters = ['firms', 'treshold'];
   firmData: IFirmData;
   rightColsCount: number = 12;
