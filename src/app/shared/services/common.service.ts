@@ -42,6 +42,22 @@ export class CommonService {
     }
     return result;
   }
+
+  generatePDF2(title: string, divId: string) {
+    this.pdfLoading = true;
+    const docName = title ? title : 'Export PDF';
+    const exportElement = document.getElementById(divId);
+    const pdf = new jspdf('p', 'pt', 'a4');
+    const options = {
+      pagesplit: true
+    };
+
+    // tslint:disable-next-line:only-arrow-functions
+    pdf.addHTML(exportElement, options, function() {
+      pdf.save(docName);
+    });
+  }
+
   generatePDF(title: string, divId: string) {
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
@@ -79,10 +95,7 @@ export class CommonService {
       pdf.save(docName);
       this.pdfLoading = false;
     });
-
-
   }
-
   capitalize(word: string): string {
     if (!word) {
       return '';

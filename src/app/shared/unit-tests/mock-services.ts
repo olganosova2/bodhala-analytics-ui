@@ -9,6 +9,7 @@ import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
 import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
 import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
+import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS} from './mock-data/practice-area';
 
 export const ngWindow = {
   location: {
@@ -110,6 +111,10 @@ export class DataStub {
         return of(MOCK_OPTIONS_FOR_FILTER);
       case 'getFirmTopSummary':
         return of(MOCK_TOP_FIRM_SUMMARY);
+      case 'getPracticeArea':
+        return of(MOCK_PRACTICE_AREAS);
+      case 'getDateRange':
+        return of(MOCK_MIN_MAX_DATES);
       default:
         return of([]);
     }
@@ -200,6 +205,7 @@ export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
     id: '4702',
     anotherId: 'd31e8b48-7309-4c83-9884-4142efdf7271',
+    client_matter_type: 'LITIGATION'
   }));
   queryParams = new Observable(observer => {
     const urlParams = {

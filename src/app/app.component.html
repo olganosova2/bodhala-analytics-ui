@@ -9,7 +9,7 @@
     <div class="spinner" [hidden]="!progress">
       <mat-spinner diameter="50" color="primary"></mat-spinner>
     </div>
-    <div class="content-body-wrapper">
+    <div class="content-body-wrapper" (contextmenu)="onRightClick($event)" (dblclick)="onDoubleClick($event)">
 
 
       <router-outlet (activate)="onActivate($event)"></router-outlet>

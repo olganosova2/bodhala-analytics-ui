@@ -93,6 +93,17 @@ export class AppComponent implements OnDestroy {
   onActivate(evt): void {
     window.scroll(0, 0);
   }
+  onRightClick(evt: any): void {
+
+  }
+  onDoubleClick(evt: any): void {
+    const style = evt.target.style;
+    if (style.backgroundColor) {
+      style.backgroundColor = null;
+    } else {
+      style.backgroundColor = '#FED8B1';
+    }
+  }
   ngOnDestroy() {
     if (this.saveInterval) {
       clearInterval(this.saveInterval);
