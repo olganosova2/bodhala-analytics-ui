@@ -101,9 +101,8 @@ export class AppComponent implements OnDestroy {
     if (style.backgroundColor) {
       style.backgroundColor = null;
     } else {
-      style.backgroundColor = '#56DEBD';
+      style.backgroundColor = '#FED8B1';
     }
-   // console.log(evt.target.nodeName);
   }
   ngOnDestroy() {
     if (this.saveInterval) {
