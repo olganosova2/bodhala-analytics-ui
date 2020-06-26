@@ -33,10 +33,11 @@ export class SpendOverviewComponent implements OnInit {
   getSpendOverview(): void {
     this.totals = Object.assign([], []);
     const params = this.filtersService.getCurrentUserCombinedFilters(true);
-    let d = new Date(new Date().getFullYear(), 0 , 1);
-    let janOne = new Date(d).toISOString().slice(0, 10);
-    janOne = janOne.replace('2020', '2019');
-    let today = new Date().toISOString().slice(0, 10);
+    const d = new Date(new Date().getFullYear(), 0 , 1);
+    const janOne = new Date(d).toISOString().slice(0, 10);
+    // JD: was testing w/ 2019 vs 2018 data as I did not have 2020 data locally
+    // janOne = janOne.replace('2020', '2019');
+    const today = new Date().toISOString().slice(0, 10);
     params.startdate = janOne;
     params.enddate = today;
 

@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import { FiltersService } from '../../../shared/services/filters.service';
+// import { MatIconRegistry } from "@angular/material/icon";
+// import { DomSanitizer } from "@angular/platform-browser";
 import {HttpService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
 import { columns, ITopFirmES, ITopMatterES, ITopTimekeeper } from '../executive-summary.model';
@@ -37,8 +39,8 @@ export class EsTableComponent implements OnInit {
   constructor(
     private filtersService: FiltersService,
     public httpService: HttpService,
-    public commonServ: CommonService
-    ) {}
+    public commonServ: CommonService,
+    ) { }
 
   ngOnInit() {
     this.getExecutiveSummaryData();
@@ -47,13 +49,13 @@ export class EsTableComponent implements OnInit {
   getExecutiveSummaryData(): void {
     this.isLoaded = false;
     const params = this.filtersService.getCurrentUserCombinedFilters(true);
-    let d = new Date(new Date().getFullYear(), 0 , 1);
-    let janOne = new Date(d).toISOString().slice(0, 10);
-    janOne = janOne.replace('2020', '2019');
-    let today = new Date().toISOString().slice(0, 10);
+    const d = new Date(new Date().getFullYear(), 0 , 1);
+    const janOne = new Date(d).toISOString().slice(0, 10);
+    // JD: was testing w/ 2019 vs 2018 data as I did not have 2020 data locally
+    // janOne = janOne.replace('2020', '2019');
+    const today = new Date().toISOString().slice(0, 10);
     params.startdate = janOne;
     params.enddate = today;
-    console.log("params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryData', params).subscribe(
       (data: any) => {
         if (data.result) {
@@ -65,15 +67,19 @@ export class EsTableComponent implements OnInit {
           this.topTKs = data.result.timekeepers;
           this.topTKsByPA = data.result.timekeepersByPA;
           this.topPracticeArea = data.result.topPracticeArea;
-          console.log("now: ", this.topFirms);
-          console.log("prior: ", this.topFirmsPriorYear)
         }
-        this.processFirmsData();
-        this.processYOYFirmsData();
-        this.processMattersData();
-        this.processTKData();
+        if (this.topFirms !== undefined && this.topFirmsByPA !== undefined && this.topFirmsPriorYear !== undefined) {
+          this.processFirmsData();
+          this.processYOYFirmsData();
+        }
+        if (this.topMatters !== undefined && this.topMattersByPA !== undefined) {
+          this.processMattersData();
+        }
+        if (this.topTKs !== undefined && this.topTKsByPA !== undefined) {
+          this.processTKData();
+        }
         this.isLoaded = true;
-      
+
       },
       err => {
         this.errorMessage = err;
@@ -83,24 +89,34 @@ export class EsTableComponent implements OnInit {
   }
 
   processFirmsData(): void {
-    console.log("firms prior: ", this.topFirmsPriorYear);
-    for (let firm of this.topFirms) {
+    for (const firm of this.topFirms) {
       if (firm.partner_hours > 0 || firm.associate_hours > 0 && (firm.partner_hours !== null || firm.partner_hours !== undefined || firm.associate_hours !== null || firm.associate_hours !== undefined)) {
         firm.blended_rate = (firm.partner_billed + firm.associate_billed) / (firm.partner_hours + firm.associate_hours);
         firm.blended_rate_formatted = this.formatter.format(firm.blended_rate);
       } else {
         firm.blended_rate_formatted = '--';
       }
-      if (firm.partner_billed > 0 && (firm.partner_billed !== null || firm.partner_billed !== undefined)) {
-        firm.partner_percent = firm.partner_billed / firm.total_billed;
+      if (firm.partner_hours > 0 && (firm.partner_hours !== null || firm.partner_hours !== undefined)) {
+        firm.avg_partner_rate = firm.partner_billed / firm.partner_hours;
+        firm.avg_partner_rate_formatted = this.formatter.format(firm.avg_partner_rate);
       } else {
-        firm.partner_percent = 0;
+        firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
         firm.avg_matter_cost = firm.matter_cost_closed / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
+      }
+      if (firm.total_billed > 0 && (firm.total_billed !== null || firm.total_billed !== undefined)) {
+        firm.block_billed_per = firm.firm_block_billed / firm.total_billed;
+      } else {
+        firm.block_billed_per = 0;
+      }
+      if (firm.partner_billed > 0 && (firm.partner_billed !== null || firm.partner_billed !== undefined)) {
+        firm.partner_percent = firm.partner_billed / firm.total_billed;
+      } else {
+        firm.partner_percent = 0;
       }
       if (firm.partner_hours > 0 && firm.associate_hours > 0) {
         const leverage = firm.associate_hours / firm.partner_hours;
@@ -119,7 +135,7 @@ export class EsTableComponent implements OnInit {
       }
 
     }
-    for (let firm of this.topFirmsByPA) {
+    for (const firm of this.topFirmsByPA) {
       if (firm.partner_hours > 0 || firm.associate_hours > 0 && (firm.partner_hours !== null || firm.partner_hours !== undefined || firm.associate_hours !== null || firm.associate_hours !== undefined)) {
         firm.blended_rate = (firm.partner_billed + firm.associate_billed) / (firm.partner_hours + firm.associate_hours);
         firm.blended_rate_formatted = this.formatter.format(firm.blended_rate);
@@ -127,7 +143,7 @@ export class EsTableComponent implements OnInit {
         firm.blended_rate_formatted = '--';
       }
       if (firm.partner_billed > 0 && (firm.partner_billed !== null || firm.partner_billed !== undefined)) {
-        firm.partner_percent = firm.partner_billed / firm.partner_hours;
+        firm.partner_percent = firm.partner_billed / firm.total_billed;
       } else {
         firm.partner_percent = 0;
       }
@@ -149,7 +165,7 @@ export class EsTableComponent implements OnInit {
         firm.block_billed_per = 0;
       }
     }
-    for (let firm of this.topFirmsPriorYear) {
+    for (const firm of this.topFirmsPriorYear) {
       if (firm.partner_hours > 0 || firm.associate_hours > 0 && (firm.partner_hours !== null || firm.partner_hours !== undefined || firm.associate_hours !== null || firm.associate_hours !== undefined)) {
         firm.blended_rate = (firm.partner_billed + firm.associate_billed) / (firm.partner_hours + firm.associate_hours);
         firm.blended_rate_formatted = this.formatter.format(firm.blended_rate);
@@ -195,37 +211,95 @@ export class EsTableComponent implements OnInit {
   }
   processYOYFirmsData(): void {
 
-    for (let priorFirm of this.topFirmsPriorYear) {
-      console.log("PRIOR: ", priorFirm);
-      for(let firm of this.topFirms) {
-        
-        if (priorFirm.firm_name === firm.firm_name) {
-          console.log("MATCH: ", firm);
+    for (const firm of this.topFirms) {
+      for (const priorYearFirm of this.topFirmsPriorYear) {
+
+        if (priorYearFirm.firm_name === firm.firm_name) {
           if (firm.avg_matter_cost > 0 && firm.avg_matter_cost !== null && firm.avg_matter_cost !== undefined) {
-            priorFirm.avg_matter_cost_trend = priorFirm.avg_matter_cost / firm.avg_matter_cost;
+            if (firm.avg_matter_cost > priorYearFirm.avg_matter_cost) {
+              firm.avg_matter_cost_trend = ((firm.avg_matter_cost / priorYearFirm.avg_matter_cost) - 1) * 100;
+            } else {
+              firm.avg_matter_cost_trend = (1 - (firm.avg_matter_cost / priorYearFirm.avg_matter_cost)) * 100;
+              firm.avg_matter_cost_trend *= -1;
+            }
           } else {
-            priorFirm.avg_matter_cost_trend = 0;
+            firm.avg_matter_cost_trend = 0;
           }
-          // if (firm.block)
+
+          if (firm.block_billed_per > 0 && firm.block_billed_per !== null && firm.block_billed_per !== undefined) {
+            if (firm.block_billed_per > priorYearFirm.block_billed_per) {
+              firm.block_billed_per_trend = ((firm.block_billed_per / priorYearFirm.block_billed_per) - 1) * 100;
+            } else {
+              firm.block_billed_per_trend = (1 - (firm.block_billed_per / priorYearFirm.block_billed_per)) * 100;
+              firm.block_billed_per_trend *= -1;
+            }
+          } else {
+            firm.block_billed_per_trend = 0;
+          }
+
+          if (firm.blended_rate > 0 && firm.blended_rate !== null && firm.blended_rate !== undefined) {
+            if (firm.blended_rate > priorYearFirm.blended_rate) {
+              firm.blended_rate_trend = ((firm.blended_rate / priorYearFirm.blended_rate) - 1) * 100;
+            } else {
+              firm.blended_rate_trend = (1 - (firm.blended_rate / priorYearFirm.blended_rate)) * 100;
+              firm.blended_rate_trend *= -1;
+            }
+          } else {
+            firm.blended_rate_trend = 0;
+          }
+
+          if (firm.bpi > 0 && firm.bpi !== null && firm.bpi !== undefined) {
+            if (firm.bpi > priorYearFirm.bpi) {
+              firm.bpi_trend = ((firm.bpi / priorYearFirm.bpi) - 1) * 100;
+            } else {
+              firm.bpi_trend = (1 - (firm.bpi / priorYearFirm.bpi)) * 100;
+              firm.bpi_trend *= -1;
+            }
+          } else {
+            firm.bpi_trend = 0;
+          }
+
+          if (firm.avg_partner_rate > 0 && firm.avg_partner_rate !== null && firm.avg_partner_rate !== undefined) {
+            if (firm.avg_partner_rate > priorYearFirm.avg_partner_rate) {
+              firm.avg_partner_rate_trend = ((firm.avg_partner_rate / priorYearFirm.avg_partner_rate) - 1) * 100;
+            } else {
+              firm.avg_partner_rate_trend = (1 - (firm.avg_partner_rate / priorYearFirm.avg_partner_rate)) * 100;
+              firm.avg_partner_rate_trend *= -1;
+            }
+          } else {
+            firm.avg_partner_rate_trend = 0;
+          }
+
+          if (firm.avg_partners > 0 && firm.avg_partners !== null && firm.avg_partners !== undefined) {
+            if (firm.avg_partners > priorYearFirm.avg_partners) {
+              firm.avg_partners_trend = ((firm.avg_partners / priorYearFirm.avg_partners) - 1) * 100;
+            } else {
+              firm.avg_partners_trend = (1 - (firm.avg_partners / priorYearFirm.avg_partners)) * 100;
+              firm.avg_partners_trend *= -1;
+            }
+          } else {
+            firm.avg_partners_trend = 0;
+          }
+
         }
       }
     }
   }
   processMattersData(): void {
-    for(let matter of this.topMatters) {
-      if(matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
+    for (const matter of this.topMatters) {
+      if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
         matter.avg_partner_rate = matter.total_partner_billed / matter.total_partner_hours;
       }
     }
-    for(let matter of this.topMattersByPA) {
-      if(matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
+    for (const matter of this.topMattersByPA) {
+      if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
         matter.avg_partner_rate = matter.total_partner_billed / matter.total_partner_hours;
       }
     }
 
   }
   processTKData(): void {
-    for (let tk of this.topTKs) {
+    for (const tk of this.topTKs) {
       tk.avg_matter_cost_formatted = '';
       if (tk.atty_hours > 0 && (tk.atty_hours !== null || tk.atty_hours !== undefined)) {
         tk.blended_rate = tk.atty_billed / tk.atty_hours;
@@ -238,7 +312,7 @@ export class EsTableComponent implements OnInit {
       }
       tk.partner_billed_per = tk.total_partner_billed / tk.total_billed;
     }
-    for (let tk of this.topTKsByPA) {
+    for (const tk of this.topTKsByPA) {
       if (tk.atty_hours > 0 && (tk.atty_hours !== null || tk.atty_hours !== undefined)) {
         tk.blended_rate = tk.atty_billed / tk.atty_hours;
       } else {

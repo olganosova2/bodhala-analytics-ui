@@ -4,7 +4,6 @@ import {FiltersService} from '../../shared/services/filters.service';
 import { TopMattersFirmsService } from '../services/top-matters-firms.service';
 import {TopLeadPartnersService} from '../services/top-lead-partners.service';
 import {InvoiceIqService} from '../services/invoice-iq.service';
-import {commonCards} from './executive-summary.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +20,5 @@ export class ExecutiveSummaryService {
   ) { }
 
 
-  configureCards(): Array<any> {
-    const result = Object.assign([], commonCards);
-    return result.sort(this.util.dynamicSort('order'));
-  }
 
 }

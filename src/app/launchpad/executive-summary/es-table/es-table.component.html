@@ -14,14 +14,14 @@
                     <th>Average Partner Rate</th>
                     <th>Average Partners per Matter</th>
                 </tr>
-                <tr *ngFor="let firm of topFirmsPriorYear">
+                <tr *ngFor="let firm of topFirms">
                     <td>{{firm.firm_name}}</td>
-                    <td>{{firm.avg_matter_cost_formatted}}</td>
-                    <td>{{firm.block_billed_per * 100| number:'1.0-0'}}%</td>
-                    <td>{{firm.blended_rate_formatted}}</td>
-                    <td>{{firm.bpi_formatted}}</td>
-                    <td>{{firm.avg_partner_rate_formatted}}</td>
-                    <td>{{firm.avg_partners_formatted}}</td>
+                    <td>{{firm.avg_matter_cost_formatted}} <span *ngIf="firm.avg_matter_cost_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.avg_matter_cost_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_matter_cost_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.avg_matter_cost_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.block_billed_per * 100 | number:'1.0-0'}}% <span *ngIf="firm.block_billed_per_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.block_billed_per_trend | number:'1.0-0'}}%</span><span *ngIf="firm.block_billed_per_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.block_billed_per_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.blended_rate_formatted}} <span *ngIf="firm.blended_rate_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.blended_rate_trend | number:'1.0-0'}}%</span><span *ngIf="firm.blended_rate_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.blended_rate_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.bpi_formatted}} <span *ngIf="firm.bpi_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.bpi_trend | number:'1.0-0'}}%</span><span *ngIf="firm.bpi_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.bpi_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.avg_partner_rate_formatted}} <span *ngIf="firm.avg_partner_rate_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.avg_partner_rate_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_partner_rate_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.avg_partner_rate_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.avg_partners_formatted}}  <span *ngIf="firm.avg_partners_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.avg_partners_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_partners_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.avg_partners_trend * -1) | number:'1.0-0'}}%</span></td>
                 </tr>
             </table>
         </div>

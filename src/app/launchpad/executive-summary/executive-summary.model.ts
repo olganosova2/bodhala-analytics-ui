@@ -38,7 +38,7 @@ export interface ITopMatterES {
     total_associate_hours: number;
     avg_partner_rate: number;
     link: string;
-    
+
 }
 
 export interface ITopFirmESPriorYear {
@@ -183,21 +183,3 @@ export const columns = {
         { name: 'Average Partners per Matter', field: 'avg_partners_per_matter', format: 'number'},
     ],
   };
-
-  export const commonCards = [
-    { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', columns: columns.topMatters, span: 2, order: 1 },
-    { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', columns: columns.topFirms, span: 2, order: 2 },
-    { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', columns: columns.topTimekeepers, span: 2, order: 3 },
-    { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', columns: columns.topMatters, span: 2, order: 4 },
-    { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', columns: columns.topFirms, span: 2, order: 5},
-    { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', columns: columns.topTimekeepers, span: 2, order: 6 }
-  ];
-
-//   export const commonCards = [
-//     { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', columns: columns.topMatters, options: mattersChartOptions, span: 2, order: 1 },
-//     { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', columns: columns.topFirms, options: firmsChartOptions, span: 2, order: 2 },
-//     { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', columns: columns.topTimekeepers, options: leadPartnerChartOptions, span: 2, order: 3 },
-//     { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', options: activeSpendChart, span: 2, order: 4 },
-//     { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', options: activeSpendChart, span: 2, order: 5},
-//     { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', options: activeSpendChart, span: 2, order: 6 }
-//   ];
