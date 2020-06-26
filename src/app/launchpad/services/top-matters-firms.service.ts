@@ -90,6 +90,7 @@ export class TopMattersFirmsService {
       rec.name = rec.firm_name;
     }
     return records.sort(this.util.dynamicSort('-total_billed')).slice(0, config.TOP_RECORDS_NUMBER);
+    // return records.sort(this.util.dynamicSort('-total_billed'));
   }
   processActiveSpend(response: IActiveSpend): IActiveSpend {
     const result = {} as IActiveSpend;

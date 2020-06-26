@@ -26,6 +26,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   startdate: string;
   showToTop: boolean = false;
   percentOfTotal: number;
+  rank: number;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -64,6 +65,13 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         const firms = data[0].result || [];
         if (firms.length > 0) {
           totalSpend = firms[0].total_billed_all || 1;
+          // tslint:disable-next-line:prefer-for-of
+          for (let ix = 0; ix < firms.length; ix++) {
+            if (firms[ix].id.toString() === this.firmId) {
+              this.rank = ix + 1;
+            }
+         }
+          this.rank = this.rank ? this.rank : -1;
         }
       }
       if (data[1].result) {
@@ -82,7 +90,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
 
   loadFirm(): Observable<any> {
-    const params = this.filtersService.getCurrentUserCombinedFilters(true);
+    const params = this.filtersService.getCurrentUserCombinedFilters();
     const response1 = this.httpService.makeGetRequest('getTopFirms', params);
     const arr = [];
     arr.push(this.firmId.toString());
@@ -93,7 +101,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
 
   loadPAs(): void {
     this.practiceAreas = [];
-    const combined = this.filtersService.getCurrentUserCombinedFilters(true);
+    const combined = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
     arr.push(this.firmId.toString());
     combined.firms = JSON.stringify(arr);
