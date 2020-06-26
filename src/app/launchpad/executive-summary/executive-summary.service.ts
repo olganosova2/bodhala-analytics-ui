@@ -20,26 +20,9 @@ export class ExecutiveSummaryService {
     private util: UtilService
   ) { }
 
-  fetchData() {
-    let d = new Date(new Date().getFullYear(), 0 , 1);
-    let janOne = new Date(d).toISOString().slice(0, 10);
-    janOne = janOne.replace('2020', '2019');
-    let today = new Date().toISOString().slice(0, 10);
-
-    const requests: any = {};
-    requests.topMatters = this.topMattersFirmsService.fetchESMatters(janOne, today);
-    // requests.topFirms = this.topMattersFirmsService.fetchFirms();
-
-    requests.topTimekeepers = this.leadPartnerService.fetchTopTimekeepers(janOne, today);
-    // requests.mattersByHighestAverageRate = this.topMattersFirmsService.fetchMattersByHighestAverageRate();
-
-    // TODO - add all requests here
-    return requests;
-  }
 
   configureCards(): Array<any> {
     const result = Object.assign([], commonCards);
-    console.log("result: ", result);
     return result.sort(this.util.dynamicSort('order'));
   }
 

@@ -5,7 +5,7 @@ import {map} from 'rxjs/operators';
 import { CurrencyPipe } from '@angular/common';
 
 import * as config from '../../shared/services/config';
-import {ITopLeadPartner, ITopTimekeeper} from '../../shared/models/top-lead-partner';
+import {ITopLeadPartner} from '../../shared/models/top-lead-partner';
 
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -41,29 +41,4 @@ export class TopLeadPartnersService {
     return records.slice(0, config.TOP_RECORDS_NUMBER);
   }
 
-  fetchTopTimekeepers(janOne, today) {
-    const params = this.filters.getCurrentUserCombinedFilters();
-    params.startdate = janOne;
-    params.enddate = today;
-
-    return this.http.makeGetRequest('getTopTimekeepers', params).pipe(
-      map(response => this.processTopTimekeepers(response.result))
-    ).toPromise();
-  }
-
-  processTopTimekeepers(records: Array<ITopTimekeeper>): Array<ITopTimekeeper> {
-    for (const rec of records) {
-      // console.log("rec: ", rec);
-      if (rec.seniority === 'associate') {
-        rec.seniority = 'Associate';
-      } else if (rec.seniority === 'partner') {
-        rec.seniority = 'Partner';
-      }
-      // if (rec.atty)
-
-
-    }
-
-    return records.slice(0, config.TOP_RECORDS_NUMBER_ES);
-  }
 }

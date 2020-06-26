@@ -1,0 +1,210 @@
+<div class="content-body">
+    <div class="panel-wrapper">
+        <div class="panel-title">
+            <h5>Top Firms YoY Comparison</h5>
+        </div>
+        <div class="panel-body" #panelBody>
+            <table class="full-width" *ngIf="isLoaded">
+                <tr>
+                    <th>Firm Name</th>
+                    <th>Average Matter Cost</th>
+                    <th>Block Billed %</th>
+                    <th>Blended Attorney Rate</th>
+                    <th>Bodhala Price Index</th>
+                    <th>Average Partner Rate</th>
+                    <th>Average Partners per Matter</th>
+                </tr>
+                <tr *ngFor="let firm of topFirmsPriorYear">
+                    <td>{{firm.firm_name}}</td>
+                    <td>{{firm.avg_matter_cost_formatted}}</td>
+                    <td>{{firm.block_billed_per * 100| number:'1.0-0'}}%</td>
+                    <td>{{firm.blended_rate_formatted}}</td>
+                    <td>{{firm.bpi_formatted}}</td>
+                    <td>{{firm.avg_partner_rate_formatted}}</td>
+                    <td>{{firm.avg_partners_formatted}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<!-- </div>
+<div class="content-body"> -->
+    <div class="panel-wrapper">
+        <div class="panel-title">
+            <h5>Top Firms YTD</h5>
+        </div>
+        <div class="panel-body" #panelBody>
+            <table class="full-width" *ngIf="isLoaded">
+                <tr>
+                    <th>Firm Name</th>
+                    <th>YTD Total Spend</th>
+                    <th>Matters</th>
+                    <th>Average Matter Cost</th>
+                    <th>Blended Attorney Rate</th>
+                    <th>Block Billing $</th>
+                    <th>Partner % Billed by $</th>
+                </tr>
+                <tr *ngFor="let firm of topFirms">
+                <!-- <td><a href="{{firm.link}}">{{firm.firm_name}}</a></td> -->
+                    <td>{{firm.firm_name}}</td>
+                    <td>${{firm.total_billed | number:'1.0-0'}}</td>
+                    <td>{{firm.total_firm_matters | number:'1.0-0'}}</td>
+                    <td>{{firm.avg_matter_cost_formatted}}</td>
+                    <td>{{firm.blended_rate_formatted}}</td>
+                    <td>${{firm.firm_block_billed | number:'1.0-0'}}</td>
+                    <td>{{firm.partner_percent * 100 | number:'1.0-0'}}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="content-body">
+    <div class="panel-wrapper">
+        <div class="panel-title">
+            <h5>Top Matters YTD</h5>
+        </div>
+        <div class="panel-body" #panelBody>
+            <table class="full-width" *ngIf="isLoaded">
+                <tr>
+                    <th class="matter-cell">Matter Name</th>
+                    <th class="matter-cell">YTD Cost</th>
+                    <th class="matter-cell">Block Billed %</th>
+                    <th class="matter-cell">Blended Attorney Rate</th>
+                    <th class="matter-cell">Bodhala Price Index</th>
+                    <th class="matter-cell">Average Partner Rate</th>
+                    <th class="matter-cell">Partner % Billed by $</th>
+                </tr>
+                <tr *ngFor="let matter of topMatters">
+                    <td>{{matter.name}}</td>
+                    <td>${{matter.total_spend | number:'1.0-0'}}</td>
+                    <td>{{matter.block_billing_percent * 100 | number:'1.0-0'}}%</td>
+                    <td>${{matter.blended_rate| number:'1.0-0'}}</td>
+                    <td>${{matter.bodhala_price_index | number:'1.0-0'}}</td>
+                    <td>${{matter.avg_partner_rate | number:'1.0-0'}}</td>
+                    <td>{{matter.partner_percent * 100 | number:'1.0-0'}}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<!-- </div>
+<div class="content-body"> -->
+    <div class="panel-wrapper">
+        <div class="panel-title">
+            <h5>Top Timekeepers YTD</h5>
+        </div>
+        <div class="panel-body" #panelBody>
+            <table class="full-width" *ngIf="isLoaded">
+                <tr>
+                    <th class="tk-name-cell">Timekeeper</th>
+                    <th class="tk-cell">Title</th>
+                    <th class="tk-cell">YTD Total Spend</th>
+                    <th class="tk-cell">Matters</th>
+                    <th class="tk-cell">Average Matter Cost</th>
+                    <th class="tk-cell">Blended Attorney Rate</th>
+                    <th class="tk-cell">Block Billing $</th>
+                    <th class="tk-cell">Partner % Billed by $</th>
+                </tr>
+                <tr *ngFor="let tk of topTKs">
+                    <td>{{tk.name}}<br><a class="firm-name">{{tk.firm}}</a></td>
+                    <td>{{commonServ.capitalize(tk.seniority)}}</td>
+                    <td>${{tk.total | number:'1.0-0'}}</td>
+                    <td>{{tk.total_matters| number:'1.0-0'}}</td>
+                    <td>{{tk.avg_matter_cost_formatted}}</td>
+                    <td>${{tk.blended_rate | number:'1.0-0'}}</td>
+                    <td>${{tk.total_block_billed | number:'1.0-0'}}</td>
+                    <td>{{tk.partner_billed_per * 100 | number:'1.0-0'}}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="content-body">
+    <div class="panel-wrapper">
+        <div class="panel-title">
+            <h5>Top Firms YTD ({{topPracticeArea}})</h5>
+        </div>
+        <div class="panel-body" #panelBody>
+            <table class="full-width" *ngIf="isLoaded">
+                <tr>
+                    <th>Firm Name</th>
+                    <th>YTD Total Spend</th>
+                    <th>Matters</th>
+                    <th>Average Matter Cost</th>
+                    <th>Blended Attorney Rate</th>
+                    <th>Block Billing $</th>
+                    <th>Partner % Billed by $</th>
+                </tr>
+                <tr *ngFor="let firm of topFirmsByPA">
+                    <td>{{firm.firm_name}}</td>
+                    <td>${{firm.total_billed | number:'1.0-0'}}</td>
+                    <td>{{firm.total_firm_matters | number:'1.0-0'}}</td>
+                    <td>{{firm.avg_matter_cost_formatted}}</td>
+                    <td>{{firm.blended_rate_formatted}}</td>
+                    <td>${{firm.firm_block_billed | number:'1.0-0'}}</td>
+                    <td>{{firm.partner_percent * 100 | number:'1.0-0'}}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<!-- </div>
+<div class="content-body"> -->
+    <div class="panel-wrapper">
+        <div class="panel-title">
+            <h5>Top Matters YTD ({{topPracticeArea}})</h5>
+        </div>
+        <div class="panel-body" #panelBody>
+            <table class="full-width" *ngIf="isLoaded">
+                <tr>
+                    <th class="matter-cell">Matter Name</th>
+                    <th class="matter-cell">YTD Cost</th>
+                    <th class="matter-cell">Block Billed %</th>
+                    <th class="matter-cell">Blended Attorney Rate</th>
+                    <th class="matter-cell">Bodhala Price Index</th>
+                    <th class="matter-cell">Average Partner Rate</th>
+                    <th class="matter-cell">Partner % Billed by $</th>
+                </tr>
+                <tr *ngFor="let matter of topMattersByPA">
+                    <td>{{matter.name}}</td>
+                    <td>${{matter.total_spend | number:'1.0-0'}}</td>
+                    <td>{{matter.block_billing_percent * 100 | number:'1.0-0'}}%</td>
+                    <td>${{matter.blended_rate| number:'1.0-0'}}</td>
+                    <td>${{matter.bodhala_price_index | number:'1.0-0'}}</td>
+                    <td>${{matter.avg_partner_rate | number:'1.0-0'}}</td>
+                    <td>{{matter.partner_percent * 100 | number:'1.0-0'}}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="content-body">
+    <div class="panel-wrapper">
+        <div class="panel-title">
+            <h5>Top Timekeepers YTD ({{topPracticeArea}})</h5>
+        </div>
+        <div class="panel-body" #panelBody>
+            <table class="full-width" *ngIf="isLoaded">
+                <tr>
+                    <th class="tk-name-cell">Timekeeper</th>
+                    <th class="tk-cell">Title</th>
+                    <th class="tk-cell">YTD Total Spend</th>
+                    <th class="tk-cell">Matters</th>
+                    <th class="tk-cell">Average Matter Cost</th>
+                    <th class="tk-cell">Blended Attorney Rate</th>
+                    <th class="tk-cell">Block Billing $</th>
+                    <th class="tk-cell">Partner % Billed by $</th>
+                </tr>
+                <tr *ngFor="let tk of topTKsByPA">
+                    <td>{{tk.name}}<br><a class="firm-name">{{tk.firm}}</a></td>
+                    <td>{{commonServ.capitalize(tk.seniority)}}</td>
+                    <td>${{tk.total | number:'1.0-0'}}</td>
+                    <td>{{tk.total_matters| number:'1.0-0'}}</td>
+                    <td>{{tk.avg_matter_cost_formatted}}</td>
+                    <td>${{tk.blended_rate | number:'1.0-0'}}</td>
+                    <td>${{tk.total_block_billed | number:'1.0-0'}}</td>
+                    <td>{{tk.partner_billed_per * 100 | number:'1.0-0'}}%</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

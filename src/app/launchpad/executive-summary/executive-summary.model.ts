@@ -10,6 +10,7 @@ import { mattersByHighestAverageRateChartOptions } from '../../shared/models/top
 import { activeSpendChart } from '../../shared/models/active-spend';
 import { blockBillerChart } from '../../shared/models/top-block-billers';
 import {iqReportPieChartOptions} from '../../shared/models/invoiceIq';
+import { NumberFilter } from 'ag-grid-community';
 
 
 export interface ISpendOverviewItem {
@@ -17,6 +18,125 @@ export interface ISpendOverviewItem {
     name: string;
     format?: string;
     lastCell?: boolean;
+}
+
+export interface ITopMatterES {
+    id: string;
+    name: string;
+    lawfirm_id: string;
+    firm_name: string;
+    total_spend: number;
+    total_expenses: number;
+    bpi: number;
+    blended_rate: number;
+    block_billing_per: number;
+    block_billing_total: number;
+    partner_billed_per: number;
+    total_partner_billed: number;
+    total_associate_billed: number;
+    total_partner_hours: number;
+    total_associate_hours: number;
+    avg_partner_rate: number;
+    link: string;
+    
+}
+
+export interface ITopFirmESPriorYear {
+    id: string;
+    firm_name: string;
+    total_billed: number;
+    total_expenses: number;
+    total_matters: number;
+    avg_matter_cost: number;
+    blended_rate: number;
+    blended_rate_formatted: string;
+    partner_billed_per: number;
+    partner_billed: number;
+    associate_billed: number;
+    associate_hours: number;
+    partner_hours: number;
+    total_firm_matters: number;
+    firm_block_billed: number;
+    matter_cost_closed: number;
+    closed_matters: number;
+    partner_percent: number;
+    avg_matter_cost_formatted: string;
+    link: string;
+    block_billed_per: number;
+    bpi: number;
+    bpi_formatted: string;
+    partners_per_matter: number;
+    avg_partner_rate: number;
+    avg_partner_rate_formatted: string;
+    partners: number;
+    avg_partners: number;
+    avg_partners_formatted: string;
+    avg_matter_cost_trend: number;
+    block_billed_per_trend: number;
+    blended_rate_trend: number;
+    bpi_trend: number;
+    avg_partner_rate_trend: number;
+    avg_partners_trend: number;
+}
+
+export interface ITopFirmES {
+    id: string;
+    firm_name: string;
+    total_billed: number;
+    total_expenses: number;
+    total_matters: number;
+    avg_matter_cost: number;
+    blended_rate: number;
+    blended_rate_formatted: string;
+    partner_billed_per: number;
+    partner_billed: number;
+    associate_billed: number;
+    associate_hours: number;
+    partner_hours: number;
+    total_firm_matters: number;
+    firm_block_billed: number;
+    matter_cost_closed: number;
+    closed_matters: number;
+    partner_percent: number;
+    avg_matter_cost_formatted: string;
+    link: string;
+    block_billed_per: number;
+    bpi: number;
+    bpi_formatted: string;
+    partners_per_matter: number;
+    avg_partner_rate: number;
+    avg_partner_rate_formatted: string;
+    partners: number;
+    avg_partners: number;
+    avg_partners_formatted: string;
+    avg_matter_cost_trend: number;
+    block_billed_per_trend: number;
+    blended_rate_trend: number;
+    bpi_trend: number;
+    avg_partner_rate_trend: number;
+    avg_partners_trend: number;
+}
+
+export interface ITopTimekeeper {
+    id: string;
+    name: string;
+    seniority: string;
+    total_billed: number;
+    total_expenses: number;
+    lawfirm_id: number;
+    firm: string;
+    total_matters: number;
+    avg_matter_cost: number;
+    block_billed_per: number;
+    blended_rate: number;
+    partner_billed_per: number;
+    atty_billed: number;
+    atty_hours: number;
+    matter_cost_closed: number;
+    closed_matters: number;
+    total_partner_billed: number;
+    avg_matter_cost_formatted: string;
+    link: string;
 }
 
 export const columns = {
@@ -65,10 +185,19 @@ export const columns = {
   };
 
   export const commonCards = [
-    // { header: 'Top Matters YTD', request: 'topMatters', columns: columns.topMatters, options: mattersChartOptions, span: 2, order: 1 },
-    // { header: 'Top Firms YTD', request: 'topFirms', columns: columns.topFirms, options: firmsChartOptions, span: 2, order: 2 },
-    { header: 'Top Timekeepers YTD', request: 'getTopTimekeepers', columns: columns.topTimekeepers, options: leadPartnerChartOptions, span: 2, order: 4 },
-    // { header: 'Top Matters YTD', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 },
-    // { header: 'Top Firms YTD', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 },
-    // { header: 'Top Timekeepers YTD', request: 'activeSpend', options: activeSpendChart, span: 2, order: 7 }
+    { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', columns: columns.topMatters, span: 2, order: 1 },
+    { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', columns: columns.topFirms, span: 2, order: 2 },
+    { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', columns: columns.topTimekeepers, span: 2, order: 3 },
+    { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', columns: columns.topMatters, span: 2, order: 4 },
+    { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', columns: columns.topFirms, span: 2, order: 5},
+    { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', columns: columns.topTimekeepers, span: 2, order: 6 }
   ];
+
+//   export const commonCards = [
+//     { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', columns: columns.topMatters, options: mattersChartOptions, span: 2, order: 1 },
+//     { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', columns: columns.topFirms, options: firmsChartOptions, span: 2, order: 2 },
+//     { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', columns: columns.topTimekeepers, options: leadPartnerChartOptions, span: 2, order: 3 },
+//     { header: 'Top Matters YTD', request: 'getExecutiveSummaryData', options: activeSpendChart, span: 2, order: 4 },
+//     { header: 'Top Firms YTD', request: 'getExecutiveSummaryData', options: activeSpendChart, span: 2, order: 5},
+//     { header: 'Top Timekeepers YTD', request: 'getExecutiveSummaryData', options: activeSpendChart, span: 2, order: 6 }
+//   ];

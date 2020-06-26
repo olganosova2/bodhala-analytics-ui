@@ -79,7 +79,8 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
     }
   }
   // hideShowFilters() {
-  //   let temp = document.getElementById('filtersdiv');
+  //   let temp = document.getElementById('exportbutton');
+  //   console.log("temp: ", temp);
   //   if (temp.style.display === '') {
   //     temp.style.display = 'None';
   //   } else if (temp.style.display === 'None' || temp.style.display === 'none') {

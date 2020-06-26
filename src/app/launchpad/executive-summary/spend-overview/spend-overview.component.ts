@@ -104,7 +104,6 @@ export class SpendOverviewComponent implements OnInit {
     });
     this.itemRowCount = this.totals.length;
     this.totals[this.totals.length - 1].lastCell = true;
-    console.log("totals: ", this.totals);
 
   }
 

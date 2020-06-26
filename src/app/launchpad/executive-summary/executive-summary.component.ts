@@ -1,8 +1,4 @@
 import {Component, OnInit, HostListener, ViewChild, ElementRef} from '@angular/core';
-import { ExecutiveSummaryService } from './executive-summary.service';
-import { FiltersService } from '../../shared/services/filters.service';
-import { columns } from './executive-summary.model';
-import {HttpService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
 
 @Component({
@@ -12,59 +8,87 @@ import {CommonService} from '../../shared/services/common.service';
 })
 export class ExecutiveSummaryComponent implements OnInit {
 
-  cards: Array<any> = [];
-  requests = {};
-  columns = columns;
+  // errorMessage: any;
+  // summary: any;
+  // isLoaded: boolean = false;
+  // cards: Array<any> = [];
+  // requests = {};
+  // columns = columns;
+  // pendingRequest: Subscription;
+  // topFirms: Array<ITopFirmES>;
+  // topFirmsByPA: Array<ITopFirmES>;
+  // topMatters: Array<ITopMatterES>;
+  // topMattersByPA: Array<ITopMatterES>;
+  // topTKs: Array<ITopTimekeeper>;
+  // topTKsByPA: Array<ITopTimekeeper>;
 
-  constructor(
-    private filtersService: FiltersService,
-    private executiveSummaryService: ExecutiveSummaryService,
-    public httpService: HttpService,
-    public commonServ: CommonService
-    ) {
-      // this.cards = this.executiveSummaryService.configureCards();
-    }
+  constructor(public commonServ: CommonService) {}
 
   ngOnInit() {
-    this.load();
+    // this.getExecutiveSummaryData();
   }
 
-  load(): void {
-    this.requests = this.executiveSummaryService.fetchData();
-    // this.postLoad();
-  }
+  // getExecutiveSummaryData(): void {
+  //   this.isLoaded = false;
+  //   const params = this.filtersService.getCurrentUserCombinedFilters(true);
+  //   let d = new Date(new Date().getFullYear(), 0 , 1);
+  //   let janOne = new Date(d).toISOString().slice(0, 10);
+  //   janOne = janOne.replace('2020', '2019');
+  //   let today = new Date().toISOString().slice(0, 10);
+  //   params.startdate = janOne;
+  //   params.enddate = today;
+  //   console.log("params: ", params);
 
-  onCardLoaded() {
-    // this.postLoad();
-  }
+  //   this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryData', params).subscribe(
+  //     (data: any) => {
+  //       this.summary = data.result;
+  //       if (data.result) {
+  //         this.topFirms = data.result.firms;
+  //         this.topFirmsByPA = data.result.firmsByPA;
+  //         this.topMatters = data.result.matters;
+  //         this.topMattersByPA = data.result.mattersByPA;
+  //         this.topTKs = data.result.timekeepers;
+  //         this.topTKsByPA = data.result.timekeepersByPA;
 
-  // bubbled up from card/cell clicks
-  onClick(item) {
-    // TODO - optionally handle click scenarios here
-  }
-
-  @HostListener('window:message', ['$event'])
-  onMessage(event) {
-    if (event.data.from !== 'child') {
-      this.receiveMessage(event);
-    }
-  }
-
-  receiveMessage(event) {
-    // event.data contains the filters from the angularjs app
-    this.filtersService.setCurrentUserFilters();
-    this.load();
-  }
-  // postLoad() {
-  //   // send messages back to the parent app
-  //   if (window.parent) {
-  //     setTimeout(() => {
-  //       // send height of content to adjust iframe height
-  //       const height = this.container.nativeElement.offsetHeight + this.insights.nativeElement.offsetHeight;
-  //       window.parent.postMessage({height, from: 'child'}, '*');
-  //     }, 100);
-  //   }
+  //       }
+  //       this.processFirmsData();
+  //       // this.processMattersData();
+  //       this.processTKData();
+  //       this.isLoaded = true;
+      
+  //     },
+  //     err => {
+  //       this.errorMessage = err;
+  //       this.isLoaded = true;
+  //     }
+  //   );
   // }
+  // processFirmsData(): void {
+  //   console.log("firms: ", this.topFirms);
+
+  // }
+  // processTKData(): void {
+  //   for (let tk of this.topTKs) {
+  //     if (tk.atty_hours > 0 && (tk.atty_hours !== null || tk.atty_hours !== undefined)) {
+  //       tk.blended_rate = tk.atty_billed / tk.atty_hours;
+  //     }
+  //     if (tk.closed_matters > 0 && (tk.closed_matters !== null || tk.closed_matters !== undefined)) {
+  //       tk.avg_matter_cost = tk.matter_cost_closed / tk.closed_matters;
+  //     }
+  //     tk.partner_billed_per = tk.total_partner_billed / tk.total_billed;
+  //   }
+  //   for (let tk of this.topTKsByPA) {
+  //     if (tk.atty_hours > 0 && (tk.atty_hours !== null || tk.atty_hours !== undefined)) {
+  //       tk.blended_rate = tk.atty_billed / tk.atty_hours;
+  //     }
+  //     if (tk.closed_matters > 0 && (tk.closed_matters !== null || tk.closed_matters !== undefined)) {
+  //       tk.avg_matter_cost = tk.matter_cost_closed / tk.closed_matters;
+  //     }
+  //     tk.partner_billed_per = tk.total_partner_billed / tk.total_billed;
+  //   }
+  //   console.log("tk: ", this.topTKs);
+  // }
+
   // hideShowFilters() {
   //   let temp = document.getElementById('filtersdiv');
   //   if (temp.style.display === '') {

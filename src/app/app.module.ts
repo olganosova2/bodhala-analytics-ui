@@ -74,6 +74,7 @@ import { ExecutiveSummaryComponent } from './launchpad/executive-summary/executi
 import { SpendOverviewComponent } from './launchpad/executive-summary/spend-overview/spend-overview.component';
 import { EsTotalItemComponent } from './launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
 import { RateCardTablesComponent } from './firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
+import { EsTableComponent } from './launchpad/executive-summary/es-table/es-table.component';
 
 
 export function initUser(config: UserService) {
@@ -137,6 +138,7 @@ export function highchartsFactory() {
     SpendOverviewComponent,
     EsTotalItemComponent,
     RateCardTablesComponent,
+    EsTableComponent,
   ],
   entryComponents: [
     PillComponent,

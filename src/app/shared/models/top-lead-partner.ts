@@ -23,24 +23,6 @@ export interface ITopLeadPartner {
   y: number;
 }
 
-export interface ITopTimekeeper {
-  id: string;
-  name: string;
-  seniority: string;
-  total_billed: number;
-  total_expenses: number;
-  lawfirm_id: number;
-  firm: string;
-  total_matters: number;
-  avg_matter_cost: number;
-  block_billed_per: number;
-  blended_rate: number;
-  partner_billed_per: number;
-  atty_billed: number;
-  atty_hours: number;
-  
-}
-
 const leadPartnerAdditionalOptions = {
   tooltip : {
     useHTML: true,

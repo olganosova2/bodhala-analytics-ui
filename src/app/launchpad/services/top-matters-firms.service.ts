@@ -55,15 +55,6 @@ export class TopMattersFirmsService {
     ).toPromise();
   }
   
-  fetchESMatters(janOne, today) {
-    const params = this.filters.getCurrentUserCombinedFilters();
-    params.startdate = janOne;
-    params.enddate = today;
-    console.log("params: ", params);
-    return this.http.makeGetRequest('getESMatters', params)
-      .pipe(map(({ result }) => this.processESMatters(result)))
-      .toPromise();
-  }
   processTopMatters(records: Array<ITopMatter>): Array<ITopMatter> {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
@@ -132,7 +123,5 @@ export class TopMattersFirmsService {
     }));
   }
 
-  processESMatters(records: Array<any>): void {
-    console.log("records: ", records)
-  }
+
 }
