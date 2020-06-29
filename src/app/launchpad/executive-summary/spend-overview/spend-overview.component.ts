@@ -1,10 +1,13 @@
-import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy, Input} from '@angular/core';
 import { FiltersService } from '../../../shared/services/filters.service';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
 import {ISpendOverviewItem} from '../executive-summary.model';
 import { _ } from 'ag-grid-community';
+import * as _moment from 'moment';
+
+const moment = _moment;
 
 @Component({
   selector: 'bd-spend-overview',
@@ -19,6 +22,7 @@ export class SpendOverviewComponent implements OnInit {
   errorMessage: any;
   isLoaded: boolean = false;
   itemRowCount: number = 9;
+  @Input() maxDate: string;
 
 
   constructor(
@@ -33,7 +37,8 @@ export class SpendOverviewComponent implements OnInit {
   getSpendOverview(): void {
     this.totals = Object.assign([], []);
     const params = this.filtersService.getCurrentUserCombinedFilters(true);
-    const d = new Date(new Date().getFullYear(), 0 , 1);
+    const lastYear = moment(this.maxDate).year();
+    const d = new Date(lastYear, 0 , 1);
     const janOne = new Date(d).toISOString().slice(0, 10);
     // JD: was testing w/ 2019 vs 2018 data as I did not have 2020 data locally
     // janOne = janOne.replace('2020', '2019');

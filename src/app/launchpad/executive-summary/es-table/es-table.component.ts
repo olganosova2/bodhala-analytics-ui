@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import { FiltersService } from '../../../shared/services/filters.service';
 // import { MatIconRegistry } from "@angular/material/icon";
@@ -7,6 +7,9 @@ import {HttpService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
 import { columns, ITopFirmES, ITopMatterES, ITopTimekeeper } from '../executive-summary.model';
 import * as config from '../../../shared/services/config';
+import * as _moment from 'moment';
+
+const moment = _moment;
 
 @Component({
   selector: 'bd-es-table',
@@ -25,6 +28,7 @@ export class EsTableComponent implements OnInit {
   isLoaded: boolean = false;
   errorMessage: any;
   pendingRequest: Subscription;
+  @Input() maxDate: string;
   formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -49,7 +53,8 @@ export class EsTableComponent implements OnInit {
   getExecutiveSummaryData(): void {
     this.isLoaded = false;
     const params = this.filtersService.getCurrentUserCombinedFilters(true);
-    const d = new Date(new Date().getFullYear(), 0 , 1);
+    const lastYear = moment(this.maxDate).year();
+    const d = new Date(lastYear, 0 , 1);
     const janOne = new Date(d).toISOString().slice(0, 10);
     // JD: was testing w/ 2019 vs 2018 data as I did not have 2020 data locally
     // janOne = janOne.replace('2020', '2019');

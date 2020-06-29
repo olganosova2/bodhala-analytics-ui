@@ -12,7 +12,7 @@
     <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
   </div>
 
-  <mat-tab-group animationDuration="0ms"> 
+  <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
 <!-- (selectedTabChange)="hideShowFilters()" -->
     <mat-tab label="Launchpad">
       <div class="launchpad" #launchpad>
@@ -31,8 +31,8 @@
 
     <mat-tab label="Executive Summary">
 
-      <bd-executive-summary>
-        
+      <bd-executive-summary *ngIf="selectedTabIndex === 1">
+
 
       </bd-executive-summary>
 

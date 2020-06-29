@@ -38,7 +38,9 @@ export interface ITopMatterES {
     total_associate_hours: number;
     avg_partner_rate: number;
     link: string;
-
+    block_billing_percent: number;
+    bodhala_price_index: number;
+    partner_percent: number;
 }
 
 export interface ITopFirmESPriorYear {
@@ -137,6 +139,8 @@ export interface ITopTimekeeper {
     total_partner_billed: number;
     avg_matter_cost_formatted: string;
     link: string;
+    total: number;
+    total_block_billed: number;
 }
 
 export const columns = {

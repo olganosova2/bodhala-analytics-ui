@@ -6,7 +6,11 @@
 </div>
 <br><br>
 <div class="executiveSummary" id="executiveSummary">
-    <bd-spend-overview></bd-spend-overview>
+  <div *ngIf="maxDate">
+    <bd-spend-overview [maxDate]="maxDate"></bd-spend-overview>
+  </div>
 <!-- <div class="executiveSummary" id="executiveSummary"> -->
-    <bd-es-table></bd-es-table>
+  <div class="mt10" *ngIf="maxDate">
+    <bd-es-table [maxDate]="maxDate"></bd-es-table>
+  </div>
 </div>
