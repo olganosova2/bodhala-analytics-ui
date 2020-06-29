@@ -108,7 +108,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        firm.avg_matter_cost = firm.matter_cost_closed / firm.closed_matters;
+        firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
@@ -159,7 +159,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        firm.avg_matter_cost = firm.matter_cost_closed / firm.closed_matters;
+        firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
@@ -184,7 +184,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        firm.avg_matter_cost = firm.matter_cost_closed / firm.closed_matters;
+        firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
@@ -310,7 +310,7 @@ export class EsTableComponent implements OnInit {
         tk.blended_rate = tk.atty_billed / tk.atty_hours;
       }
       if (tk.closed_matters > 0 && (tk.closed_matters !== null || tk.closed_matters !== undefined)) {
-        tk.avg_matter_cost = tk.matter_cost_closed / tk.closed_matters;
+        tk.avg_matter_cost = (tk.matter_cost_closed + tk.total_afa_closed)  / tk.closed_matters;
         tk.avg_matter_cost_formatted = this.formatter.format(tk.avg_matter_cost);
       } else {
         tk.avg_matter_cost_formatted = '--';
@@ -324,7 +324,7 @@ export class EsTableComponent implements OnInit {
         tk.blended_rate = 0;
       }
       if (tk.closed_matters > 0 && (tk.closed_matters !== null || tk.closed_matters !== undefined)) {
-        tk.avg_matter_cost = tk.matter_cost_closed / tk.closed_matters;
+        tk.avg_matter_cost = (tk.matter_cost_closed + tk.total_afa_closed)  / tk.closed_matters;
         tk.avg_matter_cost_formatted = this.formatter.format(tk.avg_matter_cost);
       } else {
         tk.avg_matter_cost_formatted = '--';

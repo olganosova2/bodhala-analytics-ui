@@ -15,13 +15,13 @@
                     <th>Average Partners per Matter</th>
                 </tr>
                 <tr *ngFor="let firm of topFirms">
-                    <td>{{firm.firm_name}}</td>
-                    <td>{{firm.avg_matter_cost_formatted}} <span *ngIf="firm.avg_matter_cost_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.avg_matter_cost_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_matter_cost_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.avg_matter_cost_trend * -1) | number:'1.0-0'}}%</span></td>
-                    <td>{{firm.block_billed_per * 100 | number:'1.0-0'}}% <span *ngIf="firm.block_billed_per_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.block_billed_per_trend | number:'1.0-0'}}%</span><span *ngIf="firm.block_billed_per_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.block_billed_per_trend * -1) | number:'1.0-0'}}%</span></td>
-                    <td>{{firm.blended_rate_formatted}} <span *ngIf="firm.blended_rate_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.blended_rate_trend | number:'1.0-0'}}%</span><span *ngIf="firm.blended_rate_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.blended_rate_trend * -1) | number:'1.0-0'}}%</span></td>
-                    <td>{{firm.bpi_formatted}} <span *ngIf="firm.bpi_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.bpi_trend | number:'1.0-0'}}%</span><span *ngIf="firm.bpi_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.bpi_trend * -1) | number:'1.0-0'}}%</span></td>
-                    <td>{{firm.avg_partner_rate_formatted}} <span *ngIf="firm.avg_partner_rate_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.avg_partner_rate_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_partner_rate_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.avg_partner_rate_trend * -1) | number:'1.0-0'}}%</span></td>
-                    <td>{{firm.avg_partners_formatted}}  <span *ngIf="firm.avg_partners_trend > 0"><img src="/assets/images/arrow_upward.svg"> {{firm.avg_partners_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_partners_trend<0"><img src="/assets/images/arrow_downward.svg"> {{(firm.avg_partners_trend * -1) | number:'1.0-0'}}%</span></td>
+                  <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
+                    <td>{{firm.avg_matter_cost_formatted}} <span *ngIf="firm.avg_matter_cost_trend > 0"><img src="assets/images/arrow_upward.svg"> {{firm.avg_matter_cost_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_matter_cost_trend<0"><img src="assets/images/arrow_downward.svg"> {{(firm.avg_matter_cost_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.block_billed_per * 100 | number:'1.0-0'}}% <span *ngIf="firm.block_billed_per_trend > 0"><img src="assets/images/arrow_upward.svg"> {{firm.block_billed_per_trend | number:'1.0-0'}}%</span><span *ngIf="firm.block_billed_per_trend<0"><img src="assets/images/arrow_downward.svg"> {{(firm.block_billed_per_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.blended_rate_formatted}} <span *ngIf="firm.blended_rate_trend > 0"><img src="assets/images/arrow_upward.svg"> {{firm.blended_rate_trend | number:'1.0-0'}}%</span><span *ngIf="firm.blended_rate_trend<0"><img src="assets/images/arrow_downward.svg"> {{(firm.blended_rate_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.bpi_formatted}} <span *ngIf="firm.bpi_trend > 0"><img src="assets/images/arrow_upward.svg"> {{firm.bpi_trend | number:'1.0-0'}}%</span><span *ngIf="firm.bpi_trend<0"><img src="assets/images/arrow_downward.svg"> {{(firm.bpi_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.avg_partner_rate_formatted}} <span *ngIf="firm.avg_partner_rate_trend > 0"><img src="assets/images/arrow_upward.svg"> {{firm.avg_partner_rate_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_partner_rate_trend<0"><img src="assets/images/arrow_downward.svg"> {{(firm.avg_partner_rate_trend * -1) | number:'1.0-0'}}%</span></td>
+                    <td>{{firm.avg_partners_formatted}}  <span *ngIf="firm.avg_partners_trend > 0"><img src="assets/images/arrow_upward.svg"> {{firm.avg_partners_trend | number:'1.0-0'}}%</span><span *ngIf="firm.avg_partners_trend<0"><img src="assets/images/arrow_downward.svg"> {{(firm.avg_partners_trend * -1) | number:'1.0-0'}}%</span></td>
                 </tr>
             </table>
         </div>
@@ -45,7 +45,7 @@
                 </tr>
                 <tr *ngFor="let firm of topFirms">
                 <!-- <td><a href="{{firm.link}}">{{firm.firm_name}}</a></td> -->
-                    <td>{{firm.firm_name}}</td>
+                  <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
                     <td>${{firm.total_billed | number:'1.0-0'}}</td>
                     <td>{{firm.total_firm_matters | number:'1.0-0'}}</td>
                     <td>{{firm.avg_matter_cost_formatted}}</td>
@@ -76,7 +76,7 @@
                     <th class="matter-cell">Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let matter of topMatters">
-                    <td>{{matter.name}}</td>
+                  <td><a class="href-link-primary" href="/#/app/client-dashboard/matter/{{matter.id}}">{{matter.name}}</a></td>
                     <td>${{matter.total_spend | number:'1.0-0'}}</td>
                     <td>{{matter.block_billing_percent * 100 | number:'1.0-0'}}%</td>
                     <td>${{matter.blended_rate| number:'1.0-0'}}</td>
@@ -106,7 +106,8 @@
                     <th class="tk-cell">Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let tk of topTKs">
-                    <td>{{tk.name}}<br><a class="firm-name">{{tk.firm}}</a></td>
+                  <td><a class="href-link-primary" href="/#/app/client-dashboard/timekeepers?firmId={{tk.lawfirm_id}}">{{tk.name}}
+                      <br><a class="firm-name">{{tk.firm}}</a></a></td>
                     <td>{{commonServ.capitalize(tk.seniority)}}</td>
                     <td>${{tk.total | number:'1.0-0'}}</td>
                     <td>{{tk.total_matters| number:'1.0-0'}}</td>
@@ -136,7 +137,7 @@
                     <th>Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let firm of topFirmsByPA">
-                    <td>{{firm.firm_name}}</td>
+                  <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
                     <td>${{firm.total_billed | number:'1.0-0'}}</td>
                     <td>{{firm.total_firm_matters | number:'1.0-0'}}</td>
                     <td>{{firm.avg_matter_cost_formatted}}</td>
@@ -165,7 +166,7 @@
                     <th class="matter-cell">Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let matter of topMattersByPA">
-                    <td>{{matter.name}}</td>
+                  <td><a class="href-link-primary" href="/#/app/client-dashboard/matter/{{matter.id}}">{{matter.name}}</a></td>
                     <td>${{matter.total_spend | number:'1.0-0'}}</td>
                     <td>{{matter.block_billing_percent * 100 | number:'1.0-0'}}%</td>
                     <td>${{matter.blended_rate| number:'1.0-0'}}</td>
@@ -195,7 +196,7 @@
                     <th class="tk-cell">Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let tk of topTKsByPA">
-                    <td>{{tk.name}}<br><a class="firm-name">{{tk.firm}}</a></td>
+                  <td><a class="href-link-primary" href="/#/app/client-dashboard/timekeepers?firmId={{tk.lawfirm_id}}">{{tk.name}}<br><a class="firm-name">{{tk.firm}}</a></a></td>
                     <td>{{commonServ.capitalize(tk.seniority)}}</td>
                     <td>${{tk.total | number:'1.0-0'}}</td>
                     <td>{{tk.total_matters| number:'1.0-0'}}</td>

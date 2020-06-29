@@ -98,6 +98,7 @@ export interface ITopFirmES {
     total_firm_matters: number;
     firm_block_billed: number;
     matter_cost_closed: number;
+    total_afa_closed: number;
     closed_matters: number;
     partner_percent: number;
     avg_matter_cost_formatted: string;
@@ -135,6 +136,7 @@ export interface ITopTimekeeper {
     atty_billed: number;
     atty_hours: number;
     matter_cost_closed: number;
+    total_afa_closed: number;
     closed_matters: number;
     total_partner_billed: number;
     avg_matter_cost_formatted: string;
