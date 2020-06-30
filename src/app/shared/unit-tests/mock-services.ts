@@ -2,12 +2,14 @@ import {CURRENT_USER} from './mock-data/user';
 import {Observable, of, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
-import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS} from './mock-data/firm';
+import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY} from './mock-data/firm';
 import {convertToParamMap} from '@angular/router';
 import {MOCK_BILLING_TOTALS} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
 import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
+import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
+import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS} from './mock-data/practice-area';
 
 export const ngWindow = {
   location: {
@@ -37,6 +39,9 @@ export class FiltersStub {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
   public getCommonFilters() {
+    return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
+  }
+  public parseLSDateString() {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
 }
@@ -102,6 +107,14 @@ export class DataStub {
         return of(MOCK_BENCHMARKS);
       case 'getFirmsListByClient':
         return of(MOCK_FIRMS);
+      case 'getOptionsForFilter':
+        return of(MOCK_OPTIONS_FOR_FILTER);
+      case 'getFirmTopSummary':
+        return of(MOCK_TOP_FIRM_SUMMARY);
+      case 'getPracticeArea':
+        return of(MOCK_PRACTICE_AREAS);
+      case 'getDateRange':
+        return of(MOCK_MIN_MAX_DATES);
       default:
         return of([]);
     }
@@ -192,6 +205,7 @@ export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
     id: '4702',
     anotherId: 'd31e8b48-7309-4c83-9884-4142efdf7271',
+    client_matter_type: 'LITIGATION'
   }));
   queryParams = new Observable(observer => {
     const urlParams = {

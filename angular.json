@@ -67,8 +67,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "5mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "7mb",
+                  "maximumError": "7mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -135,7 +135,8 @@
               "src/assets"
             ],
             "codeCoverageExclude": [
-              "src/app/shared/unit-tests/*mock*.ts"
+              "src/app/shared/unit-tests/*mock*.ts",
+              "src/app/lead-attorney/lead-attorney.component.ts"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",

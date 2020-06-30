@@ -1,0 +1,55 @@
+<div class="content-body relative-pos">
+  <h4 class="mt20 mb10">Top Matters</h4>
+  <div class="panel-wrapper black-border">
+    <table class="full-width" *ngIf="summary && summary.matters.length > 0">
+      <tr>
+        <th class="matter-cell">Name</th>
+        <th class="matter-cell">Total Billed</th>
+        <th class="matter-cell">BPI</th>
+        <th class="matter-cell">Blended Rate</th>
+<!--        <th class="matter-cell">Block Billing %</th>-->
+<!--        <th class="matter-cell">Block Billing $</th>-->
+        <th>% $$ Billed by Partner</th>
+      </tr>
+      <tr *ngFor="let matter of summary.matters">
+        <td>{{matter.name}}</td>
+        <td>${{matter.total_spend | number:'1.0-0'}}</td>
+        <td>${{matter.bodhala_price_index | number:'1.0-0'}}</td>
+        <td>${{matter.blended_rate | number:'1.0-0'}}</td>
+<!--        <td>{{matter.block_billing_percent * 100 | number:'1.0-0'}}%</td>-->
+<!--        <td>${{matter.total_block_billed | number:'1.0-0'}}</td>-->
+        <td>{{matter.partner_percent * 100 | number:'1.0-0'}}%</td>
+      </tr>
+    </table>
+  </div>
+  <h4 class="mt20 mb10">Top Timekeepers</h4>
+  <div class="panel-wrapper black-border mb40">
+    <table class="full-width" *ngIf="summary && summary.timekeepers.length > 0">
+      <tr>
+        <th class="tk-cell">Timekeeper</th>
+        <th class="tk-cell">Title</th>
+        <th class="tk-cell">Total Spend</th>
+        <th class="tk-cell">Total Hours</th>
+        <th class="tk-cell">Hourly Rate</th>
+        <th class="tk-cell">Effective Rate</th>
+<!--        <th class="tk-cell">Block Billing %</th>-->
+        <th>% Billed in Last 3 Days of Month</th>
+      </tr>
+      <tr *ngFor="let tk of summary.timekeepers">
+        <td>{{tk.name}}</td>
+        <td>{{commonServ.capitalize(tk.seniority)}}</td>
+        <td>${{tk.total | number:'1.0-0'}}</td>
+        <td>{{tk.total_hours_billed | number:'1.0-0'}}</td>
+        <td>${{tk.current_rate | number:'1.0-0'}}</td>
+        <td>${{tk.effective_rate | number:'1.0-0'}}</td>
+<!--        <td>{{tk.block_billing_percent * 100 | number:'1.0-0'}}%</td>-->
+        <td>{{tk.pct | number:'1.0-0'}}%</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
+</div>
+

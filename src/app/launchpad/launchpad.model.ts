@@ -17,7 +17,7 @@ export const columns = {
     { name: 'Spend', format: 'currency', field: 'total_spend', component: PillComponent },
     // { name: 'Lead Partner', format: 'lawyer', field: 'lead_partner_name', avatar: 'bio_image_url', component: PillComponent },
     { name: 'Lead Partner', field: 'lead_partner_name', component: LinkComponent, isPrimary: false, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${lead_partner_id}/${lawfirm_id}'},
-    { name: 'Practice Area', field: 'client_matter_type', component: LinkComponent, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}` }
+    { name: 'Practice Area', field: 'client_matter_type', component: LinkComponent, isPrimary: true, route: config.outerAppLinks.viewPracticeAreaDetail, route_params: 'client_matter_type'}
   ],
   topFirms: [
     { name: 'Firm', field: 'firm_name', component: LinkComponent, isPrimary: true, route: config.outerAppLinks.viewFirm, route_params: 'id'},
@@ -25,7 +25,7 @@ export const columns = {
     { name: '% of Total Spend', format: 'percent', field: 'total_percent', component: PillComponent }
   ],
   spendByPracticeArea: [
-    { name: 'Practice Area', field: 'practice_area', component: LinkComponent, isPrimary: true, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
+    { name: 'Practice Area', field: 'practice_area', component: LinkComponent, isPrimary: true, route: config.outerAppLinks.viewPracticeAreaDetail, route_params: 'practice_area'},
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
     { name: 'Top Firm', field: 'firm_name', component: LinkComponent, isPrimary: false, route: config.outerAppLinks.viewFirm, route_params: 'firm_id'},
     { name: 'Top Matter', field: 'matter_name', component: LinkComponent, isPrimary: false, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${matter_id}'},
@@ -33,7 +33,7 @@ export const columns = {
   topLeadPartners: [
     { name: 'Lead Partner', field: 'name', component: LinkComponent, isPrimary: true, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${id}/${firm_id}'},
     { name: 'Spend', format: 'currency', field: 'total_billed', component: PillComponent },
-    { name: 'Practice Area', field: 'top_practice', component: LinkComponent, isPrimary: false, href: `${environment.host}${config.outerAppLinks.viewPracticeArea}`},
+    { name: 'Practice Area', field: 'top_practice', component: LinkComponent, isPrimary: true, route: config.outerAppLinks.viewPracticeAreaDetail, route_params: 'top_practice'},
     { name: 'Top Matter', field: 'top_matter_name', component: LinkComponent, isPrimary: false, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${top_matter_id}'},
   ],
   mattersByHighestAverageRate: [

@@ -1,0 +1,25 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables.scss";
+
+.rate-card-div {
+  padding: 20px;
+  background-color: #fff;
+  color: $body-color;
+  border: 1px solid #fff;
+  border-radius: $card-panel-radius;
+}
+hr{
+  height: 2px;
+  background-color:$darker-gray;
+  border: none;
+  margin: 20px -20px 10px -20px;
+}
+.icon-arrow-up {
+  font-size: 35pt;
+  position: fixed;
+  top: 75px;
+  left: 50%;
+  color: $body-color;
+  z-index: 10;
+  cursor: pointer;
+}

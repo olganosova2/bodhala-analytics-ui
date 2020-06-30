@@ -216,3 +216,17 @@ export const USER_FILTERS = {
     "value": "SpendByFirm"
   }
 }
+
+export const MOCK_OPTIONS_FOR_FILTER = {
+  "result": [{
+    "id": "EXCESS",
+    "name": "EXCESS"
+  }, {
+    "id": "PROFESSIONAL LIABILITY",
+    "name": "PROFESSIONAL LIABILITY"
+  }, {
+    "id": "CASUALTY",
+    "name": "CASUALTY"
+  }]
+}
+

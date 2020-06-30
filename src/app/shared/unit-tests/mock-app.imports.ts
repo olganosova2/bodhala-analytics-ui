@@ -70,6 +70,16 @@ import {OverlayPanelModule} from 'primeng';
 import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import {IeBannerComponent} from '../components/ie-banner/ie-banner.component';
 import {ErrorMessagesComponent} from '../components/error-messages/error-messages.component';
+import {MattersComponent} from '../../matters/matters.component';
+import {AgGridModule} from 'ag-grid-angular';
+import {LeadAttorneyComponent} from '../../lead-attorney/lead-attorney.component';
+import {FirmRateCardComponent} from '../../firm/firm-rate-card/firm-rate-card.component';
+import {RateCardTablesComponent} from '../../firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
+import {PracticeAreaComponent} from '../../practice-area/practice-area.component';
+import {PaTopLeadPartnersComponent} from '../../practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
+import {PracticeAreaDropdownComponent} from '../../practice-area/practice-area-dropdown/practice-area-dropdown.component';
+import {PaTopFirmsComponent} from '../../practice-area/pa-top-firms/pa-top-firms.component';
+import {ExecutiveSummaryComponent} from '../../launchpad/executive-summary/executive-summary.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -122,7 +132,8 @@ export const IMPORTS = [
   NgbModule,
   ChartModule,
   DropdownModule,
-  OverlayPanelModule
+  OverlayPanelModule,
+  AgGridModule.withComponents([])
 ];
 
 export const DECLARATIONS = [
@@ -149,7 +160,16 @@ export const DECLARATIONS = [
   TwoBarsComponent,
   BenchmarkFirmDetailComponent,
   IeBannerComponent,
-  ErrorMessagesComponent
+  ErrorMessagesComponent,
+  MattersComponent,
+  LeadAttorneyComponent,
+  FirmRateCardComponent,
+  RateCardTablesComponent,
+  PracticeAreaComponent,
+  PaTopLeadPartnersComponent,
+  PracticeAreaDropdownComponent,
+  PaTopFirmsComponent,
+  ExecutiveSummaryComponent
 ];
 
 export const PROVIDERS = [

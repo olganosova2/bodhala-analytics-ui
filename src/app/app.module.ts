@@ -5,13 +5,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {AgGridModule} from 'ag-grid-angular';
+import 'ag-grid-enterprise';
 import {
   MatBadgeModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
   MatDialogModule,
   MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
   MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule
+  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule
 } from '@angular/material';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
@@ -61,6 +63,18 @@ import {OverlayPanelModule} from 'primeng';
 import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
+import { MattersComponent } from './matters/matters.component';
+import { LeadAttorneyComponent } from './lead-attorney/lead-attorney.component';
+import { PracticeAreaComponent } from './practice-area/practice-area.component';
+import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dropdown/practice-area-dropdown.component';
+import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
+import { PaTopLeadPartnersComponent } from './practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
+import { FirmRateCardComponent } from './firm/firm-rate-card/firm-rate-card.component';
+import { ExecutiveSummaryComponent } from './launchpad/executive-summary/executive-summary.component';
+import { SpendOverviewComponent } from './launchpad/executive-summary/spend-overview/spend-overview.component';
+import { EsTotalItemComponent } from './launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
+import { RateCardTablesComponent } from './firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
+import { EsTableComponent } from './launchpad/executive-summary/es-table/es-table.component';
 
 
 export function initUser(config: UserService) {
@@ -113,6 +127,18 @@ export function highchartsFactory() {
     BenchmarkFirmDetailComponent,
     IeBannerComponent,
     ErrorMessagesComponent,
+    MattersComponent,
+    LeadAttorneyComponent,
+    PracticeAreaComponent,
+    PracticeAreaDropdownComponent,
+    PaTopFirmsComponent,
+    PaTopLeadPartnersComponent,
+    FirmRateCardComponent,
+    ExecutiveSummaryComponent,
+    SpendOverviewComponent,
+    EsTotalItemComponent,
+    RateCardTablesComponent,
+    EsTableComponent,
   ],
   entryComponents: [
     PillComponent,
@@ -154,9 +180,11 @@ export function highchartsFactory() {
     BodhalaUiElementsModule,
     FlexLayoutModule,
     MatButtonToggleModule,
+    MatTabsModule,
     ChartModule,
     DropdownModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    AgGridModule.withComponents([])
   ],
   providers: [CookieService,
     UserService,

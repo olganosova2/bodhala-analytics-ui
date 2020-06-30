@@ -35,15 +35,17 @@ export class FiltersService {
       this.includeExpenses = JSON.parse(serializedIncludeExpenses) || false;
     }
     this.userFilters = Object.assign({}, this.filtersHelper.create(this.userFilters));
-    const dt = moment();
   }
 
   getCurrentUserCombinedFiltersOld(): any {
     return {...this.getCommonFilters(), ...this.getQueryString()};
   }
 
-  getCurrentUserCombinedFilters(): any {
+  getCurrentUserCombinedFilters(datesOnly: boolean = false): any {
     const currentUser = { clientId: this.userService.currentUser.client_info_id };
+    if (datesOnly) {
+      return {...currentUser, ...this.parseLSDateString()};
+    }
     return {...currentUser, ...this.parseLSQueryString()};
   }
 
@@ -58,6 +60,23 @@ export class FiltersService {
       return this.getCommonFilters();
     }
     const serializedQs = JSON.parse(qs).querystring.toString();
+    const pairs = serializedQs.split('&');
+    for (const pair of pairs) {
+      const keys = pair.split('=');
+      if (keys.length === 2) {
+        result[keys[0]] = decodeURIComponent(keys[1]);
+      }
+    }
+    return result;
+  }
+  parseLSDateString(): any {
+    //
+    const result = {};
+    const qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    if (!qs) {
+      return this.getCommonFilters();
+    }
+    const serializedQs = JSON.parse(qs).datestring.toString();
     const pairs = serializedQs.split('&');
     for (const pair of pairs) {
       const keys = pair.split('=');

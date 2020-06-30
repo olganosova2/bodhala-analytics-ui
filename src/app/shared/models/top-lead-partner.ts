@@ -1,4 +1,5 @@
 import {basePieChartOptions} from './base-chart';
+import { NumberFilter } from 'ag-grid-community';
 
 export interface ITopLeadPartner {
   id: string;

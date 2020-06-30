@@ -23,6 +23,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   firmId: string;
   firm: IFirm;
   pageName: string = 'app.client-dashboard.firm-detail';
+  pageType: string = 'Firms';
   excludeFilters = ['firms', 'treshold'];
   firmData: IFirmData;
   rightColsCount: number = 12;
@@ -38,6 +39,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   @ViewChild(ScoreTrendComponent, {static: false}) scoreAndTrend: ScoreTrendComponent;
 
   constructor(private route: ActivatedRoute,
+              public router: Router,
               private httpService: HttpService,
               public appStateService: AppStateService,
               public filtersService: FiltersService,
@@ -103,6 +105,9 @@ export class FirmComponent implements OnInit, OnDestroy {
     this.billingTotals.formatItems();
     this.topMatters.processMatters();
     this.spendByMonth.renderChart();
+  }
+  viewReportCard(): void {
+    this.router.navigate(['/analytics-ui/firm/report-card/', this.firmId]);
   }
 
   ngOnDestroy() {

@@ -40,4 +40,5 @@ export class TopLeadPartnersService {
     }
     return records.slice(0, config.TOP_RECORDS_NUMBER);
   }
+
 }

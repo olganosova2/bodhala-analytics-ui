@@ -1,9 +1,16 @@
 @import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables";
 .diversity {
   background-color: #fff;
+  border: 1px solid #fff;
+  border-bottom-right-radius: $card-panel-radius;
+  border-top-right-radius: $card-panel-radius;
   .banner{
     padding:0;
-    background-color: #2e373c;
+    background-color: $body-color;
+    border: 1px solid $body-color;
+    border-bottom-left-radius: $card-panel-radius;
+    border-top-left-radius: $card-panel-radius;
     color: #fff;
     text-align: center;
     min-width: 200px;
