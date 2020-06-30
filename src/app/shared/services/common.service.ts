@@ -72,7 +72,7 @@ export class CommonService {
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
 
-    html2canvas(document.getElementById('pdfDiv'), {
+    html2canvas(document.getElementById(divId), {
       width: htmlWidth,
       height: htmlHeight
     }).then(canvas => {

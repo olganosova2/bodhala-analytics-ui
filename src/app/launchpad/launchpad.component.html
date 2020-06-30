@@ -1,8 +1,7 @@
 <div class="content-body-inner-wrapper">
   <bd-ie-banner></bd-ie-banner>
   <bd-error-messages></bd-error-messages>
-  <div>
-    <!--      [excludeFilters] = "['firms','threshold']"-->
+  <div id="filtersdiv">
     <lib-bd-filters
       (sendFilters)="receiveMessage($event)"
       [pageName]="pageName"
@@ -12,19 +11,33 @@
   <div #insights style="display: block">
     <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
   </div>
-  <!-- <div id="giveitashot" style="height: 40.67px; width: 198.83px;">
-    <img src="assets/images/new_logo.png" style="height: 40.67px; width: 198.83px;" id="giveitashot">
-  </div> -->
-  <div class="launchpad" #launchpad id="launchpadtest">
-    <bd-card *ngFor="let card of cards"
-             [header]="card.header"
-             [request]="requests[card.request]"
-             [cardName]="card.request"
-             [columns]="card.columns"
-             [options]="card.options"
-             (clicked)="onClick($event)"
-             (loaded)="onCardLoaded()"
-             [ngStyle]="{'grid-column': 'span ' + card.span}">
-    </bd-card>
-  </div>
+
+  <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
+<!-- (selectedTabChange)="hideShowFilters()" -->
+    <mat-tab label="Launchpad">
+      <div class="launchpad" #launchpad>
+        <bd-card *ngFor="let card of cards"
+                 [header]="card.header"
+                 [request]="requests[card.request]"
+                 [cardName]="card.request"
+                 [columns]="card.columns"
+                 [options]="card.options"
+                 (clicked)="onClick($event)"
+                 (loaded)="onCardLoaded()"
+                 [ngStyle]="{'grid-column': 'span ' + card.span}">
+        </bd-card>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Executive Summary">
+
+      <bd-executive-summary *ngIf="selectedTabIndex === 1">
+
+
+      </bd-executive-summary>
+
+    </mat-tab>
+
+  </mat-tab-group>
+
 </div>

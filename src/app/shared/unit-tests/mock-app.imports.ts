@@ -79,6 +79,7 @@ import {PracticeAreaComponent} from '../../practice-area/practice-area.component
 import {PaTopLeadPartnersComponent} from '../../practice-area/pa-top-lead-partners/pa-top-lead-partners.component';
 import {PracticeAreaDropdownComponent} from '../../practice-area/practice-area-dropdown/practice-area-dropdown.component';
 import {PaTopFirmsComponent} from '../../practice-area/pa-top-firms/pa-top-firms.component';
+import {ExecutiveSummaryComponent} from '../../launchpad/executive-summary/executive-summary.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -167,7 +168,8 @@ export const DECLARATIONS = [
   PracticeAreaComponent,
   PaTopLeadPartnersComponent,
   PracticeAreaDropdownComponent,
-  PaTopFirmsComponent
+  PaTopFirmsComponent,
+  ExecutiveSummaryComponent
 ];
 
 export const PROVIDERS = [
