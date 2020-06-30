@@ -54,6 +54,7 @@ export class TopMattersFirmsService {
       map(response => this.processActiveSpend(response.result))
     ).toPromise();
   }
+
   processTopMatters(records: Array<ITopMatter>): Array<ITopMatter> {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
@@ -122,4 +123,6 @@ export class TopMattersFirmsService {
       y: record.blended_rate
     }));
   }
+
+
 }

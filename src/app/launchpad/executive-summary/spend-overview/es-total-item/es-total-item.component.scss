@@ -1,0 +1,34 @@
+@import "../../../../../assets/styles/colors.scss";
+.cell-item {
+  color: $body-color;
+  margin:0;
+  padding: 10px 30px 10px 30px;
+  border-right: $gray-blue-bg 1px solid;
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+em {
+  color: $body-color;
+  font-size: 1.2rem;
+}
+span {
+  display: inline-block;
+  font-size: 18px;
+  vertical-align: bottom;
+}
+.cell-label {
+    font-size: 0.9rem;
+    height: 55%;
+}
+.cell-last {
+  border-right: none;
+}
+.img-div {
+  min-height: 33px;
+}
+// .font-bold {
+//     position: absolute;
+//     bottom: 30px;
+// }

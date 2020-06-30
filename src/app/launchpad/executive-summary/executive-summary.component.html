@@ -1,0 +1,16 @@
+
+<div class="pull-right">
+    <button class="primary-button ml20" (click)="commonServ.generatePDF('Executive Summary', 'executiveSummary')" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+        <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
+    </button>
+</div>
+<br><br>
+<div class="executiveSummary" id="executiveSummary">
+  <div *ngIf="maxDate">
+    <bd-spend-overview [maxDate]="maxDate"></bd-spend-overview>
+  </div>
+<!-- <div class="executiveSummary" id="executiveSummary"> -->
+  <div class="mt10" *ngIf="maxDate">
+    <bd-es-table [maxDate]="maxDate"></bd-es-table>
+  </div>
+</div>

@@ -14,6 +14,7 @@ import {UserService} from 'bodhala-ui-common';
 })
 export class LaunchpadComponent implements OnInit, OnDestroy {
   pageName = 'app.client-dashboard.launchpad';
+  selectedTabIndex: number = 0;
   @ViewChild('launchpad', {static: false})
   container: ElementRef;
 
@@ -23,8 +24,6 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   cards: Array<any> = []; // cards;
   requests = {};
   columns = columns;
-  launchpadImage = null;
-  logoImage = null;
 
   constructor(
     private filtersService: FiltersService,
@@ -77,6 +76,10 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
         window.parent.postMessage({height, from: 'child'}, '*');
       }, 100);
     }
+  }
+  changeTab(evt): void {
+    this.selectedTabIndex = evt.index;
+
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
