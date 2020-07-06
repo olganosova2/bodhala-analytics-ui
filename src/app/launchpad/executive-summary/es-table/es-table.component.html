@@ -26,14 +26,12 @@
                       <span *ngIf="firm.bpi_trend<0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.bpi_trend * -1) | number:'1.0-0'}}% </span></td>
                     <td>{{firm.avg_partner_rate_formatted}} <span *ngIf="firm.avg_partner_rate_trend > 0" class="arrow-up"><br/><em  class="fa fa-arrow-up"></em> {{firm.avg_partner_rate_trend | number:'1.0-0'}}%</span>
                       <span *ngIf="firm.avg_partner_rate_trend<0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.avg_partner_rate_trend * -1) | number:'1.0-0'}}%</span></td>
-                    <td>{{firm.avg_partners_formatted}}  <span *ngIf="firm.avg_partners_trend > 0" class="arrow-up"><br/><em  class="fa fa-arrow-up"></em> {{firm.avg_partners_trend | number:'1.0-0'}}%</span>
+                    <td>{{firm.partners_formatted}}  <span *ngIf="firm.avg_partners_trend > 0" class="arrow-up"><br/><em  class="fa fa-arrow-up"></em> {{firm.avg_partners_trend | number:'1.0-0'}}%</span>
                       <span *ngIf="firm.avg_partners_trend<0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.avg_partners_trend * -1) | number:'1.0-0'}}%</span></td>
                 </tr>
             </table>
         </div>
     </div>
-<!-- </div>
-<div class="content-body"> -->
     <div class="panel-wrapper">
         <div class="panel-title">
             <h5>Top Firms YTD</h5>
@@ -93,8 +91,6 @@
             </table>
         </div>
     </div>
-<!-- </div>
-<div class="content-body"> -->
     <div class="panel-wrapper">
         <div class="panel-title">
             <h5>Top Timekeepers YTD</h5>
@@ -154,8 +150,6 @@
             </table>
         </div>
     </div>
-<!-- </div>
-<div class="content-body"> -->
     <div class="panel-wrapper">
         <div class="panel-title">
             <h5>Top Matters YTD ({{topPracticeArea}})</h5>

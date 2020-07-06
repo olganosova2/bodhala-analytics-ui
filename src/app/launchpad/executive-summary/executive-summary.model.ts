@@ -71,8 +71,7 @@ export interface ITopFirmESPriorYear {
     avg_partner_rate: number;
     avg_partner_rate_formatted: string;
     partners: number;
-    avg_partners: number;
-    avg_partners_formatted: string;
+    partners_formatted: string;
     avg_matter_cost_trend: number;
     block_billed_per_trend: number;
     blended_rate_trend: number;
@@ -110,6 +109,7 @@ export interface ITopFirmES {
     avg_partner_rate: number;
     avg_partner_rate_formatted: string;
     partners: number;
+    partners_formatted: string;
     avg_partners: number;
     avg_partners_formatted: string;
     avg_matter_cost_trend: number;
