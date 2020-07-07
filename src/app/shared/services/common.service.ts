@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
+// import {new_logo} from '../../../assets/images/new_logo.png';
 import * as jspdf from 'jspdf';
 
 @Injectable({
@@ -61,17 +62,34 @@ export class CommonService {
   generatePDF(title: string, divId: string) {
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
-    const exportElement = document.getElementById(divId);
+    let exportElement = document.getElementById(divId);
+    let footerDiv = document.createElement('DIV');
+    let logo = new Image();
+    if (title === 'Executive Summary' || title.includes('Rate Card')) {
+      footerDiv.innerHTML = 'Powered by';
+      footerDiv.style.fontSize = '22px';
+      footerDiv.style.fontFamily = 'Sharp Sans';
+      footerDiv.style.textAlign = 'center';
+      
+      logo.src = '../../../assets/images/new_logo.png';
+      logo.style.height = '40px'
+      logo.style.width = 'auto';
+      logo.style.display = 'block';
+      logo.style.marginLeft = 'auto';
+      logo.style.marginRight = 'auto';
+      footerDiv.appendChild(logo);
 
+      exportElement.appendChild(footerDiv);
+    }
+    
     const htmlWidth = exportElement.offsetWidth;
     const htmlHeight = exportElement.offsetHeight;
     const topLeftMargin = 15;
     const pdfWidth = htmlWidth + (topLeftMargin * 2);
-    const pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
+    let pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
     const canvasImageWidth = htmlWidth;
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
-
     html2canvas(document.getElementById(divId), {
       width: htmlWidth,
       height: htmlHeight
@@ -94,6 +112,9 @@ export class CommonService {
       }
       pdf.save(docName);
       this.pdfLoading = false;
+      if (title === 'Executive Summary' || title.includes('Rate Card')) {
+        exportElement.removeChild(footerDiv)
+      }
     });
   }
   capitalize(word: string): string {
