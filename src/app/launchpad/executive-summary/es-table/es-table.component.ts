@@ -132,11 +132,10 @@ export class EsTableComponent implements OnInit {
         firm.bpi_formatted = '--';
       }
 
-      if (firm.total_firm_matters > 0) {
-        firm.avg_partners = firm.partners / firm.total_firm_matters;
-        firm.avg_partners_formatted = this.formatter1.format(firm.avg_partners);
+      if (firm.partners > 0 && firm.partners !== null && firm.partners !== undefined) {
+        firm.partners_formatted = this.formatter1.format(firm.partners);
       } else {
-        firm.avg_partners_formatted = '--';
+        firm.partners_formatted = '--';
       }
 
     }
@@ -203,15 +202,6 @@ export class EsTableComponent implements OnInit {
       } else {
         firm.bpi_formatted = '--';
       }
-
-      if (firm.total_firm_matters > 0) {
-        firm.avg_partners = firm.partners / firm.total_firm_matters;
-        firm.avg_partners_formatted = this.formatter1.format(firm.avg_partners);
-      } else {
-        firm.avg_partners_formatted = '--';
-      }
-
-
     }
   }
   processYOYFirmsData(): void {
@@ -275,11 +265,11 @@ export class EsTableComponent implements OnInit {
             firm.avg_partner_rate_trend = 0;
           }
 
-          if (firm.avg_partners > 0 && firm.avg_partners !== null && firm.avg_partners !== undefined) {
-            if (firm.avg_partners > priorYearFirm.avg_partners) {
-              firm.avg_partners_trend = ((firm.avg_partners / priorYearFirm.avg_partners) - 1) * 100;
+          if (firm.partners > 0 && firm.partners !== null && firm.partners !== undefined) {
+            if (firm.partners > priorYearFirm.partners) {
+              firm.avg_partners_trend = ((firm.partners / priorYearFirm.partners) - 1) * 100;
             } else {
-              firm.avg_partners_trend = (1 - (firm.avg_partners / priorYearFirm.avg_partners)) * 100;
+              firm.avg_partners_trend = (1 - (firm.partners / priorYearFirm.partners)) * 100;
               firm.avg_partners_trend *= -1;
             }
           } else {
@@ -315,7 +305,6 @@ export class EsTableComponent implements OnInit {
       } else {
         tk.avg_matter_cost_formatted = '--';
       }
-      tk.partner_billed_per = tk.total_partner_billed / tk.total_billed;
     }
     for (const tk of this.topTKsByPA) {
       if (tk.atty_hours > 0 && (tk.atty_hours !== null || tk.atty_hours !== undefined)) {
@@ -329,7 +318,6 @@ export class EsTableComponent implements OnInit {
       } else {
         tk.avg_matter_cost_formatted = '--';
       }
-      tk.partner_billed_per = tk.total_partner_billed / tk.total_billed;
     }
   }
 
