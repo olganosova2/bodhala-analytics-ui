@@ -54,10 +54,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
     this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
-    console.log('saved filter: ', this.selectedSavedFilterName);
-    // if (saved) {
-    //   this.savedState = JSON.parse(saved);
-    // }
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
       this.initFirm();
