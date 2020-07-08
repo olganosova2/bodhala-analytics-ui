@@ -28,6 +28,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   percentOfTotal: number;
   rank: number;
   selectedSavedFilterName: string = null;
+  logoUrl: string;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -47,6 +48,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               public router: Router,
               private userService: UserService) {
     this.commonServ.pageTitle = 'Firms > Report Card';
+    this.logoUrl = this.userService.currentUser.client_info.org.logo_url;
   }
 
   ngOnInit() {
