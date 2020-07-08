@@ -132,7 +132,6 @@ export interface ITopTimekeeper {
     avg_matter_cost: number;
     block_billed_per: number;
     blended_rate: number;
-    partner_billed_per: number;
     atty_billed: number;
     atty_hours: number;
     matter_cost_closed: number;

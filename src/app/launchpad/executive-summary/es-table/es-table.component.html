@@ -48,7 +48,6 @@
                     <th>Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let firm of topFirms">
-                <!-- <td><a href="{{firm.link}}">{{firm.firm_name}}</a></td> -->
                   <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
                     <td>${{firm.total_billed | number:'1.0-0'}}</td>
                     <td>{{firm.total_firm_matters | number:'1.0-0'}}</td>
@@ -105,7 +104,6 @@
                     <th class="tk-cell">Average Matter Cost</th>
                     <th class="tk-cell">Blended Attorney Rate</th>
                     <th class="tk-cell">Block Billing $</th>
-                    <th class="tk-cell">Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let tk of topTKs">
                   <td><a class="href-link-primary" href="/#/app/client-dashboard/timekeepers?firmId={{tk.lawfirm_id}}">{{tk.name}}
@@ -116,7 +114,6 @@
                     <td>{{tk.avg_matter_cost_formatted}}</td>
                     <td>${{tk.blended_rate | number:'1.0-0'}}</td>
                     <td>${{tk.total_block_billed | number:'1.0-0'}}</td>
-                    <td>{{tk.partner_billed_per * 100 | number:'1.0-0'}}%</td>
                 </tr>
             </table>
         </div>
@@ -193,7 +190,6 @@
                     <th class="tk-cell">Average Matter Cost</th>
                     <th class="tk-cell">Blended Attorney Rate</th>
                     <th class="tk-cell">Block Billing $</th>
-                    <th class="tk-cell">Partner % Billed by $</th>
                 </tr>
                 <tr *ngFor="let tk of topTKsByPA">
                   <td><a class="href-link-primary" href="/#/app/client-dashboard/timekeepers?firmId={{tk.lawfirm_id}}">{{tk.name}}<br><a class="firm-name">{{tk.firm}}</a></a></td>
@@ -203,7 +199,6 @@
                     <td>{{tk.avg_matter_cost_formatted}}</td>
                     <td>${{tk.blended_rate | number:'1.0-0'}}</td>
                     <td>${{tk.total_block_billed | number:'1.0-0'}}</td>
-                    <td>{{tk.partner_billed_per * 100 | number:'1.0-0'}}%</td>
                 </tr>
             </table>
         </div>
