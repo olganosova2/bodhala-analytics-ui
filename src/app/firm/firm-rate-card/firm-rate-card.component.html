@@ -3,8 +3,8 @@
   <div>
     <div class="pull-left">
       <div class="ui-g">
-        <div class="ui-3 pr20">
-          <img src = "assets/images/aig-logo.png"/>
+        <div class="ui-3 pr20" *ngIf="logoUrl">
+          <img [src]="logoUrl" alt="logo"/>
         </div>
         <div class="ui-9">
           <h2>{{commonServ.pageSubtitle}}</h2>
