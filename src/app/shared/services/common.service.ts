@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
-// import {new_logo} from '../../../assets/images/new_logo.png';
 import * as jspdf from 'jspdf';
 
 @Injectable({
