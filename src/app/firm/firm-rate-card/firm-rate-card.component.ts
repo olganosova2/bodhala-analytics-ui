@@ -4,11 +4,7 @@ import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 const moment = _moment;
-<<<<<<< HEAD
-import {HttpService, UtilService, UserService} from 'bodhala-ui-common';
-=======
 import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
->>>>>>> release
 import {IFirm} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
 
