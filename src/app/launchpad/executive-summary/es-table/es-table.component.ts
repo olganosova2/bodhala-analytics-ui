@@ -304,7 +304,6 @@ export class EsTableComponent implements OnInit {
       } else {
         tk.avg_matter_cost_formatted = '--';
       }
-      tk.partner_billed_per = tk.total_partner_billed / tk.total_billed;
     }
     for (const tk of this.topTKsByPA) {
       if (tk.atty_hours > 0 && (tk.atty_hours !== null || tk.atty_hours !== undefined)) {
@@ -318,7 +317,6 @@ export class EsTableComponent implements OnInit {
       } else {
         tk.avg_matter_cost_formatted = '--';
       }
-      tk.partner_billed_per = tk.total_partner_billed / tk.total_billed;
     }
   }
 
