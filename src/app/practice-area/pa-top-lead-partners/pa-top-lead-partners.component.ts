@@ -89,6 +89,14 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
 
     window.location.href = '/#/app/client-dashboard/lead-attorneys?practiceArea=' + this.practiceArea.client_matter_type;
   }
+  goToLPView(href: string, id: string, firm_id: number): void {
+    let encFirm = '';
+    if (firm_id) {
+      encFirm = encodeURIComponent(firm_id.toString());
+    }
+    const enc = encodeURIComponent(id);
+    window.location.href = href + encodeURIComponent(enc) + '/' + encodeURIComponent(encFirm);
+  }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
