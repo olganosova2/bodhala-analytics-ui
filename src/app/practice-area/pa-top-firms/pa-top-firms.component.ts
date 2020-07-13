@@ -96,6 +96,10 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
 
     window.location.href = '/#/app/client-dashboard/firm?practiceArea=' + this.practiceArea.client_matter_type;
   }
+  goToFirmView(href: string, id: string): void {
+    const enc = encodeURIComponent(id);
+    window.location.href = href + encodeURIComponent(enc);
+  }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();

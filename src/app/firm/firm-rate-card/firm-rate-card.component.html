@@ -3,13 +3,14 @@
   <div>
     <div class="pull-left">
       <div class="ui-g">
-        <div class="ui-3 pr20">
-          <img src = "assets/images/aig-logo.png"/>
+        <div class="ui-3 pr20" *ngIf="logoUrl">
+          <img [src]="logoUrl" alt="logo"/>
         </div>
         <div class="ui-9">
           <h2>{{commonServ.pageSubtitle}}</h2>
           <div class="font-bold">Timeframe: {{startdate}} - {{enddate}}</div>
           <div class="font-bold">Rank: <span *ngIf="rank>0">{{ rank }}</span><span *ngIf="rank<0"> > 20</span> ({{percentOfTotal * 100 | number:'1.2-2'}}% of total spend)</div>
+          <div class="font-bold" *ngIf="selectedSavedFilterName!==null">Saved Filter: {{selectedSavedFilterName}}</div>
         </div>
       </div>
 

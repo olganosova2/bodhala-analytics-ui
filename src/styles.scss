@@ -235,21 +235,6 @@ a:hover {
   color: $secondary-link;
   text-decoration: underline;
 }
-.filter-group-label.bh-date-range {
-  padding-left: 0;
-  padding-right:0;
-  .form-control {
-    color: $body-color;
-    font-size: 12px !important;
-    border: 1px solid;
-    border-radius: 25px;
-  }
-  input {
-    text-align: center;
-    width: 195px !important;
-  }
-}
-
 .mat-card, .mat-flat-button, .mat-dialog-container {
   color: $body-color;
   //font-size: 1.4rem;
@@ -506,6 +491,13 @@ h1, h2, h3, h4, h5, h6 {
   margin-left:0 !important;
 }
 // FILTER OVERRIDES
+.filter-group-label.bh-date-range {
+  padding-left: 0;
+  padding-right: 0;
+}
+.filter-group-label-rd .btn-range {
+  padding-right: 0;
+}
 .filter-group-label {
   padding: 0 10px 0 10px;
   margin: 10px 5px 10px 0;

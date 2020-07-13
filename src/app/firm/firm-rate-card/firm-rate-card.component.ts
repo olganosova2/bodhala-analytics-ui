@@ -4,7 +4,7 @@ import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 const moment = _moment;
-import {HttpService, UtilService} from 'bodhala-ui-common';
+import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {IFirm} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
 
@@ -27,6 +27,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   showToTop: boolean = false;
   percentOfTotal: number;
   rank: number;
+  selectedSavedFilterName: string = null;
+  logoUrl: string;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -43,14 +45,17 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               private httpService: HttpService,
               public filtersService: FiltersService,
               public utilServ: UtilService,
+              public userService: UserService,
               public router: Router) {
     this.commonServ.pageTitle = 'Firms > Report Card';
+    this.logoUrl = this.userService.currentUser.client_info.org.logo_url;
   }
 
   ngOnInit() {
     const dates = this.filtersService.parseLSDateString();
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
+    this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
       this.initFirm();
