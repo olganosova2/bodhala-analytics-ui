@@ -62,17 +62,17 @@ export class CommonService {
   generatePDF(title: string, divId: string) {
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
-    let exportElement = document.getElementById(divId);
-    let footerDiv = document.createElement('DIV');
-    let logo = new Image();
+    const exportElement = document.getElementById(divId);
+    const footerDiv = document.createElement('DIV');
+    const logo = new Image();
     if (title === 'Executive Summary' || title.includes('Rate Card')) {
       footerDiv.innerHTML = 'Powered by';
       footerDiv.style.fontSize = '22px';
       footerDiv.style.fontFamily = 'Sharp Sans';
       footerDiv.style.textAlign = 'center';
-      
+
       logo.src = '../../../assets/images/new_logo.png';
-      logo.style.height = '40px'
+      logo.style.height = '40px';
       logo.style.width = 'auto';
       logo.style.display = 'block';
       logo.style.marginLeft = 'auto';
@@ -81,12 +81,12 @@ export class CommonService {
 
       exportElement.appendChild(footerDiv);
     }
-    
+
     const htmlWidth = exportElement.offsetWidth;
     const htmlHeight = exportElement.offsetHeight;
     const topLeftMargin = 15;
     const pdfWidth = htmlWidth + (topLeftMargin * 2);
-    let pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
+    const pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
     const canvasImageWidth = htmlWidth;
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
@@ -113,7 +113,7 @@ export class CommonService {
       pdf.save(docName);
       this.pdfLoading = false;
       if (title === 'Executive Summary' || title.includes('Rate Card')) {
-        exportElement.removeChild(footerDiv)
+        exportElement.removeChild(footerDiv);
       }
     });
   }
