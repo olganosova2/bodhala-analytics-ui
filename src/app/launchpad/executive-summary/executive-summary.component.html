@@ -4,6 +4,7 @@
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
     </button>
 </div>
+<div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
 <br><br>
 <div class="executiveSummary" id="executiveSummary">
   <div *ngIf="maxDate">
