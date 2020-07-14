@@ -70,7 +70,8 @@ export class CommonService {
       footerDiv.style.fontFamily = 'Sharp Sans';
       footerDiv.style.textAlign = 'center';
 
-      logo.src = '../../../assets/images/new_logo.png';
+      logo.src = '../../../analytics-ui/assets/images/new_logo.png';
+      // logo.src = '../../../assets/images/new_logo.png';
       logo.style.height = '40px';
       logo.style.width = 'auto';
       logo.style.display = 'block';
@@ -89,6 +90,19 @@ export class CommonService {
     const canvasImageWidth = htmlWidth;
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
+
+    if (totalPDFPages > 4) {
+      exportElement.removeChild(footerDiv);
+      footerDiv.removeChild(logo);
+      const bodhalaName = document.createElement('DIV');
+      bodhalaName.innerHTML = 'Bodhala';
+      bodhalaName.style.fontSize = '28px';
+      bodhalaName.style.fontFamily = 'Sharp Sans';
+      bodhalaName.style.textAlign = 'center';
+      footerDiv.appendChild(bodhalaName);
+      exportElement.appendChild(footerDiv);
+    }
+
     html2canvas(document.getElementById(divId), {
       width: htmlWidth,
       height: htmlHeight
