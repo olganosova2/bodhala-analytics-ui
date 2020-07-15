@@ -8,5 +8,5 @@
     <span *ngIf="item?.format === 'number2'">${{ item.total | number:'1.2-2'}}</span>
     <span *ngIf="!item?.format">{{ item.total | number:'1.0-0' }}</span>
   </div>
-  <div class="cell-label">{{ item.name }}</div>
+  <span class="cell-label">{{ item.name }}</span>
 </div>
