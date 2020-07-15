@@ -75,6 +75,7 @@
 
     </div>
     <div class="panel-wrapper-chart full-width" #trendsDiv>
+      <i *ngIf="!peerTrends" class="signpost fa fa-info-circle" ngbPopover="{{message}}" triggers="mouseenter:mouseleave" style="float: right;"></i>
       <chart [options]="options" (load)="saveInstance($event.context)"></chart>
     </div>
     <div class="spinner-card" [hidden]="isLoaded">
