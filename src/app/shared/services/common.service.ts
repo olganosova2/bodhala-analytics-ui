@@ -71,7 +71,6 @@ export class CommonService {
       footerDiv.style.textAlign = 'center';
 
       logo.src = '../../../analytics-ui/assets/images/new_logo.png';
-      // logo.src = '../../../assets/images/new_logo.png';
       logo.style.height = '40px';
       logo.style.width = 'auto';
       logo.style.display = 'block';
@@ -91,7 +90,7 @@ export class CommonService {
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
 
-    if (totalPDFPages > 4) {
+    if (totalPDFPages > 3) {
       exportElement.removeChild(footerDiv);
       footerDiv.removeChild(logo);
       const bodhalaName = document.createElement('DIV');
@@ -105,7 +104,9 @@ export class CommonService {
 
     html2canvas(document.getElementById(divId), {
       width: htmlWidth,
-      height: htmlHeight
+      height: htmlHeight,
+      scrollY: -window.scrollY,
+      scrollX: 0
     }).then(canvas => {
 
       canvas.getContext('2d');
