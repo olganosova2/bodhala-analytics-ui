@@ -1,0 +1,16 @@
+<div class="content-body-inner-wrapper">
+  <bd-ie-banner></bd-ie-banner>
+  <bd-error-messages></bd-error-messages>
+  <div id="filtersdiv">
+    <lib-bd-filters
+      (sendFilters)="getSavingsCalculator($event)"
+      [pageName]="pageName"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-4">
+      <bd-savings-widget *ngIf="!isLoading" #bbWidget [percent]="bbPercent" [total]="bbTotal" [title]="'Block Billing'" [savingsType]="'BlockBilling'"></bd-savings-widget>
+    </div>
+  </div>
+</div>
