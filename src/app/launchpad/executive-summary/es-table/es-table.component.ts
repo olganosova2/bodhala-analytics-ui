@@ -60,7 +60,7 @@ export class EsTableComponent implements OnInit {
     // janOne = janOne.replace('2020', '2019');
     const today = new Date().toISOString().slice(0, 10);
     params.startdate = janOne;
-    params.enddate = today;
+    params.enddate = this.maxDate;
     this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryData', params).subscribe(
       (data: any) => {
         if (data.result) {
