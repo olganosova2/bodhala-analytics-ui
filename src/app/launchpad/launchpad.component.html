@@ -1,7 +1,7 @@
 <div class="content-body-inner-wrapper">
   <bd-ie-banner></bd-ie-banner>
   <bd-error-messages></bd-error-messages>
-  <div id="filtersdiv">
+  <div id="filtersdiv" *ngIf="selectedTabIndex === 0">
     <lib-bd-filters
       (sendFilters)="receiveMessage($event)"
       [pageName]="pageName"
