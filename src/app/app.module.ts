@@ -32,6 +32,7 @@ import { LaunchpadComponent } from './launchpad/launchpad.component';
 import {RouterModule} from '@angular/router';
 import {appRouterConfig} from './app.routes';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {SliderModule} from 'primeng/slider';
 import {FiltersService} from './shared/services/filters.service';
 import {UserFiltersModel} from './shared/models/user-filters';
 import { CardComponent } from './launchpad/card/card.component';
@@ -75,6 +76,8 @@ import { SpendOverviewComponent } from './launchpad/executive-summary/spend-over
 import { EsTotalItemComponent } from './launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
 import { RateCardTablesComponent } from './firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
 import { EsTableComponent } from './launchpad/executive-summary/es-table/es-table.component';
+import { SavingsCalculatorComponent } from './savings-calculator/savings-calculator.component';
+import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savings-widget.component';
 
 
 export function initUser(config: UserService) {
@@ -139,6 +142,8 @@ export function highchartsFactory() {
     EsTotalItemComponent,
     RateCardTablesComponent,
     EsTableComponent,
+    SavingsCalculatorComponent,
+    SavingsWidgetComponent,
   ],
   entryComponents: [
     PillComponent,
@@ -184,6 +189,7 @@ export function highchartsFactory() {
     ChartModule,
     DropdownModule,
     OverlayPanelModule,
+    SliderModule,
     AgGridModule.withComponents([])
   ],
   providers: [CookieService,
