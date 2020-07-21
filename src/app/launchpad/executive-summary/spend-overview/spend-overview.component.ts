@@ -44,8 +44,7 @@ export class SpendOverviewComponent implements OnInit {
     // janOne = janOne.replace('2020', '2019');
     const today = new Date().toISOString().slice(0, 10);
     params.startdate = janOne;
-    params.enddate = today;
-
+    params.enddate = this.maxDate;
     this.isLoaded = false;
     this.pendingRequest = this.httpService.makeGetRequest('getBillingTotals', params).subscribe(
       (data: any) => {

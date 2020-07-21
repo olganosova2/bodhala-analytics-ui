@@ -78,14 +78,6 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
     }
   }
   changeTab(evt): void {
-    const filtersDiv = document.getElementById('filtersdiv');
-    if (filtersDiv) {
-      if (filtersDiv.style.display === '') {
-        filtersDiv.style.display = 'None';
-           } else if (filtersDiv.style.display === 'None' || filtersDiv.style.display === 'none') {
-            filtersDiv.style.display = '';
-           }
-    }
     this.selectedTabIndex = evt.index;
 
   }
