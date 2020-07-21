@@ -6,22 +6,23 @@
     <div class="text-right pull-right">{{maxRange}}%</div>
 
   </div>
+
   <div class="clear-both ml15 mr15">
     <p-slider [(ngModel)]="percent" [step]="1"
               [range]="false" [min]="minRange"
               (onChange)="sliderChange($event)"
               [max]="maxRange"></p-slider>
   </div>
-<!--  <div class="full-width text-center mt30 mb20">-->
-<!--    <div class="circle">-->
-<!--      <div class="circle-text">${{total  | number:'1.0-0'}}</div>-->
-<!--    </div>-->
-<!--  </div>-->
-  <div class="full-width mt20">
-    <div class="centered-chart">
-      <chart [options]="options" (load)="saveInstance($event.context)"></chart>
-        <div class="circle-text">${{total  | number:'1.0-0'}}</div>
+  <div class="full-width text-center circle-wrapper mt30 mb20">
+    <div class="circle">
+      <div class="circle-text">${{total  | number:'1.0-0'}}</div>
     </div>
-
   </div>
+<!--  <div class="full-width mt20">-->
+<!--    <div class="centered-chart">-->
+<!--      <chart [options]="options" (load)="saveInstance($event.context)"></chart>-->
+<!--        <div class="circle-text">${{total  | number:'1.0-0'}}</div>-->
+<!--    </div>-->
+
+<!--  </div>-->
 </div>

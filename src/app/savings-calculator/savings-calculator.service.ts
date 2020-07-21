@@ -64,8 +64,15 @@ export class SavingsCalculatorService {
   constructor() {
   }
   calculateBlockBillingValue(val: number, percent: number, total: number): number {
-    const divider = percent || 1;
-    return val * total / divider;
+    percent = percent || 1;
+    return 0.2 * ( ( (percent - val ) / percent ) * total);
+  }
+  calculateDiameter(val: number, percent: number, total: number): number {
+    const maxTotal = 0.2 * total || 1;
+    percent = percent || 1;
+    const currentTotal = 0.2 * ( ( (percent - val ) / percent ) * total);
+    const result = (currentTotal * 200 / maxTotal);
+    return result;
   }
   getChartSeries(val: number, percent: number, total: number): Array<number> {
     const grandTotal = this.calculateBlockBillingValue(100, percent, total);

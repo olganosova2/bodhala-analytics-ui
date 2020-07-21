@@ -1,6 +1,6 @@
 @import "../../../assets/styles/colors.scss";
-$circle-diameter: 178px;
-$border-radius: 89px;
+$circle-diameter: 200px;
+$border-radius: 100px;
 
 :host ::ng-deep {
   .ui-slider .ui-slider-range {
@@ -18,19 +18,20 @@ $border-radius: 89px;
   width:$circle-diameter;
   height:$circle-diameter;
   border-radius: $border-radius;
-  font-size:22px;
-  // line-height:$circle-diameter;
   text-align:center;
   background:#fff;
   margin: auto;
   position: relative;
-  //box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
+
   box-shadow: 0 0 15px  rgba(0, 0, 0, .24);
   -moz-box-shadow: 0 0 15px  rgba(0, 0, 0, .24);
   -webkit-box-shadow: 0 0 15px  rgba(0, 0, 0, .24);
   -o-box-shadow: 0 0 15px  rgba(0, 0, 0, .24);
 }
+
 .circle-text {
+  font-size:22px;
+  width: 100%;
   text-align: center;
   position: absolute;
   top: 40%;

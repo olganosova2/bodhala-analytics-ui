@@ -20,6 +20,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   bbPercent: number = 0;
   bbTotal: number = 0;
   isLoading: boolean = false;
+  currentYear: number = 0;
   pageName: string = 'app.client-dashboard.savings-calculator';
   @ViewChild(SavingsWidgetComponent, {static: false}) bbWidget: SavingsWidgetComponent;
 
@@ -57,8 +58,8 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   formatData(): void {
     this.bbData = this.calcData.bb_percent || [];
     if (this.bbData.length > 0) {
-      this.bbPercent = this.bbData[0].bbp;
-      this.bbTotal = this.bbData[0].total_block_billed;
+      this.bbPercent = this.bbData[this.currentYear].bbp;
+      this.bbTotal = this.bbData[this.currentYear].total_block_billed;
       setTimeout(() => {
         this.bbWidget.setUpDefaults();
       });

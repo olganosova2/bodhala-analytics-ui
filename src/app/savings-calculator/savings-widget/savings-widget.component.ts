@@ -40,14 +40,16 @@ export class SavingsWidgetComponent implements OnInit {
   setUpDefaults(): void {
     this.origPercent = this.percent;
     this.origTotal = this.total;
-    this.chart.series[0].setData(this.savingsService.getChartSeries(this.origPercent, this.origPercent, this.origTotal));
+    const initValue = Object.assign({}, { value: this.origPercent});
+    this.sliderChange(initValue);
+   // this.chart.series[0].setData(this.savingsService.getChartSeries(this.origPercent, this.origPercent, this.origTotal));
   }
 
   sliderChange(val: any): void {
     switch (this.savingsType) {
       case SavingMetrics.BlockBilling:
         this.total = this.savingsService.calculateBlockBillingValue(val.value, this.origPercent, this.origTotal);
-        this.chart.series[0].setData(this.savingsService.getChartSeries(val.value, this.origPercent, this.origTotal));
+        // this.chart.series[0].setData(this.savingsService.getChartSeries(val.value, this.origPercent, this.origTotal));
         break;
       default:
         break;
