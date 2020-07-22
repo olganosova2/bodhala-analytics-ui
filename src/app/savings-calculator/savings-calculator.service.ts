@@ -1,10 +1,36 @@
 import {Injectable} from '@angular/core';
-
 export enum SavingMetrics {
   TkLevel = 'TkLevel',
   BlockBilling = 'BlockBilling',
   RateIncrease = 'RateIncrease',
   Overstaffing = 'Overstaffing'
+}
+export interface ISlider {
+  value: number;
+}
+export interface IBlockBillingData {
+  end_date: string;
+  bbp: number;
+  total_billed: number;
+  total_block_billed: number;
+}
+export interface IOverstaffingData {
+  timekeepers: number;
+  firm_id: number;
+  firm_name: string;
+  line_item_date: string;
+  total_billed: number;
+  client_matter_id: string;
+  matter_name: string;
+  total_hours: number;
+}
+export interface IMetric {
+  percent: number;
+  total: number;
+  title: string;
+  savingsType: SavingMetrics;
+  maxRange: number;
+  savings: number;
 }
 
 export const pieDonutOptions = {
@@ -62,6 +88,21 @@ export const pieDonutOptions = {
 export class SavingsCalculatorService {
 
   constructor() {
+  }
+  createMetricsRecord(record: IBlockBillingData | IOverstaffingData, type: SavingMetrics): IMetric {
+    const result = {} as IMetric;
+    result.savingsType = type;
+    if (type === SavingMetrics.BlockBilling) {
+      const bbRecord = record as IBlockBillingData;
+      result.percent = Math.round(bbRecord.bbp);
+      result.total = bbRecord.total_block_billed;
+      result.maxRange = 100;
+    }
+    if (type === SavingMetrics.Overstaffing) {
+      const osRecord = record as IOverstaffingData;
+      result.maxRange = 50;
+    }
+    return result;
   }
   calculateBlockBillingValue(val: number, percent: number, total: number): number {
     percent = percent || 1;

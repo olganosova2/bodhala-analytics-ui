@@ -8,9 +8,21 @@
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
   </div>
+  <div class="text-center">
+    <h4>Calculate Your Savings</h4>
+    <h5>Predicted Annual Savings</h5>
+    <div class="div-grand-total">${{grandTotal  | number:'1.0-0'}}</div>
+  </div>
   <div class="ui-g">
     <div class="ui-g-4">
-      <bd-savings-widget *ngIf="!isLoading" #bbWidget [percent]="bbPercent" [total]="bbTotal" [title]="'Block Billing'" [savingsType]="'BlockBilling'"></bd-savings-widget>
+      <bd-savings-widget *ngIf="!isLoading" #bbWidget
+                         [percent]="bbPercent"
+                         [total]="bbTotal"
+                         [title]="'Block Billing'"
+                         [savingsType]="'BlockBilling'"
+                         [maxRange] = "100"
+                         (changed)="updateTotals($event)"
+      ></bd-savings-widget>
     </div>
   </div>
 </div>
