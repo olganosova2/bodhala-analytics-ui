@@ -27,6 +27,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   showToTop: boolean = false;
   percentOfTotal: number;
   rank: number;
+  selectedSavedFilterName: string = null;
   logoUrl: string;
 
   @HostListener('window:scroll', [])
@@ -54,6 +55,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     const dates = this.filtersService.parseLSDateString();
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
+    this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
       this.initFirm();

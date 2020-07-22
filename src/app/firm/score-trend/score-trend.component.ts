@@ -43,6 +43,8 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   isLoaded: boolean = false;
   rightColsCount: number = 12;
   scoreAvg: number = 0;
+  peerTrends: boolean = true;
+  message: string = 'Peer Firm Averages are not available for ';
   @Input() firmId: number;
   @Input() firm: IFirm;
   @Input() clientMatterType: string;
@@ -88,8 +90,11 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         this.trends.firm_trends = this.trends.firm_trends.sort(this.utilServ.dynamicSort('year'));
         if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
           this.trends.client_trends = Object.assign([], this.trends.peer_trends);
+          this.peerTrends = true;
         } else {
           this.trends.client_trends = [];
+          this.peerTrends = false;
+          this.message += this.firm.name;
         }
         this.trends.client_trends = this.trends.client_trends.sort(this.utilServ.dynamicSort('year'));
         this.renderChart();

@@ -60,7 +60,7 @@ export class EsTableComponent implements OnInit {
     // janOne = janOne.replace('2020', '2019');
     const today = new Date().toISOString().slice(0, 10);
     params.startdate = janOne;
-    params.enddate = today;
+    params.enddate = this.maxDate;
     this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryData', params).subscribe(
       (data: any) => {
         if (data.result) {
@@ -137,7 +137,6 @@ export class EsTableComponent implements OnInit {
       } else {
         firm.partners_formatted = '--';
       }
-
     }
     for (const firm of this.topFirmsByPA) {
       if (firm.partner_hours > 0 || firm.associate_hours > 0 && (firm.partner_hours !== null || firm.partner_hours !== undefined || firm.associate_hours !== null || firm.associate_hours !== undefined)) {

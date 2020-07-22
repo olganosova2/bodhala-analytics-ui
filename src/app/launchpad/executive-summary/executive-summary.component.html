@@ -4,6 +4,14 @@
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
     </button>
 </div>
+
+<div>
+  <div class="pull-left mt20" style="font-family: 'Sharp Sans'; font-size: 12px; padding-left: 10px;">Executive Summary Data Range: {{this.lowerDateRange}} - {{this.upperDateRange}}</div>
+  <div class="pull-right mt10" style="display: inline"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
+</div>
+
+
+
 <br><br>
 <div class="executiveSummary" id="executiveSummary">
   <div *ngIf="maxDate">

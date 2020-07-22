@@ -62,6 +62,24 @@ export class CommonService {
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
+    const footerDiv = document.createElement('DIV');
+    const logo = new Image();
+    if (title === 'Executive Summary' || title.includes('Rate Card')) {
+      footerDiv.innerHTML = 'Powered by';
+      footerDiv.style.fontSize = '22px';
+      footerDiv.style.fontFamily = 'Sharp Sans';
+      footerDiv.style.textAlign = 'center';
+
+      logo.src = '../../../analytics-ui/assets/images/new_logo.png';
+      logo.style.height = '40px';
+      logo.style.width = 'auto';
+      logo.style.display = 'block';
+      logo.style.marginLeft = 'auto';
+      logo.style.marginRight = 'auto';
+      footerDiv.appendChild(logo);
+
+      exportElement.appendChild(footerDiv);
+    }
 
     const htmlWidth = exportElement.offsetWidth;
     const htmlHeight = exportElement.offsetHeight;
@@ -72,9 +90,23 @@ export class CommonService {
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
 
+    if (totalPDFPages > 3) {
+      exportElement.removeChild(footerDiv);
+      footerDiv.removeChild(logo);
+      const bodhalaName = document.createElement('DIV');
+      bodhalaName.innerHTML = 'Bodhala';
+      bodhalaName.style.fontSize = '28px';
+      bodhalaName.style.fontFamily = 'Sharp Sans';
+      bodhalaName.style.textAlign = 'center';
+      footerDiv.appendChild(bodhalaName);
+      exportElement.appendChild(footerDiv);
+    }
+
     html2canvas(document.getElementById(divId), {
       width: htmlWidth,
-      height: htmlHeight
+      height: htmlHeight,
+      scrollY: -window.scrollY,
+      scrollX: 0
     }).then(canvas => {
 
       canvas.getContext('2d');
@@ -94,6 +126,9 @@ export class CommonService {
       }
       pdf.save(docName);
       this.pdfLoading = false;
+      if (title === 'Executive Summary' || title.includes('Rate Card')) {
+        exportElement.removeChild(footerDiv);
+      }
     });
   }
   capitalize(word: string): string {
