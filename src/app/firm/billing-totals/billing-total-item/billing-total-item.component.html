@@ -1,4 +1,4 @@
-<div class="cell-item" [ngClass]="{'cell-last': isLastCell}">
+<div class="cell-item" *ngIf="!reportCardItem" [ngClass]="{'cell-last': isLastCell}">
   <div *ngIf="!item.svg"><em class="{{item.icon}}"></em></div>
   <div *ngIf="item.svg" class="img-div"><img src="assets/images/{{item.svg}}.svg" alt="icon"/></div>
   <div class="font-bold mb10 mt10">
@@ -9,4 +9,42 @@
     <span *ngIf="!item?.format">{{ item.total | number:'1.0-0' }}</span>
   </div>
   <span class="cell-label">{{ item.name }}</span>
+</div>
+
+<div class="report-card-cell-item" *ngIf="reportCardItem" [ngClass]="{'cell-last': isLastCell}">
+  <div *ngIf="!item.svg"><em class="{{item.icon}}"></em></div>
+  <div *ngIf="item.svg" class="img-div">
+    <img *ngIf="item.name === 'Outside Counsel Spend'" style="height: 35px; margin-top: 25px;" src="assets/images/{{item.svg}}.svg" alt="icon"/>
+    <img *ngIf="item.name !== 'Outside Counsel Spend'" src="assets/images/{{item.svg}}.svg" alt="icon"/>
+  </div>
+  <div class="font-bold">
+    <span *ngIf="item?.format === 'currency' && item.name === 'Outside Counsel Spend'" style="font-size: 20px;">${{ item.total | number:'1.0-0'}}</span>
+    <span *ngIf="item?.format === 'currency' && item.name !== 'Outside Counsel Spend'">${{ item.total | number:'1.0-0'}}</span>
+    <span *ngIf="item?.format === 'percent'">{{ item.total | number:'1.2-2'}}%</span>
+    <span *ngIf="item?.format === 'number'">{{ item.total | number:'1.2-2'}}</span>
+    <span *ngIf="item?.format === 'number2'">${{ item.total | number:'1.2-2'}}</span>
+    <span *ngIf="!item?.format">{{ item.total | number:'1.0-0' }}</span>
+  </div>
+  <span *ngIf="item.name === 'Outside Counsel Spend'" style="font-size: 16px; padding-bottom: 25px;" class="cell-label">{{ item.name }}</span>
+  <span *ngIf="item.name !== 'Outside Counsel Spend'" class="cell-label">{{ item.name }}</span>
+</div>
+<div class="bottom-cell-item" *ngIf="reportCardItem && item.name !== 'Outside Counsel Spend'" [ngClass]="{'cell-last': isLastCell}">
+  <div class="temp">
+    Avg.
+    <div class="font-bold">
+      <span *ngIf="item?.format === 'currency'">${{ item.avg | number:'1.0-0'}}</span>
+      <span *ngIf="item?.format === 'percent'">{{ item.avg | number:'1.2-2'}}%</span>
+      <span *ngIf="item?.format === 'number'">{{ item.avg | number:'1.2-2'}}</span>
+      <span *ngIf="item?.format === 'number2'">${{ item.avg | number:'1.2-2'}}</span>
+      <span *ngIf="!item?.format">{{ item.avg | number:'1.0-0' }}</span>
+    </div>
+  </div>
+  <div class="temp">
+    Diff.
+    <div class="font-bold">
+      <span *ngIf="item.diff > 0" class="arrow-up"><em class="fa fa-arrow-up"></em> {{item.diff | number:'1.0-0'}}%</span>
+      <span *ngIf="item.diff < 0" class="arrow-down"><em class ="fa fa-arrow-down"></em> {{item.diff * -1 | number:'1.0-0'}}%</span>
+      <span *ngIf="item.diff === 0">0%</span>
+    </div>
+  </div>
 </div>

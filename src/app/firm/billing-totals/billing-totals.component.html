@@ -1,4 +1,4 @@
-<div class="full-width relative-pos">
+<div class="full-width relative-pos" *ngIf="!isReportCard">
   <div class="panel-wrapper flex-container" [ngClass]="{ 'black-border' : isReportCard }">
     <div *ngFor="let item of totals.slice(0, itemTopRowCount);let i=$index;" class="flex-item">
       <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
@@ -7,6 +7,22 @@
   <div class="mt10 panel-wrapper flex-container" [ngClass]="{ 'black-border' : isReportCard }">
     <div *ngFor="let item of totals.slice(itemTopRowCount);let i=$index;" class="flex-item">
       <bd-billing-total-item [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
+    </div>
+  </div>
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
+</div>
+
+<div class="full-width relative-pos" *ngIf="isReportCard">
+  <div class="panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
+    <div *ngFor="let item of totalsRC.slice(0, itemTopRowCount);let i=$index;" class="flex-item">
+      <bd-billing-total-item [reportCardItem]="true" [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
+    </div>
+  </div>
+  <div class="mt10 panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
+    <div *ngFor="let item of totalsRC.slice(itemTopRowCount);let i=$index;" class="flex-item">
+      <bd-billing-total-item [reportCardItem]="true" [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
     </div>
   </div>
   <div class="spinner-card" [hidden]="isLoaded">

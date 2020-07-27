@@ -35,6 +35,7 @@ export const END_POINTS_URLS = {
 
   getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: false},
   getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: false},
+  reportCardBillingTotals: {url: BASE_URL + 'analytics/reportCardBillingTotals', showLoading: false},
   getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: false},
   spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
   getFirmographicInfo: {url: BASE_URL + 'analytics/getFirmographicInfo', showLoading: false},
