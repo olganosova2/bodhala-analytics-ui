@@ -56,10 +56,8 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     } else {
       requestString = 'getBillingTotals';
     }
-    console.log("Vals: ", this.isReportCard, requestString);
     this.pendingRequest = this.httpService.makeGetRequest(requestString, params).subscribe(
       (data: any) => {
-        console.log("DATA: ", data);
         if (this.isReportCard === true) {
           this.totalsRaw = data.result.firm_overview;
           this.otherFirms = data.result.all_other_firms;
@@ -83,8 +81,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       this.calculateHoursPercentage(this.totalsRaw);
       this.calculateHoursPercentage(this.otherFirms);
       this.calculateDiffs(this.totalsRaw, this.otherFirms);
-      console.log("after calc: ", this.totalsRaw);
-      console.log("after calc OF: ", this.otherFirms);
 
       this.totalsRC.push({
         icon: 'icon-layers',
@@ -146,7 +142,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         format: 'number2',
         svg: 'avg_ass_matter',
         avg: this.otherFirms.avg_associate_rate,
-        diff: this.otherFirms.avg_associate_rate_diff 
+        diff: this.otherFirms.avg_associate_rate_diff
       });
       this.totalsRC.push({
         icon: 'icon-briefcase',
@@ -178,7 +174,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       this.itemTopRowCount = Math.ceil(this.totalsRC.length / 2);
       this.totalsRC[this.itemTopRowCount - 1].lastCell = true;
       this.totalsRC[this.totalsRC.length - 1].lastCell = true;
-      console.log("TOTES: ", this.totalsRC);
     } else {
       this.totals.push({
         icon: 'icon-layers',
@@ -254,7 +249,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       this.totals[this.itemTopRowCount - 1].lastCell = true;
       this.totals[this.totals.length - 1].lastCell = true;
 
-    } 
+    }
 
   }
 
@@ -265,37 +260,105 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   }
 
   calculateDiffs(totalsRaw: any, otherFirms: any): void {
-    // dont forget checks on these
-    // if (firm.avg_partner_rate > 0 && firm.avg_partner_rate !== null && firm.avg_partner_rate !== undefined) {
-    //   if (firm.avg_partner_rate > priorYearFirm.avg_partner_rate) {
-    //     firm.avg_partner_rate_trend = ((firm.avg_partner_rate / priorYearFirm.avg_partner_rate) - 1) * 100;
-    //   } else {
-    //     firm.avg_partner_rate_trend = (1 - (firm.avg_partner_rate / priorYearFirm.avg_partner_rate)) * 100;
-    //     firm.avg_partner_rate_trend *= -1;
-    //   }
-    // } else {
-    //   firm.avg_partner_rate_trend = 0;
-    // }
-    // if (otherFirms.avg_matter_cost_including_expenses.avg_cost > 0 && otherFirms.avg_matter_cost_including_expenses.avg_cost !== null && otherFirms.avg_matter_cost_including_expenses.avg_cost !== undefined) {
-    //   if (firm.avg_partner_rate > priorYearFirm.avg_partner_rate) {
-    //     firm.avg_partner_rate_trend = ((firm.avg_partner_rate / priorYearFirm.avg_partner_rate) - 1) * 100;
-    //   } else {
-    //     firm.avg_partner_rate_trend = (1 - (firm.avg_partner_rate / priorYearFirm.avg_partner_rate)) * 100;
-    //     firm.avg_partner_rate_trend *= -1;
-    //   }
-    // } else {
-    //   firm.avg_partner_rate_trend = 0;
-    // }
-    otherFirms.avg_matter_cost_diff = this.filtersService.includeExpenses ? (totalsRaw.avg_matter_cost_including_expenses.avg_cost /
-    otherFirms.avg_matter_cost_including_expenses.avg_cost) : (totalsRaw.avg_matter_cost.avg_cost / otherFirms.avg_matter_cost.avg_cost) || 0;
-    otherFirms.total_associate_hours_prct_diff = (totalsRaw.total_associate_hours_prct / otherFirms.total_associate_hours_prct) || 0;
-    otherFirms.total_partner_hours_prct_diff = (totalsRaw.total_partner_hours_prct / otherFirms.total_partner_hours_prct) || 0;
-    otherFirms.avg_matter_duration_diff = (totalsRaw.avg_matter_duration.avg_duration / otherFirms.avg_matter_duration.avg_duration) || 0;
-    otherFirms.avg_partner_rate_diff = (totalsRaw.avg_partner_rate / otherFirms.avg_partner_rate) || 0;
-    otherFirms.avg_associate_rate_diff = (totalsRaw.avg_associate_rate / otherFirms.avg_associate_rate) || 0;
-    otherFirms.avg_paralegal_legal_assistant_rate_diff = (totalsRaw.avg_paralegal_legal_assistant_rate / otherFirms.avg_paralegal_legal_assistant_rate) || 0;
-    otherFirms.avg_blended_rate_diff = (totalsRaw.avg_blended_rate / otherFirms.avg_blended_rate) || 0;
-    otherFirms.bodhala_price_index_diff = (totalsRaw.bodhala_price_index / otherFirms.bodhala_price_index);
+    otherFirms.avg_matter_cost_diff = 0;
+    otherFirms.total_associate_hours_prct_diff = 0;
+    otherFirms.total_partner_hours_prct_diff = 0;
+    otherFirms.avg_matter_duration_diff = 0;
+    otherFirms.avg_partner_rate_diff = 0;
+    otherFirms.avg_associate_rate_diff = 0;
+    otherFirms.avg_paralegal_legal_assistant_rate_diff = 0;
+    otherFirms.avg_blended_rate_diff = 0;
+    otherFirms.bodhala_price_index_diff = 0;
+
+    if (!this.filtersService.includeExpenses && otherFirms.avg_matter_cost.avg_cost > 0 && otherFirms.avg_matter_cost.avg_cost !== undefined && otherFirms.avg_matter_cost.avg_cost !== null) {
+      if (otherFirms.avg_matter_cost.avg_cost > totalsRaw.avg_matter_cost.avg_cost) {
+        otherFirms.avg_matter_cost_diff = (1 - (totalsRaw.avg_matter_cost.avg_cost / otherFirms.avg_matter_cost.avg_cost)) * 100;
+        otherFirms.avg_matter_cost_diff *= -1;
+      } else {
+        otherFirms.avg_matter_cost_diff = ((totalsRaw.avg_matter_cost.avg_cost / otherFirms.avg_matter_cost.avg_cost) - 1) * 100;
+      }
+    } else if (this.filtersService.includeExpenses && otherFirms.avg_matter_cost_including_expenses.avg_cost > 0 && otherFirms.avg_matter_cost_including_expenses.avg_cost !== undefined
+      && otherFirms.avg_matter_cost_including_expenses.avg_cost !== null) {
+      if (otherFirms.avg_matter_cost_including_expenses.avg_cost > totalsRaw.avg_matter_cost_including_expenses.avg_cost) {
+        otherFirms.avg_matter_cost_diff = (1 - (totalsRaw.avg_matter_cost_including_expenses.avg_cost / otherFirms.avg_matter_cost_including_expenses.avg_cost)) * 100;
+        otherFirms.avg_matter_cost_diff *= -1;
+      } else {
+        otherFirms.avg_matter_cost_diff = ((totalsRaw.avg_matter_cost_including_expenses.avg_cost / otherFirms.avg_matter_cost_including_expenses.avg_cost) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.total_associate_hours_prct > 0 && otherFirms.total_associate_hours_prct !== undefined && otherFirms.total_associate_hours_prct !== null) {
+      if (otherFirms.total_associate_hours_prct > totalsRaw.total_associate_hours_prct) {
+        otherFirms.total_associate_hours_prct_diff = (1 - (totalsRaw.total_associate_hours_prct / otherFirms.total_associate_hours_prct)) * 100;
+        otherFirms.total_associate_hours_prct_diff *= -1;
+      } else {
+        otherFirms.total_associate_hours_prct_diff = ((totalsRaw.total_associate_hours_prct / otherFirms.total_associate_hours_prct) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.total_partner_hours_prct > 0 && otherFirms.total_partner_hours_prct !== undefined && otherFirms.total_partner_hours_prct !== null) {
+      if (otherFirms.total_partner_hours_prct > totalsRaw.total_partner_hours_prct) {
+        otherFirms.total_partner_hours_prct_diff = (1 - (totalsRaw.total_partner_hours_prct / otherFirms.total_partner_hours_prct)) * 100;
+        otherFirms.total_partner_hours_prct_diff *= -1;
+      } else {
+        otherFirms.total_partner_hours_prct_diff = ((totalsRaw.total_partner_hours_prct / otherFirms.total_partner_hours_prct) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.avg_matter_duration.avg_duration > 0 && otherFirms.avg_matter_duration.avg_duration !== undefined && otherFirms.avg_matter_duration.avg_duration !== null) {
+      if (otherFirms.avg_matter_duration.avg_duration > totalsRaw.avg_matter_duration.avg_duration) {
+        otherFirms.avg_matter_duration_diff = (1 - (totalsRaw.avg_matter_duration.avg_duration / otherFirms.avg_matter_duration.avg_duration)) * 100;
+        otherFirms.avg_matter_duration_diff *= -1;
+      } else {
+        otherFirms.avg_matter_duration_diff = ((totalsRaw.avg_matter_duration.avg_duration / otherFirms.avg_matter_duration.avg_duration) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.avg_partner_rate > 0 && otherFirms.avg_partner_rate !== undefined && otherFirms.avg_partner_rate !== null) {
+      if (otherFirms.avg_partner_rate > totalsRaw.avg_partner_rate) {
+        otherFirms.avg_partner_rate_diff = (1 - (totalsRaw.avg_partner_rate / otherFirms.avg_partner_rate)) * 100;
+        otherFirms.avg_partner_rate_diff *= -1;
+      } else {
+        otherFirms.avg_partner_rate_diff = ((totalsRaw.avg_partner_rate / otherFirms.avg_partner_rate) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.avg_associate_rate > 0 && otherFirms.avg_associate_rate !== undefined && otherFirms.avg_associate_rate !== null) {
+      if (otherFirms.avg_associate_rate > totalsRaw.avg_associate_rate) {
+        otherFirms.avg_associate_rate_diff = (1 - (totalsRaw.avg_associate_rate / otherFirms.avg_associate_rate)) * 100;
+        otherFirms.avg_associate_rate_diff *= -1;
+      } else {
+        otherFirms.avg_associate_rate_diff = ((totalsRaw.avg_associate_rate / otherFirms.avg_associate_rate) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.avg_paralegal_legal_assistant_rate > 0 && otherFirms.avg_paralegal_legal_assistant_rate !== undefined && otherFirms.avg_paralegal_legal_assistant_rate !== null) {
+      if (otherFirms.avg_paralegal_legal_assistant_rate > totalsRaw.avg_paralegal_legal_assistant_rate) {
+        otherFirms.avg_paralegal_legal_assistant_rate_diff = (1 - (totalsRaw.avg_paralegal_legal_assistant_rate / otherFirms.avg_paralegal_legal_assistant_rate)) * 100;
+        otherFirms.avg_paralegal_legal_assistant_rate_diff *= -1;
+      } else {
+        otherFirms.avg_paralegal_legal_assistant_rate_diff = ((totalsRaw.avg_paralegal_legal_assistant_rate / otherFirms.avg_paralegal_legal_assistant_rate) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.avg_blended_rate > 0 && otherFirms.avg_blended_rate !== undefined && otherFirms.avg_blended_rate !== null) {
+      if (otherFirms.avg_blended_rate > totalsRaw.avg_blended_rate) {
+        otherFirms.avg_blended_rate_diff = (1 - (totalsRaw.avg_blended_rate / otherFirms.avg_blended_rate)) * 100;
+        otherFirms.avg_blended_rate_diff *= -1;
+      } else {
+        otherFirms.avg_blended_rate_diff = ((totalsRaw.avg_blended_rate / otherFirms.avg_blended_rate) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.bodhala_price_index > 0 && otherFirms.bodhala_price_index !== undefined && otherFirms.bodhala_price_index !== null) {
+      if (otherFirms.bodhala_price_index > totalsRaw.bodhala_price_index) {
+        otherFirms.bodhala_price_index_diff = (1 - (totalsRaw.bodhala_price_index / otherFirms.bodhala_price_index)) * 100;
+        otherFirms.bodhala_price_index_diff *= -1;
+      } else {
+        otherFirms.bodhala_price_index_diff = ((totalsRaw.bodhala_price_index / otherFirms.bodhala_price_index) - 1) * 100;
+      }
+    }
+
   }
 
   ngOnDestroy() {
