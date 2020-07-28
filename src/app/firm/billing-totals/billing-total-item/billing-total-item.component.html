@@ -42,8 +42,8 @@
   <div class="temp">
     Diff.
     <div class="font-bold">
-      <span *ngIf="itemRC.diff > 0" class="arrow-up"><em class="fa fa-arrow-up"></em> {{itemRC.diff | number:'1.0-0'}}%</span>
-      <span *ngIf="itemRC.diff < 0" class="arrow-down"><em class ="fa fa-arrow-down"></em> {{itemRC.diff * -1 | number:'1.0-0'}}%</span>
+      <span *ngIf="itemRC.diff > 0"><em class="fa fa-arrow-up"></em> {{itemRC.diff | number:'1.0-0'}}%</span>
+      <span *ngIf="itemRC.diff < 0"><em class ="fa fa-arrow-down"></em> {{itemRC.diff * -1 | number:'1.0-0'}}%</span>
       <span *ngIf="itemRC.diff === 0">0%</span>
     </div>
   </div>
