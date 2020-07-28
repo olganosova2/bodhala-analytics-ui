@@ -17,12 +17,12 @@
 <div class="full-width relative-pos" *ngIf="isReportCard">
   <div class="panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
     <div *ngFor="let item of totalsRC.slice(0, itemTopRowCount);let i=$index;" class="flex-item">
-      <bd-billing-total-item [reportCardItem]="true" [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
+      <bd-billing-total-item [reportCardItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
     </div>
   </div>
   <div class="mt10 panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
     <div *ngFor="let item of totalsRC.slice(itemTopRowCount);let i=$index;" class="flex-item">
-      <bd-billing-total-item [reportCardItem]="true" [item]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
+      <bd-billing-total-item [reportCardItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-billing-total-item>
     </div>
   </div>
   <div class="spinner-card" [hidden]="isLoaded">

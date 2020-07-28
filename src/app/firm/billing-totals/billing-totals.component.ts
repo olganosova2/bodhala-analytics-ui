@@ -53,6 +53,12 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     let requestString = '';
     if (this.isReportCard === true) {
       requestString = 'reportCardBillingTotals';
+      const paramsLS = this.filtersService.parseLSQueryString();
+      if (paramsLS.firms !== null && paramsLS.firms !== undefined) {
+        let otherFirmIDs = paramsLS.firms;
+        otherFirmIDs = JSON.parse(otherFirmIDs);
+        params.otherFirms = otherFirmIDs;
+      }
     } else {
       requestString = 'getBillingTotals';
     }
@@ -101,15 +107,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         diff: this.otherFirms.avg_matter_cost_diff
       });
       this.totalsRC.push({
-        icon: 'icon-users',
-        total: this.totalsRaw.total_associate_hours_prct,
-        name: 'Associate Hours Worked',
-        format: 'percent',
-        svg: 'avg_ass_matter',
-        avg: this.otherFirms.total_associate_hours_prct,
-        diff: this.otherFirms.total_associate_hours_prct_diff
-      });
-      this.totalsRC.push({
         icon: 'icon-energy',
         total: this.totalsRaw.total_partner_hours_prct,
         name: 'Partner Hours Worked',
@@ -119,12 +116,39 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         diff: this.otherFirms.total_partner_hours_prct_diff
       });
       this.totalsRC.push({
+        icon: 'icon-users',
+        total: this.totalsRaw.total_associate_hours_prct,
+        name: 'Associate Hours Worked',
+        format: 'percent',
+        svg: 'avg_ass_matter',
+        avg: this.otherFirms.total_associate_hours_prct,
+        diff: this.otherFirms.total_associate_hours_prct_diff
+      });
+      this.totalsRC.push({
         icon: 'icon-calendar',
         total: this.totalsRaw.avg_matter_duration.avg_duration || 0,
         name: 'Matter Duration (days)',
         svg: 'matter_dur',
         avg: this.otherFirms.avg_matter_duration.avg_duration || 0,
         diff: this.otherFirms.avg_matter_duration_diff
+      });
+      this.totalsRC.push({
+        icon: 'icon-picture',
+        total: this.totalsRaw.avg_blended_rate,
+        name: 'Blended Rate',
+        format: 'currency',
+        svg: 'bills',
+        avg: this.otherFirms.avg_blended_rate,
+        diff: this.otherFirms.avg_blended_rate_diff
+      });
+      this.totalsRC.push({
+        icon: 'icon-bar-chart',
+        total: this.totalsRaw.bodhala_price_index,
+        name: 'BPI',
+        format: 'currency',
+        svg: 'bpi',
+        avg: this.otherFirms.bodhala_price_index,
+        diff: this.otherFirms.bodhala_price_index_diff
       });
       this.totalsRC.push({
         icon: 'icon-energy',
@@ -152,24 +176,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         svg: 'avg_par_rate',
         avg: this.otherFirms.avg_paralegal_legal_assistant_rate,
         diff: this.otherFirms.avg_paralegal_legal_assistant_rate_diff
-      });
-      this.totalsRC.push({
-        icon: 'icon-picture',
-        total: this.totalsRaw.avg_blended_rate,
-        name: 'Blended Rate',
-        format: 'currency',
-        svg: 'bills',
-        avg: this.otherFirms.avg_blended_rate,
-        diff: this.otherFirms.avg_blended_rate_diff
-      });
-      this.totalsRC.push({
-        icon: 'icon-bar-chart',
-        total: this.totalsRaw.bodhala_price_index,
-        name: 'BPI',
-        format: 'currency',
-        svg: 'bpi',
-        avg: this.otherFirms.bodhala_price_index,
-        diff: this.otherFirms.bodhala_price_index_diff
       });
       this.itemTopRowCount = Math.ceil(this.totalsRC.length / 2);
       this.totalsRC[this.itemTopRowCount - 1].lastCell = true;
