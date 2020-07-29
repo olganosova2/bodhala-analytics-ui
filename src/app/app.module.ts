@@ -65,7 +65,6 @@ import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail
 import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
 import { MattersComponent } from './matters/matters.component';
-import { LeadAttorneyComponent } from './lead-attorney/lead-attorney.component';
 import { PracticeAreaComponent } from './practice-area/practice-area.component';
 import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dropdown/practice-area-dropdown.component';
 import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
@@ -133,7 +132,6 @@ export function highchartsFactory() {
     IeBannerComponent,
     ErrorMessagesComponent,
     MattersComponent,
-    LeadAttorneyComponent,
     PracticeAreaComponent,
     PracticeAreaDropdownComponent,
     PaTopFirmsComponent,

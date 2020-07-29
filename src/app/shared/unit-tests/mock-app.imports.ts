@@ -72,7 +72,6 @@ import {IeBannerComponent} from '../components/ie-banner/ie-banner.component';
 import {ErrorMessagesComponent} from '../components/error-messages/error-messages.component';
 import {MattersComponent} from '../../matters/matters.component';
 import {AgGridModule} from 'ag-grid-angular';
-import {LeadAttorneyComponent} from '../../lead-attorney/lead-attorney.component';
 import {FirmRateCardComponent} from '../../firm/firm-rate-card/firm-rate-card.component';
 import {RateCardTablesComponent} from '../../firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
 import {PracticeAreaComponent} from '../../practice-area/practice-area.component';
@@ -169,7 +168,6 @@ export const DECLARATIONS = [
   IeBannerComponent,
   ErrorMessagesComponent,
   MattersComponent,
-  LeadAttorneyComponent,
   FirmRateCardComponent,
   RateCardTablesComponent,
   PracticeAreaComponent,

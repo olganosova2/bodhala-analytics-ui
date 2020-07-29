@@ -48,7 +48,6 @@ export const END_POINTS_URLS = {
   getFirmsListByClient: {url: BASE_URL + 'analytics/getFirmListByClient', showLoading: false},
   getMinMaxMatterCost: {url: BASE_URL + 'analytics/getMinMaxMatterCost', showLoading: false},
   getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
-  // ui-api/analytics/getFirmTopSummary
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
