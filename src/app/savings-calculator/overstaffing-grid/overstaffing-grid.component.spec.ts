@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EsTableComponent } from './es-table.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
-import {ExecutiveSummaryComponent} from '../executive-summary.component';
+import { OverstaffingGridComponent } from './overstaffing-grid.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
+import {ProgressSemiCircleComponent} from '../progress-semi-circle/progress-semi-circle.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as mockServices from '../../../shared/unit-tests/mock-services';
-import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
-import {FiltersService} from '../../../shared/services/filters.service';
+import * as mockServices from '../../shared/unit-tests/mock-services';
+import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
+import {FiltersService} from '../../shared/services/filters.service';
 
-describe('EsTableComponent', () => {
-  let component: EsTableComponent;
-  let fixture: ComponentFixture<EsTableComponent>;
+describe('OverstaffingGridComponent', () => {
+  let component: OverstaffingGridComponent;
+  let fixture: ComponentFixture<OverstaffingGridComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -23,7 +23,7 @@ describe('EsTableComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(EsTableComponent, {
+    }).overrideComponent(OverstaffingGridComponent, {
       set: {
         providers: [
           AppStateService,
@@ -39,13 +39,12 @@ describe('EsTableComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EsTableComponent);
+    fixture = TestBed.createComponent(OverstaffingGridComponent);
     component = fixture.componentInstance;
-    component.maxDate = '2019-06-24';
     fixture.detectChanges();
   });
 
-  it('should create EsTableComponent', () => {
+  it('should create OverstaffingGridComponent', () => {
     expect(component).toBeTruthy();
   });
 });

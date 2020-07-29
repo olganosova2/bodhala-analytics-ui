@@ -1,0 +1,35 @@
+@import "../../../assets/styles/colors.scss";
+$diameter: 320px;
+$half-diameter: 160px;
+.progress{
+  background-color: $gray-blue-bg;
+  position: relative;
+  width: $diameter;
+  text-align: center;
+  min-height: $half-diameter;
+}
+.barOverflow{ /* Wraps the rotating .bar */
+  position: relative;
+  width: $diameter; height: $half-diameter; /* Half circle (overflow) */
+  margin-bottom: -14px; /* bring the numbers up */
+  overflow: hidden;
+}
+.bar{
+  position: absolute;
+  top: 0; left: 0;
+  width: $diameter; height: $diameter; /* full circle! */
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 8px solid #ccc;     /* half gray, */
+  border-bottom-color: $brand-blue;  /* half azure */
+  border-right-color: $brand-blue;
+}
+.label-info {
+  position: absolute;
+  top: 80px;
+  text-align: center;
+  min-width: $diameter;
+}
+.div-total {
+  font-size: 2.6rem;
+}

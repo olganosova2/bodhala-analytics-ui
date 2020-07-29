@@ -1,29 +1,38 @@
 <div class="panel-wrapper flex-container">
-  <h5 class="">{{title}}</h5>
-  <div class="subtitle mb10">Last Year: <span class="font-body">{{origPercent | number:'1.0-0'}}%</span></div>
-  <div class="subtitle mb20">Current: <span class="font-body">{{percent | number:'1.0-0'}}%</span></div>
+  <h5 class="">{{metric.title}}</h5>
+  <div class="subtitle mb10" *ngIf="!metric.viewLabel">Last Year: <span class="font-body">{{metric.origPercent | number:'1.0-0'}}%</span></div>
+  <div class="subtitle mb10" *ngIf="metric.viewLabel"><a class="href-link-primary" (click)="openDetails()">View {{metric.viewLabel}} details</a></div>
   <div class="small-title">
     <div class="text-left pull-left">{{minRange}}%</div>
-    <div class="text-right pull-right">{{maxRange}}%</div>
+    <div class="text-right pull-right">{{metric.maxRange}}%</div>
 
   </div>
-
-  <div class="clear-both ml15 mr15">
-    <p-slider [(ngModel)]="percent" [step]="1"
-              [range]="false" [min]="minRange"
-              (onChange)="sliderChange($event)"
-              [max]="maxRange"></p-slider>
+  <div class="clear-both ml10 mr10">
+    <mat-slider color="primary" [min]="minRange" [max]="metric.maxRange" [step]="1" [(value)]="metric.percent"
+                thumbLabel="true"
+                [displayWith]="formatLabel"
+    (change)="sliderChange($event)"></mat-slider>
   </div>
-  <div class="full-width text-center circle-wrapper mt30 mb20">
+
+<!--  <div class="clear-both ml15 mr15">-->
+<!--    <p-slider [(ngModel)]="metric.percent" [step]="1"-->
+<!--              [range]="false" [min]="minRange"-->
+<!--              (onChange)="sliderChange($event)"-->
+<!--              [max]="metric.maxRange"></p-slider>-->
+<!--  </div>-->
+  <div class="full-width text-center circle-wrapper mb20">
     <div class="circle">
-      <div class="circle-text">${{savings  | number:'1.0-0'}}</div>
+      <div class="circle-text">
+        <div>${{metric.savings  | number:'1.0-0'}}</div>
+        <div class="text-gray font-normal">{{savingsService.calculatePercent(metric.savings, totalSpend)  | number:'1.0-0'}}%</div>
+      </div>
     </div>
   </div>
-<!--  <div class="full-width mt20">-->
-<!--    <div class="centered-chart">-->
-<!--      <chart [options]="options" (load)="saveInstance($event.context)"></chart>-->
-<!--        <div class="circle-text">${{total  | number:'1.0-0'}}</div>-->
-<!--    </div>-->
+  <!--  <div class="full-width mt20">-->
+  <!--    <div class="centered-chart">-->
+  <!--      <chart [options]="options" (load)="saveInstance($event.context)"></chart>-->
+  <!--        <div class="circle-text">${{total  | number:'1.0-0'}}</div>-->
+  <!--    </div>-->
 
-<!--  </div>-->
+  <!--  </div>-->
 </div>

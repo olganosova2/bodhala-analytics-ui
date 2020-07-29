@@ -13,7 +13,7 @@ import {
   MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
   MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule
+  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule, MatSliderModule
 } from '@angular/material';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
@@ -78,6 +78,8 @@ import { RateCardTablesComponent } from './firm/firm-rate-card/rate-card-tables/
 import { EsTableComponent } from './launchpad/executive-summary/es-table/es-table.component';
 import { SavingsCalculatorComponent } from './savings-calculator/savings-calculator.component';
 import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savings-widget.component';
+import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
+import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
 
 
 export function initUser(config: UserService) {
@@ -144,10 +146,13 @@ export function highchartsFactory() {
     EsTableComponent,
     SavingsCalculatorComponent,
     SavingsWidgetComponent,
+    ProgressSemiCircleComponent,
+    OverstaffingGridComponent,
   ],
   entryComponents: [
     PillComponent,
-    LinkComponent
+    LinkComponent,
+    OverstaffingGridComponent
   ],
   imports: [
     HttpClientModule,
@@ -177,6 +182,7 @@ export function highchartsFactory() {
     MatExpansionModule,
     MatSlideToggleModule,
     MatRadioModule,
+    MatSliderModule,
     MomentModule,
     NgIdleKeepaliveModule.forRoot(),
     MatBadgeModule,

@@ -1,0 +1,14 @@
+<div>
+  <div class="pull-right"><button mat-flat-button class="btn-grey mb10" mat-dialog-close>CLOSE</button></div>
+  <div class="card-wrapper clear-both mt20">
+    <ag-grid-angular
+        #agGrid
+        style="width: 100%; height:65vh"
+        class="ag-theme-alpine"
+        [sideBar]="sideBarConfig"
+        [rowData]="data"
+        (displayedColumnsChanged)="saveGridConfig($event);"
+        [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </div>
+</div>

@@ -10,6 +10,8 @@ import {MOCK_INSIGHTS} from './mock-data/insights';
 import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
 import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
 import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS} from './mock-data/practice-area';
+import {SAVINGS_DATA} from './mock-data/savings-calculator';
+import {EXECUTIVE_SUMMARY} from './mock-data/execitive-summary';
 
 export const ngWindow = {
   location: {
@@ -115,6 +117,10 @@ export class DataStub {
         return of(MOCK_PRACTICE_AREAS);
       case 'getDateRange':
         return of(MOCK_MIN_MAX_DATES);
+      case 'getSavingsCalculator':
+        return of(SAVINGS_DATA);
+      case 'getExecutiveSummaryData':
+        return of(EXECUTIVE_SUMMARY);
       default:
         return of([]);
     }
