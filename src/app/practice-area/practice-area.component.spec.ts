@@ -7,6 +7,7 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../shared/unit-tests/mock-services';
 import {ActivatedRouteMock} from '../shared/unit-tests/mock-services';
+import {MOCK_PRACTICE_AREA} from '../shared/unit-tests/mock-data/practice-area';
 import {FiltersService} from '../shared/services/filters.service';
 
 describe('PracticeAreaComponent', () => {
@@ -41,10 +42,22 @@ describe('PracticeAreaComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PracticeAreaComponent);
     component = fixture.componentInstance;
+    component.practiceArea = MOCK_PRACTICE_AREA;
     fixture.detectChanges();
   });
 
   it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+  it('should toggleExpenses', () => {
+    component.filtersService.includeExpenses =  false;
+    component.toggleExpenses();
+    const test = component.filtersService.includeExpenses;
+    component.toggleExpenses();
+    expect(test).toBe(true);
+  });
+  it('should refreshData', () => {
+    component.refreshData(null);
     expect(component).toBeTruthy();
   });
 });
