@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
 import {FiltersService} from '../shared/services/filters.service';
 import {TopMattersFirmsService} from './services/top-matters-firms.service';
 
-xdescribe('LaunchpadComponent', () => {
+describe('LaunchpadComponent', () => {
   let component: LaunchpadComponent;
   let fixture: ComponentFixture<LaunchpadComponent>;
   const mockRouter = {
@@ -57,8 +57,16 @@ xdescribe('LaunchpadComponent', () => {
     // spyOn(launchpadService, 'fetchData').and.returnValue(mockRequests);
     fixture.detectChanges();
   });
-  xit('should create LaunchpadComponent', () => {
+  it('should create LaunchpadComponent', () => {
     expect(component).toBeTruthy();
   });
-  // afterAll(() => { TestBed.resetTestingModule(); });
+  it('LaunchpadComponent should changeTab', () => {
+    component.selectedTabIndex = 0;
+    component.changeTab({ index: 1});
+    expect(component.selectedTabIndex).toBe(1);
+  });
+  it('LaunchpadComponent should receiveMessage', () => {
+    component.receiveMessage({ index: 1});
+    expect(component.filtersService).toBeTruthy();
+  });
 });
