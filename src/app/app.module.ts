@@ -31,6 +31,9 @@ import * as CONFIG from './shared/services/config';
 import { LaunchpadComponent } from './launchpad/launchpad.component';
 import {RouterModule} from '@angular/router';
 import {appRouterConfig} from './app.routes';
+import { InjectionToken } from '@angular/core';
+
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {SliderModule} from 'primeng/slider';
 import {FiltersService} from './shared/services/filters.service';
@@ -80,6 +83,8 @@ import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savi
 import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
 import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
 
+export const WindowToken = new InjectionToken('Window');
+export function windowProvider() { return window; }
 
 export function initUser(config: UserService) {
   return () => config.load();
@@ -217,6 +222,7 @@ export function highchartsFactory() {
     DatePipe,
     FiltersService,
     UserFiltersModel,
+    { provide: WindowToken, useFactory: windowProvider },
     TopMattersFirmsService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
