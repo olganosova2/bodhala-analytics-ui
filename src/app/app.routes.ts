@@ -5,7 +5,6 @@ import {BenchmarksEntryComponent} from './benchmarks/benchmarks-entry/benchmarks
 import {BenchmarkOverviewComponent} from './benchmarks/benchmark-overview/benchmark-overview.component';
 import {BenchmarkFirmDetailComponent} from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import {MattersComponent} from './matters/matters.component';
-import {LeadAttorneyComponent} from './lead-attorney/lead-attorney.component';
 import {PracticeAreaComponent} from './practice-area/practice-area.component';
 import {FirmRateCardComponent} from './firm/firm-rate-card/firm-rate-card.component';
 import {SavingsCalculatorComponent} from './savings-calculator/savings-calculator.component';
@@ -21,8 +20,6 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/benchmarking', component: BenchmarkOverviewComponent},
   {path: 'matter', component: MattersComponent},
   {path: 'analytics-ui/matter', component: MattersComponent},
-  {path: 'lead-attorney', component: LeadAttorneyComponent},
-  {path: 'analytics-ui/lead-attorney', component: LeadAttorneyComponent},
   {path: 'analytics-ui/benchmarking/firm/:id', component: BenchmarkFirmDetailComponent},
   {path: 'benchmarking/firm/:id', component: BenchmarkFirmDetailComponent},
   {path: 'analytics-ui/practiceArea/:client_matter_type', component: PracticeAreaComponent},

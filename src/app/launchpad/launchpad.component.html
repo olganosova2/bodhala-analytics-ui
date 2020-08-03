@@ -9,7 +9,7 @@
     ></lib-bd-filters>
   </div>
   <div #insights style="display: block">
-    <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
+    <bd-insights (insightsLoaded)="onCardLoaded()" #insights></bd-insights>
   </div>
 
   <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">

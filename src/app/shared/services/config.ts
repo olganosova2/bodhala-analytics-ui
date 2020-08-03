@@ -49,7 +49,6 @@ export const END_POINTS_URLS = {
   getFirmsListByClient: {url: BASE_URL + 'analytics/getFirmListByClient', showLoading: false},
   getMinMaxMatterCost: {url: BASE_URL + 'analytics/getMinMaxMatterCost', showLoading: false},
   getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
-  // ui-api/analytics/getFirmTopSummary
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
@@ -58,13 +57,14 @@ export const END_POINTS_URLS = {
   getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
   getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
 
-  getSavingsCalculator: {url: BASE_URL + 'analytics/getSavingsCalculator', showLoading: false},
+  getSavingsCalculator: {url: BASE_URL + 'analytics/getSavingsCalculator', showLoading: true},
 };
 
 export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
+  {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
   {name: 'app.client-dashboard.practice-area', routePath: null, fragment: 'analytics-ui/practiceArea/'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
@@ -112,5 +112,13 @@ export const outerAppLinks = {
   viewIQReport: '#/app/client-dashboard/textsearch-report?reportId=',
   viewBlockBilling: '#/app/client-dashboard/block-billing',
   viewPracticeAreaDetail: '/analytics-ui/practiceArea/'
+};
+export const SAVINGS_CALCULATOR_CONFIG = {
+  numberOfYears: 1,
+  idealNumberOfPplInMeetings: 0.5,
+  detailsDialogConfig : {
+    height: '80vh',
+    width: '80vw',
+  }
 };
 

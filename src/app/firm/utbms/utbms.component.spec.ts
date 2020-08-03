@@ -48,4 +48,10 @@ describe('UtbmsComponent', () => {
     component.firmId = 1;
     expect(component).toBeTruthy();
   });
+
+  it('should return rgb', () => {
+    let temp = component.colorLuminance('ddeeff', 0.15);
+    
+    expect(temp).toBe('#feffff');
+  });
 });

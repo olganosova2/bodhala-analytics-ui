@@ -4,8 +4,10 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../shared/services/filters.service';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
-import {SavingsCalculatorService} from './savings-calculator.service';
+import {IMetric, SavingMetrics, SavingsCalculatorService} from './savings-calculator.service';
 import {SavingsWidgetComponent} from './savings-widget/savings-widget.component';
+import {ProgressSemiCircleComponent} from './progress-semi-circle/progress-semi-circle.component';
+import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 
 @Component({
   selector: 'bd-savings-calculator',
@@ -16,13 +18,13 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   errorMessage: any;
   pendingRequest: Subscription;
   calcData: any;
-  bbData: Array<any> = [];
-  bbPercent: number = 0;
-  bbTotal: number = 0;
-  isLoading: boolean = false;
+  grandTotal: number = 0;
+  totalSpend: number = 0;
   currentYear: number = 0;
+  metrics: Array<IMetric> = [];
   pageName: string = 'app.client-dashboard.savings-calculator';
   @ViewChild(SavingsWidgetComponent, {static: false}) bbWidget: SavingsWidgetComponent;
+  @ViewChild(ProgressSemiCircleComponent, {static: false}) bdProgress: ProgressSemiCircleComponent;
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -38,41 +40,56 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getSavingsCalculator(null);
   }
+
   getSavingsCalculator(evt: any): void {
-    this.isLoading = true;
+    this.grandTotal = 0;
+    this.metrics = [];
     const params = this.filtersService.getCurrentUserCombinedFilters();
+    params.numberOfYears = SAVINGS_CALCULATOR_CONFIG.numberOfYears;
     this.pendingRequest = this.httpService.makeGetRequest('getSavingsCalculator', params).subscribe(
       (data: any) => {
-      if (data.result) {
-        this.calcData = data.result;
-        this.formatData();
-        this.isLoading = false;
-      }
+        if (data.result) {
+          this.calcData = data.result;
+          this.formatData();
+          // this.calculateGrandTotal();
+        }
       },
       err => {
         this.errorMessage = err;
-        this.isLoading = false;
       }
     );
   }
+
   formatData(): void {
-    this.bbData = this.calcData.bb_percent || [];
-    if (this.bbData.length > 0) {
-      this.bbPercent = this.bbData[this.currentYear].bbp;
-      this.bbTotal = this.bbData[this.currentYear].total_block_billed;
-      setTimeout(() => {
-        this.bbWidget.setUpDefaults();
-      });
+    if (this.calcData.bb_percent && this.calcData.bb_percent.length > 0) {
+      this.totalSpend = this.calcData.bb_percent[this.currentYear].total_billed;
+      const metricBB = this.savingsService.createMetricsRecord(this.calcData.bb_percent[this.currentYear], SavingMetrics.BlockBilling);
+      this.metrics.push(metricBB);
+    }
+    if (this.calcData.overstaffing && this.calcData.overstaffing.length > 0) {
+      const metricOverstaffing = this.savingsService.createMetricsRecord(this.calcData.overstaffing[this.currentYear], SavingMetrics.Overstaffing);
+      this.metrics.push(metricOverstaffing);
     }
   }
+
+  updateTotals(evt: IMetric): void {
+    this.calculateGrandTotal();
+  }
+
+  calculateGrandTotal(): void {
+    this.grandTotal = 0;
+    for (const metric of this.metrics) {
+      this.grandTotal += metric.savings;
+    }
+    setTimeout(() => {
+      this.bdProgress.updateValues(this.grandTotal, this.totalSpend);
+    });
+  }
+
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }
-    if (this.pendingRequest) {
-      this.pendingRequest.unsubscribe();
-    }
   }
-
 }

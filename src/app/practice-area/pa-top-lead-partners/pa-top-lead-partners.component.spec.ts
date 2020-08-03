@@ -8,7 +8,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
-import {MOCK_PLACTICE_AREA} from '../../shared/unit-tests/mock-data/practice-area';
+import {MOCK_PRACTICE_AREA} from '../../shared/unit-tests/mock-data/practice-area';
+import {FILTERS_LS} from '../../shared/unit-tests/mock-data/filters';
 
 describe('PaTopLeadPartnersComponent', () => {
   let component: PaTopLeadPartnersComponent;
@@ -44,12 +45,19 @@ describe('PaTopLeadPartnersComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaTopLeadPartnersComponent);
     component = fixture.componentInstance;
-    component.practiceArea = MOCK_PLACTICE_AREA;
+    component.practiceArea = MOCK_PRACTICE_AREA;
     component.clientMatterType = '';
     fixture.detectChanges();
   });
 
   it('should create PaTopLeadPartnersComponent', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should set local storage', () => {
+    const serializedState = JSON.stringify(FILTERS_LS);
+    localStorage.setItem('ELEMENTS_dataFilters_397', serializedState);
+    component.setLocalStorage();
     expect(component).toBeTruthy();
   });
 });

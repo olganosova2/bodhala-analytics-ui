@@ -1,11 +1,12 @@
 @import "../../../assets/styles/colors.scss";
-$circle-diameter: 200px;
-$border-radius: 100px;
+$circle-diameter: 150px;
+$border-radius: 75px;
 
 :host ::ng-deep {
   .ui-slider .ui-slider-range {
     background-color: $body-color !important;
   }
+
 }
 .ui-slider .ui-slider-range {
   background-color: $body-color !important;
@@ -30,13 +31,13 @@ $border-radius: 100px;
 }
 
 .circle-text {
-  font-size:22px;
+  font-size:20px;
   width: 100%;
   text-align: center;
   position: absolute;
   top: 40%;
   min-width: $circle-diameter;
-  z-index: 2;
+  // z-index: 2;
 }
 .subtitle {
   color:$medium-gray;
@@ -48,3 +49,9 @@ $border-radius: 100px;
   align-items: center;
   justify-content: center;
 }
+.href-link-primary {
+  text-decoration: underline;
+  color: $body-color;
+  font-size: 0.9rem;
+}
+

@@ -33,4 +33,8 @@ describe('LaunchPadService', () => {
     const result = service.fetchData();
     expect(result.topMatters).toBeTruthy();
   }));
+  it('LaunchPadService should configure `Cards', inject([LaunchPadService], (service: LaunchPadService) => {
+    const cards = service.configureCards();
+    expect(cards.length).toBe(8);
+  }));
 });

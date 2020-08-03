@@ -72,7 +72,6 @@ import {IeBannerComponent} from '../components/ie-banner/ie-banner.component';
 import {ErrorMessagesComponent} from '../components/error-messages/error-messages.component';
 import {MattersComponent} from '../../matters/matters.component';
 import {AgGridModule} from 'ag-grid-angular';
-import {LeadAttorneyComponent} from '../../lead-attorney/lead-attorney.component';
 import {FirmRateCardComponent} from '../../firm/firm-rate-card/firm-rate-card.component';
 import {RateCardTablesComponent} from '../../firm/firm-rate-card/rate-card-tables/rate-card-tables.component';
 import {PracticeAreaComponent} from '../../practice-area/practice-area.component';
@@ -82,6 +81,11 @@ import {PaTopFirmsComponent} from '../../practice-area/pa-top-firms/pa-top-firms
 import {ExecutiveSummaryComponent} from '../../launchpad/executive-summary/executive-summary.component';
 import {SavingsCalculatorComponent} from '../../savings-calculator/savings-calculator.component';
 import {SavingsWidgetComponent} from '../../savings-calculator/savings-widget/savings-widget.component';
+import {ProgressSemiCircleComponent} from '../../savings-calculator/progress-semi-circle/progress-semi-circle.component';
+import {OverstaffingGridComponent} from '../../savings-calculator/overstaffing-grid/overstaffing-grid.component';
+import {EsTableComponent} from '../../launchpad/executive-summary/es-table/es-table.component';
+import {EsTotalItemComponent} from '../../launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
+import {SpendOverviewComponent} from '../../launchpad/executive-summary/spend-overview/spend-overview.component';
 
 export function highchartsFactory() {
   // return highcharts;
@@ -164,7 +168,6 @@ export const DECLARATIONS = [
   IeBannerComponent,
   ErrorMessagesComponent,
   MattersComponent,
-  LeadAttorneyComponent,
   FirmRateCardComponent,
   RateCardTablesComponent,
   PracticeAreaComponent,
@@ -172,8 +175,13 @@ export const DECLARATIONS = [
   PracticeAreaDropdownComponent,
   PaTopFirmsComponent,
   ExecutiveSummaryComponent,
+  EsTableComponent,
+  EsTotalItemComponent,
+  SpendOverviewComponent,
   SavingsCalculatorComponent,
-  SavingsWidgetComponent
+  SavingsWidgetComponent,
+  ProgressSemiCircleComponent,
+  OverstaffingGridComponent
 ];
 
 export const PROVIDERS = [

@@ -47,4 +47,11 @@ describe('BillingTotalsComponent', () => {
   it('should create BillingTotalsComponent', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should create BillingTotalsComponentRC', () => {
+    component.isReportCard = true;
+
+    expect(component).toBeTruthy();
+  });
+
 });

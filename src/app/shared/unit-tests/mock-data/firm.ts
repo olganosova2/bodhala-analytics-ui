@@ -43,6 +43,16 @@ export const BILLING_TOTAL_ITEM = {
   format: 'percent',
   lastCell: false
 };
+export const BILLING_TOTAL_ITEM_RC = {
+  icon: 'fa-users',
+  total: 100,
+  total_expenses: 90,
+  name: 'All',
+  format: 'percent',
+  avg: 100,
+  diff: 0,
+  lastCell: false
+};
 export const MOCK_DIVERSITY_DATA =  {
   total_hours: 2351.9845,
   total_lawyer_hours: 2137.5862,
@@ -255,3 +265,24 @@ export const MOCK_TOP_FIRM_SUMMARY = {
   },
   "error": null
 }
+
+export const MOCK_UTBMS_CODES = {
+  "result": [
+    {"code": "C200", "description": "Researching Law", "subcodes": [{"code": "C200", "description": null, "total_billed": 759592.56, "total_hours": 10.8}], "total_billed": 759592.56, "total_hours": 10.8}, {"code": "C300", "description": "Analysis and Advice", "subcodes": 
+    [{"code": "C300", "description": null, "total_billed": 232444.8, "total_hours": 4.4}], "total_billed": 232444.8, "total_hours": 4.4}, 
+    {"code": "C400", "description": "Third Party Communication", "subcodes": [], "total_billed": 0, "total_hours": 0}, 
+    {"code": "L100", "description": "Case Assessment, Development and Administration", "subcodes": [{"code": "L160", "description": null, "total_billed": 6095330.14, "total_hours": 101.2}, 
+    {"code": "L100", "description": null, "total_billed": 896133.68, "total_hours": 52.4}], "total_billed": 9886169.56, "total_hours": 192.6}
+
+  ]
+};
+
+
+export const MOCK_PHASE_TAXONOMY = {
+  "result": [
+    {"code": "C200", "description": "Researching Law", "subcodes": [{"code": "C200", "description": null, "total_billed": 759592.56, "total_hours": 10.8}], "total_billed": 759592.56, "total_hours": 10.8}, {"code": "C300", "description": "Analysis and Advice", "subcodes": 
+    [{"code": "C300", "description": null, "total_billed": 232444.8, "total_hours": 4.4}], "total_billed": 232444.8, "total_hours": 4.4}, 
+    {"code": "C400", "description": "Third Party Communication", "subcodes": [], "total_billed": 0, "total_hours": 0}, 
+    {"code": "L100", "description": "Case Assessment, Development and Administration", "subcodes": [{"code": "L160", "description": null, "total_billed": 6095330.14, "total_hours": 101.2}, 
+    {"code": "L100", "description": null, "total_billed": 896133.68, "total_hours": 52.4}], "total_billed": 9886169.56, "total_hours": 192.6}  ]
+};
