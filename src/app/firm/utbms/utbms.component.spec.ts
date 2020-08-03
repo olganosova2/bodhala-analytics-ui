@@ -50,8 +50,8 @@ describe('UtbmsComponent', () => {
   });
 
   it('should return rgb', () => {
-    let temp = component.colorLuminance('ddeeff', 0.15);
-    
+    const temp = component.colorLuminance('ddeeff', 0.15);
+
     expect(temp).toBe('#feffff');
   });
 });

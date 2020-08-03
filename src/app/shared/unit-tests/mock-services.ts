@@ -89,7 +89,7 @@ export class DataStub {
       case 'getBillingTotals':
         return of(MOCK_BILLING_TOTALS);
       case 'reportCardBillingTotals':
-        return of(MOCK_BILLING_TOTALS_RC)
+        return of(MOCK_BILLING_TOTALS_RC);
       case 'spendByMonth':
         return of({result: []});
       case 'getBlockBillingFirms':
