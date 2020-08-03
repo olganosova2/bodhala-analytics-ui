@@ -28,7 +28,7 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    let temp = this.filtersService.getCurrentUserCombinedFilters();
+    const temp = this.filtersService.getCurrentUserCombinedFilters();
     this.getLeadPartners();
   }
 
