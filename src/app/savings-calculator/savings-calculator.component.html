@@ -1,0 +1,40 @@
+<div class="content-body-inner-wrapper">
+  <bd-ie-banner></bd-ie-banner>
+  <bd-error-messages></bd-error-messages>
+  <div id="filtersdiv">
+    <lib-bd-filters
+      (sendFilters)="getSavingsCalculator($event)"
+      [pageName]="pageName"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+  <div class="text-center">
+    <h4>Calculate Your Savings</h4>
+    <h5>Predicted Annual Savings</h5>
+    <div class="div-progress mt20">
+      <bd-progress-semi-circle #progress></bd-progress-semi-circle>
+    </div>
+
+<!--    <div class="div-image mt10">-->
+<!--      <img src="assets/images/savings.svg"/>-->
+<!--      <div class="div-grand-total">-->
+<!--        ${{grandTotal  | number:'1.0-0'}}-->
+<!--      </div>-->
+<!--    </div>-->
+
+  </div>
+  <div class="div-total-spend-wrapper">
+    <div class="div-total-spend">
+      <span class="from">from </span> ${{ totalSpend | number:'1.0-0'}} total spend
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-4" *ngFor="let metric of metrics;let i=$index">
+      <bd-savings-widget
+                         [metric]="metric"
+                         [totalSpend]="totalSpend"
+                         (changed)="updateTotals($event)"
+      ></bd-savings-widget>
+    </div>
+  </div>
+</div>

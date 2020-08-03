@@ -78,3 +78,47 @@ export const FILTERS = {
     "value": "SpendByFirm"
   }
 };
+
+
+export const FILTERS_LS = {
+  "dataFilters": 
+[{"clientId": 113, "displayName": "Hour Threshold", "fieldName": "threshold", "type": "NUMERIC", "step": 0.25, "filterGroup": "Threshold", "description": null, "value": 4, "default": 4}, 
+{"clientId": 113, "displayName": "Dollar Threshold", "fieldName": "dollar_threshold", "type": "NUMERIC", "filterGroup": "Threshold", "description": null, "value": 0, "step": 500, "default": 0}, 
+{"clientId": 113, "displayName": "Firms", "fieldName": "firms", "type": "MULTISELECT", "filterGroup": "Firms", "description": null}, 
+{"clientId": 113, "displayName": "Matters", "fieldName": "matters", "type": "MULTISELECT", "filterGroup": "Matters", "description": null}, 
+{"clientId": 113, "displayName": "Practice Areas", "fieldName": "practiceAreas", "type": "MULTISELECT", "filterGroup": "Practice Areas", "description": null}, 
+{"clientId": 113, "displayName": "Geographies", "fieldName": "geographies", "type": "MULTISELECT", "filterGroup": "Internal", "description": null}, 
+{"clientId": 113, "displayName": "Task Codes", "fieldName": "utbmsCodes", "type": "MULTISELECT", "filterGroup": "Matters", "description": null}, 
+{"clientId": 113, "displayName": "Firm Types", "fieldName": "firmTypes", "type": "MULTISELECT", "filterGroup": "Firms", "description": null}, 
+{"clientId": 113, "displayName": "Date Range", "fieldName": "dateRange", "type": "DATERANGE", "filterGroup": "Dates", "description": null, "minDate": "2014-06-30", "maxDate": "2019-12-20"}, 
+{"clientId": 113, "displayName": "Number of Matters", "fieldName": "firmMatterCount", "type": "RANGESLIDER", "filterGroup": "Firms", "description": null, "minRange": 1, "maxRange": 1000, "isCapped": true}, 
+{"clientId": 113, "displayName": "Lead Partners", "fieldName": "leadPartners", "type": "MULTISELECT", "filterGroup": "Firms", "description": null}, 
+{"clientId": 113, "displayName": "Total Matter Cost", "fieldName": "matterCost", "type": "RANGESLIDER", "filterGroup": "Matters", "description": null, "minRange": 0, "maxRange": 15250000, "step": 50000, "isCapped": true}, 
+{"clientId": 113, "displayName": "Firm Size (Attorneys)", "fieldName": "firmSize", "type": "RANGESLIDER", "step": 50, "filterGroup": "Firms", "description": null, "minRange": 1, "maxRange": 500, "isCapped": true}, 
+{"clientId": 113, "displayName": "Matter Status", "fieldName": "matterStatus", "type": "SELECT", "filterGroup": "Matters", "options": ["Closed", "Open"], "description": null}, 
+{"clientId": 113, "displayName": "Efficiency", "fieldName": "analytics_matter_tag_type.14", "isMatterTag": true, "filterGroup": "Matters", "type": "RANGESLIDER", "minRange": 0, "maxRange": 5, "options": null, "description": "How efficiently was the matter resolved? With 5 being most efficient.", "ordered": false}, 
+{"clientId": 113, "displayName": "Complexity", "fieldName": "analytics_matter_tag_type.9", "isMatterTag": true, "filterGroup": "Matters", "type": "RANGESLIDER", "minRange": 0, "maxRange": 5, "options": null, "description": "How complex was this matter? With 5 being the most complex.", "ordered": false}, 
+{"clientId": 113, "displayName": "Outcome", "fieldName": "analytics_matter_tag_type.15", "isMatterTag": true, "filterGroup": "Matters", "type": "RANGESLIDER", "minRange": 0, "maxRange": 5, "options": null, "description": "Rate the outcome of this matter? With 5 being the best possible outcome.", "ordered": false}, 
+{"clientId": 113, "displayName": "Critical", "fieldName": "analytics_matter_tag_type.13", "isMatterTag": true, "filterGroup": "Matters", "type": "RANGESLIDER", "minRange": 0, "maxRange": 5, "options": null, "description": "How critical or strategic was this matter? With 5 being most critical or strategic.", "ordered": false}, 
+{"clientId": 113, "displayName": "Matter Tag Collections", "fieldName": "matterTagCollections", "isMatterCollection": true, "filterGroup": "Matters", "description": null, "type": "SELECT", "options": ["M&A", "Funds"]}, 
+{"clientId": 113, "displayName": "Regulatory Interaction", "fieldName": "analytics_matter_tag_type.101", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "Shareholder Arrangements", "fieldName": "analytics_matter_tag_type.98", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "No. of Bidders", "fieldName": "analytics_matter_tag_type.102", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "Earn-out", "fieldName": "analytics_matter_tag_type.96", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "Material Regulatory Diligence", "fieldName": "analytics_matter_tag_type.100", "isMatterTag": true, "filterGroup": "Matters", "type": "MULTISELECT", "options": null, "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "Deal Size", "fieldName": "analytics_matter_tag_type.99", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "Buy-Side/Sell-side", "fieldName": "analytics_matter_tag_type.94", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "Carve-out", "fieldName": "analytics_matter_tag_type.95", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "NVCA Documents", "fieldName": "analytics_matter_tag_type.97", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "M&A"}, 
+{"clientId": 113, "displayName": "AML", "fieldName": "analytics_matter_tag_type.93", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "# of Sub-facilities", "fieldName": "analytics_matter_tag_type.89", "isMatterTag": true, "filterGroup": "Matters", "type": "NUMERIC", "default": 0, "value": 0, "step": 1, "options": null, "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "# of coinvestment facilities", "fieldName": "analytics_matter_tag_type.91", "isMatterTag": true, "filterGroup": "Matters", "type": "NUMERIC", "default": 0, "value": 0, "step": 1, "options": null, "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "Fund Type", "fieldName": "analytics_matter_tag_type.85", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "Placement Agent Agreements", "fieldName": "analytics_matter_tag_type.90", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "# of Closings", "fieldName": "analytics_matter_tag_type.92", "isMatterTag": true, "filterGroup": "Matters", "type": "NUMERIC", "default": 0, "value": 0, "step": 1, "options": null, "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "Size", "fieldName": "analytics_matter_tag_type.86", "isMatterTag": true, "filterGroup": "Matters", "type": "NUMERIC", "default": 0, "value": 0, "step": 1, "options": null, "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "Upper Tier/Carried Interest Plans/Carry Plan", "fieldName": "analytics_matter_tag_type.87", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "Funds"}, 
+{"clientId": 113, "displayName": "Fund Financing Arrangements", "fieldName": "analytics_matter_tag_type.88", "isMatterTag": true, "filterGroup": "Matters", "type": "SELECT", "options": [], "description": null, "ordered": false, "matterCollection": "Funds"}],
+"datestring": "&startdate=2014-06-30&enddate=2019-12-20",
+"querystring": "&threshold=4&startdate=2014-06-30&enddate=2019-12-20&expenses=false"
+};

@@ -8,7 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
-import {MOCK_PLACTICE_AREA} from '../../shared/unit-tests/mock-data/practice-area';
+import {MOCK_PRACTICE_AREA} from '../../shared/unit-tests/mock-data/practice-area';
 
 describe('PaTopFirmsComponent', () => {
   let component: PaTopFirmsComponent;
@@ -42,7 +42,7 @@ describe('PaTopFirmsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PaTopFirmsComponent);
     component = fixture.componentInstance;
-    component.practiceArea = MOCK_PLACTICE_AREA;
+    component.practiceArea = MOCK_PRACTICE_AREA;
     fixture.detectChanges();
   });
 

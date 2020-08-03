@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { EsTotalItemComponent } from './es-total-item.component';
+import {EsTotalItemComponent} from './es-total-item.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../../shared/unit-tests/mock-app.imports';
 import {ExecutiveSummaryComponent} from '../../executive-summary.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -16,6 +16,12 @@ describe('EsTotalItemComponent', () => {
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
+  const MOCK_ES_ITEM = {
+    total: 100,
+    name: 'Item 1',
+    format: null,
+    lastCell: false
+  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -27,11 +33,11 @@ describe('EsTotalItemComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
-          { provide: FiltersService, useClass: mockServices.FiltersStub },
-          { provide: HttpService, useClass: mockServices.DataStub },
-          { provide: UserService, useClass: mockServices.UserStub }
+          {provide: Router, useValue: mockRouter},
+          {provide: ActivatedRoute, useClass: ActivatedRouteMock},
+          {provide: FiltersService, useClass: mockServices.FiltersStub},
+          {provide: HttpService, useClass: mockServices.DataStub},
+          {provide: UserService, useClass: mockServices.UserStub}
         ]
       }
     })
@@ -42,6 +48,7 @@ describe('EsTotalItemComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EsTotalItemComponent);
     component = fixture.componentInstance;
+    component.item = MOCK_ES_ITEM;
     fixture.detectChanges();
   });
 

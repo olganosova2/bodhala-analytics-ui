@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaTopLeadPartnersComponent } from './pa-top-lead-partners.component';
+import { SavingsWidgetComponent } from './savings-widget.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {PracticeAreaDropdownComponent} from '../practice-area-dropdown/practice-area-dropdown.component';
+import {SavingsCalculatorComponent} from '../savings-calculator.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
-import {MOCK_PRACTICE_AREA} from '../../shared/unit-tests/mock-data/practice-area';
-import {FILTERS_LS} from '../../shared/unit-tests/mock-data/filters';
+import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
+import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
+import {MOCK_METRIC} from '../../shared/unit-tests/mock-data/savings-calculator';
 
-describe('PaTopLeadPartnersComponent', () => {
-  let component: PaTopLeadPartnersComponent;
-  let fixture: ComponentFixture<PaTopLeadPartnersComponent>;
-
+describe('SavingsWidgetComponent', () => {
+  let component: SavingsWidgetComponent;
+  let fixture: ComponentFixture<SavingsWidgetComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -26,7 +26,7 @@ describe('PaTopLeadPartnersComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(PaTopLeadPartnersComponent, {
+    }).overrideComponent(SavingsWidgetComponent, {
       set: {
         providers: [
           AppStateService,
@@ -38,26 +38,23 @@ describe('PaTopLeadPartnersComponent', () => {
         ]
       }
     })
-      .compileComponents();
+    TestBed.overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [ OverstaffingGridComponent ]
+      }
+    });
+    TestBed.compileComponents();
   }));
 
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PaTopLeadPartnersComponent);
+    fixture = TestBed.createComponent(SavingsWidgetComponent);
     component = fixture.componentInstance;
-    component.practiceArea = MOCK_PRACTICE_AREA;
-    component.clientMatterType = '';
+    component.metric = MOCK_METRIC;
     fixture.detectChanges();
   });
 
-  it('should create PaTopLeadPartnersComponent', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should set local storage', () => {
-    const serializedState = JSON.stringify(FILTERS_LS);
-    localStorage.setItem('ELEMENTS_dataFilters_397', serializedState);
-    component.setLocalStorage();
+  it('should create SavingsWidgetComponent', () => {
     expect(component).toBeTruthy();
   });
 });

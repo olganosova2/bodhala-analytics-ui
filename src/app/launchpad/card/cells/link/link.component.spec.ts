@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { InjectionToken } from '@angular/core';
 import { LinkComponent } from './link.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS, SERVICE_PROVIDERS} from '../../../../shared/unit-tests/mock-app.imports';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -9,9 +9,12 @@ import {ngWindow} from '../../../../shared/unit-tests/mock-services';
 import {TopMattersComponent} from '../../../../firm/top-matters/top-matters.component';
 import {Router} from '@angular/router';
 
+export const LOCATION_TOKEN = new InjectionToken<Location>('Window location object');
+
 describe('LinkComponent', () => {
   let component: LinkComponent;
   let fixture: ComponentFixture<LinkComponent>;
+
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
