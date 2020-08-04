@@ -52,6 +52,18 @@ export interface IBillingTotalItem {
   lastCell?: boolean;
 }
 
+export interface IBillingTotalItemReportCard {
+  icon: string;
+  svg?: string;
+  total: number;
+  total_expenses?: number;
+  avg: number;
+  diff: number;
+  name: string;
+  format?: string;
+  lastCell?: boolean;
+}
+
 export interface ITimekeeper {
   id: string;
   name: string;

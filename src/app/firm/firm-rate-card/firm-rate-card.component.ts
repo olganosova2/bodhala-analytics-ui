@@ -25,6 +25,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   enddate: string;
   startdate: string;
   showToTop: boolean = false;
+  otherFirms: boolean = false;
   percentOfTotal: number;
   rank: number;
   selectedSavedFilterName: string = null;
@@ -56,6 +57,10 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
     this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
+    const paramsLS = this.filtersService.parseLSQueryString();
+    if (paramsLS.firms !== null && paramsLS.firms !== undefined) {
+      this.otherFirms = true;
+    }
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
       this.initFirm();
@@ -66,29 +71,76 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   initFirm(): void {
     this.loadFirm().subscribe(data => {
       let totalSpend = 1;
-      if (data[0].result) {
-        const firms = data[0].result || [];
-        if (firms.length > 0) {
-          totalSpend = firms[0].total_billed_all || 1;
-          // tslint:disable-next-line:prefer-for-of
-          for (let ix = 0; ix < firms.length; ix++) {
-            if (firms[ix].id.toString() === this.firmId) {
-              this.rank = ix + 1;
-            }
-         }
-          this.rank = this.rank ? this.rank : -1;
-        }
-      }
-      if (data[1].result) {
-        if (data[1].result) {
-          const firms = data[1].result || [];
+      if (this.otherFirms === false) {
+        if (data[0].result) {
+          const firms = data[0].result || [];
           if (firms.length > 0) {
-            this.commonServ.pageSubtitle = firms[0].firm_name;
-            this.firm = firms[0];
-            this.percentOfTotal = firms[0].total_billed / totalSpend;
+            totalSpend = firms[0].total_billed_all || 1;
+            // tslint:disable-next-line:prefer-for-of
+            for (let ix = 0; ix < firms.length; ix++) {
+              if (firms[ix].id.toString() === this.firmId) {
+                this.rank = ix + 1;
+              }
+           }
+            this.rank = this.rank ? this.rank : -1;
+          }
+        }
+        if (data[1].result) {
+          if (data[1].result) {
+            const firms = data[1].result || [];
+            if (firms.length > 0) {
+              this.commonServ.pageSubtitle = firms[0].firm_name;
+              this.firm = firms[0];
+              this.percentOfTotal = firms[0].total_billed / totalSpend;
+            }
+          }
+        }
+      } else {
+
+        if (data[0].result) {
+          const firms = data[0].result || [];
+          if (firms.length > 0) {
+            totalSpend = firms[0].total_billed_all || 1;
+            // tslint:disable-next-line:prefer-for-of
+            for (let ix = 0; ix < firms.length; ix++) {
+              if (firms[ix].id.toString() === this.firmId) {
+                this.rank = ix + 1;
+              }
+           }
+            this.rank = this.rank ? this.rank : -1;
+          }
+        }
+        if (data[1].result) {
+          if (data[1].result) {
+            const firms = data[1].result || [];
+            if (firms.length > 0) {
+              // this conditional handles for the case when the firm RC being viewed is not in the saved filter firms list
+              if (this.rank < 0) {
+                totalSpend += firms[0].total_billed;
+                const otherFirms = data[0].result || [];
+                const currentFirm = firms[0];
+                otherFirms.push(currentFirm);
+
+                const spendPercentage = [];
+                for (const tempFirm of otherFirms) {
+                  spendPercentage.push([tempFirm.id, tempFirm.total_billed]);
+                }
+                spendPercentage.sort((a, b) =>  b[1] - a[1]);
+                for (let i = 0; i < spendPercentage.length; i++) {
+                  if (spendPercentage[i][0].toString() === this.firmId) {
+                    this.rank = i + 1;
+                  }
+                }
+                this.rank = this.rank ? this.rank : -1;
+              }
+              this.commonServ.pageSubtitle = firms[0].firm_name;
+              this.firm = firms[0];
+              this.percentOfTotal = firms[0].total_billed / totalSpend;
+            }
           }
         }
       }
+
     }, err => {
       this.errorMessage = err;
     });
