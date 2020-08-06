@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {CommonService} from '../../shared/services/common.service';
-import {IMetric, ISlider, pieDonutOptions, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
+import {IMetric, pieDonutOptions, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
 import {MatDialog} from '@angular/material';
 import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
 import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
@@ -14,9 +14,9 @@ import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
   styleUrls: ['./savings-widget.component.scss']
 })
 export class SavingsWidgetComponent implements OnInit {
-  minRange = 0;
   chart: any = {};
   options: any = Object.assign({}, pieDonutOptions);
+  minRange = 0;
   @Input() metric: IMetric;
   @Input() totalSpend: number = 0;
   @Output() changed: EventEmitter<any> = new EventEmitter<IMetric>();
@@ -41,18 +41,20 @@ export class SavingsWidgetComponent implements OnInit {
   }
 
   setUpDefaults(): void {
+    this.minRange = this.metric.minRange ? this.metric.minRange : 0;
     const initValue = Object.assign({}, {value: this.metric.percent});
     this.sliderChange(initValue);
-    // this.chart.series[0].setData(this.savingsService.getChartSeries(this.origPercent, this.origPercent, this.origTotal));
   }
   sliderChange(val: any): void {
     switch (this.metric.savingsType) {
       case SavingMetrics.BlockBilling:
         this.metric.savings = this.savingsService.calculateBlockBillingValue(val.value, this.metric.origPercent, this.metric.total);
-        // this.chart.series[0].setData(this.savingsService.getChartSeries(val.value, this.origPercent, this.origTotal));
         break;
       case SavingMetrics.Overstaffing:
         this.metric.savings = this.savingsService.calculateOverstaffingValue(val.value, this.metric.total);
+        break;
+      case SavingMetrics.RateIncrease:
+        this.metric.savings = this.savingsService.calculateIncreaseRateValue(val.value, this.metric);
         break;
       default:
         break;

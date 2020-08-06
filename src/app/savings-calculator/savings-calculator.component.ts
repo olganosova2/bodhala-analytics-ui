@@ -66,6 +66,10 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       const metricBB = this.savingsService.createMetricsRecord(this.calcData.bb_percent[this.currentYear], SavingMetrics.BlockBilling);
       this.metrics.push(metricBB);
     }
+    if (this.calcData.overstaffing && this.calcData.rate_increase.length > 0) {
+      const metricRateIncrease = this.savingsService.createRateIncreaseRecord(this.calcData.rate_increase);
+      this.metrics.push(metricRateIncrease);
+    }
     if (this.calcData.overstaffing && this.calcData.overstaffing.length > 0) {
       const metricOverstaffing = this.savingsService.createMetricsRecord(this.calcData.overstaffing[this.currentYear], SavingMetrics.Overstaffing);
       this.metrics.push(metricOverstaffing);

@@ -51,4 +51,18 @@ describe('FirmRateCardComponent', () => {
   it('should create FirmRateCardComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should initFirm', () => {
+    component.otherFirms = true;
+   // component.firmId = '87';
+    component.initFirm();
+    expect(component.rank).toBe(-1);
+  });
+  it('should navigate', () => {
+    component.editReportCard();
+    expect(component).toBeTruthy();
+  });
+  it('should goToTop', () => {
+    component.goToTop();
+    expect(component).toBeTruthy();
+  });
 });

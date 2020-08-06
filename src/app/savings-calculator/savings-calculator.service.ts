@@ -6,8 +6,20 @@ export enum SavingMetrics {
   RateIncrease = 'RateIncrease',
   Overstaffing = 'Overstaffing'
 }
+export enum tkClassifications {
+  associate = 'associate',
+  partner = 'partner',
+  other = 'other',
+  paralegal = 'paralegal'
+}
 export interface ISlider {
   value: number;
+}
+export interface IClassification {
+  title: string;
+  avgRateIncrease: number;
+  totalHours: number;
+  lastYearRate: number;
 }
 export interface IBlockBillingData {
   end_date: string;
@@ -25,9 +37,21 @@ export interface IOverstaffingRow {
   matter_name: string;
   total_hours: number;
 }
+export interface IRateIncreaseRow {
+  bh_classification: string;
+  total_billed: number;
+  total_afa: number;
+  total_spend: number;
+  total_hours: number;
+  effective_rate: number;
+}
 export interface IOverstaffingData {
   end_date: string;
   overstaffing: Array<IOverstaffingRow>;
+}
+export interface IRateIncreaseData {
+  end_date: string;
+  rate_increase: Array<IRateIncreaseRow>;
 }
 export interface IMetric {
   origPercent: number;
@@ -38,7 +62,10 @@ export interface IMetric {
   maxRange: number;
   savings: number;
   viewLabel?: string;
+  percentLabel?: string;
   details?: Array<any>;
+  minRange?: number;
+  classifications?: Array<IClassification>;
 }
 
 export const pieDonutOptions = {
@@ -111,6 +138,7 @@ export class SavingsCalculatorService {
       result.origPercent = Math.round(bbRecord.bbp);
       result.total = bbRecord.total_block_billed;
       result.title = 'Block Billing';
+      result.percentLabel = 'Last Year';
       result.maxRange = 100;
     }
     if (type === SavingMetrics.Overstaffing) {
@@ -129,24 +157,85 @@ export class SavingsCalculatorService {
     }
     return result;
   }
+  createRateIncreaseRecord(records: Array<IRateIncreaseData>): IMetric {
+    const result = {} as IMetric;
+    result.savingsType = SavingMetrics.RateIncrease;
+    result.minRange = -5;
+    result.maxRange = 20;
+    result.percent = 3;
+    result.total = 0; // TODO
+    result.title = 'Rate Increase Prevention';
+    result.percentLabel = 'Average for 3 years';
+    const tkClassificationsProcessed = [];
+    for (const key of Object.keys(tkClassifications)) {
+      tkClassificationsProcessed.push(this.createClassification(key, records));
+    }
+    result.classifications = tkClassificationsProcessed;
+    result.origPercent = this.calculateOrigIncreaseRatePercent(tkClassificationsProcessed);
+    return result;
+  }
+  createClassification(name: string, records: Array<IRateIncreaseData>): any {
+    const classification = {} as IClassification;
+    classification.title = name;
+    const year1 = records[0].rate_increase || [];
+    const year2 =  records[1].rate_increase || [];
+    const year3 =  records[2].rate_increase || [];
+    const year1Rec = year1.find(e => e.bh_classification === name) || {} as IRateIncreaseRow;
+    const year2Rec = year2.find(e => e.bh_classification === name) || {} as IRateIncreaseRow;
+    const year3Rec = year3.find(e => e.bh_classification === name) || {} as IRateIncreaseRow;
+    const divider1 = year2Rec.effective_rate ? year2Rec.effective_rate : 1;
+    const year1Increase = ((year1Rec.effective_rate || 0) - (year2Rec.effective_rate || 0)) / divider1;
+    const divider2 = year3Rec.effective_rate ? year3Rec.effective_rate : 1;
+    const year2Increase = ((year2Rec.effective_rate || 0) - (year3Rec.effective_rate || 0)) / divider2;
+    classification.avgRateIncrease = (year1Increase + year2Increase) / 2;
+    if (!year2Rec.effective_rate && !year3Rec.effective_rate) { // no data for 2 years
+      classification.avgRateIncrease = 0;
+    }
+    classification.totalHours = year1Rec.total_hours ||  0;
+    classification.lastYearRate = year1Rec.effective_rate || 0;
+    return classification;
+  }
+  calculateOrigIncreaseRatePercent(classifications: Array<IClassification>): number {
+    let result = 0;
+    let cnt = 0;
+    let avg = 0;
+    for (const rec of classifications) {
+      if (rec.totalHours && rec.totalHours > 0) {
+        cnt++;
+        avg += rec.avgRateIncrease;
+      }
+    }
+    result = cnt > 0 ? avg * 100 / cnt : 0;
+    return result;
+  }
   calculateBlockBillingValue(val: number, percent: number, total: number): number {
     percent = percent || 1;
     return 0.2 * ( ( (percent - val ) / percent ) * total);
   }
   calculateOverstaffingValue(val: number, total: number): number {
-    return val * ( SAVINGS_CALCULATOR_CONFIG.idealNumberOfPplInMeetings * total);
+    return val * ( SAVINGS_CALCULATOR_CONFIG.idealNumberOfPplInMeetings * total) / 100;
   }
-  calculateDiameter(val: number, percent: number, total: number): number {
-    const maxTotal = 0.2 * total || 1;
-    percent = percent || 1;
-    const currentTotal = 0.2 * ( ( (percent - val ) / percent ) * total);
-    const result = (currentTotal * 200 / maxTotal);
+  calculateIncreaseRateValue(val: number, metric: IMetric): number {
+    let result = 0;
+    if (!metric.classifications || metric.classifications.length === 0) {
+      return result;
+    }
+    for (const rec of metric.classifications) {
+      result += (rec.avgRateIncrease - val / 100) * rec.totalHours * rec.lastYearRate;
+    }
     return result;
   }
-  getChartSeries(val: number, percent: number, total: number): Array<number> {
-    const grandTotal = this.calculateBlockBillingValue(100, percent, total);
-    const filled = this.calculateBlockBillingValue(val, percent, total);
-    const remaining = grandTotal - filled;
-    return [filled, remaining];
-  }
+  // calculateDiameter(val: number, percent: number, total: number): number {
+  //   const maxTotal = 0.2 * total || 1;
+  //   percent = percent || 1;
+  //   const currentTotal = 0.2 * ( ( (percent - val ) / percent ) * total);
+  //   const result = (currentTotal * 200 / maxTotal);
+  //   return result;
+  // }
+  // getChartSeries(val: number, percent: number, total: number): Array<number> {
+  //   const grandTotal = this.calculateBlockBillingValue(100, percent, total);
+  //   const filled = this.calculateBlockBillingValue(val, percent, total);
+  //   const remaining = grandTotal - filled;
+  //   return [filled, remaining];
+  // }
 }

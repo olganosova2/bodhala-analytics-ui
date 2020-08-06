@@ -37,7 +37,7 @@ describe('SavingsWidgetComponent', () => {
           { provide: UserService, useClass: mockServices.UserStub }
         ]
       }
-    })
+    });
     TestBed.overrideModule(BrowserDynamicTestingModule, {
       set: {
         entryComponents: [ OverstaffingGridComponent ]

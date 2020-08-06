@@ -12,6 +12,7 @@ import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
 import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data/practice-area';
 import {SAVINGS_DATA} from './mock-data/savings-calculator';
 import {EXECUTIVE_SUMMARY} from './mock-data/execitive-summary';
+import {SPEND_BY_UTBMS_CODES} from './mock-data/uybms-codes';
 
 export const ngWindow = {
   location: {
@@ -89,7 +90,7 @@ export class DataStub {
       case 'getBillingTotals':
         return of(MOCK_BILLING_TOTALS);
       case 'reportCardBillingTotals':
-        return of(MOCK_BILLING_TOTALS_RC)
+        return of(MOCK_BILLING_TOTALS_RC);
       case 'spendByMonth':
         return of({result: []});
       case 'getBlockBillingFirms':
@@ -116,10 +117,10 @@ export class DataStub {
         return of(MOCK_FIRMS);
       case 'getPracticeAreasListByClient':
         return of(MOCK_PRACTICE_AREAS);
-      // case 'getSpendByUtbmsCodes':
-      //   return of (MOCK_UTBMS_CODES);
-      // case 'getPhaseTaxonomySpend':
-      //   return of(MOCK_PHASE_TAXONOMY);
+      case 'getSpendByUtbmsCodes':
+        return of (SPEND_BY_UTBMS_CODES);
+      case 'getPhaseTaxonomySpend':
+        return of(MOCK_PHASE_TAXONOMY);
       case 'getOptionsForFilter':
         return of(MOCK_OPTIONS_FOR_FILTER);
       case 'getFirmTopSummary':
