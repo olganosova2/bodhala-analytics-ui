@@ -2,14 +2,17 @@ import {CURRENT_USER} from './mock-data/user';
 import {Observable, of, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
-import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY} from './mock-data/firm';
+import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY, MOCK_PHASE_TAXONOMY, MOCK_UTBMS_CODES} from './mock-data/firm';
 import {convertToParamMap} from '@angular/router';
-import {MOCK_BILLING_TOTALS} from './mock-data/billing-totals';
+import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
 import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
 import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
-import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS} from './mock-data/practice-area';
+import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data/practice-area';
+import {SAVINGS_DATA} from './mock-data/savings-calculator';
+import {EXECUTIVE_SUMMARY} from './mock-data/execitive-summary';
+import {SPEND_BY_UTBMS_CODES} from './mock-data/uybms-codes';
 
 export const ngWindow = {
   location: {
@@ -42,6 +45,9 @@ export class FiltersStub {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
   public parseLSDateString() {
+    return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
+  }
+  public parseLSQueryString() {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
 }
@@ -83,6 +89,8 @@ export class DataStub {
         return of({result: [ MOCK_FIRM ]});
       case 'getBillingTotals':
         return of(MOCK_BILLING_TOTALS);
+      case 'reportCardBillingTotals':
+        return of(MOCK_BILLING_TOTALS_RC);
       case 'spendByMonth':
         return of({result: []});
       case 'getBlockBillingFirms':
@@ -92,7 +100,7 @@ export class DataStub {
       case 'spendByPracticeAreas':
         return of({result: []});
       case 'getTopLeadPartners':
-        return of({result: []});
+        return of(MOCK_TOP_LPS);
       case 'getTopMattersAndLeadPartners':
         return of( TOP_MATTERS);
       case 'getTopFirms':
@@ -107,6 +115,12 @@ export class DataStub {
         return of(MOCK_BENCHMARKS);
       case 'getFirmsListByClient':
         return of(MOCK_FIRMS);
+      case 'getPracticeAreasListByClient':
+        return of(MOCK_PRACTICE_AREAS);
+      case 'getSpendByUtbmsCodes':
+        return of (SPEND_BY_UTBMS_CODES);
+      case 'getPhaseTaxonomySpend':
+        return of(MOCK_PHASE_TAXONOMY);
       case 'getOptionsForFilter':
         return of(MOCK_OPTIONS_FOR_FILTER);
       case 'getFirmTopSummary':
@@ -115,6 +129,10 @@ export class DataStub {
         return of(MOCK_PRACTICE_AREAS);
       case 'getDateRange':
         return of(MOCK_MIN_MAX_DATES);
+      case 'getSavingsCalculator':
+        return of(SAVINGS_DATA);
+      case 'getExecutiveSummaryData':
+        return of(EXECUTIVE_SUMMARY);
       default:
         return of([]);
     }

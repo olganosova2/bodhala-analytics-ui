@@ -8,9 +8,25 @@
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
   </div>
+  <div class="text-center">
+    <h4>Calculate Your Savings</h4>
+    <h5>Predicted Annual Savings</h5>
+    <div class="div-progress mt20">
+      <bd-progress-semi-circle #progress></bd-progress-semi-circle>
+    </div>
+  </div>
+  <div class="div-total-spend-wrapper">
+    <div class="div-total-spend">
+      <span class="from">from </span> ${{ totalSpend | number:'1.0-0'}} total spend
+    </div>
+  </div>
   <div class="ui-g">
-    <div class="ui-g-4">
-      <bd-savings-widget *ngIf="!isLoading" #bbWidget [percent]="bbPercent" [total]="bbTotal" [title]="'Block Billing'" [savingsType]="'BlockBilling'"></bd-savings-widget>
+    <div class="ui-g-4" *ngFor="let metric of metrics;let i=$index">
+      <bd-savings-widget
+                         [metric]="metric"
+                         [totalSpend]="totalSpend"
+                         (changed)="updateTotals($event)"
+      ></bd-savings-widget>
     </div>
   </div>
 </div>

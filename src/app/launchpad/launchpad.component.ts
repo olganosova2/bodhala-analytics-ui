@@ -26,7 +26,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   columns = columns;
 
   constructor(
-    private filtersService: FiltersService,
+    public filtersService: FiltersService,
     private launchPadService: LaunchPadService,
     public appStateService: AppStateService,
     public userService: UserService,
@@ -44,48 +44,17 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
 
   load(): void {
     this.requests = this.launchPadService.fetchData();
-    this.postLoad();
   }
 
   onCardLoaded() {
-    this.postLoad();
   }
-  // bubbled up from card/cell clicks
   onClick(item) {
-    // TODO - optionally handle click scenarios here
   }
-
-  @HostListener('window:message', ['$event'])
-  onMessage(event) {
-    if (event.data.from !== 'child') {
-      this.receiveMessage(event);
-    }
-  }
-
   receiveMessage(event) {
-    // event.data contains the filters from the angularjs app
     this.filtersService.setCurrentUserFilters();
     this.load();
   }
-  postLoad() {
-    // send messages back to the parent app
-    if (window.parent) {
-      setTimeout(() => {
-        // send height of content to adjust iframe height
-        const height = this.container.nativeElement.offsetHeight + this.insights.nativeElement.offsetHeight;
-        window.parent.postMessage({height, from: 'child'}, '*');
-      }, 100);
-    }
-  }
   changeTab(evt): void {
-    const filtersDiv = document.getElementById('filtersdiv');
-    if (filtersDiv) {
-      if (filtersDiv.style.display === '') {
-        filtersDiv.style.display = 'None';
-           } else if (filtersDiv.style.display === 'None' || filtersDiv.style.display === 'none') {
-            filtersDiv.style.display = '';
-           }
-    }
     this.selectedTabIndex = evt.index;
 
   }

@@ -1,12 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {CommonService} from '../../shared/services/common.service';
-import {pieDonutOptions, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
-import {of, throwError} from 'rxjs';
-import {TOP_MATTERS} from '../../shared/unit-tests/mock-data/top-matters';
-import {TOP_FIRMS} from '../../shared/unit-tests/mock-data/top-firms';
+import {IMetric, pieDonutOptions, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
+import {MatDialog} from '@angular/material';
+import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
+import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
 
 @Component({
   selector: 'bd-savings-widget',
@@ -14,19 +14,16 @@ import {TOP_FIRMS} from '../../shared/unit-tests/mock-data/top-firms';
   styleUrls: ['./savings-widget.component.scss']
 })
 export class SavingsWidgetComponent implements OnInit {
-  origPercent: number = 0;
-  origTotal: number = 0;
-  minRange = 0;
-  maxRange = 100;
   chart: any = {};
   options: any = Object.assign({}, pieDonutOptions);
-  @Input() savingsType: SavingMetrics;
-  @Input() percent: number = 0;
-  @Input() total: number = 0;
-  @Input() title: string;
+  minRange = 0;
+  @Input() metric: IMetric;
+  @Input() totalSpend: number = 0;
+  @Output() changed: EventEmitter<any> = new EventEmitter<IMetric>();
 
   constructor(private route: ActivatedRoute,
               public router: Router,
+              public dialog: MatDialog,
               private httpService: HttpService,
               public appStateService: AppStateService,
               public filtersService: FiltersService,
@@ -36,28 +33,43 @@ export class SavingsWidgetComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-  setUpDefaults(): void {
-    this.origPercent = this.percent;
-    this.origTotal = this.total;
-    const initValue = Object.assign({}, { value: this.origPercent});
-    this.sliderChange(initValue);
-   // this.chart.series[0].setData(this.savingsService.getChartSeries(this.origPercent, this.origPercent, this.origTotal));
+    this.setUpDefaults();
   }
 
+  formatLabel(value: number) {
+    return value.toString() + '%';
+  }
+
+  setUpDefaults(): void {
+    this.minRange = this.metric.minRange ? this.metric.minRange : 0;
+    const initValue = Object.assign({}, {value: this.metric.percent});
+    this.sliderChange(initValue);
+  }
   sliderChange(val: any): void {
-    switch (this.savingsType) {
+    switch (this.metric.savingsType) {
       case SavingMetrics.BlockBilling:
-        this.total = this.savingsService.calculateBlockBillingValue(val.value, this.origPercent, this.origTotal);
-        // this.chart.series[0].setData(this.savingsService.getChartSeries(val.value, this.origPercent, this.origTotal));
+        this.metric.savings = this.savingsService.calculateBlockBillingValue(val.value, this.metric.origPercent, this.metric.total);
+        break;
+      case SavingMetrics.Overstaffing:
+        this.metric.savings = this.savingsService.calculateOverstaffingValue(val.value, this.metric.total);
+        break;
+      case SavingMetrics.RateIncrease:
+        this.metric.savings = this.savingsService.calculateIncreaseRateValue(val.value, this.metric);
         break;
       default:
         break;
     }
+    this.changed.emit(this.metric);
   }
 
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
   }
+  openDetails(): void {
+    const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], this.metric.details)};
+    const dialogRef = this.dialog.open(OverstaffingGridComponent, {...modalConfig, disableClose: true });
 
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
 }

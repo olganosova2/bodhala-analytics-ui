@@ -8,6 +8,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
+import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
+import {MOCK_METRIC} from '../../shared/unit-tests/mock-data/savings-calculator';
 
 describe('SavingsWidgetComponent', () => {
   let component: SavingsWidgetComponent;
@@ -34,14 +37,20 @@ describe('SavingsWidgetComponent', () => {
           { provide: UserService, useClass: mockServices.UserStub }
         ]
       }
-    })
-      .compileComponents();
+    });
+    TestBed.overrideModule(BrowserDynamicTestingModule, {
+      set: {
+        entryComponents: [ OverstaffingGridComponent ]
+      }
+    });
+    TestBed.compileComponents();
   }));
 
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SavingsWidgetComponent);
     component = fixture.componentInstance;
+    component.metric = MOCK_METRIC;
     fixture.detectChanges();
   });
 

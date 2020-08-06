@@ -12,6 +12,7 @@
           <div class="font-bold">Timeframe: {{startdate}} - {{enddate}}</div>
           <div class="font-bold">Rank: <span *ngIf="rank>0">{{ rank }}</span><span *ngIf="rank<0"> > 20</span> ({{percentOfTotal * 100 | number:'1.2-2'}}% of total spend)</div>
           <div class="font-bold" *ngIf="selectedSavedFilterName!==null">Saved Filter: {{selectedSavedFilterName}}</div>
+          <div class="font-bold" *ngIf="otherFirms"><i>Note: Rank and averages are based off firms available as defined by selected Timeframe and Filters.</i></div>
         </div>
       </div>
 

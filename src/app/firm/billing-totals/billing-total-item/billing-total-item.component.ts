@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IBillingTotalItem} from '../../firm.model';
+import {IBillingTotalItem, IBillingTotalItemReportCard} from '../../firm.model';
 import {FiltersService} from '../../../shared/services/filters.service';
 
 @Component({
@@ -10,7 +10,9 @@ import {FiltersService} from '../../../shared/services/filters.service';
 export class BillingTotalItemComponent implements OnInit {
   @Input() isLastCell: boolean = false;
   @Input() item: IBillingTotalItem;
+  @Input() itemRC: IBillingTotalItemReportCard;
   @Input() includeExpenses: boolean = false;
+  @Input() reportCardItem: boolean = false;
 
   constructor(public filtersService: FiltersService) {
   }

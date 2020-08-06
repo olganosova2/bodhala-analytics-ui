@@ -1,7 +1,7 @@
 <div class="content-body-inner-wrapper">
   <bd-ie-banner></bd-ie-banner>
   <bd-error-messages></bd-error-messages>
-  <div id="filtersdiv">
+  <div id="filtersdiv" *ngIf="selectedTabIndex === 0">
     <lib-bd-filters
       (sendFilters)="receiveMessage($event)"
       [pageName]="pageName"
@@ -9,7 +9,7 @@
     ></lib-bd-filters>
   </div>
   <div #insights style="display: block">
-    <bd-insights (insightsLoaded)="postLoad()" #insights></bd-insights>
+    <bd-insights (insightsLoaded)="onCardLoaded()" #insights></bd-insights>
   </div>
 
   <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">

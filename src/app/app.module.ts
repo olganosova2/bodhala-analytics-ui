@@ -13,7 +13,7 @@ import {
   MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
   MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
   MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule
+  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule, MatSliderModule
 } from '@angular/material';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {MomentModule} from 'angular2-moment';
@@ -31,6 +31,9 @@ import * as CONFIG from './shared/services/config';
 import { LaunchpadComponent } from './launchpad/launchpad.component';
 import {RouterModule} from '@angular/router';
 import {appRouterConfig} from './app.routes';
+import { InjectionToken } from '@angular/core';
+
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {SliderModule} from 'primeng/slider';
 import {FiltersService} from './shared/services/filters.service';
@@ -65,7 +68,6 @@ import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail
 import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
 import { MattersComponent } from './matters/matters.component';
-import { LeadAttorneyComponent } from './lead-attorney/lead-attorney.component';
 import { PracticeAreaComponent } from './practice-area/practice-area.component';
 import { PracticeAreaDropdownComponent } from './practice-area/practice-area-dropdown/practice-area-dropdown.component';
 import { PaTopFirmsComponent } from './practice-area/pa-top-firms/pa-top-firms.component';
@@ -78,7 +80,11 @@ import { RateCardTablesComponent } from './firm/firm-rate-card/rate-card-tables/
 import { EsTableComponent } from './launchpad/executive-summary/es-table/es-table.component';
 import { SavingsCalculatorComponent } from './savings-calculator/savings-calculator.component';
 import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savings-widget.component';
+import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
+import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
 
+export const WindowToken = new InjectionToken('Window');
+export function windowProvider() { return window; }
 
 export function initUser(config: UserService) {
   return () => config.load();
@@ -131,7 +137,6 @@ export function highchartsFactory() {
     IeBannerComponent,
     ErrorMessagesComponent,
     MattersComponent,
-    LeadAttorneyComponent,
     PracticeAreaComponent,
     PracticeAreaDropdownComponent,
     PaTopFirmsComponent,
@@ -144,10 +149,13 @@ export function highchartsFactory() {
     EsTableComponent,
     SavingsCalculatorComponent,
     SavingsWidgetComponent,
+    ProgressSemiCircleComponent,
+    OverstaffingGridComponent,
   ],
   entryComponents: [
     PillComponent,
-    LinkComponent
+    LinkComponent,
+    OverstaffingGridComponent
   ],
   imports: [
     HttpClientModule,
@@ -177,6 +185,7 @@ export function highchartsFactory() {
     MatExpansionModule,
     MatSlideToggleModule,
     MatRadioModule,
+    MatSliderModule,
     MomentModule,
     NgIdleKeepaliveModule.forRoot(),
     MatBadgeModule,
@@ -213,6 +222,7 @@ export function highchartsFactory() {
     DatePipe,
     FiltersService,
     UserFiltersModel,
+    { provide: WindowToken, useFactory: windowProvider },
     TopMattersFirmsService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

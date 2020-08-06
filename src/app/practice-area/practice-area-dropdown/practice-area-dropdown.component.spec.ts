@@ -8,13 +8,17 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {MOCK_PRACTICE_AREA, MOCK_PRACTICE_AREAS} from '../../shared/unit-tests/mock-data/practice-area';
+
 
 describe('PracticeAreaDropdownComponent', () => {
   let component: PracticeAreaDropdownComponent;
   let fixture: ComponentFixture<PracticeAreaDropdownComponent>;
 
   const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
+    navigate: jasmine.createSpy('navigate'),
+    // navigateByUrl: jasmine.createSpy('navigateByUrl'),
+    // url: 'benchmarking/firm'
   };
   beforeEach(async(() => {
 
@@ -41,10 +45,26 @@ describe('PracticeAreaDropdownComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PracticeAreaDropdownComponent);
     component = fixture.componentInstance;
+    component.clientMatterType = 'LITIGATION';
+    component.currentPracticeArea = 'LITIGATION';
     fixture.detectChanges();
   });
 
   it('should create PracticeAreaDropdownComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should getPracticeAreasList with name <= 45', () => {
+    component.getPracticeAreasList();
+    expect(component.dropdownWidth.width).toBe('325px');
+  });
+  it('should getPracticeAreasList with name > 45', () => {
+    component.clientMatterType = 'PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCTS LIA';
+    component.getPracticeAreasList();
+    expect(component.dropdownWidth.width).toBe('425px');
+  });
+  it('should getPracticeAreasList with name > 55', () => {
+    component.clientMatterType = 'PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCT';
+    component.getPracticeAreasList();
+    expect(component.dropdownWidth.width).toBe('525px');
   });
 });
