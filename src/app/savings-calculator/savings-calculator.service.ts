@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
+import {UtilService} from 'bodhala-ui-common';
 export enum SavingMetrics {
   TkLevel = 'TkLevel',
   BlockBilling = 'BlockBilling',
@@ -122,7 +123,7 @@ export const pieDonutOptions = {
 })
 export class SavingsCalculatorService {
 
-  constructor() {
+  constructor(private utilService: UtilService) {
   }
   calculatePercent(total: number, grandTotal: number): number {
     grandTotal = grandTotal ? grandTotal : 1;
@@ -153,6 +154,9 @@ export class SavingsCalculatorService {
       result.title = 'Overstaffing';
       result.viewLabel = 'meeting';
       result.details = osRecord.overstaffing || [];
+      if (result.details.length > 0) {
+        result.details.sort(this.utilService.dynamicSort('-timekeepers'));
+      }
       result.maxRange = 50;
     }
     return result;

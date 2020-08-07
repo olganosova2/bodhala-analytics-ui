@@ -44,7 +44,7 @@ export class OverstaffingGridComponent implements OnInit, AfterViewInit {
     this.gridOptions.columnDefs = [
       { headerName: 'Firm', field: 'firm_name', ... this.defaultColumn, width: 350, filter: 'text' },
     //  { headerName: 'Firm Id', field: 'firm_id', ... this.defaultColumn },
-      { headerName: 'Matter', field: 'matter_name', ... this.defaultColumn, width: 250, filter: 'text' },
+      { headerName: 'Matter', field: 'matter_name', ... this.defaultColumn, width: 350, filter: 'text' },
       { headerName: '# of TKs', field: 'timekeepers', ... this.defaultColumn },
       { headerName: 'Date', field: 'line_item_date', ... this.defaultColumn,  filter: 'agDateColumnFilter',  valueFormatter: this.dateFormatter },
       { headerName: 'Total Billed', field: 'total_billed', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ... this.defaultColumn, comparator: this.agGridService.zeroNumberComparator},
