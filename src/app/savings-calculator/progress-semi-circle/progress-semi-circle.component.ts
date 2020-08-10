@@ -21,11 +21,10 @@ export class ProgressSemiCircleComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
   }
-  updateValues(t: number, gt: number): void {
+  updateValues(t: number, percent: number): void {
     this.total = t;
-    this.grandTotal = gt;
-    const percent  = this.savingsService.calculatePercent(this.total, this.grandTotal);
-    this.percent = percent > 0 ? percent : 0;
+    // this.grandTotal = gt;
+    this.percent  = percent;
     const transform = 'rotate(' + (45 + (this.percent * 1.8)) + 'deg)';
     this.renderer.setStyle(this.bar.nativeElement, 'transform', transform);
   }

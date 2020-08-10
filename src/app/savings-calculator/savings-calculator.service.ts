@@ -132,6 +132,7 @@ export class SavingsCalculatorService {
   createMetricsRecord(record: IBlockBillingData | IOverstaffingData, type: SavingMetrics): IMetric {
     const result = {} as IMetric;
     result.savingsType = type;
+    result.savings = 0;
     if (type === SavingMetrics.BlockBilling) {
       const bbRecord = record as IBlockBillingData;
       const bbP = bbRecord.bbp > 10 ?  bbRecord.bbp - 10 : bbRecord.bbp;
@@ -163,6 +164,7 @@ export class SavingsCalculatorService {
   }
   createRateIncreaseRecord(records: Array<IRateIncreaseData>): IMetric {
     const result = {} as IMetric;
+    result.savings = 0;
     result.savingsType = SavingMetrics.RateIncrease;
     result.minRange = -5;
     result.maxRange = 20;
