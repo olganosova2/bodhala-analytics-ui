@@ -55,10 +55,23 @@ describe('LinkComponent', () => {
     expect(component.clicked).toBeTruthy();
    // expect(component.clicked).toHaveBeenCalledWith({column: component.column, data: null });
   });
-  it('should call inject', () => {
+  it('should call onClick', () => {
     spyOn(component.clicked, 'emit');
     component.onClick({ key1: 'test'});
     expect(component.clicked).toBeTruthy();
+  });
+  it('should navigate', () => {
+    const data = {param1: 87};
+    component.column = { route: '/firm', route_params: 'param1'};
+    component.onClick(data);
+    expect (mockRouter.navigate).toHaveBeenCalledWith([ '/firm', 87]);
+  });
+  it('should onclick action', () => {
+    spyOn(component.clicked, 'emit');
+    const data = {param1: 87};
+    component.column = { action: (e) => {}};
+    component.onClick(data);
+    expect(component.clicked.emit).toHaveBeenCalledWith({column: component.column, data});
   });
   // it('should call goToView', () => {
   //   spyOn(window, 'location').and.returnValue({ location: null });

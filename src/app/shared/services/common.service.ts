@@ -114,8 +114,12 @@ export class CommonService {
       if (title === 'Executive Summary' || title.includes('Rate Card')) {
         exportElement.removeChild(footerDiv);
       }
-    });
+    })
+      .catch(() => {
+        /* This is fired when the promise executes without the DOM */
+      });
   }
+
   capitalize(word: string): string {
     if (!word) {
       return '';

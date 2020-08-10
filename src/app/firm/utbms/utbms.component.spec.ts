@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 import {FiltersService} from '../../shared/services/filters.service';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
+import {taxonomyChartOptions, trendChart, UTBMSChartOptions} from '../firm.model';
+import {chainedInstruction} from '@angular/compiler/src/render3/view/util';
 
 describe('UtbmsComponent', () => {
   let component: UtbmsComponent;
@@ -41,6 +43,12 @@ describe('UtbmsComponent', () => {
     fixture = TestBed.createComponent(UtbmsComponent);
     component = fixture.componentInstance;
     component.firmId = 1;
+    component.chartUTBMS = Object.assign({}, UTBMSChartOptions);
+    component.chartUTBMS.series[0].setData = (data) => {};
+    component.chartUTBMS.series[1].setData = (data) => {};
+    component.chartTaxonomy = Object.assign({}, taxonomyChartOptions);
+    component.chartTaxonomy.series[0].setData = (data) => {};
+    component.chartTaxonomy.series[1].setData = (data) => {};
     fixture.detectChanges();
   });
 
@@ -51,7 +59,6 @@ describe('UtbmsComponent', () => {
 
   it('should return rgb', () => {
     const temp = component.colorLuminance('ddeeff', 0.15);
-
     expect(temp).toBe('#feffff');
   });
 });

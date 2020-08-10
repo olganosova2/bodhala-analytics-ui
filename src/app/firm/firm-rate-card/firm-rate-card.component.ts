@@ -184,14 +184,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
-    if (this.pendingRequestFirm) {
-      this.pendingRequestFirm.unsubscribe();
-    }
     if (this.pendingRequestPAs) {
       this.pendingRequestPAs.unsubscribe();
-    }
-    if (this.pendingRequestSummary) {
-      this.pendingRequestSummary.unsubscribe();
     }
   }
 

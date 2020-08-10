@@ -8,6 +8,8 @@
         [sideBar]="sideBarConfig"
         [rowData]="data"
         (displayedColumnsChanged)="saveGridConfig($event);"
+        (sortChanged)="saveGridConfig($event);"
+        (columnResized)="saveGridConfig($event);"
         [gridOptions]="gridOptions">
     </ag-grid-angular>
   </div>

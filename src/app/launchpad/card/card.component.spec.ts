@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS } from '../../shared/unit-tests/mock-app.imports';
 import {CardComponent, CardMode} from './card.component';
 import { ChartModule } from 'angular2-highcharts';
+import {mattersChartOptions} from '../../shared/models/top-matters';
 
 describe('CardComponent', () => {
   let component: CardComponent;
@@ -40,5 +41,28 @@ describe('CardComponent', () => {
   it('should create saveInstance', () => {
     component.saveInstance({});
     expect(component.chart).toBeTruthy();
+  });
+  it('should create toggle', () => {
+    component.cardName = 'topBlockBillers';
+    component.chart = Object.assign({}, mattersChartOptions);
+    component.chart.xAxis = [];
+    const xAxis = { setCategories: () => {} };
+    component.chart.xAxis.push(xAxis);
+    component.chart.series[0].setData = (data) => {};
+    component.options = {};
+    component.data = [];
+    component.toggle({});
+    expect(component.chart).toBeTruthy();
+  });
+  it('should reloadChart', () => {
+    component.cardName = 'topBlockBillers';
+    component.chart = Object.assign({}, mattersChartOptions);
+    component.chart.xAxis = [];
+    const xAxis = { setCategories: () => {} };
+    component.chart.xAxis.push(xAxis);
+    component.chart.series[0].setData = (data) => {};
+    component.data = [];
+    component.reloadChart();
+    expect(component.chart.series[0]).toBeTruthy();
   });
 });

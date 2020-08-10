@@ -19,6 +19,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   calcData: any;
   grandTotal: number = 0;
+  grandPercent: number = 0;
   totalSpend: number = 0;
   currentYear: number = 0;
   metrics: Array<IMetric> = [];
@@ -66,6 +67,10 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       const metricBB = this.savingsService.createMetricsRecord(this.calcData.bb_percent[this.currentYear], SavingMetrics.BlockBilling);
       this.metrics.push(metricBB);
     }
+    if (this.calcData.rate_increase && this.calcData.rate_increase.length > 0) {
+      const metricRateIncrease = this.savingsService.createRateIncreaseRecord(this.calcData.rate_increase);
+      this.metrics.push(metricRateIncrease);
+    }
     if (this.calcData.overstaffing && this.calcData.overstaffing.length > 0) {
       const metricOverstaffing = this.savingsService.createMetricsRecord(this.calcData.overstaffing[this.currentYear], SavingMetrics.Overstaffing);
       this.metrics.push(metricOverstaffing);
@@ -78,11 +83,14 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
 
   calculateGrandTotal(): void {
     this.grandTotal = 0;
+    this.grandPercent = 0;
     for (const metric of this.metrics) {
       this.grandTotal += metric.savings;
+      const percent = this.savingsService.calculatePercent(metric.savings, this.totalSpend);
+      this.grandPercent += Math.round(percent);
     }
     setTimeout(() => {
-      this.bdProgress.updateValues(this.grandTotal, this.totalSpend);
+      this.bdProgress.updateValues(this.grandTotal, this.grandPercent);
     });
   }
 
