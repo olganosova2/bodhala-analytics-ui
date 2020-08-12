@@ -7,7 +7,7 @@ import {
   UTBMSChartOptions,
   taxonomyChartOptions,
   utbmsPieDonut,
-  ITaxonomyData,
+  ITaxonomyData, trendChart,
 } from '../firm.model';
 import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
@@ -23,7 +23,7 @@ import { SpyNgModuleFactoryLoader } from '@angular/router/testing';
   templateUrl: './utbms.component.html',
   styleUrls: ['./utbms.component.scss']
 })
-export class UtbmsComponent implements OnInit {
+export class UtbmsComponent implements OnInit, OnDestroy {
   errorMessage: any;
   chartData: IUTBMSData;
   taxonomyChartData: ITaxonomyData;
@@ -265,14 +265,14 @@ export class UtbmsComponent implements OnInit {
   }
 
   formatChartSeries(): void {
-    if (this.userService.hasEntitlement('analytics.utbms.codes')) {
+    if (this.userService.hasEntitlement('analytics.utbms.codes') && this.chartUTBMS.series) {
       this.chartUTBMS.series[0].setData(this.chartData.taskdata);
       this.chartUTBMS.series[1].setData(this.chartData.activitydata);
     }
     this.loaded = true;
   }
   formatChartSeriesTaxonomy(): void {
-    if (this.userService.hasEntitlement('analytics.phase.taxonomy')) {
+    if (this.userService.hasEntitlement('analytics.phase.taxonomy') && this.chartTaxonomy.series) {
       this.chartTaxonomy.series[0].setData(this.taxonomyChartData.phasedata);
       this.chartTaxonomy.series[1].setData(this.taxonomyChartData.subphasedata);
     }
@@ -286,7 +286,7 @@ export class UtbmsComponent implements OnInit {
   saveInstanceTaxonomy(chartInstance): void {
     this.chartTaxonomy = chartInstance;
   }
-  OnDestroy() {
+  ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }

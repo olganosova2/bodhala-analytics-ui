@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LeadAttorneyComponent } from './lead-attorney.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../shared/unit-tests/mock-app.imports';
-import {MattersComponent} from '../matters/matters.component';
+import { OverstaffingGridComponent } from './overstaffing-grid.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
+import {ProgressSemiCircleComponent} from '../progress-semi-circle/progress-semi-circle.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as mockServices from '../shared/unit-tests/mock-services';
-import {ActivatedRouteMock} from '../shared/unit-tests/mock-services';
-import {FiltersService} from '../shared/services/filters.service';
+import * as mockServices from '../../shared/unit-tests/mock-services';
+import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
+import {FiltersService} from '../../shared/services/filters.service';
 
-describe('LeadAttorneyComponent', () => {
-  let component: LeadAttorneyComponent;
-  let fixture: ComponentFixture<LeadAttorneyComponent>;
+describe('OverstaffingGridComponent', () => {
+  let component: OverstaffingGridComponent;
+  let fixture: ComponentFixture<OverstaffingGridComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -23,7 +23,7 @@ describe('LeadAttorneyComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(LeadAttorneyComponent, {
+    }).overrideComponent(OverstaffingGridComponent, {
       set: {
         providers: [
           AppStateService,
@@ -38,14 +38,13 @@ describe('LeadAttorneyComponent', () => {
       .compileComponents();
   }));
 
-
   beforeEach(() => {
-    fixture = TestBed.createComponent(LeadAttorneyComponent);
+    fixture = TestBed.createComponent(OverstaffingGridComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create OverstaffingGridComponent', () => {
     expect(component).toBeTruthy();
   });
 });

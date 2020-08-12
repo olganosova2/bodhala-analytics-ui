@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { InjectionToken } from '@angular/core';
 import { LinkComponent } from './link.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS, SERVICE_PROVIDERS} from '../../../../shared/unit-tests/mock-app.imports';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -9,9 +9,12 @@ import {ngWindow} from '../../../../shared/unit-tests/mock-services';
 import {TopMattersComponent} from '../../../../firm/top-matters/top-matters.component';
 import {Router} from '@angular/router';
 
+export const LOCATION_TOKEN = new InjectionToken<Location>('Window location object');
+
 describe('LinkComponent', () => {
   let component: LinkComponent;
   let fixture: ComponentFixture<LinkComponent>;
+
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
@@ -52,10 +55,23 @@ describe('LinkComponent', () => {
     expect(component.clicked).toBeTruthy();
    // expect(component.clicked).toHaveBeenCalledWith({column: component.column, data: null });
   });
-  it('should call inject', () => {
+  it('should call onClick', () => {
     spyOn(component.clicked, 'emit');
     component.onClick({ key1: 'test'});
     expect(component.clicked).toBeTruthy();
+  });
+  it('should navigate', () => {
+    const data = {param1: 87};
+    component.column = { route: '/firm', route_params: 'param1'};
+    component.onClick(data);
+    expect (mockRouter.navigate).toHaveBeenCalledWith([ '/firm', 87]);
+  });
+  it('should onclick action', () => {
+    spyOn(component.clicked, 'emit');
+    const data = {param1: 87};
+    component.column = { action: (e) => {}};
+    component.onClick(data);
+    expect(component.clicked.emit).toHaveBeenCalledWith({column: component.column, data});
   });
   // it('should call goToView', () => {
   //   spyOn(window, 'location').and.returnValue({ location: null });

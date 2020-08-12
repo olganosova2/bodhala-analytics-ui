@@ -41,6 +41,7 @@ describe('EsTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EsTableComponent);
     component = fixture.componentInstance;
+    component.maxDate = '2019-06-24';
     fixture.detectChanges();
   });
 

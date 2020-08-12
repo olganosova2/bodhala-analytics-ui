@@ -84,19 +84,6 @@ export interface ILeadPartner {
 
 }
 
-// export interface ILeadPartner {
-//     id: string;
-//     name: string;
-//     seniority: string;
-//     bio_image_url: string;
-//     firm: string;
-//     lawfirm_id: number;
-//     total: number;
-//     total_billed: number;
-//     total_afa: number;
-//     current_rate: number;
-// }
-
 export const paTrendChart = {
     chart: {
       type: 'line',

@@ -6,7 +6,6 @@ import {HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {CommonService} from '../../shared/services/common.service';
 import * as config from '../../shared/services/config';
-// import * as config from '../shared/services/config';
 
 @Component({
   selector: 'bd-pa-top-lead-partners',
@@ -29,6 +28,7 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
+    const temp = this.filtersService.getCurrentUserCombinedFilters();
     this.getLeadPartners();
   }
 
@@ -71,22 +71,28 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
       }
     );
   }
-  goToView(): void {
+
+  setLocalStorage(): void {
     const qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
     let serializedQs = JSON.parse(qs).querystring.toString();
     const tempQs = JSON.parse(qs);
-    tempQs.querystring = serializedQs;
-    serializedQs += '&practiceAreas=["' + encodeURIComponent(this.practiceArea.client_matter_type) + '"]';
-    tempQs.querystring = serializedQs;
+    if (tempQs !== undefined) {
+      tempQs.querystring = serializedQs;
+      serializedQs += '&practiceAreas=["' + encodeURIComponent(this.practiceArea.client_matter_type) + '"]';
+      tempQs.querystring = serializedQs;
 
-    for (const filter of tempQs.dataFilters) {
-      if (filter.fieldName === 'practiceAreas') {
-        filter.value = [{id: this.practiceArea.client_matter_type, name: this.practiceArea.client_matter_type, sortField: this.practiceArea.client_matter_type}];
-        break;
+      for (const filter of tempQs.dataFilters) {
+        if (filter.fieldName === 'practiceAreas') {
+          filter.value = [{id: this.practiceArea.client_matter_type, name: this.practiceArea.client_matter_type, sortField: this.practiceArea.client_matter_type}];
+          break;
+        }
       }
+      localStorage.setItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id, JSON.stringify(tempQs));
     }
-    localStorage.setItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id, JSON.stringify(tempQs));
+  }
 
+  goToView(): void {
+    this.setLocalStorage();
     window.location.href = '/#/app/client-dashboard/lead-attorneys?practiceArea=' + this.practiceArea.client_matter_type;
   }
   goToLPView(href: string, id: string, firmId: number): void {
