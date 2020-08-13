@@ -26,7 +26,7 @@ describe('LaunchPadService', () => {
   });
 
   it('LaunchPadService should be created', () => {
-    const service: LaunchPadService = TestBed.get(LaunchPadService);
+    const service: LaunchPadService = TestBed.inject(LaunchPadService);
     expect(service).toBeTruthy();
   });
   it('LaunchPadService should fetch data', inject([LaunchPadService], (service: LaunchPadService) => {

@@ -7,16 +7,31 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AgGridModule} from 'ag-grid-angular';
 import 'ag-grid-enterprise';
-import {
-  MatBadgeModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
-  MatDialogModule,
-  MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
-  MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
-  MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule, MatSliderModule
-} from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
-import {MomentModule} from 'angular2-moment';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
 import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
@@ -34,7 +49,6 @@ import {appRouterConfig} from './app.routes';
 import { InjectionToken } from '@angular/core';
 
 
-import { FlexLayoutModule } from '@angular/flex-layout';
 import {SliderModule} from 'primeng/slider';
 import {FiltersService} from './shared/services/filters.service';
 import {UserFiltersModel} from './shared/models/user-filters';
@@ -82,6 +96,7 @@ import { SavingsCalculatorComponent } from './savings-calculator/savings-calcula
 import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savings-widget.component';
 import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
 import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
+import {BaseCell} from './launchpad/card/cells/base-cell';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -91,20 +106,6 @@ export function initUser(config: UserService) {
 }
 export function initHttp(service: HttpService) {
   return () => service.loadConfig(CONFIG);
-}
-export function highchartsFactory() {
-  // return highcharts;
-  const hc = require('highcharts');
-  borderRadius(hc);
-  const dd = require('highcharts/modules/exporting');
-  hc.setOptions({
-    lang: {
-      thousandsSep: ','
-    }
-  });
-  dd(hc);
-
-  return hc;
 }
 @NgModule({
   declarations: [
@@ -150,7 +151,7 @@ export function highchartsFactory() {
     SavingsCalculatorComponent,
     SavingsWidgetComponent,
     ProgressSemiCircleComponent,
-    OverstaffingGridComponent,
+    OverstaffingGridComponent
   ],
   entryComponents: [
     PillComponent,
@@ -186,16 +187,15 @@ export function highchartsFactory() {
     MatSlideToggleModule,
     MatRadioModule,
     MatSliderModule,
-    MomentModule,
     NgIdleKeepaliveModule.forRoot(),
     MatBadgeModule,
     MatDialogModule,
     BodhalaUiCommonModule,
     BodhalaUiElementsModule,
-    FlexLayoutModule,
     MatButtonToggleModule,
     MatTabsModule,
-    ChartModule,
+    // ChartModule,
+    ChartModule.forRoot(highcharts),
     DropdownModule,
     OverlayPanelModule,
     SliderModule,
@@ -214,10 +214,6 @@ export function highchartsFactory() {
       useFactory: initUser,
       deps: [UserService],
       multi: true
-    },
-    {
-      provide: HighchartsStatic,
-      useFactory: highchartsFactory
     },
     DatePipe,
     FiltersService,

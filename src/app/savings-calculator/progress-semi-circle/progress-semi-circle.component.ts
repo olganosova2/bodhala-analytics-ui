@@ -10,8 +10,8 @@ export class ProgressSemiCircleComponent implements OnInit, AfterViewInit {
   percent: number = 0;
   @Input() total: number = 0;
   @Input() grandTotal: number = 0;
-  @ViewChild('barOverflow', {static: false}) barOverflow: ElementRef;
-  @ViewChild('bar', {static: false}) bar: ElementRef;
+  @ViewChild('barOverflow') barOverflow: ElementRef;
+  @ViewChild('bar') bar: ElementRef;
 
   constructor(private renderer: Renderer2,
               public savingsService: SavingsCalculatorService) {

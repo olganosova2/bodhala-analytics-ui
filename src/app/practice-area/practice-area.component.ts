@@ -31,15 +31,15 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   rightColsCount: number = 12;
   pendingRequest: Subscription;
   pendingRequestPracticeArea: Subscription;
-  @ViewChild(BillingTotalsComponent, {static: false}) billingTotals: BillingTotalsComponent;
-  @ViewChild(SpendByMonthComponent, {static: false}) spendByMonth: SpendByMonthComponent;
-  @ViewChild(TopMattersComponent, {static: false}) topMatters: TopMattersComponent;
-  @ViewChild(ScoreTrendComponent, {static: false}) scoreTrend: ScoreTrendComponent;
-  @ViewChild(DiversityComponent, {static: false}) diversity: DiversityComponent;
-  @ViewChild(UtbmsComponent, {static: false}) utbms: UtbmsComponent;
+  @ViewChild(BillingTotalsComponent) billingTotals: BillingTotalsComponent;
+  @ViewChild(SpendByMonthComponent) spendByMonth: SpendByMonthComponent;
+  @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
+  @ViewChild(ScoreTrendComponent) scoreTrend: ScoreTrendComponent;
+  @ViewChild(DiversityComponent) diversity: DiversityComponent;
+  @ViewChild(UtbmsComponent) utbms: UtbmsComponent;
 
-  @ViewChild(PaTopLeadPartnersComponent, {static: false}) topLeadPartners: PaTopLeadPartnersComponent;
-  @ViewChild(PaTopFirmsComponent, {static: false}) topFirms: PaTopFirmsComponent;
+  @ViewChild(PaTopLeadPartnersComponent) topLeadPartners: PaTopLeadPartnersComponent;
+  @ViewChild(PaTopFirmsComponent) topFirms: PaTopFirmsComponent;
 
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,

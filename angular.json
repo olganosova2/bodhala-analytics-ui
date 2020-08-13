@@ -22,10 +22,16 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
+            ],
+            "allowedCommonJsDependencies": [
+              "jspdf",
+              "angular2-highcharts",
+              "ag-grid-enterprise",
+              "chart.js"
             ],
             "styles": [
               "node_modules/simple-line-icons/css/simple-line-icons.css",
@@ -60,7 +66,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": false,
@@ -78,6 +83,12 @@
               ]
             },
             "int": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -86,6 +97,12 @@
               ]
             },
             "stage": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -94,6 +111,12 @@
               ]
             },
             "prod": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

@@ -23,7 +23,7 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
   @Input() firmId: number;
   @Input() firm: IFirm;
   pendingRequest: Subscription;
-  @ViewChild('spendByMonthDiv', {static: false}) spendByMonthDiv: ElementRef<HTMLElement>;
+  @ViewChild('spendByMonthDiv') spendByMonthDiv: ElementRef<HTMLElement>;
 
   constructor(private httpService: HttpService,
               public filtersService: FiltersService) {

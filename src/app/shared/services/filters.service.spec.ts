@@ -17,7 +17,7 @@ describe('FiltersService', () => {
   });
 
   it('FiltersService should be created', () => {
-    const service: FiltersService = TestBed.get(FiltersService);
+    const service: FiltersService = TestBed.inject(FiltersService);
     expect(service).toBeTruthy();
   });
   it('should setCurrentUserFilters and check Start Date', inject([FiltersService], (service: FiltersService) => {

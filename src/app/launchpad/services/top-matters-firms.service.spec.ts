@@ -27,7 +27,7 @@ describe('TopMattersFirmsService', () => {
   });
 
   it('TopMattersFirmsService should be created', () => {
-    const service: TopMattersFirmsService = TestBed.get(TopMattersFirmsService);
+    const service: TopMattersFirmsService = TestBed.inject(TopMattersFirmsService);
     expect(service).toBeTruthy();
   });
   it('TopMattersFirmsService should fetchMatters', inject([TopMattersFirmsService], (service: TopMattersFirmsService) => {

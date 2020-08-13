@@ -19,14 +19,14 @@
   font-family: 'Sharp Sans';
   font-style: normal;
   font-weight: normal;
-  src: local('Sharp Sans'), local('Sharp Sans'), url(src/assets/fonts/sharpsans/SharpSans-Medium.woff2) format('woff2');
+  src: local('Sharp Sans'), local('Sharp Sans'), url(./assets/fonts/sharpsans/SharpSans-Medium.woff2) format('woff2');
 }
 /* sharpsans display bold */
 @font-face {
   font-family: 'Sharp Sans Display';
   font-style: normal;
   font-weight: 700;
-  src: local('Sharp Sans Display'), local('Sharp Sans Display'), url(src/assets/fonts/sharpsansdisplay/SharpSansDispNo1-Bold.woff2) format('woff2');
+  src: local('Sharp Sans Display'), local('Sharp Sans Display'), url(./assets/fonts/sharpsansdisplay/SharpSansDispNo1-Bold.woff2) format('woff2');
 }
 //@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
 //@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";

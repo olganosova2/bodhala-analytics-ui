@@ -23,7 +23,7 @@ describe('InvoiceIqService', () => {
   });
 
   it('InvoiceIqService should be created', () => {
-    const service: InvoiceIqService = TestBed.get(InvoiceIqService);
+    const service: InvoiceIqService = TestBed.inject(InvoiceIqService);
     expect(service).toBeTruthy();
   });
   it('InvoiceIqService should fetchLeadPartners', inject([InvoiceIqService], (service: InvoiceIqService) => {

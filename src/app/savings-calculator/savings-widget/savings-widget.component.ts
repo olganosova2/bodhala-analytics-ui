@@ -4,7 +4,7 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {CommonService} from '../../shared/services/common.service';
 import {IMetric, pieDonutOptions, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
 import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
 
