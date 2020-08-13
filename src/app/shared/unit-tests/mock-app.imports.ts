@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
+import * as highcharts from 'highcharts';
 
 
 import { appRouterConfig } from '../../app.routes';
@@ -56,9 +57,7 @@ import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bo
 import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
 import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { ChartModule } from 'angular2-highcharts';
-import borderRadius from 'highcharts-border-radius';
 import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
 import {LinkComponent} from '../../launchpad/card/cells/link/link.component';
 import {UtbmsComponent} from '../../firm/utbms/utbms.component';
@@ -89,21 +88,6 @@ import {OverstaffingGridComponent} from '../../savings-calculator/overstaffing-g
 import {EsTableComponent} from '../../launchpad/executive-summary/es-table/es-table.component';
 import {EsTotalItemComponent} from '../../launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
 import {SpendOverviewComponent} from '../../launchpad/executive-summary/spend-overview/spend-overview.component';
-
-export function highchartsFactory() {
-  // return highcharts;
-  const hc = require('highcharts');
-  borderRadius(hc);
-  const dd = require('highcharts/modules/exporting');
-  hc.setOptions({
-    lang: {
-      thousandsSep: ','
-    }
-  });
-  dd(hc);
-
-  return hc;
-}
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -138,7 +122,7 @@ export const IMPORTS = [
   MatAutocompleteModule,
   MatStepperModule,
   NgbModule,
-  ChartModule,
+  ChartModule.forRoot(highcharts),
   DropdownModule,
   OverlayPanelModule,
   AgGridModule.withComponents([])
@@ -200,10 +184,6 @@ export const PROVIDERS = [
   TopMattersFirmsService,
   DatePipe,
   CommonService,
-  {
-    provide: HighchartsStatic,
-    useFactory: highchartsFactory
-  },
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },

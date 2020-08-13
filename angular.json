@@ -27,6 +27,12 @@
               "src/favicon.ico",
               "src/assets"
             ],
+            "allowedCommonJsDependencies": [
+              "jspdf",
+              "angular2-highcharts",
+              "ag-grid-enterprise",
+              "chart.js"
+            ],
             "styles": [
               "node_modules/simple-line-icons/css/simple-line-icons.css",
               "./node_modules/primeicons/primeicons.css",

@@ -22,7 +22,7 @@ describe('SpendByPracticeAreaService', () => {
     }).compileComponents();
   });
   it('should be created', () => {
-    const service: SpendByPracticeAreaService = TestBed.get(SpendByPracticeAreaService);
+    const service: SpendByPracticeAreaService = TestBed.inject(SpendByPracticeAreaService);
     expect(service).toBeTruthy();
   });
   it('SpendByPracticeAreaService should fetchLeadPartners', inject([SpendByPracticeAreaService], (service: SpendByPracticeAreaService) => {

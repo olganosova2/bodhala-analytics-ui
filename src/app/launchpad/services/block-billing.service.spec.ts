@@ -21,7 +21,7 @@ describe('BlockBillingService', () => {
     }).compileComponents();
   });
   it('should be created', () => {
-    const service: BlockBillingService = TestBed.get(BlockBillingService);
+    const service: BlockBillingService = TestBed.inject(BlockBillingService);
     expect(service).toBeTruthy();
   });
   it('BlockBillingService should getBlockBillingFirms', inject([BlockBillingService], (service: BlockBillingService) => {

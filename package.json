@@ -1,6 +1,7 @@
 {
   "name": "bodhala-analytics-ui",
   "version": "0.0.0",
+  "browserslist" : [],
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json --port 4300",

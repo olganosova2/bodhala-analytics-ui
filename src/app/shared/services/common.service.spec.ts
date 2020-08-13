@@ -18,7 +18,7 @@ describe('CommonService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('CommonService should be created', () => {
-    const service: CommonService = TestBed.get(CommonService);
+    const service: CommonService = TestBed.inject(CommonService);
     expect(service).toBeTruthy();
   });
   it('CommonService should formatTkName', inject([CommonService], (service: CommonService) => {

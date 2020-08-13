@@ -96,6 +96,7 @@ import { SavingsCalculatorComponent } from './savings-calculator/savings-calcula
 import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savings-widget.component';
 import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
 import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
+import {BaseCell} from './launchpad/card/cells/base-cell';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -105,20 +106,6 @@ export function initUser(config: UserService) {
 }
 export function initHttp(service: HttpService) {
   return () => service.loadConfig(CONFIG);
-}
-export function highchartsFactory() {
-  // return highcharts;
-  const hc = require('highcharts');
-  borderRadius(hc);
-  const dd = require('highcharts/modules/exporting');
-  hc.setOptions({
-    lang: {
-      thousandsSep: ','
-    }
-  });
-  dd(hc);
-
-  return hc;
 }
 @NgModule({
   declarations: [
@@ -164,7 +151,7 @@ export function highchartsFactory() {
     SavingsCalculatorComponent,
     SavingsWidgetComponent,
     ProgressSemiCircleComponent,
-    OverstaffingGridComponent,
+    OverstaffingGridComponent
   ],
   entryComponents: [
     PillComponent,
@@ -228,10 +215,6 @@ export function highchartsFactory() {
       deps: [UserService],
       multi: true
     },
-    // {
-    //   provide: HighchartsStatic,
-    //   useFactory: highchartsFactory
-    // },
     DatePipe,
     FiltersService,
     UserFiltersModel,
