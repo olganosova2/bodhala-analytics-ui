@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 export interface ICommonFilters {
   clientId: number;
   startdate: string;
@@ -77,6 +78,7 @@ export interface IDataFilters {
   maxFirmMatterCount: number;
   excludeOpposingFirms: boolean;
 }
+@Injectable()
 export class UserFiltersModel {
   getFirmSizes(sizes: Array<any>): Array<any> {
     if (!sizes || !sizes.length || sizes.length !== 2) {

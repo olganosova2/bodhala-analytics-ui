@@ -7,16 +7,31 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AgGridModule} from 'ag-grid-angular';
 import 'ag-grid-enterprise';
-import {
-  MatBadgeModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatChipsModule, MatDatepickerModule,
-  MatDialogModule,
-  MatExpansionModule, MatFormFieldModule, MatGridListModule, MatIconModule, MatInputModule, MatMenuModule,
-  MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule,
-  MatRadioModule, MatSelectModule,
-  MatSlideToggleModule, MatSortModule, MatTableModule, MatButtonToggleModule, MatTabsModule, MatSliderModule
-} from '@angular/material';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
-import {MomentModule} from 'angular2-moment';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
 import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
@@ -34,7 +49,6 @@ import {appRouterConfig} from './app.routes';
 import { InjectionToken } from '@angular/core';
 
 
-import { FlexLayoutModule } from '@angular/flex-layout';
 import {SliderModule} from 'primeng/slider';
 import {FiltersService} from './shared/services/filters.service';
 import {UserFiltersModel} from './shared/models/user-filters';
@@ -186,13 +200,11 @@ export function highchartsFactory() {
     MatSlideToggleModule,
     MatRadioModule,
     MatSliderModule,
-    MomentModule,
     NgIdleKeepaliveModule.forRoot(),
     MatBadgeModule,
     MatDialogModule,
     BodhalaUiCommonModule,
     BodhalaUiElementsModule,
-    FlexLayoutModule,
     MatButtonToggleModule,
     MatTabsModule,
     ChartModule,

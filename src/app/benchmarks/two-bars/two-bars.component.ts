@@ -22,7 +22,7 @@ export class TwoBarsComponent implements OnInit, AfterViewInit {
   @Input() highestRate: number = 0;
   @Input() dataRow: IBenchmarkOverviewRow;
   @Input() firmDetail: boolean = false;
-  @ViewChild('chartPanel', {static: false}) chartPanel: ElementRef<HTMLElement>;
+  @ViewChild('chartPanel') chartPanel: ElementRef<HTMLElement>;
 
   constructor(public bmService: BenchmarkService) {
   }

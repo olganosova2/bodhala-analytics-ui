@@ -30,13 +30,13 @@ export class FirmComponent implements OnInit, OnDestroy {
   helpText: string = 'The data points included below show current firmographic information on this law firm';
   pendingRequest: Subscription;
   pendingRequestFirm: Subscription;
-  @ViewChild(BillingTotalsComponent, {static: false}) billingTotals: BillingTotalsComponent;
-  @ViewChild(TopTimekeepersComponent, {static: false}) topTKs: TopTimekeepersComponent;
-  @ViewChild(TopMattersComponent, {static: false}) topMatters: TopMattersComponent;
-  @ViewChild(SpendByMonthComponent, {static: false}) spendByMonth: SpendByMonthComponent;
-  @ViewChild(DiversityComponent, {static: false}) diversity: DiversityComponent;
-  @ViewChild(UtbmsComponent, {static: false}) utbms: UtbmsComponent;
-  @ViewChild(ScoreTrendComponent, {static: false}) scoreAndTrend: ScoreTrendComponent;
+  @ViewChild(BillingTotalsComponent) billingTotals: BillingTotalsComponent;
+  @ViewChild(TopTimekeepersComponent) topTKs: TopTimekeepersComponent;
+  @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
+  @ViewChild(SpendByMonthComponent) spendByMonth: SpendByMonthComponent;
+  @ViewChild(DiversityComponent) diversity: DiversityComponent;
+  @ViewChild(UtbmsComponent) utbms: UtbmsComponent;
+  @ViewChild(ScoreTrendComponent) scoreAndTrend: ScoreTrendComponent;
 
   constructor(private route: ActivatedRoute,
               public router: Router,

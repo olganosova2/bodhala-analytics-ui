@@ -10,7 +10,7 @@ import * as config from './shared/services/config';
 import { environment } from '../environments/environment';
 import {KEEP_ALIVE_SEC} from './shared/services/config';
 import {Title} from '@angular/platform-browser';
-import {MatDialog} from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import {Keepalive} from '@ng-idle/keepalive';
 import {FiltersService} from './shared/services/filters.service';
 import {CommonService} from './shared/services/common.service';

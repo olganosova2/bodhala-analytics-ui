@@ -12,24 +12,28 @@ import { appRouterConfig } from '../../app.routes';
 import { UtilService } from 'bodhala-ui-common';
 import {CookieService} from 'ngx-cookie-service';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {
-  MAT_DIALOG_DATA, MatAccordion, MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule, MatCheckboxModule,
-  MatChipsModule, MatDatepickerModule,
-  MatDialogModule, MatDialogRef, MatExpansionModule,
-  MatFormFieldModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatMenuModule, MatNativeDateModule,
-  MatPaginatorModule, MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatSelectModule, MatSlideToggleModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import * as mockServices from '../unit-tests/mock-services';
 
@@ -37,7 +41,6 @@ import { AppComponent } from '../../app.component';
 import {UserFiltersModel} from '../models/user-filters';
 import {LaunchpadComponent} from '../../launchpad/launchpad.component';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
-import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
 import {TopMattersFirmsService} from '../../launchpad/services/top-matters-firms.service';
 import {InsightsComponent} from '../../launchpad/insights/insights.component';
@@ -129,7 +132,6 @@ export const IMPORTS = [
   MatNativeDateModule,
   MatDialogModule,
   MatSlideToggleModule,
-  MomentModule,
   NgIdleKeepaliveModule.forRoot(),
   MatProgressBarModule,
   MatExpansionModule,

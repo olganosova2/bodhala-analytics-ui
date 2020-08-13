@@ -13,7 +13,7 @@ export class CellComponent implements AfterViewInit, AfterViewChecked, OnInit {
   @Output() changed: EventEmitter<any> = new EventEmitter();
   @Output() clicked: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('container', { read: ViewContainerRef, static: false })
+  @ViewChild('container', { read: ViewContainerRef })
   container: ViewContainerRef;
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver, private ref: ChangeDetectorRef) { }

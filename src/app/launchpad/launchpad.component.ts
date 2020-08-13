@@ -15,10 +15,10 @@ import {UserService} from 'bodhala-ui-common';
 export class LaunchpadComponent implements OnInit, OnDestroy {
   pageName = 'app.client-dashboard.launchpad';
   selectedTabIndex: number = 0;
-  @ViewChild('launchpad', {static: false})
+  @ViewChild('launchpad')
   container: ElementRef;
 
-  @ViewChild('insights', {read: ElementRef, static: false})
+  @ViewChild('insights', { read: ElementRef })
   insights: ElementRef;
 
   cards: Array<any> = []; // cards;
