@@ -207,7 +207,8 @@ export function highchartsFactory() {
     BodhalaUiElementsModule,
     MatButtonToggleModule,
     MatTabsModule,
-    ChartModule,
+    // ChartModule,
+    ChartModule.forRoot(highcharts),
     DropdownModule,
     OverlayPanelModule,
     SliderModule,
@@ -227,10 +228,10 @@ export function highchartsFactory() {
       deps: [UserService],
       multi: true
     },
-    {
-      provide: HighchartsStatic,
-      useFactory: highchartsFactory
-    },
+    // {
+    //   provide: HighchartsStatic,
+    //   useFactory: highchartsFactory
+    // },
     DatePipe,
     FiltersService,
     UserFiltersModel,

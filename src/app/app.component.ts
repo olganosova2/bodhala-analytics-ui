@@ -41,7 +41,9 @@ export class AppComponent implements OnDestroy {
     this.appStateService.loadRoutes(config.ROUTES);
     this.filtersService.setCurrentUserFilters();
     this.httpService.callInProgress.subscribe(value => {
-      this.progress = value ? value : false;
+      setTimeout(() => {
+        this.progress = value ? value : false;
+      });
     });
     this.ieVersion = this.utilService.getIEVersion();
     titleService.setTitle(config.uiTitleString);
