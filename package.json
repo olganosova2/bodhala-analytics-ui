@@ -1,7 +1,7 @@
 {
   "name": "bodhala-analytics-ui",
   "version": "0.0.0",
-  "browserslist" : [],
+  "browserslist": [],
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json --port 4300",
@@ -40,7 +40,7 @@
     "ag-grid-enterprise": "^23.1.1",
     "angular2-highcharts": "^0.5.5",
     "bodhala-ui-common": "git+ssh://git@bitbucket.org/bodhala/bodhala-ui-common.git#angular10",
-    "bodhala-ui-elements": "git+ssh://git@bitbucket.org/bodhala/bodhala-ui-elements.git#angular9",
+    "bodhala-ui-elements": "git+ssh://git@bitbucket.org/bodhala/bodhala-ui-elements.git#develop27",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.3",
     "classlist.js": "^1.1.20150312",
