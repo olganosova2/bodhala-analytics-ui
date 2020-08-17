@@ -88,6 +88,7 @@ export class CommonService {
     }
 
     html2canvas(document.getElementById(divId), {
+      useCORS: true,
       width: htmlWidth,
       height: htmlHeight,
       scrollY: -window.scrollY,
