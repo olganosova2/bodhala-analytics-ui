@@ -68,6 +68,11 @@ export class SpendOverviewComponent implements OnInit {
       format: 'currency',
     });
     this.totals.push({
+      total: this.totalsRaw.total_hours,
+      name: 'Total Hours Billed',
+      format: 'number',
+    });
+    this.totals.push({
       total: this.filtersService.includeExpenses ? this.totalsRaw.avg_matter_cost_including_expenses.avg_cost : this.totalsRaw.avg_matter_cost.avg_cost || 0,
       name: 'Average Matter Cost',
       format: 'currency',
@@ -93,23 +98,11 @@ export class SpendOverviewComponent implements OnInit {
       format: 'currency',
     });
     this.totals.push({
-      total: this.totalsRaw.partner_tks_per_matter.avg,
-      name: 'Average Partners per Matter',
-      format: 'number',
-    });
-    this.totals.push({
       total: this.totalsRaw.avg_associate_rate,
       name: 'Average Associate Rate',
       format: 'currency',
     });
-    this.totals.push({
-      total: this.totalsRaw.associate_tks_per_matter.avg,
-      name: 'Average Associates per Matter',
-      format: 'number',
-    });
     this.itemRowCount = this.totals.length;
     this.totals[this.totals.length - 1].lastCell = true;
-
   }
-
 }

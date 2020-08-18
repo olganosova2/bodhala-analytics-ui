@@ -35,6 +35,8 @@ export interface ITopMatterES {
     total_partner_billed: number;
     total_associate_billed: number;
     total_partner_hours: number;
+    total_hours: number;
+    partner_percent_hours_worked: number;
     total_associate_hours: number;
     avg_partner_rate: number;
     link: string;
@@ -94,6 +96,8 @@ export interface ITopFirmES {
     associate_billed: number;
     associate_hours: number;
     partner_hours: number;
+    total_hours: number;
+    partner_percent_hours_worked: number;
     total_firm_matters: number;
     firm_block_billed: number;
     matter_cost_closed: number;
