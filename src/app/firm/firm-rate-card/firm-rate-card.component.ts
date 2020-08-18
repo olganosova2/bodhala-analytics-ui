@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
+import * as config from '../../shared/services/config';
 const moment = _moment;
 import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {IFirm} from '../firm.model';
@@ -49,7 +50,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               public userService: UserService,
               public router: Router) {
     this.commonServ.pageTitle = 'Firms > Report Card';
-    this.logoUrl = this.userService.currentUser.client_info.org.logo_url;
+    this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
   }
 
   ngOnInit() {
@@ -181,6 +182,16 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
   goToTop(): void {
     window.scroll(0, 0);
+  }
+  formatLogoUrl(url: string): string {
+    let result = '';
+    if (!url) {
+      return result;
+    }
+    const domain = config.IS_LOCAL ? 'bodhala-assets.s3.amazonaws.com' : window.location.host;
+    const ix = url.indexOf('/img/clients/');
+    result = 'https://' + domain + url.substring(ix);
+    return result;
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
