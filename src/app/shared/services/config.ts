@@ -2,8 +2,8 @@ import {environment} from '../../../environments/environment';
 import {Input} from '@angular/core';
 
 export const BASE_URL = environment.apiUrl;
-export const IS_LOCAL = (window.location.hostname.indexOf('localhost') >= 0 || window.location.hostname.indexOf('127.0.0.1')) >= 0 ? true : false;
 export const HOST = environment.host;
+export const IS_LOCAL = window.location.host.indexOf('127.0.0.1') >= 0 ? true : false;
 export const SAVED_FILTERS_NAME = 'ELEMENTS_dataFilters_';
 
 export const END_POINTS_URLS = {

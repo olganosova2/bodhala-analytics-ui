@@ -188,9 +188,12 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     if (!url) {
       return result;
     }
-    const domain = config.IS_LOCAL ? 'bodhala-assets.s3.amazonaws.com' : window.location.host;
     const ix = url.indexOf('/img/clients/');
-    result = 'https://' + domain + url.substring(ix);
+    if (config.IS_LOCAL) {
+      result = config.HOST + url.substring(ix);
+    } else {
+      result = 'https://' + window.location.host + url.substring(ix);
+    }
     return result;
   }
   ngOnDestroy() {
