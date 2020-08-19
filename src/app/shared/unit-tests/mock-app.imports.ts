@@ -88,6 +88,7 @@ import {OverstaffingGridComponent} from '../../savings-calculator/overstaffing-g
 import {EsTableComponent} from '../../launchpad/executive-summary/es-table/es-table.component';
 import {EsTotalItemComponent} from '../../launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
 import {SpendOverviewComponent} from '../../launchpad/executive-summary/spend-overview/spend-overview.component';
+import {TaskCostComponent} from '../../task-cost/task-cost.component';
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -167,7 +168,8 @@ export const DECLARATIONS = [
   SavingsCalculatorComponent,
   SavingsWidgetComponent,
   ProgressSemiCircleComponent,
-  OverstaffingGridComponent
+  OverstaffingGridComponent,
+  TaskCostComponent
 ];
 
 export const PROVIDERS = [

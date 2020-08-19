@@ -97,6 +97,7 @@ import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savi
 import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
 import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
 import {BaseCell} from './launchpad/card/cells/base-cell';
+import { TaskCostComponent } from './task-cost/task-cost.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -151,7 +152,8 @@ export function initHttp(service: HttpService) {
     SavingsCalculatorComponent,
     SavingsWidgetComponent,
     ProgressSemiCircleComponent,
-    OverstaffingGridComponent
+    OverstaffingGridComponent,
+    TaskCostComponent
   ],
   entryComponents: [
     PillComponent,

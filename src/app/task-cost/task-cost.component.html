@@ -1,0 +1,28 @@
+<div class="content-body-inner-wrapper">
+  <bd-ie-banner></bd-ie-banner>
+  <bd-error-messages></bd-error-messages>
+  <div>
+    <lib-bd-filters
+      (sendFilters)="refreshData($event)"
+      [pageName]="pageName"
+      [pageType]="pageType"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+  <div class="panel-wrapper flex-container">
+    <ag-grid-angular
+        #agGrid
+        style="width: 100%;"
+        [ngStyle]="{'height': agGridService.setGridHeight(taskCostData, paginationPageSize) +'px'}"
+        class="ag-theme-alpine"
+        [pagination]="true"
+        [paginationPageSize]="paginationPageSize"
+        [sideBar]="sideBarConfig"
+        (displayedColumnsChanged)="saveGridConfig($event)"
+        (sortChanged)="saveGridConfig($event);"
+        (columnResized)="saveGridConfig($event);"
+        [gridOptions]="gridOptions"
+        (gridReady)="loadTaskCost()">
+    </ag-grid-angular>
+  </div>
+</div>
