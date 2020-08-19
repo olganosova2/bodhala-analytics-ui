@@ -4,7 +4,7 @@ import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
 import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY, MOCK_PHASE_TAXONOMY, MOCK_UTBMS_CODES} from './mock-data/firm';
 import {convertToParamMap} from '@angular/router';
-import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC} from './mock-data/billing-totals';
+import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC, MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
 import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
@@ -89,6 +89,8 @@ export class DataStub {
         return of({result: [ MOCK_FIRM ]});
       case 'getBillingTotals':
         return of(MOCK_BILLING_TOTALS);
+      case 'getExecutiveSummaryBillingTotals':
+        return of(MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS);
       case 'reportCardBillingTotals':
         return of(MOCK_BILLING_TOTALS_RC);
       case 'spendByMonth':

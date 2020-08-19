@@ -64,7 +64,6 @@ export class EsTableComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryData', params).subscribe(
       (data: any) => {
         if (data.result) {
-          console.log("DATA: ", data);
           this.topFirms = data.result.firms;
           this.topFirmsByPA = data.result.firmsByPA;
           this.topFirmsPriorYear = data.result.firmsPriorYear;

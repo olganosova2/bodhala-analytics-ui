@@ -15,6 +15,8 @@ import { NumberFilter } from 'ag-grid-community';
 
 export interface ISpendOverviewItem {
     total: number;
+    priorYearTotal: number;
+    diff: number;
     name: string;
     format?: string;
     lastCell?: boolean;
