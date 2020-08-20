@@ -18,6 +18,8 @@ describe('EsTotalItemComponent', () => {
   };
   const MOCK_ES_ITEM = {
     total: 100,
+    priorYearTotal: 95,
+    diff: 5,
     name: 'Item 1',
     format: null,
     lastCell: false
