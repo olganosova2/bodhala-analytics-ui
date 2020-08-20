@@ -84,7 +84,6 @@ export class EsTableComponent implements OnInit {
           this.processTKData();
         }
         this.isLoaded = true;
-
       },
       err => {
         this.errorMessage = err;
@@ -100,6 +99,9 @@ export class EsTableComponent implements OnInit {
         firm.blended_rate_formatted = this.formatter.format(firm.blended_rate);
       } else {
         firm.blended_rate_formatted = '--';
+      }
+      if (firm.total_hours > 0 && firm.total_hours !== null) {
+        firm.partner_percent_hours_worked = firm.partner_hours / firm.total_hours;
       }
       if (firm.partner_hours > 0 && (firm.partner_hours !== null || firm.partner_hours !== undefined)) {
         firm.avg_partner_rate = firm.partner_billed / firm.partner_hours;
@@ -144,6 +146,9 @@ export class EsTableComponent implements OnInit {
         firm.blended_rate_formatted = this.formatter.format(firm.blended_rate);
       } else {
         firm.blended_rate_formatted = '--';
+      }
+      if (firm.total_hours > 0 && firm.total_hours !== null) {
+        firm.partner_percent_hours_worked = firm.partner_hours / firm.total_hours;
       }
       if (firm.partner_billed > 0 && (firm.partner_billed !== null || firm.partner_billed !== undefined)) {
         firm.partner_percent = firm.partner_billed / firm.total_billed;
@@ -284,10 +289,17 @@ export class EsTableComponent implements OnInit {
       if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
         matter.avg_partner_rate = matter.total_partner_billed / matter.total_partner_hours;
       }
+
+      if (matter.total_hours > 0 && matter.total_hours !== null) {
+        matter.partner_percent_hours_worked = matter.total_partner_hours / matter.total_hours;
+      }
     }
     for (const matter of this.topMattersByPA) {
       if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
         matter.avg_partner_rate = matter.total_partner_billed / matter.total_partner_hours;
+      }
+      if (matter.total_hours > 0 && matter.total_hours !== null) {
+        matter.partner_percent_hours_worked = matter.total_partner_hours / matter.total_hours;
       }
     }
 

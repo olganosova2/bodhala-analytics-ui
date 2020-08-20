@@ -45,7 +45,7 @@
                     <th>Average Matter Cost</th>
                     <th>Blended Attorney Rate</th>
                     <th>Block Billing $</th>
-                    <th>Partner % Billed by $</th>
+                    <th>Partner % of Hours Worked</th>
                 </tr>
                 <tr *ngFor="let firm of topFirms">
                   <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
@@ -54,7 +54,7 @@
                     <td>{{firm.avg_matter_cost_formatted}}</td>
                     <td>{{firm.blended_rate_formatted}}</td>
                     <td>${{firm.firm_block_billed | number:'1.0-0'}}</td>
-                    <td>{{firm.partner_percent * 100 | number:'1.0-0'}}%</td>
+                    <td>{{firm.partner_percent_hours_worked * 100 | number:'1.0-0'}}%</td>
                 </tr>
             </table>
         </div>
@@ -76,7 +76,7 @@
                     <th class="matter-cell">Blended Attorney Rate</th>
                     <th class="matter-cell">Bodhala Price Index</th>
                     <th class="matter-cell">Average Partner Rate</th>
-                    <th class="matter-cell">Partner % Billed by $</th>
+                    <th class="matter-cell">Partner % of Hours Worked</th>
                 </tr>
                 <tr *ngFor="let matter of topMatters">
                   <td><a class="href-link-primary" href="/#/app/client-dashboard/matter/{{matter.id}}">{{matter.name}}</a></td>
@@ -85,7 +85,7 @@
                     <td>${{matter.blended_rate| number:'1.0-0'}}</td>
                     <td>${{matter.bodhala_price_index | number:'1.0-0'}}</td>
                     <td>${{matter.avg_partner_rate | number:'1.0-0'}}</td>
-                    <td>{{matter.partner_percent * 100 | number:'1.0-0'}}%</td>
+                    <td>{{matter.partner_percent_hours_worked * 100 | number:'1.0-0'}}%</td>
                 </tr>
             </table>
         </div>
@@ -133,7 +133,7 @@
                     <th>Average Matter Cost</th>
                     <th>Blended Attorney Rate</th>
                     <th>Block Billing $</th>
-                    <th>Partner % Billed by $</th>
+                    <th>Partner % of Hours Worked</th>
                 </tr>
                 <tr *ngFor="let firm of topFirmsByPA">
                   <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
@@ -142,7 +142,7 @@
                     <td>{{firm.avg_matter_cost_formatted}}</td>
                     <td>{{firm.blended_rate_formatted}}</td>
                     <td>${{firm.firm_block_billed | number:'1.0-0'}}</td>
-                    <td>{{firm.partner_percent * 100 | number:'1.0-0'}}%</td>
+                    <td>{{firm.partner_percent_hours_worked * 100 | number:'1.0-0'}}%</td>
                 </tr>
             </table>
         </div>
@@ -160,7 +160,7 @@
                     <th class="matter-cell">Blended Attorney Rate</th>
                     <th class="matter-cell">Bodhala Price Index</th>
                     <th class="matter-cell">Average Partner Rate</th>
-                    <th class="matter-cell">Partner % Billed by $</th>
+                    <th class="matter-cell">Partner % of Hours Worked</th>
                 </tr>
                 <tr *ngFor="let matter of topMattersByPA">
                   <td><a class="href-link-primary" href="/#/app/client-dashboard/matter/{{matter.id}}">{{matter.name}}</a></td>
@@ -169,7 +169,7 @@
                     <td>${{matter.blended_rate| number:'1.0-0'}}</td>
                     <td>${{matter.bodhala_price_index | number:'1.0-0'}}</td>
                     <td>${{matter.avg_partner_rate | number:'1.0-0'}}</td>
-                    <td>{{matter.partner_percent * 100 | number:'1.0-0'}}%</td>
+                    <td>{{matter.partner_percent_hours_worked * 100 | number:'1.0-0'}}%</td>
                 </tr>
             </table>
         </div>
