@@ -84,7 +84,6 @@ export class EsTableComponent implements OnInit {
           this.processTKData();
         }
         this.isLoaded = true;
-
       },
       err => {
         this.errorMessage = err;

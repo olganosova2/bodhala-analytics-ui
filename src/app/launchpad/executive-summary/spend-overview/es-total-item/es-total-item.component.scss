@@ -12,7 +12,7 @@
 .bottom-cell-item {
   color: $body-color;
   margin:0;
-  padding: 5px 30px 10px 30px;
+  padding: 5px 10px 10px 30px;
   // border-right: $gray-blue-bg 1px solid;
   border-right: $gray-blue-bg 1px solid;
   border-top: $gray-blue-bg 1px solid;
@@ -40,12 +40,22 @@ em {
 .img-div {
   min-height: 33px;
 }
-.temp {
-  // display: inline-block;
+.bottom-cell-data {
   width: 100%;
   font-size: 0.9em;
 }
 .font-bold-bottom {
   font-weight: 600;
-  // font-size: 1em !important;
+}
+.fa-arrow-up {
+  color: red;
+}
+.fa-arrow-down {
+  color: green;
+}
+.arrow-up{
+  color: red;
+}
+.arrow-down{
+  color: green;
 }
