@@ -149,7 +149,9 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     if (!this.chart.series || this.chart.series.length !== 2) {
       return;
     }
+    console.log("REZ: ", result);
     this.chart.series[0].setData(result);
+    console.log("chart data: ", this.chart.series[0].data);
     if (this.firm) {
       this.chart.series[0].options.name = this.firm.name;
       this.chart.series[0].update(this.chart.series[0].options);

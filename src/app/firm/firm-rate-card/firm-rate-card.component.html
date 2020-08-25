@@ -18,7 +18,7 @@
 
     </div>
     <div class="pull-right">
-      <button class="primary-button ml20" (click)="commonServ.generatePDF(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv')" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+      <button class="primary-button ml20" (click)="commonServ.generatePDF(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', firmId)" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
       </button>
       <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
@@ -33,6 +33,7 @@
     <bd-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
                        *ngIf="firmId && firm"></bd-billing-totals>
     <bd-rate-card-tables [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
+    <!-- <bd-spend-by-quarter [firmId]="firmId" [practiceArea]="pa"></bd-spend-by-quarter> -->
     <hr id="hrEnd_{{i}}"/>
   </div>
 </div>

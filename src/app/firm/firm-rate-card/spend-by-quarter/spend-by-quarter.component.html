@@ -1,0 +1,40 @@
+<div *ngIf="options" class="panel-wrapper" #spendByQuarterDiv>
+    <!-- <div class="tabs-panel">
+        <span class="tab-button tab-button-first"
+              [ngClass]="{'tab-button-selected-first': selectedChart === chartTypes.LEVERAGE }"
+              (click)="changeViewMode(chartTypes.LEVERAGE)">Leverage</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.MATTER_COST}"
+            (click)="changeViewMode(chartTypes.MATTER_COST)">Matter Cost</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BLOCK_BILLING}"
+            (click)="changeViewMode(chartTypes.BLOCK_BILLING)">Block Billing</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARTNER_RATE}"
+            (click)="changeViewMode(chartTypes.PARTNER_RATE)">Partner Rate</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_RATE}"
+            (click)="changeViewMode(chartTypes.ASSOCIATE_RATE)">Associate Rate</span>
+
+    </div> -->
+    <!-- <h4 class="mb20">Spend by Quarter</h4> -->
+    <div class="tabs-panel">
+        <span class="tab-button"
+              [ngClass]="{'tab-button-selected-first': selectedChart === chartTypes.LEVERAGE }"
+              (click)="changeViewMode(chartTypes.LEVERAGE)">Leverage</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.MATTER_COST}"
+            (click)="changeViewMode(chartTypes.MATTER_COST)">Matter Cost</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BLOCK_BILLING}"
+            (click)="changeViewMode(chartTypes.BLOCK_BILLING)">Block Billing</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARTNER_RATE}"
+            (click)="changeViewMode(chartTypes.PARTNER_RATE)">Partner Rate</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_RATE}"
+            (click)="changeViewMode(chartTypes.ASSOCIATE_RATE)">Associate Rate</span>
+
+    </div>
+    <chart [options]="options" (load)="saveInstance($event.context)" width="100%"></chart>
+  </div>

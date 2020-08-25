@@ -1,6 +1,10 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import {Subscription} from 'rxjs';
+import {HttpService, UserService} from 'bodhala-ui-common';
+import { FiltersService } from './filters.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +14,11 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
+  pendingRequest: Subscription;
 
-  constructor() {
-  }
+  constructor(public httpService: HttpService,
+              public userService: UserService,
+              public filtersService: FiltersService) {}
 
   clearTitles(): void {
     this.pageSubtitle = '';
@@ -43,7 +49,22 @@ export class CommonService {
     return result;
   }
 
-  generatePDF(title: string, divId: string) {
+  savePDFExport(firmId: string): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    params.filter_set = qs;
+    params.firmId = firmId;
+    console.log("params: ", params);
+    this.httpService.makePostRequest('saveExport', params).subscribe(
+      (data: any) => {
+        console.log("returned export data: ", data);
+      }
+    );
+    
+  }
+
+  generatePDF(title: string, divId: string, firmId: string) {
+    this.savePDFExport(firmId);
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
