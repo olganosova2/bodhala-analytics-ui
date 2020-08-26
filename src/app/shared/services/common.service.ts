@@ -51,7 +51,8 @@ export class CommonService {
 
   savePDFExport(firmId: string): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
-    const qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    let qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    qs = JSON.parse(qs);
     params.filter_set = qs;
     params.firmId = firmId;
     console.log("params: ", params);
