@@ -61,7 +61,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const dates = this.filtersService.parseLSDateString();
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
@@ -77,7 +77,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
       this.loadPAs();
     });
     this.matDialog.closeAll();
-    this.checkSavedReports();
+    await this.checkSavedReports();
   }
 
   initFirm(): void {
@@ -188,32 +188,29 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     );
   }
 
-  checkSavedReports(): void {
+  checkSavedReports(): Promise<Subscription> {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
-    // arr.push(this.firmId.toString());
-    // params.firms = JSON.stringify(arr);
     if (this.firmId) {
       arr.push(this.firmId.toString());
       params.firmId = JSON.stringify(arr);
     }
-    this.pendingRequest = this.httpService.makeGetRequest('getSavedExports', params).subscribe(
-      (data: any) => {
-        if (data.result.length > 0) {
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getSavedExports', params).subscribe(
+        (data: any) => {
+          if (!data.result) {
+            return;
+          }
           this.savedReportsAvailable = true;
           this.savedReports = data.result;
-          console.log("checkSavedReports : ", this.savedReports);
+          resolve();
         }
-      },
-      err => {
-        this.errorMessage = err;
-      }
-    );
+      );
+    });
   }
 
-  showSavedReports(): void {
-    this.checkSavedReports();
-    console.log("showSavedReports: ", this.savedReports);
+  async showSavedReports(): Promise<void> {
+    await this.checkSavedReports();
     this.matDialog.open(SavedReportsModalComponent, {
       data: this.savedReports
     });

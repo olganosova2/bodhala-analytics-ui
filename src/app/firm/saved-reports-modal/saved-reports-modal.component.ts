@@ -1,5 +1,5 @@
 import {Component, OnInit, Inject} from '@angular/core';
-import {UserService, HttpService} from 'bodhala-ui-common';
+import {UserService, HttpService, UtilService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {GridOptions, Module, _} from 'ag-grid-community';
 import { DatePipe } from '@angular/common';
@@ -32,7 +32,8 @@ export class SavedReportsModalComponent implements OnInit {
               public userService: UserService,
               public httpService: HttpService,
               public datepipe: DatePipe,
-              public router: Router) { }
+              public router: Router,
+              public utilServ: UtilService) { }
 
   ngOnInit(): void {
     this.savedReportData = this.data;
@@ -41,16 +42,15 @@ export class SavedReportsModalComponent implements OnInit {
   }
 
   processData(): void {
-    for (let data of this.data) {
-      data.print_date = this.dateFormatter(data.print_date);
-      data.username = this.userService.currentUser.first_name + ' ' + this.userService.currentUser.last_name;
-      let temp = data.filter_set.datestring.split('&');
-      data.startdate = temp[1].split('=')[1];
-      data.enddate = temp[2].split('=')[1];
-      data.startdate = this.dateFormatter(data.startdate);
-      data.enddate = this.dateFormatter(data.enddate);
+    for (const rec of this.savedReportData) {
+      rec.print_date = this.dateFormatter(rec.print_date);
+      rec.username = this.userService.currentUser.first_name + ' ' + this.userService.currentUser.last_name;
+      const temp = rec.filter_set.datestring.split('&');
+      rec.startdate = temp[1].split('=')[1];
+      rec.enddate = temp[2].split('=')[1];
+      rec.startdate = this.dateFormatter(rec.startdate);
+      rec.enddate = this.dateFormatter(rec.enddate);
     }
-    
   }
 
   dateFormatter(date) {
@@ -58,7 +58,6 @@ export class SavedReportsModalComponent implements OnInit {
   }
 
   loadSavedExport(data): void {
-    console.log("loadSavedExport: ", data, typeof(data.filter_set));
     let temp = data.filter_set;
     temp = JSON.stringify(temp);
     localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), temp);
@@ -67,27 +66,25 @@ export class SavedReportsModalComponent implements OnInit {
     } else {
       localStorage.setItem('saved_filter_' + this.userService.currentUser.id.toString(), data.saved_view);
     }
-    // localStorage.setItem('saved_report_' + this.userService.currentUser.id.toString(), data.print_date);
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['analytics-ui/firm/report-card/' + data.lawfirm_id]);
-    }); 
+    });
   }
 
-  deleteSavedExport(data): void {
+  deleteSavedExport(exportData): void {
     let params = {};
     let lawfirmId = 0;
-    if (data.lawfirm_id) {
-      lawfirmId = data.lawfirm_id
+    if (exportData.lawfirm_id) {
+      lawfirmId = exportData.lawfirm_id;
     }
-    if (data.id) {
-      params = {id: data.id};
+    if (exportData.id) {
+      params = {id: exportData.id};
     }
-    console.log("params: ", params);
     this.pendingRequest = this.httpService.makeDeleteRequest('deleteSavedExport', params).subscribe(
       (data: any) => {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate(['analytics-ui/firm/report-card/' + lawfirmId]);
-        }); 
+        });
       },
       err => {
         this.errorMessage = err;

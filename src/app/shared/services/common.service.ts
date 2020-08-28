@@ -61,10 +61,8 @@ export class CommonService {
     params.pageName = this.pageTitle;
     const savedView = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
     params.savedView = savedView;
-    console.log("params export: ", params);
     this.httpService.makePostRequest('saveExport', params).subscribe(
       (data: any) => {
-        console.log("returned export data: ", data);
       }
     );
   }
