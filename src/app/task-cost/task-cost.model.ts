@@ -11,5 +11,6 @@ export interface ITaskCost {
   total_matters: number;
   total_matters_group: number;
   total_matters_column: number;
+  line_item_task_code_formatted?: string;
 }
 

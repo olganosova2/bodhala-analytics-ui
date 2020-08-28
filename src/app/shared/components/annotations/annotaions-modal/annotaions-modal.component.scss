@@ -1,0 +1,64 @@
+@import "../../../../../assets/styles/colors.scss";
+.dialog-content {
+  // max-height: 46vh;
+  // overflow-x: auto;
+}
+.ql-font-monospace {
+  font-family: "Monaco, Courier New, monospace";
+}
+.icon-note {
+  font-size: 1.2em;
+  margin-right: 10px;
+}
+.icon-close{
+  font-size: 2.0em;
+}
+.cancel-button{
+  color: $body-color;
+  background-color: $gray-blue-bg;
+}
+:host ::ng-deep {
+  .ui-g-9 {
+    padding-left: 0;
+  }
+  blockquote {
+    margin-left: 15px;
+    border-left: 4px solid $brand-blue;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 16px;
+  }
+  .ql-font-monospace {
+    font-family: Monaco, Courier New, monospace;
+  }
+  .ql-font-serif {
+    font-family: Georgia, Times New Roman, serif;
+  }
+  .ql-size-large {
+    font-size: 1.5em;
+  }
+  .ql-size-huge {
+    font-size: 2.5em;
+  }
+  .ql-size-small {
+    font-size: 0.75em;
+  }
+  .ql-align-right {
+    text-align: right;
+  }
+  .ql-align-center {
+    text-align: center;
+  }
+  pre.ql-syntax {
+    background-color: $body-color;
+    color: #f8f8f2;
+    overflow: visible;
+  }
+  .ui-splitbutton.ui-buttonset .ui-menu {
+    width: 50px !important;
+    text-align: left;
+  }
+  .mat-dialog-content {
+    max-height: 77vh;
+  }
+}

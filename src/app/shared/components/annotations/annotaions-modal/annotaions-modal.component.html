@@ -1,0 +1,62 @@
+<div>
+  <div mat-dialog-title>
+    <div class="pull-left"><h3 #topHeader><em class="icon-note"></em>Annotations</h3></div>
+    <div class="pull-right">
+      <em class="icon-close" [mat-dialog-close]="notes"></em>
+    </div>
+    <div class="clear-both"></div>
+  </div>
+  <mat-dialog-content>
+    <div #modalDiv>
+      <div class="href-link-primary" (click)="scrollToId(bottomClose)" *ngIf="showToBottom">New+</div>
+      <div class="dialog-content mt20">
+        <div *ngFor="let note of notes">
+          <div class="ui-g">
+            <div class="ui-g-9">
+              <bd-annotation-labels [note]="note" [isPublicDefault]="isPublicDefault"></bd-annotation-labels>
+              <span *ngIf="note.user_id === userService.currentUser.id">
+            <mat-checkbox color="primary" [(ngModel)]="note.is_public" (ngModelChange)="setPublic(note)"></mat-checkbox>
+            <span class="ml5">Public</span>
+          </span>
+            </div>
+            <div class="ui-g-3 text-right">
+          <span class="text-right mb10 mr20" *ngIf="!note.editMode && note.user_id === userService.currentUser.id">
+              <span class="href-link-primary" (click)="note.editMode=true">Edit</span>
+              <span class="href-link-secondary ml20" (click)="openDialog(note)">Delete</span>
+          </span>
+            </div>
+          </div>
+
+
+          <div *ngIf="!note.editMode">
+            <div [innerHTML]="note.notes | safe: 'html'">"></div>
+          </div>
+          <div *ngIf="note.editMode">
+            <quill-editor [styles]="commonServ.editorStyle" [(ngModel)]="note.notes"
+                          [modules]="quillConfig"></quill-editor>
+            <div class="text-right mb10 mt10" *ngIf="note.editMode && note.user_id === userService.currentUser.id">
+              <button class="primary-button cancel-button mr5" (click)="editNote(note)">Cancel</button>
+              <button class="primary-button" (click)="cancelEdit(note)">Save</button>
+            </div>
+          </div>
+          <hr/>
+        </div>
+      </div>
+      <div class="full-width">
+        <h4>Add New Annotation</h4>
+        <quill-editor [styles]="commonServ.editorStyle" [(ngModel)]="newNote.notes"
+                      [modules]="quillConfig"></quill-editor>
+        <div class="mt10">
+          <mat-checkbox color="primary"
+                        [(ngModel)]="newNote.is_public">Public
+          </mat-checkbox>
+        </div>
+        <div>
+          <button class="primary-button mt10" [disabled]="!newNote.notes" (click)="addNote()">Save</button>
+        </div>
+      </div>
+      <div #bottomClose class="pull-right">
+      </div>
+    </div>
+  </mat-dialog-content>
+</div>

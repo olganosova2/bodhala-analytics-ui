@@ -10,6 +10,9 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
+  editorStyle = {
+    height: '150px'
+  };
 
   constructor() {
   }
@@ -41,6 +44,13 @@ export class CommonService {
       result = result.substring(0, 25) + '...';
     }
     return result;
+  }
+
+  generatePdfOuter(title: string, divId: string) {
+    this.pdfLoading = true;
+    setTimeout(() => {
+      this.generatePDF(title, divId);
+    });
   }
 
   generatePDF(title: string, divId: string) {
@@ -117,6 +127,7 @@ export class CommonService {
       }
     })
       .catch(() => {
+        this.pdfLoading = false;
         /* This is fired when the promise executes without the DOM */
       });
   }
@@ -126,5 +137,16 @@ export class CommonService {
       return '';
     }
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  formatPath(path: string): string {
+    let result = path;
+    const ix = path.indexOf('?');
+    if (ix >= 0) {
+      result = path.substring(ix);
+    }
+    return result;
+  }
+  formatHtml(text: string): string {
+    return text.replace(/\n/g, '<br/>');
   }
 }

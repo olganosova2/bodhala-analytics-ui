@@ -1,0 +1,8 @@
+.ag-sort-order {
+  display: none !important;
+}
+:host ::ng-deep {
+  .ag-sort-order {
+    display: none !important;
+  }
+}

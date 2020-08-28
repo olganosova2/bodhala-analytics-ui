@@ -1,4 +1,4 @@
-import {Component, OnInit, HostListener, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import {CommonService} from '../../shared/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -6,6 +6,8 @@ import {FiltersService} from '../../shared/services/filters.service';
 import {Subscription} from 'rxjs';
 import { DatePipe } from '@angular/common';
 import * as _moment from 'moment';
+import * as config from '../../shared/services/config';
+import {IUiAnnotation} from '../../shared/components/annotations/model';
 
 const moment = _moment;
 
@@ -14,12 +16,14 @@ const moment = _moment;
   templateUrl: './executive-summary.component.html',
   styleUrls: ['./executive-summary.component.scss']
 })
-export class ExecutiveSummaryComponent implements OnInit {
+export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   errorMessage: any;
   maxDate: string;
   lowerDateRange: string;
   upperDateRange: string;
+  notes: Array<IUiAnnotation> = [];
+  uiId: string = config.UI_ANNOTATIONS_IDS.executiveSummary;
   // errorMessage: any;
   // summary: any;
   // isLoaded: boolean = false;
@@ -66,6 +70,13 @@ export class ExecutiveSummaryComponent implements OnInit {
       }
     );
   }
-
+  loadNotes(notes: Array<IUiAnnotation>): void {
+    this.notes = Object.assign([], notes);
+  }
+  ngOnDestroy() {
+    if (this.pendingRequest) {
+      this.pendingRequest.unsubscribe();
+    }
+  }
 
 }
