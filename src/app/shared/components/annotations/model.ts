@@ -16,4 +16,5 @@ export interface IUiAnnotation {
   editMode?: boolean;
   first_name?: string;
   last_name?: string;
+  dropDownOpened?: boolean;
 }

@@ -104,6 +104,7 @@ import { AnnotationsComponent } from './shared/components/annotations/annotation
 import { AnnotaionsModalComponent } from './shared/components/annotations/annotaions-modal/annotaions-modal.component';
 import { SafePipe } from './shared/pipes/safe.pipe';
 import { AnnotationLabelsComponent } from './shared/components/annotations/annotation-labels/annotation-labels.component';
+import {ClickOutsideModule} from 'ng-click-outside';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -213,7 +214,8 @@ export function initHttp(service: HttpService) {
     OverlayPanelModule,
     SliderModule,
     AgGridModule.withComponents([]),
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    ClickOutsideModule
   ],
   providers: [CookieService,
     UserService,

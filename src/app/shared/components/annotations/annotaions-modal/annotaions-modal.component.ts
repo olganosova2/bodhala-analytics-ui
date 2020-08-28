@@ -76,6 +76,7 @@ export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewIni
       note = this.utilService.shallowCopy(note, found);
     }
     note.editMode = false;
+    note.dropDownOpened = false;
   }
   setPublic(note: IUiAnnotation): void {
     const params = note;
@@ -104,6 +105,7 @@ export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewIni
               this.masterList[ix] = this.utilService.shallowCopy(this.masterList[ix], responseObj);
             }
             params.editMode = false;
+            params.dropDownOpened = false;
           }
         }
       },
@@ -124,7 +126,8 @@ export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewIni
       json_config: {},
       deleted_on: null,
       deleted_by: null,
-      editMode: false
+      editMode: false,
+      dropDownOpened: false
     };
   }
   openDialog(note: IUiAnnotation): void {
@@ -143,9 +146,12 @@ export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewIni
   checkShowToBottom(): void {
     const modalHeight = window.innerHeight * 0.9;
     const modalContentHeight = this.modalDiv.nativeElement.offsetHeight;
-    if (modalContentHeight - 250 > modalHeight) {
+    if (modalContentHeight - 200 > modalHeight) {
       this.showToBottom = true;
     }
+  }
+  onClickedOutside(event: any, note: IUiAnnotation): void {
+    note.dropDownOpened = false;
   }
   ngOnDestroy() {
     if (this.pendingRequest) {
