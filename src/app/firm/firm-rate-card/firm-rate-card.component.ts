@@ -8,6 +8,9 @@ const moment = _moment;
 import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {IFirm} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
+import {MatDialog} from '@angular/material/dialog';
+import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
+
 
 @Component({
   selector: 'bd-firm-rate-card',
@@ -19,6 +22,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   firm: IFirm;
   selectedPracticeArea: string = '';
   errorMessage: any;
+  pendingRequest: Subscription;
   pendingRequestFirm: Subscription;
   pendingRequestPAs: Subscription;
   pendingRequestSummary: Subscription;
@@ -26,6 +30,9 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   enddate: string;
   startdate: string;
   showToTop: boolean = false;
+  savedReportsAvailable: boolean = false;
+  savedReports: any;
+  savedReportDate: string = null;
   otherFirms: boolean = false;
   percentOfTotal: number;
   rank: number;
@@ -48,7 +55,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService,
               public utilServ: UtilService,
               public userService: UserService,
-              public router: Router) {
+              public router: Router,
+              public matDialog: MatDialog) {
     this.commonServ.pageTitle = 'Firms > Report Card';
     this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
   }
@@ -58,6 +66,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
     this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
+    // this.savedReportDate = localStorage.getItem('saved_report_' + this.userService.currentUser.id.toString());
     const paramsLS = this.filtersService.parseLSQueryString();
     if (paramsLS.firms !== null && paramsLS.firms !== undefined) {
       this.otherFirms = true;
@@ -67,6 +76,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
       this.initFirm();
       this.loadPAs();
     });
+    this.matDialog.closeAll();
+    this.checkSavedReports();
   }
 
   initFirm(): void {
@@ -175,6 +186,37 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         this.errorMessage = err;
       }
     );
+  }
+
+  checkSavedReports(): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const arr = [];
+    // arr.push(this.firmId.toString());
+    // params.firms = JSON.stringify(arr);
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firmId = JSON.stringify(arr);
+    }
+    this.pendingRequest = this.httpService.makeGetRequest('getSavedExports', params).subscribe(
+      (data: any) => {
+        if (data.result.length > 0) {
+          this.savedReportsAvailable = true;
+          this.savedReports = data.result;
+          console.log("checkSavedReports : ", this.savedReports);
+        }
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
+  }
+
+  showSavedReports(): void {
+    this.checkSavedReports();
+    console.log("showSavedReports: ", this.savedReports);
+    this.matDialog.open(SavedReportsModalComponent, {
+      data: this.savedReports
+    });
   }
 
   editReportCard(): void {

@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
-import {Subscription} from 'rxjs';
+import {Subscription, Subject} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
+// import {FirmRateCardComponent} from '../../firm/firm-rate-card/firm-rate-card.component';
+// import {SavedReportsModalComponent} from '../../firm/saved-reports-modal/saved-reports-modal.component';
 
 
 @Injectable({
@@ -15,6 +17,7 @@ export class CommonService {
   exportImage = null;
   pdfLoading: boolean = false;
   pendingRequest: Subscription;
+  invokeEvent: Subject<any> = new Subject();
 
   constructor(public httpService: HttpService,
               public userService: UserService,
@@ -55,17 +58,21 @@ export class CommonService {
     qs = JSON.parse(qs);
     params.filter_set = qs;
     params.firmId = firmId;
-    console.log("params: ", params);
+    params.pageName = this.pageTitle;
+    const savedView = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
+    params.savedView = savedView;
+    console.log("params export: ", params);
     this.httpService.makePostRequest('saveExport', params).subscribe(
       (data: any) => {
         console.log("returned export data: ", data);
       }
     );
-    
   }
 
   generatePDF(title: string, divId: string, firmId: string) {
-    this.savePDFExport(firmId);
+    if (title.includes('Rate Card')) {
+      this.savePDFExport(firmId);
+    }
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);

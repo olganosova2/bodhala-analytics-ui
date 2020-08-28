@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SpendByQuarterComponent } from './spend-by-quarter.component';
+import { SavedReportsModalComponent } from './saved-reports-modal.component';
 
-describe('SpendByQuarterComponent', () => {
-  let component: SpendByQuarterComponent;
-  let fixture: ComponentFixture<SpendByQuarterComponent>;
+describe('SavedReportsModalComponent', () => {
+  let component: SavedReportsModalComponent;
+  let fixture: ComponentFixture<SavedReportsModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SpendByQuarterComponent ]
+      declarations: [ SavedReportsModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SpendByQuarterComponent);
+    fixture = TestBed.createComponent(SavedReportsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

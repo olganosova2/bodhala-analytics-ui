@@ -31,6 +31,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
@@ -97,7 +98,7 @@ import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savi
 import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
 import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
 import {BaseCell} from './launchpad/card/cells/base-cell';
-import { SpendByQuarterComponent } from './firm/firm-rate-card/spend-by-quarter/spend-by-quarter.component';
+import { SavedReportsModalComponent } from './firm/saved-reports-modal/saved-reports-modal.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -153,7 +154,7 @@ export function initHttp(service: HttpService) {
     SavingsWidgetComponent,
     ProgressSemiCircleComponent,
     OverstaffingGridComponent,
-    SpendByQuarterComponent
+    SavedReportsModalComponent
   ],
   entryComponents: [
     PillComponent,
@@ -196,6 +197,7 @@ export function initHttp(service: HttpService) {
     BodhalaUiElementsModule,
     MatButtonToggleModule,
     MatTabsModule,
+    MatTooltipModule,
     // ChartModule,
     ChartModule.forRoot(highcharts),
     DropdownModule,
