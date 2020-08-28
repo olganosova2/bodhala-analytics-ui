@@ -57,7 +57,8 @@ export const END_POINTS_URLS = {
   getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
   getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
   getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
-
+  getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
+  getAnnotations: {url: BASE_URL + 'client/annotations', showLoading: false},
   getSavingsCalculator: {url: BASE_URL + 'analytics/getSavingsCalculator', showLoading: true},
 };
 
@@ -66,7 +67,8 @@ export const ROUTES = [
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
-  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: 'analytics-ui/practiceArea/'}
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: 'analytics-ui/practiceArea/'},
+  {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
 
@@ -121,5 +123,31 @@ export const SAVINGS_CALCULATOR_CONFIG = {
     height: '80vh',
     width: '80vw',
   }
+};
+export const UI_ANNOTATIONS_IDS = {
+  executiveSummary: 'ExecutiveSummary'
+};
+export const quillConfig = {
+  toolbar: [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+
+    [{ header: 1 }, { header: 2 }],               // custom button values
+    [{ list: 'ordered'}, { list: 'bullet' }],
+    [{ script: 'sub'}, { script: 'super' }],      // superscript/subscript
+    [{ indent: '-1'}, { indent: '+1' }],          // outdent/indent
+    [{ direction: 'rtl' }],                         // text direction
+
+    [{ size: ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ color: [] }, { background: [] }],          // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+
+    ['clean'],                                         // remove formatting button
+
+    ['link', 'image']                         // link and image, video
+  ]
 };
 

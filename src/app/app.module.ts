@@ -47,9 +47,11 @@ import { LaunchpadComponent } from './launchpad/launchpad.component';
 import {RouterModule} from '@angular/router';
 import {appRouterConfig} from './app.routes';
 import { InjectionToken } from '@angular/core';
+import { QuillModule } from 'ngx-quill';
 
 
 import {SliderModule} from 'primeng/slider';
+import { SplitButtonModule } from 'primeng/splitbutton';
 import {FiltersService} from './shared/services/filters.service';
 import {UserFiltersModel} from './shared/models/user-filters';
 import { CardComponent } from './launchpad/card/card.component';
@@ -97,6 +99,12 @@ import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savi
 import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
 import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
 import {BaseCell} from './launchpad/card/cells/base-cell';
+import { TaskCostComponent } from './task-cost/task-cost.component';
+import { AnnotationsComponent } from './shared/components/annotations/annotations.component';
+import { AnnotaionsModalComponent } from './shared/components/annotations/annotaions-modal/annotaions-modal.component';
+import { SafePipe } from './shared/pipes/safe.pipe';
+import { AnnotationLabelsComponent } from './shared/components/annotations/annotation-labels/annotation-labels.component';
+import {ClickOutsideModule} from 'ng-click-outside';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -151,12 +159,18 @@ export function initHttp(service: HttpService) {
     SavingsCalculatorComponent,
     SavingsWidgetComponent,
     ProgressSemiCircleComponent,
-    OverstaffingGridComponent
+    OverstaffingGridComponent,
+    TaskCostComponent,
+    AnnotationsComponent,
+    AnnotaionsModalComponent,
+    SafePipe,
+    AnnotationLabelsComponent
   ],
   entryComponents: [
     PillComponent,
     LinkComponent,
-    OverstaffingGridComponent
+    OverstaffingGridComponent,
+    AnnotaionsModalComponent
   ],
   imports: [
     HttpClientModule,
@@ -194,12 +208,14 @@ export function initHttp(service: HttpService) {
     BodhalaUiElementsModule,
     MatButtonToggleModule,
     MatTabsModule,
-    // ChartModule,
+    SplitButtonModule,
     ChartModule.forRoot(highcharts),
     DropdownModule,
     OverlayPanelModule,
     SliderModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    QuillModule.forRoot(),
+    ClickOutsideModule
   ],
   providers: [CookieService,
     UserService,
