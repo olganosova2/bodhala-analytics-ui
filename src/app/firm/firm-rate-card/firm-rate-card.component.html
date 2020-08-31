@@ -19,10 +19,11 @@
     </div>
     <div class="pull-right">
       <bd-annotations (notesUpdated)="loadNotes($event)" #annotations></bd-annotations>
-      <button class="primary-button ml20" (click)="commonServ.generatePdfOuter(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv')" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+      <button #tooltip="matTooltip" matTooltip="Export report to .pdf file"  class="primary-button ml20" (click)="generatePDF(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', firmId)" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
       </button>
-      <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
+      <button #tooltip="matTooltip" matTooltip="Edit filters for this report" class="primary-button ml20" (click)="editReportCard()">Edit</button>
+      <button *ngIf="savedReports.length > 0" #tooltip="matTooltip" matTooltip="View saved reports for {{commonServ.pageSubtitle}}" class="primary-button ml20" (click)="showSavedReports()">Saved</button>
     </div>
   </div>
   <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>

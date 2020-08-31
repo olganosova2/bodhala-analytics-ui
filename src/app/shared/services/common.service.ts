@@ -1,6 +1,10 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import {Subscription} from 'rxjs';
+import {HttpService, UserService} from 'bodhala-ui-common';
+import { FiltersService } from './filters.service';
+
 import {IUiAnnotation} from '../components/annotations/model';
 
 @Injectable({
@@ -11,12 +15,14 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
+  pendingRequest: Subscription;
   editorStyle = {
     height: '150px'
   };
 
-  constructor() {
-  }
+  constructor(public httpService: HttpService,
+              public userService: UserService,
+              public filtersService: FiltersService) {}
 
   clearTitles(): void {
     this.pageSubtitle = '';
@@ -47,14 +53,31 @@ export class CommonService {
     return result;
   }
 
+  savePDFExport(firmId: string): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    let qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    qs = JSON.parse(qs);
+    params.filter_set = qs;
+    params.firmId = firmId;
+    params.pageName = this.pageTitle;
+    const savedView = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
+    params.savedView = savedView;
+    this.httpService.makePostRequest('saveExport', params).subscribe(
+      (data: any) => {
+      }
+    );
+  }
   generatePdfOuter(title: string, divId: string) {
     this.pdfLoading = true;
     setTimeout(() => {
-      this.generatePDF(title, divId);
+      this.generatePDF(title, divId, null);
     });
   }
 
-  generatePDF(title: string, divId: string) {
+  generatePDF(title: string, divId: string, firmId: string) {
+    if (title.includes('Rate Card')) {
+      this.savePDFExport(firmId);
+    }
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
