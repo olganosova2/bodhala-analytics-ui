@@ -11,7 +11,7 @@
   margin-right: 10px;
 }
 .icon-close{
-  font-size: 2.0em;
+  font-size: 40px;
 }
 .cancel-button{
   color: $body-color;
@@ -92,5 +92,9 @@
   }
   .mat-dialog-content {
     max-height: 77vh;
+  }
+  .mat-icon {
+    font-size: 40px !important;
+    margin-right: 20px;
   }
 }
