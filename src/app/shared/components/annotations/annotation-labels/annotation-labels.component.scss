@@ -1,0 +1,15 @@
+@import "../../../../../assets/styles/colors.scss";
+.logo-circle {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding-top: 7px;
+  background: $fair-color;
+  border: 1px solid $fair-color;
+  color: #fff;
+  text-align: center;
+  font-size: 16px;
+  display: inline-block;
+  margin-right: 15px;
+  text-transform: uppercase;
+}

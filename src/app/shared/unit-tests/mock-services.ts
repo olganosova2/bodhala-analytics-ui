@@ -13,6 +13,8 @@ import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data
 import {SAVINGS_DATA} from './mock-data/savings-calculator';
 import {EXECUTIVE_SUMMARY} from './mock-data/execitive-summary';
 import {SPEND_BY_UTBMS_CODES} from './mock-data/uybms-codes';
+import {MOCK_TASK_COST} from './mock-data/task-cost';
+import {MOCK_ANNOTATIONS} from './mock-data/annotations';
 
 export const ngWindow = {
   location: {
@@ -135,6 +137,10 @@ export class DataStub {
         return of(SAVINGS_DATA);
       case 'getExecutiveSummaryData':
         return of(EXECUTIVE_SUMMARY);
+      case 'getTaskCost':
+        return of(MOCK_TASK_COST);
+      case 'getAnnotations':
+        return of(MOCK_ANNOTATIONS);
       default:
         return of([]);
     }

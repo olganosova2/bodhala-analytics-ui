@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import {IUiAnnotation} from '../components/annotations/model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,9 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
+  editorStyle = {
+    height: '150px'
+  };
 
   constructor() {
   }
@@ -41,6 +45,13 @@ export class CommonService {
       result = result.substring(0, 25) + '...';
     }
     return result;
+  }
+
+  generatePdfOuter(title: string, divId: string) {
+    this.pdfLoading = true;
+    setTimeout(() => {
+      this.generatePDF(title, divId);
+    });
   }
 
   generatePDF(title: string, divId: string) {
@@ -117,6 +128,7 @@ export class CommonService {
       }
     })
       .catch(() => {
+        this.pdfLoading = false;
         /* This is fired when the promise executes without the DOM */
       });
   }
@@ -126,5 +138,27 @@ export class CommonService {
       return '';
     }
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  formatPath(path: string): string {
+    let result = path;
+    const ix = path.indexOf('?');
+    if (ix >= 0) {
+      result = path.substring(ix);
+    }
+    return result;
+  }
+  formatHtml(text: string): string {
+    return text.replace(/\n/g, '<br/>');
+  }
+  formatInitials(note: IUiAnnotation): string {
+    let firstLetter = '';
+    let secondLetter = '';
+    if (note.first_name && note.first_name.length > 0) {
+      firstLetter = note.first_name.substring(0, 1);
+    }
+    if (note.last_name && note.last_name.length > 0) {
+      secondLetter = note.last_name.substring(0, 1);
+    }
+    return firstLetter + secondLetter;
   }
 }

@@ -8,6 +8,7 @@ import {MattersComponent} from './matters/matters.component';
 import {PracticeAreaComponent} from './practice-area/practice-area.component';
 import {FirmRateCardComponent} from './firm/firm-rate-card/firm-rate-card.component';
 import {SavingsCalculatorComponent} from './savings-calculator/savings-calculator.component';
+import {TaskCostComponent} from './task-cost/task-cost.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -29,6 +30,8 @@ export const appRouterConfig: Routes = [
   {path: 'firm/report-card/:id', component: FirmRateCardComponent},
   {path: 'analytics-ui/savings-calculator', component: SavingsCalculatorComponent},
   {path: 'savings-calculator', component: SavingsCalculatorComponent},
+  {path: 'analytics-ui/task-cost', component: TaskCostComponent},
+  {path: 'task-cost', component: TaskCostComponent},
   // {path: 'analytics.html', component: LaunchpadComponent},
   {path: '**',  component: LaunchpadComponent}
   ];
