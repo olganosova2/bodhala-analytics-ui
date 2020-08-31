@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
-import {Subscription, Subject} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
@@ -15,9 +15,7 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
-  savedPDFsAvailable: boolean = false;
   pendingRequest: Subscription;
-  invokeEvent: Subject<any> = new Subject();
   editorStyle = {
     height: '150px'
   };
@@ -150,9 +148,6 @@ export class CommonService {
       this.pdfLoading = false;
       if (title === 'Executive Summary' || title.includes('Rate Card')) {
         exportElement.removeChild(footerDiv);
-      }
-      if (title.includes('Rate Card')) {
-        this.savedPDFsAvailable = true;
       }
     })
       .catch(() => {

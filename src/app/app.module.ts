@@ -212,7 +212,6 @@ export function initHttp(service: HttpService) {
     MatButtonToggleModule,
     MatTabsModule,
     MatTooltipModule,
-    // ChartModule,
     SplitButtonModule,
     ChartModule.forRoot(highcharts),
     DropdownModule,
