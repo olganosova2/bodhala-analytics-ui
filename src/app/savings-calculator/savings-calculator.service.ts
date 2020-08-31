@@ -67,6 +67,7 @@ export interface IMetric {
   details?: Array<any>;
   minRange?: number;
   classifications?: Array<IClassification>;
+  tooltip: string;
 }
 
 export const pieDonutOptions = {
@@ -142,6 +143,7 @@ export class SavingsCalculatorService {
       result.title = 'Block Billing';
       result.percentLabel = 'Last Year';
       result.maxRange = 100;
+      result.tooltip = 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s acceptable threshold is under 20%.';
     }
     if (type === SavingMetrics.Overstaffing) {
       const osRecord = record as IOverstaffingData;
@@ -159,6 +161,7 @@ export class SavingsCalculatorService {
         result.details.sort(this.utilService.dynamicSort('-timekeepers'));
       }
       result.maxRange = 50;
+      result.tooltip = 'Bodhala\'s general guideline is to restrict more than 2 timekeepers charging for the same internal meeting.';
     }
     return result;
   }
@@ -172,6 +175,7 @@ export class SavingsCalculatorService {
     result.total = 0; // TODO
     result.title = 'Rate Increase Prevention';
     result.percentLabel = 'Average for 3 years';
+    result.tooltip = 'The typical cost of inflation is around 2-3%. Any increases above this threshold are considered excessive.';
     const tkClassificationsProcessed = [];
     for (const key of Object.keys(tkClassifications)) {
       tkClassificationsProcessed.push(this.createClassification(key, records));

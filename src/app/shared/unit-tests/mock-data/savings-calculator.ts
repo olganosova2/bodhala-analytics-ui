@@ -8,7 +8,8 @@ export const MOCK_METRIC = {
   savingsType: SavingMetrics.BlockBilling,
   maxRange: 100,
   savings: 0,
-  details: []
+  details: [],
+  tooltip: 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s aceptable threshold is under 20%.'
 };
 export const SAVINGS_DATA = {
   "result": {
