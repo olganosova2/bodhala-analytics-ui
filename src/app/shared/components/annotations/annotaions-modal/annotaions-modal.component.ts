@@ -90,8 +90,11 @@ export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewIni
         if (responseObj) {
           responseObj.editMode = false;
           if (isNew) {
-            this.notes.unshift(responseObj);
-            this.masterList.unshift(responseObj);
+            const newNote =  Object.assign({}, responseObj);
+            newNote.first_name = this.userService.currentUser.first_name;
+            newNote.last_name = this.userService.currentUser.last_name;
+            this.notes.unshift(newNote);
+            this.masterList.unshift(newNote);
             this.newNote = Object.assign({}, this.createNewNote());
             this.scrollToId(this.topHeader.nativeElement);
           } else if (params.deleted_on) {
@@ -120,7 +123,7 @@ export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewIni
       client_id: this.userService.currentUser.client_info_id,
       user_id: this.userService.currentUser.id,
       url: this.uiId ? '' : this.url,
-      ui_id: this.uiId,
+      ui_id: this.uiId ? this.uiId : null,
       notes: '',
       is_public: this.isPublicDefault,
       json_config: {},
