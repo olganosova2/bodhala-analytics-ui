@@ -162,7 +162,7 @@ export function initHttp(service: HttpService) {
     SavingsWidgetComponent,
     ProgressSemiCircleComponent,
     OverstaffingGridComponent,
-    SavedReportsModalComponent
+    SavedReportsModalComponent,
     TaskCostComponent,
     AnnotationsComponent,
     AnnotaionsModalComponent,
