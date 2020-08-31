@@ -1,16 +1,4 @@
 import {basePieChartOptions} from '../shared/models/base-chart';
-import * as Highcharts from 'highcharts';
-
-const moneyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 2
-});
-const formatter = new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 2,
-  minimumFractionDigits: 2
-});
 
 export interface ITag {
   modified_on: string;

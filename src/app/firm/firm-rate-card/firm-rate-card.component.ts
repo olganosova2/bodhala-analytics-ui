@@ -13,7 +13,6 @@ import {IUiAnnotation} from '../../shared/components/annotations/model';
 import {MatDialog} from '@angular/material/dialog';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
 
-
 @Component({
   selector: 'bd-firm-rate-card',
   templateUrl: './firm-rate-card.component.html',

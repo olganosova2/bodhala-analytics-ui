@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
-import {Subscription, Subject} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
@@ -15,12 +15,10 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
+  pendingRequest: Subscription;
   editorStyle = {
     height: '150px'
   };
-  savedPDFsAvailable: boolean = false;
-  pendingRequest: Subscription;
-  invokeEvent: Subject<any> = new Subject();
 
   constructor(public httpService: HttpService,
               public userService: UserService,
@@ -55,13 +53,6 @@ export class CommonService {
     return result;
   }
 
-  generatePdfOuter(title: string, divId: string) {
-    this.pdfLoading = true;
-    setTimeout(() => {
-      this.generatePDF(title, divId, null);
-    });
-  }
-
   savePDFExport(firmId: string): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     let qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
@@ -75,6 +66,12 @@ export class CommonService {
       (data: any) => {
       }
     );
+  }
+  generatePdfOuter(title: string, divId: string) {
+    this.pdfLoading = true;
+    setTimeout(() => {
+      this.generatePDF(title, divId, null);
+    });
   }
 
   generatePDF(title: string, divId: string, firmId: string) {
@@ -151,9 +148,6 @@ export class CommonService {
       this.pdfLoading = false;
       if (title === 'Executive Summary' || title.includes('Rate Card')) {
         exportElement.removeChild(footerDiv);
-      }
-      if (title.includes('Rate Card')) {
-        this.savedPDFsAvailable = true;
       }
     })
       .catch(() => {
