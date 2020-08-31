@@ -143,7 +143,7 @@ export class SavingsCalculatorService {
       result.title = 'Block Billing';
       result.percentLabel = 'Last Year';
       result.maxRange = 100;
-      result.tooltip = 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s aceptable threshold is under 20%.';
+      result.tooltip = 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s acceptable threshold is under 20%.';
     }
     if (type === SavingMetrics.Overstaffing) {
       const osRecord = record as IOverstaffingData;
