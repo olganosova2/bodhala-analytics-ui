@@ -18,6 +18,7 @@
 
     </div>
     <div class="pull-right">
+      <bd-annotations (notesUpdated)="loadNotes($event)" #annotations></bd-annotations>
       <button #tooltip="matTooltip" matTooltip="Export report to .pdf file"  class="primary-button ml20" (click)="generatePDF(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', firmId)" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
       </button>
@@ -35,5 +36,13 @@
                        *ngIf="firmId && firm"></bd-billing-totals>
     <bd-rate-card-tables [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
     <hr id="hrEnd_{{i}}"/>
+  </div>
+  <div [hidden]="!commonServ.pdfLoading">
+    <h4>Annotations</h4>
+    <div *ngFor="let note of notes">
+        <bd-annotation-labels [note]="note" [isPublicDefault]="false"></bd-annotation-labels>
+        <div class="mt10" [innerHTML]="note.notes | safe: 'html'">></div>
+      <hr/>
+    </div>
   </div>
 </div>

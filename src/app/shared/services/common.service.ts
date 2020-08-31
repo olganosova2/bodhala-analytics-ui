@@ -5,6 +5,7 @@ import {Subscription, Subject} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
+import {IUiAnnotation} from '../components/annotations/model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,9 @@ export class CommonService {
   savedPDFsAvailable: boolean = false;
   pendingRequest: Subscription;
   invokeEvent: Subject<any> = new Subject();
+  editorStyle = {
+    height: '150px'
+  };
 
   constructor(public httpService: HttpService,
               public userService: UserService,
@@ -64,6 +68,12 @@ export class CommonService {
       (data: any) => {
       }
     );
+  }
+  generatePdfOuter(title: string, divId: string) {
+    this.pdfLoading = true;
+    setTimeout(() => {
+      this.generatePDF(title, divId, null);
+    });
   }
 
   generatePDF(title: string, divId: string, firmId: string) {
@@ -146,6 +156,7 @@ export class CommonService {
       }
     })
       .catch(() => {
+        this.pdfLoading = false;
         /* This is fired when the promise executes without the DOM */
       });
   }
@@ -155,5 +166,27 @@ export class CommonService {
       return '';
     }
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  formatPath(path: string): string {
+    let result = path;
+    const ix = path.indexOf('?');
+    if (ix >= 0) {
+      result = path.substring(ix);
+    }
+    return result;
+  }
+  formatHtml(text: string): string {
+    return text.replace(/\n/g, '<br/>');
+  }
+  formatInitials(note: IUiAnnotation): string {
+    let firstLetter = '';
+    let secondLetter = '';
+    if (note.first_name && note.first_name.length > 0) {
+      firstLetter = note.first_name.substring(0, 1);
+    }
+    if (note.last_name && note.last_name.length > 0) {
+      secondLetter = note.last_name.substring(0, 1);
+    }
+    return firstLetter + secondLetter;
   }
 }

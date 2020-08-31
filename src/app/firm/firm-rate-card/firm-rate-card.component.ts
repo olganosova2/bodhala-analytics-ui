@@ -11,6 +11,8 @@ import {FiltersService} from '../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
 
+import {AnnotationsComponent} from '../../shared/components/annotations/annotations.component';
+import {IUiAnnotation} from '../../shared/components/annotations/model';
 
 @Component({
   selector: 'bd-firm-rate-card',
@@ -37,6 +39,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   rank: number;
   selectedSavedFilterName: string = null;
   logoUrl: string;
+  notes: Array<IUiAnnotation> = [];
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -237,6 +240,9 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
       result = 'https://' + window.location.host + url.substring(ix);
     }
     return result;
+  }
+  loadNotes(notes: Array<IUiAnnotation>): void {
+    this.notes = Object.assign([], notes);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
