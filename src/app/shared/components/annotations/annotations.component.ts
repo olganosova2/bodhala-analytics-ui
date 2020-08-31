@@ -58,7 +58,7 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
       userId: this.userService.currentUser.id,
       url: this.uiId ? '' : this.url,
       clientId: this.userService.currentUser.client_info_id,
-      uiId: this.uiId
+      uiId: this.uiId ? this.uiId : null
     };
     this.pendingRequest = this.httpService.makeGetRequest<IUiAnnotation>('getAnnotations', params).subscribe(
       (data: any) => {

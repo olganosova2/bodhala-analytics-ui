@@ -4,10 +4,10 @@ import {of, throwError} from 'rxjs';
 import {TOP_MATTERS} from '../shared/unit-tests/mock-data/top-matters';
 import {TOP_FIRMS} from '../shared/unit-tests/mock-data/top-firms';
 export enum BM_COLORS  {
-  Poor = '#FE3F56;',
-  Fair = '#FFC327;',
-  Excellent = '#3EDB73;',
-  Default = '#E9F1F4;'
+  Poor = '#FE3F56',
+  Fair = '#FFC327',
+  Excellent = '#3EDB73',
+  Default = '#E9F1F4'
 }
 @Injectable({
   providedIn: 'root'
