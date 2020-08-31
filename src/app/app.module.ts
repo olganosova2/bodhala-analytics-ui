@@ -31,6 +31,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
@@ -105,6 +106,7 @@ import { AnnotaionsModalComponent } from './shared/components/annotations/annota
 import { SafePipe } from './shared/pipes/safe.pipe';
 import { AnnotationLabelsComponent } from './shared/components/annotations/annotation-labels/annotation-labels.component';
 import {ClickOutsideModule} from 'ng-click-outside';
+import { SavedReportsModalComponent } from './firm/saved-reports-modal/saved-reports-modal.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -164,7 +166,8 @@ export function initHttp(service: HttpService) {
     AnnotationsComponent,
     AnnotaionsModalComponent,
     SafePipe,
-    AnnotationLabelsComponent
+    AnnotationLabelsComponent,
+    SavedReportsModalComponent
   ],
   entryComponents: [
     PillComponent,
@@ -209,6 +212,8 @@ export function initHttp(service: HttpService) {
     MatButtonToggleModule,
     MatTabsModule,
     SplitButtonModule,
+    MatTooltipModule,
+    // ChartModule,
     ChartModule.forRoot(highcharts),
     DropdownModule,
     OverlayPanelModule,

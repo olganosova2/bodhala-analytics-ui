@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener,  OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
@@ -10,6 +10,9 @@ import {IFirm} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {AnnotationsComponent} from '../../shared/components/annotations/annotations.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
+import {MatDialog} from '@angular/material/dialog';
+import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
+
 
 @Component({
   selector: 'bd-firm-rate-card',
@@ -21,6 +24,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   firm: IFirm;
   selectedPracticeArea: string = '';
   errorMessage: any;
+  pendingRequest: Subscription;
   pendingRequestFirm: Subscription;
   pendingRequestPAs: Subscription;
   pendingRequestSummary: Subscription;
@@ -28,6 +32,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   enddate: string;
   startdate: string;
   showToTop: boolean = false;
+  savedReportsAvailable: boolean = false;
+  savedReports: Array<any> = [];
   otherFirms: boolean = false;
   percentOfTotal: number;
   rank: number;
@@ -50,13 +56,14 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               private httpService: HttpService,
               public filtersService: FiltersService,
               public utilServ: UtilService,
+              public userService: UserService,
               public router: Router,
-              private userService: UserService) {
+              public matDialog: MatDialog) {
     this.commonServ.pageTitle = 'Firms > Report Card';
     this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const dates = this.filtersService.parseLSDateString();
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
@@ -70,6 +77,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
       this.initFirm();
       this.loadPAs();
     });
+    this.matDialog.closeAll();
+    await this.checkSavedReports();
   }
 
   initFirm(): void {
@@ -178,6 +187,39 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         this.errorMessage = err;
       }
     );
+  }
+
+  checkSavedReports(): Promise<Subscription> {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const arr = [];
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firmId = JSON.stringify(arr);
+    }
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getSavedExports', params).subscribe(
+        (data: any) => {
+          if (!data.result) {
+            return;
+          }
+          this.savedReportsAvailable = true;
+          this.savedReports = data.result;
+          resolve();
+        }
+      );
+    });
+  }
+
+  async showSavedReports(): Promise<void> {
+    await this.checkSavedReports();
+    this.matDialog.open(SavedReportsModalComponent, {
+      data: this.savedReports
+    });
+  }
+
+  async generatePDF(pdfTitle: string, pdfDiv: string, firmId: string): Promise<void> {
+    this.commonServ.generatePDF(pdfTitle, pdfDiv, firmId);
+    await this.checkSavedReports();
   }
 
   editReportCard(): void {

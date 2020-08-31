@@ -60,6 +60,10 @@ export const END_POINTS_URLS = {
   getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
   getAnnotations: {url: BASE_URL + 'client/annotations', showLoading: false},
   getSavingsCalculator: {url: BASE_URL + 'analytics/getSavingsCalculator', showLoading: true},
+  spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
+  saveExport: {url: BASE_URL + 'analytics/saveExport', showLoading: true},
+  getSavedExports: {url: BASE_URL + 'analytics/getSavedExports', showLoading: true},
+  deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true}
 };
 
 export const ROUTES = [

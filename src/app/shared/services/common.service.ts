@@ -1,6 +1,10 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import {Subscription, Subject} from 'rxjs';
+import {HttpService, UserService} from 'bodhala-ui-common';
+import { FiltersService } from './filters.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +17,13 @@ export class CommonService {
   editorStyle = {
     height: '150px'
   };
+  savedPDFsAvailable: boolean = false;
+  pendingRequest: Subscription;
+  invokeEvent: Subject<any> = new Subject();
 
-  constructor() {
-  }
+  constructor(public httpService: HttpService,
+              public userService: UserService,
+              public filtersService: FiltersService) {}
 
   clearTitles(): void {
     this.pageSubtitle = '';
@@ -49,11 +57,29 @@ export class CommonService {
   generatePdfOuter(title: string, divId: string) {
     this.pdfLoading = true;
     setTimeout(() => {
-      this.generatePDF(title, divId);
+      this.generatePDF(title, divId, null);
     });
   }
 
-  generatePDF(title: string, divId: string) {
+  savePDFExport(firmId: string): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    let qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    qs = JSON.parse(qs);
+    params.filter_set = qs;
+    params.firmId = firmId;
+    params.pageName = this.pageTitle;
+    const savedView = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
+    params.savedView = savedView;
+    this.httpService.makePostRequest('saveExport', params).subscribe(
+      (data: any) => {
+      }
+    );
+  }
+
+  generatePDF(title: string, divId: string, firmId: string) {
+    if (title.includes('Rate Card')) {
+      this.savePDFExport(firmId);
+    }
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
@@ -124,6 +150,9 @@ export class CommonService {
       this.pdfLoading = false;
       if (title === 'Executive Summary' || title.includes('Rate Card')) {
         exportElement.removeChild(footerDiv);
+      }
+      if (title.includes('Rate Card')) {
+        this.savedPDFsAvailable = true;
       }
     })
       .catch(() => {

@@ -1,6 +1,10 @@
 import {inject, TestBed} from '@angular/core/testing';
 
 import { CommonService } from './common.service';
+import {HttpService, UserService} from 'bodhala-ui-common';
+import {FiltersService} from '../../shared/services/filters.service';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
+import * as mockServices from '../../shared/unit-tests/mock-services';
 
 const mockDiv = {
   offsetWidth: 600,
@@ -15,7 +19,14 @@ const mockFooter = {
   removeChild: () => {},
 };
 describe('CommonService', () => {
-  beforeEach(() => TestBed.configureTestingModule({}));
+  beforeEach((() => {
+    TestBed.configureTestingModule({
+      imports: IMPORTS,
+      declarations: DECLARATIONS,
+      providers: PROVIDERS,
+      schemas: SCHEMAS
+    });
+  }));
 
   it('CommonService should be created', () => {
     const service: CommonService = TestBed.inject(CommonService);
@@ -43,7 +54,7 @@ describe('CommonService', () => {
     spyOn(document, 'createElement').and.callFake(() => {
       return mockFooter;
     });
-    service.generatePDF('Executive Summary', 'div1');
+    service.generatePDF('Executive Summary', 'div1', null);
     expect(service).toBeTruthy();
   }));
   it('CommonService should capitalize', inject([CommonService], (service: CommonService) => {
