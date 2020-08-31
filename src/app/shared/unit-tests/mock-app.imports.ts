@@ -35,6 +35,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import * as mockServices from '../unit-tests/mock-services';
 
@@ -96,6 +97,7 @@ export const IMPORTS = [
   RouterTestingModule,
   HttpClientTestingModule,
   MatTableModule,
+  MatTooltipModule,
   MatSortModule,
   MatPaginatorModule,
   MatCardModule,

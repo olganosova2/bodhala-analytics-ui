@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener,  OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
@@ -31,8 +31,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   startdate: string;
   showToTop: boolean = false;
   savedReportsAvailable: boolean = false;
-  savedReports: any;
-  savedReportDate: string = null;
+  savedReports: Array<any> = [];
   otherFirms: boolean = false;
   percentOfTotal: number;
   rank: number;
@@ -66,7 +65,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
     this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
-    // this.savedReportDate = localStorage.getItem('saved_report_' + this.userService.currentUser.id.toString());
     const paramsLS = this.filtersService.parseLSQueryString();
     if (paramsLS.firms !== null && paramsLS.firms !== undefined) {
       this.otherFirms = true;
@@ -214,6 +212,11 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.matDialog.open(SavedReportsModalComponent, {
       data: this.savedReports
     });
+  }
+
+  async generatePDF(pdfTitle: string, pdfDiv: string, firmId: string): Promise<void> {
+    this.commonServ.generatePDF(pdfTitle, pdfDiv, firmId);
+    await this.checkSavedReports();
   }
 
   editReportCard(): void {

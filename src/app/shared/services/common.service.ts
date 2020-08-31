@@ -4,8 +4,6 @@ import * as jspdf from 'jspdf';
 import {Subscription, Subject} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
-// import {FirmRateCardComponent} from '../../firm/firm-rate-card/firm-rate-card.component';
-// import {SavedReportsModalComponent} from '../../firm/saved-reports-modal/saved-reports-modal.component';
 
 
 @Injectable({
@@ -16,6 +14,7 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
+  savedPDFsAvailable: boolean = false;
   pendingRequest: Subscription;
   invokeEvent: Subject<any> = new Subject();
 
@@ -141,6 +140,9 @@ export class CommonService {
       this.pdfLoading = false;
       if (title === 'Executive Summary' || title.includes('Rate Card')) {
         exportElement.removeChild(footerDiv);
+      }
+      if (title.includes('Rate Card')) {
+        this.savedPDFsAvailable = true;
       }
     })
       .catch(() => {

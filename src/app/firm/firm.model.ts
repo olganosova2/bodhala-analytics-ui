@@ -468,7 +468,6 @@ export const taxonomyAdditionalOptions = {
 };
 
 export const spendByMonthOptions = { ... lineChartOptions, ...spendByMonthChartAdditionalOptions};
-export const spendByQuarterOptions = { ... lineChartOptions, ...spendByQuarterChartAdditionalOptions};
 export const genderChartOptions = {...pieDonut, ...genderAdditionalOptions};
 export const minorityChartOptions = {...pieDonut, ...minorityAdditionalOptions};
 export const UTBMSChartOptions = {...utbmsPieDonut, ...UTBMSAdditionalOptions};

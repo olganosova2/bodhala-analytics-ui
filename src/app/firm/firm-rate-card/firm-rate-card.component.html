@@ -13,17 +13,16 @@
           <div class="font-bold">Rank: <span *ngIf="rank>0">{{ rank }}</span><span *ngIf="rank<0"> > 20</span> ({{percentOfTotal * 100 | number:'1.2-2'}}% of total spend)</div>
           <div class="font-bold" *ngIf="selectedSavedFilterName!==null">Saved Filter: {{selectedSavedFilterName}}</div>
           <div class="font-bold" *ngIf="otherFirms"><i>Note: Rank and averages are based off firms available as defined by selected Timeframe and Filters.</i></div>
-          <div class="font-bold" *ngIf="savedReportDate !== null"><i>Viewing Saved Report from {{savedReportDate}}</i></div>
         </div>
       </div>
 
     </div>
     <div class="pull-right">
-      <button #tooltip="matTooltip" matTooltip="Export report to .pdf file"  class="primary-button ml20" (click)="commonServ.generatePDF(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', firmId)" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+      <button #tooltip="matTooltip" matTooltip="Export report to .pdf file"  class="primary-button ml20" (click)="generatePDF(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', firmId)" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
       </button>
       <button #tooltip="matTooltip" matTooltip="Edit filters for this report" class="primary-button ml20" (click)="editReportCard()">Edit</button>
-      <button #tooltip="matTooltip" matTooltip="View saved reports for {{commonServ.pageSubtitle}}" *ngIf="savedReportsAvailable" class="primary-button ml20" (click)="showSavedReports()">Saved</button>
+      <button *ngIf="savedReports.length > 0" #tooltip="matTooltip" matTooltip="View saved reports for {{commonServ.pageSubtitle}}" class="primary-button ml20" (click)="showSavedReports()">Saved</button>
     </div>
   </div>
   <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
