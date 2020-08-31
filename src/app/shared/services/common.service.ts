@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import {IUiAnnotation} from '../components/annotations/model';
 
 @Injectable({
   providedIn: 'root'
@@ -148,5 +149,16 @@ export class CommonService {
   }
   formatHtml(text: string): string {
     return text.replace(/\n/g, '<br/>');
+  }
+  formatInitials(note: IUiAnnotation): string {
+    let firstLetter = '';
+    let secondLetter = '';
+    if (note.first_name && note.first_name.length > 0) {
+      firstLetter = note.first_name.substring(0, 1);
+    }
+    if (note.last_name && note.last_name.length > 0) {
+      secondLetter = note.last_name.substring(0, 1);
+    }
+    return firstLetter + secondLetter;
   }
 }
