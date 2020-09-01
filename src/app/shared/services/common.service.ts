@@ -67,10 +67,10 @@ export class CommonService {
       }
     );
   }
-  generatePdfOuter(title: string, divId: string) {
+  generatePdfOuter(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
     setTimeout(() => {
-      this.generatePDF(title, divId, null);
+      this.generatePDF(title, divId, firmId);
     });
   }
 

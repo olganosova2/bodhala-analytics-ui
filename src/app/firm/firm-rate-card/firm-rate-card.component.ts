@@ -218,7 +218,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
 
   async generatePDF(pdfTitle: string, pdfDiv: string, firmId: string): Promise<void> {
-    this.commonServ.generatePDF(pdfTitle, pdfDiv, firmId);
+    this.commonServ.generatePdfOuter(pdfTitle, pdfDiv, firmId);
     await this.checkSavedReports();
   }
 
@@ -240,12 +240,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
       result = 'https://' + window.location.host + url.substring(ix);
     }
     return result;
-  }
-  export(): void {
-    this.commonServ.pdfLoading = true;
-    setTimeout(() => {
-      this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'pdfDiv');
-    }, 200);
   }
   loadNotes(notes: Array<IUiAnnotation>): void {
     this.notes = Object.assign([], notes);
