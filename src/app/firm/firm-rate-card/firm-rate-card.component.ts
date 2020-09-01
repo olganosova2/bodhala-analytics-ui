@@ -199,6 +199,12 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     }
     return result;
   }
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    setTimeout(() => {
+      this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'pdfDiv');
+    }, 200);
+  }
   loadNotes(notes: Array<IUiAnnotation>): void {
     this.notes = Object.assign([], notes);
   }
