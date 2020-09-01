@@ -11,8 +11,9 @@
   </div>
   <div class="panel-wrapper flex-container">
     <div class="full-width">
-<!--      <lib-export-button [gridOptions]="gridOptions"></lib-export-button>-->
-      <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+          <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
+          <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+          <span class="light-badge ml20 mr20 mb15 pointer-hand display-inline" (click)="agGridService.resetGrid(defaultState, gridOptions)">Reset to Bodhala Default</span>
     </div>
     <ag-grid-angular
         #agGrid
