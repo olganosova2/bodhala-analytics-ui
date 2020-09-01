@@ -217,7 +217,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
 
   async generatePDF(pdfTitle: string, pdfDiv: string, firmId: string): Promise<void> {
-    this.commonServ.generatePDF(pdfTitle, pdfDiv, firmId);
+    this.commonServ.generatePdfOuter(pdfTitle, pdfDiv, firmId);
     await this.checkSavedReports();
   }
 

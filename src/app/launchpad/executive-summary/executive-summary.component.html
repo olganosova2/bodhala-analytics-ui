@@ -1,7 +1,7 @@
 
 <div class="pull-right">
   <bd-annotations (notesUpdated)="loadNotes($event)" #annotations [uiId]="uiId" [isPublicDefault]="true"></bd-annotations>
-    <button class="primary-button ml20" (click)="commonServ.generatePdfOuter('Executive Summary', 'executiveSummary')" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+    <button class="primary-button ml20" (click)="commonServ.generatePdfOuter('Executive Summary', 'executiveSummary', null)" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
     </button>
 </div>
