@@ -1,5 +1,6 @@
 @import "../../../node_modules/ag-grid-community/src/styles/ag-grid.scss";
 @import "../../../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
+@import "./colors.scss";
 .ag-theme-alpine {
   @include ag-theme-alpine((
     odd-row-background-color: #ffffff, alpine-active-color: $body-color, selected-row-background-color: $gray-blue-bg,  foreground-color:$body-color
@@ -26,4 +27,14 @@
   overflow: visible !important;
   text-overflow: unset !important;
   white-space: normal !important;
+}
+.light-badge {
+  background-color: #fff;
+  color: $body-color;
+  border: 1px solid $body-color;
+  border-radius: 16px;
+  padding: 4px 16px;
+  min-width: 100px;
+  display: inline-block;
+  text-align: center;
 }

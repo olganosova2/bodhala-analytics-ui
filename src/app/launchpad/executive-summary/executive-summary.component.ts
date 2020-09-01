@@ -73,6 +73,12 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   loadNotes(notes: Array<IUiAnnotation>): void {
     this.notes = Object.assign([], notes);
   }
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    setTimeout(() => {
+      this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'executiveSummary', null);
+    }, 200);
+  }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();

@@ -28,7 +28,7 @@ export class TaskCostComponent implements OnInit, OnDestroy {
   totalRecords: number = 0;
   gridHeight: number = 629;
   autoGroupColumnDef: any;
-  defaultColDef: any;
+  defaultState: any;
   taskCostData: Array<ITaskCost> = [];
 
   constructor(private route: ActivatedRoute,
@@ -87,6 +87,7 @@ export class TaskCostComponent implements OnInit, OnDestroy {
     if (!this.gridOptions.api) {
       return;
     }
+    this.defaultState = this.gridOptions.columnApi.getColumnState();
     this.gridOptions.api.setRowData(this.taskCostData);
     this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
