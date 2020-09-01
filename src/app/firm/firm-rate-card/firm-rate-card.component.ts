@@ -217,9 +217,12 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  async generatePDF(pdfTitle: string, pdfDiv: string, firmId: string): Promise<void> {
-    this.commonServ.generatePdfOuter(pdfTitle, pdfDiv, firmId);
-    await this.checkSavedReports();
+  export(): void {
+      this.commonServ.pdfLoading = true;
+      setTimeout(() => {
+        this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', this.firmId);
+        this.checkSavedReports();
+      }, 200);
   }
 
   editReportCard(): void {
