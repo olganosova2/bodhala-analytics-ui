@@ -22,22 +22,30 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
+            ],
+            "allowedCommonJsDependencies": [
+              "jspdf",
+              "angular2-highcharts",
+              "ag-grid-enterprise",
+              "chart.js"
             ],
             "styles": [
               "node_modules/simple-line-icons/css/simple-line-icons.css",
               "./node_modules/primeicons/primeicons.css",
               "./node_modules/primeng/resources/themes/nova-light/theme.css",
               "./node_modules/primeng/resources/primeng.min.css",
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+
               "src/assets/styles/font-awesome.min.css",
               "src/styles.scss",
               {
                 "input": "./node_modules/bootstrap/dist/css/bootstrap.css"
-              }
+              },
+              "./node_modules/quill/dist/quill.core.css",
+              "./node_modules/quill/dist/quill.snow.css"
             ],
             "scripts": [
               "node_modules/chart.js/dist/Chart.js",
@@ -60,7 +68,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": false,
@@ -78,6 +85,12 @@
               ]
             },
             "int": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -86,6 +99,12 @@
               ]
             },
             "stage": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -94,6 +113,12 @@
               ]
             },
             "prod": {
+              "budgets": [
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
+                }
+              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -139,7 +164,7 @@
               "src/app/lead-attorney/lead-attorney.component.ts"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+
               "src/styles.scss"
             ],
             "scripts": []

@@ -4,7 +4,7 @@ import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
 import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY, MOCK_PHASE_TAXONOMY, MOCK_UTBMS_CODES} from './mock-data/firm';
 import {convertToParamMap} from '@angular/router';
-import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC} from './mock-data/billing-totals';
+import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC, MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
 import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
@@ -13,6 +13,8 @@ import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data
 import {SAVINGS_DATA} from './mock-data/savings-calculator';
 import {EXECUTIVE_SUMMARY} from './mock-data/execitive-summary';
 import {SPEND_BY_UTBMS_CODES} from './mock-data/uybms-codes';
+import {MOCK_TASK_COST} from './mock-data/task-cost';
+import {MOCK_ANNOTATIONS} from './mock-data/annotations';
 
 export const ngWindow = {
   location: {
@@ -89,6 +91,8 @@ export class DataStub {
         return of({result: [ MOCK_FIRM ]});
       case 'getBillingTotals':
         return of(MOCK_BILLING_TOTALS);
+      case 'getExecutiveSummaryBillingTotals':
+        return of(MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS);
       case 'reportCardBillingTotals':
         return of(MOCK_BILLING_TOTALS_RC);
       case 'spendByMonth':
@@ -133,6 +137,10 @@ export class DataStub {
         return of(SAVINGS_DATA);
       case 'getExecutiveSummaryData':
         return of(EXECUTIVE_SUMMARY);
+      case 'getTaskCost':
+        return of(MOCK_TASK_COST);
+      case 'getAnnotations':
+        return of(MOCK_ANNOTATIONS);
       default:
         return of([]);
     }

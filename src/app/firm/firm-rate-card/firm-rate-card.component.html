@@ -4,7 +4,8 @@
     <div class="pull-left">
       <div class="ui-g">
         <div class="ui-3 pr20" *ngIf="logoUrl">
-         <img [src]="logoUrl" alt="logo"/>
+          <img [src]="logoUrl" alt="logo"/>
+<!--          <img src="assets/images/aig-logo.png"/>-->
         </div>
         <div class="ui-9">
           <h2>{{commonServ.pageSubtitle}}</h2>
@@ -17,10 +18,12 @@
 
     </div>
     <div class="pull-right">
-      <button class="primary-button ml20" (click)="commonServ.generatePDF(commonServ.pageSubtitle + ' Rate Card', 'pdfDiv')" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+      <bd-annotations (notesUpdated)="loadNotes($event)" #annotations></bd-annotations>
+      <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
       </button>
-      <button class="primary-button ml20" (click)="editReportCard()">Edit</button>
+      <button #tooltip="matTooltip" matTooltip="Edit filters for this report" class="primary-button ml20" (click)="editReportCard()">Edit</button>
+      <button *ngIf="savedReports.length > 0" #tooltip="matTooltip" matTooltip="View saved reports for {{commonServ.pageSubtitle}}" class="primary-button ml20" (click)="showSavedReports()">Saved</button>
     </div>
   </div>
   <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
@@ -33,5 +36,13 @@
                        *ngIf="firmId && firm"></bd-billing-totals>
     <bd-rate-card-tables [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
     <hr id="hrEnd_{{i}}"/>
+  </div>
+  <div [hidden]="!commonServ.pdfLoading">
+    <h4>Annotations</h4>
+    <div *ngFor="let note of notes">
+        <bd-annotation-labels [note]="note" [isPublicDefault]="false"></bd-annotation-labels>
+        <div class="mt10" [innerHTML]="note.notes | safe: 'html'">></div>
+      <hr/>
+    </div>
   </div>
 </div>

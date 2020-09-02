@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { ICell } from '../cell.interface';
-import { BaseCell } from '../base-cell';
+import { BaseCell} from '../base-cell';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../../shared/services/filters.service';

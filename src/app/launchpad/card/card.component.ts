@@ -29,7 +29,7 @@ export class CardComponent implements OnInit, OnChanges {
   @Output()
   loaded: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('panelBody', {static: false}) panelBody: ElementRef;
+  @ViewChild('panelBody') panelBody: ElementRef;
 
   individualData: any;
   data: Array<any> = [];

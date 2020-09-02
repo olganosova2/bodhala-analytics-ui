@@ -1,5 +1,6 @@
 <div class="panel-wrapper flex-container">
-  <h5 class="">{{metric.title}}</h5>
+    <h5 style="display: inline" class="">{{metric.title}}</h5>
+    <i #tooltip="matTooltip" matTooltip="{{metric.tooltip}}" [matTooltipPosition]="'right'" class="fa fa-info-circle" style="padding-left: 5px;"></i>
   <div class="subtitle mb10" *ngIf="metric.percentLabel">{{metric.percentLabel}}: <span class="font-body">{{metric.origPercent | number:'1.0-0'}}%</span></div>
   <div class="subtitle mb10" *ngIf="metric.viewLabel"><a class="href-link-primary" (click)="openDetails()">View {{metric.viewLabel}} details</a></div>
   <div class="small-title">

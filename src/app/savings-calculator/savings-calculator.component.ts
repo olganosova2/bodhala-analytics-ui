@@ -24,8 +24,8 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   currentYear: number = 0;
   metrics: Array<IMetric> = [];
   pageName: string = 'app.client-dashboard.savings-calculator';
-  @ViewChild(SavingsWidgetComponent, {static: false}) bbWidget: SavingsWidgetComponent;
-  @ViewChild(ProgressSemiCircleComponent, {static: false}) bdProgress: ProgressSemiCircleComponent;
+  @ViewChild(SavingsWidgetComponent) bbWidget: SavingsWidgetComponent;
+  @ViewChild(ProgressSemiCircleComponent) bdProgress: ProgressSemiCircleComponent;
 
   constructor(private route: ActivatedRoute,
               public router: Router,

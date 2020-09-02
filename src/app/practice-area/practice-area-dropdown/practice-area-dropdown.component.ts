@@ -9,15 +9,6 @@ import {FormsModule} from '@angular/forms';
 import {DropdownModule} from 'primeng/dropdown';
 import {SelectItem} from 'primeng/api';
 
-@NgModule({
-  imports: [
-    DropdownModule,
-    FormsModule
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA,
-            NO_ERRORS_SCHEMA]
-})
-
 @Component({
   selector: 'bd-practice-area-dropdown',
   templateUrl: './practice-area-dropdown.component.html',

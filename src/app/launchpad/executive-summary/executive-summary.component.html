@@ -1,6 +1,7 @@
 
 <div class="pull-right">
-    <button class="primary-button ml20" (click)="commonServ.generatePDF('Executive Summary', 'executiveSummary')" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+  <bd-annotations (notesUpdated)="loadNotes($event)" #annotations [uiId]="uiId" [isPublicDefault]="true"></bd-annotations>
+    <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
     </button>
 </div>
@@ -20,5 +21,13 @@
 <!-- <div class="executiveSummary" id="executiveSummary"> -->
   <div class="mt10" *ngIf="maxDate">
     <bd-es-table [maxDate]="maxDate"></bd-es-table>
+  </div>
+  <div [hidden]="!commonServ.pdfLoading">
+    <h4>Annotations</h4>
+    <div *ngFor="let note of notes">
+      <bd-annotation-labels [note]="note" [isPublicDefault]="true"></bd-annotation-labels>
+      <div class="mt10" [innerHTML]="note.notes | safe: 'html'"></div>
+      <hr/>
+    </div>
   </div>
 </div>

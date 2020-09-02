@@ -1,6 +1,11 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
+import {Subscription} from 'rxjs';
+import {HttpService, UserService} from 'bodhala-ui-common';
+import { FiltersService } from './filters.service';
+
+import {IUiAnnotation} from '../components/annotations/model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +15,14 @@ export class CommonService {
   pageSubtitle: string = '';
   exportImage = null;
   pdfLoading: boolean = false;
+  pendingRequest: Subscription;
+  editorStyle = {
+    height: '150px'
+  };
 
-  constructor() {
-  }
+  constructor(public httpService: HttpService,
+              public userService: UserService,
+              public filtersService: FiltersService) {}
 
   clearTitles(): void {
     this.pageSubtitle = '';
@@ -43,7 +53,32 @@ export class CommonService {
     return result;
   }
 
-  generatePDF(title: string, divId: string) {
+  savePDFExport(firmId: string): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    let qs =  localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    qs = JSON.parse(qs);
+    params.filter_set = qs;
+    params.firmId = firmId;
+    params.pageName = this.pageTitle;
+    const savedView = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
+    params.savedView = savedView;
+    this.httpService.makePostRequest('saveExport', params).subscribe(
+      (data: any) => {
+      }
+    );
+  }
+  generatePdfOuter(title: string, divId: string, firmId: string) {
+    this.pdfLoading = true;
+    this.generatePDF(title, divId, firmId);
+    // setTimeout(() => {
+    //   this.generatePDF(title, divId, firmId);
+    // });
+  }
+
+  generatePDF(title: string, divId: string, firmId: string) {
+    if (title.includes('Rate Card')) {
+      this.savePDFExport(firmId);
+    }
     this.pdfLoading = true;
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
@@ -88,6 +123,7 @@ export class CommonService {
     }
 
     html2canvas(document.getElementById(divId), {
+      useCORS: true,
       width: htmlWidth,
       height: htmlHeight,
       scrollY: -window.scrollY,
@@ -116,6 +152,7 @@ export class CommonService {
       }
     })
       .catch(() => {
+        this.pdfLoading = false;
         /* This is fired when the promise executes without the DOM */
       });
   }
@@ -125,5 +162,27 @@ export class CommonService {
       return '';
     }
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  formatPath(path: string): string {
+    let result = path;
+    const ix = path.indexOf('?');
+    if (ix >= 0) {
+      result = path.substring(ix);
+    }
+    return result;
+  }
+  formatHtml(text: string): string {
+    return text.replace(/\n/g, '<br/>');
+  }
+  formatInitials(note: IUiAnnotation): string {
+    let firstLetter = '';
+    let secondLetter = '';
+    if (note.first_name && note.first_name.length > 0) {
+      firstLetter = note.first_name.substring(0, 1);
+    }
+    if (note.last_name && note.last_name.length > 0) {
+      secondLetter = note.last_name.substring(0, 1);
+    }
+    return firstLetter + secondLetter;
   }
 }

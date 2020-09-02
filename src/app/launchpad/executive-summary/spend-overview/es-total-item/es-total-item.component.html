@@ -1,10 +1,25 @@
 <div class="cell-item" [ngClass]="{'cell-last': isLastCell}">
     <div class="cell-label">{{ item.name }}</div>
     <div class="font-bold mb10 mt10">
-      <span *ngIf="item?.format === 'currency'">${{ item.total | number:'1.0-0'}}</span>
-      <span *ngIf="item?.format === 'percent'">{{ item.total | number:'1.2-2'}}%</span>
-      <span *ngIf="item?.format === 'number'">{{ item.total | number:'1.2-2'}}</span>
-      <span *ngIf="item?.format === 'number2'">${{ item.total | number:'1.2-2'}}</span>
-      <span *ngIf="!item?.format">{{ item.total | number:'1.0-0' }}</span>
+      <span class="top-data" *ngIf="item?.format === 'currency'">${{ item.total | number:'1.0-0'}}</span>
+      <span class="top-data" *ngIf="item?.format === 'percent'">{{ item.total | number:'1.2-2'}}%</span>
+      <span class="top-data" *ngIf="item?.format === 'number'">{{ item.total | number:'1.0-0'}}</span>
+      <span class="top-data" *ngIf="item?.format === 'number2'">{{ item.total | number:'1.2-2'}}</span>
+      <span class="top-data" *ngIf="!item?.format">{{ item.total | number:'1.0-0' }}</span>
     </div>
+</div>
+<div class="bottom-cell-item" [ngClass]="{'cell-last': isLastCell}">
+  <div class="bottom-cell-data">
+    Prior Year
+    <div class="font-bold-bottom">
+      <span *ngIf="item?.format === 'currency'">${{ item.priorYearTotal | number:'1.0-0'}} </span>
+      <span *ngIf="item?.format === 'percent'">{{ item.priorYearTotal | number:'1.2-2'}}% </span>
+      <span *ngIf="item?.format === 'number'">{{ item.priorYearTotal | number:'1.0-0'}} </span>
+      <span *ngIf="item?.format === 'number2'">${{ item.priorYearTotal | number:'1.2-2'}} </span>
+      <span *ngIf="!item?.format">{{ item.priorYearTotal | number:'1.0-0' }} </span>
+      <span *ngIf="item.diff > 0" class="arrow-up"><em class="fa fa-arrow-up"></em> {{item.diff | number:'1.0-0'}}%</span>
+      <span *ngIf="item.diff < 0" class="arrow-down"><em class ="fa fa-arrow-down"></em> {{item.diff * -1 | number:'1.0-0'}}%</span>
+      <span *ngIf="item.diff === 0">0%</span>
+    </div>
+  </div>
 </div>

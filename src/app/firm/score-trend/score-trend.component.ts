@@ -51,7 +51,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   @Input() practiceArea: IPracticeArea;
   pendingRequest: Subscription;
   pendingRequestTrends: Subscription;
-  @ViewChild('trendsDiv', {static: false}) trendsDiv: ElementRef<HTMLElement>;
+  @ViewChild('trendsDiv') trendsDiv: ElementRef<HTMLElement>;
   @ViewChildren(ScoreBadgeComponent) scoreBadges !: QueryList<ScoreBadgeComponent>;
 
 

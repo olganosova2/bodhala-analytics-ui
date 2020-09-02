@@ -2,8 +2,8 @@ import {environment} from '../../../environments/environment';
 import {Input} from '@angular/core';
 
 export const BASE_URL = environment.apiUrl;
-export const IS_LOCAL = false; // (window.location.href.indexOf('localhost:4200') > 0 || window.location.href.indexOf('127.0.0.1:4200')) > 0 ? true : false;
 export const HOST = environment.host;
+export const IS_LOCAL = window.location.host.indexOf('127.0.0.1') >= 0 ? true : false;
 export const SAVED_FILTERS_NAME = 'ELEMENTS_dataFilters_';
 
 export const END_POINTS_URLS = {
@@ -35,6 +35,7 @@ export const END_POINTS_URLS = {
 
   getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: false},
   getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: false},
+  getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},
   reportCardBillingTotals: {url: BASE_URL + 'analytics/reportCardBillingTotals', showLoading: false},
   getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: false},
   spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
@@ -56,8 +57,13 @@ export const END_POINTS_URLS = {
   getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
   getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
   getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
-
+  getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
+  getAnnotations: {url: BASE_URL + 'client/annotations', showLoading: false},
   getSavingsCalculator: {url: BASE_URL + 'analytics/getSavingsCalculator', showLoading: true},
+  spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
+  saveExport: {url: BASE_URL + 'analytics/saveExport', showLoading: true},
+  getSavedExports: {url: BASE_URL + 'analytics/getSavedExports', showLoading: true},
+  deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true}
 };
 
 export const ROUTES = [
@@ -65,7 +71,8 @@ export const ROUTES = [
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
-  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: 'analytics-ui/practiceArea/'}
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: 'analytics-ui/practiceArea/'},
+  {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
 
@@ -120,5 +127,31 @@ export const SAVINGS_CALCULATOR_CONFIG = {
     height: '80vh',
     width: '80vw',
   }
+};
+export const UI_ANNOTATIONS_IDS = {
+  executiveSummary: 'ExecutiveSummary'
+};
+export const quillConfig = {
+  toolbar: [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+
+    [{ header: 1 }, { header: 2 }],               // custom button values
+    [{ list: 'ordered'}, { list: 'bullet' }],
+    [{ script: 'sub'}, { script: 'super' }],      // superscript/subscript
+    [{ indent: '-1'}, { indent: '+1' }],          // outdent/indent
+    [{ direction: 'rtl' }],                         // text direction
+
+    [{ size: ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ color: [] }, { background: [] }],          // dropdown with defaults from theme
+    [{ font: [] }],
+    [{ align: [] }],
+
+    ['clean'],                                         // remove formatting button
+
+    ['link', 'image']                         // link and image, video
+  ]
 };
 

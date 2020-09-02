@@ -6,38 +6,44 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
+import * as highcharts from 'highcharts';
 
 
 import { appRouterConfig } from '../../app.routes';
 import { UtilService } from 'bodhala-ui-common';
 import {CookieService} from 'ngx-cookie-service';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {
-  MAT_DIALOG_DATA, MatAccordion, MatAutocompleteModule,
-  MatButtonModule,
-  MatCardModule, MatCheckboxModule,
-  MatChipsModule, MatDatepickerModule,
-  MatDialogModule, MatDialogRef, MatExpansionModule,
-  MatFormFieldModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatMenuModule, MatNativeDateModule,
-  MatPaginatorModule, MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatSelectModule, MatSlideToggleModule,
-  MatSortModule,
-  MatStepperModule,
-  MatTableModule
-} from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {QuillModule} from 'ngx-quill';
 import * as mockServices from '../unit-tests/mock-services';
 
 import { AppComponent } from '../../app.component';
 import {UserFiltersModel} from '../models/user-filters';
 import {LaunchpadComponent} from '../../launchpad/launchpad.component';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
-import {MomentModule} from 'angular2-moment';
 import {FiltersService} from '../services/filters.service';
 import {TopMattersFirmsService} from '../../launchpad/services/top-matters-firms.service';
 import {InsightsComponent} from '../../launchpad/insights/insights.component';
@@ -53,9 +59,7 @@ import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bo
 import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
 import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { ChartModule } from 'angular2-highcharts';
-import borderRadius from 'highcharts-border-radius';
 import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
 import {LinkComponent} from '../../launchpad/card/cells/link/link.component';
 import {UtbmsComponent} from '../../firm/utbms/utbms.component';
@@ -86,21 +90,12 @@ import {OverstaffingGridComponent} from '../../savings-calculator/overstaffing-g
 import {EsTableComponent} from '../../launchpad/executive-summary/es-table/es-table.component';
 import {EsTotalItemComponent} from '../../launchpad/executive-summary/spend-overview/es-total-item/es-total-item.component';
 import {SpendOverviewComponent} from '../../launchpad/executive-summary/spend-overview/spend-overview.component';
+import {TaskCostComponent} from '../../task-cost/task-cost.component';
+import {AnnotationsComponent} from '../components/annotations/annotations.component';
+import {AnnotaionsModalComponent} from '../components/annotations/annotaions-modal/annotaions-modal.component';
+import {AnnotationLabelsComponent} from '../components/annotations/annotation-labels/annotation-labels.component';
+import {SafePipe} from '../pipes/safe.pipe';
 
-export function highchartsFactory() {
-  // return highcharts;
-  const hc = require('highcharts');
-  borderRadius(hc);
-  const dd = require('highcharts/modules/exporting');
-  hc.setOptions({
-    lang: {
-      thousandsSep: ','
-    }
-  });
-  dd(hc);
-
-  return hc;
-}
 
 export const IMPORTS = [
   ReactiveFormsModule,
@@ -109,6 +104,7 @@ export const IMPORTS = [
   RouterTestingModule,
   HttpClientTestingModule,
   MatTableModule,
+  MatTooltipModule,
   MatSortModule,
   MatPaginatorModule,
   MatCardModule,
@@ -129,17 +125,17 @@ export const IMPORTS = [
   MatNativeDateModule,
   MatDialogModule,
   MatSlideToggleModule,
-  MomentModule,
   NgIdleKeepaliveModule.forRoot(),
   MatProgressBarModule,
   MatExpansionModule,
   MatAutocompleteModule,
   MatStepperModule,
   NgbModule,
-  ChartModule,
+  ChartModule.forRoot(highcharts),
   DropdownModule,
   OverlayPanelModule,
-  AgGridModule.withComponents([])
+  AgGridModule.withComponents([]),
+  QuillModule.forRoot()
 ];
 
 export const DECLARATIONS = [
@@ -181,7 +177,12 @@ export const DECLARATIONS = [
   SavingsCalculatorComponent,
   SavingsWidgetComponent,
   ProgressSemiCircleComponent,
-  OverstaffingGridComponent
+  OverstaffingGridComponent,
+  TaskCostComponent,
+  AnnotationsComponent,
+  AnnotaionsModalComponent,
+  AnnotationLabelsComponent,
+  SafePipe
 ];
 
 export const PROVIDERS = [
@@ -198,10 +199,6 @@ export const PROVIDERS = [
   TopMattersFirmsService,
   DatePipe,
   CommonService,
-  {
-    provide: HighchartsStatic,
-    useFactory: highchartsFactory
-  },
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },
