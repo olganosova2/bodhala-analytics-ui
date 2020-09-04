@@ -45,4 +45,8 @@ describe('AnnotationsComponent', () => {
   it('should create AnnotationsComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should viewNotes', () => {
+    component.viewNotes();
+    expect(component).toBeTruthy();
+  });
 });

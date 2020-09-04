@@ -5,6 +5,8 @@ import {HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
 import * as mockServices from '../../shared/unit-tests/mock-services';
+import {MOCK_ANNOTATIONS} from '../unit-tests/mock-data/annotations';
+import {IUiAnnotation} from '../components/annotations/model';
 
 const mockDiv = {
   offsetWidth: 600,
@@ -64,6 +66,31 @@ describe('CommonService', () => {
   it('CommonService should capitalize when null', inject([CommonService], (service: CommonService) => {
     const result = service.capitalize(null);
     expect(result).toBe('');
+  }));
+  // it('CommonService generate PDF Outer', inject([CommonService], (service: CommonService) => {
+  //   const text = '87';
+  //   service.generatePdfOuter('Executive Summary', 'ExecutiveSummary', null);
+  //   expect(service).toBeTruthy();
+  // }));
+  it('CommonService should format Path with no ?', inject([CommonService], (service: CommonService) => {
+    const text = 'Hello';
+    const result = service.formatPath(text);
+    expect(result).toBe('Hello');
+  }));
+  it('CommonService should format Path with  ?', inject([CommonService], (service: CommonService) => {
+    const text = 'Hello?there';
+    const result = service.formatPath(text);
+    expect(result).toBe('Hello');
+  }));
+  it('CommonService should format Html', inject([CommonService], (service: CommonService) => {
+    const text = 'Hello';
+    const result = service.formatHtml(text);
+    expect(result).toBe('Hello');
+  }));
+  it('CommonService should format Initials', inject([CommonService], (service: CommonService) => {
+    const note = MOCK_ANNOTATIONS.result[0] as IUiAnnotation;
+    const result = service.formatInitials(note);
+    expect(result).toBe('JH');
   }));
 });
 

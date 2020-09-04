@@ -167,7 +167,7 @@ export class CommonService {
     let result = path;
     const ix = path.indexOf('?');
     if (ix >= 0) {
-      result = path.substring(ix);
+      result = path.substring(0, ix);
     }
     return result;
   }
