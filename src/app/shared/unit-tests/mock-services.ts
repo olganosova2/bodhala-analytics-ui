@@ -146,6 +146,15 @@ export class DataStub {
     }
     return of({});
   }
+  public makeDeleteRequest(url: string, request?: any): Observable<any> {
+    switch (url) {
+      case 'deleteSavedExport':
+        return of([]);
+      default:
+        return of([]);
+    }
+    return of({});
+  }
   public fetch(url: string, params: any): Observable<any> {
     if (url.indexOf('errorStub') >= 0) {
       return throwError({ errorStatus: 505 });
