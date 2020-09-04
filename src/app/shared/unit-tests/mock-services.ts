@@ -66,6 +66,8 @@ export class DataStub {
         return of({result: TOP_MATTERS });
       case 'getTopFirms':
         return of({result: TOP_FIRMS });
+      case 'getAnnotations':
+        return of({result: MOCK_ANNOTATIONS.result[0] });
       default:
         return of([]);
     }
@@ -242,3 +244,11 @@ export class ActivatedRouteMock {
     observer.complete();
   });
 }
+export class MatDialogMock {
+  open() {
+    return {
+      afterClosed: () => of({result: true})
+    };
+  }
+}
+

@@ -10,6 +10,8 @@ import * as mockServices from '../../shared/unit-tests/mock-services';
 import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
 import {IFirm} from '../firm.model';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
+import {MOCK_ANNOTATIONS} from '../../shared/unit-tests/mock-data/annotations';
+import {IUiAnnotation} from '../../shared/components/annotations/model';
 
 describe('FirmRateCardComponent', () => {
   let component: FirmRateCardComponent;
@@ -64,5 +66,15 @@ describe('FirmRateCardComponent', () => {
   it('should goToTop', () => {
     component.goToTop();
     expect(component).toBeTruthy();
+  });
+  it('should loadNotes', () => {
+    const notes = MOCK_ANNOTATIONS.result as Array<IUiAnnotation>;
+    component.loadNotes(notes);
+    expect(component.notes.length).toBe(1);
+  });
+  it('should formatLogoUrl', () => {
+    const url = '/img/clients/img123';
+    const result = component.formatLogoUrl(url);
+    expect(result).toBeTruthy();
   });
 });

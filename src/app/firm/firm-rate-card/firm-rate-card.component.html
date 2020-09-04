@@ -18,7 +18,7 @@
 
     </div>
     <div class="pull-right">
-      <bd-annotations (notesUpdated)="loadNotes($event)" #annotations></bd-annotations>
+      <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations>
       <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
       </button>
