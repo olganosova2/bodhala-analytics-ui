@@ -57,4 +57,8 @@ describe('SavingsWidgetComponent', () => {
   it('should create SavingsWidgetComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should create format Label', () => {
+    const result = component.formatLabel(123);
+    expect(result).toBe('123%');
+  });
 });
