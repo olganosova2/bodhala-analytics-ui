@@ -39,4 +39,14 @@ describe('SavedReportsModalComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should load savedExport data', () => {
+    component.loadSavedExport(MOCK_SAVED_REPORT_DATA);
+  });
+
+  it('should delete savedExport data', () => {
+    component.deleteSavedExport(MOCK_SAVED_REPORT_DATA);
+  });
+
+
 });
