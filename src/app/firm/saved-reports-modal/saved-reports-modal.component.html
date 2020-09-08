@@ -16,7 +16,10 @@
             <td>{{item.enddate}}</td>
             <td *ngIf="item.saved_view">{{item.saved_view}}</td>
             <td *ngIf="!item.saved_view">N/A</td>
-            <td><button #tooltip="matTooltip" matTooltip="View this report" class="action-button" (click)="loadSavedExport(item)"><i class="fa fa-eye"></i></button><button #tooltip="matTooltip" matTooltip="Delete this report" class="action-button" (click)="deleteSavedExport(item)"><i class="fa fa-trash-o"></i></button></td>
+            <td><button #tooltip="matTooltip" matTooltip="View this report" class="action-button" (click)="loadSavedExport(item)"><i class="fa fa-eye"></i></button>
+                <button #tooltip="matTooltip" matTooltip="View report comparison" class="action-button" (click)="viewReportComparison(item)"><i class="fa fa-clone"></i></button>
+                <button #tooltip="matTooltip" matTooltip="Delete this report" class="action-button" (click)="deleteSavedExport(item)"><i class="fa fa-trash-o"></i></button>
+            </td>
         </tr>
     </table>
 </div>

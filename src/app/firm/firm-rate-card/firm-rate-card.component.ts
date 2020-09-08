@@ -35,6 +35,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   savedReportsAvailable: boolean = false;
   savedReports: Array<any> = [];
   otherFirms: boolean = false;
+  comparing: boolean = false;
   percentOfTotal: number;
   rank: number;
   selectedSavedFilterName: string = null;

@@ -71,6 +71,10 @@ export class SavedReportsModalComponent implements OnInit {
     });
   }
 
+  viewReportComparison(data): void {
+    console.log("We are comparing reports: ", data);
+  }
+
   deleteSavedExport(exportData): void {
     let params = {};
     let lawfirmId = 0;
