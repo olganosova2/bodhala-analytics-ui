@@ -75,8 +75,14 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   export(): void {
     this.commonServ.pdfLoading = true;
+    let exportName = '';
+    if (this.userService.currentUser.client_info.org.name !== null) {
+      exportName = this.userService.currentUser.client_info.org.name + ' Executive Summary';
+    } else {
+      exportName = 'Executive Summary';
+    }
     setTimeout(() => {
-      this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'executiveSummary', null);
+      this.commonServ.generatePdfOuter(exportName, 'executiveSummary', null);
     }, 200);
   }
   ngOnDestroy() {
