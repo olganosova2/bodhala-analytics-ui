@@ -35,9 +35,12 @@ export class SpendTrendChartComponent implements OnInit {
   chart: any = {};
   options: any;
   chartTypes: any = TrendChart;
+  firstLoad: boolean = true;
   @Input() firmId: string;
   @Input() startdate: string;
   @Input() enddate: string;
+  @Input() compStartDate: string;
+  @Input() compEndDate: string;
   pendingRequest: Subscription;
   @ViewChild('spendByQuarterDiv') spendByQuarterDiv: ElementRef<HTMLElement>;
 
@@ -91,6 +94,9 @@ export class SpendTrendChartComponent implements OnInit {
     //     text: 'Report Card Date Range'
     //   },
     // });
+    if (this.firstLoad) {
+
+    }
     if (this.startdate && this.enddate) {
       const tempStartDate = new Date(this.startdate);
       const formattedStartDate = tempStartDate.toISOString().slice(0, 10);
