@@ -13,6 +13,7 @@ export class BillingTotalItemComponent implements OnInit {
   @Input() itemRC: IBillingTotalItemReportCard;
   @Input() includeExpenses: boolean = false;
   @Input() reportCardItem: boolean = false;
+  @Input() comparisonItem: boolean = false;
 
   constructor(public filtersService: FiltersService) {
   }

@@ -21,6 +21,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   itemTopRowCount: number = 6;
   @Input() practiceArea: IPracticeArea;
   @Input() isReportCard: boolean = false;
+  @Input() isComparison: boolean = false;
   @Input() firm: IFirm;
 
   constructor(private httpService: HttpService,
@@ -59,6 +60,8 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         otherFirmIDs = JSON.parse(otherFirmIDs);
         params.otherFirms = otherFirmIDs;
       }
+    } else if (this.isComparison === true) {
+      requestString = 'reportCardComparisonBillingTotals';
     } else {
       requestString = 'getBillingTotals';
     }
@@ -67,6 +70,10 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         if (this.isReportCard === true) {
           this.totalsRaw = data.result.firm_overview;
           this.otherFirms = data.result.all_other_firms;
+        } else if (this.isComparison === true) {
+          console.log("comp data: ", data);
+          this.otherFirms = data.result.saved_report_timeframe;
+          this.totalsRaw = data.result.comparison_timeframe;
         } else {
           this.totalsRaw = data.result;
         }
@@ -82,7 +89,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
 
   formatItems(): void {
     this.totals = Object.assign([], []);
-    if (this.isReportCard) {
+    if (this.isReportCard || this.isComparison) {
       this.totalsRC = Object.assign([], []);
       this.calculateHoursPercentage(this.totalsRaw);
       this.calculateHoursPercentage(this.otherFirms);
@@ -94,8 +101,8 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         name: 'Outside Counsel Spend',
         format: 'currency',
         svg: 'bills',
-        avg: null,
-        diff: null
+        avg: this.filtersService.includeExpenses ? this.otherFirms.total_spend_including_expenses.total : this.otherFirms.total_spend.total,
+        diff: this.otherFirms.total_spend_diff
       });
       this.totalsRC.push({
         icon: 'icon-folder-alt',
@@ -180,6 +187,8 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       this.itemTopRowCount = Math.ceil(this.totalsRC.length / 2);
       this.totalsRC[this.itemTopRowCount - 1].lastCell = true;
       this.totalsRC[this.totalsRC.length - 1].lastCell = true;
+    } else if (this.isComparison === true) {
+
     } else {
       this.totals.push({
         icon: 'icon-layers',
@@ -275,6 +284,23 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     otherFirms.avg_paralegal_legal_assistant_rate_diff = 0;
     otherFirms.avg_blended_rate_diff = 0;
     otherFirms.bodhala_price_index_diff = 0;
+
+    if (!this.filtersService.includeExpenses && otherFirms.total_spend.total > 0 && otherFirms.total_spend.total !== undefined && otherFirms.total_spend.total !== null) {
+      if (otherFirms.total_spend.total > totalsRaw.total_spend.total) {
+        otherFirms.total_spend_diff = (1 - (totalsRaw.total_spend.total / otherFirms.total_spend.total)) * 100;
+        otherFirms.total_spend_diff *= -1;
+      } else {
+        otherFirms.total_spend_diff = ((totalsRaw.total_spend.total / otherFirms.total_spend.total) - 1) * 100;
+      }
+    } else if (this.filtersService.includeExpenses && otherFirms.total_spend_including_expenses.total > 0 && otherFirms.total_spend_including_expenses.total !== undefined
+      && otherFirms.total_spend_including_expenses.total !== null) {
+      if (otherFirms.total_spend_including_expenses.total > totalsRaw.total_spend_including_expenses.total) {
+        otherFirms.total_spend_diff = (1 - (totalsRaw.total_spend_including_expenses.total / otherFirms.total_spend_including_expenses.total)) * 100;
+        otherFirms.total_spend_diff *= -1;
+      } else {
+        otherFirms.total_spend_diff = ((totalsRaw.total_spend_including_expenses.total / otherFirms.total_spend_including_expenses.total) - 1) * 100;
+      }
+    }
 
     if (!this.filtersService.includeExpenses && otherFirms.avg_matter_cost.avg_cost > 0 && otherFirms.avg_matter_cost.avg_cost !== undefined && otherFirms.avg_matter_cost.avg_cost !== null) {
       if (otherFirms.avg_matter_cost.avg_cost > totalsRaw.avg_matter_cost.avg_cost) {

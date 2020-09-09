@@ -107,6 +107,7 @@ import { AnnotaionsModalComponent } from './shared/components/annotations/annota
 import { SafePipe } from './shared/pipes/safe.pipe';
 import { AnnotationLabelsComponent } from './shared/components/annotations/annotation-labels/annotation-labels.component';
 import {ClickOutsideModule} from 'ng-click-outside';
+import { SpendTrendChartComponent } from './firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -167,7 +168,8 @@ export function initHttp(service: HttpService) {
     AnnotationsComponent,
     AnnotaionsModalComponent,
     SafePipe,
-    AnnotationLabelsComponent
+    AnnotationLabelsComponent,
+    SpendTrendChartComponent
   ],
   entryComponents: [
     PillComponent,

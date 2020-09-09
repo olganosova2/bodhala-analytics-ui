@@ -1,0 +1,40 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/variables";
+.panel-wrapper-chart {
+  padding: 10px;
+  width: 100%;
+  background-color: #fff;
+  color: $body-color;
+  border: 1px solid #fff;
+  border-bottom-left-radius: $card-panel-radius;
+  border-bottom-right-radius: $card-panel-radius;
+}
+.tab-button {
+  background-color: $card-header-gray;
+  // border-bottom: none;
+  padding: 10px 20px;
+  color: $body-color;
+  display: inline-block;
+  text-align:center;
+  vertical-align: middle;
+  cursor:pointer;
+  margin-right: 2px;
+  margin-bottom: -1px;
+}
+.tab-button-first {
+  border: 1px solid #fff;
+  border-top-left-radius: $card-panel-radius;
+}
+.tab-button-selected{
+  background-color: #fff;
+}
+.tab-button-selected-first{
+  background-color: #fff;
+  // border: 1px solid #fff;
+}
+.tabs-panel{
+  background-color: white;
+  width: 55%;
+  // border: 1px solid black !important;
+  border-radius: 4px;
+}

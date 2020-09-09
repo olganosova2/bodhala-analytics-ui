@@ -1,18 +1,20 @@
-import {Component, ElementRef, HostListener,  OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 import * as config from '../../shared/services/config';
 const moment = _moment;
-import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {IFirm} from '../firm.model';
+const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {IFirm, taxonomyChartOptions} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
 
 import {AnnotationsComponent} from '../../shared/components/annotations/annotations.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
+import {SpendTrendChartComponent} from './spend-trend-chart/spend-trend-chart.component';
 
 @Component({
   selector: 'bd-firm-rate-card',
@@ -31,6 +33,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   practiceAreas: Array<string> = [];
   enddate: string;
   startdate: string;
+  comparisonStartDate: string;
+  comparisonEndDate: string = '2019-09-25';
   showToTop: boolean = false;
   savedReportsAvailable: boolean = false;
   savedReports: Array<any> = [];
@@ -41,6 +45,11 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   selectedSavedFilterName: string = null;
   logoUrl: string;
   notes: Array<IUiAnnotation> = [];
+  selectedTabIndex: number = 0;
+  pageName: string = 'analytics-ui/firm/report-card/';
+  pageType: string = 'Firm Report Card';
+  excludeFilters = ['firms', 'threshold', 'matters', 'practice areas', 'internal'];
+  @ViewChild(SpendTrendChartComponent) spendTrendChart: SpendTrendChartComponent;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -59,7 +68,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               public utilServ: UtilService,
               public userService: UserService,
               public router: Router,
-              public matDialog: MatDialog) {
+              public matDialog: MatDialog,
+              public appStateService: AppStateService) {
     this.commonServ.pageTitle = 'Firms > Report Card';
     this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
   }
@@ -247,6 +257,35 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
   loadNotes(notes: Array<IUiAnnotation>): void {
     this.notes = Object.assign([], notes);
+  }
+  refreshData(evt: any): void {
+    console.log("REFRESH: ", evt);
+    
+    this.spendTrendChart.getSpendByQuarter();
+
+
+  }
+  getCompareDates(dates): void {
+    let startDate = dates.startdate;
+    let endDate = dates.enddate;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    let comparisonStartDateTemp = new Date(this.comparisonEndDate);
+    let daysDiff = Math.floor((Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) - Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()) ) /(_MS_PER_DAY));
+    // daysDiff -= 1;
+    comparisonStartDateTemp.setDate(comparisonStartDateTemp.getDate() - daysDiff);
+    //  comparisonStartDateTemp.toISOString().slice(0, 10);
+    this.comparisonStartDate = comparisonStartDateTemp.toISOString().slice(0, 10);
+    console.log("compstart: ", this.comparisonStartDate);
+    this.comparisonStartDate = moment(this.comparisonStartDate).format('MMM DD, YYYY');
+    this.comparisonEndDate = moment(this.comparisonEndDate).format('MMM DD, YYYY');
+  }
+  changeTab(evt): void {
+    this.selectedTabIndex = evt.index;
+    if (this.selectedTabIndex === 1) {
+      const dates = this.filtersService.parseLSDateString();
+      this.getCompareDates(dates);
+    }
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

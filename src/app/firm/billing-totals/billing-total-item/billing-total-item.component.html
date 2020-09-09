@@ -1,4 +1,4 @@
-<div class="cell-item" *ngIf="!reportCardItem" [ngClass]="{'cell-last': isLastCell}">
+<div class="cell-item" *ngIf="!reportCardItem && !comparisonItem" [ngClass]="{'cell-last': isLastCell}">
   <div *ngIf="!item.svg"><em class="{{item.icon}}"></em></div>
   <div *ngIf="item.svg" class="img-div"><img src="assets/images/{{item.svg}}.svg" alt="icon"/></div>
   <div class="font-bold mb10 mt10">
@@ -31,6 +31,41 @@
 <div class="bottom-cell-item" *ngIf="reportCardItem && itemRC.name !== 'Outside Counsel Spend'" [ngClass]="{'cell-last': isLastCell}">
   <div class="temp">
     Avg.
+    <div class="font-bold">
+      <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.avg | number:'1.0-0'}}</span>
+      <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.avg | number:'1.2-2'}}%</span>
+      <span *ngIf="itemRC?.format === 'number'">{{ itemRC.avg | number:'1.2-2'}}</span>
+      <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.avg | number:'1.2-2'}}</span>
+      <span *ngIf="!itemRC?.format">{{ itemRC.avg | number:'1.0-0' }}</span>
+    </div>
+  </div>
+  <div class="temp">
+    Diff.
+    <div class="font-bold">
+      <span *ngIf="itemRC.diff > 0"><em class="fa fa-arrow-up"></em> {{itemRC.diff | number:'1.0-0'}}%</span>
+      <span *ngIf="itemRC.diff < 0"><em class ="fa fa-arrow-down"></em> {{itemRC.diff * -1 | number:'1.0-0'}}%</span>
+      <span *ngIf="itemRC.diff === 0">0%</span>
+    </div>
+  </div>
+</div>
+
+<div class="report-card-cell-item" *ngIf="comparisonItem" [ngClass]="{'cell-last': isLastCell}">
+  <div *ngIf="!itemRC.svg"><em class="{{itemRC.icon}}"></em></div>
+  <div *ngIf="itemRC.svg" class="img-div">
+    <img src="assets/images/{{itemRC.svg}}.svg" alt="icon"/>
+  </div>
+  <div class="font-bold">
+    <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.total | number:'1.0-0'}}</span>
+    <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.total | number:'1.2-2'}}%</span>
+    <span *ngIf="itemRC?.format === 'number'">{{ itemRC.total | number:'1.2-2'}}</span>
+    <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.total | number:'1.2-2'}}</span>
+    <span *ngIf="!itemRC?.format">{{ itemRC.total | number:'1.0-0' }}</span>
+  </div>
+  <span class="cell-label">{{ itemRC.name }}</span>
+</div>
+<div class="bottom-cell-item" *ngIf="comparisonItem" [ngClass]="{'cell-last': isLastCell}">
+  <div class="temp">
+    Report Card Period
     <div class="font-bold">
       <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.avg | number:'1.0-0'}}</span>
       <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.avg | number:'1.2-2'}}%</span>

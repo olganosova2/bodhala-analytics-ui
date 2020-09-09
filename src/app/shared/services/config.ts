@@ -63,7 +63,8 @@ export const END_POINTS_URLS = {
   spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
   saveExport: {url: BASE_URL + 'analytics/saveExport', showLoading: true},
   getSavedExports: {url: BASE_URL + 'analytics/getSavedExports', showLoading: true},
-  deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true}
+  deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
+  reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true}
 };
 
 export const ROUTES = [
