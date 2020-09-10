@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
-import {Subscription} from 'rxjs';
+import {Subscription, Subject} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
@@ -16,9 +16,46 @@ export class CommonService {
   exportImage = null;
   pdfLoading: boolean = false;
   pendingRequest: Subscription;
+  reportCardFiltersVar: boolean = false;
+  reportCardFiltersChange: Subject<boolean> = new Subject<boolean>();
+  reportCardStartDateVar: string = null;
+  reportCardStartDateChange: Subject<string> = new Subject<string>();
+  reportCardEndDateVar: string = null;
+  reportCardEndDateChange: Subject<string> = new Subject<string>();
+
   editorStyle = {
     height: '150px'
   };
+
+  get reportCardFilters(): Subject<boolean> {
+    return this.reportCardFiltersChange;
+  }
+  set reportCardFilters(filtersUpdated: Subject<boolean>) {
+    this.reportCardFiltersChange = filtersUpdated;
+  }
+  changeReportCardFilters(filtersUpdated: boolean) {
+    this.reportCardFiltersChange.next(filtersUpdated);
+  }
+
+  get reportCardStartDate(): Subject<string> {
+    return this.reportCardStartDateChange;
+  }
+  set reportCardStartDate(startDate: Subject<string>) {
+    this.reportCardStartDateChange = startDate;
+  }
+  changeReportCardStartDate(startDate: string) {
+    this.reportCardStartDateChange.next(startDate);
+  }
+
+  get reportCardEndDate(): Subject<string> {
+    return this.reportCardEndDateChange;
+  }
+  set reportCardEndDate(endDate: Subject<string>) {
+    this.reportCardEndDateChange = endDate;
+  }
+  changeReportCardEndDate(endDate: string) {
+    this.reportCardEndDateChange.next(endDate);
+  }
 
   constructor(public httpService: HttpService,
               public userService: UserService,

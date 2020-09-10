@@ -63,7 +63,6 @@ export class SpendTrendChartComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest('spendByQuarter', params).subscribe(
       (data: any) => {
         this.spend = data.result;
-        console.log("data: ", data);
         this.renderChart();
       },
       err => {
@@ -79,23 +78,42 @@ export class SpendTrendChartComponent implements OnInit {
     }
 
     this.chart.series[0].setData(result);
-    const params = this.filtersService.getCurrentUserCombinedFilters();
-    let startDate = params.startdate;
-    let endDate = params.enddate;
-    const random = Math.random();
-    startDate = moment(startDate).valueOf();
-    endDate = moment(endDate).valueOf();
-    // this.chart.xAxis[0].addPlotBand({
-    //   color: 'orange',
-    //   from: startDate,
-    //   to: endDate,
-    //   id: 'plotband-1',
-    //   label: {
-    //     text: 'Report Card Date Range'
-    //   },
-    // });
+    let startDate;
+    let endDate;
+    
     if (this.firstLoad) {
-
+      startDate = moment(this.compStartDate).valueOf();
+      endDate = moment(this.compEndDate).valueOf();
+      this.chart.xAxis[0].addPlotBand({
+        color: 'blue',
+        from: startDate,
+        to: endDate,
+        id: 'plotband-2',
+        label: {
+          text: 'Comparison Date Range'
+        },
+      });
+      this.firstLoad = false;
+      this.chart.xAxis[0].update({
+        max: endDate
+      });
+    } else {
+      this.chart.xAxis[0].removePlotBand('plotband-2');
+      const params = this.filtersService.getCurrentUserCombinedFilters();
+      let startDate = params.startdate;
+      let endDate = params.enddate;
+      const random = Math.random();
+      startDate = moment(startDate).valueOf();
+      endDate = moment(endDate).valueOf();
+      this.chart.xAxis[0].addPlotBand({
+        color: 'blue',
+        from: startDate,
+        to: endDate,
+        id: 'plotband-2',
+        label: {
+          text: 'Comparison Date Range'
+        },
+      });
     }
     if (this.startdate && this.enddate) {
       const tempStartDate = new Date(this.startdate);
@@ -116,11 +134,7 @@ export class SpendTrendChartComponent implements OnInit {
           x: -10
         },
       });
-      // this.chart.xAxis[0].update({
-      //   max: endDate
-      // });
     }
-    console.log("xAxis: ", this.chart.xAxis[0]);
     this.setUpChart();
     setTimeout(() => {
       this.resizeChart();

@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
-import {forkJoin, Observable, Subscription} from 'rxjs';
+import {forkJoin, Observable, Subscription, Subject} from 'rxjs';
 import * as _moment from 'moment';
 import * as config from '../../shared/services/config';
 const moment = _moment;
@@ -33,8 +33,12 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   practiceAreas: Array<string> = [];
   enddate: string;
   startdate: string;
+  reportCardStartDate: string;
+  reportCardEndDate: string;
   comparisonStartDate: string;
   comparisonEndDate: string = '2019-09-25';
+  formattedComparisonStartDate: string;
+  formattedComparisonEndDate: string;
   showToTop: boolean = false;
   savedReportsAvailable: boolean = false;
   savedReports: Array<any> = [];
@@ -76,6 +80,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const dates = this.filtersService.parseLSDateString();
+    this.reportCardStartDate = dates.startdate;
+    this.reportCardEndDate = dates.enddate;
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
     this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
@@ -259,10 +265,15 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.notes = Object.assign([], notes);
   }
   refreshData(evt: any): void {
-    console.log("REFRESH: ", evt);
-    
+    this.commonServ.changeReportCardFilters(true);
+    this.commonServ.changeReportCardStartDate(this.reportCardStartDate);
+    this.commonServ.changeReportCardEndDate(this.reportCardEndDate);
     this.spendTrendChart.getSpendByQuarter();
-
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const startDate = params.startdate;
+    const endDate = params.enddate;
+    this.formattedComparisonStartDate = moment(startDate).format('MMM DD, YYYY');
+    this.formattedComparisonEndDate = moment(endDate).format('MMM DD, YYYY');
 
   }
   getCompareDates(dates): void {
@@ -272,13 +283,10 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     endDate = new Date(endDate);
     let comparisonStartDateTemp = new Date(this.comparisonEndDate);
     let daysDiff = Math.floor((Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) - Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()) ) /(_MS_PER_DAY));
-    // daysDiff -= 1;
     comparisonStartDateTemp.setDate(comparisonStartDateTemp.getDate() - daysDiff);
-    //  comparisonStartDateTemp.toISOString().slice(0, 10);
     this.comparisonStartDate = comparisonStartDateTemp.toISOString().slice(0, 10);
-    console.log("compstart: ", this.comparisonStartDate);
-    this.comparisonStartDate = moment(this.comparisonStartDate).format('MMM DD, YYYY');
-    this.comparisonEndDate = moment(this.comparisonEndDate).format('MMM DD, YYYY');
+    this.formattedComparisonStartDate = moment(this.comparisonStartDate).format('MMM DD, YYYY');
+    this.formattedComparisonEndDate = moment(this.comparisonEndDate).format('MMM DD, YYYY');
   }
   changeTab(evt): void {
     this.selectedTabIndex = evt.index;

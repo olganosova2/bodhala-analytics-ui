@@ -1,8 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IBillingTotalItem, IBillingTotalItemReportCard, IFirm} from '../firm.model';
 import {IPracticeArea} from '../../practice-area/practice-area.model';
-import {Subscription} from 'rxjs';
+import {Subscription, Subject} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
+import {CommonService} from '../../shared/services/common.service';
 import {FiltersService} from '../../shared/services/filters.service';
 
 @Component({
@@ -18,15 +19,38 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   totalsRC: Array<IBillingTotalItemReportCard> = [];
   pendingRequest: Subscription;
   isLoaded: boolean = false;
+  firstLoad: boolean = true;
   itemTopRowCount: number = 6;
   @Input() practiceArea: IPracticeArea;
   @Input() isReportCard: boolean = false;
   @Input() isComparison: boolean = false;
   @Input() firm: IFirm;
+  filtersUpdated: boolean = false;
+  filtersUpdatedSrc: Subject<boolean>;
+  reportCardStartDate: string;
+  reportCardStartDateSrc: Subject<string>;
+  reportCardEndDate: string;
+  reportCardEndDateSrc: Subject<string>;
 
   constructor(private httpService: HttpService,
-              public filtersService: FiltersService) {
-  }
+              public filtersService: FiltersService,
+              public commonServ: CommonService) {
+                this.filtersUpdatedSrc = this.commonServ.reportCardFilters;
+                this.filtersUpdatedSrc.subscribe(value => {
+                  this.filtersUpdated = value;
+                });
+
+                this.reportCardStartDateSrc = this.commonServ.reportCardStartDate;
+                this.reportCardStartDateSrc.subscribe(value => {
+                  this.reportCardStartDate = value;
+                });
+
+                this.reportCardEndDateSrc = this.commonServ.reportCardEndDate;
+                this.reportCardEndDateSrc.subscribe(value => {
+                  this.reportCardEndDate = value;
+                  this.loadTotals();
+                });
+              }
 
   ngOnInit() {
     this.loadTotals();
@@ -60,8 +84,14 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         otherFirmIDs = JSON.parse(otherFirmIDs);
         params.otherFirms = otherFirmIDs;
       }
-    } else if (this.isComparison === true) {
+    } else if (this.isComparison === true && this.firstLoad === true) {
       requestString = 'reportCardComparisonBillingTotals';
+      params.secondCall = false;
+    } else if (this.isComparison === true && this.firstLoad === false) {
+      requestString = 'reportCardComparisonBillingTotals';
+      params.secondCall = true;
+      params.reportCardStartDate = this.reportCardStartDate;
+      params.reportCardEndDate = this.reportCardEndDate;
     } else {
       requestString = 'getBillingTotals';
     }
@@ -70,8 +100,11 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         if (this.isReportCard === true) {
           this.totalsRaw = data.result.firm_overview;
           this.otherFirms = data.result.all_other_firms;
-        } else if (this.isComparison === true) {
-          console.log("comp data: ", data);
+        } else if (this.isComparison === true && this.firstLoad === true) {
+          this.otherFirms = data.result.saved_report_timeframe;
+          this.totalsRaw = data.result.comparison_timeframe;
+          this.firstLoad = false;
+        } else if (this.isComparison === true && this.firstLoad === false) {
           this.otherFirms = data.result.saved_report_timeframe;
           this.totalsRaw = data.result.comparison_timeframe;
         } else {
