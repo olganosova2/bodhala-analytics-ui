@@ -47,6 +47,7 @@
     "core-js": "^3.6.5",
     "font-awesome": "^4.7.0",
     "fontawesome": "4.5.0",
+    "highcharts": "^8.2.0",
     "highcharts-border-radius": "0.0.2",
     "html2canvas": "^1.0.0-rc.5",
     "jspdf": "^1.5.3",

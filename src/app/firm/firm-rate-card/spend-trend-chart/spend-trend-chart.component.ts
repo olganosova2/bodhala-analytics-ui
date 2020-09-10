@@ -63,7 +63,7 @@ export class SpendTrendChartComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest('spendByQuarter', params).subscribe(
       (data: any) => {
         this.spend = data.result;
-        this.renderChart();
+        this.renderChart(false);
       },
       err => {
         this.errorMessage = err;
@@ -71,7 +71,7 @@ export class SpendTrendChartComponent implements OnInit {
     );
   }
 
-  renderChart(): void {
+  renderChart(switchingView: boolean): void {
     let result = [];
     for (const rec of this.spend) {
       result.push(this.buildChartItem(rec));
@@ -80,18 +80,23 @@ export class SpendTrendChartComponent implements OnInit {
     this.chart.series[0].setData(result);
     let startDate;
     let endDate;
-    
-    if (this.firstLoad) {
+    console.log("switchingView: ", switchingView);
+    if (this.firstLoad || switchingView) {
       startDate = moment(this.compStartDate).valueOf();
       endDate = moment(this.compEndDate).valueOf();
       this.chart.xAxis[0].addPlotBand({
-        color: 'blue',
+        color: '#FCFFC5',
         from: startDate,
         to: endDate,
         id: 'plotband-2',
         label: {
-          text: 'Comparison Date Range'
-        },
+          text: 'Comparison Timeframe',
+          y: 30,
+          style: {
+              fontWeight: 'bold',
+              width: '30px'
+          }
+        }
       });
       this.firstLoad = false;
       this.chart.xAxis[0].update({
@@ -106,13 +111,18 @@ export class SpendTrendChartComponent implements OnInit {
       startDate = moment(startDate).valueOf();
       endDate = moment(endDate).valueOf();
       this.chart.xAxis[0].addPlotBand({
-        color: 'blue',
+        color: '#FCFFC5',
         from: startDate,
         to: endDate,
         id: 'plotband-2',
         label: {
-          text: 'Comparison Date Range'
-        },
+          text: 'Comparison Timeframe',
+          y: 30,
+          style: {
+              fontWeight: 'bold',
+              width: '30px'
+          }
+        }
       });
     }
     if (this.startdate && this.enddate) {
@@ -128,11 +138,15 @@ export class SpendTrendChartComponent implements OnInit {
         from: startDate,
         to: endDate,
         id: 'plotband-1',
+       
         label: {
-          text: 'Report Card Date Range',
-          align: 'center',
-          x: -10
-        },
+          text: 'Report Card Timeframe',
+          y: 30,
+          style: {
+              fontWeight: 'bold',
+              width: '30px'
+          }
+        }
       });
     }
     this.setUpChart();
@@ -221,7 +235,7 @@ export class SpendTrendChartComponent implements OnInit {
 
   changeViewMode(type: TrendChart): void {
     this.selectedChart = type;
-    this.renderChart();
+    this.renderChart(true);
   }
 
 
@@ -236,15 +250,3 @@ export class SpendTrendChartComponent implements OnInit {
   }
 
 }
-
-// this.chart.xAxis[0].addPlotLine({
-//   color: '#FCFFC5',
-//   from: startDate,
-//   to: endDate,
-//   id: 'plotband-2',
-//   label: {
-//     text: 'Comparison Date Range',
-//     align: 'center',
-//     x: -10
-//   },
-// });

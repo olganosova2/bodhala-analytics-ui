@@ -237,8 +237,13 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   export(): void {
       this.commonServ.pdfLoading = true;
       setTimeout(() => {
-        this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', this.firmId);
-        this.checkSavedReports();
+        if (this.selectedTabIndex === 0) {
+          this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', this.firmId);
+          this.checkSavedReports();
+        } else {
+          this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card Comparison', 'comparisonDiv', this.firmId);
+        }
+        
       }, 200);
   }
 
