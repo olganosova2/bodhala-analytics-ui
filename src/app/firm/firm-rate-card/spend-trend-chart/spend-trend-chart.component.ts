@@ -7,16 +7,21 @@ import {HttpService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {CommonService} from '../../../shared/services/common.service';
 import * as Highcharts from 'highcharts';
+import { BreadcrumbModule } from 'primeng';
 
 const moment = _moment;
 
 export enum TrendChart {
-  LEVERAGE = 'LEVERAGE',
+  TOTAL_SPEND = 'TOTAL_SPEND',
   MATTER_COST = 'MATTER_COST',
-  BLOCK_BILLING = 'BLOCK_BILLING',
+  PARTNER_HOURS = 'PARTNER_HOURS',
+  ASSOCIATE_HOURS = 'ASSOCIATE_HOURS',
+  // AVG_MATTER_DURATION = 'AVG_MATTER_DURATION',
+  BLENDED_RATE = 'BLENDED_RATE',
+  BODHALA_PRICE_INDEX = 'BODHALA_PRICE_INDEX',
   PARTNER_RATE = 'PARTNER_RATE',
   ASSOCIATE_RATE = 'ASSOCIATE_RATE',
-  TOTAL_SPEND = 'TOTAL_SPEND'
+  PARALEGAL_RATE = 'PARALEGAL_RATE'
 }
 
 @Component({
@@ -31,7 +36,7 @@ export class SpendTrendChartComponent implements OnInit {
   isLoaded: boolean = false;
   spend: Array<any> = [];
   includeExpenses: boolean = false;
-  selectedChart: TrendChart = TrendChart.LEVERAGE;
+  selectedChart: TrendChart = TrendChart.TOTAL_SPEND;
   chart: any = {};
   options: any;
   chartTypes: any = TrendChart;
@@ -63,12 +68,44 @@ export class SpendTrendChartComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest('spendByQuarter', params).subscribe(
       (data: any) => {
         this.spend = data.result;
+        this.processData();
         this.renderChart(false);
       },
       err => {
         this.errorMessage = err;
       }
     );
+  }
+
+  processData(): void {
+    for (const rec of this.spend) {
+      if (rec.total_hours > 0 && rec.total_hours !== null && rec.total_hours !== undefined) {
+        rec.partner_hours_percent = (rec.partner_hours / rec.total_hours) * 100;
+        rec.associate_hours_percent = (rec.associate_hours / rec.total_hours) * 100;
+        rec.blended_rate = this.calcBlendedRate(rec);
+        rec.bodhala_price_index = this.calcBPI(rec);
+      }
+    }
+  }
+
+  calcBlendedRate(rec: any): number {
+    const result = 0;
+    if (!rec.partner_hours) {
+      return result;
+    }
+    return (rec.total_partner_billed + rec.total_associate_billed - rec.total_partner_writeoff - rec.total_associate_writeoff) / (rec.partner_hours + rec.associate_hours - rec.partner_writeoff_hours - rec.associate_writeoff_hours);
+  }
+
+  calcBPI(rec: any): number {
+    const result = 0;
+    if (!rec.partner_hours || !rec.associate_hours) {
+      return result;
+    }
+    const leverage = (rec.associate_hours / rec.partner_hours);
+    const avgPartnerRate = (rec.total_partner_billed / rec.partner_hours);
+    const avgAssociateRate = (rec.total_associate_billed / rec.associate_hours);
+    const bpi = avgPartnerRate + (avgAssociateRate * leverage);
+    return bpi;
   }
 
   renderChart(switchingView: boolean): void {
@@ -172,14 +209,26 @@ export class SpendTrendChartComponent implements OnInit {
     const yearStr = yearQuarter[0] + quarterStartDate;
     const year = moment(yearStr).valueOf();
     switch (this.selectedChart) {
-      case TrendChart.LEVERAGE:
-        result = [year, rec.leverage_by_hours];
+      case TrendChart.TOTAL_SPEND:
+        result = [year, rec.total_billed];
         break;
       case TrendChart.MATTER_COST:
         result = [year, rec.avg_matter_cost];
         break;
-      case TrendChart.BLOCK_BILLING:
-        result = [year, rec.block_billed_pct];
+      case TrendChart.PARTNER_HOURS:
+        result = [year, rec.partner_hours_percent];
+        break;
+      case TrendChart.ASSOCIATE_HOURS:
+        result = [year, rec.associate_hours_percent];
+        break;
+      // case TrendChart.AVG_MATTER_DURATION:
+      //   result = [year, rec.avg_matter_duration];
+      //   break;
+      case TrendChart.BLENDED_RATE:
+        result = [year, rec.blended_rate];
+        break;
+      case TrendChart.BODHALA_PRICE_INDEX:
+        result = [year, rec.bodhala_price_index];
         break;
       case TrendChart.PARTNER_RATE:
         result = [year, rec.partner_rate];
@@ -187,8 +236,8 @@ export class SpendTrendChartComponent implements OnInit {
       case TrendChart.ASSOCIATE_RATE:
         result = [year, rec.associate_rate];
         break;
-      case TrendChart.TOTAL_SPEND:
-        result = [year, rec.total_billed];
+      case TrendChart.PARALEGAL_RATE:
+        result = [year, rec.paralegal_rate];
         break;
       default:
         break;
@@ -199,14 +248,26 @@ export class SpendTrendChartComponent implements OnInit {
   setUpChart(): void {
     let result = '';
     switch (this.selectedChart) {
-      case TrendChart.LEVERAGE:
-        result = 'Avg';
+      case TrendChart.TOTAL_SPEND:
+        result = 'Dollars';
         break;
       case TrendChart.MATTER_COST:
         result = 'Dollars';
         break;
-      case TrendChart.BLOCK_BILLING:
+      case TrendChart.PARTNER_HOURS:
         result = 'Percent';
+        break;
+      case TrendChart.ASSOCIATE_HOURS:
+        result = 'Percent';
+        break;
+      // case TrendChart.AVG_MATTER_DURATION:
+      //   result = 'Number';
+      //   break;
+      case TrendChart.BLENDED_RATE:
+        result = 'Dollars';
+        break;
+      case TrendChart.BODHALA_PRICE_INDEX:
+        result = 'Dollars';
         break;
       case TrendChart.PARTNER_RATE:
         result = 'Dollars';
@@ -214,7 +275,7 @@ export class SpendTrendChartComponent implements OnInit {
       case TrendChart.ASSOCIATE_RATE:
         result = 'Dollars';
         break;
-      case TrendChart.TOTAL_SPEND:
+      case TrendChart.PARALEGAL_RATE:
         result = 'Dollars';
         break;
       default:
@@ -237,7 +298,6 @@ export class SpendTrendChartComponent implements OnInit {
     this.selectedChart = type;
     this.renderChart(true);
   }
-
 
   saveInstance(chartInstance): void {
     this.chart = chartInstance;

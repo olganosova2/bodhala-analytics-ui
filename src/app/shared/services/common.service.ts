@@ -22,6 +22,10 @@ export class CommonService {
   reportCardStartDateChange: Subject<string> = new Subject<string>();
   reportCardEndDateVar: string = null;
   reportCardEndDateChange: Subject<string> = new Subject<string>();
+  reportCardVar: boolean = false;
+  reportCardChange: Subject<boolean> = new Subject<boolean>();
+  comparisonVar: boolean = false;
+  comparisonChange: Subject<boolean> = new Subject<boolean>();
 
   editorStyle = {
     height: '150px'
@@ -34,7 +38,7 @@ export class CommonService {
     this.reportCardFiltersChange = filtersUpdated;
   }
   changeReportCardFilters(filtersUpdated: boolean) {
-    this.reportCardFiltersChange.next(filtersUpdated);
+    this.reportCardFilters.next(filtersUpdated);
   }
 
   get reportCardStartDate(): Subject<string> {
@@ -44,7 +48,7 @@ export class CommonService {
     this.reportCardStartDateChange = startDate;
   }
   changeReportCardStartDate(startDate: string) {
-    this.reportCardStartDateChange.next(startDate);
+    this.reportCardStartDate.next(startDate);
   }
 
   get reportCardEndDate(): Subject<string> {
@@ -54,8 +58,18 @@ export class CommonService {
     this.reportCardEndDateChange = endDate;
   }
   changeReportCardEndDate(endDate: string) {
-    this.reportCardEndDateChange.next(endDate);
+    this.reportCardEndDate.next(endDate);
   }
+
+  // get reportCard(): Subject<boolean> {
+  //   return this.reportCardFiltersChange;
+  // }
+  // set reportCard(filtersUpdated: Subject<boolean>) {
+  //   this.reportCardFiltersChange = filtersUpdated;
+  // }
+  // changeReportCardFilters(filtersUpdated: boolean) {
+  //   this.reportCardFiltersChange.next(filtersUpdated);
+  // }
 
   constructor(public httpService: HttpService,
               public userService: UserService,

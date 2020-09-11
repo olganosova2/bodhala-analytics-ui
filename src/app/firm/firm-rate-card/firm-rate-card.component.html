@@ -86,7 +86,7 @@
     
       <div class="clear-both"></div>
       <hr/>
-      <bd-billing-totals [firm]="firm" [isComparison]="true" #comparisonBillingTotals *ngIf="firmId && firm && selectedTabIndex === 1"></bd-billing-totals>
+      <bd-billing-totals [firm]="firm" [reportCard]="false" [isComparison]="true" #comparisonBillingTotals *ngIf="firmId && firm && selectedTabIndex === 1"></bd-billing-totals>
       <bd-spend-trend-chart *ngIf="selectedTabIndex === 1" [firmId]="firmId" [startdate]="startdate" [enddate]="enddate" [compStartDate]="comparisonStartDate" [compEndDate]="comparisonEndDate"></bd-spend-trend-chart>
     </div>
   </mat-tab>

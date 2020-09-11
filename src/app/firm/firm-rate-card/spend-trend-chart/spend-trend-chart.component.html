@@ -1,14 +1,26 @@
 <div *ngIf="options" class="panel-wrapper" #spendByQuarterDiv>
     <div class="tabs-panel">
         <span class="tab-button"
-                [ngClass]="{'tab-button-selected-first': selectedChart === chartTypes.LEVERAGE }"
-                (click)="changeViewMode(chartTypes.LEVERAGE)">Leverage</span>
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.TOTAL_SPEND}"
+            (click)="changeViewMode(chartTypes.TOTAL_SPEND)">Total Spend</span>
         <span class="tab-button"
             [ngClass]="{'tab-button-selected': selectedChart === chartTypes.MATTER_COST}"
             (click)="changeViewMode(chartTypes.MATTER_COST)">Matter Cost</span>
         <span class="tab-button"
-            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BLOCK_BILLING}"
-            (click)="changeViewMode(chartTypes.BLOCK_BILLING)">Block Billing</span>
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARTNER_HOURS}"
+            (click)="changeViewMode(chartTypes.PARTNER_HOURS)">Partner Hours</span>
+        <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_HOURS}"
+            (click)="changeViewMode(chartTypes.ASSOCIATE_HOURS)">Associate Hours</span>
+        <!-- <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.AVG_MATTER_DURATION}"
+            (click)="changeViewMode(chartTypes.AVG_MATTER_DURATION)">Avg. Matter Duration</span> -->
+        <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BLENDED_RATE}"
+            (click)="changeViewMode(chartTypes.BLENDED_RATE)">Blended Rate</span>
+        <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BODHALA_PRICE_INDEX}"
+            (click)="changeViewMode(chartTypes.BODHALA_PRICE_INDEX)">BPI</span>
         <span class="tab-button"
             [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARTNER_RATE}"
             (click)="changeViewMode(chartTypes.PARTNER_RATE)">Partner Rate</span>
@@ -16,8 +28,8 @@
             [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_RATE}"
             (click)="changeViewMode(chartTypes.ASSOCIATE_RATE)">Associate Rate</span>
         <span class="tab-button"
-            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.TOTAL_SPEND}"
-            (click)="changeViewMode(chartTypes.TOTAL_SPEND)">Total Spend</span>
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARALEGAL_RATE}"
+            (click)="changeViewMode(chartTypes.PARALEGAL_RATE)">Paralegal Rate</span>
 
     </div>
     <chart [options]="options" (load)="saveInstance($event.context)" width="100%"></chart>

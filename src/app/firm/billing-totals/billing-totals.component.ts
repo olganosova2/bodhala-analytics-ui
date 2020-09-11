@@ -31,6 +31,10 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   reportCardStartDateSrc: Subject<string>;
   reportCardEndDate: string;
   reportCardEndDateSrc: Subject<string>;
+  comparison: boolean = false;
+  comparisonSrc: Subject<boolean>;
+  reportCard: boolean = false;
+  reportCardSrc: Subject<boolean>;
 
   constructor(private httpService: HttpService,
               public filtersService: FiltersService,
@@ -48,6 +52,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
                 this.reportCardEndDateSrc = this.commonServ.reportCardEndDate;
                 this.reportCardEndDateSrc.subscribe(value => {
                   this.reportCardEndDate = value;
+                  console.log("reportCardEndDateSrc subscribe: ", this.isComparison, this.isReportCard);
                   this.loadTotals();
                 });
               }
@@ -95,6 +100,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
     } else {
       requestString = 'getBillingTotals';
     }
+    console.log("billingTotals params: ", params, requestString);
     this.pendingRequest = this.httpService.makeGetRequest(requestString, params).subscribe(
       (data: any) => {
         if (this.isReportCard === true) {

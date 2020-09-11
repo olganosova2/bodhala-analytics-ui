@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild, ɵCompiler_compileModuleSync__POST_R3__} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription, Subject} from 'rxjs';
@@ -36,7 +36,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   reportCardStartDate: string;
   reportCardEndDate: string;
   comparisonStartDate: string;
-  comparisonEndDate: string = '2019-09-25';
+  comparisonEndDate: string;
   formattedComparisonStartDate: string;
   formattedComparisonEndDate: string;
   showToTop: boolean = false;
@@ -292,12 +292,55 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.comparisonStartDate = comparisonStartDateTemp.toISOString().slice(0, 10);
     this.formattedComparisonStartDate = moment(this.comparisonStartDate).format('MMM DD, YYYY');
     this.formattedComparisonEndDate = moment(this.comparisonEndDate).format('MMM DD, YYYY');
+    let tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    tempFilters = JSON.parse(tempFilters);
+
+    for (let filter of tempFilters['dataFilters']) {
+      if (filter.fieldName === 'dateRange') {
+        filter.value['startDate'] = this.comparisonStartDate;
+        filter.value['endDate'] = this.comparisonEndDate;
+      }
+    }
+    tempFilters = JSON.stringify(tempFilters);
+    localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFilters);
   }
   changeTab(evt): void {
     this.selectedTabIndex = evt.index;
     if (this.selectedTabIndex === 1) {
       const dates = this.filtersService.parseLSDateString();
-      this.getCompareDates(dates);
+      const params = {clientId: this.userService.currentUser.client_info.id}
+      this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
+        (data: any) => {
+          if (data) {
+            this.comparisonEndDate = data.result.max;
+            this.getCompareDates(dates);
+          }
+        },
+        err => {
+          this.errorMessage = err;
+        }
+      );
+    } else {
+      console.log("selectedTabIndex: ", this.selectedTabIndex);
+      let tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+      tempFilters = JSON.parse(tempFilters);
+
+      for (let filter of tempFilters['dataFilters']) {
+        if (filter.fieldName === 'dateRange') {
+          filter.value['startDate'] = this.reportCardStartDate;
+          filter.value['endDate'] = this.reportCardEndDate;
+        }
+      }
+      console.log("tempFilters switchback: ", tempFilters);
+      console.log("tempFilters dates: ", this.reportCardStartDate, this.reportCardEndDate);
+      tempFilters['datestring'] = '&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      tempFilters['querystring'] = '&threshold=4&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      tempFilters = JSON.stringify(tempFilters);
+      localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFilters);
+
+      this.commonServ.changeReportCardFilters(true);
+      this.commonServ.changeReportCardStartDate(this.reportCardStartDate);
+      this.commonServ.changeReportCardEndDate(this.reportCardEndDate);
     }
   }
   ngOnDestroy() {
