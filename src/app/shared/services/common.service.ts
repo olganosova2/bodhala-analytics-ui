@@ -61,15 +61,25 @@ export class CommonService {
     this.reportCardEndDate.next(endDate);
   }
 
-  // get reportCard(): Subject<boolean> {
-  //   return this.reportCardFiltersChange;
-  // }
-  // set reportCard(filtersUpdated: Subject<boolean>) {
-  //   this.reportCardFiltersChange = filtersUpdated;
-  // }
-  // changeReportCardFilters(filtersUpdated: boolean) {
-  //   this.reportCardFiltersChange.next(filtersUpdated);
-  // }
+  get reportCard(): Subject<boolean> {
+    return this.reportCardChange;
+  }
+  set reportCard(isReportCard: Subject<boolean>) {
+    this.reportCardChange = isReportCard;
+  }
+  changeReportCard(isReportCard: boolean) {
+    this.reportCard.next(isReportCard);
+  }
+
+  get comparison(): Subject<boolean> {
+    return this.comparisonChange;
+  }
+  set comparison(comparison: Subject<boolean>) {
+    this.comparisonChange = comparison;
+  }
+  changeComparison(comparison: boolean) {
+    this.comparison.next(comparison);
+  }
 
   constructor(public httpService: HttpService,
               public userService: UserService,
