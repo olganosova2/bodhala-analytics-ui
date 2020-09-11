@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild, ɵCompiler_compileModuleSync__POST_R3__} from '@angular/core';
+import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription, Subject} from 'rxjs';
@@ -15,6 +15,7 @@ import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-m
 import {AnnotationsComponent} from '../../shared/components/annotations/annotations.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
 import {SpendTrendChartComponent} from './spend-trend-chart/spend-trend-chart.component';
+import {ReportCardBillingTotalsComponent} from './report-card-billing-totals/report-card-billing-totals.component';
 
 @Component({
   selector: 'bd-firm-rate-card',
@@ -54,6 +55,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   pageType: string = 'Firm Report Card';
   excludeFilters = ['firms', 'threshold', 'matters', 'practice areas', 'internal'];
   @ViewChild(SpendTrendChartComponent) spendTrendChart: SpendTrendChartComponent;
+  @ViewChild(ReportCardBillingTotalsComponent) reportCardBillingTotalsComponent: ReportCardBillingTotalsComponent;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -270,10 +272,16 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.notes = Object.assign([], notes);
   }
   refreshData(evt: any): void {
-    this.commonServ.changeReportCardFilters(true);
-    this.commonServ.changeReportCardStartDate(this.reportCardStartDate);
-    this.commonServ.changeReportCardEndDate(this.reportCardEndDate);
+    console.log("dates: ", this.reportCardStartDate, this.reportCardEndDate);
+    this.reportCardBillingTotalsComponent.totalsRC = Object.assign([], []);
+    this.reportCardBillingTotalsComponent.reportCardStartDate = this.reportCardStartDate;
+    this.reportCardBillingTotalsComponent.reportCardEndDate = this.reportCardEndDate;
+    this.reportCardBillingTotalsComponent.isComparison = true;
+    this.reportCardBillingTotalsComponent.isReportCard = false;
+    this.reportCardBillingTotalsComponent.firstLoad = false;
+    // this.reportCardBillingTotalsComponent.loadTotals();
     this.spendTrendChart.getSpendByQuarter();
+    this.reportCardBillingTotalsComponent.loadTotals();
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const startDate = params.startdate;
     const endDate = params.enddate;
@@ -337,10 +345,11 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
       tempFilters['querystring'] = '&threshold=4&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
       tempFilters = JSON.stringify(tempFilters);
       localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFilters);
-
-      this.commonServ.changeReportCardFilters(true);
-      this.commonServ.changeReportCardStartDate(this.reportCardStartDate);
-      this.commonServ.changeReportCardEndDate(this.reportCardEndDate);
+      this.reportCardBillingTotalsComponent.reportCardStartDate = this.reportCardStartDate;
+      this.reportCardBillingTotalsComponent.reportCardEndDate = this.reportCardEndDate;
+      this.reportCardBillingTotalsComponent.isComparison = false;
+      this.reportCardBillingTotalsComponent.isReportCard = true;
+      this.reportCardBillingTotalsComponent.loadTotals();
     }
   }
   ngOnDestroy() {

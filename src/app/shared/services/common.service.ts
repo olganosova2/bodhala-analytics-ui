@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import html2canvas from 'html2canvas';
 import * as jspdf from 'jspdf';
-import {Subscription, Subject} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
@@ -16,70 +16,10 @@ export class CommonService {
   exportImage = null;
   pdfLoading: boolean = false;
   pendingRequest: Subscription;
-  reportCardFiltersVar: boolean = false;
-  reportCardFiltersChange: Subject<boolean> = new Subject<boolean>();
-  reportCardStartDateVar: string = null;
-  reportCardStartDateChange: Subject<string> = new Subject<string>();
-  reportCardEndDateVar: string = null;
-  reportCardEndDateChange: Subject<string> = new Subject<string>();
-  reportCardVar: boolean = false;
-  reportCardChange: Subject<boolean> = new Subject<boolean>();
-  comparisonVar: boolean = false;
-  comparisonChange: Subject<boolean> = new Subject<boolean>();
 
   editorStyle = {
     height: '150px'
   };
-
-  get reportCardFilters(): Subject<boolean> {
-    return this.reportCardFiltersChange;
-  }
-  set reportCardFilters(filtersUpdated: Subject<boolean>) {
-    this.reportCardFiltersChange = filtersUpdated;
-  }
-  changeReportCardFilters(filtersUpdated: boolean) {
-    this.reportCardFilters.next(filtersUpdated);
-  }
-
-  get reportCardStartDate(): Subject<string> {
-    return this.reportCardStartDateChange;
-  }
-  set reportCardStartDate(startDate: Subject<string>) {
-    this.reportCardStartDateChange = startDate;
-  }
-  changeReportCardStartDate(startDate: string) {
-    this.reportCardStartDate.next(startDate);
-  }
-
-  get reportCardEndDate(): Subject<string> {
-    return this.reportCardEndDateChange;
-  }
-  set reportCardEndDate(endDate: Subject<string>) {
-    this.reportCardEndDateChange = endDate;
-  }
-  changeReportCardEndDate(endDate: string) {
-    this.reportCardEndDate.next(endDate);
-  }
-
-  get reportCard(): Subject<boolean> {
-    return this.reportCardChange;
-  }
-  set reportCard(isReportCard: Subject<boolean>) {
-    this.reportCardChange = isReportCard;
-  }
-  changeReportCard(isReportCard: boolean) {
-    this.reportCard.next(isReportCard);
-  }
-
-  get comparison(): Subject<boolean> {
-    return this.comparisonChange;
-  }
-  set comparison(comparison: Subject<boolean>) {
-    this.comparisonChange = comparison;
-  }
-  changeComparison(comparison: boolean) {
-    this.comparison.next(comparison);
-  }
 
   constructor(public httpService: HttpService,
               public userService: UserService,
