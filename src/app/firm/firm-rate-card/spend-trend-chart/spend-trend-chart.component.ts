@@ -68,7 +68,6 @@ export class SpendTrendChartComponent implements OnInit {
     }
     this.pendingRequest = this.httpService.makeGetRequest('spendByQuarter', params).subscribe(
       (data: any) => {
-        console.log("data.result in spendby fucking quarter: ", data.result);
         this.spend = data.result;
         this.processData();
         this.renderChart(false);
@@ -80,7 +79,7 @@ export class SpendTrendChartComponent implements OnInit {
   }
 
   processData(): void {
-    console.log("FUCKING SPEND ON SPEND BY QUARTERQUARTERQUARTER: ", this.spend);
+   
     for (const rec of this.spend) {
       if (rec.total_hours > 0 && rec.total_hours !== null && rec.total_hours !== undefined) {
         rec.partner_hours_percent = (rec.partner_hours / rec.total_hours) * 100;
@@ -117,180 +116,183 @@ export class SpendTrendChartComponent implements OnInit {
     for (const rec of this.spend) {
       result.push(this.buildChartItem(rec));
     }
-    this.chart.series[0].setData(result);
-    let startDate;
-    let endDate;
-    const params = this.filtersService.getCurrentUserCombinedFilters();
-    if (this.firstLoad) {
-      startDate = moment(this.compStartDate).valueOf();
-      endDate = moment(this.compEndDate).valueOf();
-      const tempStartDate = new Date(this.startdate);
-      const formattedStartDate = tempStartDate.toISOString().slice(0, 10);
-      const tempEndDate = new Date(this.enddate);
-      const formattedEndDate = tempEndDate.toISOString().slice(0, 10);
-      const compStartDate = moment(formattedStartDate).valueOf();
-      const compEndDate = moment(formattedEndDate).valueOf();
+    if (this.chart.series !== undefined) {
+      this.chart.series[0].setData(result);
+      let startDate;
+      let endDate;
+      const params = this.filtersService.getCurrentUserCombinedFilters();
+      if (this.firstLoad) {
+        startDate = moment(this.compStartDate).valueOf();
+        endDate = moment(this.compEndDate).valueOf();
+        const tempStartDate = new Date(this.startdate);
+        const formattedStartDate = tempStartDate.toISOString().slice(0, 10);
+        const tempEndDate = new Date(this.enddate);
+        const formattedEndDate = tempEndDate.toISOString().slice(0, 10);
+        const compStartDate = moment(formattedStartDate).valueOf();
+        const compEndDate = moment(formattedEndDate).valueOf();
 
-      if (startDate >= compStartDate && startDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
-        startDate = compEndDate;
-        this.chart.xAxis[0].addPlotBand({
-          color: '#FCFFC5',
-          from: startDate,
-          to: endDate,
-          id: 'plotband-2',
-          label: {
-            text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
-            y: 30,
-            align: 'left',
-            style: {
-                fontWeight: 'bold',
-                width: '30px'
+        if (startDate >= compStartDate && startDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
+          startDate = compEndDate;
+          this.chart.xAxis[0].addPlotBand({
+            color: '#FCFFC5',
+            from: startDate,
+            to: endDate,
+            id: 'plotband-2',
+            label: {
+              text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
+              y: 30,
+              align: 'left',
+              style: {
+                  fontWeight: 'bold',
+                  width: '30px'
+              }
             }
-          }
-        });
-      } else if (endDate >= compStartDate && endDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
-        endDate = compStartDate;
-        this.chart.xAxis[0].addPlotBand({
-          color: '#FCFFC5',
-          from: startDate,
-          to: endDate,
-          id: 'plotband-2',
-          label: {
-            text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
-            y: 30,
-            align: 'right',
-            style: {
-                fontWeight: 'bold',
-                width: '30px'
+          });
+        } else if (endDate >= compStartDate && endDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
+          endDate = compStartDate;
+          this.chart.xAxis[0].addPlotBand({
+            color: '#FCFFC5',
+            from: startDate,
+            to: endDate,
+            id: 'plotband-2',
+            label: {
+              text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
+              y: 30,
+              align: 'right',
+              style: {
+                  fontWeight: 'bold',
+                  width: '30px'
+              }
             }
-          }
-        });
-      } else if (startDate === compStartDate && endDate === compEndDate) {
-        this.datesOverlap = true;
-      } else {
-        this.chart.xAxis[0].addPlotBand({
-          color: '#FCFFC5',
-          from: startDate,
-          to: endDate,
-          id: 'plotband-2',
-          label: {
-            text: 'Comparison Timeframe',
-            y: 30,
-            align: 'center',
-            style: {
-                fontWeight: 'bold',
-                width: '30px'
+          });
+        } else if (startDate === compStartDate && endDate === compEndDate) {
+          this.datesOverlap = true;
+        } else {
+          this.chart.xAxis[0].addPlotBand({
+            color: '#FCFFC5',
+            from: startDate,
+            to: endDate,
+            id: 'plotband-2',
+            label: {
+              text: 'Comparison Timeframe',
+              y: 30,
+              align: 'center',
+              style: {
+                  fontWeight: 'bold',
+                  width: '30px'
+              }
             }
-          }
-        });
-      }
-      this.firstLoad = false;
-      this.chart.xAxis[0].update({
-        max: endDate
-      });
-    } else {
-      this.chart.xAxis[0].removePlotBand('plotband-2');
-
-      startDate = params.startdate;
-      endDate = params.enddate;
-      startDate = moment(startDate).valueOf();
-      endDate = moment(endDate).valueOf();
-
-      const tempStartDate = new Date(this.startdate);
-      const formattedStartDate = tempStartDate.toISOString().slice(0, 10);
-      const tempEndDate = new Date(this.enddate);
-      const formattedEndDate = tempEndDate.toISOString().slice(0, 10);
-
-      const compStartDate = moment(formattedStartDate).valueOf();
-      const compEndDate = moment(formattedEndDate).valueOf();
-      if (startDate >= compStartDate && startDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
-        startDate = compEndDate;
-        this.chart.xAxis[0].addPlotBand({
-          color: '#FCFFC5',
-          from: startDate,
-          to: endDate,
-          id: 'plotband-2',
-          label: {
-            text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
-            y: 30,
-            align: 'right',
-            style: {
-                fontWeight: 'bold',
-                width: '30px'
-            }
-          }
-        });
-
-      } else if (endDate >= compStartDate && endDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
-        endDate = compStartDate;
-        this.chart.xAxis[0].addPlotBand({
-          color: '#FCFFC5',
-          from: startDate,
-          to: endDate,
-          id: 'plotband-2',
-          label: {
-            text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
-            y: 30,
-            align: 'left',
-            style: {
-                fontWeight: 'bold',
-                width: '30px'
-            }
-          }
-        });
-      } else if (startDate === compStartDate && endDate === compEndDate) {
-        this.datesOverlap = true;
-      } else {
-        this.chart.xAxis[0].addPlotBand({
-          color: '#FCFFC5',
-          from: startDate,
-          to: endDate,
-          id: 'plotband-2',
-          label: {
-            text: 'Comparison Timeframe',
-            y: 30,
-            align: 'right',
-            style: {
-                fontWeight: 'bold',
-                width: '30px'
-            }
-          }
-        });
-      }
-    }
-    if (this.startdate && this.enddate) {
-      const tempStartDate = new Date(this.startdate);
-      const formattedStartDate = tempStartDate.toISOString().slice(0, 10);
-      const tempEndDate = new Date(this.enddate);
-      const formattedEndDate = tempEndDate.toISOString().slice(0, 10);
-      let labelText = '';
-      if (this.datesOverlap === true) {
-        labelText = 'Report Card Timeframe (matches Comparison Timeframe)';
-      } else {
-        labelText = 'Report Card Timeframe';
-      }
-      startDate = moment(formattedStartDate).valueOf();
-      endDate = moment(formattedEndDate).valueOf();
-
-      this.chart.xAxis[0].addPlotLine({
-        color: 'orange',
-        from: startDate,
-        to: endDate,
-        id: 'plotband-1',
-        label: {
-          text: labelText,
-          y: 30,
-          style: {
-              fontWeight: 'bold',
-              width: '30px'
-          }
+          });
         }
+        this.firstLoad = false;
+        this.chart.xAxis[0].update({
+          max: endDate
+        });
+      } else {
+        this.chart.xAxis[0].removePlotBand('plotband-2');
+
+        startDate = params.startdate;
+        endDate = params.enddate;
+        startDate = moment(startDate).valueOf();
+        endDate = moment(endDate).valueOf();
+
+        const tempStartDate = new Date(this.startdate);
+        const formattedStartDate = tempStartDate.toISOString().slice(0, 10);
+        const tempEndDate = new Date(this.enddate);
+        const formattedEndDate = tempEndDate.toISOString().slice(0, 10);
+
+        const compStartDate = moment(formattedStartDate).valueOf();
+        const compEndDate = moment(formattedEndDate).valueOf();
+        if (startDate >= compStartDate && startDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
+          startDate = compEndDate;
+          this.chart.xAxis[0].addPlotBand({
+            color: '#FCFFC5',
+            from: startDate,
+            to: endDate,
+            id: 'plotband-2',
+            label: {
+              text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
+              y: 30,
+              align: 'right',
+              style: {
+                  fontWeight: 'bold',
+                  width: '30px'
+              }
+            }
+          });
+
+        } else if (endDate >= compStartDate && endDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
+          endDate = compStartDate;
+          this.chart.xAxis[0].addPlotBand({
+            color: '#FCFFC5',
+            from: startDate,
+            to: endDate,
+            id: 'plotband-2',
+            label: {
+              text: 'Comparison Timeframe (Partially overlaps RC Timeframe)',
+              y: 30,
+              align: 'left',
+              style: {
+                  fontWeight: 'bold',
+                  width: '30px'
+              }
+            }
+          });
+        } else if (startDate === compStartDate && endDate === compEndDate) {
+          this.datesOverlap = true;
+        } else {
+          this.chart.xAxis[0].addPlotBand({
+            color: '#FCFFC5',
+            from: startDate,
+            to: endDate,
+            id: 'plotband-2',
+            label: {
+              text: 'Comparison Timeframe',
+              y: 30,
+              align: 'right',
+              style: {
+                  fontWeight: 'bold',
+                  width: '30px'
+              }
+            }
+          });
+        }
+      }
+      if (this.startdate && this.enddate) {
+        const tempStartDate = new Date(this.startdate);
+        const formattedStartDate = tempStartDate.toISOString().slice(0, 10);
+        const tempEndDate = new Date(this.enddate);
+        const formattedEndDate = tempEndDate.toISOString().slice(0, 10);
+        let labelText = '';
+        if (this.datesOverlap === true) {
+          labelText = 'Report Card Timeframe (matches Comparison Timeframe)';
+        } else {
+          labelText = 'Report Card Timeframe';
+        }
+        startDate = moment(formattedStartDate).valueOf();
+        endDate = moment(formattedEndDate).valueOf();
+
+        this.chart.xAxis[0].addPlotLine({
+          color: 'orange',
+          from: startDate,
+          to: endDate,
+          id: 'plotband-1',
+          label: {
+            text: labelText,
+            y: 30,
+            style: {
+                fontWeight: 'bold',
+                width: '30px'
+            }
+          }
+        });
+      }
+      this.setUpChart();
+      setTimeout(() => {
+        this.resizeChart();
       });
     }
-    this.setUpChart();
-    setTimeout(() => {
-      this.resizeChart();
-    });
+    
   }
 
   buildChartItem(rec: any): Array<any> {

@@ -20,7 +20,6 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
   isLoaded: boolean = false;
   firstLoad: boolean = true;
   itemTopRowCount: number = 6;
-  @Input() practiceArea: IPracticeArea;
   @Input() isReportCard: boolean = false;
   @Input() isComparison: boolean = false;
   @Input() firm: IFirm;
@@ -46,16 +45,6 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
       const arr = [];
       arr.push(this.firm.id.toString());
       params.firms = JSON.stringify(arr);
-    }
-    if (this.practiceArea) {
-      const arr = [];
-      if (this.practiceArea.client_matter_type === null || this.practiceArea.client_matter_type === undefined) {
-        arr.push(this.practiceArea);
-      } else {
-        arr.push(this.practiceArea.client_matter_type);
-      }
-      // arr.push(this.practiceArea.client_matter_type);
-      params.practiceAreas = JSON.stringify(arr);
     }
     let requestString = '';
     if (this.isReportCard === true) {

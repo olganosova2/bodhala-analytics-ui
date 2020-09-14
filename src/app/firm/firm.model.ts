@@ -214,6 +214,62 @@ export const spendByMonthChartAdditionalOptions = {
     data: []
   }]
 };
+
+export const trendChart = {
+  chart: {
+    type: 'line',
+    width: 800,
+    // height: 600,
+    marginLeft: null,
+    marginRight: 10,
+    marginTop: 15,
+    spacingTop: 10,
+    zoomType: false,
+  },
+  exporting: {   enabled: false  },
+  credits: { enabled: false },
+  title: { text: null },
+  tooltip: {
+    headerFormat: '<b></b><br>',
+    pointFormat: '{point.x: %Y}: {point.y:,.2f}'
+  },
+  xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+      month: '%Y',
+      year: '%Y'
+    }
+  },
+  yAxis: {
+    title: {
+      text: 'Avg'
+    }
+  },
+  legend: {
+    layout: 'horizontal',
+    align: 'right',
+    verticalAlign: 'top'
+  },
+  plotOptions: {
+    line: {
+      colors: ['#9D02FE', '#6F00FF'],
+    },
+    series: {
+      label: {
+        connectorAllowed: false
+      }
+    }
+  },
+  series: [{
+    name: 'Firm',
+   // color: '#FF0000',
+    data: []
+  }, {
+    name: 'Peer Firm Avg.',
+    color: '#000',
+    data: []
+  }]
+};
 export const spendByQuarterChartAdditionalOptions = {
   chart: {
     type: 'line',
@@ -286,61 +342,6 @@ export const spendByQuarterChartAdditionalOptions = {
   series: [{
     name: 'Firm',
     // color: '#FF0000',
-    data: []
-  }]
-};
-export const trendChart = {
-  chart: {
-    type: 'line',
-    width: 800,
-    // height: 600,
-    marginLeft: null,
-    marginRight: 10,
-    marginTop: 15,
-    spacingTop: 10,
-    zoomType: false,
-  },
-  exporting: {   enabled: false  },
-  credits: { enabled: false },
-  title: { text: null },
-  tooltip: {
-    headerFormat: '<b></b><br>',
-    pointFormat: '{point.x: %Y}: {point.y:,.2f}'
-  },
-  xAxis: {
-    type: 'datetime',
-    dateTimeLabelFormats: {
-      month: '%Y',
-      year: '%Y'
-    }
-  },
-  yAxis: {
-    title: {
-      text: 'Avg'
-    }
-  },
-  legend: {
-    layout: 'horizontal',
-    align: 'right',
-    verticalAlign: 'top'
-  },
-  plotOptions: {
-    line: {
-      colors: ['#9D02FE', '#6F00FF'],
-    },
-    series: {
-      label: {
-        connectorAllowed: false
-      }
-    }
-  },
-  series: [{
-    name: 'Firm',
-   // color: '#FF0000',
-    data: []
-  }, {
-    name: 'Peer Firm Avg.',
-    color: '#000',
     data: []
   }]
 };
