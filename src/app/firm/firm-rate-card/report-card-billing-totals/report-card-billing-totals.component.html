@@ -1,35 +1,35 @@
 <div class="full-width relative-pos" *ngIf="isReportCard">
-    <div class="panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
+  <div class="panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
+    <div *ngFor="let item of totalsRC.slice(0, itemTopRowCount);let i=$index;" class="flex-item">
+      <bd-report-card-billing-total-item [reportCardItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
+    </div>
+  </div>
+  <div class="mt10 panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
+    <div *ngFor="let item of totalsRC.slice(itemTopRowCount);let i=$index;" class="flex-item">
+      <bd-report-card-billing-total-item [reportCardItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
+    </div>
+  </div>
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
+</div>
+  
+<div style="background: white" *ngIf="isComparison" >
+  <div class="full-width relative-pos" style="padding: 20px;">
+    <div class="panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isComparison }">
       <div *ngFor="let item of totalsRC.slice(0, itemTopRowCount);let i=$index;" class="flex-item">
-        <bd-report-card-billing-total-item [reportCardItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
+          <bd-report-card-billing-total-item [comparisonItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
       </div>
     </div>
-    <div class="mt10 panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isReportCard }">
+    <div class="mt10 panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isComparison }">
       <div *ngFor="let item of totalsRC.slice(itemTopRowCount);let i=$index;" class="flex-item">
-        <bd-report-card-billing-total-item [reportCardItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
+          <bd-report-card-billing-total-item [comparisonItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
       </div>
     </div>
     <div class="spinner-card" [hidden]="isLoaded">
       <mat-spinner diameter="50" color="primary"></mat-spinner>
     </div>
-</div>
-  
-<div style="background: white" *ngIf="isComparison" >
-    <div class="full-width relative-pos" style="padding: 20px;">
-        <div class="panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isComparison }">
-          <div *ngFor="let item of totalsRC.slice(0, itemTopRowCount);let i=$index;" class="flex-item">
-              <bd-report-card-billing-total-item [comparisonItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
-          </div>
-        </div>
-        <div class="mt10 panel-wrapper flex-container report-card-panel-wrapper" [ngClass]="{ 'black-border' : isComparison }">
-          <div *ngFor="let item of totalsRC.slice(itemTopRowCount);let i=$index;" class="flex-item">
-              <bd-report-card-billing-total-item [comparisonItem]="true" [itemRC]="item" [isLastCell]="item.lastCell"></bd-report-card-billing-total-item>
-          </div>
-        </div>
-        <div class="spinner-card" [hidden]="isLoaded">
-          <mat-spinner diameter="50" color="primary"></mat-spinner>
-        </div>
-    </div>
+  </div>
 </div>
   
   

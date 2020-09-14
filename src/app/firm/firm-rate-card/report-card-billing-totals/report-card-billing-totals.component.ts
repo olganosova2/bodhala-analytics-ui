@@ -1,18 +1,17 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core';
 import {IBillingTotalItemReportCard, IFirm} from '../../firm.model';
 import {IPracticeArea} from '../../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
 import {FiltersService} from '../../../shared/services/filters.service';
-// import {ReportCardBillingTotalItemComponent} from './report-card-billing-total-item/report-card-billing-total-item.component';
 
 @Component({
   selector: 'bd-report-card-billing-totals',
   templateUrl: './report-card-billing-totals.component.html',
   styleUrls: ['./report-card-billing-totals.component.scss']
 })
-export class ReportCardBillingTotalsComponent implements OnInit {
+export class ReportCardBillingTotalsComponent implements OnChanges {
   errorMessage: any;
   totalsRaw: any;
   otherFirms: any;
@@ -25,21 +24,23 @@ export class ReportCardBillingTotalsComponent implements OnInit {
   @Input() isReportCard: boolean = false;
   @Input() isComparison: boolean = false;
   @Input() firm: IFirm;
-  reportCardStartDate: string;
-  reportCardEndDate: string;
-  // @ViewChild(ReportCardBillingTotalItemComponent) reportCardBillingTotalItemComponent: ReportCardBillingTotalItemComponent;
+  @Input() reportCardStartDate: string;
+  @Input() reportCardEndDate: string;
+  @Input() comparisonStartDate: string;
+  @Input() comparisonEndDate: string;
+  @Input() filtersChanged: boolean = false;
 
-  constructor(private httpService: HttpService,
+  constructor(public httpService: HttpService,
               public filtersService: FiltersService,
               public commonServ: CommonService) {}
 
-  ngOnInit(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.isLoaded = false;
     this.loadTotals();
   }
 
   loadTotals(): void {
     this.totalsRC = Object.assign([], []);
-    console.log("loadTotals: ", this.totalsRC);
     const params = this.filtersService.getCurrentUserCombinedFilters();
     if (this.firm) {
       const arr = [];
@@ -73,15 +74,12 @@ export class ReportCardBillingTotalsComponent implements OnInit {
       params.secondCall = true;
       params.reportCardStartDate = this.reportCardStartDate;
       params.reportCardEndDate = this.reportCardEndDate;
-      
     } else {
       requestString = 'getBillingTotals';
     }
     this.isLoaded = false;
-    console.log("ReportCardBillingTotalsComponent params: ", params, this.isLoaded);
     this.pendingRequest = this.httpService.makeGetRequest(requestString, params).subscribe(
       (data: any) => {
-        console.log("data: ", data, this.isLoaded);
         if (this.isReportCard === true) {
           this.totalsRaw = data.result.firm_overview;
           this.otherFirms = data.result.all_other_firms;
@@ -97,6 +95,7 @@ export class ReportCardBillingTotalsComponent implements OnInit {
         }
         this.formatItems();
         this.isLoaded = true;
+        this.filtersChanged = false;
       },
       err => {
         this.errorMessage = err;
@@ -106,7 +105,6 @@ export class ReportCardBillingTotalsComponent implements OnInit {
   }
 
   formatItems(): void {
-    console.log("formatitems: ", this.isLoaded);
     this.totalsRC = Object.assign([], []);
     this.calculateHoursPercentage(this.totalsRaw);
     this.calculateHoursPercentage(this.otherFirms);
@@ -203,7 +201,6 @@ export class ReportCardBillingTotalsComponent implements OnInit {
     this.itemTopRowCount = Math.ceil(this.totalsRC.length / 2);
     this.totalsRC[this.itemTopRowCount - 1].lastCell = true;
     this.totalsRC[this.totalsRC.length - 1].lastCell = true;
-    console.log("totalsRC: ", this.totalsRC);
   }
 
   calculateHoursPercentage(totalsRaw: any): void {

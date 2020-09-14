@@ -16,10 +16,6 @@ export class ReportCardBillingTotalItemComponent implements OnInit {
 
   constructor(public filtersService: FiltersService) { }
 
-  ngOnInit(): void {
-    if (this.comparisonItem === true) {
-      console.log("itemRC: ", this.itemRC);
-    }
-  }
+  ngOnInit(): void {}
 
 }

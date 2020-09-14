@@ -45,6 +45,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   savedReports: Array<any> = [];
   otherFirms: boolean = false;
   comparing: boolean = false;
+  newStartDate: string;
   percentOfTotal: number;
   rank: number;
   selectedSavedFilterName: string = null;
@@ -245,7 +246,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         } else {
           this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card Comparison', 'comparisonDiv', this.firmId);
         }
-        
+
       }, 200);
   }
 
@@ -272,51 +273,44 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.notes = Object.assign([], notes);
   }
   refreshData(evt: any): void {
-    console.log("dates: ", this.reportCardStartDate, this.reportCardEndDate);
-    this.reportCardBillingTotalsComponent.totalsRC = Object.assign([], []);
-    this.reportCardBillingTotalsComponent.reportCardStartDate = this.reportCardStartDate;
-    this.reportCardBillingTotalsComponent.reportCardEndDate = this.reportCardEndDate;
-    this.reportCardBillingTotalsComponent.isComparison = true;
-    this.reportCardBillingTotalsComponent.isReportCard = false;
-    this.reportCardBillingTotalsComponent.firstLoad = false;
-    // this.reportCardBillingTotalsComponent.loadTotals();
-    this.spendTrendChart.getSpendByQuarter();
+    const params1 = this.filtersService.getCurrentUserCombinedFilters();
+    this.comparisonStartDate = params1.startdate;
+    this.comparisonEndDate = params1.enddate;
     this.reportCardBillingTotalsComponent.loadTotals();
+    this.spendTrendChart.getSpendByQuarter();
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const startDate = params.startdate;
     const endDate = params.enddate;
     this.formattedComparisonStartDate = moment(startDate).format('MMM DD, YYYY');
     this.formattedComparisonEndDate = moment(endDate).format('MMM DD, YYYY');
-
   }
   getCompareDates(dates): void {
     let startDate = dates.startdate;
     let endDate = dates.enddate;
     startDate = new Date(startDate);
     endDate = new Date(endDate);
-    let comparisonStartDateTemp = new Date(this.comparisonEndDate);
-    let daysDiff = Math.floor((Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) - Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()) ) /(_MS_PER_DAY));
+    const comparisonStartDateTemp = new Date(this.comparisonEndDate);
+    const daysDiff = Math.floor((Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) - Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()) ) / (_MS_PER_DAY));
     comparisonStartDateTemp.setDate(comparisonStartDateTemp.getDate() - daysDiff);
     this.comparisonStartDate = comparisonStartDateTemp.toISOString().slice(0, 10);
     this.formattedComparisonStartDate = moment(this.comparisonStartDate).format('MMM DD, YYYY');
     this.formattedComparisonEndDate = moment(this.comparisonEndDate).format('MMM DD, YYYY');
-    let tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
-    tempFilters = JSON.parse(tempFilters);
-
-    for (let filter of tempFilters['dataFilters']) {
+    const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    let tempFiltersDict = JSON.parse(tempFilters);
+    for (const filter of tempFiltersDict.dataFilters) {
       if (filter.fieldName === 'dateRange') {
-        filter.value['startDate'] = this.comparisonStartDate;
-        filter.value['endDate'] = this.comparisonEndDate;
+        filter.value.startDate = this.comparisonStartDate;
+        filter.value.endDate = this.comparisonEndDate;
       }
     }
-    tempFilters = JSON.stringify(tempFilters);
-    localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFilters);
+    tempFiltersDict = JSON.stringify(tempFiltersDict);
+    localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFiltersDict);
   }
   changeTab(evt): void {
     this.selectedTabIndex = evt.index;
     if (this.selectedTabIndex === 1) {
       const dates = this.filtersService.parseLSDateString();
-      const params = {clientId: this.userService.currentUser.client_info.id}
+      const params = {clientId: this.userService.currentUser.client_info.id};
       this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
         (data: any) => {
           if (data) {
@@ -329,22 +323,19 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         }
       );
     } else {
-      console.log("selectedTabIndex: ", this.selectedTabIndex);
-      let tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
-      tempFilters = JSON.parse(tempFilters);
+      const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+      let tempFiltersDict = JSON.parse(tempFilters);
 
-      for (let filter of tempFilters['dataFilters']) {
+      for (const filter of tempFiltersDict.dataFilters) {
         if (filter.fieldName === 'dateRange') {
-          filter.value['startDate'] = this.reportCardStartDate;
-          filter.value['endDate'] = this.reportCardEndDate;
+          filter.value.startDate = this.reportCardStartDate;
+          filter.value.endDate = this.reportCardEndDate;
         }
       }
-      console.log("tempFilters switchback: ", tempFilters);
-      console.log("tempFilters dates: ", this.reportCardStartDate, this.reportCardEndDate);
-      tempFilters['datestring'] = '&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
-      tempFilters['querystring'] = '&threshold=4&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
-      tempFilters = JSON.stringify(tempFilters);
-      localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFilters);
+      tempFiltersDict.datestring = '&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      tempFiltersDict.querystring = '&threshold=4&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      tempFiltersDict = JSON.stringify(tempFiltersDict);
+      localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFiltersDict);
       this.reportCardBillingTotalsComponent.reportCardStartDate = this.reportCardStartDate;
       this.reportCardBillingTotalsComponent.reportCardEndDate = this.reportCardEndDate;
       this.reportCardBillingTotalsComponent.isComparison = false;

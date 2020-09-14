@@ -32,7 +32,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
 
   loadTotals(): void {
     this.totals = Object.assign([], []);
-    console.log("loadTotals: ", this.totals);
     const params = this.filtersService.getCurrentUserCombinedFilters();
     if (this.firm) {
       const arr = [];
@@ -49,7 +48,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       params.practiceAreas = JSON.stringify(arr);
     }
     this.isLoaded = false;
-    console.log("basic params: ", params, this.isLoaded);
     this.pendingRequest = this.httpService.makeGetRequest('getBillingTotals', params).subscribe(
       (data: any) => {
         this.totalsRaw = data.result;
@@ -64,7 +62,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   }
 
   formatItems(): void {
-    console.log("formatitems: ", this.isLoaded);
     this.totals = Object.assign([], []);
     this.totals.push({
       icon: 'icon-layers',

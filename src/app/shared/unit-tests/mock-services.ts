@@ -97,7 +97,11 @@ export class DataStub {
         return of(MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS);
       case 'reportCardBillingTotals':
         return of(MOCK_BILLING_TOTALS_RC);
+      case 'reportCardComparisonBillingTotals':
+        return of(MOCK_BILLING_TOTALS_RC);
       case 'spendByMonth':
+        return of({result: []});
+      case 'spendByQuarter':
         return of({result: []});
       case 'getBlockBillingFirms':
         return of({result: []});

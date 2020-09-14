@@ -229,26 +229,26 @@ export const spendByQuarterChartAdditionalOptions = {
   credits: { enabled: false },
   title: { text: null },
   tooltip: {
-    formatter: function() {
+    formatter() {
       let quarterNumber = '';
       if (Highcharts.dateFormat('%b', this.x, true) === 'Jan') {
-        quarterNumber = 'Q1'
+        quarterNumber = 'Q1';
       } else if (Highcharts.dateFormat('%b', this.x, true) === 'Apr') {
-        quarterNumber = 'Q2'
+        quarterNumber = 'Q2';
       } else if (Highcharts.dateFormat('%b', this.x, true) === 'Jul') {
-        quarterNumber = 'Q3'
+        quarterNumber = 'Q3';
       }  else if (Highcharts.dateFormat('%b', this.x, true) === 'Oct') {
-        quarterNumber = 'Q4'
+        quarterNumber = 'Q4';
       }
       let result = '';
-      if (this.series.yAxis.axisTitle.textStr === 'Avg') {
-        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber+ ': ' + formatter.format(this.y);
+      if (this.series.yAxis.axisTitle.textStr === 'Avg. Days') {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + formatter.format(this.y);
       } else if (this.series.yAxis.axisTitle.textStr === 'Dollars') {
-        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber+ ': ' + moneyFormatter.format(this.y);
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + moneyFormatter.format(this.y);
       } else if (this.series.yAxis.axisTitle.textStr === 'Percent') {
-        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber+ ': ' + formatter.format(this.y) + '%';
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + formatter.format(this.y) + '%';
       } else {
-        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber+ ': ' + formatter.format(this.y);
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + formatter.format(this.y);
       }
       return result;
     }

@@ -14,8 +14,6 @@ export class BillingTotalItemComponent implements OnInit {
   constructor(public filtersService: FiltersService) {
   }
 
-  ngOnInit() {
-    console.log("ITEM: ", this.item);
-  }
+  ngOnInit() {}
 
 }

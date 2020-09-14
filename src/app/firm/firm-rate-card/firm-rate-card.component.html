@@ -78,7 +78,7 @@
         </div>
       </div>
       <div class="pull-right">
-        <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations>
+        <!-- <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations> -->
         <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
           <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
         </button>
@@ -86,7 +86,7 @@
     
       <div class="clear-both"></div>
       <hr/>
-      <bd-report-card-billing-totals [firm]="firm" [reportCard]="false" [isComparison]="true" #comparisonBillingTotals *ngIf="firmId && firm && selectedTabIndex === 1"></bd-report-card-billing-totals>
+      <bd-report-card-billing-totals [comparisonStartDate]="comparisonStartDate" [comparisonEndDate]="comparisonEndDate" [reportCardStartDate]="reportCardStartDate" [reportCardEndDate]="reportCardEndDate" [firm]="firm" [reportCard]="false" [isComparison]="true" #comparisonBillingTotals *ngIf="firmId && firm && selectedTabIndex === 1"></bd-report-card-billing-totals>
       <bd-spend-trend-chart *ngIf="selectedTabIndex === 1" [firmId]="firmId" [startdate]="startdate" [enddate]="enddate" [compStartDate]="comparisonStartDate" [compEndDate]="comparisonEndDate"></bd-spend-trend-chart>
     </div>
   </mat-tab>
