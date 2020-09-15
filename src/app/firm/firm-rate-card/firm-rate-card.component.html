@@ -19,7 +19,7 @@
     </div>
     <div class="pull-right">
       <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations>
-      <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+      <button #tooltip="matTooltip" matTooltip="Export this report card to PDF and automatically save for future viewing"  class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export & Save
         <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
       </button>
       <button #tooltip="matTooltip" matTooltip="Edit filters for this report" class="primary-button ml20" (click)="editReportCard()">Edit</button>
