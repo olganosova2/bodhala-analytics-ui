@@ -1,4 +1,16 @@
 import {basePieChartOptions} from '../shared/models/base-chart';
+import * as Highcharts from 'highcharts';
+
+const moneyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2
+});
+const formatter = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2
+});
 
 export interface ITag {
   modified_on: string;
@@ -202,6 +214,7 @@ export const spendByMonthChartAdditionalOptions = {
     data: []
   }]
 };
+
 export const trendChart = {
   chart: {
     type: 'line',
@@ -254,6 +267,81 @@ export const trendChart = {
   }, {
     name: 'Peer Firm Avg.',
     color: '#000',
+    data: []
+  }]
+};
+export const spendByQuarterChartAdditionalOptions = {
+  chart: {
+    type: 'line',
+    width: 800,
+    // height: 600,
+    marginLeft: null,
+    marginRight: 10,
+    marginTop: 15,
+    spacingTop: 10,
+    zoomType: false,
+  },
+  exporting: {   enabled: false  },
+  credits: { enabled: false },
+  title: { text: null },
+  tooltip: {
+    formatter() {
+      let quarterNumber = '';
+      if (Highcharts.dateFormat('%b', this.x, true) === 'Jan') {
+        quarterNumber = 'Q1';
+      } else if (Highcharts.dateFormat('%b', this.x, true) === 'Apr') {
+        quarterNumber = 'Q2';
+      } else if (Highcharts.dateFormat('%b', this.x, true) === 'Jul') {
+        quarterNumber = 'Q3';
+      }  else if (Highcharts.dateFormat('%b', this.x, true) === 'Oct') {
+        quarterNumber = 'Q4';
+      }
+      let result = '';
+      if (this.series.yAxis.axisTitle.textStr === 'Avg. Days') {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + formatter.format(this.y);
+      } else if (this.series.yAxis.axisTitle.textStr === 'Dollars') {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + moneyFormatter.format(this.y);
+      } else if (this.series.yAxis.axisTitle.textStr === 'Percent') {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + formatter.format(this.y) + '%';
+      } else {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + ' ' + quarterNumber + ': ' + formatter.format(this.y);
+      }
+      return result;
+    }
+  },
+  xAxis: {
+    type: 'datetime',
+    units: [
+      ['year', [1]]
+    ],
+    dateTimeLabelFormats: {
+      month: '%Y',
+      year: '%Y'
+    },
+  },
+  yAxis: {
+    title: {
+      text: 'Avg'
+    }
+  },
+  legend: {
+    layout: 'horizontal',
+    align: 'right',
+    verticalAlign: 'top'
+  },
+  plotOptions: {
+    line: {
+      colors: ['#9D02FE', '#6F00FF'],
+    },
+    series: {
+      label: {
+        connectorAllowed: false
+      }
+    }
+  },
+  series: [{
+    name: 'Firm',
+    // color: '#FF0000',
     data: []
   }]
 };
@@ -456,6 +544,7 @@ export const taxonomyAdditionalOptions = {
 };
 
 export const spendByMonthOptions = { ... lineChartOptions, ...spendByMonthChartAdditionalOptions};
+export const spendByQuarterOptions = { ... lineChartOptions, ...spendByQuarterChartAdditionalOptions};
 export const genderChartOptions = {...pieDonut, ...genderAdditionalOptions};
 export const minorityChartOptions = {...pieDonut, ...minorityAdditionalOptions};
 export const UTBMSChartOptions = {...utbmsPieDonut, ...UTBMSAdditionalOptions};

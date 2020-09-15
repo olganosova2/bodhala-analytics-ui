@@ -107,6 +107,9 @@ import { SafePipe } from './shared/pipes/safe.pipe';
 import { AnnotationLabelsComponent } from './shared/components/annotations/annotation-labels/annotation-labels.component';
 import {ClickOutsideModule} from 'ng-click-outside';
 import { SavedReportsModalComponent } from './firm/saved-reports-modal/saved-reports-modal.component';
+import { SpendTrendChartComponent } from './firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
+import { ReportCardBillingTotalsComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
+import { ReportCardBillingTotalItemComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-total-item/report-card-billing-total-item.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -168,6 +171,9 @@ export function initHttp(service: HttpService) {
     AnnotaionsModalComponent,
     SafePipe,
     AnnotationLabelsComponent,
+    SpendTrendChartComponent,
+    ReportCardBillingTotalsComponent,
+    ReportCardBillingTotalItemComponent
   ],
   entryComponents: [
     PillComponent,
