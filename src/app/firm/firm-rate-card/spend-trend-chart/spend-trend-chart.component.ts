@@ -79,7 +79,6 @@ export class SpendTrendChartComponent implements OnInit {
   }
 
   processData(): void {
-   
     for (const rec of this.spend) {
       if (rec.total_hours > 0 && rec.total_hours !== null && rec.total_hours !== undefined) {
         rec.partner_hours_percent = (rec.partner_hours / rec.total_hours) * 100;
@@ -292,7 +291,6 @@ export class SpendTrendChartComponent implements OnInit {
         this.resizeChart();
       });
     }
-    
   }
 
   buildChartItem(rec: any): Array<any> {

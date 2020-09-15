@@ -38,7 +38,7 @@ describe('ReportCardBillingTotalsComponent', () => {
     component.firm = MOCK_FIRM as IFirm;
     fixture.detectChanges();
   });
-   
+
   it('should create ReportCardBillingTotalsComponent', () => {
     expect(component).toBeTruthy();
   });
@@ -63,7 +63,6 @@ describe('ReportCardBillingTotalsComponent', () => {
     component.filtersService.includeExpenses = true;
     component.reportCardStartDate = '2019-09-25';
     component.reportCardEndDate = '2017-09-25';
-    
     component.loadTotals();
     expect(component).toBeTruthy();
   });
