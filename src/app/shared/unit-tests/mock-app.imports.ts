@@ -94,6 +94,8 @@ import {TaskCostComponent} from '../../task-cost/task-cost.component';
 import {AnnotationsComponent} from '../components/annotations/annotations.component';
 import {AnnotaionsModalComponent} from '../components/annotations/annotaions-modal/annotaions-modal.component';
 import {AnnotationLabelsComponent} from '../components/annotations/annotation-labels/annotation-labels.component';
+import {ReportCardBillingTotalsComponent} from '../../firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
+import {SpendTrendChartComponent} from '../../firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import {SafePipe} from '../pipes/safe.pipe';
 
 
@@ -182,7 +184,9 @@ export const DECLARATIONS = [
   AnnotationsComponent,
   AnnotaionsModalComponent,
   AnnotationLabelsComponent,
-  SafePipe
+  SafePipe,
+  ReportCardBillingTotalsComponent,
+  SpendTrendChartComponent
 ];
 
 export const PROVIDERS = [

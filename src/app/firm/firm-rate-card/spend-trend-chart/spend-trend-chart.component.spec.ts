@@ -33,6 +33,8 @@ describe('SpendTrendChartComponent', () => {
     fixture = TestBed.createComponent(SpendTrendChartComponent);
     component = fixture.componentInstance;
     component.firmId = '1';
+    component.startdate = '2017-09-25';
+    component.enddate = '2019-09-25';
     fixture.detectChanges();
   });
 
