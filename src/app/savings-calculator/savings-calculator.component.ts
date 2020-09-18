@@ -8,6 +8,7 @@ import {IMetric, SavingMetrics, SavingsCalculatorService} from './savings-calcul
 import {SavingsWidgetComponent} from './savings-widget/savings-widget.component';
 import {ProgressSemiCircleComponent} from './progress-semi-circle/progress-semi-circle.component';
 import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
+import {MOCK_SAVING_DATA} from '../shared/unit-tests/mock-data/saving-calc-mock';
 
 @Component({
   selector: 'bd-savings-calculator',
@@ -51,6 +52,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data.result) {
           this.calcData = data.result;
+          // this.calcData = MOCK_SAVING_DATA.result;
           this.formatData();
           // this.calculateGrandTotal();
         }
