@@ -178,7 +178,9 @@ export class SavingsCalculatorService {
     result.tooltip = 'The typical cost of inflation is around 2-3%. Any increases above this threshold are considered excessive.';
     const tkClassificationsProcessed = [];
     for (const key of Object.keys(tkClassifications)) {
-      tkClassificationsProcessed.push(this.createClassification(key, records));
+      if (key === 'partner' || key === 'associate') {
+        tkClassificationsProcessed.push(this.createClassification(key, records));
+      }
     }
     result.classifications = tkClassificationsProcessed;
     result.origPercent = this.calculateOrigIncreaseRatePercent(tkClassificationsProcessed);
@@ -198,8 +200,17 @@ export class SavingsCalculatorService {
     const divider2 = year3Rec.effective_rate ? year3Rec.effective_rate : 1;
     const year2Increase = ((year2Rec.effective_rate || 0) - (year3Rec.effective_rate || 0)) / divider2;
     classification.avgRateIncrease = (year1Increase + year2Increase) / 2;
+    // handling missing data
     if (!year2Rec.effective_rate && !year3Rec.effective_rate) { // no data for 2 years
       classification.avgRateIncrease = 0;
+    }
+    else if (!year3Rec.effective_rate) { // no data for 3-rd year
+      classification.avgRateIncrease = year1Increase;
+    }
+    else if (!year2Rec.effective_rate) { // no data for 2-nd year
+      const div1 = year3Rec.effective_rate ? year3Rec.effective_rate : 1;
+      const year1Incr = ((year1Rec.effective_rate || 0) - (year3Rec.effective_rate || 0)) / div1;
+      classification.avgRateIncrease = year1Incr;
     }
     classification.totalHours = year1Rec.total_hours ||  0;
     classification.lastYearRate = year1Rec.effective_rate || 0;
