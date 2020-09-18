@@ -67,27 +67,27 @@ describe('ScoreTrendComponent', () => {
   });
   it('should renderChart', () => {
     component.renderChart();
-    expect(component.options.series[0].data.length).toBe(0);
+    expect(component.options.series[0].data.length).toBe(14);
   });
   it('should renderChart when TrendChart.MATTER_COST', () => {
     component.selectedChart = TrendChart.MATTER_COST;
     component.renderChart();
-    expect(component.options.series[0].data.length).toBe(0);
+    expect(component.options.series[0].data.length).toBe(14);
   });
   it('should renderChart when TrendChart.BLOCK_BILLING', () => {
     component.selectedChart = TrendChart.BLOCK_BILLING;
     component.renderChart();
-    expect(component.options.series[0].data.length).toBe(0);
+    expect(component.options.series[0].data.length).toBe(14);
   });
   it('should renderChart when TrendChart.PARTNER_RATE', () => {
     component.selectedChart = TrendChart.PARTNER_RATE;
     component.renderChart();
-    expect(component.options.series[0].data.length).toBe(0);
+    expect(component.options.series[0].data.length).toBe(14);
   });
   it('should renderChart when TrendChart.ASSOCIATE_RATE', () => {
     component.selectedChart = TrendChart.ASSOCIATE_RATE;
     component.renderChart();
-    expect(component.options.series[0].data.length).toBe(0);
+    expect(component.options.series[0].data.length).toBe(14);
   });
   it('should changeViewMode', () => {
     component.changeViewMode(TrendChart.LEVERAGE);
