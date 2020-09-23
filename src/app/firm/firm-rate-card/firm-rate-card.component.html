@@ -58,6 +58,15 @@
           <hr/>
         </div>
       </div>
+
+    </div>
+    <div class="pull-right">
+      <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations>
+      <button #tooltip="matTooltip" matTooltip="Export this report card to PDF and automatically save for future viewing"  class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export & Save
+        <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
+      </button>
+      <button #tooltip="matTooltip" matTooltip="Edit filters for this report" class="primary-button ml20" (click)="editReportCard()">Edit</button>
+      <button *ngIf="savedReports.length > 0" #tooltip="matTooltip" matTooltip="View saved reports for {{commonServ.pageSubtitle}}" class="primary-button ml20" (click)="showSavedReports()">Saved</button>
     </div>
   </mat-tab>
 
