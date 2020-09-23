@@ -1,18 +1,21 @@
-import {Component, ElementRef, HostListener,  OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 import * as config from '../../shared/services/config';
 const moment = _moment;
-import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {IFirm} from '../firm.model';
+const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {IFirm, taxonomyChartOptions} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
 
 import {AnnotationsComponent} from '../../shared/components/annotations/annotations.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
+import {SpendTrendChartComponent} from './spend-trend-chart/spend-trend-chart.component';
+import {ReportCardBillingTotalsComponent} from './report-card-billing-totals/report-card-billing-totals.component';
 
 @Component({
   selector: 'bd-firm-rate-card',
@@ -31,15 +34,29 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   practiceAreas: Array<string> = [];
   enddate: string;
   startdate: string;
+  reportCardStartDate: string;
+  reportCardEndDate: string;
+  comparisonStartDate: string;
+  comparisonEndDate: string;
+  formattedComparisonStartDate: string;
+  formattedComparisonEndDate: string;
   showToTop: boolean = false;
   savedReportsAvailable: boolean = false;
   savedReports: Array<any> = [];
   otherFirms: boolean = false;
+  comparing: boolean = false;
+  newStartDate: string;
   percentOfTotal: number;
   rank: number;
   selectedSavedFilterName: string = null;
   logoUrl: string;
   notes: Array<IUiAnnotation> = [];
+  selectedTabIndex: number = 0;
+  pageName: string = 'analytics-ui/firm/report-card/';
+  pageType: string = 'Firm Report Card';
+  excludeFilters = ['firms', 'threshold', 'matters', 'practice areas', 'internal'];
+  @ViewChild(SpendTrendChartComponent) spendTrendChart: SpendTrendChartComponent;
+  @ViewChild(ReportCardBillingTotalsComponent) reportCardBillingTotalsComponent: ReportCardBillingTotalsComponent;
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
@@ -58,13 +75,16 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               public utilServ: UtilService,
               public userService: UserService,
               public router: Router,
-              public matDialog: MatDialog) {
+              public matDialog: MatDialog,
+              public appStateService: AppStateService) {
     this.commonServ.pageTitle = 'Firms > Report Card';
     this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
   }
 
   async ngOnInit() {
     const dates = this.filtersService.parseLSDateString();
+    this.reportCardStartDate = dates.startdate;
+    this.reportCardEndDate = dates.enddate;
     this.enddate = moment(dates.enddate).format('MMM DD, YYYY');
     this.startdate = moment(dates.startdate).format('MMM DD, YYYY');
     this.selectedSavedFilterName = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
@@ -220,8 +240,13 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   export(): void {
       this.commonServ.pdfLoading = true;
       setTimeout(() => {
-        this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', this.firmId);
-        this.checkSavedReports();
+        if (this.selectedTabIndex === 0) {
+          this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card', 'pdfDiv', this.firmId);
+          this.checkSavedReports();
+        } else {
+          this.commonServ.generatePdfOuter(this.commonServ.pageSubtitle + ' Rate Card Comparison', 'comparisonDiv', this.firmId);
+        }
+
       }, 200);
   }
 
@@ -246,6 +271,77 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
   loadNotes(notes: Array<IUiAnnotation>): void {
     this.notes = Object.assign([], notes);
+  }
+  refreshData(evt: any): void {
+    const params1 = this.filtersService.getCurrentUserCombinedFilters();
+    this.comparisonStartDate = params1.startdate;
+    this.comparisonEndDate = params1.enddate;
+    this.reportCardBillingTotalsComponent.loadTotals();
+    this.spendTrendChart.getSpendByQuarter();
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const startDate = params.startdate;
+    const endDate = params.enddate;
+    this.formattedComparisonStartDate = moment(startDate).format('MMM DD, YYYY');
+    this.formattedComparisonEndDate = moment(endDate).format('MMM DD, YYYY');
+  }
+  getCompareDates(dates): void {
+    let startDate = dates.startdate;
+    let endDate = dates.enddate;
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
+    const comparisonStartDateTemp = new Date(this.comparisonEndDate);
+    const daysDiff = Math.floor((Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) - Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()) ) / (_MS_PER_DAY));
+    comparisonStartDateTemp.setDate(comparisonStartDateTemp.getDate() - daysDiff);
+    this.comparisonStartDate = comparisonStartDateTemp.toISOString().slice(0, 10);
+    this.formattedComparisonStartDate = moment(this.comparisonStartDate).format('MMM DD, YYYY');
+    this.formattedComparisonEndDate = moment(this.comparisonEndDate).format('MMM DD, YYYY');
+    const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    let tempFiltersDict = JSON.parse(tempFilters);
+    for (const filter of tempFiltersDict.dataFilters) {
+      if (filter.fieldName === 'dateRange') {
+        filter.value.startDate = this.comparisonStartDate;
+        filter.value.endDate = this.comparisonEndDate;
+      }
+    }
+    tempFiltersDict = JSON.stringify(tempFiltersDict);
+    localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFiltersDict);
+  }
+  changeTab(evt): void {
+    this.selectedTabIndex = evt.index;
+    if (this.selectedTabIndex === 1) {
+      const dates = this.filtersService.parseLSDateString();
+      const params = {clientId: this.userService.currentUser.client_info.id};
+      this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
+        (data: any) => {
+          if (data) {
+            this.comparisonEndDate = data.result.max;
+            this.getCompareDates(dates);
+          }
+        },
+        err => {
+          this.errorMessage = err;
+        }
+      );
+    } else {
+      const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+      let tempFiltersDict = JSON.parse(tempFilters);
+
+      for (const filter of tempFiltersDict.dataFilters) {
+        if (filter.fieldName === 'dateRange') {
+          filter.value.startDate = this.reportCardStartDate;
+          filter.value.endDate = this.reportCardEndDate;
+        }
+      }
+      tempFiltersDict.datestring = '&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      tempFiltersDict.querystring = '&threshold=4&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      tempFiltersDict = JSON.stringify(tempFiltersDict);
+      localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFiltersDict);
+      this.reportCardBillingTotalsComponent.reportCardStartDate = this.reportCardStartDate;
+      this.reportCardBillingTotalsComponent.reportCardEndDate = this.reportCardEndDate;
+      this.reportCardBillingTotalsComponent.isComparison = false;
+      this.reportCardBillingTotalsComponent.isReportCard = true;
+      this.reportCardBillingTotalsComponent.loadTotals();
+    }
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
