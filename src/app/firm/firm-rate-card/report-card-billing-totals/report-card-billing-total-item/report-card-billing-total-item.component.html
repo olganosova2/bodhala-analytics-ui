@@ -42,23 +42,23 @@
       <img src="assets/images/{{itemRC.svg}}.svg" alt="icon"/>
     </div>
     <div class="font-bold">
-      <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.total | number:'1.0-0'}}</span>
-      <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.total | number:'1.2-2'}}%</span>
-      <span *ngIf="itemRC?.format === 'number'">{{ itemRC.total | number:'1.2-2'}}</span>
-      <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.total | number:'1.2-2'}}</span>
-      <span *ngIf="!itemRC?.format">{{ itemRC.total | number:'1.0-0' }}</span>
+      <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.avg | number:'1.0-0'}}</span>
+      <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.avg | number:'1.2-2'}}%</span>
+      <span *ngIf="itemRC?.format === 'number'">{{ itemRC.avg | number:'1.2-2'}}</span>
+      <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.avg | number:'1.2-2'}}</span>
+      <span *ngIf="!itemRC?.format">{{ itemRC.avg | number:'1.0-0' }}</span>
     </div>
     <span class="cell-label">{{ itemRC.name }}</span>
   </div>
   <div class="bottom-cell-item" *ngIf="comparisonItem" [ngClass]="{'cell-last': isLastCell}">
     <div class="temp">
-      Report Card Period
+      Comparison Timeframe
       <div class="font-bold">
-        <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.avg | number:'1.0-0'}}</span>
-        <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.avg | number:'1.2-2'}}%</span>
-        <span *ngIf="itemRC?.format === 'number'">{{ itemRC.avg | number:'1.2-2'}}</span>
-        <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.avg | number:'1.2-2'}}</span>
-        <span *ngIf="!itemRC?.format">{{ itemRC.avg | number:'1.0-0' }}</span>
+        <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.total | number:'1.0-0'}}</span>
+        <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.total | number:'1.2-2'}}%</span>
+        <span *ngIf="itemRC?.format === 'number'">{{ itemRC.total | number:'1.2-2'}}</span>
+        <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.total | number:'1.2-2'}}</span>
+        <span *ngIf="!itemRC?.format">{{ itemRC.total | number:'1.0-0' }}</span>
       </div>
     </div>
     <div class="temp">
