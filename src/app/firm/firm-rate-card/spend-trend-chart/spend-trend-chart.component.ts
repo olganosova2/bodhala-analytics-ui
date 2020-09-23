@@ -147,7 +147,7 @@ export class SpendTrendChartComponent implements OnInit {
               style: {
                   fontWeight: 'bold',
                   width: '30px',
-                  fontSize: '11px' 
+                  fontSize: '11px'
               }
             }
           });
@@ -165,7 +165,7 @@ export class SpendTrendChartComponent implements OnInit {
               style: {
                   fontWeight: 'bold',
                   width: '30px',
-                  fontSize: '11px' 
+                  fontSize: '11px'
               }
             }
           });
@@ -184,7 +184,7 @@ export class SpendTrendChartComponent implements OnInit {
               style: {
                   fontWeight: 'bold',
                   width: '30px',
-                  fontSize: '11px' 
+                  fontSize: '11px'
               }
             }
           });
@@ -222,7 +222,7 @@ export class SpendTrendChartComponent implements OnInit {
               style: {
                   fontWeight: 'bold',
                   width: '30px',
-                  fontSize: '11px' 
+                  fontSize: '11px'
               }
             }
           });
@@ -241,7 +241,7 @@ export class SpendTrendChartComponent implements OnInit {
               style: {
                   fontWeight: 'bold',
                   width: '30px',
-                  fontSize: '11px'    
+                  fontSize: '11px'
               }
             }
           });
@@ -261,7 +261,7 @@ export class SpendTrendChartComponent implements OnInit {
               style: {
                   fontWeight: 'bold',
                   width: '30px',
-                  fontSize: '11px' 
+                  fontSize: '11px'
               }
             }
           });
@@ -294,7 +294,7 @@ export class SpendTrendChartComponent implements OnInit {
             style: {
                 fontWeight: 'bold',
                 width: '30px',
-                fontSize: '11px' 
+                fontSize: '11px'
             }
           }
         });
