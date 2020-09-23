@@ -69,6 +69,9 @@ export class SpendTrendChartComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest('spendByQuarter', params).subscribe(
       (data: any) => {
         this.spend = data.result;
+        if (this.spend !== undefined) {
+          this.spend = this.spend.sort(this.utilServ.dynamicSort('year_quarter'));
+        }
         this.processData();
         this.renderChart(false);
       },
@@ -143,7 +146,8 @@ export class SpendTrendChartComponent implements OnInit {
               align: 'left',
               style: {
                   fontWeight: 'bold',
-                  width: '30px'
+                  width: '30px',
+                  fontSize: '11px' 
               }
             }
           });
@@ -160,7 +164,8 @@ export class SpendTrendChartComponent implements OnInit {
               align: 'right',
               style: {
                   fontWeight: 'bold',
-                  width: '30px'
+                  width: '30px',
+                  fontSize: '11px' 
               }
             }
           });
@@ -178,7 +183,8 @@ export class SpendTrendChartComponent implements OnInit {
               align: 'center',
               style: {
                   fontWeight: 'bold',
-                  width: '30px'
+                  width: '30px',
+                  fontSize: '11px' 
               }
             }
           });
@@ -215,11 +221,12 @@ export class SpendTrendChartComponent implements OnInit {
               align: 'right',
               style: {
                   fontWeight: 'bold',
-                  width: '30px'
+                  width: '30px',
+                  fontSize: '11px' 
               }
             }
           });
-
+          this.datesOverlap = false;
         } else if (endDate >= compStartDate && endDate <= compEndDate && !(startDate === compStartDate && endDate === compEndDate)) {
           endDate = compStartDate;
           this.chart.xAxis[0].addPlotBand({
@@ -233,10 +240,12 @@ export class SpendTrendChartComponent implements OnInit {
               align: 'left',
               style: {
                   fontWeight: 'bold',
-                  width: '30px'
+                  width: '30px',
+                  fontSize: '11px'    
               }
             }
           });
+          this.datesOverlap = false;
         } else if (startDate === compStartDate && endDate === compEndDate) {
           this.datesOverlap = true;
         } else {
@@ -251,10 +260,12 @@ export class SpendTrendChartComponent implements OnInit {
               align: 'right',
               style: {
                   fontWeight: 'bold',
-                  width: '30px'
+                  width: '30px',
+                  fontSize: '11px' 
               }
             }
           });
+          this.datesOverlap = false;
         }
       }
       if (this.startdate && this.enddate) {
@@ -268,6 +279,7 @@ export class SpendTrendChartComponent implements OnInit {
         } else {
           labelText = 'Report Card Timeframe';
         }
+        this.chart.xAxis[0].removePlotBand('plotband-1');
         startDate = moment(formattedStartDate).valueOf();
         endDate = moment(formattedEndDate).valueOf();
 
@@ -281,7 +293,8 @@ export class SpendTrendChartComponent implements OnInit {
             y: 30,
             style: {
                 fontWeight: 'bold',
-                width: '30px'
+                width: '30px',
+                fontSize: '11px' 
             }
           }
         });

@@ -12,11 +12,12 @@ import {IFirm} from '../firm.model';
 import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {MOCK_ANNOTATIONS} from '../../shared/unit-tests/mock-data/annotations';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
+import {FILTERS_LS} from '../../shared/unit-tests/mock-data/filters';
+import { SpendTrendChartComponent } from './spend-trend-chart/spend-trend-chart.component';
 
 describe('FirmRateCardComponent', () => {
   let component: FirmRateCardComponent;
   let fixture: ComponentFixture<FirmRateCardComponent>;
-
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
@@ -31,6 +32,7 @@ describe('FirmRateCardComponent', () => {
       set: {
         providers: [
           AppStateService,
+          SpendTrendChartComponent,
           { provide: Router, useValue: mockRouter},
           { provide: ActivatedRoute, useClass: ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
@@ -77,4 +79,40 @@ describe('FirmRateCardComponent', () => {
     const result = component.formatLogoUrl(url);
     expect(result).toBeTruthy();
   });
+
+  it('should compareDates', () => {
+    const dates = {startdate: '2017-09-25', enddate: '2019-09-25'};
+    component.comparisonStartDate = '2017-09-25';
+    component.comparisonEndDate = '2019-09-25';
+    const serializedState = JSON.stringify(FILTERS_LS);
+    localStorage.setItem('ELEMENTS_dataFilters_397', serializedState);
+    component.userService.currentUser.id = 397;
+    component.getCompareDates(dates);
+    expect(component).toBeTruthy();
+  });
+
+  it('should changeTabs', () => {
+    component.selectedTabIndex = 1;
+    const evt = {index: 1, tab: {}};
+    component.changeTab(evt);
+    expect(component).toBeTruthy();
+  });
+
+  it('should changeTabs to Report Card', () => {
+    component.reportCardStartDate = '2017-09-25';
+    component.reportCardEndDate = '2019-09-25';
+    const serializedState = JSON.stringify(FILTERS_LS);
+    localStorage.setItem('ELEMENTS_dataFilters_397', serializedState);
+    component.userService.currentUser.id = 397;
+    component.selectedTabIndex = 0;
+    const evt = {index: 0, tab: {}};
+    component.changeTab(evt);
+    expect(component).toBeTruthy();
+  });
+
+  // it('should refreshData', () => {
+  //   component.refreshData(null);
+  //   expect(component).toBeTruthy();
+  // });
+
 });

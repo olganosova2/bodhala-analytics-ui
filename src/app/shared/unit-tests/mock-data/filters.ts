@@ -90,7 +90,7 @@ export const FILTERS_LS = {
 {"clientId": 113, "displayName": "Geographies", "fieldName": "geographies", "type": "MULTISELECT", "filterGroup": "Internal", "description": null}, 
 {"clientId": 113, "displayName": "Task Codes", "fieldName": "utbmsCodes", "type": "MULTISELECT", "filterGroup": "Matters", "description": null}, 
 {"clientId": 113, "displayName": "Firm Types", "fieldName": "firmTypes", "type": "MULTISELECT", "filterGroup": "Firms", "description": null}, 
-{"clientId": 113, "displayName": "Date Range", "fieldName": "dateRange", "type": "DATERANGE", "filterGroup": "Dates", "description": null, "minDate": "2014-06-30", "maxDate": "2019-12-20"}, 
+{"clientId": 113, "displayName": "Date Range", "fieldName": "dateRange", "type": "DATERANGE", "filterGroup": "Dates", "description": null, "minDate": "2014-06-30", "maxDate": "2019-12-20", value: {startDate: '2017-09-25', endDate: '2019-09-25'}}, 
 {"clientId": 113, "displayName": "Number of Matters", "fieldName": "firmMatterCount", "type": "RANGESLIDER", "filterGroup": "Firms", "description": null, "minRange": 1, "maxRange": 1000, "isCapped": true}, 
 {"clientId": 113, "displayName": "Lead Partners", "fieldName": "leadPartners", "type": "MULTISELECT", "filterGroup": "Firms", "description": null}, 
 {"clientId": 113, "displayName": "Total Matter Cost", "fieldName": "matterCost", "type": "RANGESLIDER", "filterGroup": "Matters", "description": null, "minRange": 0, "maxRange": 15250000, "step": 50000, "isCapped": true}, 
