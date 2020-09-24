@@ -34,6 +34,9 @@ export class LinkComponent extends BaseCell implements OnInit, ICell {
     if (data.id) {
       const etc = encodeURIComponent(data.id);
       data.id = encodeURIComponent(etc);
+    } else if (data.top_matter_id) {
+      const etc = encodeURIComponent(data.id);
+      data.id = encodeURIComponent(etc);
     }
     const href = this.inject(hrefTemplate, data);
     const w = window.parent ? window.parent : window;
