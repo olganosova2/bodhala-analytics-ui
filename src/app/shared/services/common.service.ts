@@ -16,7 +16,6 @@ export class CommonService {
   exportImage = null;
   pdfLoading: boolean = false;
   pendingRequest: Subscription;
-
   editorStyle = {
     height: '150px'
   };

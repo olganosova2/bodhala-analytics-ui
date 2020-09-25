@@ -1,7 +1,7 @@
 import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
-import {forkJoin, Observable, Subscription, Subject} from 'rxjs';
+import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 import * as config from '../../shared/services/config';
 const moment = _moment;
