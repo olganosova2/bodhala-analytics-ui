@@ -154,7 +154,7 @@ export class SavingsCalculatorService {
       result.total = osTotal;
       result.percent = 20;
       result.origPercent = 20;
-      result.title = 'Overstaffing';
+      result.title = 'Overbilling on Internal Meetings';
       result.viewLabel = 'meeting';
       result.details = osRecord.overstaffing || [];
       if (result.details.length > 0) {
