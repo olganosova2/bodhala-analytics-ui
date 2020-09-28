@@ -219,7 +219,7 @@ export const trendChart = {
   chart: {
     type: 'line',
     width: 800,
-    // height: 600,
+    height: 600,
     marginLeft: null,
     marginRight: 10,
     marginTop: 15,
@@ -274,7 +274,7 @@ export const spendByQuarterChartAdditionalOptions = {
   chart: {
     type: 'line',
     width: 800,
-    // height: 600,
+    height: 600,
     marginLeft: null,
     marginRight: 10,
     marginTop: 15,
