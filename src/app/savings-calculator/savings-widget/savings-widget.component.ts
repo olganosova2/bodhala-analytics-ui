@@ -62,9 +62,6 @@ export class SavingsWidgetComponent implements OnInit {
     this.changed.emit(this.metric);
   }
 
-  saveInstance(chartInstance): void {
-    this.chart = chartInstance;
-  }
   openDetails(): void {
     const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], this.metric.details)};
     const dialogRef = this.dialog.open(OverstaffingGridComponent, {...modalConfig, disableClose: true });

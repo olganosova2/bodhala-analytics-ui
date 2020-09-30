@@ -1,0 +1,55 @@
+@import "../../../../../assets/styles/colors.scss";
+.cell-item {
+  color: $body-color;
+  margin:0;
+  padding: 10px 30px 10px 30px;
+  border-right: $gray-blue-bg 1px solid;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  // min-width: 100px;
+}
+.report-card-cell-item {
+  color: $body-color;
+  margin:0;
+  padding: 5px 30px 10px 30px;
+  // border-right: $gray-blue-bg 1px solid;
+  border-right: black 1px solid;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  // min-width: 100px;
+}
+.bottom-cell-item {
+  color: $body-color;
+  margin:0;
+  padding: 5px 30px 10px 30px;
+  // border-right: $gray-blue-bg 1px solid;
+  border-right: black 1px solid;
+  border-top: $gray-blue-bg 1px solid;
+  text-align: center;
+  display: inline-block;
+  width: 100%;
+  // min-width: 100px;
+}
+em {
+  color: $body-color;
+  font-size: 1.2rem;
+}
+span {
+  display: inline-block;
+}
+.cell-label {
+  font-size: 0.8rem;
+}
+.cell-last {
+  border-right: none;
+}
+.img-div {
+  min-height: 33px;
+}
+.temp {
+  display: inline-block;
+  width: 50%;
+  font-size: 0.8rem;
+}

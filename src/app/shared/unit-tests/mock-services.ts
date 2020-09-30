@@ -2,9 +2,9 @@ import {CURRENT_USER} from './mock-data/user';
 import {Observable, of, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
-import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY, MOCK_PHASE_TAXONOMY, MOCK_UTBMS_CODES} from './mock-data/firm';
+import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY, MOCK_PHASE_TAXONOMY, MOCK_UTBMS_CODES, MOCK_SPEND_BY_QUARTER_DATA} from './mock-data/firm';
 import {convertToParamMap} from '@angular/router';
-import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC, MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS} from './mock-data/billing-totals';
+import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC, MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC_COMP} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
 import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
@@ -66,6 +66,8 @@ export class DataStub {
         return of({result: TOP_MATTERS });
       case 'getTopFirms':
         return of({result: TOP_FIRMS });
+      case 'getAnnotations':
+        return of({result: MOCK_ANNOTATIONS.result[0] });
       default:
         return of([]);
     }
@@ -95,8 +97,12 @@ export class DataStub {
         return of(MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS);
       case 'reportCardBillingTotals':
         return of(MOCK_BILLING_TOTALS_RC);
+      case 'reportCardComparisonBillingTotals':
+        return of(MOCK_BILLING_TOTALS_RC_COMP);
       case 'spendByMonth':
         return of({result: []});
+      case 'spendByQuarter':
+        return of(MOCK_SPEND_BY_QUARTER_DATA);
       case 'getBlockBillingFirms':
         return of({result: []});
       case 'getInvoiceIQReports':
@@ -141,6 +147,15 @@ export class DataStub {
         return of(MOCK_TASK_COST);
       case 'getAnnotations':
         return of(MOCK_ANNOTATIONS);
+      default:
+        return of([]);
+    }
+    return of({});
+  }
+  public makeDeleteRequest(url: string, request?: any): Observable<any> {
+    switch (url) {
+      case 'deleteSavedExport':
+        return of([]);
       default:
         return of([]);
     }
@@ -242,3 +257,11 @@ export class ActivatedRouteMock {
     observer.complete();
   });
 }
+export class MatDialogMock {
+  open() {
+    return {
+      afterClosed: () => of({result: true})
+    };
+  }
+}
+
