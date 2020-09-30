@@ -28,6 +28,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
   @Input() comparisonStartDate: string;
   @Input() comparisonEndDate: string;
   @Input() filtersChanged: boolean = false;
+  @Input() practiceArea: IPracticeArea;
 
   constructor(public httpService: HttpService,
               public filtersService: FiltersService,
@@ -54,6 +55,15 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         let otherFirmIDs = paramsLS.firms;
         otherFirmIDs = JSON.parse(otherFirmIDs);
         params.otherFirms = otherFirmIDs;
+      }
+      if (this.practiceArea) {
+        const arr = [];
+        if (this.practiceArea.client_matter_type === null || this.practiceArea.client_matter_type === undefined) {
+          arr.push(this.practiceArea);
+        } else {
+          arr.push(this.practiceArea.client_matter_type);
+        }
+        params.practiceAreas = JSON.stringify(arr);
       }
     } else if (this.isComparison === true && this.firstLoad === true) {
       requestString = 'reportCardComparisonBillingTotals';
