@@ -125,15 +125,17 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
       return forkJoin([response1, response2]);
     }
     if (this.clientMatterType) {
+      const regEx = new RegExp('/', 'g');
+      const regEx1 = new RegExp('\\?\\?\\?!', 'g');
       if (this.clientMatterType.includes('/')) {
-        this.clientMatterType = this.clientMatterType.replace('/', '???!');
+        this.clientMatterType = this.clientMatterType.replace(regEx, '???!');
         this.clientMatterType = encodeURIComponent(this.clientMatterType);
       }
       params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
       const response1 = this.httpService.makeGetRequest('getPracticeAreaScore', params);
       const response2 = this.httpService.makeGetRequest('getPracticeAreaTrends', params);
       this.clientMatterType = decodeURIComponent(this.clientMatterType);
-      this.clientMatterType = this.clientMatterType.replace('???!', '/');
+      this.clientMatterType = this.clientMatterType.replace(regEx1, '/');
       return forkJoin([response1, response2]);
     }
   }
