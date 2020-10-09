@@ -7,7 +7,7 @@ import {HttpService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {CommonService} from '../../../shared/services/common.service';
 import * as Highcharts from 'highcharts';
-import { BreadcrumbModule } from 'primeng';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 const moment = _moment;
 
@@ -68,7 +68,7 @@ export class SpendTrendChartComponent implements OnInit {
     }
     this.pendingRequest = this.httpService.makeGetRequest('spendByQuarter', params).subscribe(
       (data: any) => {
-        this.spend = data.result;
+        this.spend = data.result || [];
         if (this.spend !== undefined) {
           this.spend = this.spend.sort(this.utilServ.dynamicSort('year_quarter'));
         }

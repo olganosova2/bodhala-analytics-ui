@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import { Subscription} from 'rxjs';
 import {Router} from '@angular/router';
+import { Location } from '@angular/common';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 
 import {AppStateService, TimeoutModalComponent, UtilService} from 'bodhala-ui-common';
@@ -29,6 +30,7 @@ export class AppComponent implements OnDestroy {
   ieVersion: string = '';
 
   constructor(public router: Router,
+              private location: Location,
               private httpService: HttpService,
               public appStateService: AppStateService,
               private titleService: Title,
@@ -38,6 +40,12 @@ export class AppComponent implements OnDestroy {
               private keepalive: Keepalive,
               public commonServ: CommonService,
               public dialog: MatDialog) {
+
+    const path = this.location.path();
+    if (path === '/launchpad' || path === '') {
+      this.router.navigateByUrl('/analytics-ui/analytics.html');
+    }
+
     this.appStateService.loadRoutes(config.ROUTES);
     this.filtersService.setCurrentUserFilters();
     this.httpService.callInProgress.subscribe(value => {
@@ -95,8 +103,16 @@ export class AppComponent implements OnDestroy {
   onActivate(evt): void {
     window.scroll(0, 0);
   }
-  onRightClick(evt: any): void {
-
+  navigateFromMenu(evt: any): void {
+    const found = this.appStateService.appRoutes.find(e => e.name === evt.state.sref);
+    if (found && found.routePath) {
+      const route = found.routePath;
+      this.router.navigate([route]);
+      return;
+    }
+    const result = '/' + evt.state.href;
+    window.location.href = result;
+    return;
   }
   onDoubleClick(evt: any): void {
     const style = evt.target.style;

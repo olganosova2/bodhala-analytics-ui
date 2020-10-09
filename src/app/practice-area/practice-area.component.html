@@ -1,4 +1,4 @@
-<div class="content-body-inner-wrapper">
+<div class="content-body-inner-wrapper pl10">
     <bd-ie-banner></bd-ie-banner>
     <bd-error-messages></bd-error-messages>
     <div>
@@ -17,9 +17,9 @@
         <bd-practice-area-dropdown></bd-practice-area-dropdown>
     </div>
 
-    <div class="ui-g">
+    <div class="p-grid mt15">
 
-        <div class="ui-g-{{rightColsCount}} no-right-padding no-left-padding">
+        <div class="p-col-{{rightColsCount}} no-right-padding no-left-padding">
             <bd-billing-totals [practiceArea]="practiceArea" #billingTotals *ngIf="clientMatterType && practiceArea"></bd-billing-totals>
         </div>
 
@@ -34,36 +34,36 @@
 
     <!-- Spend by Month and Top TKs -->
     <div>
-        <div class="ui-g mt15">
-          <div class="ui-md-12 ui-lg-8 no-left-padding pr15">
+        <div class="p-grid mt15">
+          <div class="p-md-12 p-lg-8 no-left-padding pr15">
             <bd-spend-by-month [practiceArea]="practiceArea" #spendByMonthDiv *ngIf="clientMatterType && practiceArea"></bd-spend-by-month>
           </div>
-          <div class="ui-md-12 ui-lg-4 no-right-padding">
+          <div class="p-md-12 p-lg-4 pl10">
             <bd-pa-top-firms [practiceArea]="practiceArea"  #topFirms *ngIf="clientMatterType && practiceArea"></bd-pa-top-firms>
           </div>
         </div>
     </div>
 
     <div>
-        <div class="ui-g mt15">
-          <div class="ui-md-12 ui-lg-5 ui-xl-6 no-left-padding">
+        <div class="p-grid mt15">
+          <div class="p-md-12 p-lg-5 p-xl-6">
             <bd-top-matters [practiceArea]="practiceArea" #paTopMatters *ngIf="clientMatterType && practiceArea"></bd-top-matters>
           </div>
-          <div class="ui-md-12 ui-lg-5 ui-xl-6 no-right-padding" #paTopLeadPartners>
+          <div class="p-md-12 p-lg-5 p-xl-6" #paTopLeadPartners>
             <bd-pa-top-lead-partners [practiceArea]="practiceArea" *ngIf="clientMatterType && practiceArea"></bd-pa-top-lead-partners>
           </div>
         </div>
     </div>
 
     <div>
-        <div class="ui-g mt15">
-          <div class="ui-md-12 ui-lg-7 ui-xl-5 no-left-padding" #diversity>
+        <div class="p-grid mt15">
+          <div class="p-md-12 p-lg-7 p-xl-5 no-left-padding div-diversity" #diversity>
             <bd-diversity [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
           </div>
         </div>
     </div>
 
-    <div class="ui-g mt15">
+    <div class="p-grid mt15">
         <bd-utbms [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
     </div>
 

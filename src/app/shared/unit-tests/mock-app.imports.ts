@@ -70,7 +70,7 @@ import {BenchmarkOverviewComponent} from '../../benchmarks/benchmark-overview/be
 import {BenchmarkRowComponent} from '../../benchmarks/benchmark-row/benchmark-row.component';
 import {BenchmarksGridComponent} from '../../benchmarks/benchmarks-grid/benchmarks-grid.component';
 import {TwoBarsComponent} from '../../benchmarks/two-bars/two-bars.component';
-import {OverlayPanelModule} from 'primeng';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import {IeBannerComponent} from '../components/ie-banner/ie-banner.component';
 import {ErrorMessagesComponent} from '../components/error-messages/error-messages.component';

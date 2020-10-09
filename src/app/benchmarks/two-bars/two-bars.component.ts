@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {IBenchmarkOverviewRow} from '../model';
 import {BenchmarkService, BM_COLORS} from '../benchmark.service';
-import {OverlayPanel} from 'primeng';
+import {OverlayPanel} from 'primeng/overlaypanel';
 
 @Component({
   selector: 'bd-two-bars',

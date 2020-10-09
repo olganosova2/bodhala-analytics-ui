@@ -1,13 +1,13 @@
-<div class="ui-g panel-wrapper">
+<div class="p-grid panel-wrapper ml5">
     <div class="panel-heading" style="display: inline; background: #FFFFFF">
         <h4>Spend by Utbms Code</h4>
     </div>
-  <div class="ui-md-12 ui-lg-6 no-left-padding left">
+  <div class="p-md-12 p-lg-6 no-left-padding left">
     <div *ngIf="userService.hasEntitlement('analytics.utbms.codes')">
         <chart [options]="optionsUTBMS" (load)="saveInstanceUTBMS($event.context)" ></chart>
     </div>
   </div>
-  <div class="ui-md-12 ui-lg-6 no-right-padding right">
+  <div class="p-md-12 p-lg-6 no-right-padding right">
     <div *ngIf="userService.hasEntitlement('analytics.phase.taxonomy')">
         <chart [options]="optionsTaxonomy" (load)="saveInstanceTaxonomy($event.context)" ></chart>
     </div>

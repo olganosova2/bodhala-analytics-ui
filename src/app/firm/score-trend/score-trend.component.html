@@ -1,5 +1,5 @@
-<div class="ui-g  no-left-padding">
-  <div *ngIf="rightColsCount !== 12" class="ui-g-{{12-rightColsCount}}  no-left-padding pr20">
+<div class="p-grid  no-left-padding">
+  <div *ngIf="rightColsCount !== 12" class="p-col-{{12-rightColsCount}}  no-left-padding pr20">
     <div class="panel-wrapper">
       <div class="pull-left">
         <h4>Health
@@ -55,7 +55,7 @@
 
     </div>
   </div>
-  <div class="ui-g-{{rightColsCount}}  no-left-padding no-right-padding chart-panel">
+  <div class="p-col-{{rightColsCount}}  no-left-padding no-right-padding chart-panel">
     <div class="tabs-panel">
         <span class="tab-button tab-button-first"
               [ngClass]="{'tab-button-selected-first': selectedChart === chartTypes.LEVERAGE }"

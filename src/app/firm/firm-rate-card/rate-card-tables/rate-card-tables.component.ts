@@ -39,7 +39,7 @@ export class RateCardTablesComponent implements OnInit, OnDestroy {
     }
     this.pendingRequestFirm = this.httpService.makeGetRequest('getFirmTopSummary', params).subscribe(
       (data: any) => {
-        this.summary = data.result;
+        this.summary = data.result || {};
         this.processData();
         this.isLoaded = true;
       },

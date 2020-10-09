@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IBenchmarkOverviewRow} from '../model';
 import {BenchmarkService} from '../benchmark.service';
-import {OverlayPanel} from 'primeng';
+import {OverlayPanel} from 'primeng/overlaypanel';
 import {Router} from '@angular/router';
 
 @Component({
