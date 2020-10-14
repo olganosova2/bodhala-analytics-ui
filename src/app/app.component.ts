@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import { Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import { Location } from '@angular/common';
@@ -15,6 +15,8 @@ import { MatDialog } from '@angular/material/dialog';
 import {Keepalive} from '@ng-idle/keepalive';
 import {FiltersService} from './shared/services/filters.service';
 import {CommonService} from './shared/services/common.service';
+import {TopTimekeepersComponent} from './firm/top-timekeepers/top-timekeepers.component';
+import {LeftSideBarComponent} from 'bodhala-ui-elements';
 
 @Component({
   selector: 'bd-root',
@@ -28,6 +30,7 @@ export class AppComponent implements OnDestroy {
   errorMessage: any;
   private saveInterval: any;
   ieVersion: string = '';
+  @ViewChild(LeftSideBarComponent) leftSidenav: TopTimekeepersComponent;
 
   constructor(public router: Router,
               private location: Location,
@@ -45,7 +48,6 @@ export class AppComponent implements OnDestroy {
     if (path === '/launchpad' || path === '') {
       this.router.navigateByUrl('/analytics-ui/analytics.html');
     }
-
     this.appStateService.loadRoutes(config.ROUTES);
     this.filtersService.setCurrentUserFilters();
     this.httpService.callInProgress.subscribe(value => {

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
+import {SAVINGS_CALCULATOR_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {UtilService} from 'bodhala-ui-common';
 export enum SavingMetrics {
   TkLevel = 'TkLevel',
@@ -68,6 +68,7 @@ export interface IMetric {
   minRange?: number;
   classifications?: Array<IClassification>;
   tooltip: string;
+  articleId?: string;
 }
 
 export const pieDonutOptions = {
@@ -144,6 +145,7 @@ export class SavingsCalculatorService {
       result.percentLabel = 'Last Year';
       result.maxRange = 100;
       result.tooltip = 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s acceptable threshold is under 20%.';
+      result.articleId = SAVINGS_CALCULATOR_ARTICLES.BlockBilling;
     }
     if (type === SavingMetrics.Overstaffing) {
       const osRecord = record as IOverstaffingData;
@@ -162,6 +164,7 @@ export class SavingsCalculatorService {
       }
       result.maxRange = 50;
       result.tooltip = 'Bodhala\'s general guideline is to restrict more than 2 timekeepers charging for the same internal meeting.';
+      result.articleId = SAVINGS_CALCULATOR_ARTICLES.Overstaffing;
     }
     return result;
   }
@@ -176,6 +179,7 @@ export class SavingsCalculatorService {
     result.title = 'Rate Increase Prevention';
     result.percentLabel = 'Average for 3 years';
     result.tooltip = 'The typical cost of inflation is around 2-3%. Any increases above this threshold are considered excessive.';
+    result.articleId = SAVINGS_CALCULATOR_ARTICLES.RateIncrease;
     const tkClassificationsProcessed = [];
     for (const key of Object.keys(tkClassifications)) {
       if (key === 'partner' || key === 'associate') {
