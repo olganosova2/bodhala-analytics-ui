@@ -64,15 +64,16 @@ export const END_POINTS_URLS = {
   saveExport: {url: BASE_URL + 'analytics/saveExport', showLoading: true},
   getSavedExports: {url: BASE_URL + 'analytics/getSavedExports', showLoading: true},
   deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
-  reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true}
+  reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true},
+  getTrainingMaterialsArticle: {url: BASE_URL + 'analytics/getTrainingMaterialsArticle', showLoading: false},
 };
 
 export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
-  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: 'analytics-ui/firm/'},
+  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
-  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: 'analytics-ui/practiceArea/'}
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'}
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
@@ -127,7 +128,16 @@ export const SAVINGS_CALCULATOR_CONFIG = {
   detailsDialogConfig : {
     height: '80vh',
     width: '80vw',
+  },
+  helpDialogConfig : {
+    // height: '80vh',
+    width: '900px',
   }
+};
+export const SAVINGS_CALCULATOR_ARTICLES = {
+  BlockBilling: '24000060478',
+  Overstaffing: '24000047547',
+  RateIncrease: '24000060502',
 };
 export const UI_ANNOTATIONS_IDS = {
   executiveSummary: 'ExecutiveSummary'
