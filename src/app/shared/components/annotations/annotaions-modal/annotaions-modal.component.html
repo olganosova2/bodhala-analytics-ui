@@ -13,15 +13,15 @@
       <div class="href-link-primary" (click)="scrollToId(bottomClose)" *ngIf="showToBottom">New+</div>
       <div class="dialog-content mt20">
         <div *ngFor="let note of notes">
-          <div class="ui-g">
-            <div class="ui-g-9">
+          <div class="p-grid">
+            <div class="p-col-9">
               <bd-annotation-labels [note]="note" [isPublicDefault]="isPublicDefault"></bd-annotation-labels>
               <span *ngIf="note.user_id === userService.currentUser.id">
             <mat-checkbox color="primary" [(ngModel)]="note.is_public" (ngModelChange)="setPublic(note)"></mat-checkbox>
             <span class="ml5">Public</span>
           </span>
             </div>
-            <div class="ui-g-3 text-right">
+            <div class="p-col-3 text-right">
           <span class="text-right mb10 mr20" *ngIf="!note.editMode && note.user_id === userService.currentUser.id">
             <div class="dots-image" (clickOutside)="note.dropDownOpened = false"><img src="assets/images/dots.png" (click)="note.dropDownOpened = !note.dropDownOpened"/>
               <div class="dots-dropdown" [ngClass]="{ 'dots-dropdown-opened': note.dropDownOpened}">

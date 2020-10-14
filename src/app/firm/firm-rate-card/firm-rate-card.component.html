@@ -15,7 +15,7 @@
       <em class="icon-arrow-up"  *ngIf="showToTop" (click)="goToTop()"></em>
       <div>
         <div class="pull-left">
-          <div class="ui-g">
+          <div class="p-grid">
             <div class="ui-3 pr20" *ngIf="logoUrl">
               <img [src]="logoUrl" alt="logo"/>
     <!--          <img src="assets/images/aig-logo.png"/>-->
@@ -28,7 +28,7 @@
               <div class="font-bold" *ngIf="otherFirms"><i>Note: Rank and averages are based off firms available as defined by selected Timeframe and Filters.</i></div>
             </div>
           </div>
-    
+
         </div>
         <div class="pull-right">
           <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations>
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
-    
+
       <div class="clear-both"></div>
       <hr/>
       <div *ngFor="let pa of practiceAreas;let i= index" class="mb30 mt40">
@@ -66,11 +66,11 @@
     <div class="rate-card-div" id="comparisonDiv" #comparisonDiv>
       <div>
         <div class="pull-left">
-          <div class="ui-g">
-            <div class="ui-3 pr20" *ngIf="logoUrl">
+          <div class="p-grid">
+            <div class="p-col-3 pr20" *ngIf="logoUrl">
               <img [src]="logoUrl" alt="logo"/>
             </div>
-            <div class="ui-9">
+            <div class="p-col-9">
               <h2>{{commonServ.pageSubtitle}}</h2>
               <div class="font-bold">Report Timeframe: {{startdate}} - {{enddate}}</div>
               <div class="font-bold">Comparison Timeframe: {{formattedComparisonStartDate}} - {{formattedComparisonEndDate}}</div>
@@ -84,7 +84,7 @@
           <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
         </button>
       </div>
-    
+
       <div class="clear-both"></div>
       <hr/>
       <bd-report-card-billing-totals [comparisonStartDate]="comparisonStartDate" [comparisonEndDate]="comparisonEndDate" [reportCardStartDate]="reportCardStartDate" [reportCardEndDate]="reportCardEndDate" [firm]="firm" [reportCard]="false" [isComparison]="true" #comparisonBillingTotals *ngIf="firmId && firm && selectedTabIndex === 1"></bd-report-card-billing-totals>

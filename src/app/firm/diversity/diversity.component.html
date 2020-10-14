@@ -1,9 +1,9 @@
-<div class="ui-g diversity mb5">
-  <div class="ui-g-4 banner">
+<div class="p-grid diversity mb5">
+  <div class="p-col-4 banner">
     <em class="fa fa-users fa-2x mt30 mb10"></em><br/>
     <div class="text-uppercase font-bold">DIVERSITY</div>
   </div>
-  <div class="ui-g-4">
+  <div class="p-col-4">
     <div *ngIf="optionsGender">
       <chart [options]="optionsGender" (load)="saveInstanceGender($event.context)" width="100%"></chart>
       <div chart-key text-center mt5 *ngIf="loaded" style="text-align: center">
@@ -13,7 +13,7 @@
     </div>
 
   </div>
-  <div class="ui-g-4">
+  <div class="p-col-4">
     <div *ngIf="optionsMinority">
       <chart [options]="optionsMinority" (load)="saveInstanceMinority($event.context)" width="100%"></chart>
     </div>

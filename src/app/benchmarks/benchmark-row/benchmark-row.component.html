@@ -1,6 +1,6 @@
-<div class="ui-g full-width bm-table"
+<div class="p-grid full-width bm-table"
      [ngClass]="{'bm-border-bottom': !dataRow.isChild }">
-  <div class="ui-g-2" [ngClass]="{'pl10': !isFirmDetail}">
+  <div class="p-col-2" [ngClass]="{'pl10': !isFirmDetail}">
     <ng-container>
       <span class="pointer-hand mr10" (click)="openGroup(dataRow)" *ngIf="!dataRow.isChild && isFirmDetail">
         <i class="fa fa-chevron-right" *ngIf="!dataRow.isExpanded"></i>
@@ -11,34 +11,34 @@
           [ngClass]="{'pl20': dataRow.isChild, 'text-underline': !dataRow.isChild && !isFirmDetail, 'pointer-hand': !dataRow.isChild}"
           (click)="showFirm()">{{ dataRow?.name}}</span>
   </div>
-  <div class="ui-g-2 text-center">
+  <div class="p-col-2 text-center">
     <span class="status-badge"
           [ngStyle]="{'background-color': bmService.getStatusColor(dataRow)}">{{ dataRow.status }}</span>
   </div>
-  <div class="ui-g-1">
+  <div class="p-col-1">
     <span *ngIf="dataRow?.avg_associate_rate else nulls"> ${{ dataRow?.avg_associate_rate | number:'1.0-0' }} </span>
   </div>
-  <div class="ui-g-1">
+  <div class="p-col-1">
     <span *ngIf="dataRow?.associate_delta else nulls"
           [ngClass]="{'color-red-span': dataRow?.associate_delta < 0, 'color-green-span': dataRow?.associate_delta > 0}">{{ formatDelta(dataRow?.associate_delta) }}</span>
   </div>
-  <div class="ui-g-1">
+  <div class="p-col-1">
     <span *ngIf="dataRow?.avg_partner_rate else nulls"> ${{ dataRow?.avg_partner_rate | number:'1.0-0' }}</span>
   </div>
-  <div class="ui-g-1">
+  <div class="p-col-1">
     <span *ngIf="dataRow?.partner_delta else nulls"
           [ngClass]="{'color-red-span': dataRow?.partner_delta < 0, 'color-green-span': dataRow?.partner_delta > 0}">{{ formatDelta(dataRow?.partner_delta) }}</span>
   </div>
-  <div class="ui-g-1">
+  <div class="p-col-1">
     {{ dataRow?.tier }}
   </div>
-  <div class="ui-g-1">
+  <div class="p-col-1">
     {{ dataRow?.avg_practice_area_discount | number:'1.2-2'  }}%
   </div>
-  <div class="ui-g-1">
+  <div class="p-col-1">
     {{ dataRow?.avg_yoy_rate_increase | number:'1.2-2'  }}%
   </div>
-  <div class="ui-g-1" *ngIf="isFirmDetail && dataRow.peers">
+  <div class="p-col-1" *ngIf="isFirmDetail && dataRow.peers">
     <span class="text-underline pointer-hand"  *ngIf="dataRow.peers.length > 0" (mouseenter)="showPeers($event, op3)" (mouseleave)="showPeers($event, op3)">
       See Firms</span>
   </div>
