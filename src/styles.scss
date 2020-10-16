@@ -505,11 +505,15 @@ h1, h2, h3, h4, h5, h6 {
 .subtitle {
   font-family: 'Sharp Sans';
 }
-.sidebar>.nav>li.active {
-  border-left-color: #2e373c !important;
-  background-color: #fcfcfc;
+.freshedesk_article {
+  p {
+    margin: 0;
+    color: black;
+  }
+  img {
+    max-width:100%;
+  }
 }
-
 .mat-tooltip {
   font-size: 14px !important;
 }
@@ -544,6 +548,7 @@ h1, h2, h3, h4, h5, h6 {
 .p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
   font-size: 14px !important;
 }
+
 
 
 
