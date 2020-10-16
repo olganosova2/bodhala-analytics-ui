@@ -97,6 +97,7 @@ import {AnnotationLabelsComponent} from '../components/annotations/annotation-la
 import {ReportCardBillingTotalsComponent} from '../../firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
 import {SpendTrendChartComponent} from '../../firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import {SafePipe} from '../pipes/safe.pipe';
+import {HelpModalComponent} from '../components/help-modal/help-modal.component';
 
 
 export const IMPORTS = [
@@ -186,7 +187,8 @@ export const DECLARATIONS = [
   AnnotationLabelsComponent,
   SafePipe,
   ReportCardBillingTotalsComponent,
-  SpendTrendChartComponent
+  SpendTrendChartComponent,
+  HelpModalComponent
 ];
 
 export const PROVIDERS = [

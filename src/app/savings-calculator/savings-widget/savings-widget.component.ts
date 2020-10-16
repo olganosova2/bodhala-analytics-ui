@@ -6,8 +6,9 @@ import {CommonService} from '../../shared/services/common.service';
 import {IMetric, pieDonutOptions, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
 import { MatDialog } from '@angular/material/dialog';
 import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
-import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
+import {HELP_MODAL_CONFIG, SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
 import {Subscription} from 'rxjs';
+import {HelpModalComponent} from '../../shared/components/help-modal/help-modal.component';
 
 @Component({
   selector: 'bd-savings-widget',
@@ -78,7 +79,9 @@ export class SavingsWidgetComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getTrainingMaterialsArticle', params).subscribe(
       (data: any) => {
         if (data.result) {
-          const response = data.result;
+          const article = data.result;
+          const modalConfig = {...HELP_MODAL_CONFIG, data: Object.assign([], article)};
+          const dialogRef = this.dialog.open(HelpModalComponent, {...modalConfig });
         }
       },
       err => {

@@ -110,6 +110,7 @@ import {ClickOutsideModule} from 'ng-click-outside';
 import { SpendTrendChartComponent } from './firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import { ReportCardBillingTotalsComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
 import { ReportCardBillingTotalItemComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-total-item/report-card-billing-total-item.component';
+import { HelpModalComponent } from './shared/components/help-modal/help-modal.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -173,13 +174,15 @@ export function initHttp(service: HttpService) {
     AnnotationLabelsComponent,
     SpendTrendChartComponent,
     ReportCardBillingTotalsComponent,
-    ReportCardBillingTotalItemComponent
+    ReportCardBillingTotalItemComponent,
+    HelpModalComponent
   ],
   entryComponents: [
     PillComponent,
     LinkComponent,
     OverstaffingGridComponent,
-    AnnotaionsModalComponent
+    AnnotaionsModalComponent,
+    HelpModalComponent
   ],
   imports: [
     HttpClientModule,

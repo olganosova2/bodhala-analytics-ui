@@ -128,15 +128,15 @@ export const SAVINGS_CALCULATOR_CONFIG = {
   detailsDialogConfig : {
     height: '80vh',
     width: '80vw',
-  },
-  helpDialogConfig : {
-    // height: '80vh',
-    width: '900px',
   }
 };
+export const HELP_MODAL_CONFIG = {
+    height: '100%',
+    width: '900px',
+  };
 export const SAVINGS_CALCULATOR_ARTICLES = {
   BlockBilling: '24000060478',
-  Overstaffing: '24000047547',
+  Overstaffing: '24000060537',
   RateIncrease: '24000060502',
 };
 export const UI_ANNOTATIONS_IDS = {
