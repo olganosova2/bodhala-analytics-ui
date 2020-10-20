@@ -80,7 +80,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
+                  "maximumWarning": "7mb",
                   "maximumError": "10kb"
                 }
               ]
@@ -89,7 +89,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "7mb"
                 }
               ],
               "fileReplacements": [
@@ -103,7 +103,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "7mb"
                 }
               ],
               "fileReplacements": [
@@ -117,7 +117,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "7mb"
                 }
               ],
               "fileReplacements": [

@@ -61,4 +61,17 @@ describe('SavingsWidgetComponent', () => {
     const result = component.formatLabel(123);
     expect(result).toBe('123%');
   });
+  it('should openDetails', () => {
+    component.openDetails();
+    expect(component.dialog).toBeTruthy();
+  });
+  it('should showTooltip', () => {
+    component.showTooltip();
+    expect(component.dialog).toBeTruthy();
+  });
+  it('should onClickedOutside', () => {
+    component.isTooltipOpened = true;
+    component.onClickedOutside(null);
+    expect(component.isTooltipOpened).toBe(false);
+  });
 });
