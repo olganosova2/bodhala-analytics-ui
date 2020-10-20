@@ -46,4 +46,8 @@ describe('ExecutiveSummaryComponent', () => {
   it('should create ExecutiveSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should create loadNotes', () => {
+    component.loadNotes([]);
+    expect(component.notes.length).toBe(0);
+  });
 });
