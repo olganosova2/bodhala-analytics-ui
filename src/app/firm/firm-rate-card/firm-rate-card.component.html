@@ -32,23 +32,32 @@
         </div>
         <div class="pull-right">
           <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations>
-          <button #tooltip="matTooltip" matTooltip="Export this report card to PDF and automatically save for future viewing"  class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export & Save
+          <button #tooltip="matTooltip" matTooltip="Export this report card to PDF and automatically save for future viewing"  class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading">Export & Save
             <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
           </button>
           <button #tooltip="matTooltip" matTooltip="Edit filters for this report" class="primary-button ml20" (click)="editReportCard()">Edit</button>
           <button *ngIf="savedReports.length > 0" #tooltip="matTooltip" matTooltip="View saved reports for {{commonServ.pageSubtitle}}" class="primary-button ml20" (click)="showSavedReports()">Saved</button>
         </div>
       </div>
-      <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
+      <!-- <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div> -->
     
       <div class="clear-both"></div>
       <hr/>
-      <div *ngFor="let pa of practiceAreas;let i= index" class="mb30 mt40">
-        <h4 class="mb10"><span *ngIf="!pa">Overall Spend</span><span *ngIf="pa">{{pa}}</span></h4>
-        <bd-report-card-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
+      <div class="mb30 mt40">
+        <h4 class="mb10"><span>Overall Spend</span></h4>
+        <bd-report-card-billing-totals [firm]="firm" [isReportCard]="true" #billingTotals
                            *ngIf="firmId && firm"></bd-report-card-billing-totals>
-        <bd-rate-card-tables [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
-        <hr id="hrEnd_{{i}}"/>
+        <bd-rate-card-tables [firmId]="firmId"></bd-rate-card-tables>
+        <hr/>
+      </div>
+      <div *ngIf="userService.hasEntitlement('analytics.practice.areas')">
+        <div *ngFor="let pa of practiceAreas;let i= index" class="mb30 mt40">
+          <h4 class="mb10"><span>{{pa}}</span></h4>
+          <bd-report-card-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
+                             *ngIf="firmId && firm && pa"></bd-report-card-billing-totals>
+          <bd-rate-card-tables *ngIf="firmId && firm && pa" [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
+          <hr *ngIf="firmId && firm && pa" id="hrEnd_{{i}}"/>
+        </div>
       </div>
       <div [hidden]="!commonServ.pdfLoading">
         <h4>Annotations</h4>
