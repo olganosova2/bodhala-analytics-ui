@@ -144,7 +144,7 @@ export class SavingsCalculatorService {
       result.title = 'Block Billing';
       result.percentLabel = 'Last Year';
       result.maxRange = 100;
-      result.tooltip = 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s acceptable threshold is under 20%.';
+      result.tooltip = 'Bodhala defines \'block billing\' as a single billing entry greater than 4 hours. This suggests imprecise billing habits by the timekeeper. Reducing the percentage of work that is block billed leads to savings.';
       result.articleId = SAVINGS_CALCULATOR_ARTICLES.BlockBilling;
     }
     if (type === SavingMetrics.Overstaffing) {
@@ -163,7 +163,7 @@ export class SavingsCalculatorService {
         result.details.sort(this.utilService.dynamicSort('-timekeepers'));
       }
       result.maxRange = 50;
-      result.tooltip = 'Bodhala\'s general guideline is to restrict more than 2 timekeepers charging for the same internal meeting.';
+      result.tooltip = 'Bodhala recommends that no more than four (4) timekeepers be allowed to invoice for the same internal law firm meeting. Reducing the staffing at these internal law firms meetings can be a substantial source of savings.';
       result.articleId = SAVINGS_CALCULATOR_ARTICLES.Overstaffing;
     }
     return result;
@@ -178,7 +178,7 @@ export class SavingsCalculatorService {
     result.total = 0; // TODO
     result.title = 'Rate Increase Prevention';
     result.percentLabel = 'Average for 3 years';
-    result.tooltip = 'The typical cost of inflation is around 2-3%. Any increases above this threshold are considered excessive.';
+    result.tooltip = 'Law firms typically increase their rates on an annual basis - often at a rate above the rate of inflation. If these rate increases are limited to or capped at a nominal amount, the savings can really add up.';
     result.articleId = SAVINGS_CALCULATOR_ARTICLES.RateIncrease;
     const tkClassificationsProcessed = [];
     for (const key of Object.keys(tkClassifications)) {
