@@ -4,7 +4,7 @@
     <i class="fa fa-info-circle pointer-hand ml5" (click)="isTooltipOpened = !isTooltipOpened"></i>
     <div class="tooltip-div" [ngClass]="{ 'tooltip-div-open': isTooltipOpened }">
       {{metric.tooltip}}
-      <div *ngIf="metric.articleId">For more info see <a class="href-link-primary pointer-hand" (click)="showTooltip()">this link</a></div>
+      <div *ngIf="metric.articleId">For more info see <a class="href-link-primary pointer-hand" (click)="showTooltip()">this link.</a></div>
     </div>
   </span>
 
