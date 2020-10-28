@@ -356,11 +356,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Sharp Sans Display", sans-serif !important;
 }
 
+.no-padding {
+  padding: 0 !important;
+}
 .no-right-padding {
-  padding-right: 0;
+  padding-right: 0 !important;
 }
 .no-left-padding {
-  padding-left: 0;
+  padding-left: 0 !important;
 }
 // Highcharts legend formatting
 .hc-partner-badge {
@@ -502,13 +505,50 @@ h1, h2, h3, h4, h5, h6 {
 .subtitle {
   font-family: 'Sharp Sans';
 }
-.sidebar>.nav>li.active {
-  border-left-color: #2e373c !important;
-  background-color: #fcfcfc;
+.freshedesk_article {
+  p {
+    margin: 0;
+    color: black;
+  }
+  img {
+    max-width:100%;
+  }
 }
-
 .mat-tooltip {
   font-size: 14px !important;
 }
+.p-panelmenu .p-panelmenu-header > a {
+  padding-left: 10px !important;
+  // letter-spacing: -0.7px;
+}
+.p-panelmenu .p-panelmenu-header > a .p-panelmenu-icon {
+  font-size: 0.8rem !important;
+  margin-right: 5px;
+}
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-panelmenu-icon {
+  font-size: 12px;
+}
+.p-panelmenu .p-panelmenu-header:not(.p-highlight):not(.p-disabled)>a:hover {
+  color: $body-color !important;
+}
+.p-panelmenu .p-panelmenu-header.p-highlight:not(.p-disabled)>a:hover {
+  color: $body-color !important;
+}
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-menuitem-text {
+  letter-spacing: 0.4px;
+  font-weight: 400;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.p-panelmenu .p-panelmenu-content .p-submenu-list:not(.p-panelmenu-root-submenu) {
+  padding-left: 10px !important;
+}
+.p-autocomplete.p-autocomplete-multiple .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+  font-size: 14px !important;
+}
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+  font-size: 14px !important;
+}
+
+
 
 

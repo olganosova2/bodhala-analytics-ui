@@ -80,7 +80,7 @@ import { BenchmarkOverviewComponent } from './benchmarks/benchmark-overview/benc
 import { BenchmarkRowComponent } from './benchmarks/benchmark-row/benchmark-row.component';
 import { BenchmarksGridComponent } from './benchmarks/benchmarks-grid/benchmarks-grid.component';
 import { TwoBarsComponent } from './benchmarks/two-bars/two-bars.component';
-import {OverlayPanelModule} from 'primeng';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
@@ -110,6 +110,7 @@ import {ClickOutsideModule} from 'ng-click-outside';
 import { SpendTrendChartComponent } from './firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import { ReportCardBillingTotalsComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
 import { ReportCardBillingTotalItemComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-total-item/report-card-billing-total-item.component';
+import { HelpModalComponent } from './shared/components/help-modal/help-modal.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -173,13 +174,15 @@ export function initHttp(service: HttpService) {
     AnnotationLabelsComponent,
     SpendTrendChartComponent,
     ReportCardBillingTotalsComponent,
-    ReportCardBillingTotalItemComponent
+    ReportCardBillingTotalItemComponent,
+    HelpModalComponent
   ],
   entryComponents: [
     PillComponent,
     LinkComponent,
     OverstaffingGridComponent,
-    AnnotaionsModalComponent
+    AnnotaionsModalComponent,
+    HelpModalComponent
   ],
   imports: [
     HttpClientModule,

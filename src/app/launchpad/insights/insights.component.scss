@@ -2,13 +2,14 @@
 @import "../../../assets/styles/variables.scss";
 
 .areas-panel{
-  width: 100%;
+  width: 99%;
   display: block;
   display: -webkit-flex;
   display: flex;
   -webkit-flex-direction: row;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: 0 10px;
 }
 .area-box {
   display:inline-block;

@@ -15,6 +15,7 @@ import {EXECUTIVE_SUMMARY} from './mock-data/execitive-summary';
 import {SPEND_BY_UTBMS_CODES} from './mock-data/uybms-codes';
 import {MOCK_TASK_COST} from './mock-data/task-cost';
 import {MOCK_ANNOTATIONS} from './mock-data/annotations';
+import {FRESHDESK_ARTICLE} from './mock-data/freshdesk-article';
 
 export const ngWindow = {
   location: {
@@ -147,6 +148,8 @@ export class DataStub {
         return of(MOCK_TASK_COST);
       case 'getAnnotations':
         return of(MOCK_ANNOTATIONS);
+      case 'getTrainingMaterialsArticle':
+        return of(FRESHDESK_ARTICLE);
       default:
         return of([]);
     }

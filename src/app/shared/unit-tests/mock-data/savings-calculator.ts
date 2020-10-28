@@ -1,4 +1,5 @@
 import {SavingMetrics} from '../../../savings-calculator/savings-calculator.service';
+import {SAVINGS_CALCULATOR_ARTICLES} from '../../services/config';
 
 export const MOCK_METRIC = {
   origPercent: 17,
@@ -9,7 +10,8 @@ export const MOCK_METRIC = {
   maxRange: 100,
   savings: 0,
   details: [],
-  tooltip: 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s aceptable threshold is under 20%.'
+  tooltip: 'Bodhala defines block billing as a single billing entry greater than 4 hours. Bodhala\'s aceptable threshold is under 20%.',
+  articleId: SAVINGS_CALCULATOR_ARTICLES.BlockBilling
 };
 export const SAVINGS_DATA = {
   "result": {

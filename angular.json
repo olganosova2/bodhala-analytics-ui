@@ -37,9 +37,9 @@
             "styles": [
               "node_modules/simple-line-icons/css/simple-line-icons.css",
               "./node_modules/primeicons/primeicons.css",
-              "./node_modules/primeng/resources/themes/nova-light/theme.css",
+              "./node_modules/primeng/resources/themes/nova/theme.css",
               "./node_modules/primeng/resources/primeng.min.css",
-
+              "./node_modules/primeflex/primeflex.css",
               "src/assets/styles/font-awesome.min.css",
               "src/styles.scss",
               {
@@ -80,7 +80,7 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
+                  "maximumWarning": "7mb",
                   "maximumError": "10kb"
                 }
               ]
@@ -89,7 +89,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "7mb"
                 }
               ],
               "fileReplacements": [
@@ -103,7 +103,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "7mb"
                 }
               ],
               "fileReplacements": [
@@ -117,7 +117,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "7mb"
                 }
               ],
               "fileReplacements": [

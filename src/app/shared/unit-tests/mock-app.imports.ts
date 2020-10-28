@@ -70,7 +70,7 @@ import {BenchmarkOverviewComponent} from '../../benchmarks/benchmark-overview/be
 import {BenchmarkRowComponent} from '../../benchmarks/benchmark-row/benchmark-row.component';
 import {BenchmarksGridComponent} from '../../benchmarks/benchmarks-grid/benchmarks-grid.component';
 import {TwoBarsComponent} from '../../benchmarks/two-bars/two-bars.component';
-import {OverlayPanelModule} from 'primeng';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import {IeBannerComponent} from '../components/ie-banner/ie-banner.component';
 import {ErrorMessagesComponent} from '../components/error-messages/error-messages.component';
@@ -97,6 +97,7 @@ import {AnnotationLabelsComponent} from '../components/annotations/annotation-la
 import {ReportCardBillingTotalsComponent} from '../../firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
 import {SpendTrendChartComponent} from '../../firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import {SafePipe} from '../pipes/safe.pipe';
+import {HelpModalComponent} from '../components/help-modal/help-modal.component';
 
 
 export const IMPORTS = [
@@ -186,7 +187,8 @@ export const DECLARATIONS = [
   AnnotationLabelsComponent,
   SafePipe,
   ReportCardBillingTotalsComponent,
-  SpendTrendChartComponent
+  SpendTrendChartComponent,
+  HelpModalComponent
 ];
 
 export const PROVIDERS = [
