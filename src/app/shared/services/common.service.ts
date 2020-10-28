@@ -6,7 +6,11 @@ import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
 import {IUiAnnotation} from '../components/annotations/model';
-
+export interface IClient {
+  bh_client_id: number;
+  org_id: number;
+  org_name: string;
+}
 @Injectable({
   providedIn: 'root'
 })

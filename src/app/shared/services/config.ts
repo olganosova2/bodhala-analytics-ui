@@ -66,6 +66,11 @@ export const END_POINTS_URLS = {
   deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
   reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true},
   getTrainingMaterialsArticle: {url: BASE_URL + 'analytics/getTrainingMaterialsArticle', showLoading: false},
+
+  getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
+  getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},
+  getAdminBenchmark: {url: BASE_URL + 'admin/benchmarking/benchmarks/{id}'}
+
 };
 
 export const ROUTES = [
@@ -73,7 +78,8 @@ export const ROUTES = [
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
-  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'}
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'},
+  {name: 'analytics.benchmarks', routePath: null, fragment: '/benchmarks'}
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];

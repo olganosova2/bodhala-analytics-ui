@@ -32,6 +32,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BodhalaUiCommonModule, HttpService, UserService} from 'bodhala-ui-common';
@@ -111,6 +112,8 @@ import { SpendTrendChartComponent } from './firm/firm-rate-card/spend-trend-char
 import { ReportCardBillingTotalsComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
 import { ReportCardBillingTotalItemComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-total-item/report-card-billing-total-item.component';
 import { HelpModalComponent } from './shared/components/help-modal/help-modal.component';
+import { AdminBenchmarksComponent } from './admin/admin-benchmarks/admin-benchmarks.component';
+import { ClientDropDownComponent } from './shared/components/client-drop-down/client-drop-down.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -175,7 +178,9 @@ export function initHttp(service: HttpService) {
     SpendTrendChartComponent,
     ReportCardBillingTotalsComponent,
     ReportCardBillingTotalItemComponent,
-    HelpModalComponent
+    HelpModalComponent,
+    AdminBenchmarksComponent,
+    ClientDropDownComponent
   ],
   entryComponents: [
     PillComponent,
@@ -216,6 +221,7 @@ export function initHttp(service: HttpService) {
     NgIdleKeepaliveModule.forRoot(),
     MatBadgeModule,
     MatDialogModule,
+    MatAutocompleteModule,
     BodhalaUiCommonModule,
     BodhalaUiElementsModule,
     MatButtonToggleModule,

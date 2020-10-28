@@ -1,0 +1,19 @@
+<div class="content-body-inner-wrapper pl10">
+  <bd-client-drop-down (clientSelected)="selectClient($event)"></bd-client-drop-down>
+
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%;"
+      [ngStyle]="{'height': agGridService.setGridHeight(benchmarks, paginationPageSize) +'px'}"
+      class="ag-theme-alpine"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [sideBar]="sideBarConfig"
+      (displayedColumnsChanged)="saveGridConfig($event)"
+      (sortChanged)="saveGridConfig($event);"
+      (columnResized)="saveGridConfig($event);"
+      [suppressAggFuncInHeader]="true"
+      [gridOptions]="gridOptions"
+      (gridReady)="getBenchmarks()">
+  </ag-grid-angular>
+</div>
