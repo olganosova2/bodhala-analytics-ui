@@ -1,0 +1,8 @@
+<button  mat-flat-button type="button" *ngIf="params.control === 'button'" (click)="navigate(params.inRouterLink)">
+  <em class="icon-pencil" ></em>
+</button>
+<a [routerLink]="[params.inRouterLink, params.value]"  (click)="navigate(params.inRouterLink)" *ngIf="params.control === 'link'">{{params.label}}</a>
+
+
+
+

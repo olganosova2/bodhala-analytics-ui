@@ -1,0 +1,41 @@
+<div class="benchmark-overview">
+  <div class="pull-right"><button class="primary-button secondary-button" (click)="cancel()">Cancel</button></div>
+  <div class="clear-both"></div>
+  <div *ngIf="editMode && editMode === 'add'">
+    <h4>Add a New Benchmark</h4>
+    Find Client
+    <bd-client-drop-down (clientSelected)="selectClient($event)" [selectedClient]="selectedClient"></bd-client-drop-down>
+
+    Select Firm
+    <mat-form-field class="example-full-width">
+      <input type="text" [disabled]="!selectedClient"
+             placeholder="Type to search for a firm; e.g: 'Acme'"
+             aria-label="Number"
+             matInput
+             autocomplete="off"
+             [(ngModel)]="selectedFirm"
+             (input)="filterFirms($event.target.value)"
+             [matAutocomplete]="auto">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayProperty" (optionSelected)="selectFirm($event.option.value)">
+        <mat-option *ngFor="let option of filteredFirms" [value]="option">
+          {{option.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <div class="pull-right mb20">
+      <button class="primary-button secondary-button" (click)="reset()">Reset</button>
+    </div>
+  </div>
+
+  <div class="panel-wrapper" *ngIf="benchmark?.id">
+
+    <div class="p-grid mt20">
+      <p class="p-col-1 table-row">Client</p>
+      <p class="p-col-11 table-row">{{benchmark.client}}</p>
+      <p class="p-col-1 table-row">Year</p>
+      <p class="p-col-11 table-row">{{benchmark.year}}</p>
+      <p class="p-col-1 table-row">Firm</p>
+      <p class="p-col-11 table-row">{{benchmark.firm}}</p>
+    </div>
+  </div>
+</div>

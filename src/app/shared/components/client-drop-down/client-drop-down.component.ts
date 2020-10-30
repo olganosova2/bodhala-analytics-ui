@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 export class ClientDropDownComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   errorMessage: any;
-  selectedClient: IClient;
+  @Input() selectedClient: IClient;
   filteredOptions: Array<IClient> = [];
   clients: Array<IClient> = [];
   @Output() clientSelected: EventEmitter<IClient> = new EventEmitter<IClient>();

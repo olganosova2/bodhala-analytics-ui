@@ -7,6 +7,7 @@ import {Subscription} from 'rxjs';
 import {AG_GRID_NAME, IAdminBenchmark} from './admin-benchmarks-model';
 import {AgGridService} from 'bodhala-ui-elements';
 import {GridOptions} from 'ag-grid-community';
+import {RouterLinkRendererComponent} from '../../shared/components/router-link-renderer/router-link-renderer.component';
 
 @Component({
   selector: 'bd-admin-benchmarks',
@@ -17,7 +18,6 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   errorMessage: any;
   benchmarks: Array<IAdminBenchmark> = [];
-  selectedClient: IClient;
   paginationPageSize: number = 10;
   gridOptions: GridOptions;
   savedState: any;
@@ -52,6 +52,12 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
       {headerName: 'Client', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2},
       {headerName: 'Firm', field: 'firm', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'text',  flex: 2 },
       {headerName: 'Year', field: 'year', ...this.defaultColumn},
+      {headerName: 'Edit', field: 'id', ...this.defaultColumn, cellRendererFramework: RouterLinkRendererComponent,
+        cellRendererParams: {
+          inRouterLink: '/analytics-ui/admin/benchmark-edit/',
+          label: 'Edit',
+          control: 'button'
+        }},
      ];
   }
   loadGrid(): void {
@@ -83,12 +89,12 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
   firmCellRenderer(params: any) {
     return params.node.data.firm + ' (' + params.node.data.firm_id + ')';
   }
-  selectClient(evt: IClient): void {
-    this.selectedClient = Object.assign({}, evt);
-  }
   saveGridConfig(evt: any): void {
     const state = evt;
-   // this.agGridService.saveState(AG_GRID_NAME, this.gridOptions);
+    this.agGridService.saveState(AG_GRID_NAME, this.gridOptions);
+  }
+  addNew() {
+    this.router.navigate(['analytics-ui/admin/benchmark-add']);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

@@ -98,6 +98,8 @@ import {ReportCardBillingTotalsComponent} from '../../firm/firm-rate-card/report
 import {SpendTrendChartComponent} from '../../firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import {SafePipe} from '../pipes/safe.pipe';
 import {HelpModalComponent} from '../components/help-modal/help-modal.component';
+import {AddEditBenchmarkComponent} from '../../admin/admin-benchmarks/add-edit-benchmark/add-edit-benchmark.component';
+import {RouterLinkRendererComponent} from '../components/router-link-renderer/router-link-renderer.component';
 
 
 export const IMPORTS = [
@@ -137,7 +139,7 @@ export const IMPORTS = [
   ChartModule.forRoot(highcharts),
   DropdownModule,
   OverlayPanelModule,
-  AgGridModule.withComponents([]),
+  AgGridModule.withComponents([ RouterLinkRendererComponent ]),
   QuillModule.forRoot()
 ];
 
@@ -188,7 +190,9 @@ export const DECLARATIONS = [
   SafePipe,
   ReportCardBillingTotalsComponent,
   SpendTrendChartComponent,
-  HelpModalComponent
+  HelpModalComponent,
+  AddEditBenchmarkComponent,
+  RouterLinkRendererComponent
 ];
 
 export const PROVIDERS = [

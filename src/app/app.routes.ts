@@ -11,6 +11,7 @@ import {SavingsCalculatorComponent} from './savings-calculator/savings-calculato
 import {TaskCostComponent} from './task-cost/task-cost.component';
 import {AdminBenchmarksComponent} from './admin/admin-benchmarks/admin-benchmarks.component';
 import {AuthService} from './shared/services/auth/auth.service';
+import {AddEditBenchmarkComponent} from './admin/admin-benchmarks/add-edit-benchmark/add-edit-benchmark.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -34,8 +35,10 @@ export const appRouterConfig: Routes = [
   {path: 'savings-calculator', component: SavingsCalculatorComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/task-cost', component: TaskCostComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'task-cost', component: TaskCostComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  // AdminBenchmarksComponent
+  // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/benchmark-edit/:id', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/benchmark-add', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   // {path: 'analytics.html', component: LaunchpadComponent},
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

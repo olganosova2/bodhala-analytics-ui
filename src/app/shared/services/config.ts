@@ -69,7 +69,8 @@ export const END_POINTS_URLS = {
 
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
   getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},
-  getAdminBenchmark: {url: BASE_URL + 'admin/benchmarking/benchmarks/{id}'}
+  getAdminBenchmark: {url: BASE_URL + 'admin/benchmarking/benchmarks/{id}'},
+  getFirmsForBenchmark: {url: BASE_URL + 'getFirmNamesLike', showLoading: false},
 
 };
 
@@ -79,7 +80,7 @@ export const ROUTES = [
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
   {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'},
-  {name: 'analytics.benchmarks', routePath: null, fragment: '/benchmarks'}
+  {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'}
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];

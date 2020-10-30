@@ -114,6 +114,8 @@ import { ReportCardBillingTotalItemComponent } from './firm/firm-rate-card/repor
 import { HelpModalComponent } from './shared/components/help-modal/help-modal.component';
 import { AdminBenchmarksComponent } from './admin/admin-benchmarks/admin-benchmarks.component';
 import { ClientDropDownComponent } from './shared/components/client-drop-down/client-drop-down.component';
+import { RouterLinkRendererComponent } from './shared/components/router-link-renderer/router-link-renderer.component';
+import { AddEditBenchmarkComponent } from './admin/admin-benchmarks/add-edit-benchmark/add-edit-benchmark.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -180,7 +182,9 @@ export function initHttp(service: HttpService) {
     ReportCardBillingTotalItemComponent,
     HelpModalComponent,
     AdminBenchmarksComponent,
-    ClientDropDownComponent
+    ClientDropDownComponent,
+    RouterLinkRendererComponent,
+    AddEditBenchmarkComponent
   ],
   entryComponents: [
     PillComponent,
@@ -232,7 +236,7 @@ export function initHttp(service: HttpService) {
     DropdownModule,
     OverlayPanelModule,
     SliderModule,
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([ RouterLinkRendererComponent ]),
     QuillModule.forRoot(),
     ClickOutsideModule
   ],
