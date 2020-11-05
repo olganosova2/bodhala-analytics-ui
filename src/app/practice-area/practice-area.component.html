@@ -14,7 +14,7 @@
     <div class="mb10">
         <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()">Include Expenses
         </mat-slide-toggle>
-        <bd-practice-area-dropdown></bd-practice-area-dropdown>
+        <bd-practice-area-dropdown [practiceAreaSetting]="practiceAreaSetting"></bd-practice-area-dropdown>
     </div>
 
     <div class="p-grid mt15">

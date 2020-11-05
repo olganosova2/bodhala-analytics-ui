@@ -8,6 +8,7 @@ import {UserService} from 'bodhala-ui-common';
 import {FormsModule} from '@angular/forms';
 import {DropdownModule} from 'primeng/dropdown';
 import {SelectItem} from 'primeng/api';
+import {SelectItemGroup} from 'primeng/api';
 
 @Component({
   selector: 'bd-practice-area-dropdown',
@@ -16,10 +17,14 @@ import {SelectItem} from 'primeng/api';
 })
 export class PracticeAreaDropdownComponent implements OnInit {
   practiceAreasList: any;
+  bodhalaPracticeAreas: any;
+  clientPracticeAreas: any;
+  @Input() practiceAreaSetting: string;
   @Input() clientMatterType: string;
   pendingRequest: Subscription;
   errorMessage: any;
   practiceAreaOptions: SelectItem[];
+  practiceAreaGroupOptions: SelectItemGroup[];
   currentPracticeArea: string;
   dropdownWidth: any = {};
 
@@ -35,6 +40,7 @@ export class PracticeAreaDropdownComponent implements OnInit {
     this.getPracticeAreasList();
     this.route.paramMap.subscribe(params => {
       this.clientMatterType = params.get('client_matter_type');
+      console.log("clientMatterType: ", this.clientMatterType, this.practiceAreaSetting);
     });
   }
 
@@ -46,7 +52,46 @@ export class PracticeAreaDropdownComponent implements OnInit {
         if (!data.result) {
           return;
         }
-        this.practiceAreasList = data.result;
+        this.practiceAreasList = [];
+
+        this.bodhalaPracticeAreas = data.result.bodhala;
+        this.clientPracticeAreas = data.result.clients;
+
+        if (this.practiceAreaSetting === 'Client Practice Areas') {
+          this.practiceAreasList = this.clientPracticeAreas;
+        } else if (this.practiceAreaSetting === 'Bodhala Practice Areas') {
+          this.practiceAreasList = this.bodhalaPracticeAreas;
+        } else if (this.practiceAreaSetting === 'Both') {
+          this.practiceAreaGroupOptions = [];
+          this.practiceAreaGroupOptions = [
+            {
+              label: 'Client Practice Areas',
+              items: []
+            },
+            {
+              label: 'Bodhala Practice Areas',
+              items: []
+            }];
+
+          for (let group of this.practiceAreaGroupOptions) {
+            if (group.label === 'Client Practice Areas') {
+              for (const practiceArea of this.clientPracticeAreas) {
+                group.items.push({label: practiceArea, value: practiceArea});
+                if (practiceArea === this.clientMatterType) {
+                  this.currentPracticeArea = practiceArea;
+                }
+              }
+            } else if (group.label === 'Bodhala Practice Areas') {
+                for (const practiceArea of this.bodhalaPracticeAreas) {
+                  group.items.push({label: practiceArea + ' - Bodhala', value: practiceArea + ' - Bodhala'});
+                  if (practiceArea === this.clientMatterType) {
+                    this.currentPracticeArea = practiceArea + ' - Bodhala';
+                  }
+                }
+            }
+          }
+        }
+
         this.practiceAreaOptions = [];
         const key = 'width';
         for (const practiceArea of this.practiceAreasList) {

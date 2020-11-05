@@ -31,6 +31,8 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   rightColsCount: number = 12;
   pendingRequest: Subscription;
   pendingRequestPracticeArea: Subscription;
+  bodhalaPA: boolean = false;
+  practiceAreaSetting: string;
   @ViewChild(BillingTotalsComponent) billingTotals: BillingTotalsComponent;
   @ViewChild(SpendByMonthComponent) spendByMonth: SpendByMonthComponent;
   @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
@@ -51,17 +53,31 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if ('analytics.practice.bodhala.areas' in this.userService.config) {
+      const userConfigs = Object.values(this.userService.config);
+      for (let config of userConfigs) {
+        if (config.configs[0].description === 'config for analytics practice areas') {
+          this.practiceAreaSetting = config.configs[0].value;
+          break;
+        }
+      }
+    }
+    console.log("this.practiceAreaSetting: ", this.practiceAreaSetting);
+
     this.route.paramMap.subscribe(params => {
       this.clientMatterType = params.get('client_matter_type');
       this.loadPracticeArea();
     });
+    
   }
 
   loadPracticeArea(): void {
-    const params = {client_matter_type: this.clientMatterType};
+    const params = {client_matter_type: this.clientMatterType, bodhalaPAs: this.bodhalaPA};
+    console.log("params: ", params);
     this.pendingRequestPracticeArea = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
+        console.log("PAs: ", practiceAreas);
         if (practiceAreas && practiceAreas.length > 0) {
           for (const pa of practiceAreas) {
             if (pa.client_matter_type === this.clientMatterType) {
