@@ -33,6 +33,7 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   pendingRequestPracticeArea: Subscription;
   bodhalaPA: boolean = false;
   practiceAreaSetting: string;
+  endPoint: string;
   @ViewChild(BillingTotalsComponent) billingTotals: BillingTotalsComponent;
   @ViewChild(SpendByMonthComponent) spendByMonth: SpendByMonthComponent;
   @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
@@ -72,9 +73,16 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   }
 
   loadPracticeArea(): void {
-    const params = {client_matter_type: this.clientMatterType, bodhalaPAs: this.bodhalaPA};
+    let params = {};
     console.log("params: ", params);
-    this.pendingRequestPracticeArea = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
+    if (this.clientMatterType.includes('Bodhala')) {
+      this.endPoint = 'getBodhalaPracticeArea';
+      params = {bodhalaPA: this.clientMatterType};
+    } else {
+      this.endPoint = 'getPracticeArea';
+      params = {client_matter_type: this.clientMatterType};
+    }
+    this.pendingRequestPracticeArea = this.httpService.makeGetRequest(this.endPoint, params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
         console.log("PAs: ", practiceAreas);
