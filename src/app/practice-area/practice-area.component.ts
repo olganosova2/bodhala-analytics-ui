@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild, ɵCompiler_compileModuleSync__POST_R3__} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
@@ -82,6 +82,8 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
       this.endPoint = 'getPracticeArea';
       params = {client_matter_type: this.clientMatterType};
     }
+    console.log("params: ", params);
+    console.log("endpoint: ", this.endPoint);
     this.pendingRequestPracticeArea = this.httpService.makeGetRequest(this.endPoint, params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
