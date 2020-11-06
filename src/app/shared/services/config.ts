@@ -66,11 +66,18 @@ export const END_POINTS_URLS = {
   deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
   reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true},
   getTrainingMaterialsArticle: {url: BASE_URL + 'analytics/getTrainingMaterialsArticle', showLoading: false},
+  getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
+  getPracticeAreas: {url: BASE_URL + 'client/getPracticeAreas', showLoading: true},
+  saveBenchmark: {url: BASE_URL + 'client/benchmarking/saveBenchmark', showLoading: true},
+  saveBenchmarkPAs: {url: BASE_URL + 'client/benchmarking/saveBenchmarkPAs', showLoading: true},
+  getRatesForCategoryAndLawyer:  {url: BASE_URL + 'client/getRatesForCategoryAndLawyer', showLoading: true},
+
 
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
   getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},
   getAdminBenchmark: {url: BASE_URL + 'admin/benchmarking/benchmarks/{id}'},
   getFirmsForBenchmark: {url: BASE_URL + 'getFirmNamesLike', showLoading: false},
+  updateBenchmarkPA: {url: BASE_URL + 'admin/benchmarking/saveBenchmarkPAs', showLoading: true},
 
 };
 
@@ -80,7 +87,8 @@ export const ROUTES = [
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
   {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'},
-  {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'}
+  {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'},
+  {name: 'analytics.benchmarking.setup', routePath: 'analytics-ui/benchmarks-setup', fragment: '/benchmarks-setup'}
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];

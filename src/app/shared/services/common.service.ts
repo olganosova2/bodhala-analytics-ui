@@ -193,4 +193,7 @@ export class CommonService {
     }
     return firstLetter + secondLetter;
   }
+  scrollToId(el: HTMLElement): void {
+    el.scrollIntoView();
+  }
 }

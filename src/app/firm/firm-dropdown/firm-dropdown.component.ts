@@ -33,7 +33,7 @@ export class FirmDropdownComponent implements OnInit {
               public commonServ: CommonService) { }
 
   ngOnInit() {
-    this.getFirmsList();
+    this.getFirmsList()
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
     });

@@ -12,8 +12,8 @@ export class RouterLinkRendererComponent implements AgRendererComponent {
   params: any;
 
   constructor(
-    private ngZone: NgZone,
-    private router: Router) { }
+    public ngZone: NgZone,
+    public router: Router) { }
 
   agInit(params: any): void {
     this.params = params;

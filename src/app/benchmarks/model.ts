@@ -15,7 +15,6 @@ export interface IBenchmarkRate {
   mid_partner: IBenchmarkMetrics;
   senior_partner: IBenchmarkMetrics;
 }
-
 export interface IBenchmark {
   id: number;
   year?: string;
@@ -26,7 +25,8 @@ export interface IBenchmark {
   rates: IBenchmarkRate;
 }
 export interface IRowBenchmark {
-  benchmark_id: number;
+  id?: number;
+  benchmark_id?: number;
   year: string;
   firm_id: number;
   firm_name: string;

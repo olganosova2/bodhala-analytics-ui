@@ -1,5 +1,8 @@
 <div class="benchmark-overview">
-  <div class="pull-right"><button class="primary-button secondary-button" (click)="cancel()">Cancel</button></div>
+  <div class="pull-right">
+    <button class="primary-button secondary-button mr5" (click)="cancel()">Cancel</button>
+    <button class="primary-button" (click)="save()">Save</button>
+  </div>
   <div class="clear-both"></div>
   <div *ngIf="editMode && editMode === 'add'">
     <h4>Add a New Benchmark</h4>
@@ -27,9 +30,9 @@
     </div>
   </div>
 
-  <div class="panel-wrapper" *ngIf="benchmark?.id">
+  <div class="pr10" *ngIf="benchmark?.id">
 
-    <div class="p-grid mt20">
+    <div class="panel-wrapper p-grid mt20 ml10 mr20">
       <p class="p-col-1 table-row">Client</p>
       <p class="p-col-11 table-row">{{benchmark.client}}</p>
       <p class="p-col-1 table-row">Year</p>
@@ -37,5 +40,12 @@
       <p class="p-col-1 table-row">Firm</p>
       <p class="p-col-11 table-row">{{benchmark.firm}}</p>
     </div>
+
+    <div class="p-grid mt20 ml5" *ngIf="benchmark">
+      <div class="p-col-6" *ngFor="let pa of benchmark?.practice_areas">
+        <bd-edit-benchmark-rate [rates]="pa.rates" [name]="pa.name"></bd-edit-benchmark-rate>
+      </div>
+    </div>
   </div>
+
 </div>

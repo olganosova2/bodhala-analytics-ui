@@ -52,7 +52,7 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
       {headerName: 'Client', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2},
       {headerName: 'Firm', field: 'firm', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'text',  flex: 2 },
       {headerName: 'Year', field: 'year', ...this.defaultColumn},
-      {headerName: 'Edit', field: 'id', ...this.defaultColumn, cellRendererFramework: RouterLinkRendererComponent,
+      {headerName: 'View', field: 'id', ...this.defaultColumn, cellRendererFramework: RouterLinkRendererComponent,
         cellRendererParams: {
           inRouterLink: '/analytics-ui/admin/benchmark-edit/',
           label: 'Edit',

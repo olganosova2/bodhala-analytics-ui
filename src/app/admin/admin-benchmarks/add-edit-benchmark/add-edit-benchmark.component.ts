@@ -40,7 +40,9 @@ export class AddEditBenchmarkComponent implements OnInit, OnDestroy {
       if (this.benchmarkId) {
         this.editMode = 'edit';
         this.loadBenchmark();
+        this.commonServ.pageSubtitle = 'Edit Benchmark';
       } else {
+        this.commonServ.pageSubtitle = 'Add Benchmark';
         this.editMode = 'add';
         this.createNew();
       }
@@ -112,6 +114,21 @@ export class AddEditBenchmarkComponent implements OnInit, OnDestroy {
   }
   cancel(): void {
     this.router.navigate(['analytics-ui/admin/benchmarks']);
+  }
+  save(): void {
+    for (const pa of this.benchmark.practice_areas) {
+      this.savePA(pa);
+    }
+    this.router.navigate(['analytics-ui/admin/benchmarks']);
+  }
+  savePA(pa: IBenchmarkPracticeArea): void {
+    this.httpService.makePostRequest('updateBenchmarkPA', pa).subscribe(
+      (data: any) => {
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

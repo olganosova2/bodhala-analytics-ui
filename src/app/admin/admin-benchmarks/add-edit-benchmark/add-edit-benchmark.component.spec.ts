@@ -6,7 +6,6 @@ import {AdminBenchmarksComponent} from '../admin-benchmarks.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
-import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 
 describe('AddEditBenchmarkComponent', () => {
@@ -28,7 +27,7 @@ describe('AddEditBenchmarkComponent', () => {
         providers: [
           AppStateService,
           { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+          { provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

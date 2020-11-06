@@ -3,18 +3,22 @@ import {IBenchmark, IBenchmarkMetrics, IBenchmarkOverviewRow, IBenchmarkRate, IR
 import {of, throwError} from 'rxjs';
 import {TOP_MATTERS} from '../shared/unit-tests/mock-data/top-matters';
 import {TOP_FIRMS} from '../shared/unit-tests/mock-data/top-firms';
-export enum BM_COLORS  {
+import {IBenchmarkSetupFormatted} from '../benchmarking-setup/benchmarking-setup-model';
+
+export enum BM_COLORS {
   Poor = '#FE3F56',
   Fair = '#FFC327',
   Excellent = '#3EDB73',
   Default = '#E9F1F4'
 }
+export const RATE_TABLE_HEADERS = ['', 'Client Rate', 'Low', 'High', 'Street', 'Practice Area Discount %', 'Y.O.Y. Price Increase %'];
 @Injectable({
   providedIn: 'root'
 })
 export class BenchmarkService {
   highestBarAvg: number;
   showChart: boolean = true;
+
   constructor() {
   }
 
@@ -37,6 +41,7 @@ export class BenchmarkService {
     }
     return result;
   }
+
   formatChildRates(parent: IBenchmarkOverviewRow, rates: IBenchmarkRate): Array<IBenchmarkOverviewRow> {
     let result = [];
     const associateArray = [];
@@ -84,6 +89,7 @@ export class BenchmarkService {
     result = [...associateArray, ...partnerArray];
     return result;
   }
+
   calculateAverages(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
     if (!rates) {
       return;
@@ -113,6 +119,7 @@ export class BenchmarkService {
       this.highestBarAvg = highestRow;
     }
   }
+
   processAssociate(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
     if (row.nonEmptyAssociate === 0) {
       row.avg_associate_rate = 0;
@@ -122,9 +129,10 @@ export class BenchmarkService {
     row.avg_associate_rate = (rates.junior_associate.client_rate + rates.mid_associate.client_rate + rates.senior_associate.client_rate) / row.nonEmptyAssociate;
     const highAssociate = (rates.junior_associate.high + rates.mid_associate.high + rates.senior_associate.high) / row.nonEmptyAssociate;
     const lowAssociate = (rates.junior_associate.low + rates.mid_associate.low + rates.senior_associate.low) / row.nonEmptyAssociate;
-    const medianAssociate = (lowAssociate + highAssociate ) / 2 || 1;
+    const medianAssociate = (lowAssociate + highAssociate) / 2 || 1;
     row.associate_delta = 100 - (row.avg_associate_rate * 100 / medianAssociate);
   }
+
   processPartner(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
     if (row.nonEmptyPartner === 0) {
       row.avg_partner_rate = 0;
@@ -135,8 +143,9 @@ export class BenchmarkService {
     const highPartner = (rates.junior_partner.high + rates.mid_partner.high + rates.senior_partner.high) / row.nonEmptyPartner;
     const lowPartner = (rates.junior_partner.low + rates.mid_partner.low + rates.senior_partner.low) / row.nonEmptyPartner;
     const medianPartner = (lowPartner + highPartner) / 2 || 1;
-    row.partner_delta = 100 - (row.avg_partner_rate * 100  / medianPartner);
+    row.partner_delta = 100 - (row.avg_partner_rate * 100 / medianPartner);
   }
+
   cleanUpData(records: Array<IRowBenchmark>): Array<IRowBenchmark> {
     const result = [];
     for (const rec of records) {
@@ -155,6 +164,7 @@ export class BenchmarkService {
     }
     return result;
   }
+
   handleMissingRates(row: IBenchmarkOverviewRow, rates: IBenchmarkRate): void {
     let missingAssociateRates = 0;
     let missingPartnerRates = 0;
@@ -178,13 +188,14 @@ export class BenchmarkService {
       this.cleanUpRate('mid_partner', rates);
       missingPartnerRates++;
     }
-    if (!rates.senior_partner  || !rates.senior_partner.client_rate) {
+    if (!rates.senior_partner || !rates.senior_partner.client_rate) {
       this.cleanUpRate('senior_partner', rates);
       missingPartnerRates++;
     }
     row.nonEmptyAssociate = 3 - missingAssociateRates;
     row.nonEmptyPartner = 3 - missingPartnerRates;
   }
+
   cleanUpRate(propName: string, rates: IBenchmarkRate): void {
     rates[propName] = {} as IBenchmarkMetrics;
     rates[propName].client_rate = 0;
@@ -194,9 +205,11 @@ export class BenchmarkService {
     rates[propName].yoy_rate_increase = 0;
     rates[propName].street = 0;
   }
+
   getEmptyRate(): IBenchmarkMetrics {
-    return { client_rate: 0, high: 0, low: 0,  practice_area_discount: 0, yoy_rate_increase: 0, street: 0 };
+    return {client_rate: 0, high: 0, low: 0, practice_area_discount: 0, yoy_rate_increase: 0, street: 0};
   }
+
   getRateName(key: string): string {
     let result = '';
     switch (key) {
@@ -219,10 +232,38 @@ export class BenchmarkService {
         result = 'Sr. Partner';
         break;
       default:
-        return  '';
+        return '';
     }
     return result;
   }
+
+  mapTKsLevels(key: string): Array<string> {
+    let result = [];
+    switch (key) {
+      case 'junior_associate':
+        result = ['Associate - 1st Year', 'Associate - 2nd Year', 'Associate - 3rd Year'];
+        break;
+      case 'junior_partner':
+        result = ['Partner Tier 1', 'Partner Tier 2', 'Partner Tier 3', 'Partner Tier 4', 'Partner Tier 5', 'Partner Tier 6'];
+        break;
+      case 'mid_associate':
+        result = ['Associate - 4th Year', 'Associate - 5th Year', 'Associate - 6th Year'];
+        break;
+      case 'mid_partner':
+        result = ['Partner Tier 7', 'Partner Tier 8', 'Partner Tier 9', 'Partner Tier 10', 'Partner Tier 11', 'Partner Tier 12'];
+        break;
+      case 'senior_associate':
+        result = ['Associate - 7th Year', 'Associate - 8th Year', 'Associate - 9th Year', 'Associate - 10+ Year'];
+        break;
+      case 'senior_partner':
+        result = ['Partner Tier 13', 'Partner Tier 14', 'Partner Tier 15', 'Partner Tier 16', 'Partner Tier 17', 'Partner Tier 18', 'Partner Tier 19', 'Partner Tier 20'];
+        break;
+      default:
+        return [];
+    }
+    return result;
+  }
+
   getRateStatusRate(rate: IBenchmarkMetrics): string {
     let result = '-';
     const median = (rate.low + rate.high) / 2;
@@ -235,6 +276,7 @@ export class BenchmarkService {
     }
     return result;
   }
+
   getAvgBarColor(bar: string, row: IBenchmarkOverviewRow): string {
     let result = BM_COLORS.Default;
     const rates = row.rates;
@@ -258,6 +300,7 @@ export class BenchmarkService {
     }
     return result;
   }
+
   getStatusColor(row: IBenchmarkOverviewRow): string {
     let result = '#cccccc;';
     switch (row.status) {
@@ -276,17 +319,19 @@ export class BenchmarkService {
     }
     return result;
   }
+
   getYears(benchmarks: Array<IRowBenchmark>): Array<any> {
     const records = Object.assign([], benchmarks);
     const years = [];
     for (const bm of records) {
       const dupe = years.find(r => r.value === bm.year);
       if (!dupe) {
-        years.push({ value: bm.year, label: bm.year});
+        years.push({value: bm.year, label: bm.year});
       }
     }
     return years;
   }
+
   mapColorToStatus(color: string): RateStatuses {
     let result = RateStatuses.Fair;
     switch (color) {
@@ -301,5 +346,56 @@ export class BenchmarkService {
         break;
     }
     return result;
+  }
+  formatBenchmarksForSetup(benchmarks: Array<IRowBenchmark>, year: string): Array<IBenchmarkSetupFormatted> {
+    const result = [];
+    const selected = benchmarks.filter(e => e.year.toString() === year);
+    for (const bm of selected) {
+      const found = result.find(f => f.firmId === bm.firm_id);
+      if (!found) {
+        const newRow = {firmId: bm.firm_id, firm_name: bm.firm_name, practice_areas: [bm.name]};
+        result.push(newRow);
+      } else {
+        found.practice_areas.push(bm.name);
+      }
+
+    }
+    return result;
+  }
+
+  createBenchmarkMetrics(): IBenchmarkMetrics {
+    return {client_rate: null, high: null, low: null, practice_area_discount: null, street: null, yoy_rate_increase: null};
+  }
+  mapTier(groupId: number): string {
+    let result = '';
+    switch (groupId) {
+      case 1:
+        result = '$$$$';
+        break;
+      case 2:
+        result = '$$$';
+        break;
+      case 3:
+        result = '$$';
+        break;
+      case 4:
+        result = '$';
+        break;
+      default:
+        result = '';
+        break;
+    }
+    return result;
+  }
+
+  createBenchmarkRates(): IBenchmarkRate {
+    return {
+      junior_associate: this.createBenchmarkMetrics(),
+      mid_associate: this.createBenchmarkMetrics(),
+      senior_associate: this.createBenchmarkMetrics(),
+      junior_partner: this.createBenchmarkMetrics(),
+      mid_partner: this.createBenchmarkMetrics(),
+      senior_partner: this.createBenchmarkMetrics()
+    };
   }
 }

@@ -1,16 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AdminBenchmarksComponent } from './admin-benchmarks.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
+import { EditBenchmarkRateComponent } from './edit-benchmark-rate.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
+import {AdminBenchmarksComponent} from '../admin-benchmarks.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import * as mockServices from '../../shared/unit-tests/mock-services';
-import {FiltersService} from '../../shared/services/filters.service';
+import * as mockServices from '../../../shared/unit-tests/mock-services';
+import {FiltersService} from '../../../shared/services/filters.service';
 
-describe('AdminBenchmarksComponent', () => {
-  let component: AdminBenchmarksComponent;
-  let fixture: ComponentFixture<AdminBenchmarksComponent>;
+describe('EditBenchmarkRateComponent', () => {
+  let component: EditBenchmarkRateComponent;
+  let fixture: ComponentFixture<EditBenchmarkRateComponent>;
+
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
@@ -21,7 +22,7 @@ describe('AdminBenchmarksComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(AdminBenchmarksComponent, {
+    }).overrideComponent(EditBenchmarkRateComponent, {
       set: {
         providers: [
           AppStateService,
@@ -37,12 +38,12 @@ describe('AdminBenchmarksComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminBenchmarksComponent);
+    fixture = TestBed.createComponent(EditBenchmarkRateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create AdminBenchmarksComponent', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

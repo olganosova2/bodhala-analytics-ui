@@ -641,4 +641,33 @@ export const MOCK_BM_ROW = {
   nonEmptyPartner: 3,
   highestChildrenRate: 600
 };
+export const MOCK_FIRMS_WITH_GROUP_ID = {
+  "result": [{
+    "firm_name": "Katten Muchin Rosenman",
+    "bh_lawfirm_id": 62,
+    "group_id": 2,
+    "total_billed": 577328.6
+  }, {
+    "firm_name": "Holland & Knight",
+    "bh_lawfirm_id": 52,
+    "group_id": 4,
+    "total_billed": 134916.1
+  }, {
+    "firm_name": "Drinker Biddle & Reath",
+    "bh_lawfirm_id": 73,
+    "group_id": 2,
+    "total_billed": 87388.5
+  }, {
+    "firm_name": "Cozen O'Connor",
+    "bh_lawfirm_id": 198,
+    "group_id": 3,
+    "total_billed": 42573.25
+  }, {
+    "firm_name": "Winstead PC",
+    "bh_lawfirm_id": 158,
+    "group_id": 3,
+    "total_billed": 585
+  }],
+  "error": null
+};
 

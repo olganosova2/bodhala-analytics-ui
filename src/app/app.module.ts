@@ -50,6 +50,7 @@ import {RouterModule} from '@angular/router';
 import {appRouterConfig} from './app.routes';
 import { InjectionToken } from '@angular/core';
 import { QuillModule } from 'ngx-quill';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 
 import {SliderModule} from 'primeng/slider';
@@ -116,6 +117,9 @@ import { AdminBenchmarksComponent } from './admin/admin-benchmarks/admin-benchma
 import { ClientDropDownComponent } from './shared/components/client-drop-down/client-drop-down.component';
 import { RouterLinkRendererComponent } from './shared/components/router-link-renderer/router-link-renderer.component';
 import { AddEditBenchmarkComponent } from './admin/admin-benchmarks/add-edit-benchmark/add-edit-benchmark.component';
+import { BenchmarkingSetupComponent } from './benchmarking-setup/benchmarking-setup.component';
+import { EditBenchmarkRateComponent } from './admin/admin-benchmarks/edit-benchmark-rate/edit-benchmark-rate.component';
+import { ObjectKeysPipe } from './shared/pipes/object-keys.pipe';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -184,7 +188,10 @@ export function initHttp(service: HttpService) {
     AdminBenchmarksComponent,
     ClientDropDownComponent,
     RouterLinkRendererComponent,
-    AddEditBenchmarkComponent
+    AddEditBenchmarkComponent,
+    BenchmarkingSetupComponent,
+    EditBenchmarkRateComponent,
+    ObjectKeysPipe
   ],
   entryComponents: [
     PillComponent,
@@ -238,7 +245,8 @@ export function initHttp(service: HttpService) {
     SliderModule,
     AgGridModule.withComponents([ RouterLinkRendererComponent ]),
     QuillModule.forRoot(),
-    ClickOutsideModule
+    ClickOutsideModule,
+    MultiSelectModule
   ],
   providers: [CookieService,
     UserService,
