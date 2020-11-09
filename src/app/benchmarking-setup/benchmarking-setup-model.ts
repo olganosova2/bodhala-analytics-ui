@@ -1,4 +1,5 @@
 import {IBenchmarkRate} from '../benchmarks/model';
+import {IMetric} from '../savings-calculator/savings-calculator.service';
 
 export interface IFirmWithGroupId {
   firm_name: string;
@@ -9,6 +10,7 @@ export interface IFirmWithGroupId {
 export interface IBMPracticeArea {
   name: string;
   hasRates: boolean;
+  rates?: IBenchmarkRate;
 }
 export interface IBenchmarkSetup {
   benchmark_id?: number;
@@ -23,5 +25,15 @@ export interface IBenchmarkSetupFormatted {
   firmId: number;
   firm_name?: string;
   practice_areas: Array<string>;
+}
+export interface ICollectionRates {
+  collection_id: number;
+  title: string;
+  collection_category_id: number;
+  display_name: string;
+  bh_classification_detail: string;
+  year: number;
+  current_standard_rate: number;
+  practice_area_discount_pct: number;
 }
 

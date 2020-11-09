@@ -118,6 +118,7 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     this.loadDataForYear();
   }
   selectFirm(evt: any): void {
+    this.selectedPAs = [];
     this.benchmark.firm_name = this.getFirmName(this.benchmark.firm_id);
     this.benchmark.tier = this.benchmarkServ.mapTier(this.getGroupId(this.benchmark.firm_id));
     const founds = this.allBenchmarks.filter(e => e.firm_id === this.benchmark.firm_id && e.year.toString() === this.selectedYear) || [];
@@ -136,7 +137,9 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   selectPracticeArea(evt: any): void {
     const found = this.benchmark.practice_areas.find(e => e.name === evt.itemValue);
     if (!found) {
-      this.benchmark.practice_areas.push({ name: evt.itemValue, hasRates: this.checkRate(evt.itemValue)});
+      const pa = { name: evt.itemValue, hasRates: false, rates: {} };
+      this.benchmark.practice_areas.push(pa);
+      this.checkRate(pa);
     } else {
       const ix = this.benchmark.practice_areas.indexOf(found);
       this.benchmark.practice_areas.splice(ix, 1);
@@ -162,11 +165,13 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
       practice_areas: []
     };
   }
-  checkRate(paName: string): boolean {
-    const params = {clientId: this.userService.currentUser.client_info_id, firmId: this.benchmark.firm_id, pa: paName, year: Number(this.selectedYear)};
+  checkRate(newPa: IBMPracticeArea): boolean {
+    const params = {clientId: this.userService.currentUser.client_info_id, firmId: this.benchmark.firm_id, pa: newPa.name, year: Number(this.selectedYear)};
     this.pendingRequestRates = this.httpService.makeGetRequest('getRatesForCategoryAndLawyer', params).subscribe(
       (data: any) => {
-        const rates = data.result || [];
+        const records = data.result || [];
+        newPa.hasRates = records.length && records.length > 0;
+        newPa.rates = Object.assign({}, this.benchmarkServ.processCollectionRates(records));
       },
       err => {
         this.errorMessage = err;
@@ -231,19 +236,19 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
       practiceAreas.push(this.packagePA(pa));
     }
     const params = { firm_id: this.benchmark.firm_id, id: null, client_id: this.userService.currentUser.client_info_id, year: this.selectedYear, practice_areas: practiceAreas};
-    this.httpService.makePostRequest('saveBenchmark', params).subscribe(
-      (data: any) => {
-        const bm = data.result;
-        this.reset();
-        this.getBenchmarks();
-      },
-      err => {
-        this.errorMessage = err;
-      }
-    );
+    // this.httpService.makePostRequest('saveBenchmark', params).subscribe(
+    //   (data: any) => {
+    //     const bm = data.result;
+    //     this.reset();
+    //     this.getBenchmarks();
+    //   },
+    //   err => {
+    //     this.errorMessage = err;
+    //   }
+    // );
   }
   packagePA(pa: IBMPracticeArea): any {
-    return { benchmark_id: this.benchmark.benchmark_id, id: null, name: pa.name, peers: [], tier: '$$$', rates: this.benchmarkServ.createBenchmarkRates() };
+    return { benchmark_id: this.benchmark.benchmark_id, id: null, name: pa.name, peers: [], tier: '$$$', rates: this.benchmarkServ.createBenchmarkRates(pa) };
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

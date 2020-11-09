@@ -3,7 +3,7 @@ import {IBenchmark, IBenchmarkMetrics, IBenchmarkOverviewRow, IBenchmarkRate, IR
 import {of, throwError} from 'rxjs';
 import {TOP_MATTERS} from '../shared/unit-tests/mock-data/top-matters';
 import {TOP_FIRMS} from '../shared/unit-tests/mock-data/top-firms';
-import {IBenchmarkSetupFormatted} from '../benchmarking-setup/benchmarking-setup-model';
+import {IBenchmarkSetupFormatted, IBMPracticeArea, ICollectionRates} from '../benchmarking-setup/benchmarking-setup-model';
 
 export enum BM_COLORS {
   Poor = '#FE3F56',
@@ -11,6 +11,38 @@ export enum BM_COLORS {
   Excellent = '#3EDB73',
   Default = '#E9F1F4'
 }
+export const TK_LEVELS_MAP = {
+  'Associate - 1st Year': 'junior_associate',
+  'Associate - 2nd Year': 'junior_associate',
+  'Associate - 3rd Year': 'junior_associate',
+  'Associate - 4th Year': 'mid_associate',
+  'Associate - 5th Year': 'mid_associate',
+  'Associate - 6th Year': 'mid_associate',
+  'Associate - 7th Year': 'senior_associate',
+  'Associate - 8th Year': 'senior_associate',
+  'Associate - 9th Year': 'senior_associate',
+  'Associate - 10+ Year': 'senior_associate',
+  'Partner Tier 1': 'junior_partner',
+  'Partner Tier 2': 'junior_partner',
+  'Partner Tier 3': 'junior_partner',
+  'Partner Tier 4': 'junior_partner',
+  'Partner Tier 5': 'junior_partner',
+  'Partner Tier 6': 'junior_partner',
+  'Partner Tier 7': 'mid_partner',
+  'Partner Tier 8': 'mid_partner',
+  'Partner Tier 9': 'mid_partner',
+  'Partner Tier 10': 'mid_partner',
+  'Partner Tier 11': 'mid_partner',
+  'Partner Tier 12': 'mid_partner',
+  'Partner Tier 13': 'senior_partner',
+  'Partner Tier 14': 'senior_partner',
+  'Partner Tier 15': 'senior_partner',
+  'Partner Tier 16': 'senior_partner',
+  'Partner Tier 17': 'senior_partner',
+  'Partner Tier 18': 'senior_partner',
+  'Partner Tier 19': 'senior_partner',
+  'Partner Tier 20': 'senior_partner'
+};
 export const RATE_TABLE_HEADERS = ['', 'Client Rate', 'Low', 'High', 'Street', 'Practice Area Discount %', 'Y.O.Y. Price Increase %'];
 @Injectable({
   providedIn: 'root'
@@ -237,32 +269,7 @@ export class BenchmarkService {
     return result;
   }
 
-  mapTKsLevels(key: string): Array<string> {
-    let result = [];
-    switch (key) {
-      case 'junior_associate':
-        result = ['Associate - 1st Year', 'Associate - 2nd Year', 'Associate - 3rd Year'];
-        break;
-      case 'junior_partner':
-        result = ['Partner Tier 1', 'Partner Tier 2', 'Partner Tier 3', 'Partner Tier 4', 'Partner Tier 5', 'Partner Tier 6'];
-        break;
-      case 'mid_associate':
-        result = ['Associate - 4th Year', 'Associate - 5th Year', 'Associate - 6th Year'];
-        break;
-      case 'mid_partner':
-        result = ['Partner Tier 7', 'Partner Tier 8', 'Partner Tier 9', 'Partner Tier 10', 'Partner Tier 11', 'Partner Tier 12'];
-        break;
-      case 'senior_associate':
-        result = ['Associate - 7th Year', 'Associate - 8th Year', 'Associate - 9th Year', 'Associate - 10+ Year'];
-        break;
-      case 'senior_partner':
-        result = ['Partner Tier 13', 'Partner Tier 14', 'Partner Tier 15', 'Partner Tier 16', 'Partner Tier 17', 'Partner Tier 18', 'Partner Tier 19', 'Partner Tier 20'];
-        break;
-      default:
-        return [];
-    }
-    return result;
-  }
+
 
   getRateStatusRate(rate: IBenchmarkMetrics): string {
     let result = '-';
@@ -388,8 +395,8 @@ export class BenchmarkService {
     return result;
   }
 
-  createBenchmarkRates(): IBenchmarkRate {
-    return {
+  createBenchmarkRates(pa: IBMPracticeArea): IBenchmarkRate {
+    const rate = {
       junior_associate: this.createBenchmarkMetrics(),
       mid_associate: this.createBenchmarkMetrics(),
       senior_associate: this.createBenchmarkMetrics(),
@@ -397,5 +404,33 @@ export class BenchmarkService {
       mid_partner: this.createBenchmarkMetrics(),
       senior_partner: this.createBenchmarkMetrics()
     };
+    for (const k in rate) {
+      if (pa.rates[k]) {
+        const current = pa.rates[k];
+        const count = current.count || 1;
+        rate[k].client_rate = current.sum / count;
+      }
+    }
+    return rate;
+  }
+  processCollectionRates(rates: Array<ICollectionRates>): any {
+    const formatted = {
+      junior_associate: {sum: 0, count: 0},
+      mid_associate: {sum: 0, count: 0},
+      senior_associate: {sum: 0, count: 0},
+      junior_partner: {sum: 0, count: 0},
+      mid_partner: {sum: 0, count: 0},
+      senior_partner: {sum: 0, count: 0},
+    }
+    for (const rate of rates) {
+      if (!rate.current_standard_rate || !TK_LEVELS_MAP[rate.bh_classification_detail]) {
+        continue;
+      }
+      const discPercent = rate.practice_area_discount_pct || 0;
+      const calcRate = rate.current_standard_rate / 100 * (100 - discPercent);
+      formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].sum += calcRate;
+      formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].count ++;
+    }
+    return formatted;
   }
 }

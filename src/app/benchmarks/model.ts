@@ -8,12 +8,12 @@ export interface IBenchmarkMetrics {
 }
 
 export interface IBenchmarkRate {
-  junior_associate: IBenchmarkMetrics;
-  mid_associate: IBenchmarkMetrics;
-  senior_associate: IBenchmarkMetrics;
-  junior_partner: IBenchmarkMetrics;
-  mid_partner: IBenchmarkMetrics;
-  senior_partner: IBenchmarkMetrics;
+  junior_associate?: IBenchmarkMetrics;
+  mid_associate?: IBenchmarkMetrics;
+  senior_associate?: IBenchmarkMetrics;
+  junior_partner?: IBenchmarkMetrics;
+  mid_partner?: IBenchmarkMetrics;
+  senior_partner?: IBenchmarkMetrics;
 }
 export interface IBenchmark {
   id: number;
