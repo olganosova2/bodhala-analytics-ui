@@ -40,7 +40,6 @@ export class PracticeAreaDropdownComponent implements OnInit {
     this.getPracticeAreasList();
     this.route.paramMap.subscribe(params => {
       this.clientMatterType = params.get('client_matter_type');
-      console.log("clientMatterType: ", this.clientMatterType, this.practiceAreaSetting);
     });
   }
 
@@ -57,37 +56,46 @@ export class PracticeAreaDropdownComponent implements OnInit {
         this.bodhalaPracticeAreas = data.result.bodhala;
         this.clientPracticeAreas = data.result.clients;
 
-        if (this.practiceAreaSetting === 'Client Practice Areas') {
+        if (this.practiceAreaSetting === 'Client Practice Areas' || this.practiceAreaSetting === undefined || this.practiceAreaSetting === null) {
           this.practiceAreasList = this.clientPracticeAreas;
         } else if (this.practiceAreaSetting === 'Bodhala Practice Areas') {
-          this.practiceAreasList = this.bodhalaPracticeAreas;
+
+          let newList = [];
+          for (let practiceArea of this.bodhalaPracticeAreas) {
+            practiceArea = practiceArea + ' - Bodhala';
+            newList.push(practiceArea);
+          }
+          this.practiceAreasList = newList;
+
         } else if (this.practiceAreaSetting === 'Both') {
           this.practiceAreaGroupOptions = [];
           this.practiceAreaGroupOptions = [
             {
-              label: 'Client Practice Areas',
+              label: 'Bodhala Practice Areas',
               items: []
             },
             {
-              label: 'Bodhala Practice Areas',
+              label: 'Client Practice Areas',
               items: []
-            }];
+            }
+          ];
 
           for (let group of this.practiceAreaGroupOptions) {
-            if (group.label === 'Client Practice Areas') {
+            if (group.label === 'Bodhala Practice Areas') {
+              for (const practiceArea of this.bodhalaPracticeAreas) {
+                group.items.push({label: practiceArea + ' - Bodhala', value: practiceArea + ' - Bodhala'});
+                if (practiceArea === this.clientMatterType) {
+                  this.currentPracticeArea = practiceArea + ' - Bodhala';
+                }
+              }
+            }
+            else if (group.label === 'Client Practice Areas') {
               for (const practiceArea of this.clientPracticeAreas) {
                 group.items.push({label: practiceArea, value: practiceArea});
                 if (practiceArea === this.clientMatterType) {
                   this.currentPracticeArea = practiceArea;
                 }
               }
-            } else if (group.label === 'Bodhala Practice Areas') {
-                for (const practiceArea of this.bodhalaPracticeAreas) {
-                  group.items.push({label: practiceArea + ' - Bodhala', value: practiceArea + ' - Bodhala'});
-                  if (practiceArea === this.clientMatterType) {
-                    this.currentPracticeArea = practiceArea + ' - Bodhala';
-                  }
-                }
             }
           }
         }

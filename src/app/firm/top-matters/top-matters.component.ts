@@ -17,6 +17,7 @@ export class TopMattersComponent implements OnInit, OnDestroy {
   @Input() practiceArea: IPracticeArea;
   @Input() firmId: number;
   @Input() firm: IFirm;
+  @Input() bodhalaPA: boolean;
   pendingRequest: Subscription;
 
   constructor(private httpService: HttpService,
@@ -38,7 +39,11 @@ export class TopMattersComponent implements OnInit, OnDestroy {
     }
     if (this.practiceArea) {
       arr.push(this.practiceArea.client_matter_type);
-      params.practiceAreas = JSON.stringify(arr);
+      if (this.bodhalaPA === true) {
+        params.bdPracticeAreas = JSON.stringify(arr);
+      } else {
+        params.practiceAreas = JSON.stringify(arr);
+      }
     }
     this.pendingRequest = this.httpService.makeGetRequest('getTopMattersForFirm', params).subscribe(
       (data: any) => {

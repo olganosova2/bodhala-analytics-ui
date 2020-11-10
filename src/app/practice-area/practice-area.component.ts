@@ -74,23 +74,26 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
 
   loadPracticeArea(): void {
     let params = {};
-    console.log("params: ", params);
     if (this.clientMatterType.includes('Bodhala')) {
       this.endPoint = 'getBodhalaPracticeArea';
       params = {bodhalaPA: this.clientMatterType};
+      this.bodhalaPA = true;
     } else {
       this.endPoint = 'getPracticeArea';
       params = {client_matter_type: this.clientMatterType};
     }
-    console.log("params: ", params);
-    console.log("endpoint: ", this.endPoint);
+
     this.pendingRequestPracticeArea = this.httpService.makeGetRequest(this.endPoint, params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
         console.log("PAs: ", practiceAreas);
+        let compString = this.clientMatterType;
+        if (this.bodhalaPA === true) {
+          compString = this.clientMatterType.split(' -')[0];
+        }
         if (practiceAreas && practiceAreas.length > 0) {
           for (const pa of practiceAreas) {
-            if (pa.client_matter_type === this.clientMatterType) {
+            if (pa.client_matter_type === compString) {
               this.practiceArea = pa;
               this.commonServ.pageSubtitle = this.clientMatterType;
             }

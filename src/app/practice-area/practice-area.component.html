@@ -20,7 +20,7 @@
     <div class="p-grid mt15">
 
         <div class="p-col-{{rightColsCount}} no-right-padding no-left-padding">
-            <bd-billing-totals [practiceArea]="practiceArea" #billingTotals *ngIf="clientMatterType && practiceArea"></bd-billing-totals>
+            <bd-billing-totals [bodhalaPA]="bodhalaPA" [practiceArea]="practiceArea" #billingTotals *ngIf="clientMatterType && practiceArea"></bd-billing-totals>
         </div>
 
     </div>
@@ -28,7 +28,7 @@
     <!-- Trend charts -->
     <div>
        <div class="no-left-padding mt15">
-          <bd-score-trend [clientMatterType]="clientMatterType" [practiceArea]="clientMatterType && practiceArea" #trend></bd-score-trend>
+          <bd-score-trend [bodhalaPA]="bodhalaPA" [clientMatterType]="clientMatterType" [practiceArea]="clientMatterType && practiceArea" #trend></bd-score-trend>
         </div>
     </div>
 
@@ -36,10 +36,10 @@
     <div>
         <div class="p-grid mt15">
           <div class="p-md-12 p-lg-8 no-left-padding pr15">
-            <bd-spend-by-month [practiceArea]="practiceArea" #spendByMonthDiv *ngIf="clientMatterType && practiceArea"></bd-spend-by-month>
+            <bd-spend-by-month [bodhalaPA]="bodhalaPA" [practiceArea]="practiceArea" #spendByMonthDiv *ngIf="clientMatterType && practiceArea"></bd-spend-by-month>
           </div>
           <div class="p-md-12 p-lg-4 pl10">
-            <bd-pa-top-firms [practiceArea]="practiceArea"  #topFirms *ngIf="clientMatterType && practiceArea"></bd-pa-top-firms>
+            <bd-pa-top-firms [bodhalaPA]="bodhalaPA" [practiceArea]="practiceArea"  #topFirms *ngIf="clientMatterType && practiceArea"></bd-pa-top-firms>
           </div>
         </div>
     </div>
@@ -47,10 +47,10 @@
     <div>
         <div class="p-grid mt15">
           <div class="p-md-12 p-lg-5 p-xl-6">
-            <bd-top-matters [practiceArea]="practiceArea" #paTopMatters *ngIf="clientMatterType && practiceArea"></bd-top-matters>
+            <bd-top-matters [bodhalaPA]="bodhalaPA" [practiceArea]="practiceArea" #paTopMatters *ngIf="clientMatterType && practiceArea"></bd-top-matters>
           </div>
           <div class="p-md-12 p-lg-5 p-xl-6" #paTopLeadPartners>
-            <bd-pa-top-lead-partners [practiceArea]="practiceArea" *ngIf="clientMatterType && practiceArea"></bd-pa-top-lead-partners>
+            <bd-pa-top-lead-partners [bodhalaPA]="bodhalaPA" [practiceArea]="practiceArea" *ngIf="clientMatterType && practiceArea"></bd-pa-top-lead-partners>
           </div>
         </div>
     </div>
@@ -58,13 +58,13 @@
     <div>
         <div class="p-grid mt15">
           <div class="p-md-12 p-lg-7 p-xl-5 no-left-padding div-diversity" #diversity>
-            <bd-diversity [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
+            <bd-diversity [bodhalaPA]="bodhalaPA" [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('data.analytics.diversity')"></bd-diversity>
           </div>
         </div>
     </div>
 
     <div class="p-grid mt15">
-        <bd-utbms [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
+        <bd-utbms [bodhalaPA]="bodhalaPA" [practiceArea]="practiceArea" *ngIf="practiceArea && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
     </div>
 
 

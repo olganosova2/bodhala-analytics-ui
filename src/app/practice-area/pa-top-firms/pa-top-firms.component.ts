@@ -19,6 +19,7 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
   helpText: string = 'Total billed for each firm display how much was spent at each firm for this Practice Area.';
   @Input() clientMatterType: string;
   @Input() practiceArea: IPracticeArea;
+  @Input() bodhalaPA: boolean;
   pendingRequest: Subscription;
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
@@ -36,7 +37,13 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
     arr.push(this.practiceArea.client_matter_type);
-    params.practiceAreas = JSON.stringify(arr);
+
+    if (this.bodhalaPA === true) {
+      params.bdPracticeAreas = JSON.stringify(arr);
+    } else {
+      params.practiceAreas = JSON.stringify(arr);
+    }
+   
     this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
       (data: any) => {
         if (data) {
@@ -64,7 +71,11 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
     arr.push(this.practiceArea.client_matter_type);
-    params.practiceAreas = JSON.stringify(arr);
+    if (this.bodhalaPA === true) {
+      params.bdPracticeAreas = JSON.stringify(arr);
+    } else {
+      params.practiceAreas = JSON.stringify(arr);
+    }
     this.pendingRequest = this.httpService.makeGetRequest('getTopFirms', params).subscribe(
       (data: any) => {
         this.firms = data.result;
