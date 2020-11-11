@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild, ɵCompiler_compileModuleSync__POST_R3__} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
@@ -31,6 +31,9 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   rightColsCount: number = 12;
   pendingRequest: Subscription;
   pendingRequestPracticeArea: Subscription;
+  bodhalaPA: boolean = false;
+  practiceAreaSetting: string;
+  endPoint: string;
   @ViewChild(BillingTotalsComponent) billingTotals: BillingTotalsComponent;
   @ViewChild(SpendByMonthComponent) spendByMonth: SpendByMonthComponent;
   @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
@@ -51,6 +54,17 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.userService.config !== undefined) {
+      if ('analytics.practice.bodhala.areas' in this.userService.config) {
+        const userConfigs = Object.values(this.userService.config);
+        for (const config of userConfigs) {
+          if (config.configs[0].description === 'config for analytics practice areas') {
+            this.practiceAreaSetting = config.configs[0].value;
+            break;
+          }
+        }
+      }
+    }
     this.route.paramMap.subscribe(params => {
       this.clientMatterType = params.get('client_matter_type');
       this.loadPracticeArea();
@@ -58,13 +72,26 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   }
 
   loadPracticeArea(): void {
-    const params = {client_matter_type: this.clientMatterType};
-    this.pendingRequestPracticeArea = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
+    let params = {};
+    if (this.clientMatterType.includes('Bodhala')) {
+      this.endPoint = 'getBodhalaPracticeArea';
+      params = {bodhalaPA: this.clientMatterType};
+      this.bodhalaPA = true;
+    } else {
+      this.endPoint = 'getPracticeArea';
+      params = {client_matter_type: this.clientMatterType};
+    }
+
+    this.pendingRequestPracticeArea = this.httpService.makeGetRequest(this.endPoint, params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
+        let compString = this.clientMatterType;
+        if (this.bodhalaPA === true) {
+          compString = this.clientMatterType.split(' -')[0];
+        }
         if (practiceAreas && practiceAreas.length > 0) {
           for (const pa of practiceAreas) {
-            if (pa.client_matter_type === this.clientMatterType) {
+            if (pa.client_matter_type === compString) {
               this.practiceArea = pa;
               this.commonServ.pageSubtitle = this.clientMatterType;
             }

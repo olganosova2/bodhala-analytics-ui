@@ -25,7 +25,8 @@ export const ngWindow = {
 
 export class UserStub {
   entitlements: [any];
-  config: object;
+  config: {};
+  // config: {'analytics.practice.bodhala.areas': {configs: [{description: "config for analytics practice areas", value: "Client Practice Areas", json_config: "Client Practice Areas"}]}};
   errorMessage: any;
   userId: number = 80;
   currentUser = CURRENT_USER.result.user;

@@ -28,6 +28,7 @@ export class DiversityComponent implements OnInit, OnDestroy {
   loaded: boolean = false;
   @Input() firmId: number;
   @Input() practiceArea: IPracticeArea;
+  @Input() bodhalaPA: boolean;
   constructor(private httpService: HttpService,
               public filtersService: FiltersService) { }
 
@@ -45,7 +46,11 @@ export class DiversityComponent implements OnInit, OnDestroy {
     }
     if (this.practiceArea) {
       arr.push(this.practiceArea.client_matter_type);
-      params.practiceAreas = JSON.stringify(arr);
+      if (this.bodhalaPA === true) {
+        params.bdPracticeAreas = JSON.stringify(arr);
+      } else {
+        params.practiceAreas = JSON.stringify(arr);
+      }
     }
     this.pendingRequest = this.httpService.makeGetRequest('getDiversityData', params).subscribe(
       (data: any) => {

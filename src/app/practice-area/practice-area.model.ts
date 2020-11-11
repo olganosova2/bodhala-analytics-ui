@@ -1,4 +1,15 @@
+import * as Highcharts from 'highcharts';
 
+const moneyFormatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2
+});
+const formatter = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2
+});
 
 export interface ITag {
     modified_on: string;
@@ -99,8 +110,29 @@ export const paTrendChart = {
     credits: { enabled: false },
     title: { text: null },
     tooltip: {
-      headerFormat: '<b></b><br>',
-      pointFormat: '{point.x: %Y}: {point.y:,.2f}'
+      formatter() {
+        let quarterNumber = '';
+        if (Highcharts.dateFormat('%b', this.x, true) === 'Jan') {
+          quarterNumber = 'Q1';
+        } else if (Highcharts.dateFormat('%b', this.x, true) === 'Apr') {
+          quarterNumber = 'Q2';
+        } else if (Highcharts.dateFormat('%b', this.x, true) === 'Jul') {
+          quarterNumber = 'Q3';
+        }  else if (Highcharts.dateFormat('%b', this.x, true) === 'Oct') {
+          quarterNumber = 'Q4';
+        }
+        let result = '';
+        if (this.series.yAxis.axisTitle.textStr === 'Avg. Days') {
+          result = formatter.format(this.y);
+        } else if (this.series.yAxis.axisTitle.textStr === 'dollars') {
+          result = moneyFormatter.format(this.y);
+        } else if (this.series.yAxis.axisTitle.textStr === 'percent') {
+          result = formatter.format(this.y) + '%';
+        } else {
+          result = formatter.format(this.y);
+        }
+        return result;
+      }
     },
     xAxis: {
       type: 'datetime',
