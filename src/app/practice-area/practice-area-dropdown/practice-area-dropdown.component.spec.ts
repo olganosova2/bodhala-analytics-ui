@@ -47,6 +47,7 @@ describe('PracticeAreaDropdownComponent', () => {
     component = fixture.componentInstance;
     component.clientMatterType = 'LITIGATION';
     component.currentPracticeArea = 'LITIGATION';
+    component.practiceAreaSetting = 'Client Practice Areas';
     fixture.detectChanges();
   });
 

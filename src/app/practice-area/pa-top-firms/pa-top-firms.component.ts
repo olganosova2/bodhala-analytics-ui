@@ -43,7 +43,6 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
     } else {
       params.practiceAreas = JSON.stringify(arr);
     }
-   
     this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
       (data: any) => {
         if (data) {

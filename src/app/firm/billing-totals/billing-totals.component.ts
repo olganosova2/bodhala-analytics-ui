@@ -52,7 +52,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
         params.practiceAreas = JSON.stringify(arr);
       }
     }
-    console.log("params: ", params);
     this.isLoaded = false;
     this.pendingRequest = this.httpService.makeGetRequest('getBillingTotals', params).subscribe(
       (data: any) => {

@@ -60,7 +60,7 @@ export class PracticeAreaDropdownComponent implements OnInit {
           this.practiceAreasList = this.clientPracticeAreas;
         } else if (this.practiceAreaSetting === 'Bodhala Practice Areas') {
 
-          let newList = [];
+          const newList = [];
           for (let practiceArea of this.bodhalaPracticeAreas) {
             practiceArea = practiceArea + ' - Bodhala';
             newList.push(practiceArea);
@@ -80,7 +80,7 @@ export class PracticeAreaDropdownComponent implements OnInit {
             }
           ];
 
-          for (let group of this.practiceAreaGroupOptions) {
+          for (const group of this.practiceAreaGroupOptions) {
             if (group.label === 'Bodhala Practice Areas') {
               for (const practiceArea of this.bodhalaPracticeAreas) {
                 group.items.push({label: practiceArea + ' - Bodhala', value: practiceArea + ' - Bodhala'});

@@ -54,22 +54,21 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if ('analytics.practice.bodhala.areas' in this.userService.config) {
-      const userConfigs = Object.values(this.userService.config);
-      for (let config of userConfigs) {
-        if (config.configs[0].description === 'config for analytics practice areas') {
-          this.practiceAreaSetting = config.configs[0].value;
-          break;
+    if (this.userService.config !== undefined) {
+      if ('analytics.practice.bodhala.areas' in this.userService.config) {
+        const userConfigs = Object.values(this.userService.config);
+        for (const config of userConfigs) {
+          if (config.configs[0].description === 'config for analytics practice areas') {
+            this.practiceAreaSetting = config.configs[0].value;
+            break;
+          }
         }
       }
     }
-    console.log("this.practiceAreaSetting: ", this.practiceAreaSetting);
-
     this.route.paramMap.subscribe(params => {
       this.clientMatterType = params.get('client_matter_type');
       this.loadPracticeArea();
     });
-    
   }
 
   loadPracticeArea(): void {
@@ -86,7 +85,6 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
     this.pendingRequestPracticeArea = this.httpService.makeGetRequest(this.endPoint, params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
-        console.log("PAs: ", practiceAreas);
         let compString = this.clientMatterType;
         if (this.bodhalaPA === true) {
           compString = this.clientMatterType.split(' -')[0];

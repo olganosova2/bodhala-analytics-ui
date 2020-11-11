@@ -70,7 +70,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setUpChartOptions();
     this.load().subscribe(data => {
-      console.log("DATA: ", data);
       if (data[0].result) {
         const reportCard = data[0].result;
         if (reportCard && reportCard.group_id) {
@@ -140,7 +139,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         // params.practiceAreas = JSON.stringify(arr);
         params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
       }
-      console.log("st params: ", params);
       // params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
       const response1 = this.httpService.makeGetRequest('getPracticeAreaScore', params);
       const response2 = this.httpService.makeGetRequest('getPracticeAreaTrends', params);
