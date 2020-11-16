@@ -408,29 +408,57 @@ export class BenchmarkService {
       if (pa.rates[k]) {
         const current = pa.rates[k];
         const count = current.count || 1;
-        rate[k].client_rate = current.sum / count;
+        const streetCount = current.streetSum ? current.streetCount : current.count || 1;
+        const streetRate = current.streetSum ? current.streetSum : current.sumBase;
+        rate[k].client_rate = Math.round(current.sum / count);
+        rate[k].street = Math.round(streetRate / streetCount);
+        let temp = rate[k].street / 100 * (100 - pa.high);
+        rate[k].high =  Math.round(temp);
+        temp = rate[k].street / 100 * (100 - pa.low);
+        rate[k].low =  Math.round(temp);
+        rate[k].practice_area_discount = current.practice_area_discount;
       }
     }
     return rate;
   }
-  processCollectionRates(rates: Array<ICollectionRates>): any {
+  processCollectionRates(rates: Array<ICollectionRates>, streetRates: Array<ICollectionRates>): any {
     const formatted = {
-      junior_associate: {sum: 0, count: 0},
-      mid_associate: {sum: 0, count: 0},
-      senior_associate: {sum: 0, count: 0},
-      junior_partner: {sum: 0, count: 0},
-      mid_partner: {sum: 0, count: 0},
-      senior_partner: {sum: 0, count: 0},
-    }
+      junior_associate: {sumBase: 0, sum: 0, count: 0, streetSum: 0, streetCount: 0, practice_area_discount: 0},
+      mid_associate: {sumBase: 0, sum: 0, count: 0, streetSum: 0, streetCount: 0, practice_area_discount: 0},
+      senior_associate: {sumBase: 0, sum: 0, count: 0, streetSum: 0, streetCount: 0, practice_area_discount: 0},
+      junior_partner: {sumBase: 0, sum: 0, count: 0, streetSum: 0, streetCount: 0, practice_area_discount: 0},
+      mid_partner: {sumBase: 0, sum: 0, count: 0, streetSum: 0, streetCount: 0, practice_area_discount: 0},
+      senior_partner: {sumBase: 0, sum: 0, count: 0, streetSum: 0, streetCount: 0, practice_area_discount: 0},
+    };
     for (const rate of rates) {
       if (!rate.current_standard_rate || !TK_LEVELS_MAP[rate.bh_classification_detail]) {
         continue;
       }
+      const calcBaseRate = rate.current_standard_rate || 0;
       const discPercent = rate.practice_area_discount_pct || 0;
       const calcRate = rate.current_standard_rate / 100 * (100 - discPercent);
+      formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].sumBase += calcBaseRate;
       formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].sum += calcRate;
       formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].count ++;
+      formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].practice_area_discount = rate.practice_area_discount_pct;
+    }
+    for (const rate of streetRates) {
+      if (!rate.current_standard_rate || !TK_LEVELS_MAP[rate.bh_classification_detail]) {
+        continue;
+      }
+      const calcBaseRate = rate.current_standard_rate || 0;
+      formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].streetSum += calcBaseRate;
+      formatted[TK_LEVELS_MAP[rate.bh_classification_detail]].streetCount ++;
     }
     return formatted;
+  }
+  formatPeers(streetRates: Array<ICollectionRates>, firmName: string): Array<string> {
+    const result = [];
+    for (const rate of streetRates) {
+      if (result.indexOf(rate.firm_name) < 0 && rate.firm_name !== firmName) {
+        result.push(rate.firm_name);
+      }
+    }
+    return result;
   }
 }

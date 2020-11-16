@@ -37,15 +37,19 @@ export class AddEditBenchmarkComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.benchmarkId = params.get('id');
+      let pageSubtitle = '';
       if (this.benchmarkId) {
         this.editMode = 'edit';
         this.loadBenchmark();
-        this.commonServ.pageSubtitle = 'Edit Benchmark';
+        pageSubtitle = 'Edit Benchmark';
       } else {
-        this.commonServ.pageSubtitle = 'Add Benchmark';
+        pageSubtitle = 'Add Benchmark';
         this.editMode = 'add';
         this.createNew();
       }
+      setTimeout(() => {
+        this.commonServ.pageSubtitle = pageSubtitle;
+      });
     });
   }
 

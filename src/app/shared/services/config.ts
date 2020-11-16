@@ -68,6 +68,7 @@ export const END_POINTS_URLS = {
   getTrainingMaterialsArticle: {url: BASE_URL + 'analytics/getTrainingMaterialsArticle', showLoading: false},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
   getPracticeAreas: {url: BASE_URL + 'client/getPracticeAreas', showLoading: true},
+  getPracticeAreasAndId: {url: BASE_URL + 'client/getPracticeAreasAndId', showLoading: true},
   saveBenchmark: {url: BASE_URL + 'client/benchmarking/saveBenchmark', showLoading: true},
   saveBenchmarkPAs: {url: BASE_URL + 'client/benchmarking/saveBenchmarkPAs', showLoading: true},
   getRatesForCategoryAndLawyer:  {url: BASE_URL + 'client/getRatesForCategoryAndLawyer', showLoading: true},

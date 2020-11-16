@@ -670,4 +670,296 @@ export const MOCK_FIRMS_WITH_GROUP_ID = {
   }],
   "error": null
 };
+export const BM_CHECK_RATES = {
+  "result": [{
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 1st Year",
+    "year": 2020,
+    "current_standard_rate": 100,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 2nd Year",
+    "year": 2020,
+    "current_standard_rate": 120,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 3rd Year",
+    "year": 2020,
+    "current_standard_rate": 130,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 4th Year",
+    "year": 2020,
+    "current_standard_rate": 140,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 5th Year",
+    "year": 2020,
+    "current_standard_rate": 150,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 6th Year",
+    "year": 2020,
+    "current_standard_rate": 160,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 7th Year",
+    "year": 2020,
+    "current_standard_rate": 170,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 8th Year",
+    "year": 2020,
+    "current_standard_rate": 180,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 9th Year",
+    "year": 2020,
+    "current_standard_rate": 200,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Associate - 10+ Year",
+    "year": 2020,
+    "current_standard_rate": 220,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Counsel",
+    "year": 2020,
+    "current_standard_rate": 230,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Paralegal",
+    "year": 2020,
+    "current_standard_rate": 240,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 1",
+    "year": 2020,
+    "current_standard_rate": 250,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 2",
+    "year": 2020,
+    "current_standard_rate": 260,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 3",
+    "year": 2020,
+    "current_standard_rate": 270,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 4",
+    "year": 2020,
+    "current_standard_rate": 280,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 5",
+    "year": 2020,
+    "current_standard_rate": 280,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 6",
+    "year": 2020,
+    "current_standard_rate": 290,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 7",
+    "year": 2020,
+    "current_standard_rate": 300,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 8",
+    "year": 2020,
+    "current_standard_rate": 310,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 9",
+    "year": 2020,
+    "current_standard_rate": 320,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 10",
+    "year": 2020,
+    "current_standard_rate": 330,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 11",
+    "year": 2020,
+    "current_standard_rate": 340,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 12",
+    "year": 2020,
+    "current_standard_rate": null,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 13",
+    "year": 2020,
+    "current_standard_rate": null,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 14",
+    "year": 2020,
+    "current_standard_rate": 380,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 15",
+    "year": 2020,
+    "current_standard_rate": 390,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 16",
+    "year": 2020,
+    "current_standard_rate": null,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 17",
+    "year": 2020,
+    "current_standard_rate": 400,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 18",
+    "year": 2020,
+    "current_standard_rate": 420,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 19",
+    "year": 2020,
+    "current_standard_rate": null,
+    "practice_area_discount_pct": 20
+  }, {
+    "collection_id": 6,
+    "title": "After Elections Collection",
+    "collection_category_id": 13,
+    "display_name": "Funds",
+    "bh_classification_detail": "Partner Tier 20",
+    "year": 2020,
+    "current_standard_rate": null,
+    "practice_area_discount_pct": 20
+  }],
+  "error": null
+};
 

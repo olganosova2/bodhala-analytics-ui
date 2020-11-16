@@ -19,7 +19,7 @@
           <tr *ngFor="let bm of yearBenchmarks">
             <td>{{bm.firm_name}} ({{bm.firmId}})</td>
             <td>
-              <span *ngFor="let pa of bm.practice_areas">{{pa}}, </span>
+              <span *ngFor="let pa of bm.practice_areas;index as i">{{pa}}<span *ngIf="i !== bm.practice_areas.length-1">, </span> </span>
             </td>
             <td class="text-center">
               <button mat-flat-button type="button" (click)="navigate(bm)">
@@ -45,7 +45,7 @@
                       (onChange)="selectFirm($event)"
                       ngDefaultControl placeholder="Select Firm" [style]="{'width':'400px'}" [filter]="true"
                       filterBy="label"></p-dropdown>
-          <span class="ml20"><i>Note: List of Client firms - limit to client firms where peer group is set up</i></span>
+          <span class="ml20"><i>Note: List of Client firms - limit to firms where peer group is set up</i></span>
         </div>
       </div>
 

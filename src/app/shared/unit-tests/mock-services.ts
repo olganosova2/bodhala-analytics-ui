@@ -7,7 +7,7 @@ import {convertToParamMap} from '@angular/router';
 import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC, MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC_COMP} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
-import {MOCK_BENCHMARKS, MOCK_FIRMS_WITH_GROUP_ID} from './mock-data/benchmarking';
+import {BM_CHECK_RATES, MOCK_BENCHMARKS, MOCK_FIRMS_WITH_GROUP_ID} from './mock-data/benchmarking';
 import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
 import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data/practice-area';
 import {SAVINGS_DATA} from './mock-data/savings-calculator';
@@ -166,6 +166,8 @@ export class DataStub {
         return of(FRESHDESK_ARTICLE);
       case 'getFirmsWithGroupId':
         return of(MOCK_FIRMS_WITH_GROUP_ID);
+      case 'getRatesForCategoryAndLawyer':
+        return of(BM_CHECK_RATES);
       default:
         return of([]);
     }

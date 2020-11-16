@@ -7,7 +7,7 @@ import {BenchmarkService} from '../benchmarks/benchmark.service';
 import {Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/api';
 import * as _moment from 'moment';
-import {IBenchmarkSetup, IBenchmarkSetupFormatted, IBMPracticeArea, IFirmWithGroupId} from './benchmarking-setup-model';
+import {IBenchmarkSetup, IBenchmarkSetupFormatted, IBMPracticeArea, IFirmWithGroupId, IPracticeAreaDD} from './benchmarking-setup-model';
 import {IDropDown} from '../shared/models/prime-ng';
 import {IBenchmark, IRowBenchmark} from '../benchmarks/model';
 import {IBenchmarkPracticeArea} from '../admin/admin-benchmarks/admin-benchmarks-model';
@@ -34,7 +34,7 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   yearOptions: Array<IDropDown> = [];
   numberOfYears: number = 2;
   selectedYear: string;
-  practiceAreasList: Array<string> = [];
+  practiceAreasList: Array<IPracticeAreaDD> = [];
   availablePAs: SelectItem[] = [];
   selectedPAs: Array<string> = [];
   benchmark: IBenchmarkSetup;
@@ -104,7 +104,7 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     );
   }
   getPracticeAreas(): void {
-    this.pendingRequestPA = this.httpService.makeGetRequest('getPracticeAreas').subscribe(
+    this.pendingRequestPA = this.httpService.makeGetRequest('getPracticeAreasAndId').subscribe(
       (data: any) => {
         this.practiceAreasList = data.result || [];
       },
@@ -127,9 +127,9 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     }
     this.availablePAs = [];
     for (const pa of this.practiceAreasList) {
-      const found = founds.find(f => f.name === pa);
+      const found = founds.find(f => f.name === pa.name);
       if (!found) {
-        this.availablePAs.push({label: pa, value: pa});
+        this.availablePAs.push({label: pa.name, value: pa.name});
       }
     }
     this.benchmark.practice_areas = [];
@@ -137,7 +137,7 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   selectPracticeArea(evt: any): void {
     const found = this.benchmark.practice_areas.find(e => e.name === evt.itemValue);
     if (!found) {
-      const pa = { name: evt.itemValue, hasRates: false, rates: {} };
+      const pa = { name: evt.itemValue, hasRates: false, rates: {}, high: 0, low: 0, peers: [] };
       this.benchmark.practice_areas.push(pa);
       this.checkRate(pa);
     } else {
@@ -149,6 +149,14 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   getFirmName(id: number): string {
     const firm = this.firms.find(e => e.bh_lawfirm_id === id);
     return firm ? firm.firm_name : null;
+  }
+  getFirmGroup(id: number): number {
+    const firm = this.firms.find(e => e.bh_lawfirm_id === id);
+    return firm ? firm.group_id : null;
+  }
+  getPAId(name: string): number {
+    const pa = this.practiceAreasList.find(e => e.name === name);
+    return pa ? pa.id : null;
   }
   getGroupId(id: number): number {
     const firm = this.firms.find(e => e.bh_lawfirm_id === id);
@@ -166,12 +174,21 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     };
   }
   checkRate(newPa: IBMPracticeArea): boolean {
-    const params = {clientId: this.userService.currentUser.client_info_id, firmId: this.benchmark.firm_id, pa: newPa.name, year: Number(this.selectedYear)};
+    const group = this.getFirmGroup(this.benchmark.firm_id);
+    const paId = this.getPAId(newPa.name);
+    const params = {clientId: this.userService.currentUser.client_info_id, firmId: this.benchmark.firm_id, pa: newPa.name, year: Number(this.selectedYear), groupId: group, practice_area_id: paId };
     this.pendingRequestRates = this.httpService.makeGetRequest('getRatesForCategoryAndLawyer', params).subscribe(
       (data: any) => {
-        const records = data.result || [];
+        const records = data.result.rates || [];
         newPa.hasRates = records.length && records.length > 0;
-        newPa.rates = Object.assign({}, this.benchmarkServ.processCollectionRates(records));
+        const streetRates = data.result.street_rates || [];
+        const discount = data.result.discount || [];
+        if (discount.length > 0) {
+         newPa.high = discount[0].percetage_range_start || 0;
+         newPa.low = discount[0].percetage_range_end || 0;
+        }
+        newPa.peers = this.benchmarkServ.formatPeers(streetRates, this.benchmark.firm_name);
+        newPa.rates = Object.assign({}, this.benchmarkServ.processCollectionRates(records, streetRates));
       },
       err => {
         this.errorMessage = err;
@@ -236,19 +253,20 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
       practiceAreas.push(this.packagePA(pa));
     }
     const params = { firm_id: this.benchmark.firm_id, id: null, client_id: this.userService.currentUser.client_info_id, year: this.selectedYear, practice_areas: practiceAreas};
-    // this.httpService.makePostRequest('saveBenchmark', params).subscribe(
-    //   (data: any) => {
-    //     const bm = data.result;
-    //     this.reset();
-    //     this.getBenchmarks();
-    //   },
-    //   err => {
-    //     this.errorMessage = err;
-    //   }
-    // );
+    // return;
+    this.httpService.makePostRequest('saveBenchmark', params).subscribe(
+      (data: any) => {
+        const bm = data.result;
+        this.reset();
+        this.getBenchmarks();
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
   packagePA(pa: IBMPracticeArea): any {
-    return { benchmark_id: this.benchmark.benchmark_id, id: null, name: pa.name, peers: [], tier: '$$$', rates: this.benchmarkServ.createBenchmarkRates(pa) };
+    return { benchmark_id: this.benchmark.benchmark_id, id: null, name: pa.name, peers: pa.peers, tier: this.benchmark.tier, rates: this.benchmarkServ.createBenchmarkRates(pa) };
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

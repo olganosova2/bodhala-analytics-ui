@@ -48,8 +48,8 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      {headerName: '#', field: 'id', ...this.defaultColumn, sort: 'asc'},
-      {headerName: 'Client', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2},
+      {headerName: '#', field: 'id', ...this.defaultColumn, sort: 'desc'},
+      {headerName: 'Client2', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2},
       {headerName: 'Firm', field: 'firm', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'text',  flex: 2 },
       {headerName: 'Year', field: 'year', ...this.defaultColumn},
       {headerName: 'View', field: 'id', ...this.defaultColumn, cellRendererFramework: RouterLinkRendererComponent,
@@ -75,7 +75,7 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
   getBenchmarks(): void {
     this.pendingRequest = this.httpService.makeGetRequest('getAdminBenchmarks').subscribe(
       (data: any) => {
-        this.benchmarks = data.result || [];
+        this.benchmarks = (data.result || []).sort(this.utilService.dynamicSort('-year'));
         this.loadGrid();
       },
       err => {

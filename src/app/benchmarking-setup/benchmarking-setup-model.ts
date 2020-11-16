@@ -7,10 +7,17 @@ export interface IFirmWithGroupId {
   group_id: number;
   total_billed: number;
 }
+export interface IPracticeAreaDD {
+  id: number;
+  name: string;
+}
 export interface IBMPracticeArea {
   name: string;
   hasRates: boolean;
   rates?: IBenchmarkRate;
+  high?: number;
+  low?: number;
+  peers?: Array<string>;
 }
 export interface IBenchmarkSetup {
   benchmark_id?: number;
@@ -29,8 +36,9 @@ export interface IBenchmarkSetupFormatted {
 export interface ICollectionRates {
   collection_id: number;
   title: string;
-  collection_category_id: number;
-  display_name: string;
+  firm_name?: string;
+  collection_category_id?: number;
+  display_name?: string;
   bh_classification_detail: string;
   year: number;
   current_standard_rate: number;
