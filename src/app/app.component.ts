@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 
-import {AppStateService, TimeoutModalComponent, UtilService} from 'bodhala-ui-common';
+import {AppStateService, TimeoutModalComponent, UserService, UtilService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
 import {HttpService} from 'bodhala-ui-common';
 import * as config from './shared/services/config';
@@ -42,6 +42,7 @@ export class AppComponent implements OnDestroy {
               private idle: Idle,
               private keepalive: Keepalive,
               public commonServ: CommonService,
+              public userService: UserService,
               public dialog: MatDialog) {
 
     const path = this.location.path();
@@ -49,7 +50,9 @@ export class AppComponent implements OnDestroy {
       this.router.navigateByUrl('/analytics-ui/analytics.html');
     }
     this.appStateService.loadRoutes(config.ROUTES);
-    this.filtersService.setCurrentUserFilters();
+    if (!this.userService.currentUser.isAdmin) {
+      this.filtersService.setCurrentUserFilters();
+    }
     this.httpService.callInProgress.subscribe(value => {
       setTimeout(() => {
         this.progress = value ? value : false;
@@ -110,6 +113,9 @@ export class AppComponent implements OnDestroy {
     if (found && found.routePath) {
       const route = found.routePath;
       this.router.navigate([route]);
+      return;
+    }
+    if (!evt.state.href) {
       return;
     }
     const result = '/' + evt.state.href;

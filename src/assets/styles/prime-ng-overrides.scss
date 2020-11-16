@@ -1,0 +1,53 @@
+@import "./colors.scss";
+.p-panelmenu .p-panelmenu-header > a {
+  padding-left: 10px !important;
+  // letter-spacing: -0.7px;
+}
+.p-panelmenu .p-panelmenu-header > a .p-panelmenu-icon {
+  font-size: 0.8rem !important;
+  margin-right: 5px;
+}
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-panelmenu-icon {
+  font-size: 12px;
+}
+.p-panelmenu .p-panelmenu-header:not(.p-highlight):not(.p-disabled)>a:hover {
+  color: $body-color !important;
+}
+.p-panelmenu .p-panelmenu-header.p-highlight:not(.p-disabled)>a:hover {
+  color: $body-color !important;
+}
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-menuitem-text {
+  letter-spacing: 0.4px;
+  font-weight: 400;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.p-panelmenu .p-panelmenu-content .p-submenu-list:not(.p-panelmenu-root-submenu) {
+  padding-left: 10px !important;
+}
+.p-autocomplete.p-autocomplete-multiple .p-autocomplete-multiple-container .p-autocomplete-input-token input {
+  font-size: 14px !important;
+}
+.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
+  font-size: 14px !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: $body-color;
+}
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  font-size: 14px !important;
+}
+.p-inputtext {
+  font-size: 14px !important;
+}
+input.hoursmins {
+  width: 70px !important;
+  display: inline-block;
+}
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight {
+  background: $gray-blue-bg;
+  color: $body-color;
+}
+.p-checkbox .p-checkbox-box.p-highlight {
+  background: $body-color;
+}

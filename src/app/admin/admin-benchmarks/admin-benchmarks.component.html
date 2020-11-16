@@ -1,0 +1,21 @@
+<div class="benchmark-overview">
+<!--<div class="pull-right mb20">-->
+<!--  <button class="primary-button" (click)="addNew()">Add New +</button>-->
+<!--</div>-->
+  <div class="clear-both"></div>
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%;"
+      [ngStyle]="{'height': agGridService.setGridHeight(benchmarks, paginationPageSize) +'px'}"
+      class="ag-theme-alpine"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [sideBar]="sideBarConfig"
+      (displayedColumnsChanged)="saveGridConfig($event)"
+      (sortChanged)="saveGridConfig($event);"
+      (columnResized)="saveGridConfig($event);"
+      [suppressAggFuncInHeader]="true"
+      [gridOptions]="gridOptions"
+      (gridReady)="getBenchmarks()">
+  </ag-grid-angular>
+</div>

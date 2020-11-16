@@ -10,6 +10,7 @@
 @include mat-core();
 @import "./assets/styles/mat-theme.scss";
 @import "./assets/styles/mat-overrides.scss";
+@import "./assets/styles/prime-ng-overrides.scss";
 @import "./assets/styles/ag-grid-overrides.scss";
 @import "~material-icons/iconfont/material-icons.css";
 @import '~bootstrap/scss/bootstrap';
@@ -447,6 +448,10 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid transparent;
   border-radius: 4px;
 }
+.secondary-button {
+  background-color: $medium-gray;
+  color: #fff;
+}
 :host ::ng-deep {
   .btn-group > .btn.active {
     z-index: 1;
@@ -517,37 +522,7 @@ h1, h2, h3, h4, h5, h6 {
 .mat-tooltip {
   font-size: 14px !important;
 }
-.p-panelmenu .p-panelmenu-header > a {
-  padding-left: 10px !important;
-  // letter-spacing: -0.7px;
-}
-.p-panelmenu .p-panelmenu-header > a .p-panelmenu-icon {
-  font-size: 0.8rem !important;
-  margin-right: 5px;
-}
-.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-panelmenu-icon {
-  font-size: 12px;
-}
-.p-panelmenu .p-panelmenu-header:not(.p-highlight):not(.p-disabled)>a:hover {
-  color: $body-color !important;
-}
-.p-panelmenu .p-panelmenu-header.p-highlight:not(.p-disabled)>a:hover {
-  color: $body-color !important;
-}
-.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-menuitem-text {
-  letter-spacing: 0.4px;
-  font-weight: 400;
-  font-family: 'Source Sans Pro', sans-serif;
-}
-.p-panelmenu .p-panelmenu-content .p-submenu-list:not(.p-panelmenu-root-submenu) {
-  padding-left: 10px !important;
-}
-.p-autocomplete.p-autocomplete-multiple .p-autocomplete-multiple-container .p-autocomplete-input-token input {
-  font-size: 14px !important;
-}
-.p-autocomplete-panel .p-autocomplete-items .p-autocomplete-item {
-  font-size: 14px !important;
-}
+
 
 
 
