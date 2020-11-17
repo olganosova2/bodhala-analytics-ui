@@ -1,0 +1,31 @@
+<div class="panel-wrapper">
+  <h5>{{name}}</h5>
+  <table class="full-width">
+    <tr>
+      <th *ngFor="let header of headers" class="text-center">{{header}}</th>
+    </tr>
+    <tr *ngFor="let rate of rates | objectKeys : excludes;">
+      <td>{{benchmarkServ.getRateName(rate)}}
+      </td>
+      <td class="metric-cell">
+        <input pInputText class="form-control" type='number' [(ngModel)]="rates[rate]['client_rate']" min="0" step="1" />
+      </td>
+      <td class="metric-cell">
+        <input pInputText class="form-control" type='number' [(ngModel)]="rates[rate]['low']" min="0" step="1" />
+      </td>
+      <td class="metric-cell">
+        <input pInputText class="form-control" type='number' [(ngModel)]="rates[rate]['high']" min="0" step="1" />
+      </td>
+      <td class="metric-cell">
+        <input pInputText class="form-control" type='number' [(ngModel)]="rates[rate]['street']" min="0" step="1" />
+      </td>
+      <td class="metric-cell">
+        <input pInputText class="form-control" type='number' [(ngModel)]="rates[rate]['practice_area_discount']" min="0" step="1" />
+      </td>
+      <td class="metric-cell">
+        <input pInputText class="form-control" type='number' [(ngModel)]="rates[rate]['yoy_rate_increase']" min="0" step="1" />
+      </td>
+
+    </tr>
+  </table>
+</div>

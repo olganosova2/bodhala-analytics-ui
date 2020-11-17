@@ -39,6 +39,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {QuillModule} from 'ngx-quill';
 import * as mockServices from '../unit-tests/mock-services';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 import { AppComponent } from '../../app.component';
 import {UserFiltersModel} from '../models/user-filters';
@@ -98,6 +99,12 @@ import {ReportCardBillingTotalsComponent} from '../../firm/firm-rate-card/report
 import {SpendTrendChartComponent} from '../../firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import {SafePipe} from '../pipes/safe.pipe';
 import {HelpModalComponent} from '../components/help-modal/help-modal.component';
+import {AddEditBenchmarkComponent} from '../../admin/admin-benchmarks/add-edit-benchmark/add-edit-benchmark.component';
+import {RouterLinkRendererComponent} from '../components/router-link-renderer/router-link-renderer.component';
+import {ClientDropDownComponent} from '../components/client-drop-down/client-drop-down.component';
+import {BenchmarkingSetupComponent} from '../../benchmarking-setup/benchmarking-setup.component';
+import {EditBenchmarkRateComponent} from '../../admin/admin-benchmarks/edit-benchmark-rate/edit-benchmark-rate.component';
+import {ObjectKeysPipe} from '../pipes/object-keys.pipe';
 
 
 export const IMPORTS = [
@@ -137,7 +144,8 @@ export const IMPORTS = [
   ChartModule.forRoot(highcharts),
   DropdownModule,
   OverlayPanelModule,
-  AgGridModule.withComponents([]),
+  MultiSelectModule,
+  AgGridModule.withComponents([ RouterLinkRendererComponent ]),
   QuillModule.forRoot()
 ];
 
@@ -188,7 +196,13 @@ export const DECLARATIONS = [
   SafePipe,
   ReportCardBillingTotalsComponent,
   SpendTrendChartComponent,
-  HelpModalComponent
+  HelpModalComponent,
+  AddEditBenchmarkComponent,
+  RouterLinkRendererComponent,
+  ClientDropDownComponent,
+  BenchmarkingSetupComponent,
+  EditBenchmarkRateComponent,
+  ObjectKeysPipe
 ];
 
 export const PROVIDERS = [
