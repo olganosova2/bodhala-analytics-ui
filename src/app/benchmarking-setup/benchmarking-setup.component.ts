@@ -202,7 +202,11 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     this.showWizard = false;
   }
   gotoRfp(pa: string): void {
-    window.location.href = '/rfp/add-collection';
+    // window.location.href = '/rfp/add-collection';
+    window.open(
+      '/rfp/add-collection',
+      '_blank'
+    );
   }
   navigate(bm: IBenchmarkSetupFormatted): void {
     this.router.navigate(['/analytics-ui/benchmarking/firm', bm.firmId], { queryParams: { year: this.selectedYear }});
