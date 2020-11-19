@@ -1,0 +1,89 @@
+<div class="benchmark-overview">
+  <bd-ie-banner></bd-ie-banner>
+  <bd-error-messages></bd-error-messages>
+  <div >
+    <div class="panel-wrapper mt20">
+      <h4 class="mb20">Benchmarking Overview</h4>
+      <div class="mb20">
+        <p-dropdown panelStyleClass="dd-class" [options]="yearOptions" [(ngModel)]="selectedYear"
+                    (onChange)="changeYear($event)"></p-dropdown>
+      </div>
+      <div class="mb20" *ngIf="noResults">No Benchmarks for {{selectedYear}} found.</div>
+      <div>
+        <table *ngIf="yearBenchmarks.length > 0" class="full-width mb20 mt20">
+          <tr>
+            <th>Firm</th>
+            <th>Practice Areas</th>
+            <th class="text-center">View</th>
+          </tr>
+          <tr *ngFor="let bm of yearBenchmarks">
+            <td>{{bm.firm_name}} ({{bm.firmId}})</td>
+            <td>
+              <span *ngFor="let pa of bm.practice_areas;index as i">{{pa}}<span *ngIf="i !== bm.practice_areas.length-1">, </span> </span>
+            </td>
+            <td class="text-center">
+              <button mat-flat-button type="button" (click)="navigate(bm)">
+                <em class="icon-eye"></em>
+              </button>
+            </td>
+          </tr>
+        </table>
+        <div class="mb20">
+          <button class="primary-button" (click)="addNew()">Add New +</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showWizard" class="panel-wrapper mt20">
+      <h4 class="mb20">Benchmarking Setup</h4>
+      <h5 class="mb20">Step 1 - Select Firms</h5>
+      <div class="p-grid">
+        <div class="p-col-2">
+          <span class="font-bold mr10">Select Firm</span>
+        </div>
+        <div class="p-col-10">
+          <p-dropdown [options]="firmOptions" [(ngModel)]="benchmark.firm_id"
+                      (onChange)="selectFirm($event)"
+                      ngDefaultControl placeholder="Select Firm" [style]="{'width':'400px'}" [filter]="true"
+                      filterBy="label"></p-dropdown>
+          <span class="ml20"><i>Note: List of Client firms - limit to firms where peer group is set up</i></span>
+        </div>
+      </div>
+
+      <div>
+        <h5 class="mb20 mt20">Step 2 - Select Practice Areas</h5>
+        <div class="p-grid">
+          <div class="p-col-2">
+            <span class="font-bold mr10">{{ benchmark.firm_name }}</span>
+          </div>
+          <div class="p-col-10">
+            <p-multiSelect [disabled]="!benchmark?.firm_id" [style]="{width:'400px'}" [options]="availablePAs"
+                           [filter]="false" (onChange)="selectPracticeArea($event)"
+                           [(ngModel)]="selectedPAs" [ngModelOptions]="{standalone: true}"
+                           placeholder="Select practice areas..."
+                           [showToggleAll]="false" [showHeader]="false"
+                           name="fieldName" ngDefaultControl>
+            </p-multiSelect>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h5 class="mb20 mt20">Step 3 - Collect Rate Cards</h5>
+        <div class="p-grid" *ngFor="let pa of benchmark.practice_areas">
+          <div class="p-col-2">
+            <span class="font-bold mr10">{{ pa.name }}</span>
+          </div>
+          <div class="p-col-10" *ngIf="pa.hasRates">
+            Card Already Collected <i class="icon-check"></i>
+          </div>
+          <div class="p-col-10" *ngIf="!pa.hasRates">
+            <button class="primary-button secondary-button" (click)="gotoRfp(pa.name)">Collect for {{pa.name}}</button>
+          </div>
+        </div>
+      </div>
+      <div class="mb20 mt20" #actionButtons>
+        <button class="primary-button secondary-button mr5" (click)="reset()">Cancel</button>
+        <button class="primary-button" [disabled]="checkIfHasRates()" (click)="save()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

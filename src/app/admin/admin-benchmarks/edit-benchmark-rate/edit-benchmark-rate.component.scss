@@ -1,0 +1,10 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/variables.scss";
+th, td {
+  padding: 10px 5px;
+  border-bottom: 1px solid $light-gray;
+}
+.metric-cell {
+  width: 13.3%;
+  text-align: center;
+}

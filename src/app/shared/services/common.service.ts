@@ -6,7 +6,15 @@ import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
 import {IUiAnnotation} from '../components/annotations/model';
-
+export interface IClient {
+  bh_client_id: number;
+  org_id: number;
+  org_name: string;
+}
+export interface IBenchmarkFirm {
+  id: number;
+  name: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -184,5 +192,8 @@ export class CommonService {
       secondLetter = note.last_name.substring(0, 1);
     }
     return firstLetter + secondLetter;
+  }
+  scrollToId(el: HTMLElement): void {
+    el.scrollIntoView();
   }
 }
