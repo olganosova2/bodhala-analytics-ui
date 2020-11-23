@@ -58,11 +58,11 @@ export class PracticeAreaDropdownComponent implements OnInit {
 
         if (this.practiceAreaSetting === 'Client Practice Areas' || this.practiceAreaSetting === undefined || this.practiceAreaSetting === null) {
           this.practiceAreasList = this.clientPracticeAreas;
-        } else if (this.practiceAreaSetting === 'Bodhala Practice Areas') {
+        } else if (this.practiceAreaSetting === 'Smart Practice Areas') {
 
           const newList = [];
           for (let practiceArea of this.bodhalaPracticeAreas) {
-            practiceArea = practiceArea + ' - Bodhala';
+            practiceArea = practiceArea + ' - [Smart]';
             newList.push(practiceArea);
           }
           this.practiceAreasList = newList;
@@ -71,7 +71,7 @@ export class PracticeAreaDropdownComponent implements OnInit {
           this.practiceAreaGroupOptions = [];
           this.practiceAreaGroupOptions = [
             {
-              label: 'Bodhala Practice Areas',
+              label: 'Smart Practice Areas',
               items: []
             },
             {
@@ -81,11 +81,11 @@ export class PracticeAreaDropdownComponent implements OnInit {
           ];
 
           for (const group of this.practiceAreaGroupOptions) {
-            if (group.label === 'Bodhala Practice Areas') {
+            if (group.label === 'Smart Practice Areas') {
               for (const practiceArea of this.bodhalaPracticeAreas) {
-                group.items.push({label: practiceArea + ' - Bodhala', value: practiceArea + ' - Bodhala'});
+                group.items.push({label: practiceArea + ' - [Smart]', value: practiceArea + ' - [Smart]'});
                 if (practiceArea === this.clientMatterType) {
-                  this.currentPracticeArea = practiceArea + ' - Bodhala';
+                  this.currentPracticeArea = practiceArea + ' - [Smart]';
                 }
               }
             }

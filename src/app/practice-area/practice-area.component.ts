@@ -73,7 +73,7 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
 
   loadPracticeArea(): void {
     let params = {};
-    if (this.clientMatterType.includes('Bodhala')) {
+    if (this.clientMatterType.includes('Smart')) {
       this.endPoint = 'getBodhalaPracticeArea';
       params = {bodhalaPA: this.clientMatterType};
       this.bodhalaPA = true;
