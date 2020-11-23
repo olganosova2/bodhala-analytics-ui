@@ -360,7 +360,7 @@ export class BenchmarkService {
     for (const bm of selected) {
       const found = result.find(f => f.firmId === bm.firm_id);
       if (!found) {
-        const newRow = {firmId: bm.firm_id, firm_name: bm.firm_name, practice_areas: [bm.name]};
+        const newRow = {id: bm.id, firmId: bm.firm_id, firm_name: bm.firm_name, practice_areas: [bm.name]};
         result.push(newRow);
       } else {
         found.practice_areas.push(bm.name);

@@ -11,6 +11,11 @@ export interface IPracticeAreaDD {
   id: number;
   name: string;
 }
+export interface IPAClientStatus {
+  collectionId: string;
+  lawyerStatus: string;
+  collectionName: string;
+}
 export interface IBMPracticeArea {
   name: string;
   hasRates: boolean;
@@ -18,6 +23,7 @@ export interface IBMPracticeArea {
   high?: number;
   low?: number;
   peers?: Array<string>;
+  currentStatus?: IPAClientStatus;
 }
 export interface IBenchmarkSetup {
   benchmark_id?: number;
@@ -29,6 +35,7 @@ export interface IBenchmarkSetup {
   practice_areas: Array<IBMPracticeArea>;
 }
 export interface IBenchmarkSetupFormatted {
+  id: number;
   firmId: number;
   firm_name?: string;
   practice_areas: Array<string>;

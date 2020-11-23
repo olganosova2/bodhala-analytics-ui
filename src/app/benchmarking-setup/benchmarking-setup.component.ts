@@ -1,8 +1,7 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
-import {AgGridService} from 'bodhala-ui-elements';
 import {BenchmarkService} from '../benchmarks/benchmark.service';
 import {Subscription} from 'rxjs';
 import {SelectItem} from 'primeng/api';
@@ -11,6 +10,9 @@ import {IBenchmarkSetup, IBenchmarkSetupFormatted, IBMPracticeArea, IFirmWithGro
 import {IDropDown} from '../shared/models/prime-ng';
 import {IBenchmark, IRowBenchmark} from '../benchmarks/model';
 import {IBenchmarkPracticeArea} from '../admin/admin-benchmarks/admin-benchmarks-model';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+
+import * as config from '../shared/services/config';
 
 const moment = _moment;
 
@@ -39,6 +41,7 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   selectedPAs: Array<string> = [];
   benchmark: IBenchmarkSetup;
   noResults: boolean;
+  urlRfp: string;
 
   @ViewChild('actionButtons') actionButtons: ElementRef<HTMLElement>;
 
@@ -52,7 +55,9 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
               public userService: UserService,
               public commonServ: CommonService,
               public utilService: UtilService,
-              public benchmarkServ: BenchmarkService) {
+              public dialog: MatDialog,
+              public benchmarkServ: BenchmarkService,
+              ) {
     this.commonServ.pageTitle = 'Benchmarking Setup';
   }
 
@@ -181,6 +186,9 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
       (data: any) => {
         const records = data.result.rates || [];
         newPa.hasRates = records.length && records.length > 0;
+        if (!newPa.hasRates) {
+          this.handleMissingRates(newPa, data.result.collections);
+        }
         const streetRates = data.result.street_rates || [];
         const discount = data.result.discount || [];
         if (discount.length > 0) {
@@ -201,10 +209,25 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     this.createNewBenchmark();
     this.showWizard = false;
   }
-  gotoRfp(pa: string): void {
-    // window.location.href = '/rfp/add-collection';
+  handleMissingRates(pa: IBMPracticeArea, collections: Array<any>): void {
+    if (collections && collections.length > 0) {
+      pa.currentStatus = { collectionId: collections[0].collection_id, collectionName: collections[0].title, lawyerStatus: null};
+      const found = collections.find(e => e.status === 'BIDDING' || e.status === 'INVITED');
+      if (found) {
+        pa.currentStatus.collectionId = found.collection_id;
+        pa.currentStatus.collectionName = found.title;
+        pa.currentStatus.lawyerStatus = found.status;
+      }
+    }
+  }
+  gotoRfp(pa: IBMPracticeArea): void {
+    if (pa.currentStatus && pa.currentStatus.collectionId) {
+      this.urlRfp = '/rfp/collection-add-firms/' + pa.currentStatus.collectionId + '?firm=' + encodeURIComponent(this.benchmark.firm_name);
+    } else {
+      this.urlRfp = '/rfp/collection-add-firms/0' + '?firm=' + encodeURIComponent(this.benchmark.firm_name) + '&pa=' + encodeURIComponent(pa.name) + '&year=' + this.selectedYear;
+    }
     window.open(
-      '/rfp/add-collection',
+      this.urlRfp,
       '_blank'
     );
   }
@@ -216,6 +239,28 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.commonServ.scrollToId(this.actionButtons.nativeElement);
     });
+  }
+  openDialog(bm: IBenchmarkSetupFormatted): void {
+    const modalConfig = {...config.confirmDialogConfig, data: {title: 'Confirm Delete', item: 'benchmark'}};
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {...modalConfig});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.delete(bm);
+      }
+    });
+  }
+  delete(bm: IBenchmarkSetupFormatted): void {
+    this.httpService.makeGetRequest('deleteBenchmark', {id: bm.id}).subscribe(
+      (data: any) => {
+        const res = data.result;
+        this.reset();
+        this.getBenchmarks();
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
   checkIfHasRates(): boolean{
     const found = this.benchmark.practice_areas.find(e => e.hasRates === true) === null || this.benchmark.practice_areas.find(e => e.hasRates === true) === undefined;

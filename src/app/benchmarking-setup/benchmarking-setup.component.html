@@ -15,6 +15,7 @@
             <th>Firm</th>
             <th>Practice Areas</th>
             <th class="text-center">View</th>
+            <th class="text-center">Delete</th>
           </tr>
           <tr *ngFor="let bm of yearBenchmarks">
             <td>{{bm.firm_name}} ({{bm.firmId}})</td>
@@ -24,6 +25,11 @@
             <td class="text-center">
               <button mat-flat-button type="button" (click)="navigate(bm)">
                 <em class="icon-eye"></em>
+              </button>
+            </td>
+            <td class="text-center">
+              <button mat-flat-button type="button" (click)="openDialog(bm)">
+                <em class="icon-trash"></em>
               </button>
             </td>
           </tr>
@@ -72,11 +78,24 @@
           <div class="p-col-2">
             <span class="font-bold mr10">{{ pa.name }}</span>
           </div>
-          <div class="p-col-10" *ngIf="pa.hasRates">
-            Card Already Collected <i class="icon-check"></i>
+
+          <div class="p-col-2" *ngIf="pa.hasRates">
+            <span class="font-bold mr10">Card Already Collected</span> <i class="icon-check"></i>
           </div>
-          <div class="p-col-10" *ngIf="!pa.hasRates">
-            <button class="primary-button secondary-button" (click)="gotoRfp(pa.name)">Collect for {{pa.name}}</button>
+          <div class="p-col-2" *ngIf="!pa.hasRates">
+            <button *ngIf="!pa.currentStatus || (pa.currentStatus && !pa.currentStatus.lawyerStatus)" class="primary-button secondary-button" (click)="gotoRfp(pa)">Collect for {{pa.name}}</button>
+            <span class="font-bold" *ngIf="pa.currentStatus && pa.currentStatus.lawyerStatus">Lawyer is {{pa.currentStatus.lawyerStatus}}</span>
+          </div>
+          <div class="p-col-8" *ngIf="!pa.hasRates">
+            <span *ngIf="!pa.currentStatus">
+              Rate Card Collection is not set up for this Practice Area. By clicking on the button at the left a new collection will be set up for you
+              and you will need to add a lawyer to respond.
+            </span>
+            <span *ngIf="pa.currentStatus && pa.currentStatus.collectionId">
+              You have already set up a collection for {{pa.name}}
+              <a href="/rfp/view-collection?collectionId={{pa.currentStatus.collectionId}}">{{pa.currentStatus.collectionName}}</a> but no rates from {{benchmark.firm_name}} have been collected.<br/>
+              <span *ngIf="!pa.currentStatus.lawyerStatus">By clicking on the button at the left you will be redirected to invite a lawyer to respond.</span>
+            </span>
           </div>
         </div>
       </div>
