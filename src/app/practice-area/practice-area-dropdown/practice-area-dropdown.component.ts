@@ -62,7 +62,7 @@ export class PracticeAreaDropdownComponent implements OnInit {
 
           const newList = [];
           for (let practiceArea of this.bodhalaPracticeAreas) {
-            practiceArea = practiceArea + ' - Bodhala';
+            practiceArea = practiceArea + ' - [Smart]';
             newList.push(practiceArea);
           }
           this.practiceAreasList = newList;
@@ -83,9 +83,9 @@ export class PracticeAreaDropdownComponent implements OnInit {
           for (const group of this.practiceAreaGroupOptions) {
             if (group.label === 'Smart Practice Areas') {
               for (const practiceArea of this.bodhalaPracticeAreas) {
-                group.items.push({label: practiceArea + ' - Bodhala', value: practiceArea + ' - Bodhala'});
+                group.items.push({label: practiceArea + ' - [Smart]', value: practiceArea + ' - [Smart]'});
                 if (practiceArea === this.clientMatterType) {
-                  this.currentPracticeArea = practiceArea + ' - Bodhala';
+                  this.currentPracticeArea = practiceArea + ' - [Smart]';
                 }
               }
             }
