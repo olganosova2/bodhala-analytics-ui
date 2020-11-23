@@ -52,6 +52,7 @@ export const END_POINTS_URLS = {
   getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
+  deleteBenchmark: { url: BASE_URL + 'client/benchmarking/deleteBenchmark/{id}', showLoading: true},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
 
   getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
