@@ -195,7 +195,7 @@ export const MOCK_BENCHMARKS =  {
   }, {
     "benchmark_id": 5,
     "year": '2020',
-    "firm_id": 283,
+    "firm_id": 62,
     "firm_name": "Wood Smith Henning & Berman",
     "name": "M&A",
     "tier": "$",
@@ -671,295 +671,1043 @@ export const MOCK_FIRMS_WITH_GROUP_ID = {
   "error": null
 };
 export const BM_CHECK_RATES = {
+  "result": {
+    "discount": [{
+      "percetage_range_start": 15,
+      "percetage_range_end": 25,
+      "practice_area_id": 75,
+      "tier": 1
+    }],
+    "street_rates": [{
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 1st Year",
+      "year": 2020,
+      "current_standard_rate": 650,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 2nd Year",
+      "year": 2020,
+      "current_standard_rate": 775,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 3rd Year",
+      "year": 2020,
+      "current_standard_rate": 890,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 4th Year",
+      "year": 2020,
+      "current_standard_rate": 980,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 5th Year",
+      "year": 2020,
+      "current_standard_rate": 1030,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 6th Year",
+      "year": 2020,
+      "current_standard_rate": 1065,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 7th Year",
+      "year": 2020,
+      "current_standard_rate": 1090,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 8th Year",
+      "year": 2020,
+      "current_standard_rate": 1100,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 9th Year",
+      "year": 2020,
+      "current_standard_rate": 1100,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Associate - 10+ Year",
+      "year": 2020,
+      "current_standard_rate": 1100,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Partner Tier 1",
+      "year": 2020,
+      "current_standard_rate": 1445,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Partner Tier 7",
+      "year": 2020,
+      "current_standard_rate": 1645,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 15,
+      "firm_name": "Cleary Gottlieb Steen & Hamilton",
+      "collection_id": 28,
+      "title": "Cleary Gottlieb Steen & Hamilton",
+      "bh_classification_detail": "Partner Tier 14",
+      "year": 2020,
+      "current_standard_rate": 1715,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Paralegal",
+      "year": 2020,
+      "current_standard_rate": 453,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 1st Year",
+      "year": 2020,
+      "current_standard_rate": 650,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 2nd Year",
+      "year": 2020,
+      "current_standard_rate": 795,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 3rd Year",
+      "year": 2020,
+      "current_standard_rate": 995,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 4th Year",
+      "year": 2020,
+      "current_standard_rate": 1100,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 5th Year",
+      "year": 2020,
+      "current_standard_rate": 1140,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 6th Year",
+      "year": 2020,
+      "current_standard_rate": 1160,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 7th Year",
+      "year": 2020,
+      "current_standard_rate": 1195,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 8th Year",
+      "year": 2020,
+      "current_standard_rate": 1225,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Associate - 9th Year",
+      "year": 2020,
+      "current_standard_rate": 1275,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Partner Tier 1",
+      "year": 2020,
+      "current_standard_rate": 1600,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Partner Tier 7",
+      "year": 2020,
+      "current_standard_rate": 1850,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 14,
+      "firm_name": "Sullivan & Cromwell",
+      "collection_id": 25,
+      "title": "Sullivan & Cromwell",
+      "bh_classification_detail": "Partner Tier 14",
+      "year": 2020,
+      "current_standard_rate": 1960,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Paralegal",
+      "year": 2020,
+      "current_standard_rate": 435,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 1st Year",
+      "year": 2020,
+      "current_standard_rate": 595,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 2nd Year",
+      "year": 2020,
+      "current_standard_rate": 730,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 3rd Year",
+      "year": 2020,
+      "current_standard_rate": 845,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 4th Year",
+      "year": 2020,
+      "current_standard_rate": 930,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 5th Year",
+      "year": 2020,
+      "current_standard_rate": 980,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 6th Year",
+      "year": 2020,
+      "current_standard_rate": 1010,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 7th Year",
+      "year": 2020,
+      "current_standard_rate": 1050,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 8th Year",
+      "year": 2020,
+      "current_standard_rate": 1050,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 9th Year",
+      "year": 2020,
+      "current_standard_rate": 1050,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Associate - 10+ Year",
+      "year": 2020,
+      "current_standard_rate": 1050,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Partner Tier 1",
+      "year": 2020,
+      "current_standard_rate": 1125,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Partner Tier 7",
+      "year": 2020,
+      "current_standard_rate": 1410,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 13,
+      "firm_name": "Weil, Gotshal & Manges",
+      "collection_id": 23,
+      "title": "Weil, Gotshal & Manges",
+      "bh_classification_detail": "Partner Tier 14",
+      "year": 2020,
+      "current_standard_rate": 1695,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Paralegal",
+      "year": 2020,
+      "current_standard_rate": 365,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 1st Year",
+      "year": 2020,
+      "current_standard_rate": 640,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 2nd Year",
+      "year": 2020,
+      "current_standard_rate": 735,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 3rd Year",
+      "year": 2020,
+      "current_standard_rate": 835,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 4th Year",
+      "year": 2020,
+      "current_standard_rate": 920,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 5th Year",
+      "year": 2020,
+      "current_standard_rate": 940,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 6th Year",
+      "year": 2020,
+      "current_standard_rate": 980,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 7th Year",
+      "year": 2020,
+      "current_standard_rate": 1005,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 8th Year",
+      "year": 2020,
+      "current_standard_rate": 1030,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 9th Year",
+      "year": 2020,
+      "current_standard_rate": 1065,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Associate - 10+ Year",
+      "year": 2020,
+      "current_standard_rate": 1065,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Partner Tier 1",
+      "year": 2020,
+      "current_standard_rate": 1230,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Partner Tier 7",
+      "year": 2020,
+      "current_standard_rate": 1355,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 25,
+      "firm_name": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "collection_id": 24,
+      "title": "Paul, Weiss, Rifkind, Wharton & Garrison",
+      "bh_classification_detail": "Partner Tier 14",
+      "year": 2020,
+      "current_standard_rate": 1560,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Paralegal",
+      "year": 2020,
+      "current_standard_rate": 460,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 1st Year",
+      "year": 2020,
+      "current_standard_rate": 735,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 2nd Year",
+      "year": 2020,
+      "current_standard_rate": 920,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 3rd Year",
+      "year": 2020,
+      "current_standard_rate": 1065,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 4th Year",
+      "year": 2020,
+      "current_standard_rate": 1155,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 5th Year",
+      "year": 2020,
+      "current_standard_rate": 1205,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 6th Year",
+      "year": 2020,
+      "current_standard_rate": 1225,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 7th Year",
+      "year": 2020,
+      "current_standard_rate": 1225,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 8th Year",
+      "year": 2020,
+      "current_standard_rate": 1225,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 9th Year",
+      "year": 2020,
+      "current_standard_rate": 1225,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Associate - 10+ Year",
+      "year": 2020,
+      "current_standard_rate": 1225,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Partner Tier 1",
+      "year": 2020,
+      "current_standard_rate": 1580,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Partner Tier 7",
+      "year": 2020,
+      "current_standard_rate": 1800,
+      "practice_area_discount_pct": null
+    }, {
+      "bh_lawfirm_id": 42,
+      "firm_name": "Debevoise & Plimpton",
+      "collection_id": 48,
+      "title": "Debevoise & Plimpton",
+      "bh_classification_detail": "Partner Tier 14",
+      "year": 2020,
+      "current_standard_rate": 1860,
+      "practice_area_discount_pct": null
+    }],
+    "collections": [{
+      "collection_id": 119,
+      "title": "Cooley Rate Card Collection - Capital Markets - 2020",
+      "status": "BIDDING",
+      "lawyer_info_id": null,
+      "collection_category_id": 34,
+      "display_name": "Capital Markets"
+    }],
+    "rates": [{
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 1st Year",
+      "year": 2020,
+      "current_standard_rate": 500,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 2nd Year",
+      "year": 2020,
+      "current_standard_rate": 520,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 3rd Year",
+      "year": 2020,
+      "current_standard_rate": 530,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 4th Year",
+      "year": 2020,
+      "current_standard_rate": 540,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 5th Year",
+      "year": 2020,
+      "current_standard_rate": 560,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 6th Year",
+      "year": 2020,
+      "current_standard_rate": 570,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 7th Year",
+      "year": 2020,
+      "current_standard_rate": 580,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 8th Year",
+      "year": 2020,
+      "current_standard_rate": 600,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 9th Year",
+      "year": 2020,
+      "current_standard_rate": 620,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Associate - 10+ Year",
+      "year": 2020,
+      "current_standard_rate": 630,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Counsel",
+      "year": 2020,
+      "current_standard_rate": 640,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Paralegal",
+      "year": 2020,
+      "current_standard_rate": null,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 1",
+      "year": 2020,
+      "current_standard_rate": 900,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 2",
+      "year": 2020,
+      "current_standard_rate": 950,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 3",
+      "year": 2020,
+      "current_standard_rate": 960,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 4",
+      "year": 2020,
+      "current_standard_rate": 970,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 5",
+      "year": 2020,
+      "current_standard_rate": 980,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 6",
+      "year": 2020,
+      "current_standard_rate": 990,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 7",
+      "year": 2020,
+      "current_standard_rate": 1000,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 8",
+      "year": 2020,
+      "current_standard_rate": 1100,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 9",
+      "year": 2020,
+      "current_standard_rate": 1150,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 10",
+      "year": 2020,
+      "current_standard_rate": 1200,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 11",
+      "year": 2020,
+      "current_standard_rate": 1250,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 12",
+      "year": 2020,
+      "current_standard_rate": 1300,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 13",
+      "year": 2020,
+      "current_standard_rate": 1350,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 14",
+      "year": 2020,
+      "current_standard_rate": 1400,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 15",
+      "year": 2020,
+      "current_standard_rate": 1600,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 16",
+      "year": 2020,
+      "current_standard_rate": null,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 17",
+      "year": 2020,
+      "current_standard_rate": null,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 18",
+      "year": 2020,
+      "current_standard_rate": null,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 19",
+      "year": 2020,
+      "current_standard_rate": null,
+      "practice_area_discount_pct": 10
+    }, {
+      "collection_id": 118,
+      "title": "Cooley Rate Card Collection - Litigation - 2020",
+      "collection_category_id": 33,
+      "display_name": "Litigation",
+      "bh_classification_detail": "Partner Tier 20",
+      "year": 2020,
+      "current_standard_rate": null,
+      "practice_area_discount_pct": 10
+    }]
+  },
+  "error": null
+};
+export const MOCK_PA_AND_ID = {
   "result": [{
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 1st Year",
-    "year": 2020,
-    "current_standard_rate": 100,
-    "practice_area_discount_pct": 20
+    "id": 65,
+    "name": "Banking & Credit"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 2nd Year",
-    "year": 2020,
-    "current_standard_rate": 120,
-    "practice_area_discount_pct": 20
+    "id": 64,
+    "name": "Bankruptcy"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 3rd Year",
-    "year": 2020,
-    "current_standard_rate": 130,
-    "practice_area_discount_pct": 20
+    "id": 66,
+    "name": "Capital Markets"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 4th Year",
-    "year": 2020,
-    "current_standard_rate": 140,
-    "practice_area_discount_pct": 20
+    "id": 67,
+    "name": "Energy"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 5th Year",
-    "year": 2020,
-    "current_standard_rate": 150,
-    "practice_area_discount_pct": 20
+    "id": 68,
+    "name": "Funds"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 6th Year",
-    "year": 2020,
-    "current_standard_rate": 160,
-    "practice_area_discount_pct": 20
+    "id": 69,
+    "name": "General/Other"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 7th Year",
-    "year": 2020,
-    "current_standard_rate": 170,
-    "practice_area_discount_pct": 20
+    "id": 70,
+    "name": "Health Care"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 8th Year",
-    "year": 2020,
-    "current_standard_rate": 180,
-    "practice_area_discount_pct": 20
+    "id": 71,
+    "name": "IP"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 9th Year",
-    "year": 2020,
-    "current_standard_rate": 200,
-    "practice_area_discount_pct": 20
+    "id": 72,
+    "name": "Labor & Employment"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Associate - 10+ Year",
-    "year": 2020,
-    "current_standard_rate": 220,
-    "practice_area_discount_pct": 20
+    "id": 75,
+    "name": "Litigation"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Counsel",
-    "year": 2020,
-    "current_standard_rate": 230,
-    "practice_area_discount_pct": 20
+    "id": 73,
+    "name": "M&A"
   }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Paralegal",
-    "year": 2020,
-    "current_standard_rate": 240,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 1",
-    "year": 2020,
-    "current_standard_rate": 250,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 2",
-    "year": 2020,
-    "current_standard_rate": 260,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 3",
-    "year": 2020,
-    "current_standard_rate": 270,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 4",
-    "year": 2020,
-    "current_standard_rate": 280,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 5",
-    "year": 2020,
-    "current_standard_rate": 280,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 6",
-    "year": 2020,
-    "current_standard_rate": 290,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 7",
-    "year": 2020,
-    "current_standard_rate": 300,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 8",
-    "year": 2020,
-    "current_standard_rate": 310,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 9",
-    "year": 2020,
-    "current_standard_rate": 320,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 10",
-    "year": 2020,
-    "current_standard_rate": 330,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 11",
-    "year": 2020,
-    "current_standard_rate": 340,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 12",
-    "year": 2020,
-    "current_standard_rate": null,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 13",
-    "year": 2020,
-    "current_standard_rate": null,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 14",
-    "year": 2020,
-    "current_standard_rate": 380,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 15",
-    "year": 2020,
-    "current_standard_rate": 390,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 16",
-    "year": 2020,
-    "current_standard_rate": null,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 17",
-    "year": 2020,
-    "current_standard_rate": 400,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 18",
-    "year": 2020,
-    "current_standard_rate": 420,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 19",
-    "year": 2020,
-    "current_standard_rate": null,
-    "practice_area_discount_pct": 20
-  }, {
-    "collection_id": 6,
-    "title": "After Elections Collection",
-    "collection_category_id": 13,
-    "display_name": "Funds",
-    "bh_classification_detail": "Partner Tier 20",
-    "year": 2020,
-    "current_standard_rate": null,
-    "practice_area_discount_pct": 20
+    "id": 74,
+    "name": "Real Estate"
   }],
   "error": null
 };
+export const MOCK_ADMIN_BENCHMARK = {
+  "error": null,
+  "result": {
+    "client": "AIG Test",
+    "client_id": 190,
+    "firm": "Cooley",
+    "firm_id": 47,
+    "id": 26,
+    "practice_areas": [
+      {
+        "benchmark_id": 26,
+        "id": 53,
+        "name": "M&A",
+        "peers": [
+          "Cleary Gottlieb Steen & Hamilton",
+          "Latham & Watkins",
+          "Sullivan & Cromwell",
+          "Weil, Gotshal & Manges",
+          "Kirkland & Ellis"
+        ],
+        "rates": {
+          "junior_associate": {
+            "client_rate": 586,
+            "high": 711,
+            "low": 634,
+            "practice_area_discount": 5,
+            "street": 769,
+            "yoy_rate_increase": null
+          },
+          "junior_partner": {
+            "client_rate": 887,
+            "high": 1218,
+            "low": 1087,
+            "practice_area_discount": 5,
+            "street": 1317,
+            "yoy_rate_increase": null
+          },
+          "mid_associate": {
+            "client_rate": 618,
+            "high": 968,
+            "low": 863,
+            "practice_area_discount": 5,
+            "street": 1046,
+            "yoy_rate_increase": null
+          },
+          "mid_partner": {
+            "client_rate": 1029,
+            "high": 1425,
+            "low": 1271,
+            "practice_area_discount": 5,
+            "street": 1540,
+            "yoy_rate_increase": null
+          },
+          "senior_associate": {
+            "client_rate": 651,
+            "high": 1053,
+            "low": 939,
+            "practice_area_discount": 5,
+            "street": 1138,
+            "yoy_rate_increase": null
+          },
+          "senior_partner": {
+            "client_rate": 1262,
+            "high": 1582,
+            "low": 1411,
+            "practice_area_discount": 5,
+            "street": 1710,
+            "yoy_rate_increase": null
+          }
+        },
+        "tier": "$$$$"
+      }
+    ],
+    "year": 2020
+  }
+};
+
+
+
 
