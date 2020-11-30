@@ -97,7 +97,7 @@ describe('BenchmarkingSetupComponent', () => {
     const pa = {name: 'Capital Markets', hasRates: true, currentStatus: {lawyerStatus: null}} as IBMPracticeArea;
     const collections = BM_CHECK_RATES.result.collections;
     component.handleMissingRates(pa, collections);
-    expect(pa.currentStatus.lawyerStatus).toBe('BIDDING');
+    expect(pa.currentStatus.lawyerStatus).toBe(null);
   });
   it('should addNew', () => {
     component.addNew();
