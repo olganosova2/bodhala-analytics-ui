@@ -212,7 +212,7 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   handleMissingRates(pa: IBMPracticeArea, collections: Array<any>): void {
     if (collections && collections.length > 0) {
       pa.currentStatus = { collectionId: collections[0].collection_id, collectionName: collections[0].title, lawyerStatus: null};
-      const found = collections.find(e => (e.status === 'BIDDING' || e.status === 'INVITED') && e.bh_lawfirm_id === this.benchmark.firm_id);
+      const found = collections.find(e => (e.status === 'BIDDING' || e.status === 'INVITED') && e.bh_lawfirm_id === this.benchmark.firm_id && e.law_firm_id === this.benchmark.firm_id);
       if (found) {
         pa.currentStatus.collectionId = found.collection_id;
         pa.currentStatus.collectionName = found.title;
