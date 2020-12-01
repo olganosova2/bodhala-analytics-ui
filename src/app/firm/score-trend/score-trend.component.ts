@@ -49,6 +49,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   @Input() firm: IFirm;
   @Input() clientMatterType: string;
   @Input() practiceArea: IPracticeArea;
+  @Input() bodhalaPA: boolean = false;
   pendingRequest: Subscription;
   pendingRequestTrends: Subscription;
   @ViewChild('trendsDiv') trendsDiv: ElementRef<HTMLElement>;
@@ -131,7 +132,11 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         this.clientMatterType = this.clientMatterType.replace(regEx, '???!');
         this.clientMatterType = encodeURIComponent(this.clientMatterType);
       }
-      params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
+      if (this.bodhalaPA === true) {
+        params = {clientId: this.userService.currentUser.client_info.id, bdPracticeAreas: this.clientMatterType};
+      } else {
+        params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
+      }
       const response1 = this.httpService.makeGetRequest('getPracticeAreaScore', params);
       const response2 = this.httpService.makeGetRequest('getPracticeAreaTrends', params);
       this.clientMatterType = decodeURIComponent(this.clientMatterType);
