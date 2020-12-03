@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MOCK_ADMIN_BENCHMARK} from '../../../shared/unit-tests/mock-data/benchmarking';
+import {IAdminBenchmark} from '../admin-benchmarks-model';
 
 describe('AddEditBenchmarkComponent', () => {
   let component: AddEditBenchmarkComponent;
@@ -41,6 +42,7 @@ describe('AddEditBenchmarkComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddEditBenchmarkComponent);
     component = fixture.componentInstance;
+    // component.benchmark = MOCK_ADMIN_BENCHMARK.result;
     fixture.detectChanges();
   });
 
@@ -60,19 +62,24 @@ describe('AddEditBenchmarkComponent', () => {
     component.reset();
     expect(component.selectedClient).toBe(null);
   });
+  it('should selectClient', () => {
+    component.benchmark = {} as IAdminBenchmark;
+    const client =  { bh_client_id: 1, org_id: 1, org_name: 'A'};
+    component.selectClient(client);
+    expect(component.benchmark.client_id).toBe(1);
+  });
   it('should save', () => {
     component.benchmark = MOCK_ADMIN_BENCHMARK.result;
     component.save();
     expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
   });
-  it('should getFirms', () => {
-    component.getFirms();
-    expect(component.firms).toEqual([]);
-  });
-  // xit('should selectClient', () => {
+  // it('should selectFirm', () => {
   //   component.benchmark = MOCK_ADMIN_BENCHMARK.result;
-  //   const client =  { bh_client_id: 1, org_id: 1, org_name: 'A'};
-  //   component.selectClient(client);
-  //   expect(component.benchmark.client_id).toBe(1);
+  //   component.selectFirm({id: 1, name: 'A'});
+  //   expect(component.benchmark.firm_id).toBe(1);
+  // });
+  // it('should getFirms', () => {
+  //   component.getFirms();
+  //   expect(component.firms).toEqual([]);
   // });
 });
