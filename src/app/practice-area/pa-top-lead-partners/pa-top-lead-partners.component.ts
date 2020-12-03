@@ -18,6 +18,7 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
   helpText: string = 'Total amount billed and Bodhala Price Index for the top Lead Partners in this Practice Area.';
   @Input() clientMatterType: string;
   @Input() practiceArea: IPracticeArea;
+  @Input() bodhalaPA: boolean;
   pendingRequest: Subscription;
 
   constructor(private route: ActivatedRoute,
@@ -36,15 +37,18 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
     arr.push(this.practiceArea.client_matter_type);
-    params.practiceAreas = JSON.stringify(arr);
+    if (this.bodhalaPA === true) {
+      params.bdPracticeAreas = JSON.stringify(arr);
+    } else {
+      params.practiceAreas = JSON.stringify(arr);
+    }
 
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       maximumFractionDigits: 2,
       minimumFractionDigits: 2
-  });
-
+    });
     this.pendingRequest = this.httpService.makeGetRequest('getTopLeadPartners', params).subscribe(
       (data: any) => {
         this.leadPartners = data.result;

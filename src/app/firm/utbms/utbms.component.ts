@@ -13,9 +13,6 @@ import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
-import { registerLocaleData } from '@angular/common';
-import { ɵAnimationGroupPlayer } from '@angular/animations';
-import { SpyNgModuleFactoryLoader } from '@angular/router/testing';
 
 
 @Component({
@@ -37,6 +34,7 @@ export class UtbmsComponent implements OnInit, OnDestroy {
   isCollapsed: boolean = true;
   @Input() firmId: number;
   @Input() practiceArea: IPracticeArea;
+  @Input() bodhalaPA: boolean;
 
 
   utbmsColors = {
@@ -91,7 +89,11 @@ export class UtbmsComponent implements OnInit, OnDestroy {
     }
     if (this.practiceArea) {
       arr.push(this.practiceArea.client_matter_type);
-      params.practiceAreas = JSON.stringify(arr);
+      if (this.bodhalaPA === true) {
+        params.bdPracticeAreas = JSON.stringify(arr);
+      } else {
+        params.practiceAreas = JSON.stringify(arr);
+      }
     }
     this.pendingRequest = this.httpService.makeGetRequest('getSpendByUtbmsCodes', params).subscribe(
       (data: any) => {
@@ -115,7 +117,11 @@ export class UtbmsComponent implements OnInit, OnDestroy {
     }
     if (this.practiceArea) {
       arr.push(this.practiceArea.client_matter_type);
-      params.practiceAreas = JSON.stringify(arr);
+      if (this.bodhalaPA === true) {
+        params.bdPracticeAreas = JSON.stringify(arr);
+      } else {
+        params.practiceAreas = JSON.stringify(arr);
+      }
     }
     this.pendingRequest = this.httpService.makeGetRequest('getPhaseTaxonomySpend', params).subscribe(
       (data: any) => {

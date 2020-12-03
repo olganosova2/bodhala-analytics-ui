@@ -56,6 +56,7 @@ export const END_POINTS_URLS = {
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
 
   getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
+  getBodhalaPracticeArea: {url: BASE_URL + 'analytics/getSpendByBodhalaPATable', showLoading: false},
   getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
   getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
   getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
