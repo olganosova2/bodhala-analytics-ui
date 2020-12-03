@@ -52,9 +52,11 @@ export const END_POINTS_URLS = {
   getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
 
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
+  deleteBenchmark: { url: BASE_URL + 'client/benchmarking/deleteBenchmark/{id}', showLoading: true},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
 
   getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
+  getBodhalaPracticeArea: {url: BASE_URL + 'analytics/getSpendByBodhalaPATable', showLoading: false},
   getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
   getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
   getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
@@ -66,6 +68,20 @@ export const END_POINTS_URLS = {
   deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
   reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true},
   getTrainingMaterialsArticle: {url: BASE_URL + 'analytics/getTrainingMaterialsArticle', showLoading: false},
+  getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
+  getPracticeAreas: {url: BASE_URL + 'client/getPracticeAreas', showLoading: true},
+  getPracticeAreasAndId: {url: BASE_URL + 'client/getPracticeAreasAndId', showLoading: true},
+  saveBenchmark: {url: BASE_URL + 'client/benchmarking/saveBenchmark', showLoading: true},
+  saveBenchmarkPAs: {url: BASE_URL + 'client/benchmarking/saveBenchmarkPAs', showLoading: true},
+  getRatesForCategoryAndLawyer:  {url: BASE_URL + 'client/getRatesForCategoryAndLawyer', showLoading: true},
+
+
+  getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
+  getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},
+  getAdminBenchmark: {url: BASE_URL + 'admin/benchmarking/benchmarks/{id}'},
+  getFirmsForBenchmark: {url: BASE_URL + 'getFirmNamesLike', showLoading: false},
+  updateBenchmarkPA: {url: BASE_URL + 'admin/benchmarking/saveBenchmarkPAs', showLoading: true},
+
 };
 
 export const ROUTES = [
@@ -73,7 +89,9 @@ export const ROUTES = [
   {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/'},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
-  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'}
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'},
+  {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'},
+  {name: 'analytics.benchmarking.setup', routePath: 'analytics-ui/benchmarks-setup', fragment: '/benchmarks-setup'}
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];

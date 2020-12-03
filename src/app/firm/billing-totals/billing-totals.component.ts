@@ -21,6 +21,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
   itemTopRowCount: number = 6;
   @Input() practiceArea: IPracticeArea;
   @Input() firm: IFirm;
+  @Input() bodhalaPA: boolean;
 
   constructor(private httpService: HttpService,
               public filtersService: FiltersService,
@@ -45,7 +46,11 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       } else {
         arr.push(this.practiceArea.client_matter_type);
       }
-      params.practiceAreas = JSON.stringify(arr);
+      if (this.bodhalaPA === true) {
+        params.bdPracticeAreas = JSON.stringify(arr);
+      } else {
+        params.practiceAreas = JSON.stringify(arr);
+      }
     }
     this.isLoaded = false;
     this.pendingRequest = this.httpService.makeGetRequest('getBillingTotals', params).subscribe(

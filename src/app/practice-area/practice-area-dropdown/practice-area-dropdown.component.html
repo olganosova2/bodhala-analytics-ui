@@ -1,4 +1,5 @@
 <div class="practice_area_dropdown">
     View Practice Area Detail:
-    <p-dropdown class="dropdown ml5" [options]="practiceAreaOptions" [(ngModel)]="clientMatterType" ngDefaultControl (onChange)="getPracticeArea()" placeholder="{{currentPracticeArea}}" [style]="dropdownWidth"></p-dropdown>
+    <p-dropdown *ngIf="practiceAreaSetting === 'Client Practice Areas' || practiceAreaSetting === 'Smart Practice Areas' || practiceAreaSetting === undefined || practiceAreaSetting === null" class="dropdown ml5" [options]="practiceAreaOptions" [(ngModel)]="clientMatterType" ngDefaultControl (onChange)="getPracticeArea()" placeholder="{{currentPracticeArea}}" [style]="dropdownWidth"></p-dropdown>
+    <p-dropdown *ngIf="practiceAreaSetting === 'Both'" class="dropdown ml5" [options]="practiceAreaGroupOptions" [(ngModel)]="clientMatterType" ngDefaultControl (onChange)="getPracticeArea()" placeholder="{{currentPracticeArea}}" [style]="dropdownWidth" [group]="true"></p-dropdown>
 </div>

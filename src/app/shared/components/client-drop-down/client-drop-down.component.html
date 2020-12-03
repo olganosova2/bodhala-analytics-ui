@@ -1,0 +1,15 @@
+<mat-form-field class="example-full-width">
+  <input type="text"
+         placeholder="Type to search for a client; e.g: 'State Farm'"
+         aria-label="Number"
+         matInput
+         autocomplete="off"
+         (input)="filterClients($event.target.value)"
+         [(ngModel)]="selectedClient"
+         [matAutocomplete]="auto">
+  <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayProperty" (optionSelected)="selectClient($event.option.value)">
+    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+      {{option.org_name}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

@@ -7,7 +7,7 @@ import {convertToParamMap} from '@angular/router';
 import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC, MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC_COMP} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
 import {MOCK_INSIGHTS} from './mock-data/insights';
-import {MOCK_BENCHMARKS} from './mock-data/benchmarking';
+import {BM_CHECK_RATES, MOCK_ADMIN_BENCHMARK, MOCK_ADMIN_BMS, MOCK_BENCHMARKS, MOCK_FIRMS_WITH_GROUP_ID, MOCK_PA_AND_ID} from './mock-data/benchmarking';
 import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
 import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data/practice-area';
 import {SAVINGS_DATA} from './mock-data/savings-calculator';
@@ -16,6 +16,7 @@ import {SPEND_BY_UTBMS_CODES} from './mock-data/uybms-codes';
 import {MOCK_TASK_COST} from './mock-data/task-cost';
 import {MOCK_ANNOTATIONS} from './mock-data/annotations';
 import {FRESHDESK_ARTICLE} from './mock-data/freshdesk-article';
+import {NgZone} from '@angular/core';
 
 export const ngWindow = {
   location: {
@@ -25,55 +26,69 @@ export const ngWindow = {
 
 export class UserStub {
   entitlements: [any];
-  config: object;
+  config: {};
+  // config: {'analytics.practice.bodhala.areas': {configs: [{description: "config for analytics practice areas", value: "Client Practice Areas", json_config: "Client Practice Areas"}]}};
   errorMessage: any;
   userId: number = 80;
   currentUser = CURRENT_USER.result.user;
+
   public load() {
     return of(this.currentUser);
   }
+
   public hasEntitlement(ent) {
     return true;
   }
 }
+
 export class FiltersStub {
   userFilters: {};
   startDate: string = '2019-01-01';  // only for debugging on localhost:4000, on the server it always will be overwritten
   endDate: string = '2019-06-24';
-  public setCurrentUserFilters() {}
+
+  public setCurrentUserFilters() {
+  }
+
   public getCurrentUserCombinedFilters() {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
+
   public getCommonFilters() {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
+
   public parseLSDateString() {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
+
   public parseLSQueryString() {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
 }
+
 export class DataStub {
-  public downloadAttachment() {}
+  public downloadAttachment() {
+  }
+
   public makePostRequest(url: string, request: any): Observable<any> {
     switch (url) {
       case 'deleteMatter':
         if (request && request.id === 505) {
-          return throwError({ errorStatus: 505 });
+          return throwError({errorStatus: 505});
         }
         return of({});
       case 'getTopMattersAndLeadPartners':
-        return of({result: TOP_MATTERS });
+        return of({result: TOP_MATTERS});
       case 'getTopFirms':
-        return of({result: TOP_FIRMS });
+        return of({result: TOP_FIRMS});
       case 'getAnnotations':
-        return of({result: MOCK_ANNOTATIONS.result[0] });
+        return of({result: MOCK_ANNOTATIONS.result[0]});
       default:
         return of([]);
     }
     return of({});
   }
+
   public makeGetRequest(url: string, request?: any): Observable<any> {
     switch (url) {
       case 'getTopMatters':
@@ -91,7 +106,7 @@ export class DataStub {
       case 'getDiversityData':
         return of({result: MOCK_DIVERSITY_DATA});
       case 'getFirm':
-        return of({result: [ MOCK_FIRM ]});
+        return of({result: [MOCK_FIRM]});
       case 'getBillingTotals':
         return of(MOCK_BILLING_TOTALS);
       case 'getExecutiveSummaryBillingTotals':
@@ -113,13 +128,13 @@ export class DataStub {
       case 'getTopLeadPartners':
         return of(MOCK_TOP_LPS);
       case 'getTopMattersAndLeadPartners':
-        return of( TOP_MATTERS);
+        return of(TOP_MATTERS);
       case 'getTopFirms':
-        return of( TOP_FIRMS );
+        return of(TOP_FIRMS);
       case 'getMattersByHighestAverageRate':
         return of({result: []});
       case 'getActiveSpend':
-        return of({result: { data: []}});
+        return of({result: {data: []}});
       case 'getClientInsights':
         return of(MOCK_INSIGHTS);
       case 'getBenchmarks':
@@ -129,7 +144,7 @@ export class DataStub {
       case 'getPracticeAreasListByClient':
         return of(MOCK_PRACTICE_AREAS);
       case 'getSpendByUtbmsCodes':
-        return of (SPEND_BY_UTBMS_CODES);
+        return of(SPEND_BY_UTBMS_CODES);
       case 'getPhaseTaxonomySpend':
         return of(MOCK_PHASE_TAXONOMY);
       case 'getOptionsForFilter':
@@ -150,11 +165,22 @@ export class DataStub {
         return of(MOCK_ANNOTATIONS);
       case 'getTrainingMaterialsArticle':
         return of(FRESHDESK_ARTICLE);
+      case 'getFirmsWithGroupId':
+        return of(MOCK_FIRMS_WITH_GROUP_ID);
+      case 'getRatesForCategoryAndLawyer':
+        return of(BM_CHECK_RATES);
+      case 'getPracticeAreasAndId':
+        return of(MOCK_PA_AND_ID);
+      case 'getAdminBenchmark':
+        return of(MOCK_ADMIN_BENCHMARK);
+      case 'getAdminBenchmarks':
+        return of(MOCK_ADMIN_BMS);
       default:
         return of([]);
     }
     return of({});
   }
+
   public makeDeleteRequest(url: string, request?: any): Observable<any> {
     switch (url) {
       case 'deleteSavedExport':
@@ -164,25 +190,28 @@ export class DataStub {
     }
     return of({});
   }
+
   public fetch(url: string, params: any): Observable<any> {
     if (url.indexOf('errorStub') >= 0) {
-      return throwError({ errorStatus: 505 });
+      return throwError({errorStatus: 505});
     }
     return of({});
   }
 
   public makeFileNetGetRequest(url: string, docParams: any): Observable<any> {
     if (!docParams.applicationId) {
-      return throwError({ errorStatus: 505 });
+      return throwError({errorStatus: 505});
     }
     return of([]);
   }
+
   // ...
 }
+
 export class HttpStub {
   public post(url: string, payload: any, httpOpts?: any): Observable<any> {
     if (!payload) {
-      return throwError({ errorStatus: 505 });
+      return throwError({errorStatus: 505});
     }
 
     return of([]);
@@ -190,31 +219,34 @@ export class HttpStub {
 
   public get(url: string, params: any): Observable<any> {
     if (url.indexOf('errorStub') >= 0) {
-      return throwError({ errorStatus: 505 });
+      return throwError({errorStatus: 505});
     }
     return of([]);
   }
 
   public delete(url: string, params: any): Observable<any> {
     if (url.indexOf('errorStub') >= 0) {
-      return throwError({ errorStatus: 505 });
+      return throwError({errorStatus: 505});
     }
     return of([]);
   }
 }
+
 export class MattersAndFirmsServiceStub {
- public fetchMatters() {
-   return Promise.resolve({result: []});
- }
+  public fetchMatters() {
+    return Promise.resolve({result: []});
+  }
+
   public fetchFirms() {
     return Promise.resolve({result: []});
   }
+
   public fetchActiveSpend() {
-    return Promise.resolve({result: { data: []}});
+    return Promise.resolve({result: {data: []}});
   }
 
   public fetchMattersByHighestAverageRate() {
-    return Promise.resolve({ result: { data: [] }});
+    return Promise.resolve({result: {data: []}});
   }
 }
 
@@ -223,15 +255,18 @@ export class PracticeServiceStub {
     return Promise.resolve({result: []});
   }
 }
+
 export class LeadPracticeServiceStub {
   public fetchLeadPartners() {
     return Promise.resolve({result: []});
   }
 }
+
 export class LaunchPadServiceStub {
   public configureCards() {
 
   }
+
   public fetchData() {
     return {
       topMatters: Promise.resolve({result: []}),
@@ -245,6 +280,7 @@ export class LaunchPadServiceStub {
     };
   }
 }
+
 export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
     id: '4702',
@@ -260,6 +296,7 @@ export class ActivatedRouteMock {
     observer.complete();
   });
 }
+
 export class MatDialogMock {
   open() {
     return {
@@ -267,4 +304,12 @@ export class MatDialogMock {
     };
   }
 }
+
+export class MockNgZone extends NgZone {
+  // tslint:disable-next-line:ban-types
+  run(fn: Function): any {
+    return fn();
+  }
+}
+
 
