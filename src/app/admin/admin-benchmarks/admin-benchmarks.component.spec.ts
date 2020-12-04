@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AdminBenchmarksComponent } from './admin-benchmarks.component';
+import {AdminBenchmarksComponent} from './admin-benchmarks.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
 import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -25,11 +25,11 @@ describe('AdminBenchmarksComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock },
-          { provide: FiltersService, useClass: mockServices.FiltersStub },
-          { provide: HttpService, useClass: mockServices.DataStub },
-          { provide: UserService, useClass: mockServices.UserStub }
+          {provide: Router, useValue: mockRouter},
+          {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
+          {provide: FiltersService, useClass: mockServices.FiltersStub},
+          {provide: HttpService, useClass: mockServices.DataStub},
+          {provide: UserService, useClass: mockServices.UserStub}
         ]
       }
     })
@@ -44,5 +44,33 @@ describe('AdminBenchmarksComponent', () => {
 
   it('should create AdminBenchmarksComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should getBenchmarks', () => {
+    component.getBenchmarks();
+    expect(component).toBeTruthy();
+  });
+  it('should clientCellRenderer', () => {
+    const param = {
+      node: {
+        data: {
+          client: 'Client 1',
+          client_id: '1'
+        }
+      }
+    };
+    const test = component.clientCellRenderer(param);
+    expect(test).toBeTruthy();
+  });
+  it('should firmCellRenderer', () => {
+    const param = {
+      node: {
+        data: {
+          firm: 'Client 1',
+          firm_id: '1'
+        }
+      }
+    };
+    const test = component.clientCellRenderer(param);
+    expect(test).toBeTruthy();
   });
 });

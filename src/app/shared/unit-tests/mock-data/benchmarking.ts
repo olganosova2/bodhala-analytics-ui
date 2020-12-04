@@ -1631,6 +1631,1155 @@ export const MOCK_PA_AND_ID = {
   }],
   "error": null
 };
+export const MOCK_ADMIN_BMS = {
+  "error": null,
+  "result": [
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Wood Smith Henning & Berman",
+      "firm_id": 283,
+      "id": 4,
+      "practice_areas": [
+        {
+          "benchmark_id": 4,
+          "id": 7,
+          "name": "Litigation",
+          "peers": [
+            "LEWEY K. LEE"
+          ],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 210,
+              "high": 300,
+              "low": 200,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 5
+            },
+            "junior_partner": {
+              "client_rate": 160,
+              "high": 300,
+              "low": 150,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 10
+            },
+            "mid_associate": {
+              "client_rate": 350,
+              "high": 500,
+              "low": 300,
+              "practice_area_discount": 15.5,
+              "street": 480,
+              "yoy_rate_increase": 5
+            },
+            "mid_partner": {
+              "client_rate": 320,
+              "high": 600,
+              "low": 300,
+              "practice_area_discount": 20.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_associate": {
+              "client_rate": 510,
+              "high": 600,
+              "low": 450,
+              "practice_area_discount": 10.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_partner": {
+              "client_rate": 700,
+              "high": 650,
+              "low": 500,
+              "practice_area_discount": 12.5,
+              "street": 680,
+              "yoy_rate_increase": 10
+            }
+          },
+          "tier": "$$"
+        },
+        {
+          "benchmark_id": 4,
+          "id": 9,
+          "name": "M&L",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "junior_partner": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "mid_associate": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "mid_partner": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "senior_associate": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "senior_partner": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            }
+          },
+          "tier": "$$"
+        },
+        {
+          "benchmark_id": 4,
+          "id": 8,
+          "name": "News",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 270,
+              "high": 300,
+              "low": 200,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 5
+            },
+            "junior_partner": {
+              "client_rate": null,
+              "high": 300,
+              "low": 150,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 10
+            },
+            "mid_associate": {
+              "client_rate": 280,
+              "high": 500,
+              "low": 300,
+              "practice_area_discount": 15.5,
+              "street": 480,
+              "yoy_rate_increase": 5
+            },
+            "mid_partner": {
+              "client_rate": null,
+              "high": 600,
+              "low": 300,
+              "practice_area_discount": 20.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_associate": {
+              "client_rate": 570,
+              "high": 600,
+              "low": 400,
+              "practice_area_discount": 10.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_partner": {
+              "client_rate": null,
+              "high": 750,
+              "low": 500,
+              "practice_area_discount": 12.5,
+              "street": 680,
+              "yoy_rate_increase": 10
+            }
+          },
+          "tier": "$$"
+        }
+      ],
+      "year": 2019
+    },
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Wilson, Elser, Moskowitz, Edelman & Dicker, Llp",
+      "firm_id": 452,
+      "id": 1,
+      "practice_areas": [
+        {
+          "benchmark_id": 1,
+          "id": 1,
+          "name": "Litigation",
+          "peers": [
+            "Walker Daly LLP",
+            "Ellis And Ko"
+          ],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 229,
+              "high": 300,
+              "low": 200,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 5
+            },
+            "junior_partner": {
+              "client_rate": 320,
+              "high": 300,
+              "low": 200,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 10
+            },
+            "mid_associate": {
+              "client_rate": 410,
+              "high": 500,
+              "low": 420,
+              "practice_area_discount": 15.5,
+              "street": 480,
+              "yoy_rate_increase": 5
+            },
+            "mid_partner": {
+              "client_rate": 610,
+              "high": 600,
+              "low": 400,
+              "practice_area_discount": 20.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_associate": {
+              "client_rate": 520,
+              "high": 600,
+              "low": 400,
+              "practice_area_discount": 10.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_partner": {
+              "client_rate": 600,
+              "high": 750,
+              "low": 500,
+              "practice_area_discount": 12.5,
+              "street": 680,
+              "yoy_rate_increase": 10
+            }
+          },
+          "tier": "$$"
+        },
+        {
+          "benchmark_id": 1,
+          "id": 4,
+          "name": "M&A",
+          "peers": [
+            "LEWEY K. LEE",
+            "One",
+            "Two",
+            "Three"
+          ],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 225,
+              "high": 300,
+              "low": 250,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 5
+            },
+            "junior_partner": {
+              "client_rate": 320,
+              "high": 350,
+              "low": 300,
+              "practice_area_discount": 10,
+              "street": 280,
+              "yoy_rate_increase": 10
+            },
+            "mid_associate": {
+              "client_rate": 420,
+              "high": 500,
+              "low": 450,
+              "practice_area_discount": 15.5,
+              "street": 480,
+              "yoy_rate_increase": 5
+            },
+            "mid_partner": {
+              "client_rate": 500,
+              "high": 600,
+              "low": 400,
+              "practice_area_discount": 20.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_associate": {
+              "client_rate": 500,
+              "high": 600,
+              "low": 400,
+              "practice_area_discount": 10.5,
+              "street": 580,
+              "yoy_rate_increase": 15
+            },
+            "senior_partner": {
+              "client_rate": 580,
+              "high": 700,
+              "low": 500,
+              "practice_area_discount": 12.5,
+              "street": 680,
+              "yoy_rate_increase": 10
+            }
+          },
+          "tier": "$$$"
+        }
+      ],
+      "year": 2019
+    },
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Husch Blackwell",
+      "firm_id": 108,
+      "id": 5,
+      "practice_areas": [
+        {
+          "benchmark_id": 5,
+          "id": 10,
+          "name": "Banking & Credit",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 120,
+              "high": 150,
+              "low": 100,
+              "practice_area_discount": 5,
+              "street": 140,
+              "yoy_rate_increase": 5
+            },
+            "junior_partner": {
+              "client_rate": 240,
+              "high": 270,
+              "low": 200,
+              "practice_area_discount": 5,
+              "street": 230,
+              "yoy_rate_increase": 5
+            },
+            "mid_associate": {
+              "client_rate": 150,
+              "high": 170,
+              "low": 120,
+              "practice_area_discount": 5,
+              "street": 160,
+              "yoy_rate_increase": 5
+            },
+            "mid_partner": {
+              "client_rate": 280,
+              "high": 320,
+              "low": 240,
+              "practice_area_discount": 5,
+              "street": 270,
+              "yoy_rate_increase": 5
+            },
+            "senior_associate": {
+              "client_rate": 200,
+              "high": 230,
+              "low": 170,
+              "practice_area_discount": 5,
+              "street": 210,
+              "yoy_rate_increase": 5
+            },
+            "senior_partner": {
+              "client_rate": 300,
+              "high": 330,
+              "low": 270,
+              "practice_area_discount": 5,
+              "street": 310,
+              "yoy_rate_increase": 5
+            }
+          },
+          "tier": "$$$"
+        },
+        {
+          "benchmark_id": 5,
+          "id": 13,
+          "name": "Bankruptcy",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 200,
+              "high": 280,
+              "low": 180,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "junior_partner": {
+              "client_rate": 180,
+              "high": 270,
+              "low": 160,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            }
+          },
+          "tier": "$$$"
+        }
+      ],
+      "year": 2019
+    },
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Arnold & Porter",
+      "firm_id": 37,
+      "id": 10,
+      "practice_areas": [
+        {
+          "benchmark_id": 10,
+          "id": 17,
+          "name": "Banking & Credit",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "junior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            }
+          },
+          "tier": "$$$"
+        },
+        {
+          "benchmark_id": 10,
+          "id": 18,
+          "name": "Bankruptcy",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "junior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            }
+          },
+          "tier": "$$$"
+        },
+        {
+          "benchmark_id": 10,
+          "id": 26,
+          "name": "Financing",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "junior_partner": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "mid_associate": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "mid_partner": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "senior_associate": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "senior_partner": {
+              "client_rate": null,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            }
+          },
+          "tier": "$$$"
+        }
+      ],
+      "year": 2018
+    },
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Balch & Bingham",
+      "firm_id": 313,
+      "id": 11,
+      "practice_areas": [
+        {
+          "benchmark_id": 11,
+          "id": 23,
+          "name": "Banking & Credit",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "junior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            }
+          },
+          "tier": "$$$"
+        },
+        {
+          "benchmark_id": 11,
+          "id": 24,
+          "name": "Bankruptcy",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 120,
+              "high": 160,
+              "low": 130,
+              "practice_area_discount": 0,
+              "street": 150,
+              "yoy_rate_increase": 0
+            },
+            "junior_partner": {
+              "client_rate": 140,
+              "high": 170,
+              "low": 130,
+              "practice_area_discount": 0,
+              "street": 150,
+              "yoy_rate_increase": 0
+            },
+            "mid_associate": {
+              "client_rate": 150,
+              "high": 180,
+              "low": 140,
+              "practice_area_discount": 0,
+              "street": 170,
+              "yoy_rate_increase": 0
+            },
+            "mid_partner": {
+              "client_rate": 200,
+              "high": 300,
+              "low": 190,
+              "practice_area_discount": 0,
+              "street": 220,
+              "yoy_rate_increase": 0
+            },
+            "senior_associate": {
+              "client_rate": 260,
+              "high": 280,
+              "low": 220,
+              "practice_area_discount": 0,
+              "street": 270,
+              "yoy_rate_increase": 0
+            },
+            "senior_partner": {
+              "client_rate": 400,
+              "high": 500,
+              "low": 350,
+              "practice_area_discount": 0,
+              "street": 500,
+              "yoy_rate_increase": 0
+            }
+          },
+          "tier": "$$$"
+        },
+        {
+          "benchmark_id": 11,
+          "id": 25,
+          "name": "Financing",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "junior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "mid_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_associate": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            },
+            "senior_partner": {
+              "client_rate": 0,
+              "high": 0,
+              "low": 0,
+              "practice_area_discount": 0,
+              "street": 0,
+              "yoy_rate_increase": 0
+            }
+          },
+          "tier": "$$$"
+        }
+      ],
+      "year": 2018
+    },
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Arnold & Porter",
+      "firm_id": 37,
+      "id": 13,
+      "practice_areas": [
+        {
+          "benchmark_id": 13,
+          "id": 28,
+          "name": "Banking & Credit",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 102,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "junior_partner": {
+              "client_rate": 326,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "mid_associate": {
+              "client_rate": 153,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "mid_partner": {
+              "client_rate": 589,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "senior_associate": {
+              "client_rate": 202,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            },
+            "senior_partner": {
+              "client_rate": 723,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": null,
+              "yoy_rate_increase": null
+            }
+          },
+          "tier": "$$$"
+        },
+        {
+          "benchmark_id": 13,
+          "id": 48,
+          "name": "M&A",
+          "peers": [
+            "Cleary Gottlieb Steen & Hamilton",
+            "Latham & Watkins",
+            "Sullivan & Cromwell",
+            "Weil, Gotshal & Manges",
+            "Kirkland & Ellis"
+          ],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 586,
+              "high": 711,
+              "low": 634,
+              "practice_area_discount": 5,
+              "street": 769,
+              "yoy_rate_increase": null
+            },
+            "junior_partner": {
+              "client_rate": 887,
+              "high": 1218,
+              "low": 1087,
+              "practice_area_discount": 5,
+              "street": 1317,
+              "yoy_rate_increase": null
+            },
+            "mid_associate": {
+              "client_rate": 618,
+              "high": 968,
+              "low": 863,
+              "practice_area_discount": 5,
+              "street": 1046,
+              "yoy_rate_increase": null
+            },
+            "mid_partner": {
+              "client_rate": 1029,
+              "high": 1425,
+              "low": 1271,
+              "practice_area_discount": 5,
+              "street": 1540,
+              "yoy_rate_increase": null
+            },
+            "senior_associate": {
+              "client_rate": 651,
+              "high": 1053,
+              "low": 939,
+              "practice_area_discount": 5,
+              "street": 1138,
+              "yoy_rate_increase": null
+            },
+            "senior_partner": {
+              "client_rate": 1262,
+              "high": 1582,
+              "low": 1411,
+              "practice_area_discount": 5,
+              "street": 1710,
+              "yoy_rate_increase": null
+            }
+          },
+          "tier": "$$$$"
+        }
+      ],
+      "year": 2020
+    },
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Baker Botts",
+      "firm_id": 55,
+      "id": 17,
+      "practice_areas": [
+        {
+          "benchmark_id": 17,
+          "id": 38,
+          "name": "Banking & Credit",
+          "peers": [],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 97,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": 117,
+              "yoy_rate_increase": null
+            },
+            "junior_partner": {
+              "client_rate": 225,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": 272,
+              "yoy_rate_increase": null
+            },
+            "mid_associate": {
+              "client_rate": 125,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": 150,
+              "yoy_rate_increase": null
+            },
+            "mid_partner": {
+              "client_rate": 266,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": 320,
+              "yoy_rate_increase": null
+            },
+            "senior_associate": {
+              "client_rate": 160,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": 193,
+              "yoy_rate_increase": null
+            },
+            "senior_partner": {
+              "client_rate": 330,
+              "high": null,
+              "low": null,
+              "practice_area_discount": null,
+              "street": 398,
+              "yoy_rate_increase": null
+            }
+          },
+          "tier": "$$$"
+        }
+      ],
+      "year": 2020
+    },
+    {
+      "client": "Bridgewater",
+      "client_id": 120,
+      "firm": "Kirkland & Ellis",
+      "firm_id": 5,
+      "id": 19,
+      "practice_areas": [
+        {
+          "benchmark_id": 19,
+          "id": 42,
+          "name": "M&A",
+          "peers": [
+            "Cleary Gottlieb Steen & Hamilton",
+            "Latham & Watkins",
+            "Sullivan & Cromwell",
+            "Weil, Gotshal & Manges"
+          ],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 99,
+              "high": 711,
+              "low": 634,
+              "practice_area_discount": 15,
+              "street": 769,
+              "yoy_rate_increase": null
+            },
+            "junior_partner": {
+              "client_rate": 238,
+              "high": 1218,
+              "low": 1087,
+              "practice_area_discount": 15,
+              "street": 1317,
+              "yoy_rate_increase": null
+            },
+            "mid_associate": {
+              "client_rate": 128,
+              "high": 968,
+              "low": 863,
+              "practice_area_discount": 15,
+              "street": 1046,
+              "yoy_rate_increase": null
+            },
+            "mid_partner": {
+              "client_rate": 307,
+              "high": 1425,
+              "low": 1271,
+              "practice_area_discount": 15,
+              "street": 1540,
+              "yoy_rate_increase": null
+            },
+            "senior_associate": {
+              "client_rate": 164,
+              "high": 1053,
+              "low": 939,
+              "practice_area_discount": 15,
+              "street": 1138,
+              "yoy_rate_increase": null
+            },
+            "senior_partner": {
+              "client_rate": 357,
+              "high": 1582,
+              "low": 1411,
+              "practice_area_discount": 15,
+              "street": 1710,
+              "yoy_rate_increase": null
+            }
+          },
+          "tier": "$$$$"
+        }
+      ],
+      "year": 2020
+    },
+    {
+      "client": "AIG Test",
+      "client_id": 190,
+      "firm": "Cooley",
+      "firm_id": 47,
+      "id": 26,
+      "practice_areas": [
+        {
+          "benchmark_id": 26,
+          "id": 53,
+          "name": "M&A",
+          "peers": [
+            "Cleary Gottlieb Steen & Hamilton",
+            "Latham & Watkins",
+            "Sullivan & Cromwell",
+            "Weil, Gotshal & Manges",
+            "Kirkland & Ellis"
+          ],
+          "rates": {
+            "junior_associate": {
+              "client_rate": 586,
+              "high": 711,
+              "low": 634,
+              "practice_area_discount": 5,
+              "street": 769,
+              "yoy_rate_increase": null
+            },
+            "junior_partner": {
+              "client_rate": 887,
+              "high": 1218,
+              "low": 1087,
+              "practice_area_discount": 5,
+              "street": 1317,
+              "yoy_rate_increase": null
+            },
+            "mid_associate": {
+              "client_rate": 618,
+              "high": 968,
+              "low": 863,
+              "practice_area_discount": 5,
+              "street": 1046,
+              "yoy_rate_increase": null
+            },
+            "mid_partner": {
+              "client_rate": 1029,
+              "high": 1425,
+              "low": 1271,
+              "practice_area_discount": 5,
+              "street": 1540,
+              "yoy_rate_increase": null
+            },
+            "senior_associate": {
+              "client_rate": 651,
+              "high": 1053,
+              "low": 939,
+              "practice_area_discount": 5,
+              "street": 1138,
+              "yoy_rate_increase": null
+            },
+            "senior_partner": {
+              "client_rate": 1262,
+              "high": 1582,
+              "low": 1411,
+              "practice_area_discount": 5,
+              "street": 1710,
+              "yoy_rate_increase": null
+            }
+          },
+          "tier": "$$$$"
+        }
+      ],
+      "year": 2020
+    }
+  ]
+};
+
 export const MOCK_ADMIN_BENCHMARK = {
   "error": null,
   "result": {
