@@ -341,7 +341,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
           filter.value.startDate = this.reportCardStartDate;
           filter.value.endDate = this.reportCardEndDate;
         } else if (filter.fieldName === 'matterCost') {
-          console.log("filter: ", filter);
           if (filter.value[0] !== this.minMatterCost) {
             filter.value[0] = this.minMatterCost;
           } else if (filter.value[1] !== this.maxMatterCost) {
