@@ -29,9 +29,9 @@
     <span *ngIf="dataRow?.partner_delta else nulls"
           [ngClass]="{'color-red-span': dataRow?.partner_delta < 0, 'color-green-span': dataRow?.partner_delta > 0}">{{ formatDelta(dataRow?.partner_delta) }}</span>
   </div>
-  <div class="p-col-1">
+  <!-- <div class="p-col-1">
     {{ dataRow?.tier }}
-  </div>
+  </div> -->
   <div class="p-col-1">
     {{ dataRow?.avg_practice_area_discount | number:'1.2-2'  }}%
   </div>
