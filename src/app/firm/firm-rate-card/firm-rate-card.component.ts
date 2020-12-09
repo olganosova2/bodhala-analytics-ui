@@ -46,6 +46,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   comparing: boolean = false;
   newStartDate: string;
   percentOfTotal: number;
+  minMatterCost: number;
+  maxMatterCost: number;
   rank: number;
   selectedSavedFilterName: string = null;
   logoUrl: string;
@@ -308,6 +310,14 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   changeTab(evt): void {
     this.selectedTabIndex = evt.index;
     if (this.selectedTabIndex === 1) {
+      const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+      const tempFiltersDict = JSON.parse(tempFilters);
+      for (const filter of tempFiltersDict.dataFilters) {
+        if (filter.fieldName === 'matterCost') {
+          this.minMatterCost = filter.value[0];
+          this.maxMatterCost = filter.value[1];
+        }
+      }
       const dates = this.filtersService.parseLSDateString();
       const params = {clientId: this.userService.currentUser.client_info.id};
       this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
@@ -329,6 +339,12 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         if (filter.fieldName === 'dateRange') {
           filter.value.startDate = this.reportCardStartDate;
           filter.value.endDate = this.reportCardEndDate;
+        } else if (filter.fieldName === 'matterCost') {
+          if (filter.value[0] !== this.minMatterCost) {
+            filter.value[0] = this.minMatterCost;
+          } else if (filter.value[1] !== this.maxMatterCost) {
+            filter.value[1] = this.maxMatterCost;
+          }
         }
       }
       tempFiltersDict.datestring = '&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;

@@ -34,7 +34,7 @@ describe('FirmRateCardComponent', () => {
           AppStateService,
           SpendTrendChartComponent,
           { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+          { provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }
@@ -92,6 +92,9 @@ describe('FirmRateCardComponent', () => {
   });
 
   it('should changeTabs', () => {
+    const serializedState = JSON.stringify(FILTERS_LS);
+    localStorage.setItem('ELEMENTS_dataFilters_397', serializedState);
+    component.userService.currentUser.id = 397;
     component.selectedTabIndex = 1;
     const evt = {index: 1, tab: {}};
     component.changeTab(evt);

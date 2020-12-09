@@ -133,13 +133,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         this.clientMatterType = encodeURIComponent(this.clientMatterType);
       }
       if (this.bodhalaPA === true) {
-        // params.bdPracticeAreas = JSON.stringify(arr);
         params = {clientId: this.userService.currentUser.client_info.id, bdPracticeAreas: this.clientMatterType};
       } else {
-        // params.practiceAreas = JSON.stringify(arr);
         params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
       }
-      // params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
       const response1 = this.httpService.makeGetRequest('getPracticeAreaScore', params);
       const response2 = this.httpService.makeGetRequest('getPracticeAreaTrends', params);
       this.clientMatterType = decodeURIComponent(this.clientMatterType);
