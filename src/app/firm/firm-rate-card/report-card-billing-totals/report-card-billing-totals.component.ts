@@ -29,6 +29,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
   @Input() comparisonEndDate: string;
   @Input() filtersChanged: boolean = false;
   @Input() practiceArea: IPracticeArea;
+  @Input() smartPAs: boolean = false;
 
   constructor(public httpService: HttpService,
               public filtersService: FiltersService,
@@ -63,7 +64,11 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         } else {
           arr.push(this.practiceArea.client_matter_type);
         }
-        params.practiceAreas = JSON.stringify(arr);
+        if (this.smartPAs === true) {
+          params.bdPracticeAreas = JSON.stringify(arr);
+        } else {
+          params.practiceAreas = JSON.stringify(arr);
+        }
       }
     } else if (this.isComparison === true && this.firstLoad === true) {
       requestString = 'reportCardComparisonBillingTotals';
