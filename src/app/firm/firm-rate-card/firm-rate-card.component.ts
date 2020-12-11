@@ -32,6 +32,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   pendingRequestPAs: Subscription;
   pendingRequestSummary: Subscription;
   practiceAreas: Array<string> = [];
+  practiceArea: any = [];
   enddate: string;
   startdate: string;
   reportCardStartDate: string;
@@ -52,6 +53,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   logoUrl: string;
   notes: Array<IUiAnnotation> = [];
   selectedTabIndex: number = 0;
+  smartPAs: boolean = false;
   pageName: string = 'analytics-ui/firm/report-card/';
   pageType: string = 'Firm Report Card';
   excludeFilters = ['firms', 'threshold', 'matters', 'practice areas', 'internal'];
@@ -82,6 +84,23 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    if (this.userService.config !== undefined) {
+      if ('analytics.practice.bodhala.areas' in this.userService.config) {
+        const userConfigs = Object.values(this.userService.config);
+        for (const configuration of userConfigs) {
+          if (configuration.configs[0].description === 'config for analytics practice areas') {
+            if (configuration.configs[0].value === 'Smart Practice Areas' || configuration.configs[0].value === 'Both') {
+              this.smartPAs = true;
+            } else {
+              this.smartPAs = false;
+            }
+            break;
+          }
+        }
+      } else {
+        this.smartPAs = false;
+      }
+    }
     const dates = this.filtersService.parseLSDateString();
     this.reportCardStartDate = dates.startdate;
     this.reportCardEndDate = dates.enddate;
@@ -95,7 +114,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
       this.initFirm();
-      this.loadPAs();
+      this.loadTopPA();
+      // this.loadPAs();
     });
     this.matDialog.closeAll();
     await this.checkSavedReports();
@@ -188,6 +208,30 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     const response2 = this.httpService.makeGetRequest('getTopFirms', params);
     return forkJoin([response1, response2]);
   }
+
+
+
+  loadTopPA(): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const arr = [];
+    arr.push(this.firmId.toString());
+    params.firms = JSON.stringify(arr);
+    if (this.smartPAs === true) {
+      params.smartPAs = true;
+    } else {
+      params.smartPAs = false;
+    }
+    this.pendingRequestPAs = this.httpService.makeGetRequest('spendByPracticeAreas', params).subscribe(
+      (data: any) => {
+        const practiceAreas = data.result;
+        practiceAreas.sort((a, b) => (a.total_billed > b.total_billed) ? -1 : 1);
+        this.practiceArea = practiceAreas[0];
+      },
+      err => {
+        this.errorMessage = err;
+      }
+      );
+    }
 
   loadPAs(): void {
     this.practiceAreas = [];

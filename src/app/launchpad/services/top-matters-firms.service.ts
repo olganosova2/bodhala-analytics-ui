@@ -28,8 +28,9 @@ export class TopMattersFirmsService {
     private datePipe: DatePipe
   ) { }
 
-  fetchMatters() {
+  fetchMatters(smartPAs: boolean) {
     const params = this.filters.getCurrentUserCombinedFilters();
+    params.smartPAs = smartPAs;
     return this.http.makeGetRequest('getTopMattersAndLeadPartners', params).pipe(
       map(response => this.processTopMatters(response.result))
     ).toPromise();

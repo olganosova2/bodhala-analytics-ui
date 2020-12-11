@@ -31,7 +31,7 @@ describe('TopMattersFirmsService', () => {
     expect(service).toBeTruthy();
   });
   it('TopMattersFirmsService should fetchMatters', inject([TopMattersFirmsService], (service: TopMattersFirmsService) => {
-    const result = service.fetchMatters();
+    const result = service.fetchMatters(false);
     expect(result).toBeTruthy();
   }));
   it('TopMattersFirmsService should fetchActiveSpend', inject([TopMattersFirmsService], (service: TopMattersFirmsService) => {

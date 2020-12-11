@@ -16,6 +16,7 @@ export class RateCardTablesComponent implements OnInit, OnDestroy {
   isLoaded: boolean = false;
   @Input() practiceArea: string;
   @Input() firmId: string;
+  @Input() smartPAs: boolean = false;
   pendingRequestFirm: Subscription;
   constructor(public commonServ: CommonService,
               private route: ActivatedRoute,
@@ -35,7 +36,11 @@ export class RateCardTablesComponent implements OnInit, OnDestroy {
     if (this.practiceArea) {
       arr = [];
       arr.push(this.practiceArea.toString());
-      params.practiceAreas = JSON.stringify(arr);
+      if (this.smartPAs === true) {
+        params.bdPracticeAreas = JSON.stringify(arr);
+      } else {
+        params.practiceAreas = JSON.stringify(arr);
+      }
     }
     this.pendingRequestFirm = this.httpService.makeGetRequest('getFirmTopSummary', params).subscribe(
       (data: any) => {
