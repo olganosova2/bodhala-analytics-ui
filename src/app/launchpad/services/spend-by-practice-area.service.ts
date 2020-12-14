@@ -18,8 +18,9 @@ export class SpendByPracticeAreaService {
     private filters: FiltersService
   ) { }
 
-  fetch() {
+  fetch(smartPAs: boolean) {
     const params = this.filters.getCurrentUserCombinedFilters();
+    params.smartPAs = smartPAs;
     return this.http.makeGetRequest('spendByPracticeAreas', params).pipe(
       map(response => this.processPracticeAreas(response.result))
     ).toPromise();

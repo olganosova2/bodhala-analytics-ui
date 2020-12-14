@@ -26,7 +26,7 @@ describe('SpendByPracticeAreaService', () => {
     expect(service).toBeTruthy();
   });
   it('SpendByPracticeAreaService should fetchLeadPartners', inject([SpendByPracticeAreaService], (service: SpendByPracticeAreaService) => {
-    const result = service.fetch();
+    const result = service.fetch(false);
     expect(result).toBeTruthy();
   }));
 
