@@ -49,6 +49,7 @@ describe('FirmRateCardComponent', () => {
     component = fixture.componentInstance;
     component.firm = MOCK_FIRM as IFirm;
     component.firmId = '87';
+    component.practiceArea = {practice_area: 'Litigation'};
     fixture.detectChanges();
   });
 

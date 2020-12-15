@@ -26,7 +26,7 @@ describe('TopLeadPartnersService', () => {
     expect(service).toBeTruthy();
   });
   it('TopLeadPartnersService should fetchLeadPartners', inject([TopLeadPartnersService], (service: TopLeadPartnersService) => {
-    const result = service.fetchLeadPartners();
+    const result = service.fetchLeadPartners(false);
     expect(result).toBeTruthy();
   }));
 

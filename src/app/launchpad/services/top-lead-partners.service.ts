@@ -24,8 +24,9 @@ export class TopLeadPartnersService {
     private filters: FiltersService
   ) { }
 
-  fetchLeadPartners() {
+  fetchLeadPartners(smartPAs: boolean) {
     const params = this.filters.getCurrentUserCombinedFilters();
+    params.smartPAs = smartPAs;
     return this.http.makeGetRequest('getTopLeadPartners', params).pipe(
       map(response => this.processLeadPartners(response.result))
     ).toPromise();

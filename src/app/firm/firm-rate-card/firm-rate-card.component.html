@@ -26,6 +26,8 @@
               <div class="font-bold">Rank: <span *ngIf="rank>0">{{ rank }}</span><span *ngIf="rank<0"> > 20</span> ({{percentOfTotal * 100 | number:'1.2-2'}}% of total spend)</div>
               <div class="font-bold" *ngIf="selectedSavedFilterName!==null">Saved Filter: {{selectedSavedFilterName}}</div>
               <div class="font-bold" *ngIf="otherFirms"><i>Note: Rank and averages are based off firms available as defined by selected Timeframe and Filters.</i></div>
+              <div class="font-bold" *ngIf="userService.hasEntitlement('analytics.practice.areas') && smartPAs === false">Note: Only the top Practice Area for {{commonServ.pageSubtitle}} is shown below Overall Spend</div>
+              <div class="font-bold" *ngIf="userService.hasEntitlement('analytics.practice.areas') && smartPAs === true">Note: Only the top Smart Practice Area for {{commonServ.pageSubtitle}} is shown below Overall Spend</div>
             </div>
           </div>
 
@@ -47,17 +49,24 @@
         <h4 class="mb10"><span>Overall Spend</span></h4>
         <bd-report-card-billing-totals [firm]="firm" [isReportCard]="true" #billingTotals
                            *ngIf="firmId && firm"></bd-report-card-billing-totals>
-        <bd-rate-card-tables [firmId]="firmId"></bd-rate-card-tables>
+        <bd-rate-card-tables [firmId]="firmId" [smartPAs]="smartPAs"></bd-rate-card-tables>
         <hr/>
       </div>
       <div *ngIf="userService.hasEntitlement('analytics.practice.areas')">
-        <div *ngFor="let pa of practiceAreas;let i= index" class="mb30 mt40">
+        <div *ngIf="practiceArea" class="mb30 mt40">
+          <h4 class="mb10" ><span>{{practiceArea.practice_area}}</span></h4>
+          <bd-report-card-billing-totals [firm]="firm" [smartPAs]="smartPAs" [isReportCard]="true" [practiceArea]="practiceArea.practice_area" #billingTotals
+                              *ngIf="firmId && firm && practiceArea.practice_area"></bd-report-card-billing-totals>
+          <bd-rate-card-tables *ngIf="firmId && firm && practiceArea.practice_area" [firmId]="firmId" [practiceArea]="practiceArea.practice_area" [smartPAs]="smartPAs"></bd-rate-card-tables>
+          <hr *ngIf="firmId && firm && practiceArea.practice_area" id="hrEnd"/>
+        </div>
+        <!-- <div *ngFor="let pa of practiceAreas;let i= index" class="mb30 mt40">
           <h4 class="mb10"><span>{{pa}}</span></h4>
           <bd-report-card-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
                              *ngIf="firmId && firm && pa"></bd-report-card-billing-totals>
           <bd-rate-card-tables *ngIf="firmId && firm && pa" [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
           <hr *ngIf="firmId && firm && pa" id="hrEnd_{{i}}"/>
-        </div>
+        </div> -->
       </div>
       <div [hidden]="!commonServ.pdfLoading">
         <h4>Annotations</h4>
