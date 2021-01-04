@@ -47,7 +47,7 @@ describe('BenchmarkingSetupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BenchmarkingSetupComponent);
     component = fixture.componentInstance;
-    component.selectedYear = '2020';
+    component.selectedYear = '2021';
     fixture.detectChanges();
   });
 
@@ -56,7 +56,7 @@ describe('BenchmarkingSetupComponent', () => {
   });
   it('should ngOnInit', () => {
     component.ngOnInit();
-    expect(component.selectedYear).toBe('2020');
+    expect(component.selectedYear).toBe('2021');
   });
   it('should loadDataForYear', () => {
     component.loadDataForYear();
@@ -72,7 +72,7 @@ describe('BenchmarkingSetupComponent', () => {
     component.allBenchmarks = MOCK_BENCHMARKS.result;
     component.practiceAreasList = MOCK_PA_AND_ID.result;
     component.selectFirm('2019');
-    expect(component.availablePAs.length).toBe(11);
+    expect(component.availablePAs.length).toBe(12);
   });
   it('should selectPracticeArea when PA exists', () => {
     component.createNewBenchmark();
@@ -101,12 +101,12 @@ describe('BenchmarkingSetupComponent', () => {
   });
   it('should addNew', () => {
     component.addNew();
-    expect(component.selectedYear).toBe('2020');
+    expect(component.selectedYear).toBe('2021');
   });
   it('should delete benchmark', () => {
     const bm = {id: 1, firmId: 1, practice_areas: []};
     component.delete(bm);
-    expect(component.selectedYear).toBe('2020');
+    expect(component.selectedYear).toBe('2021');
   });
   it('should save new benchmark', () => {
     const metric = {
@@ -125,7 +125,7 @@ describe('BenchmarkingSetupComponent', () => {
     pa.rates = rate;
     component.benchmark.practice_areas = [pa];
     component.save();
-    expect(component.selectedYear).toBe('2020');
+    expect(component.selectedYear).toBe('2021');
   });
   it('should save existing benchmark', () => {
     const metric = {
