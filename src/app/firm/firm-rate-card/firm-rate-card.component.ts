@@ -58,6 +58,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   pageName: string = 'analytics-ui/firm/report-card/';
   pageType: string = 'Firm Report Card';
   excludeFilters = ['firms', 'threshold', 'matters', 'practice areas', 'internal'];
+  originalQueryString: string;
   @ViewChild(SpendTrendChartComponent) spendTrendChart: SpendTrendChartComponent;
   @ViewChild(ReportCardBillingTotalsComponent) reportCardBillingTotalsComponent: ReportCardBillingTotalsComponent;
 
@@ -356,6 +357,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     if (this.selectedTabIndex === 1) {
       const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
       const tempFiltersDict = JSON.parse(tempFilters);
+      this.originalQueryString = tempFiltersDict.querystring;
       for (const filter of tempFiltersDict.dataFilters) {
         if (filter.fieldName === 'matterCost') {
           this.minMatterCost = filter.value[0];
@@ -392,7 +394,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         }
       }
       tempFiltersDict.datestring = '&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
-      tempFiltersDict.querystring = '&threshold=4&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      // tempFiltersDict.querystring = '&threshold=4&startdate=' + this.reportCardStartDate + '&enddate=' + this.reportCardEndDate;
+      tempFiltersDict.querystring = this.originalQueryString;
       tempFiltersDict = JSON.stringify(tempFiltersDict);
       localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), tempFiltersDict);
       this.reportCardBillingTotalsComponent.reportCardStartDate = this.reportCardStartDate;

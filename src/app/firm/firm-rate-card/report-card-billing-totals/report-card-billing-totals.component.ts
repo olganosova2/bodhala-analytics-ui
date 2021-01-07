@@ -20,6 +20,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
   isLoaded: boolean = false;
   firstLoad: boolean = true;
   itemTopRowCount: number = 6;
+  initialFilterSet: any;
   @Input() isReportCard: boolean = false;
   @Input() isComparison: boolean = false;
   @Input() firm: IFirm;
@@ -73,6 +74,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
     } else if (this.isComparison === true && this.firstLoad === true) {
       requestString = 'reportCardComparisonBillingTotals';
       params.secondCall = false;
+      this.initialFilterSet = params;
     } else if (this.isComparison === true && this.firstLoad === false) {
       requestString = 'reportCardComparisonBillingTotals';
       params.secondCall = true;
@@ -82,6 +84,20 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
       requestString = 'getBillingTotals';
     }
     this.isLoaded = false;
+    if (this.initialFilterSet !== undefined) {
+      if (params.hasOwnProperty('minMatterCost') && !this.initialFilterSet.hasOwnProperty('minMatterCost')) {
+        delete params.minMatterCost;
+      }
+      if (params.hasOwnProperty('maxMatterCost') && !this.initialFilterSet.hasOwnProperty('maxMatterCost')) {
+        delete params.maxMatterCost;
+      }
+      if (!params.hasOwnProperty('minMatterCost') && this.initialFilterSet.hasOwnProperty('minMatterCost')) {
+        params.minMatterCost = this.initialFilterSet.minMatterCost;
+      }
+      if (!params.hasOwnProperty('maxMatterCost') && this.initialFilterSet.hasOwnProperty('maxMatterCost')) {
+        params.maxMatterCost = this.initialFilterSet.maxMatterCost;
+      }
+    }
     this.pendingRequest = this.httpService.makeGetRequest(requestString, params).subscribe(
       (data: any) => {
         if (this.isReportCard === true) {
