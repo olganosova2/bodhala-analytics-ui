@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import { Subscription} from 'rxjs';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 
@@ -17,6 +17,8 @@ import {FiltersService} from './shared/services/filters.service';
 import {CommonService} from './shared/services/common.service';
 import {TopTimekeepersComponent} from './firm/top-timekeepers/top-timekeepers.component';
 import {LeftSideBarComponent} from 'bodhala-ui-elements';
+
+declare let gtag: any;
 
 @Component({
   selector: 'bd-root',
@@ -79,6 +81,22 @@ export class AppComponent implements OnDestroy {
       this.keepAlive();
     }, KEEP_ALIVE_SEC);
 
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const pre = window.location.host.split('.')[0];
+        let gaAccount = '';
+        if (pre === 'www' || pre === 'prod') {
+          gaAccount = 'UA-4735512-5';
+        } else {
+          gaAccount = 'UA-4735512-6';
+        }
+        gtag('config', gaAccount,
+          {
+            page_path: event.urlAfterRedirects
+          }
+        );
+       }
+    });
   }
   resetIdle() {
     this.idle.watch();
