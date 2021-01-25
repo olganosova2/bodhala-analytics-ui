@@ -83,20 +83,29 @@ export class AppComponent implements OnDestroy {
 
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const pre = window.location.host.split('.')[0];
-        let gaAccount = '';
-        if (pre === 'www' || pre === 'prod') {
-          gaAccount = 'UA-4735512-5';
-        } else {
-          gaAccount = 'UA-4735512-6';
-        }
-        gtag('config', gaAccount,
+        gtag('config', environment.gaAccount,
           {
             page_path: event.urlAfterRedirects
           }
         );
        }
     });
+    if (environment.gaAccount) {
+      // register google tag manager
+      const gTagManagerScript = document.createElement('script');
+      gTagManagerScript.async = true;
+      gTagManagerScript.src = `https://www.googletagmanager.com/gtag/js?id=${environment.gaAccount}`;
+      document.head.appendChild(gTagManagerScript);
+      // register google analytics
+      const gaScript = document.createElement('script');
+      gaScript.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', '${environment.gaAccount}');
+      `;
+      document.head.appendChild(gaScript);
+    }
   }
   resetIdle() {
     this.idle.watch();
