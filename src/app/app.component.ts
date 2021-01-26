@@ -102,7 +102,6 @@ export class AppComponent implements OnDestroy {
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-        gtag('config', '${environment.gaAccount}');
       `;
       document.head.appendChild(gaScript);
     }
