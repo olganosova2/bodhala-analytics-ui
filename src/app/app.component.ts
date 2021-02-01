@@ -18,7 +18,7 @@ import {CommonService} from './shared/services/common.service';
 import {TopTimekeepersComponent} from './firm/top-timekeepers/top-timekeepers.component';
 import {LeftSideBarComponent} from 'bodhala-ui-elements';
 
-declare let gtag: any;
+declare const gtag: any;
 
 @Component({
   selector: 'bd-root',
@@ -81,30 +81,17 @@ export class AppComponent implements OnDestroy {
       this.keepAlive();
     }, KEEP_ALIVE_SEC);
 
+    this.addGAScript();
+    // track page views
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        gtag('config', environment.gaAccount,
+        gtag('event', 'page_view',
           {
             page_path: event.urlAfterRedirects
           }
         );
        }
     });
-    if (environment.gaAccount) {
-      // register google tag manager
-      const gTagManagerScript = document.createElement('script');
-      gTagManagerScript.async = true;
-      gTagManagerScript.src = `https://www.googletagmanager.com/gtag/js?id=${environment.gaAccount}`;
-      document.head.appendChild(gTagManagerScript);
-      // register google analytics
-      const gaScript = document.createElement('script');
-      gaScript.innerHTML = `
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-      `;
-      document.head.appendChild(gaScript);
-    }
   }
   resetIdle() {
     this.idle.watch();
@@ -154,6 +141,23 @@ export class AppComponent implements OnDestroy {
       style.backgroundColor = null;
     } else {
       style.backgroundColor = '#FED8B1';
+    }
+  }
+  addGAScript(): void {
+    // register googletagmanager
+    if (environment.gaAccount) {
+      const gaScript = document.createElement('script');
+      gaScript.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+      `;
+      document.head.prepend(gaScript);
+      const gTagManagerScript = document.createElement('script');
+      gTagManagerScript.async = true;
+      gTagManagerScript.src = `https://www.googletagmanager.com/gtag/js?id=${environment.gaAccount}`;
+      document.head.prepend(gTagManagerScript);
+      gtag('config', environment.gaAccount, { send_page_view: false });
     }
   }
   ngOnDestroy() {
