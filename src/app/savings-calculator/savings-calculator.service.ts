@@ -21,6 +21,7 @@ export interface IClassification {
   avgRateIncrease: number;
   totalHours: number;
   lastYearRate: number;
+  lastYearRateIncrease?: number;
 }
 export interface IBlockBillingData {
   end_date: string;
@@ -220,14 +221,46 @@ export class SavingsCalculatorService {
     classification.lastYearRate = year1Rec.effective_rate || 0;
     return classification;
   }
-  calculateOrigIncreaseRatePercent(classifications: Array<IClassification>): number {
+  createClassificationDynamic(name: string, records: Array<IRateIncreaseData>): any {
+    const classification = {} as IClassification;
+    classification.title = name;
+    let lastYear = (records[0].rate_increase || []).find(e => e.bh_classification === name) || {} as IRateIncreaseRow;
+    classification.totalHours = lastYear.total_hours ||  0;
+    classification.lastYearRate = lastYear.effective_rate || 0;
+    let increases = 0;
+    let count = 0;
+    let prevYearsEffectiveRate = 0;
+    for (let ix = 1; ix < records.length; ix++) {
+      const year1Rec = lastYear;
+      const year2Rec = records[ix].rate_increase.find(e => e.bh_classification === name) || {} as IRateIncreaseRow;
+      const divider = year2Rec.effective_rate ? year2Rec.effective_rate : 1;
+      const yearIncrease = ((year1Rec.effective_rate || 0) - (year2Rec.effective_rate || 0)) / divider;
+      if (ix === 1) {
+        prevYearsEffectiveRate = year2Rec.effective_rate;
+      }
+      if (year1Rec.effective_rate && year2Rec.effective_rate) {
+        increases += yearIncrease;
+        count ++;
+        lastYear = year2Rec;
+      }
+    }
+    const prevDivider = prevYearsEffectiveRate ?  prevYearsEffectiveRate : 1;
+    classification.lastYearRateIncrease = (classification.lastYearRate - prevYearsEffectiveRate ) / prevDivider;
+    classification.avgRateIncrease = count ? (increases / count) : 0;
+    return classification;
+  }
+  calculateOrigIncreaseRatePercent(classifications: Array<IClassification>, isAvg = true): number {
     let result = 0;
     let cnt = 0;
     let avg = 0;
     for (const rec of classifications) {
       if (rec.totalHours && rec.totalHours > 0) {
         cnt++;
-        avg += rec.avgRateIncrease;
+        if (isAvg) {
+          avg += rec.avgRateIncrease;
+        } else {
+          avg += rec.lastYearRateIncrease;
+        }
       }
     }
     result = cnt > 0 ? avg * 100 / cnt : 0;
@@ -250,17 +283,4 @@ export class SavingsCalculatorService {
     }
     return result;
   }
-  // calculateDiameter(val: number, percent: number, total: number): number {
-  //   const maxTotal = 0.2 * total || 1;
-  //   percent = percent || 1;
-  //   const currentTotal = 0.2 * ( ( (percent - val ) / percent ) * total);
-  //   const result = (currentTotal * 200 / maxTotal);
-  //   return result;
-  // }
-  // getChartSeries(val: number, percent: number, total: number): Array<number> {
-  //   const grandTotal = this.calculateBlockBillingValue(100, percent, total);
-  //   const filled = this.calculateBlockBillingValue(val, percent, total);
-  //   const remaining = grandTotal - filled;
-  //   return [filled, remaining];
-  // }
 }

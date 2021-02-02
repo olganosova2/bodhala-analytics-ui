@@ -105,6 +105,7 @@ import {ClientDropDownComponent} from '../components/client-drop-down/client-dro
 import {BenchmarkingSetupComponent} from '../../benchmarking-setup/benchmarking-setup.component';
 import {EditBenchmarkRateComponent} from '../../admin/admin-benchmarks/edit-benchmark-rate/edit-benchmark-rate.component';
 import {ObjectKeysPipe} from '../pipes/object-keys.pipe';
+import {RateIncreaseComponent} from '../../admin/rate-increase/rate-increase.component';
 
 
 export const IMPORTS = [
@@ -202,7 +203,8 @@ export const DECLARATIONS = [
   ClientDropDownComponent,
   BenchmarkingSetupComponent,
   EditBenchmarkRateComponent,
-  ObjectKeysPipe
+  ObjectKeysPipe,
+  RateIncreaseComponent
 ];
 
 export const PROVIDERS = [
