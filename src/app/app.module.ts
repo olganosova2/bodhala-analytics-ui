@@ -120,6 +120,7 @@ import { AddEditBenchmarkComponent } from './admin/admin-benchmarks/add-edit-ben
 import { BenchmarkingSetupComponent } from './benchmarking-setup/benchmarking-setup.component';
 import { EditBenchmarkRateComponent } from './admin/admin-benchmarks/edit-benchmark-rate/edit-benchmark-rate.component';
 import { ObjectKeysPipe } from './shared/pipes/object-keys.pipe';
+import { RateIncreaseComponent } from './admin/rate-increase/rate-increase.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -191,7 +192,8 @@ export function initHttp(service: HttpService) {
     AddEditBenchmarkComponent,
     BenchmarkingSetupComponent,
     EditBenchmarkRateComponent,
-    ObjectKeysPipe
+    ObjectKeysPipe,
+    RateIncreaseComponent
   ],
   entryComponents: [
     PillComponent,

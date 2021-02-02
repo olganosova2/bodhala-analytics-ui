@@ -13,6 +13,7 @@ import {AdminBenchmarksComponent} from './admin/admin-benchmarks/admin-benchmark
 import {AuthService} from './shared/services/auth/auth.service';
 import {AddEditBenchmarkComponent} from './admin/admin-benchmarks/add-edit-benchmark/add-edit-benchmark.component';
 import {BenchmarkingSetupComponent} from './benchmarking-setup/benchmarking-setup.component';
+import {RateIncreaseComponent} from './admin/rate-increase/rate-increase.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -41,6 +42,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/benchmark-edit/:id', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/benchmark-add', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/rate-increase', component: RateIncreaseComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   // {path: 'analytics.html', component: LaunchpadComponent},
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];
