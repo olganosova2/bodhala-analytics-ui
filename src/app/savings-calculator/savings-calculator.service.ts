@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {SAVINGS_CALCULATOR_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {UtilService} from 'bodhala-ui-common';
+import {IDropDown} from '../shared/models/prime-ng';
 export enum SavingMetrics {
   TkLevel = 'TkLevel',
   BlockBilling = 'BlockBilling',
@@ -70,56 +71,16 @@ export interface IMetric {
   classifications?: Array<IClassification>;
   tooltip: string;
   articleId?: string;
+  overstaffingNumber?: string;
 }
-
-export const pieDonutOptions = {
-  chart: {
-    type: 'pie',
-    width: 200,
-    height: 200,
-    spacingTop: 0,
-    spacingRight: 0,
-    spacingBottom: 0,
-    spacingLeft: 0,
-    plotBorderWidth: 0,
-    margin: [0, 0 , 0, 0]
-  },
-  title: {
-    text: ''
-  },
-  yAxis: {
-    visible: false
-  },
-  xAxis: {
-    visible: false
-  },
-  plotOptions: {
-    pie: {
-      shadow: false,
-      colors: ['#FF632C', '#E9F1F4'],
-    }
-  },
-  tooltip: {
-    enabled: false
-  },
-  exporting: {
-    enabled: false
-  },
-  credits: {
-    enabled: false
-  },
-  series: [{
-    name: 'Browsers',
-    data: [6, 4],
-    size: '100%',
-    innerSize: '90%',
-    showInLegend: false,
-    dataLabels: {
-      enabled: false
-    }
-  }]
-};
-
+export interface ISavingsRecord {
+  id: number;
+  firm_name: string;
+  bb: number;
+  rate_increase?: number;
+  overstaffing?: number;
+  total?: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -166,8 +127,22 @@ export class SavingsCalculatorService {
       result.maxRange = 50;
       result.tooltip = 'Bodhala recommends that no more than four (4) timekeepers be allowed to invoice for the same internal law firm meeting. Reducing the staffing at these internal law firms meetings can be a substantial source of savings.';
       result.articleId = SAVINGS_CALCULATOR_ARTICLES.Overstaffing;
+      result.overstaffingNumber = SAVINGS_CALCULATOR_CONFIG.overstaffingNumber;
     }
     return result;
+  }
+  updateOverstaffingMetric(metric: IMetric, record: IOverstaffingData): void {
+    const osRecord = record as IOverstaffingData;
+    let osTotal = 0;
+    for (const rec of osRecord.overstaffing) {
+      osTotal += rec.total_billed;
+    }
+    metric.total = osTotal;
+    metric.details = osRecord.overstaffing || [];
+    if (metric.details.length > 0) {
+      metric.details.sort(this.utilService.dynamicSort('-timekeepers'));
+    }
+    metric.savings = this.calculateOverstaffingValue(metric.percent, metric.total);
   }
   createRateIncreaseRecord(records: Array<IRateIncreaseData>): IMetric {
     const result = {} as IMetric;
@@ -280,6 +255,43 @@ export class SavingsCalculatorService {
     }
     for (const rec of metric.classifications) {
       result += (rec.avgRateIncrease - val / 100) * rec.totalHours * rec.lastYearRate;
+    }
+    return result;
+  }
+  buildOverstaffingDropDown(): Array<IDropDown> {
+    const result = [];
+    for (let ix = 3; ix <= 40; ix++) {
+      result.push({value: ix.toString(), label: ix.toString()});
+    }
+    return result;
+  }
+  calculateBBrecordForTable(bbp: number, totalBB: number, bbMetric: IMetric): number {
+    let result = 0;
+    if (!bbp || !bbMetric) {
+      return result;
+    }
+    result = this.calculateBlockBillingValue(bbMetric.percent, bbp, totalBB);
+    return result;
+  }
+  formatDataForTable(data: any, metrics: Array<IMetric>): Array<any> {
+    const result = [];
+    if (!data.bb_percent || data.bb_percent.length === 0){
+      return result;
+    }
+    const allFirms =  data.bb_percent[0].bb_percent;
+    if (!allFirms || allFirms.length === 0){
+      return result;
+    }
+    const topFirms = allFirms.slice(0, SAVINGS_CALCULATOR_CONFIG.topFirmsNumber) || [];
+    for (const firm of topFirms) {
+      const recordForTable  = {} as ISavingsRecord;
+      recordForTable.firm_name = firm.firm_name;
+      recordForTable.id = firm.bh_lawfirm_id;
+      recordForTable.total = 0;
+      const bbMetric = metrics.find(e => e.savingsType === SavingMetrics.BlockBilling);
+      recordForTable.bb = this.calculateBBrecordForTable(firm.bbp, firm.total_block_billed, bbMetric) || 0;
+      recordForTable.total += recordForTable.bb;
+      result.push(recordForTable);
     }
     return result;
   }

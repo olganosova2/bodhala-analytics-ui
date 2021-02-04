@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {CommonService} from '../../shared/services/common.service';
-import {IMetric, pieDonutOptions, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
+import {IMetric, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
 import { MatDialog } from '@angular/material/dialog';
 import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
 import {HELP_MODAL_CONFIG, SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
@@ -17,14 +17,15 @@ import {HelpModalComponent} from '../../shared/components/help-modal/help-modal.
 })
 export class SavingsWidgetComponent implements OnInit, OnDestroy {
   chart: any = {};
-  options: any = Object.assign({}, pieDonutOptions);
   minRange = 0;
   pendingRequest: Subscription;
   errorMessage: any;
   isTooltipOpened: boolean = false;
+  overstaffingOptions = [];
   @Input() metric: IMetric;
   @Input() totalSpend: number = 0;
   @Output() changed: EventEmitter<any> = new EventEmitter<IMetric>();
+  @Output() thresholdChanged: EventEmitter<any> = new EventEmitter<IMetric>();
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -46,6 +47,7 @@ export class SavingsWidgetComponent implements OnInit, OnDestroy {
   }
 
   setUpDefaults(): void {
+    this.overstaffingOptions = this.savingsService.buildOverstaffingDropDown();
     this.minRange = this.metric.minRange ? this.metric.minRange : 0;
     const initValue = Object.assign({}, {value: this.metric.percent});
     this.sliderChange(initValue);
@@ -65,6 +67,9 @@ export class SavingsWidgetComponent implements OnInit, OnDestroy {
         break;
     }
     this.changed.emit(this.metric);
+  }
+  getOverstaffing(evt: IMetric): void {
+    this.thresholdChanged.emit(this.metric);
   }
 
   openDetails(): void {
