@@ -74,6 +74,8 @@ export const END_POINTS_URLS = {
   saveBenchmark: {url: BASE_URL + 'client/benchmarking/saveBenchmark', showLoading: true},
   saveBenchmarkPAs: {url: BASE_URL + 'client/benchmarking/saveBenchmarkPAs', showLoading: true},
   getRatesForCategoryAndLawyer:  {url: BASE_URL + 'client/getRatesForCategoryAndLawyer', showLoading: true},
+  getOverstaffing: {url: BASE_URL + 'analytics/getOverstaffing', showLoading: true},
+  getSavingsCalculatorTable: {url: BASE_URL + 'analytics/getSavingsCalculatorTable', showLoading: false},
 
 
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -146,10 +148,12 @@ export const outerAppLinks = {
 export const SAVINGS_CALCULATOR_CONFIG = {
   numberOfYears: 1,
   idealNumberOfPplInMeetings: 0.5,
+  overstaffingNumber: '3',
   detailsDialogConfig : {
     height: '80vh',
     width: '80vw',
-  }
+  },
+  topFirmsNumber: 10
 };
 export const HELP_MODAL_CONFIG = {
     height: '100%',

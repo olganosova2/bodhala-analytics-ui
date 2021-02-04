@@ -26,6 +26,7 @@
                          [metric]="metric"
                          [totalSpend]="totalSpend"
                          (changed)="updateTotals($event)"
+                         (thresholdChanged)="getOverstaffing($event)"
       ></bd-savings-widget>
     </div>
   </div>

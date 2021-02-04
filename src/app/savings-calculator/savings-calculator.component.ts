@@ -18,12 +18,15 @@ import {MOCK_SAVING_DATA} from '../shared/unit-tests/mock-data/saving-calc-mock'
 export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   errorMessage: any;
   pendingRequest: Subscription;
+  pendingRequestOverstaffing: Subscription;
   calcData: any;
+  calcDataTable: any;
   grandTotal: number = 0;
   grandPercent: number = 0;
   totalSpend: number = 0;
   currentYear: number = 0;
   metrics: Array<IMetric> = [];
+  tableRecords: Array<any> = [];
   pageName: string = 'app.client-dashboard.savings-calculator';
   @ViewChild(SavingsWidgetComponent) bbWidget: SavingsWidgetComponent;
   @ViewChild(ProgressSemiCircleComponent) bdProgress: ProgressSemiCircleComponent;
@@ -52,9 +55,42 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data.result) {
           this.calcData = data.result;
-          // this.calcData = MOCK_SAVING_DATA.result;
           this.formatData();
-          // this.calculateGrandTotal();
+          // this.getSavingsCalculatorTable(3);
+        }
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
+  }
+  getSavingsCalculatorTable(overstaffingNumber: number): void {
+    this.tableRecords = [];
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    params.overstaffingNumber = 3;
+    params.numberOfYears = SAVINGS_CALCULATOR_CONFIG.numberOfYears;
+    this.pendingRequest = this.httpService.makeGetRequest('getSavingsCalculatorTable', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          this.calcDataTable = data.result || {};
+          this.tableRecords = Object.assign([], this.savingsService.formatDataForTable(this.calcDataTable, this.metrics));
+        }
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
+  }
+  getOverstaffing(metric: IMetric): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    params.numberOfYears = SAVINGS_CALCULATOR_CONFIG.numberOfYears;
+    params.overstaffingNumber = metric.overstaffingNumber;
+    this.pendingRequest = this.httpService.makeGetRequest('getOverstaffing', params).subscribe(
+      (data: any) => {
+        if (data.result && data.result.overstaffing) {
+          const record = data.result.overstaffing[this.currentYear] || {};
+          this.savingsService.updateOverstaffingMetric(metric, record);
+          this.calculateGrandTotal();
         }
       },
       err => {
@@ -81,6 +117,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
 
   updateTotals(evt: IMetric): void {
     this.calculateGrandTotal();
+    // this.tableRecords = Object.assign([], this.savingsService.formatDataForTable(this.calcDataTable, this.metrics));
   }
 
   calculateGrandTotal(): void {
@@ -100,6 +137,9 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
+    }
+    if (this.pendingRequestOverstaffing) {
+      this.pendingRequestOverstaffing.unsubscribe();
     }
   }
 }
