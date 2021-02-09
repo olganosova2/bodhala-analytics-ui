@@ -2,6 +2,10 @@ import {Injectable} from '@angular/core';
 import {SAVINGS_CALCULATOR_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {UtilService} from 'bodhala-ui-common';
 import {IDropDown} from '../shared/models/prime-ng';
+import * as _moment from 'moment';
+
+const moment = _moment;
+
 export enum SavingMetrics {
   TkLevel = 'TkLevel',
   BlockBilling = 'BlockBilling',
@@ -47,6 +51,9 @@ export interface IRateIncreaseRow {
   total_spend: number;
   total_hours: number;
   effective_rate: number;
+  bh_lawfirm_id?: number;
+  firm_name?: string;
+  year?: number;
 }
 export interface IOverstaffingData {
   end_date: string;
@@ -270,7 +277,55 @@ export class SavingsCalculatorService {
     if (!bbp || !bbMetric) {
       return result;
     }
-    result = this.calculateBlockBillingValue(bbMetric.percent, bbp, totalBB);
+    result = this.calculateBlockBillingValue(bbMetric.percent, Math.round(bbp), totalBB);
+    return result;
+  }
+  calculateOverstaffingrecordForTable(records: Array<IOverstaffingRow>, osMetric: IMetric): number {
+    let result = 0;
+    if (!records || records.length === 0 || !osMetric) {
+      return result;
+    }
+    let totalOS = 0;
+    for (const rec of records) {
+      totalOS += rec.total_billed;
+    }
+    result = this.calculateOverstaffingValue(osMetric.percent, Math.round(totalOS));
+    return result;
+  }
+  calculateRateIncreaseForTable(records: Array<IRateIncreaseRow>, lastYear: number, rateIncreaseMetric: IMetric): number {
+    let result = 0;
+    const distinctYears = [];
+    const yearRecords = [];
+    for (let ix = 0; ix <  SAVINGS_CALCULATOR_CONFIG.yearsRange; ix++) {
+      distinctYears.push(lastYear - ix);
+    }
+    for (const year of distinctYears) {
+      const yearRecs = records.filter(e => e.year === year) || [];
+      const classifications = [];
+      const partnerRecords = yearRecs.filter(e => e.bh_classification === 'partner') || [];
+      if (partnerRecords.length > 0) {
+        classifications.push(partnerRecords[0]);
+      }
+      const associateRecords = yearRecs.filter(e => e.bh_classification === 'associate') || [];
+      if (associateRecords.length > 0) {
+        classifications.push(associateRecords[0]);
+      }
+      if (classifications.length > 0) {
+        yearRecords.push({ rate_increase: classifications});
+      } else {
+        yearRecords.push({ rate_increase: []});
+      }
+    }
+    const tkClassificationsProcessed = [];
+    for (const key of Object.keys(tkClassifications)) {
+      if (key === 'partner' || key === 'associate') {
+        tkClassificationsProcessed.push(this.createClassification(key, yearRecords));
+      }
+    }
+    const processed = tkClassificationsProcessed;
+    const clonedMetric = Object.assign({}, rateIncreaseMetric);
+    clonedMetric.classifications = Object.assign([], processed);
+    result = this.calculateIncreaseRateValue(clonedMetric.percent, clonedMetric);
     return result;
   }
   formatDataForTable(data: any, metrics: Array<IMetric>): Array<any> {
@@ -282,15 +337,27 @@ export class SavingsCalculatorService {
     if (!allFirms || allFirms.length === 0){
       return result;
     }
-    const topFirms = allFirms.slice(0, SAVINGS_CALCULATOR_CONFIG.topFirmsNumber) || [];
+    const bbMetric = metrics.find(e => e.savingsType === SavingMetrics.BlockBilling);
+    const osMetric = metrics.find(e => e.savingsType === SavingMetrics.Overstaffing);
+    const rateIncreaseMetric = metrics.find(e => e.savingsType === SavingMetrics.RateIncrease);
+    // const topFirms = allFirms.slice(0, SAVINGS_CALCULATOR_CONFIG.topFirmsNumber) || [];
+    const topFirms = allFirms || [];
+    const overstaffingData = data.overstaffing[0].overstaffing || [];
+    const rateIncreaseData = data.rate_increase[0].rate_increase || [];
+    const lastYear = moment(data.rate_increase[0].end_date).year();
     for (const firm of topFirms) {
       const recordForTable  = {} as ISavingsRecord;
       recordForTable.firm_name = firm.firm_name;
       recordForTable.id = firm.bh_lawfirm_id;
       recordForTable.total = 0;
-      const bbMetric = metrics.find(e => e.savingsType === SavingMetrics.BlockBilling);
       recordForTable.bb = this.calculateBBrecordForTable(firm.bbp, firm.total_block_billed, bbMetric) || 0;
       recordForTable.total += recordForTable.bb;
+      const firmOverstaffing = overstaffingData.filter(e => e.firm_id === firm.bh_lawfirm_id) || [];
+      recordForTable.overstaffing = this.calculateOverstaffingrecordForTable(firmOverstaffing, osMetric);
+      recordForTable.total += recordForTable.overstaffing;
+      const firmRateIncrease = rateIncreaseData.filter(e => e.bh_lawfirm_id === firm.bh_lawfirm_id) || [];
+      recordForTable.rate_increase = this.calculateRateIncreaseForTable(firmRateIncrease, lastYear,  rateIncreaseMetric);
+      recordForTable.total += recordForTable.rate_increase;
       result.push(recordForTable);
     }
     return result;

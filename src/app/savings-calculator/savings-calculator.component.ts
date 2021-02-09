@@ -4,11 +4,14 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../shared/services/filters.service';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
-import {IMetric, SavingMetrics, SavingsCalculatorService} from './savings-calculator.service';
+import {IMetric, ISavingsRecord, SavingMetrics, SavingsCalculatorService} from './savings-calculator.service';
 import {SavingsWidgetComponent} from './savings-widget/savings-widget.component';
 import {ProgressSemiCircleComponent} from './progress-semi-circle/progress-semi-circle.component';
 import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {MOCK_SAVING_DATA} from '../shared/unit-tests/mock-data/saving-calc-mock';
+import {OverstaffingGridComponent} from './overstaffing-grid/overstaffing-grid.component';
+import {MatDialog} from '@angular/material/dialog';
+import {SavingsFirmGridComponent} from './savings-firm-grid/savings-firm-grid.component';
 
 @Component({
   selector: 'bd-savings-calculator',
@@ -26,13 +29,14 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   totalSpend: number = 0;
   currentYear: number = 0;
   metrics: Array<IMetric> = [];
-  tableRecords: Array<any> = [];
+  tableRecords: Array<ISavingsRecord> = [];
   pageName: string = 'app.client-dashboard.savings-calculator';
   @ViewChild(SavingsWidgetComponent) bbWidget: SavingsWidgetComponent;
   @ViewChild(ProgressSemiCircleComponent) bdProgress: ProgressSemiCircleComponent;
 
   constructor(private route: ActivatedRoute,
               public router: Router,
+              public dialog: MatDialog,
               private httpService: HttpService,
               public appStateService: AppStateService,
               public filtersService: FiltersService,
@@ -49,6 +53,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   getSavingsCalculator(evt: any): void {
     this.grandTotal = 0;
     this.metrics = [];
+    this.calcDataTable = null;
     const params = this.filtersService.getCurrentUserCombinedFilters();
     params.numberOfYears = SAVINGS_CALCULATOR_CONFIG.numberOfYears;
     this.pendingRequest = this.httpService.makeGetRequest('getSavingsCalculator', params).subscribe(
@@ -56,7 +61,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
         if (data.result) {
           this.calcData = data.result;
           this.formatData();
-          // this.getSavingsCalculatorTable(3);
+          this.getSavingsCalculatorTable(3);
         }
       },
       err => {
@@ -73,7 +78,6 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data.result) {
           this.calcDataTable = data.result || {};
-          this.tableRecords = Object.assign([], this.savingsService.formatDataForTable(this.calcDataTable, this.metrics));
         }
       },
       err => {
@@ -90,6 +94,9 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
         if (data.result && data.result.overstaffing) {
           const record = data.result.overstaffing[this.currentYear] || {};
           this.savingsService.updateOverstaffingMetric(metric, record);
+          if (this.calcDataTable && data.result.overstaffing) {
+            this.calcDataTable.overstaffing = Object.assign([], data.result.overstaffing);
+          }
           this.calculateGrandTotal();
         }
       },
@@ -98,7 +105,13 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       }
     );
   }
-
+  buildTableRecords(): void {
+    if (!this.calcDataTable) {
+      return;
+    }
+    this.tableRecords = Object.assign([], this.savingsService.formatDataForTable(this.calcDataTable, this.metrics)) || [];
+    this.openSavingByFirmModal();
+  }
   formatData(): void {
     if (this.calcData.bb_percent && this.calcData.bb_percent.length > 0) {
       this.totalSpend = this.calcData.bb_percent[this.currentYear].total_billed;
@@ -117,7 +130,6 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
 
   updateTotals(evt: IMetric): void {
     this.calculateGrandTotal();
-    // this.tableRecords = Object.assign([], this.savingsService.formatDataForTable(this.calcDataTable, this.metrics));
   }
 
   calculateGrandTotal(): void {
@@ -130,6 +142,13 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
     }
     setTimeout(() => {
       this.bdProgress.updateValues(this.grandTotal, this.grandPercent);
+    });
+  }
+  openSavingByFirmModal(): void {
+    const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], this.tableRecords)};
+    const dialogRef = this.dialog.open(SavingsFirmGridComponent, {...modalConfig, disableClose: true });
+
+    dialogRef.afterClosed().subscribe(result => {
     });
   }
 

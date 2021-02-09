@@ -1,0 +1,18 @@
+<div>
+  <h4 class="pull-left">Savings By Firm</h4>
+  <div class="pull-right"><button mat-flat-button class="btn-grey mb10" [mat-dialog-close]="true">CLOSE</button></div>
+  <div class="card-wrapper clear-both mb20"></div>
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%; height:65vh"
+      class="ag-theme-alpine"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [sideBar]="sideBarConfig"
+      [rowData]="data"
+      (displayedColumnsChanged)="saveGridConfig($event)"
+      (sortChanged)="saveGridConfig($event);"
+      (columnResized)="saveGridConfig($event);"
+      [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>

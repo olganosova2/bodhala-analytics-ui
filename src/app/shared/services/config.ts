@@ -153,7 +153,8 @@ export const SAVINGS_CALCULATOR_CONFIG = {
     height: '80vh',
     width: '80vw',
   },
-  topFirmsNumber: 10
+  topFirmsNumber: 10,
+  yearsRange: 3
 };
 export const HELP_MODAL_CONFIG = {
     height: '100%',

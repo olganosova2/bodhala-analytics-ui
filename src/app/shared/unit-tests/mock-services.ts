@@ -17,6 +17,8 @@ import {MOCK_TASK_COST} from './mock-data/task-cost';
 import {MOCK_ANNOTATIONS} from './mock-data/annotations';
 import {FRESHDESK_ARTICLE} from './mock-data/freshdesk-article';
 import {NgZone} from '@angular/core';
+import {MOCK_OVERSTAFFING} from './mock-data/saving-calc-mock';
+import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
 
 export const ngWindow = {
   location: {
@@ -175,6 +177,10 @@ export class DataStub {
         return of(MOCK_ADMIN_BENCHMARK);
       case 'getAdminBenchmarks':
         return of(MOCK_ADMIN_BMS);
+      case 'getOverstaffing':
+        return of(MOCK_OVERSTAFFING);
+      case 'getSavingsCalculatorTable':
+        return of(MOCK_SAVINGS_BY_FIRM);
       default:
         return of([]);
     }
