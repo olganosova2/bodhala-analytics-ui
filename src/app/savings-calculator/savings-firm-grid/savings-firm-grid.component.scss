@@ -1,0 +1,9 @@
+:host ::ng-deep {
+  .ag-header-cell-text {
+    max-width: 200px !important;
+  }
+}
+button:focus {
+  outline: none;
+}
+

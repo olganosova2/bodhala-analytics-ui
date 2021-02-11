@@ -61,16 +61,6 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
       {headerName: 'Last Increase', field: 'lastYearIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
     ];
   }
-  getClients(): void {
-    this.pendingRequestClients = this.httpService.makeGetRequest('getAnalyticsClients').subscribe(
-      (data: any) => {
-        this.clients = data.result || [];
-      },
-      err => {
-        this.errorMessage = err;
-      }
-    );
-  }
   getRates(): void {
     const params = { clientId: 190, numberOfYears: 3};
     this.pendingRequest = this.httpService.makeGetRequest('getEffectiveRatesForAllClients', params).subscribe(
