@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../shared/unit-tests/mock-services';
 import {ActivatedRouteMock} from '../shared/unit-tests/mock-services';
 import {FiltersService} from '../shared/services/filters.service';
+import {MOCK_SAVINGS_BY_FIRM} from '../shared/unit-tests/mock-data/savings-by-firm';
 
 describe('SavingsCalculatorComponent', () => {
   let component: SavingsCalculatorComponent;
@@ -46,6 +47,15 @@ describe('SavingsCalculatorComponent', () => {
   });
 
   it('should create SavingsCalculatorComponent', () => {
+    expect(component).toBeTruthy();
+  });
+  it('should getSavingsCalculator', () => {
+    component.getSavingsCalculator({});
+    expect(component).toBeTruthy();
+  });
+  it('should buildTableRecords', () => {
+    component.calcDataTable = MOCK_SAVINGS_BY_FIRM.result;
+    component.buildTableRecords();
     expect(component).toBeTruthy();
   });
 });

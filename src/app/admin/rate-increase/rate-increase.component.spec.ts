@@ -45,4 +45,12 @@ describe('RateIncreaseComponent', () => {
   it('should create RateIncreaseComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should getRates', () => {
+    component.getRates();
+    expect(component).toBeTruthy();
+  });
+  it('should saveGridConfig', () => {
+    component.saveGridConfig({});
+    expect(component.agGridService).toBeTruthy();
+  });
 });

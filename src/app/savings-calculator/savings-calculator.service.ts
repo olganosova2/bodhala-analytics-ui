@@ -84,7 +84,9 @@ export interface ISavingsRecord {
   id: number;
   firm_name: string;
   bb: number;
+  bbRaw?: number;
   rate_increase?: number;
+  rate_increaseRaw?: number;
   overstaffing?: number;
   total?: number;
 }
@@ -350,6 +352,7 @@ export class SavingsCalculatorService {
       recordForTable.firm_name = firm.firm_name;
       recordForTable.id = firm.bh_lawfirm_id;
       recordForTable.total = 0;
+      recordForTable.bbRaw = firm.total_block_billed;
       recordForTable.bb = this.calculateBBrecordForTable(firm.bbp, firm.total_block_billed, bbMetric) || 0;
       recordForTable.total += recordForTable.bb;
       const firmOverstaffing = overstaffingData.filter(e => e.firm_id === firm.bh_lawfirm_id) || [];

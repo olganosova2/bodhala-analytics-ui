@@ -70,7 +70,12 @@ describe('AdminBenchmarksComponent', () => {
         }
       }
     };
-    const test = component.clientCellRenderer(param);
+    const test = component.firmCellRenderer(param);
     expect(test).toBeTruthy();
+  });
+  xit('should saveGridConfig', () => {
+    component.ngOnInit();
+    component.saveGridConfig({});
+    expect(component.agGridService).toBeTruthy();
   });
 });
