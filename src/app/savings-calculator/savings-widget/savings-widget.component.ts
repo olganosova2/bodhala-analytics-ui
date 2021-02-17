@@ -63,6 +63,9 @@ export class SavingsWidgetComponent implements OnInit, OnDestroy {
       case SavingMetrics.RateIncrease:
         this.metric.savings = this.savingsService.calculateIncreaseRateValue(val.value, this.metric);
         break;
+      case SavingMetrics.DelayedBilling:
+        this.metric.savings = this.savingsService.calculateDelayedBillingValue(val.value, this.metric.total);
+        break;
       default:
         break;
     }
