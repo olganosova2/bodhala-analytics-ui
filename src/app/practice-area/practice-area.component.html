@@ -12,7 +12,7 @@
       ></lib-bd-filters>
     </div>
     <div class="mb10">
-        <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()">Include Expenses
+        <mat-slide-toggle *ngIf="userService.hasEntitlement('analytics.expenses')" (change)="toggleExpenses()">Include Expenses
         </mat-slide-toggle>
         <bd-practice-area-dropdown [practiceAreaSetting]="practiceAreaSetting"></bd-practice-area-dropdown>
     </div>
