@@ -15,9 +15,9 @@
     <h4>{{ firm?.name }}</h4>
   </div> -->
   <div class="mb10">
-    <mat-slide-toggle [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()" class="pt10">Include Expenses
+    <mat-slide-toggle *ngIf="userService.hasEntitlement('analytics.expenses')" [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()" class="pt10">Include Expenses
     </mat-slide-toggle>
-    <button class="primary-button ml20" *ngIf="firmId && userService.hasEntitlement('analytics.firm.ratecard')" (click)="viewReportCard()">View Report Card</button>
+    <button [ngClass]="userService.hasEntitlement('analytics.expenses') ? 'primary-button ml20':'primary-button'" *ngIf="firmId && userService.hasEntitlement('analytics.firm.ratecard')" (click)="viewReportCard()">View Report Card</button>
     <bd-firm-dropdown></bd-firm-dropdown>
   </div>
   <div class="p-grid">
