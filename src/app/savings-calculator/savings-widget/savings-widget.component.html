@@ -1,5 +1,5 @@
 <div class="panel-wrapper flex-container">
-  <div class="pull-left">
+  <div>
     <h5  style="display: inline;" >{{metric.title}}</h5>
     <span *ngIf="metric.tooltip" class="relative-pos" (clickOutside)="onClickedOutside($event)">
       <i class="fa fa-info-circle pointer-hand ml5" (click)="isTooltipOpened = !isTooltipOpened"></i>
@@ -8,12 +8,17 @@
         <div *ngIf="metric.articleId">For more info see <a class="href-link-primary pointer-hand" (click)="showTooltip()">this link.</a></div>
       </div>
     </span>
-    <div class="subtitle mb10 mt5" *ngIf="metric.viewLabel"><a class="href-link-primary" (click)="openDetails()">View {{metric.viewLabel}} details</a></div>
   </div>
-  <div class="pull-right" *ngIf="metric.overstaffingNumber">
-    <span class="pr5">Meeting Threshold</span>
-    <p-dropdown class="mr20" [options]="overstaffingOptions" (onChange)="getOverstaffing($event)" [(ngModel)]="metric.overstaffingNumber"></p-dropdown>
-  </div>
+
+
+    <div class="subtitle mb10 mt5 pull-left" *ngIf="metric.viewLabel"><a class="href-link-primary" (click)="openDetails()">View {{metric.viewLabel}} details</a></div>
+    <div class="pull-right mt5" *ngIf="metric.overstaffingNumber">
+      <span class="pr5">Meeting Threshold</span>
+      <p-dropdown  [options]="overstaffingOptions" (onChange)="getOverstaffing($event)"
+                  > [(ngModel)]="metric.overstaffingNumber"></p-dropdown>
+    </div>
+
+
   <div class="clear-both"></div>
   <div class="subtitle mb10 mt5" *ngIf="metric.percentLabel">{{metric.percentLabel}}:
     <span class="font-body" *ngIf="metric.savingsType !== 'DelayedBilling'">{{metric.origPercent | number:'1.0-0'}}%</span>
