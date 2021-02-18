@@ -10,13 +10,15 @@ import {MOCK_INSIGHTS} from './mock-data/insights';
 import {BM_CHECK_RATES, MOCK_ADMIN_BENCHMARK, MOCK_ADMIN_BMS, MOCK_BENCHMARKS, MOCK_FIRMS_WITH_GROUP_ID, MOCK_PA_AND_ID} from './mock-data/benchmarking';
 import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
 import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data/practice-area';
-import {SAVINGS_DATA} from './mock-data/savings-calculator';
+import {MOCK_CLIENT_SAVINGS, SAVINGS_DATA} from './mock-data/savings-calculator';
 import {EXECUTIVE_SUMMARY} from './mock-data/execitive-summary';
 import {SPEND_BY_UTBMS_CODES} from './mock-data/uybms-codes';
 import {MOCK_TASK_COST} from './mock-data/task-cost';
 import {MOCK_ANNOTATIONS} from './mock-data/annotations';
 import {FRESHDESK_ARTICLE} from './mock-data/freshdesk-article';
 import {NgZone} from '@angular/core';
+import {MOCK_OVERSTAFFING} from './mock-data/saving-calc-mock';
+import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
 
 export const ngWindow = {
   location: {
@@ -175,6 +177,12 @@ export class DataStub {
         return of(MOCK_ADMIN_BENCHMARK);
       case 'getAdminBenchmarks':
         return of(MOCK_ADMIN_BMS);
+      case 'getOverstaffing':
+        return of(MOCK_OVERSTAFFING);
+      case 'getSavingsCalculatorTable':
+        return of(MOCK_SAVINGS_BY_FIRM);
+      case 'getEffectiveRatesForAllClients':
+        return of(MOCK_CLIENT_SAVINGS);
       default:
         return of([]);
     }

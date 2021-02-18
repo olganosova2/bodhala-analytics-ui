@@ -237,7 +237,9 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   addNew(): void {
     this.showWizard = true;
     setTimeout(() => {
-      this.commonServ.scrollToId(this.actionButtons.nativeElement);
+      if (this.actionButtons && this.actionButtons.nativeElement) {
+        this.commonServ.scrollToId(this.actionButtons.nativeElement);
+      }
     });
   }
   openDialog(bm: IBenchmarkSetupFormatted): void {

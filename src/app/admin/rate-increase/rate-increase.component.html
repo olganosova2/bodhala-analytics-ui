@@ -1,0 +1,18 @@
+<div>
+  <h4>Rate Increase Prevention</h4>
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%;"
+      [ngStyle]="{'height': agGridService.setGridHeight(rateIncreases, paginationPageSize) +'px'}"
+      class="ag-theme-alpine"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [sideBar]="sideBarConfig"
+      (displayedColumnsChanged)="saveGridConfig($event)"
+      (sortChanged)="saveGridConfig($event);"
+      (columnResized)="saveGridConfig($event);"
+      [suppressAggFuncInHeader]="true"
+      [gridOptions]="gridOptions"
+      (gridReady)="getRates()">
+  </ag-grid-angular>
+</div>

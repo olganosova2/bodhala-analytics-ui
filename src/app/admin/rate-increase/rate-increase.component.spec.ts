@@ -1,16 +1,16 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AdminBenchmarksComponent} from './admin-benchmarks.component';
+import { RateIncreaseComponent } from './rate-increase.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {BenchmarkFirmDetailComponent} from '../../benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
+import {AdminBenchmarksComponent} from '../admin-benchmarks/admin-benchmarks.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
 
-describe('AdminBenchmarksComponent', () => {
-  let component: AdminBenchmarksComponent;
-  let fixture: ComponentFixture<AdminBenchmarksComponent>;
+describe('RateIncreaseComponent', () => {
+  let component: RateIncreaseComponent;
+  let fixture: ComponentFixture<RateIncreaseComponent>;
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
@@ -21,7 +21,7 @@ describe('AdminBenchmarksComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(AdminBenchmarksComponent, {
+    }).overrideComponent(RateIncreaseComponent, {
       set: {
         providers: [
           AppStateService,
@@ -37,44 +37,19 @@ describe('AdminBenchmarksComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AdminBenchmarksComponent);
+    fixture = TestBed.createComponent(RateIncreaseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create AdminBenchmarksComponent', () => {
+  it('should create RateIncreaseComponent', () => {
     expect(component).toBeTruthy();
   });
-  it('should getBenchmarks', () => {
-    component.getBenchmarks();
+  it('should getRates', () => {
+    component.getRates();
     expect(component).toBeTruthy();
   });
-  it('should clientCellRenderer', () => {
-    const param = {
-      node: {
-        data: {
-          client: 'Client 1',
-          client_id: '1'
-        }
-      }
-    };
-    const test = component.clientCellRenderer(param);
-    expect(test).toBeTruthy();
-  });
-  it('should firmCellRenderer', () => {
-    const param = {
-      node: {
-        data: {
-          firm: 'Client 1',
-          firm_id: '1'
-        }
-      }
-    };
-    const test = component.firmCellRenderer(param);
-    expect(test).toBeTruthy();
-  });
-  xit('should saveGridConfig', () => {
-    component.ngOnInit();
+  it('should saveGridConfig', () => {
     component.saveGridConfig({});
     expect(component.agGridService).toBeTruthy();
   });

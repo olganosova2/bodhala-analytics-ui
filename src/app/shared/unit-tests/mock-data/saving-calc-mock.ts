@@ -2728,3 +2728,103 @@ export const MOCK_SAVING_DATA = {
   },
   "error": null
 }
+export const MOCK_OVERSTAFFING = {
+  "result": {
+    "overstaffing": [{
+      "end_date": "2019-06-26",
+      "overstaffing": [{
+        "timekeepers": 5,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-07-26",
+        "total_billed": 1796.44,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 10
+      }, {
+        "timekeepers": 5,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-07-27",
+        "total_billed": 1441.42,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 8.2
+      }, {
+        "timekeepers": 6,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-07-30",
+        "total_billed": 5619.64,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 36.4
+      }, {
+        "timekeepers": 8,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-07-31",
+        "total_billed": 9278.05,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 56.4
+      }, {
+        "timekeepers": 7,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-08-01",
+        "total_billed": 4307.24,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 25.7
+      }, {
+        "timekeepers": 5,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-08-08",
+        "total_billed": 2275.62,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 13.5
+      }, {
+        "timekeepers": 5,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-08-15",
+        "total_billed": 3220.4,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 18.2
+      }, {
+        "timekeepers": 5,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-09-13",
+        "total_billed": 2261.07,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 12.6
+      }, {
+        "timekeepers": 6,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-09-17",
+        "total_billed": 2602.51,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 15.1
+      }, {
+        "timekeepers": 5,
+        "firm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "line_item_date": "2018-09-18",
+        "total_billed": 3732.56,
+        "client_matter_id": "OSOS109KL",
+        "matter_name": "169-221981-001",
+        "total_hours": 21.2
+      }]
+    }]
+  },
+  "error": null
+}
+

@@ -120,6 +120,8 @@ import { AddEditBenchmarkComponent } from './admin/admin-benchmarks/add-edit-ben
 import { BenchmarkingSetupComponent } from './benchmarking-setup/benchmarking-setup.component';
 import { EditBenchmarkRateComponent } from './admin/admin-benchmarks/edit-benchmark-rate/edit-benchmark-rate.component';
 import { ObjectKeysPipe } from './shared/pipes/object-keys.pipe';
+import { RateIncreaseComponent } from './admin/rate-increase/rate-increase.component';
+import { SavingsFirmGridComponent } from './savings-calculator/savings-firm-grid/savings-firm-grid.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -191,14 +193,17 @@ export function initHttp(service: HttpService) {
     AddEditBenchmarkComponent,
     BenchmarkingSetupComponent,
     EditBenchmarkRateComponent,
-    ObjectKeysPipe
+    ObjectKeysPipe,
+    RateIncreaseComponent,
+    SavingsFirmGridComponent
   ],
   entryComponents: [
     PillComponent,
     LinkComponent,
     OverstaffingGridComponent,
     AnnotaionsModalComponent,
-    HelpModalComponent
+    HelpModalComponent,
+    SavingsFirmGridComponent
   ],
   imports: [
     HttpClientModule,
