@@ -6,11 +6,15 @@ $border-radius: 75px;
   .ui-slider .ui-slider-range {
     background-color: $body-color !important;
   }
+  .p-dropdown {
+    height: 26px;
+  }
+  .p-inputtext{
+    padding: 0 0.429rem;
+  }
 
 }
-.ui-slider .ui-slider-range {
-  background-color: $body-color !important;
-}
+
 .panel-wrapper {
   padding: 20px !important;
 }

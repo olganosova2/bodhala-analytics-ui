@@ -126,6 +126,10 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       const metricOverstaffing = this.savingsService.createMetricsRecord(this.calcData.overstaffing[this.currentYear], SavingMetrics.Overstaffing);
       this.metrics.push(metricOverstaffing);
     }
+    if (this.calcData.delayed_billing && this.calcData.delayed_billing.length > 0) {
+      const metricDelayedBilling = this.savingsService.createMetricsRecord(this.calcData.delayed_billing[this.currentYear], SavingMetrics.DelayedBilling);
+      this.metrics.push(metricDelayedBilling);
+    }
   }
 
   updateTotals(evt: IMetric): void {

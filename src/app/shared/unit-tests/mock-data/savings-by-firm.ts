@@ -379,7 +379,18 @@ export const MOCK_SAVINGS_BY_FIRM = {
         "matter_name": "501-012800-001",
         "total_hours": 12.6999
       }]
+    }],
+    "delayed_billing": [{
+      "end_date": "2019-06-26",
+      "delayed_billing": [{
+        "bh_lawfirm_id": 87,
+        "firm_name": "Lewis, Brisbois, Bisgaard & Smith",
+        "total_billed": 587419.6703,
+        "total_afa": 0,
+        "total_spend": 587419.6703
+      }]
     }]
   },
   "error": null
 }
+
