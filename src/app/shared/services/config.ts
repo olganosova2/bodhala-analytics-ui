@@ -76,6 +76,7 @@ export const END_POINTS_URLS = {
   getRatesForCategoryAndLawyer:  {url: BASE_URL + 'client/getRatesForCategoryAndLawyer', showLoading: true},
   getOverstaffing: {url: BASE_URL + 'analytics/getOverstaffing', showLoading: true},
   getSavingsCalculatorTable: {url: BASE_URL + 'analytics/getSavingsCalculatorTable', showLoading: false},
+  getPastSavings: {url: BASE_URL + 'analytics/getPastSavings', showLoading: true},
 
 
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -154,7 +155,8 @@ export const SAVINGS_CALCULATOR_CONFIG = {
     width: '80vw',
   },
   topFirmsNumber: 10,
-  yearsRange: 3
+  yearsRange: 3,
+  defaultPercentAnnualIncrease: 0.03
 };
 export const HELP_MODAL_CONFIG = {
     height: '100%',

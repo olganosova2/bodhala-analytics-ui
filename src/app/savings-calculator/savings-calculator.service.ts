@@ -103,6 +103,10 @@ export interface ISavingsRecord {
   delayed_billing?: number;
   total?: number;
 }
+export interface IPastSavingsMetric {
+  savings: number;
+  label: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -406,6 +410,27 @@ export class SavingsCalculatorService {
       recordForTable.total += recordForTable.delayed_billing;
       result.push(recordForTable);
     }
+    return result;
+  }
+  calculateSentinel(spend: number, percentAnnualIncrease: number, uploadStartDate: string): IPastSavingsMetric {
+    const result = { label: 'Sentinel', savings: 0} as IPastSavingsMetric;
+    const start = moment(uploadStartDate);
+    const daysDiff = moment().diff(start, 'days') || 0;
+    const remainder = daysDiff % 365;
+    const percentOfDateRange = remainder / 365;
+    const calculated = (spend + spend * percentAnnualIncrease) * 0.05 * percentOfDateRange;
+    result.savings = calculated;
+    return result;
+  }
+  calculatePastRateIncrease(spend: number, records: Array<IRateIncreaseData>, thisYearRateIncrease: number): IPastSavingsMetric {
+    const result = { label: 'Rate Increase Prevention', savings: 0} as IPastSavingsMetric;
+    const tkClassificationsProcessed = [];
+    for (const key of Object.keys(tkClassifications)) {
+      if (key === 'partner' || key === 'associate') {
+        tkClassificationsProcessed.push(this.createClassificationDynamic(key, records));
+      }
+    }
+    const lastYearIncrease = this.calculateOrigIncreaseRatePercent(tkClassificationsProcessed, false);
     return result;
   }
 }

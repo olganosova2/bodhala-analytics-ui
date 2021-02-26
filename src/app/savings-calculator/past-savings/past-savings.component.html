@@ -1,0 +1,21 @@
+<div class="content-body-inner-wrapper">
+  <bd-ie-banner></bd-ie-banner>
+  <bd-error-messages></bd-error-messages>
+  <div id="filtersdiv" *ngIf="pastSavingsConfig">
+    <lib-bd-filters
+      (sendFilters)="getPastSavingsData($event)"
+      [pageName]="pageName"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+
+  <div class="content-body">
+    <div class="panel-wrapper">
+      <div *ngIf="!pastSavingsConfig">Past Saving are not configured.</div>
+      <div *ngFor="let metric of calculatedMetrics" class="p-grid">
+        <div class="p-col-3">{{metric.label}}</div>
+        <div class="p-col-9">{{metric.savings | number:'1.0-0'}}</div>
+      </div>
+    </div>
+  </div>
+</div>
