@@ -12,9 +12,20 @@
   <div class="content-body">
     <div class="panel-wrapper">
       <div *ngIf="!pastSavingsConfig">Past Saving are not configured.</div>
-      <div *ngFor="let metric of calculatedMetrics" class="p-grid">
-        <div class="p-col-3">{{metric.label}}</div>
-        <div class="p-col-9">{{metric.savings | number:'1.0-0'}}</div>
+      <div *ngIf="pastSavingsConfig">
+        <div class="last-year-div">Last Year Spend: ${{lastYearSpend | number:'1.0-0'}}</div>
+        <h4 class="mt15">Past Savings in Real-time</h4>
+        <div *ngFor="let metric of calculatedMetrics" class="p-grid border-bottom pt15">
+          <div class="p-col-3">{{metric.label}}</div>
+          <div class="p-col-9 font-bold"><span *ngIf="!metric.error">${{metric.savings | number:'1.0-0'}}</span>
+            <span class="ml20 error-mes-sm" *ngIf="metric.error">{{metric.error}}</span>
+          </div>
+        </div>
+        <div class="p-grid pt15 border-bottom">
+          <div class="p-col-3 font-bold">Total</div>
+          <div class="p-col-9 font-bold">${{getTotals() | number:'1.0-0'}}
+          </div>
+        </div>
       </div>
     </div>
   </div>

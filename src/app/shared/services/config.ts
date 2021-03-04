@@ -98,7 +98,8 @@ export const ROUTES = [
   {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'},
   {name: 'analytics.benchmarking.setup', routePath: 'analytics-ui/benchmarks-setup', fragment: '/benchmarks-setup'},
   {name: 'app.rate.increase', routePath: 'analytics-ui/admin/rate-increase', fragment: '/rate-increase'},
-  // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
+  {name: 'analytics.pastsavings', routePath: 'analytics-ui/past-savings', fragment: '/past-savings'},
+  // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
 
