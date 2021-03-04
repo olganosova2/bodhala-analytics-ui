@@ -49,6 +49,11 @@ describe('AdminBenchmarksComponent', () => {
     component.getBenchmarks();
     expect(component).toBeTruthy();
   });
+  xit('should saveGridConfig', () => {
+    component.gridOptions = component.agGridService.getDefaultGridOptions();
+    component.saveGridConfig({});
+    expect(component.agGridService).toBeTruthy();
+  });
   it('should clientCellRenderer', () => {
     const param = {
       node: {
@@ -73,9 +78,9 @@ describe('AdminBenchmarksComponent', () => {
     const test = component.firmCellRenderer(param);
     expect(test).toBeTruthy();
   });
-  xit('should saveGridConfig', () => {
-    component.ngOnInit();
-    component.saveGridConfig({});
-    expect(component.agGridService).toBeTruthy();
+
+  it('should addNew', () => {
+    component.addNew();
+    expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmark-add' ]);
   });
 });

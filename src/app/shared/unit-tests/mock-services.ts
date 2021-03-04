@@ -19,6 +19,7 @@ import {FRESHDESK_ARTICLE} from './mock-data/freshdesk-article';
 import {NgZone} from '@angular/core';
 import {MOCK_OVERSTAFFING} from './mock-data/saving-calc-mock';
 import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
+import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
 
 export const ngWindow = {
   location: {
@@ -183,6 +184,8 @@ export class DataStub {
         return of(MOCK_SAVINGS_BY_FIRM);
       case 'getEffectiveRatesForAllClients':
         return of(MOCK_CLIENT_SAVINGS);
+      case 'getPastSavings':
+        return of(MOCK_PAST_SAVINGS);
       default:
         return of([]);
     }

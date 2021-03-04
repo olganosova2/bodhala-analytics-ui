@@ -114,9 +114,5 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }
-    if (this.pendingRequestClients) {
-      this.pendingRequestClients.unsubscribe();
-    }
   }
-
 }

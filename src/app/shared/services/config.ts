@@ -76,6 +76,7 @@ export const END_POINTS_URLS = {
   getRatesForCategoryAndLawyer:  {url: BASE_URL + 'client/getRatesForCategoryAndLawyer', showLoading: true},
   getOverstaffing: {url: BASE_URL + 'analytics/getOverstaffing', showLoading: true},
   getSavingsCalculatorTable: {url: BASE_URL + 'analytics/getSavingsCalculatorTable', showLoading: false},
+  getPastSavings: {url: BASE_URL + 'analytics/getPastSavings', showLoading: true},
 
 
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -97,7 +98,8 @@ export const ROUTES = [
   {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'},
   {name: 'analytics.benchmarking.setup', routePath: 'analytics-ui/benchmarks-setup', fragment: '/benchmarks-setup'},
   {name: 'app.rate.increase', routePath: 'analytics-ui/admin/rate-increase', fragment: '/rate-increase'},
-  // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'}
+  {name: 'analytics.pastsavings', routePath: 'analytics-ui/past-savings', fragment: '/past-savings'},
+  // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
 
@@ -154,7 +156,8 @@ export const SAVINGS_CALCULATOR_CONFIG = {
     width: '80vw',
   },
   topFirmsNumber: 10,
-  yearsRange: 3
+  yearsRange: 3,
+  defaultPercentAnnualIncrease: 0.03
 };
 export const HELP_MODAL_CONFIG = {
     height: '100%',

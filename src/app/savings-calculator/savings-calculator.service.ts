@@ -57,7 +57,7 @@ export interface IRateIncreaseRow {
   year?: number;
 }
 export interface IOverstaffingData {
-  end_date: string;
+  end_date?: string;
   overstaffing: Array<IOverstaffingRow>;
 }
 export interface IRateIncreaseData {
@@ -102,6 +102,11 @@ export interface ISavingsRecord {
   overstaffing?: number;
   delayed_billing?: number;
   total?: number;
+}
+export interface IPastSavingsMetric {
+  savings: number;
+  label: string;
+  error?: string;
 }
 
 @Injectable({
@@ -406,6 +411,57 @@ export class SavingsCalculatorService {
       recordForTable.total += recordForTable.delayed_billing;
       result.push(recordForTable);
     }
+    return result;
+  }
+  calculatePercentOfDateRange(tDate: string): number {
+    let result = 0;
+    const start = moment(tDate);
+    const daysDiff = moment().diff(start, 'days') || 0;
+    const remainder = daysDiff % 365;
+    result = remainder / 365;
+    return result;
+  }
+  calculateSentinel(spend: number, percentAnnualIncrease: number, uploadStartDate: string): IPastSavingsMetric {
+    const result = { label: 'Sentinel', savings: 0} as IPastSavingsMetric;
+    const percentOfDateRange = this.calculatePercentOfDateRange(uploadStartDate);
+    const calculated = (spend + spend * percentAnnualIncrease) * 0.05 * percentOfDateRange;
+    result.savings = calculated;
+    return result;
+  }
+  calculatePastBlockBilling(spend: number, bbData: any, bbStartDate: string, lastYearBBpercent: number) {
+    const result = { label: 'Block Billing', savings: 0} as IPastSavingsMetric;
+    if (!bbData.total_billed || !bbData.percent_block_billed) {
+      result.error = 'No Block Billing Data from Start Date: ' + bbStartDate + ' to today';
+    } else {
+      const percentOfDateRange = this.calculatePercentOfDateRange(bbStartDate);
+      const bbStartDatePercent = (bbData.percent_block_billed || 0) / 100;
+      const calcFormula = this.calculateBlockBillingValue(bbStartDatePercent * 100, lastYearBBpercent, spend) || 0;
+      const calculated = calcFormula * percentOfDateRange;
+      result.savings = calculated;
+    }
+    return result;
+  }
+  calculatePastRateIncrease(spend: number, records: Array<IRateIncreaseData>, thisYearRateIncrease: number, percentAnnualIncrease: number): IPastSavingsMetric {
+    const result = { label: 'Rate Increase Prevention', savings: 0} as IPastSavingsMetric;
+    const tkClassificationsProcessed = [];
+    for (const key of Object.keys(tkClassifications)) {
+      if (key === 'partner' || key === 'associate') {
+        tkClassificationsProcessed.push(this.createClassificationDynamic(key, records));
+      }
+    }
+    const lastYearIncrease = this.calculateOrigIncreaseRatePercent(tkClassificationsProcessed, false) / 100;
+    const calculated = (spend + spend * percentAnnualIncrease) * (lastYearIncrease - thisYearRateIncrease);
+    result.savings = calculated;
+    return result;
+  }
+  calculatePastOverbilling(osRecord: Array<IOverstaffingRow>, overstaffingPercent: number): IPastSavingsMetric {
+    const result = { label: 'Overbilling on Internal Meetings', savings: 0} as IPastSavingsMetric;
+    let osTotal = 0;
+    for (const rec of osRecord) {
+      osTotal += rec.total_billed;
+    }
+    const calculated = overstaffingPercent * ( SAVINGS_CALCULATOR_CONFIG.idealNumberOfPplInMeetings * osTotal);
+    result.savings = calculated;
     return result;
   }
 }
