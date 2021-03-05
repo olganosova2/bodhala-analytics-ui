@@ -252,7 +252,7 @@ export class SavingsCalculatorService {
       const divider = year2Rec.effective_rate ? year2Rec.effective_rate : 1;
       const yearIncrease = ((year1Rec.effective_rate || 0) - (year2Rec.effective_rate || 0)) / divider;
       if (ix === 1) {
-        prevYearsEffectiveRate = year2Rec.effective_rate;
+        prevYearsEffectiveRate = year2Rec.effective_rate || 0;
       }
       if (year1Rec.effective_rate && year2Rec.effective_rate) {
         increases += yearIncrease;
@@ -261,7 +261,11 @@ export class SavingsCalculatorService {
       }
     }
     const prevDivider = prevYearsEffectiveRate ?  prevYearsEffectiveRate : 1;
-    classification.lastYearRateIncrease = (classification.lastYearRate - prevYearsEffectiveRate ) / prevDivider;
+    if (prevYearsEffectiveRate) {
+      classification.lastYearRateIncrease = (classification.lastYearRate - prevYearsEffectiveRate ) / prevDivider;
+    } else {
+      classification.lastYearRateIncrease = 0;
+    }
     classification.avgRateIncrease = count ? (increases / count) : 0;
     return classification;
   }
