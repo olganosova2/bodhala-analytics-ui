@@ -52,7 +52,7 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getTopLeadPartners', params).subscribe(
       (data: any) => {
         this.leadPartners = data.result;
-        if (this.leadPartners !== undefined) {
+        if (this.leadPartners !== undefined && this.leadPartners !== null) {
           if (this.leadPartners.length > 10) {
             this.leadPartners = this.leadPartners.slice(0, 10);
           }
