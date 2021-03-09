@@ -51,7 +51,7 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.defaultColumn = this.agGridService.getDefaultColumn();
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
-    this.savedState = this.agGridService.getSavedState('RateIncreses');
+    this.savedState = this.agGridService.getSavedState('RateIncreasesGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
     // this.getClients();
@@ -87,6 +87,10 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   }
   calculateRates(records: Array<IRateIncreaseData>, clientName: string, clientId: number): any {
     const record = {} as IClientRateIncreases;
+    record.partnerAvgIncrease = 0;
+    record.partnerLastIncrease = 0;
+    record.associateLastIncrease = 0;
+    record.associateLastIncrease = 0;
     const tkClassificationsProcessed = [];
     for (const key of Object.keys(tkClassifications)) {
       if (key === 'partner' || key === 'associate') {
@@ -117,7 +121,7 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   }
   saveGridConfig(evt: any): void {
     const state = evt;
-    this.agGridService.saveState('RateIncreses', this.gridOptions);
+    this.agGridService.saveState('RateIncreasesGrid', this.gridOptions);
   }
 
   ngOnDestroy() {
