@@ -11,7 +11,7 @@
         [collapsed]="appStateService.layout.isCollapsed"
       ></lib-bd-filters>
     </div>
-    <div class="mb10">
+    <div class="mb10" style="height: 28px; line-height: 24px;">
         <mat-slide-toggle *ngIf="userService.hasEntitlement('analytics.expenses')" (change)="toggleExpenses()">Include Expenses
         </mat-slide-toggle>
         <bd-practice-area-dropdown [practiceAreaSetting]="practiceAreaSetting"></bd-practice-area-dropdown>
