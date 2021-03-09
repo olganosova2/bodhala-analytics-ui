@@ -58,8 +58,9 @@ export class PracticeAreaDropdownComponent implements OnInit {
 
         if (this.practiceAreaSetting === 'Client Practice Areas' || this.practiceAreaSetting === undefined || this.practiceAreaSetting === null) {
           this.practiceAreasList = this.clientPracticeAreas;
+          this.practiceAreasList.sort();
         } else if (this.practiceAreaSetting === 'Smart Practice Areas') {
-
+          this.bodhalaPracticeAreas.sort();
           const newList = [];
           for (let practiceArea of this.bodhalaPracticeAreas) {
             practiceArea = practiceArea + ' - [Smart]';
