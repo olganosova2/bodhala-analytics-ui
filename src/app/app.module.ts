@@ -125,6 +125,7 @@ import { SavingsFirmGridComponent } from './savings-calculator/savings-firm-grid
 import { PastSavingsComponent } from './savings-calculator/past-savings/past-savings.component';
 import { ClientConfigsComponent } from './admin/client-configs/client-configs.component';
 import { AddEditConfigComponent } from './admin/client-configs/add-edit-config/add-edit-config.component';
+import {AceEditorModule} from 'ng2-ace-editor';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -258,7 +259,8 @@ export function initHttp(service: HttpService) {
     AgGridModule.withComponents([ RouterLinkRendererComponent ]),
     QuillModule.forRoot(),
     ClickOutsideModule,
-    MultiSelectModule
+    MultiSelectModule,
+    AceEditorModule
   ],
   providers: [CookieService,
     UserService,

@@ -110,6 +110,7 @@ import {SavingsFirmGridComponent} from '../../savings-calculator/savings-firm-gr
 import {PastSavingsComponent} from '../../savings-calculator/past-savings/past-savings.component';
 import {ClientConfigsComponent} from '../../admin/client-configs/client-configs.component';
 import {AddEditConfigComponent} from '../../admin/client-configs/add-edit-config/add-edit-config.component';
+import {AceEditorModule} from 'ng2-ace-editor';
 
 
 export const IMPORTS = [
@@ -151,7 +152,8 @@ export const IMPORTS = [
   OverlayPanelModule,
   MultiSelectModule,
   AgGridModule.withComponents([ RouterLinkRendererComponent ]),
-  QuillModule.forRoot()
+  QuillModule.forRoot(),
+  AceEditorModule
 ];
 
 export const DECLARATIONS = [

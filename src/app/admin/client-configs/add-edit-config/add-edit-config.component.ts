@@ -1,5 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import 'brace';
+import 'brace/mode/json';
+
 import {IEntityConfig} from '../client-configs-model';
 import {IClient} from '../../../shared/services/common.service';
 
@@ -16,6 +19,7 @@ export class AddEditConfigComponent implements OnInit {
 
   ngOnInit(): void {
     this.config = Object.assign({}, this.data.config);
+    this.config.json_config_parsed = JSON.stringify(this.config.json_config);
     this.client = Object.assign({}, this.data.client);
   }
   validateForm(): boolean {
