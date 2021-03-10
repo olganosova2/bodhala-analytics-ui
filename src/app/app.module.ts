@@ -124,6 +124,7 @@ import { RateIncreaseComponent } from './admin/rate-increase/rate-increase.compo
 import { SavingsFirmGridComponent } from './savings-calculator/savings-firm-grid/savings-firm-grid.component';
 import { PastSavingsComponent } from './savings-calculator/past-savings/past-savings.component';
 import { ClientConfigsComponent } from './admin/client-configs/client-configs.component';
+import { AddEditConfigComponent } from './admin/client-configs/add-edit-config/add-edit-config.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -199,7 +200,8 @@ export function initHttp(service: HttpService) {
     RateIncreaseComponent,
     SavingsFirmGridComponent,
     PastSavingsComponent,
-    ClientConfigsComponent
+    ClientConfigsComponent,
+    AddEditConfigComponent
   ],
   entryComponents: [
     PillComponent,
@@ -207,7 +209,8 @@ export function initHttp(service: HttpService) {
     OverstaffingGridComponent,
     AnnotaionsModalComponent,
     HelpModalComponent,
-    SavingsFirmGridComponent
+    SavingsFirmGridComponent,
+    AddEditConfigComponent
   ],
   imports: [
     HttpClientModule,

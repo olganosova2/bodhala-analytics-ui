@@ -109,6 +109,7 @@ import {RateIncreaseComponent} from '../../admin/rate-increase/rate-increase.com
 import {SavingsFirmGridComponent} from '../../savings-calculator/savings-firm-grid/savings-firm-grid.component';
 import {PastSavingsComponent} from '../../savings-calculator/past-savings/past-savings.component';
 import {ClientConfigsComponent} from '../../admin/client-configs/client-configs.component';
+import {AddEditConfigComponent} from '../../admin/client-configs/add-edit-config/add-edit-config.component';
 
 
 export const IMPORTS = [
@@ -210,7 +211,8 @@ export const DECLARATIONS = [
   RateIncreaseComponent,
   SavingsFirmGridComponent,
   PastSavingsComponent,
-  ClientConfigsComponent
+  ClientConfigsComponent,
+  AddEditConfigComponent
 ];
 
 export const PROVIDERS = [
