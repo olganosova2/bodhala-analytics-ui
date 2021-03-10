@@ -54,8 +54,6 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
     this.savedState = this.agGridService.getSavedState('RateIncreasesGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
-    // this.getClients();
-    // this.getRates();
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
@@ -72,7 +70,6 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   getRates(): void {
     const params = { clientId: 190, numberOfYears: 3};
     this.pendingRequest = this.httpService.makeGetRequest('getEffectiveRatesForAllClients', params).subscribe(
-    // this.pendingRequest = this.httpService.makeGetRequest('getEffectiveRates', params).subscribe(
       (data: any) => {
         const clients = data.result || [];
         for (const client of clients) {
@@ -98,8 +95,8 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
         tkClassificationsProcessed.push(processed);
         const propNameAvg = key + 'AvgIncrease';
         const propNameLast = key + 'LastIncrease';
-        record[propNameAvg] = processed.avgRateIncrease * 100;
-        record[propNameLast] = processed.lastYearRateIncrease * 100;
+        record[propNameAvg] = processed.avgRateIncrease * 100 || 0;
+        record[propNameLast] = processed.lastYearRateIncrease * 100 || 0;
       }
     }
     record.avgIncrease = this.savCalcService.calculateOrigIncreaseRatePercent(tkClassificationsProcessed, true);
