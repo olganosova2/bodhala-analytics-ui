@@ -15,6 +15,7 @@ import {AddEditBenchmarkComponent} from './admin/admin-benchmarks/add-edit-bench
 import {BenchmarkingSetupComponent} from './benchmarking-setup/benchmarking-setup.component';
 import {RateIncreaseComponent} from './admin/rate-increase/rate-increase.component';
 import {PastSavingsComponent} from './savings-calculator/past-savings/past-savings.component';
+import {ClientConfigsComponent} from './admin/client-configs/client-configs.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -46,6 +47,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/benchmark-edit/:id', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/benchmark-add', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/rate-increase', component: RateIncreaseComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
-  // {path: 'analytics.html', component: LaunchpadComponent},
+  {path: 'analytics-ui/admin/client-configs', component: ClientConfigsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  // ClientConfigsComponent,
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

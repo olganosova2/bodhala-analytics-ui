@@ -108,6 +108,7 @@ import {ObjectKeysPipe} from '../pipes/object-keys.pipe';
 import {RateIncreaseComponent} from '../../admin/rate-increase/rate-increase.component';
 import {SavingsFirmGridComponent} from '../../savings-calculator/savings-firm-grid/savings-firm-grid.component';
 import {PastSavingsComponent} from '../../savings-calculator/past-savings/past-savings.component';
+import {ClientConfigsComponent} from '../../admin/client-configs/client-configs.component';
 
 
 export const IMPORTS = [
@@ -208,7 +209,8 @@ export const DECLARATIONS = [
   ObjectKeysPipe,
   RateIncreaseComponent,
   SavingsFirmGridComponent,
-  PastSavingsComponent
+  PastSavingsComponent,
+  ClientConfigsComponent
 ];
 
 export const PROVIDERS = [
