@@ -4,16 +4,23 @@
       <h4><span *ngIf="!config.id">Add Config</span><span *ngIf="config.id">Edit Config</span> for {{ client.org_name }}</h4>
     </div>
     <div class="pull-right">
-      <button mat-flat-button class="btn-grey mb10" [mat-dialog-close]="true">CLOSE</button>
+      <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="!validateForm()">Save</button>
+      <button mat-flat-button class="btn-grey ml10" [mat-dialog-close]="false">Cancel</button>
     </div>
     <div class="clear-both"></div>
   </div>
   <mat-dialog-content>
     <div>
-      <div>Name</div>
+      <div>Name*</div>
+      <div class="error-mes-sm" *ngIf="this.checkDuplicates()">Error: Duplicate Name and Value</div>
       <mat-form-field appearance="outline" class="full-width">
-        <input type="text" matInput [(ngModel)]="config.name" autocomplete="off" placeholder="Name" required
-               maxlength="255">
+        <input type="text" matInput [(ngModel)]="config.name" autocomplete="off"  placeholder="Name" required (input)="filterNames($event.target.value)"
+               maxlength="255" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [hidden]="config.id">
+            <mat-option *ngFor="let name of filteredNames" [value]="name">
+              <span>{{name}}</span>
+            </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
       <div>Description</div>
@@ -28,15 +35,8 @@
         <input type="text" matInput [(ngModel)]="config.value" autocomplete="off" placeholder="Value"
                maxlength="255">
       </mat-form-field>
-      <div>JSON</div>
-      <ace-editor [(text)]="config.json_config_parsed" mode="json" style="height:400px;font-size: 14px;"></ace-editor>
+      <div class="mb5">JSON</div>
+      <ace-editor [(text)]="config.json_config_parsed" mode="json" style="height:300px;font-size: 14px;"></ace-editor>
     </div>
   </mat-dialog-content>
-  <div matDialogActions>
-    <div>
-      <button mat-flat-button class="btn-grey mr5" [mat-dialog-close]="true">Cancel</button>
-      <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="validateForm()">Save</button>
-    </div>
-  </div>
-
 </div>

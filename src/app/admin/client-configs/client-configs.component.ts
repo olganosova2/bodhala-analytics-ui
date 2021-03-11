@@ -20,7 +20,7 @@ import {AddEditConfigComponent} from './add-edit-config/add-edit-config.componen
 })
 export class ClientConfigsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  pendingRequestClients: Subscription;
+  pendingRequestDelete: Subscription;
   errorMessage: any;
   selectedClient: IClient;
   clientConfigs: Array<IEntityConfig> = [];
@@ -74,7 +74,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest<IEntityConfig>('getClientConfigs', params).subscribe(
       (data: any) => {
         this.clientConfigs = data.result || [];
-        this.clientConfigs = this.clientConfigs.sort(this.utilService.dynamicSort('name'));
+        this.clientConfigs = this.clientConfigs.sort(this.utilService.dynamicSort('-name'));
         this.loadGrid();
       },
       err => {
@@ -115,6 +115,9 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(AddEditConfigComponent, {...modalConfig, disableClose: true });
 
     dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.getClientConfigs();
+      }
     });
 
   }
@@ -136,12 +139,26 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
     });
   }
   deleteConfig(item: IEntityConfig): void {
-
+    const params = { id: item.id};
+    this.pendingRequestDelete = this.httpService.makePostRequest('deleteClientConfig', params).subscribe(
+      (data: any) => {
+        const deleted = data.result;
+        if (deleted) {
+          this.getClientConfigs();
+        }
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
+    }
+    if (this.pendingRequestDelete) {
+      this.pendingRequestDelete.unsubscribe();
     }
   }
 
