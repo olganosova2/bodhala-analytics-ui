@@ -8,8 +8,6 @@ import {IMetric, ISavingsRecord, SavingMetrics, SavingsCalculatorService} from '
 import {SavingsWidgetComponent} from './savings-widget/savings-widget.component';
 import {ProgressSemiCircleComponent} from './progress-semi-circle/progress-semi-circle.component';
 import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
-import {MOCK_SAVING_DATA} from '../shared/unit-tests/mock-data/saving-calc-mock';
-import {OverstaffingGridComponent} from './overstaffing-grid/overstaffing-grid.component';
 import {MatDialog} from '@angular/material/dialog';
 import {SavingsFirmGridComponent} from './savings-firm-grid/savings-firm-grid.component';
 
@@ -125,6 +123,10 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
     if (this.calcData.overstaffing && this.calcData.overstaffing.length > 0) {
       const metricOverstaffing = this.savingsService.createMetricsRecord(this.calcData.overstaffing[this.currentYear], SavingMetrics.Overstaffing);
       this.metrics.push(metricOverstaffing);
+    }
+    if (this.calcData.delayed_billing && this.calcData.delayed_billing.length > 0) {
+      const metricDelayedBilling = this.savingsService.createMetricsRecord(this.calcData.delayed_billing[this.currentYear], SavingMetrics.DelayedBilling);
+      this.metrics.push(metricDelayedBilling);
     }
   }
 

@@ -14,6 +14,7 @@ import {AuthService} from './shared/services/auth/auth.service';
 import {AddEditBenchmarkComponent} from './admin/admin-benchmarks/add-edit-benchmark/add-edit-benchmark.component';
 import {BenchmarkingSetupComponent} from './benchmarking-setup/benchmarking-setup.component';
 import {RateIncreaseComponent} from './admin/rate-increase/rate-increase.component';
+import {PastSavingsComponent} from './savings-calculator/past-savings/past-savings.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -38,6 +39,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/task-cost', component: TaskCostComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'task-cost', component: TaskCostComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/benchmarks-setup', component: BenchmarkingSetupComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/past-savings', component: PastSavingsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'past-savings', component: PastSavingsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/benchmark-edit/:id', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},

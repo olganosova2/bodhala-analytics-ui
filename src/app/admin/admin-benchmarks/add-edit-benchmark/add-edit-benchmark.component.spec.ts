@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { AddEditBenchmarkComponent } from './add-edit-benchmark.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
@@ -73,13 +73,30 @@ describe('AddEditBenchmarkComponent', () => {
     component.save();
     expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
   });
-  // it('should selectFirm', () => {
-  //   component.benchmark = MOCK_ADMIN_BENCHMARK.result;
-  //   component.selectFirm({id: 1, name: 'A'});
-  //   expect(component.benchmark.firm_id).toBe(1);
-  // });
-  // it('should getFirms', () => {
-  //   component.getFirms();
-  //   expect(component.firms).toEqual([]);
-  // });
+  it('should cancel', () => {
+    component.benchmark = MOCK_ADMIN_BENCHMARK.result;
+    component.cancel();
+    expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
+  });
+  it('should displayProperty', () => {
+    const result = component.displayProperty({id: 1, name: 'AAA'});
+    expect(result).toBe('AAA');
+  });
+  it('should selectFirm', () => {
+    component.benchmark = MOCK_ADMIN_BENCHMARK.result;
+    component.selectFirm({id: 1, name: 'A'});
+    expect(component.benchmark.firm_id).toBe(1);
+  });
+  it('should filterFirms', () => {
+    component.filteredFirms = [];
+    const firm = {id: 1, name: 'A'};
+    component.filteredFirms.push(firm);
+    component.filterFirms('A');
+    expect(component.filteredFirms.length).toBe(0);
+  });
+  it('should ngOnInit', () => {
+    component.benchmarkId = null;
+    component.ngOnInit();
+    expect(component.editMode).toBe('edit');
+  });
 });

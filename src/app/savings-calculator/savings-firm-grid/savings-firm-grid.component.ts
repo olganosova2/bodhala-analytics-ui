@@ -28,7 +28,7 @@ export class SavingsFirmGridComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.defaultColumn = this.agGridService.getDefaultColumn();
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
-    this.savedState = this.agGridService.getSavedState('SavingsByFirm');
+    this.savedState = this.agGridService.getSavedState('SavingsByFirmGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.gridOptions.headerHeight = 40;
     this.initColumns();
@@ -49,12 +49,14 @@ export class SavingsFirmGridComponent implements OnInit, AfterViewInit {
       {headerName: 'Block Billing', field: 'bb',  cellRenderer: this.agGridService.roundCurrencyCellRenderer,  ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
       {headerName: 'Rate Increase', field: 'rate_increase',  cellRenderer: this.agGridService.roundCurrencyCellRenderer,  ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
       {headerName: 'Internal Meetings', field: 'overstaffing',  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
+      {headerName: 'Delayed Billing', field: 'delayed_billing',  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
       {headerName: 'Total', field: 'total',  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, width: 150, sort: 'desc', comparator: this.agGridService.zeroNumberComparator }
     ];
   }
   saveGridConfig(evt: any): void {
     const state = evt;
-    this.agGridService.saveState('SavingsByFirm', this.gridOptions);
+    this.agGridService.saveState('SavingsByFirmGrid', this.gridOptions);
+    const gridFilters = this.gridOptions.api.getFilterModel();
   }
 
 }

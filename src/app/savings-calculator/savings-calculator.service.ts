@@ -10,7 +10,8 @@ export enum SavingMetrics {
   TkLevel = 'TkLevel',
   BlockBilling = 'BlockBilling',
   RateIncrease = 'RateIncrease',
-  Overstaffing = 'Overstaffing'
+  Overstaffing = 'Overstaffing',
+  DelayedBilling = 'DelayedBilling'
 }
 export enum tkClassifications {
   associate = 'associate',
@@ -56,12 +57,23 @@ export interface IRateIncreaseRow {
   year?: number;
 }
 export interface IOverstaffingData {
-  end_date: string;
+  end_date?: string;
   overstaffing: Array<IOverstaffingRow>;
 }
 export interface IRateIncreaseData {
   end_date: string;
   rate_increase: Array<IRateIncreaseRow>;
+}
+export interface IDelayedBillingRow {
+  total_billed: number;
+  total_afa: number;
+  total_spend: number;
+  bh_lawfirm_id?: number;
+  firm_name?: string;
+}
+export interface IDelayedBillingData {
+  end_date: string;
+  delayed_billing: Array<IDelayedBillingRow>;
 }
 export interface IMetric {
   origPercent: number;
@@ -88,7 +100,13 @@ export interface ISavingsRecord {
   rate_increase?: number;
   rate_increaseRaw?: number;
   overstaffing?: number;
+  delayed_billing?: number;
   total?: number;
+}
+export interface IPastSavingsMetric {
+  savings: number;
+  label: string;
+  error?: string;
 }
 
 @Injectable({
@@ -102,7 +120,7 @@ export class SavingsCalculatorService {
     grandTotal = grandTotal ? grandTotal : 1;
     return total * 100 / grandTotal;
   }
-  createMetricsRecord(record: IBlockBillingData | IOverstaffingData, type: SavingMetrics): IMetric {
+  createMetricsRecord(record: IBlockBillingData | IOverstaffingData | any, type: SavingMetrics): IMetric {
     const result = {} as IMetric;
     result.savingsType = type;
     result.savings = 0;
@@ -137,6 +155,20 @@ export class SavingsCalculatorService {
       result.tooltip = 'Bodhala recommends that no more than four (4) timekeepers be allowed to invoice for the same internal law firm meeting. Reducing the staffing at these internal law firms meetings can be a substantial source of savings.';
       result.articleId = SAVINGS_CALCULATOR_ARTICLES.Overstaffing;
       result.overstaffingNumber = SAVINGS_CALCULATOR_CONFIG.overstaffingNumber;
+    }
+    if (type === SavingMetrics.DelayedBilling) {
+      let bbRecord = {} as IDelayedBillingRow;
+      if (record.delayed_billing.length > 0) {
+        bbRecord = record.delayed_billing[0] as IDelayedBillingRow;
+      }
+      result.percent = 50;
+      result.origPercent = 50;
+      result.total = bbRecord.total_spend || 0;
+      result.title = 'Delayed Billing';
+      result.percentLabel = 'Last Year';
+      result.maxRange = 100;
+      result.tooltip = null;
+      result.articleId = null;
     }
     return result;
   }
@@ -220,7 +252,7 @@ export class SavingsCalculatorService {
       const divider = year2Rec.effective_rate ? year2Rec.effective_rate : 1;
       const yearIncrease = ((year1Rec.effective_rate || 0) - (year2Rec.effective_rate || 0)) / divider;
       if (ix === 1) {
-        prevYearsEffectiveRate = year2Rec.effective_rate;
+        prevYearsEffectiveRate = year2Rec.effective_rate || 0;
       }
       if (year1Rec.effective_rate && year2Rec.effective_rate) {
         increases += yearIncrease;
@@ -229,7 +261,11 @@ export class SavingsCalculatorService {
       }
     }
     const prevDivider = prevYearsEffectiveRate ?  prevYearsEffectiveRate : 1;
-    classification.lastYearRateIncrease = (classification.lastYearRate - prevYearsEffectiveRate ) / prevDivider;
+    if (prevYearsEffectiveRate) {
+      classification.lastYearRateIncrease = (classification.lastYearRate - prevYearsEffectiveRate ) / prevDivider;
+    } else {
+      classification.lastYearRateIncrease = 0;
+    }
     classification.avgRateIncrease = count ? (increases / count) : 0;
     return classification;
   }
@@ -266,6 +302,9 @@ export class SavingsCalculatorService {
       result += (rec.avgRateIncrease - val / 100) * rec.totalHours * rec.lastYearRate;
     }
     return result;
+  }
+  calculateDelayedBillingValue(val: number, total: number): number {
+    return val * total / 100;
   }
   buildOverstaffingDropDown(): Array<IDropDown> {
     const result = [];
@@ -330,6 +369,15 @@ export class SavingsCalculatorService {
     result = this.calculateIncreaseRateValue(clonedMetric.percent, clonedMetric);
     return result;
   }
+  calculateDelayedBillingForTable(records: Array<IDelayedBillingRow>, dbMetric: IMetric): number {
+    let result = 0;
+    if (records.length === 0 || !dbMetric) {
+      return result;
+    }
+    const db = records[0];
+    result = this.calculateDelayedBillingValue(dbMetric.percent, db.total_spend);
+    return result;
+  }
   formatDataForTable(data: any, metrics: Array<IMetric>): Array<any> {
     const result = [];
     if (!data.bb_percent || data.bb_percent.length === 0){
@@ -342,10 +390,11 @@ export class SavingsCalculatorService {
     const bbMetric = metrics.find(e => e.savingsType === SavingMetrics.BlockBilling);
     const osMetric = metrics.find(e => e.savingsType === SavingMetrics.Overstaffing);
     const rateIncreaseMetric = metrics.find(e => e.savingsType === SavingMetrics.RateIncrease);
-    // const topFirms = allFirms.slice(0, SAVINGS_CALCULATOR_CONFIG.topFirmsNumber) || [];
+    const delayedBillingMetric = metrics.find(e => e.savingsType === SavingMetrics.DelayedBilling);
     const topFirms = allFirms || [];
     const overstaffingData = data.overstaffing[0].overstaffing || [];
     const rateIncreaseData = data.rate_increase[0].rate_increase || [];
+    const delayedBillingData = data.delayed_billing[0].delayed_billing || [];
     const lastYear = moment(data.rate_increase[0].end_date).year();
     for (const firm of topFirms) {
       const recordForTable  = {} as ISavingsRecord;
@@ -361,8 +410,62 @@ export class SavingsCalculatorService {
       const firmRateIncrease = rateIncreaseData.filter(e => e.bh_lawfirm_id === firm.bh_lawfirm_id) || [];
       recordForTable.rate_increase = this.calculateRateIncreaseForTable(firmRateIncrease, lastYear,  rateIncreaseMetric);
       recordForTable.total += recordForTable.rate_increase;
+      const firmDelayedBilling = delayedBillingData.filter(e => e.bh_lawfirm_id === firm.bh_lawfirm_id) || [];
+      recordForTable.delayed_billing = this.calculateDelayedBillingForTable(firmDelayedBilling, delayedBillingMetric);
+      recordForTable.total += recordForTable.delayed_billing;
       result.push(recordForTable);
     }
+    return result;
+  }
+  calculatePercentOfDateRange(tDate: string): number {
+    let result = 0;
+    const start = moment(tDate);
+    const daysDiff = moment().diff(start, 'days') || 0;
+    const remainder = daysDiff % 365;
+    result = remainder / 365;
+    return result;
+  }
+  calculateSentinel(spend: number, percentAnnualIncrease: number, uploadStartDate: string): IPastSavingsMetric {
+    const result = { label: 'Sentinel', savings: 0} as IPastSavingsMetric;
+    const percentOfDateRange = this.calculatePercentOfDateRange(uploadStartDate);
+    const calculated = (spend + spend * percentAnnualIncrease) * 0.05 * percentOfDateRange;
+    result.savings = calculated;
+    return result;
+  }
+  calculatePastBlockBilling(spend: number, bbData: any, bbStartDate: string, lastYearBBpercent: number) {
+    const result = { label: 'Block Billing', savings: 0} as IPastSavingsMetric;
+    if (!bbData.total_billed || !bbData.percent_block_billed) {
+      result.error = 'No Block Billing Data from Start Date: ' + bbStartDate + ' to today';
+    } else {
+      const percentOfDateRange = this.calculatePercentOfDateRange(bbStartDate);
+      const bbStartDatePercent = (bbData.percent_block_billed || 0) / 100;
+      const calcFormula = this.calculateBlockBillingValue(bbStartDatePercent * 100, lastYearBBpercent, spend) || 0;
+      const calculated = calcFormula * percentOfDateRange;
+      result.savings = calculated;
+    }
+    return result;
+  }
+  calculatePastRateIncrease(spend: number, records: Array<IRateIncreaseData>, thisYearRateIncrease: number, percentAnnualIncrease: number): IPastSavingsMetric {
+    const result = { label: 'Rate Increase Prevention', savings: 0} as IPastSavingsMetric;
+    const tkClassificationsProcessed = [];
+    for (const key of Object.keys(tkClassifications)) {
+      if (key === 'partner' || key === 'associate') {
+        tkClassificationsProcessed.push(this.createClassificationDynamic(key, records));
+      }
+    }
+    const lastYearIncrease = this.calculateOrigIncreaseRatePercent(tkClassificationsProcessed, false) / 100;
+    const calculated = (spend + spend * percentAnnualIncrease) * (lastYearIncrease - thisYearRateIncrease);
+    result.savings = calculated;
+    return result;
+  }
+  calculatePastOverbilling(osRecord: Array<IOverstaffingRow>, overstaffingPercent: number): IPastSavingsMetric {
+    const result = { label: 'Overbilling on Internal Meetings', savings: 0} as IPastSavingsMetric;
+    let osTotal = 0;
+    for (const rec of osRecord) {
+      osTotal += rec.total_billed;
+    }
+    const calculated = overstaffingPercent * ( SAVINGS_CALCULATOR_CONFIG.idealNumberOfPplInMeetings * osTotal);
+    result.savings = calculated;
     return result;
   }
 }

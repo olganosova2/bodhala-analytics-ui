@@ -10,8 +10,12 @@ import {IRateIncreaseData, SavingsCalculatorService, tkClassifications} from '..
 export interface IClientRateIncreases {
   id: number;
   name: string;
-  avgIncrease: number;
-  lastYearIncrease: number;
+  avgIncrease?: number;
+  lastYearIncrease?: number;
+  partnerAvgIncrease?: number;
+  associateAvgIncrease?: number;
+  partnerLastIncrease?: number;
+  associateLastIncrease?: number;
 }
 @Component({
   selector: 'bd-rate-increase',
@@ -47,27 +51,26 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.defaultColumn = this.agGridService.getDefaultColumn();
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
-    this.savedState = this.agGridService.getSavedState('RateIncreses');
+    this.savedState = this.agGridService.getSavedState('RateIncreasesGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
-    // this.getClients();
-    // this.getRates();
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'Client', field: 'name', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Client ID', field: 'id', ...this.defaultColumn},
-      {headerName: '3-Yr Ave', field: 'avgIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
-      {headerName: 'Last Increase', field: 'lastYearIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
+      {headerName: '3-Yr Avg Parner', field: 'partnerAvgIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
+      {headerName: 'Last Year Partner', field: 'partnerLastIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
+      {headerName: '3-Yr Avg Associate', field: 'associateAvgIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
+      {headerName: 'Last Year Associate', field: 'associateLastIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
+      {headerName: '3-Yr Avg', field: 'avgIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
+      {headerName: 'Last Year', field: 'lastYearIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
     ];
   }
   getRates(): void {
     const params = { clientId: 190, numberOfYears: 3};
     this.pendingRequest = this.httpService.makeGetRequest('getEffectiveRatesForAllClients', params).subscribe(
-    // this.pendingRequest = this.httpService.makeGetRequest('getEffectiveRates', params).subscribe(
       (data: any) => {
-        // const yearsRecords = data.result || [];
-        // this.calculateRates(yearsRecords, 'AIG', 190);
         const clients = data.result || [];
         for (const client of clients) {
           this.calculateRates(client.rates, client.org_name, client.bh_client_id);
@@ -81,10 +84,19 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   }
   calculateRates(records: Array<IRateIncreaseData>, clientName: string, clientId: number): any {
     const record = {} as IClientRateIncreases;
+    record.partnerAvgIncrease = 0;
+    record.partnerLastIncrease = 0;
+    record.associateLastIncrease = 0;
+    record.associateLastIncrease = 0;
     const tkClassificationsProcessed = [];
     for (const key of Object.keys(tkClassifications)) {
       if (key === 'partner' || key === 'associate') {
-        tkClassificationsProcessed.push(this.savCalcService.createClassificationDynamic(key, records));
+        const processed = this.savCalcService.createClassificationDynamic(key, records);
+        tkClassificationsProcessed.push(processed);
+        const propNameAvg = key + 'AvgIncrease';
+        const propNameLast = key + 'LastIncrease';
+        record[propNameAvg] = processed.avgRateIncrease * 100 || 0;
+        record[propNameLast] = processed.lastYearRateIncrease * 100 || 0;
       }
     }
     record.avgIncrease = this.savCalcService.calculateOrigIncreaseRatePercent(tkClassificationsProcessed, true);
@@ -106,7 +118,7 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   }
   saveGridConfig(evt: any): void {
     const state = evt;
-    this.agGridService.saveState('RateIncreses', this.gridOptions);
+    this.agGridService.saveState('RateIncreasesGrid', this.gridOptions);
   }
 
   ngOnDestroy() {
@@ -114,9 +126,5 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }
-    if (this.pendingRequestClients) {
-      this.pendingRequestClients.unsubscribe();
-    }
   }
-
 }
