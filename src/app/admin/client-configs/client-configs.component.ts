@@ -140,7 +140,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
   }
   deleteConfig(item: IEntityConfig): void {
     const params = { id: item.id};
-    this.pendingRequestDelete = this.httpService.makePostRequest('deleteClientConfig', params).subscribe(
+    this.pendingRequestDelete = this.httpService.makeDeleteRequest('deleteClientConfig', params).subscribe(
       (data: any) => {
         const deleted = data.result;
         if (deleted) {
