@@ -201,6 +201,8 @@ export class DataStub {
     switch (url) {
       case 'deleteSavedExport':
         return of([]);
+      case 'deleteClientConfig':
+        return of({ result: {}});
       default:
         return of([]);
     }
