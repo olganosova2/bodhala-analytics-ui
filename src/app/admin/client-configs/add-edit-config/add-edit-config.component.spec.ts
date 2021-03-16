@@ -7,7 +7,7 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
-import {MOCK_CLIENT_CONFIGS} from '../../../shared/unit-tests/mock-data/client-configs';
+import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES} from '../../../shared/unit-tests/mock-data/client-configs';
 import {IEntityConfig} from '../client-configs-model';
 
 describe('AddEditConfigComponent', () => {
@@ -44,11 +44,60 @@ describe('AddEditConfigComponent', () => {
     fixture = TestBed.createComponent(AddEditConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.allConfigs = []; // MOCK_CLIENT_CONFIGS.result as Array<IEntityConfig>;
+    component.allConfigs = MOCK_CLIENT_CONFIGS.result as unknown as Array<IEntityConfig>;
   });
 
   it('should create AddEditConfigComponent', () => {
-    component.allConfigs = [];
     expect(component).toBeTruthy();
+  });
+  it('should validateForm without json config parsed', () => {
+    component.config.name = 'analytics.pastsavings';
+    component.config.json_config_parsed = null;
+    component.config.json_config = {name: 'John'};
+    const result = component.validateForm();
+    expect(result).toBe(true);
+  });
+  it('should validateForm with json config parsed', () => {
+    component.config.name = 'analytics.pastsavings';
+    component.config.json_config_parsed = 'John';
+    component.config.json_config = {name: 'John'};
+    const result = component.validateForm();
+    expect(result).toBe(false);
+  });
+  it('should getDistinctNames', () => {
+    component.getDistinctNames();
+    expect(component).toBeTruthy();
+  });
+  it('should saveConfig', () => {
+    component.config.name = 'analytics.pastsavings2';
+    component.saveConfig();
+    expect(component).toBeTruthy();
+  });
+  it('should checkDuplicates', () => {
+    component.config.name = 'analytics.pastsavings';
+    component.config.value = null;
+    component.config.id = null;
+    const result = component.checkDuplicates();
+    expect(result).toBe(true);
+  });
+  it('should checkDuplicates', () => {
+    component.config.name = 'analytics.pastsavings';
+    component.config.value = null;
+    component.config.id = 10172;
+    const result = component.checkDuplicates();
+    expect(result).toBe(false);
+  });
+  it('should filterNames with value', () => {
+    component.config.name = 'analytics.pastsavings';
+    component.distinctNames = MOCK_DISTINCT_NAMES.result;
+    component.filterNames('analytics.pastsavings');
+    expect(component.filteredNames.length).toBe(1);
+  });
+  it('should filterNames without value', () => {
+    component.filteredNames = [];
+    component.config.name = null;
+    component.distinctNames = MOCK_DISTINCT_NAMES.result;
+    component.filterNames(null);
+    expect(component.filteredNames.length).toBe(0);
   });
 });

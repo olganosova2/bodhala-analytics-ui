@@ -7,6 +7,8 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {MOCK_CLIENT_CONFIGS} from '../../shared/unit-tests/mock-data/client-configs';
+import {IEntityConfig} from './client-configs-model';
 
 describe('ClientConfigsComponent', () => {
   let component: ClientConfigsComponent;
@@ -46,5 +48,55 @@ describe('ClientConfigsComponent', () => {
 
   it('should create ClientConfigsComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should loadConfigs', () => {
+    const client = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
+    component.loadConfigs(client);
+    expect(component.selectedClient.org_id).toBe(1);
+  });
+  it('should getClientConfigs', () => {
+    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
+    component.getClientConfigs();
+    expect(component.selectedClient.org_id).toBe(1);
+  });
+  it('should loadGrid', () => {
+    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
+    const result = component.loadGrid();
+    expect(component.selectedClient.org_id).toBe(1);
+  });
+  it('should addNew', () => {
+    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
+    spyOn(component.dialog, 'open').and.callThrough();
+    component.addNew();
+    expect(component.dialog.open).toHaveBeenCalled();
+  });
+  it('should createNewConfig', () => {
+    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
+    const result = component.createNewConfig();
+    expect(result.id).toBe(null);
+  });
+  it('should deleteConfig', () => {
+    const item  = MOCK_CLIENT_CONFIGS.result[0] as unknown as IEntityConfig;
+    component.deleteConfig(item);
+    expect(component).toBeTruthy();
+  });
+  it('should openDeleteDialog', () => {
+    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
+    spyOn(component.dialog, 'open').and.callThrough();
+    component.openDeleteDialog({data: 123});
+    expect(component.dialog.open).toHaveBeenCalled();
+  });
+  it('should editCellRenderer', () => {
+    const result = component.editCellRenderer({ id: 1});
+    expect(result).toBeTruthy();
+  });
+  it('should deleteCellRenderer', () => {
+    const result = component.deleteCellRenderer({ id: 1});
+    expect(result).toBeTruthy();
+  });
+  it('should edit', () => {
+    spyOn(component.dialog, 'open').and.callThrough();
+    component.edit({data: 123});
+    expect(component.dialog.open).toHaveBeenCalled();
   });
 });
