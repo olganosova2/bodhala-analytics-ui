@@ -7,6 +7,8 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_CLIENT_CONFIGS} from '../../../shared/unit-tests/mock-data/client-configs';
+import {IEntityConfig} from '../client-configs-model';
 
 describe('AddEditConfigComponent', () => {
   let component: AddEditConfigComponent;
@@ -42,9 +44,11 @@ describe('AddEditConfigComponent', () => {
     fixture = TestBed.createComponent(AddEditConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.allConfigs = []; // MOCK_CLIENT_CONFIGS.result as Array<IEntityConfig>;
   });
 
   it('should create AddEditConfigComponent', () => {
+    component.allConfigs = [];
     expect(component).toBeTruthy();
   });
 });

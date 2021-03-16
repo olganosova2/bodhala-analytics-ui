@@ -198,7 +198,6 @@ export class SavingsCalculatorService {
     result.tooltip = 'Law firms typically increase their rates on an annual basis - often at a rate above the rate of inflation. If these rate increases are limited to or capped at a nominal amount, the savings can really add up.';
     result.articleId = SAVINGS_CALCULATOR_ARTICLES.RateIncrease;
     const tkClassificationsProcessed = [];
-    records = records.reverse();
     for (const key of Object.keys(tkClassifications)) {
       if (key === 'partner' || key === 'associate') {
         tkClassificationsProcessed.push(this.createClassification(key, records));

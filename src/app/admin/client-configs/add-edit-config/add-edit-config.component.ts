@@ -29,7 +29,7 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
     this.config = Object.assign({}, this.data.config);
     this.config.json_config_parsed = JSON.stringify(this.config.json_config, null, 2);
     this.client = Object.assign({}, this.data.client);
-    this.allConfigs = this.data.records;
+    this.allConfigs = this.data.records || [];
     this.getDistinctNames();
   }
   validateForm(): boolean {
