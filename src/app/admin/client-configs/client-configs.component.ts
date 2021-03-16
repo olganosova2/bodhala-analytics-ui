@@ -74,7 +74,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest<IEntityConfig>('getClientConfigs', params).subscribe(
       (data: any) => {
         this.clientConfigs = data.result || [];
-        this.clientConfigs = this.clientConfigs.sort(this.utilService.dynamicSort('-name'));
+        this.clientConfigs = this.clientConfigs.sort(this.utilService.dynamicSort('name'));
         this.loadGrid();
       },
       err => {

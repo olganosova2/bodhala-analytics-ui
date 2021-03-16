@@ -5,8 +5,8 @@ export interface IEntityConfig {
   user_id?: number;
   description: string;
   name: string;
-  value: number;
-  json_config: string;
+  value?: any;
+  json_config?: any;
   json_config_parsed?: string;
   created_by?: string;
   created_on?: string;

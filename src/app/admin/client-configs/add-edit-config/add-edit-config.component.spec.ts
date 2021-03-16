@@ -44,11 +44,33 @@ describe('AddEditConfigComponent', () => {
     fixture = TestBed.createComponent(AddEditConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.allConfigs = []; // MOCK_CLIENT_CONFIGS.result as Array<IEntityConfig>;
+    component.allConfigs = MOCK_CLIENT_CONFIGS.result as unknown as Array<IEntityConfig>;
   });
 
   it('should create AddEditConfigComponent', () => {
-    component.allConfigs = [];
+    expect(component).toBeTruthy();
+  });
+  it('should validateForm without json config parsed', () => {
+    component.config.name = 'analytics.pastsavings';
+    component.config.json_config_parsed = null;
+    component.config.json_config = {name: 'John'};
+    const result = component.validateForm();
+    expect(result).toBe(true);
+  });
+  it('should validateForm with json config parsed', () => {
+    component.config.name = 'analytics.pastsavings';
+    component.config.json_config_parsed = 'John';
+    component.config.json_config = {name: 'John'};
+    const result = component.validateForm();
+    expect(result).toBe(false);
+  });
+  it('should getDistinctNames', () => {
+    component.getDistinctNames();
+    expect(component).toBeTruthy();
+  });
+  it('should saveConfig', () => {
+    component.config.name = 'analytics.pastsavings2';
+    component.saveConfig();
     expect(component).toBeTruthy();
   });
 });
