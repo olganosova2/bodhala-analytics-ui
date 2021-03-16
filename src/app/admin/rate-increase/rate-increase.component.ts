@@ -46,7 +46,9 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
               public commonServ: CommonService,
               public utilService: UtilService,
               public agGridService: AgGridService,
-              public benchmarkServ: BenchmarkService) { }
+              public benchmarkServ: BenchmarkService) {
+    this.commonServ.pageTitle = 'Rate Increase';
+  }
 
   ngOnInit(): void {
     this.defaultColumn = this.agGridService.getDefaultColumn();

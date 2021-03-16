@@ -123,6 +123,9 @@ import { ObjectKeysPipe } from './shared/pipes/object-keys.pipe';
 import { RateIncreaseComponent } from './admin/rate-increase/rate-increase.component';
 import { SavingsFirmGridComponent } from './savings-calculator/savings-firm-grid/savings-firm-grid.component';
 import { PastSavingsComponent } from './savings-calculator/past-savings/past-savings.component';
+import { ClientConfigsComponent } from './admin/client-configs/client-configs.component';
+import { AddEditConfigComponent } from './admin/client-configs/add-edit-config/add-edit-config.component';
+import {AceEditorModule} from 'ng2-ace-editor';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -197,7 +200,9 @@ export function initHttp(service: HttpService) {
     ObjectKeysPipe,
     RateIncreaseComponent,
     SavingsFirmGridComponent,
-    PastSavingsComponent
+    PastSavingsComponent,
+    ClientConfigsComponent,
+    AddEditConfigComponent
   ],
   entryComponents: [
     PillComponent,
@@ -205,7 +210,8 @@ export function initHttp(service: HttpService) {
     OverstaffingGridComponent,
     AnnotaionsModalComponent,
     HelpModalComponent,
-    SavingsFirmGridComponent
+    SavingsFirmGridComponent,
+    AddEditConfigComponent
   ],
   imports: [
     HttpClientModule,
@@ -253,7 +259,8 @@ export function initHttp(service: HttpService) {
     AgGridModule.withComponents([ RouterLinkRendererComponent ]),
     QuillModule.forRoot(),
     ClickOutsideModule,
-    MultiSelectModule
+    MultiSelectModule,
+    AceEditorModule
   ],
   providers: [CookieService,
     UserService,

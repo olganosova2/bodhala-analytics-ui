@@ -32,7 +32,8 @@
               "angular2-highcharts",
               "ag-grid-enterprise",
               "chart.js",
-              "highcharts"
+              "highcharts",
+              "brace/mode/json"
             ],
             "styles": [
               "node_modules/simple-line-icons/css/simple-line-icons.css",

@@ -20,6 +20,7 @@ import {NgZone} from '@angular/core';
 import {MOCK_OVERSTAFFING} from './mock-data/saving-calc-mock';
 import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
 import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
+import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES} from './mock-data/client-configs';
 
 export const ngWindow = {
   location: {
@@ -186,6 +187,10 @@ export class DataStub {
         return of(MOCK_CLIENT_SAVINGS);
       case 'getPastSavings':
         return of(MOCK_PAST_SAVINGS);
+      case 'getClientConfigs':
+        return of(MOCK_CLIENT_CONFIGS);
+      case 'getClientDistinctConfigNames':
+        return of(MOCK_DISTINCT_NAMES);
       default:
         return of([]);
     }

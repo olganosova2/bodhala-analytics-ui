@@ -1,0 +1,42 @@
+<div>
+  <div mat-dialog-title>
+    <div class="pull-left">
+      <h4><span *ngIf="!config.id">Add Config</span><span *ngIf="config.id">Edit Config</span> for {{ client.org_name }}</h4>
+    </div>
+    <div class="pull-right">
+      <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="!validateForm()">Save</button>
+      <button mat-flat-button class="btn-grey ml10" [mat-dialog-close]="false">Cancel</button>
+    </div>
+    <div class="clear-both"></div>
+  </div>
+  <mat-dialog-content>
+    <div>
+      <div>Name*</div>
+      <div class="error-mes-sm" *ngIf="this.checkDuplicates()">Error: Duplicate Name and Value</div>
+      <mat-form-field appearance="outline" class="full-width">
+        <input type="text" matInput [(ngModel)]="config.name" autocomplete="off"  placeholder="Name" required (input)="filterNames($event.target.value)"
+               maxlength="255" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [hidden]="config.id">
+            <mat-option *ngFor="let name of filteredNames" [value]="name">
+              <span>{{name}}</span>
+            </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <div>Description</div>
+      <mat-form-field appearance="outline" class="full-width">
+          <textarea matInput [(ngModel)]="config.description" rows="4" cols="40" placeholder="Description"
+                    maxlength="255"
+          ></textarea>
+      </mat-form-field>
+
+      <div>Value</div>
+      <mat-form-field appearance="outline" class="full-width">
+        <input type="text" matInput [(ngModel)]="config.value" autocomplete="off" placeholder="Value"
+               maxlength="255">
+      </mat-form-field>
+      <div class="mb5">JSON</div>
+      <ace-editor [(text)]="config.json_config_parsed" mode="json" style="height:300px;font-size: 14px;"></ace-editor>
+    </div>
+  </mat-dialog-content>
+</div>

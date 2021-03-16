@@ -86,6 +86,10 @@ export const END_POINTS_URLS = {
   updateBenchmarkPA: {url: BASE_URL + 'admin/benchmarking/saveBenchmarkPAs', showLoading: true},
   getEffectiveRates: {url: BASE_URL + 'admin/getEffectiveRates', showLoading: true},
   getEffectiveRatesForAllClients: {url: BASE_URL + 'admin/getEffectiveRatesForAllClients', showLoading: true},
+  getClientConfigs: {url: BASE_URL + 'admin/getClientConfigs', showLoading: true},
+  saveClientConfig: {url: BASE_URL + 'admin/saveClientConfig', showLoading: true},
+  deleteClientConfig: {url: BASE_URL + 'admin/deleteClientConfig', showLoading: true},
+  getClientDistinctConfigNames: {url: BASE_URL + 'admin/getClientDistinctConfigNames', showLoading: true},
 
 };
 
