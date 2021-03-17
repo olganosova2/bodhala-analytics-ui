@@ -21,6 +21,7 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
   allConfigs: Array<IEntityConfig> = [];
   distinctNames: Array<string> = [];
   filteredNames: Array<string> = [];
+  inProgress: boolean = false;
   constructor(public dialogRef: MatDialogRef<AddEditConfigComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private httpService: HttpService) { }
@@ -62,15 +63,18 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
     if (this.checkDuplicates()) {
       return;
     }
+    this.inProgress = true;
     const params = Object.assign({}, this.config);
     this.pendingRequest = this.httpService.makePostRequest('saveClientConfig', params).subscribe(
       (data: any) => {
         const updConfig = data.result;
         if (updConfig) {
+          this.inProgress = false;
           this.dialogRef.close(updConfig);
         }
       },
       err => {
+        this.inProgress = false;
         this.errorMessage = err;
       }
     );

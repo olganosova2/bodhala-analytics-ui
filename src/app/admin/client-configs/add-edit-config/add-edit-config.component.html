@@ -4,7 +4,7 @@
       <h4><span *ngIf="!config.id">Add Config</span><span *ngIf="config.id">Edit Config</span> for {{ client.org_name }}</h4>
     </div>
     <div class="pull-right">
-      <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="!validateForm()">Save</button>
+      <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="!validateForm() || inProgress">Save</button>
       <button mat-flat-button class="btn-grey ml10" [mat-dialog-close]="false">Cancel</button>
     </div>
     <div class="clear-both"></div>
