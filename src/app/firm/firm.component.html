@@ -18,6 +18,7 @@
     <mat-slide-toggle *ngIf="userService.hasEntitlement('analytics.expenses')" [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()" class="pt10">Include Expenses
     </mat-slide-toggle>
     <button [ngClass]="userService.hasEntitlement('analytics.expenses') ? 'primary-button ml20':'primary-button'" *ngIf="firmId && userService.hasEntitlement('analytics.firm.ratecard')" (click)="viewReportCard()">View Report Card</button>
+    <lib-bd-annotations *ngIf="userService.hasEntitlement('annotations.lawfirm')"  #annotations></lib-bd-annotations>
     <bd-firm-dropdown></bd-firm-dropdown>
   </div>
   <div class="p-grid">
