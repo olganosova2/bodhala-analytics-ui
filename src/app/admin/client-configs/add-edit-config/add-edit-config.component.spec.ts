@@ -9,6 +9,7 @@ import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES} from '../../../shared/unit-tests/mock-data/client-configs';
 import {IEntityConfig} from '../client-configs-model';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 
 describe('AddEditConfigComponent', () => {
   let component: AddEditConfigComponent;
@@ -98,6 +99,25 @@ describe('AddEditConfigComponent', () => {
     component.config.name = null;
     component.distinctNames = MOCK_DISTINCT_NAMES.result;
     component.filterNames(null);
-    expect(component.filteredNames.length).toBe(0);
+    expect(component.filteredNames.length).toBe(21);
+  });
+  it('should filterValues with value', () => {
+    component.filteredValues = [];
+    component.config.value = 'a';
+    component.possibleValues = ['a', 'b', 'c'];
+    component.filterValues('a');
+    expect(component.filteredValues.length).toBe(1);
+  });
+  it('should filterValues without value', () => {
+    component.filteredValues = [];
+    component.config.value = null;
+    component.possibleValues = ['a', 'b', 'c'];
+    component.filterValues(null);
+    expect(component.filteredValues.length).toBe(3);
+  });
+  it('should getConfigByName', () => {
+   const params = { option: { value: 'pastsavings'} } as unknown as MatAutocompleteSelectedEvent;
+   component.getConfigByName(params);
+   expect(component).toBeTruthy();
   });
 });

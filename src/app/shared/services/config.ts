@@ -67,7 +67,7 @@ export const END_POINTS_URLS = {
   getSavedExports: {url: BASE_URL + 'analytics/getSavedExports', showLoading: true},
   deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
   reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true},
-  getTrainingMaterialsArticle: {url: BASE_URL + 'analytics/getTrainingMaterialsArticle', showLoading: false},
+  getTrainingMaterialsArticle: {url: BASE_URL + 'public/getTrainingMaterialsArticle', showLoading: false},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
   getPracticeAreas: {url: BASE_URL + 'client/getPracticeAreas', showLoading: true},
   getPracticeAreasAndId: {url: BASE_URL + 'client/getPracticeAreasAndId', showLoading: true},
@@ -90,6 +90,7 @@ export const END_POINTS_URLS = {
   saveClientConfig: {url: BASE_URL + 'admin/saveClientConfig', showLoading: true},
   deleteClientConfig: {url: BASE_URL + 'admin/deleteClientConfig', showLoading: true},
   getClientDistinctConfigNames: {url: BASE_URL + 'admin/getClientDistinctConfigNames', showLoading: true},
+  getConfigByName: {url: BASE_URL + 'admin/getConfigByName', showLoading: true},
 
 };
 
@@ -168,10 +169,11 @@ export const HELP_MODAL_CONFIG = {
     height: '100%',
     width: '900px',
   };
-export const SAVINGS_CALCULATOR_ARTICLES = {
+export const FRESH_DESK_ARTICLES = {
   BlockBilling: '24000060478',
   Overstaffing: '24000060537',
   RateIncrease: '24000060502',
+  EntityConfig: '24000066545'
 };
 export const UI_ANNOTATIONS_IDS = {
   executiveSummary: 'ExecutiveSummary'

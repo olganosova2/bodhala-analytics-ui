@@ -1,5 +1,7 @@
 <div>
-  <h4>Manage Client Configs</h4>
+  <h4>Manage Client Configs
+    <i class="fa fa-info-circle pointer-hand ml5" (click)="openHelp()"></i>
+  </h4>
   <div>
     <div class="mb10 mt10">Please select a client:</div>
     <bd-client-drop-down (clientSelected)="loadConfigs($event)"></bd-client-drop-down>

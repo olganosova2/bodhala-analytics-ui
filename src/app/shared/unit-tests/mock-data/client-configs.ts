@@ -296,4 +296,25 @@ export const MOCK_DISTINCT_NAMES = {
   "result": ["analytics.exclude.filter", "analytics.genericFilter1.name", "analytics.genericFilter10.name", "analytics.genericFilter11.name", "analytics.genericFilter12.name", "analytics.genericFilter2.name", "analytics.genericFilter3.name", "analytics.genericFilter4.name", "analytics.genericFilter5.name", "analytics.genericFilter6.name", "analytics.genericFilter7.name", "analytics.genericFilter8.name", "analytics.genericFilter9.name", "analytics.lawfirm.discount.default", "analytics.pastsavings", "analytics.reportcard.config", "analytics.summary.advanced", "analytics.summary.splitassistants", "analytics.tkclass.source", "saml", "sso_only"],
   "error": null
 }
+export const MOCK_SAMPLE_CONFIGS = {
+  "result": [{
+    "name": "analytics.exclude.filter",
+    "value": "firmSize",
+    "json_config": null
+  }, {
+    "name": "analytics.exclude.filter",
+    "value": "firmTypes",
+    "json_config": null
+  }, {
+    "name": "analytics.exclude.filter",
+    "value": "genericFilter2",
+    "json_config": null
+  }, {
+    "name": "analytics.exclude.filter",
+    "value": "offices",
+    "json_config": null
+  }],
+  "error": null
+}
+
 

@@ -4,7 +4,7 @@
       <h4><span *ngIf="!config.id">Add Config</span><span *ngIf="config.id">Edit Config</span> for {{ client.org_name }}</h4>
     </div>
     <div class="pull-right">
-      <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="!validateForm()">Save</button>
+      <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="!validateForm() || inProgress">Save</button>
       <button mat-flat-button class="btn-grey ml10" [mat-dialog-close]="false">Cancel</button>
     </div>
     <div class="clear-both"></div>
@@ -14,9 +14,9 @@
       <div>Name*</div>
       <div class="error-mes-sm" *ngIf="this.checkDuplicates()">Error: Duplicate Name and Value</div>
       <mat-form-field appearance="outline" class="full-width">
-        <input type="text" matInput [(ngModel)]="config.name" autocomplete="off"  placeholder="Name" required (input)="filterNames($event.target.value)"
-               maxlength="255" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" [hidden]="config.id">
+        <input type="text" matInput [(ngModel)]="config.name" autocomplete="chrome-off"  placeholder="Name" required (input)="filterNames($event.target.value)"
+             (focus)="filterNames(null)"  maxlength="255" [matAutocomplete]="auto" name="configName">
+        <mat-autocomplete #auto="matAutocomplete" [hidden]="config.id" (optionSelected)="getConfigByName($event)">
             <mat-option *ngFor="let name of filteredNames" [value]="name">
               <span>{{name}}</span>
             </mat-option>
@@ -31,11 +31,22 @@
       </mat-form-field>
 
       <div>Value</div>
+
       <mat-form-field appearance="outline" class="full-width">
-        <input type="text" matInput [(ngModel)]="config.value" autocomplete="off" placeholder="Value"
-               maxlength="255">
+        <input type="text" matInput [(ngModel)]="config.value" autocomplete="chrome-off" placeholder="Value" (input)="filterValues($event.target.value)"
+               (focus)="filterValues(null)" maxlength="255" [matAutocomplete]="autoVal">
+        <mat-autocomplete #autoVal="matAutocomplete" [hidden]="config.id || possibleValues.length === 0" >
+          <mat-option *ngFor="let name of filteredValues" [value]="name">
+            <span>{{name}}</span>
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
-      <div class="mb5">JSON</div>
+      <div class="mb5">JSON
+        <span *ngIf="sampleConfig && config.json_config">
+          - Below is an example of JSON, please edit accordingly.
+        </span>
+      </div>
+
       <ace-editor [(text)]="config.json_config_parsed" mode="json" style="height:300px;font-size: 14px;"></ace-editor>
     </div>
   </mat-dialog-content>

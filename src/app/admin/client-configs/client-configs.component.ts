@@ -10,7 +10,7 @@ import {IEntityConfig} from './client-configs-model';
 import {IBenchmarkSetupFormatted} from '../../benchmarking-setup/benchmarking-setup-model';
 import * as config from '../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
-import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
+import {FRESH_DESK_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
 import {AddEditConfigComponent} from './add-edit-config/add-edit-config.component';
 
 @Component({
@@ -31,6 +31,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
   defaultColumn: any;
   defaultState: any;
   firstLoad: boolean = true;
+  helpArticleId: string = FRESH_DESK_ARTICLES.EntityConfig;
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -151,6 +152,9 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
         this.errorMessage = err;
       }
     );
+  }
+  openHelp(): void {
+    this.commonServ.openHelpArticle(this.helpArticleId);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

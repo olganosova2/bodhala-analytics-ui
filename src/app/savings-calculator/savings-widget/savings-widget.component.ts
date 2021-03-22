@@ -83,19 +83,7 @@ export class SavingsWidgetComponent implements OnInit, OnDestroy {
     });
   }
   showTooltip(): void {
-    const params = {id: this.metric.articleId};
-    this.pendingRequest = this.httpService.makeGetRequest('getTrainingMaterialsArticle', params).subscribe(
-      (data: any) => {
-        if (data.result) {
-          const article = data.result;
-          const modalConfig = {...HELP_MODAL_CONFIG, data: Object.assign([], article)};
-          const dialogRef = this.dialog.open(HelpModalComponent, {...modalConfig });
-        }
-      },
-      err => {
-        this.errorMessage = err;
-      }
-    );
+    this.commonServ.openHelpArticle(this.metric.articleId);
   }
   onClickedOutside(event: any) {
       this.isTooltipOpened = false;
