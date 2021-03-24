@@ -158,7 +158,7 @@ export const SAVINGS_CALCULATOR_CONFIG = {
   idealNumberOfPplInMeetings: 0.5,
   overstaffingNumber: '3',
   detailsDialogConfig : {
-    height: '80vh',
+    height: '85vh',
     width: '80vw',
   },
   topFirmsNumber: 10,

@@ -42,7 +42,7 @@
         </div>
       </div>
       <!-- <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div> -->
-    
+
       <div class="clear-both"></div>
       <hr/>
       <div class="mb30 mt40">
@@ -71,7 +71,7 @@
       <div [hidden]="!commonServ.pdfLoading">
         <h4>Annotations</h4>
         <div *ngFor="let note of notes">
-            <bd-annotation-labels [note]="note" [isPublicDefault]="false"></bd-annotation-labels>
+            <bd-annotation-labels *ngIf="userService.hasEntitlement('ui.annotations')" [note]="note" [isPublicDefault]="false"></bd-annotation-labels>
             <div class="mt10" [innerHTML]="note.notes | safe: 'html'">></div>
           <hr/>
         </div>

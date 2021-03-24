@@ -44,6 +44,7 @@ describe('FirmComponent', () => {
     component.firm =  MOCK_FIRM;
     component.firmId = '4702';
     component.firmData = MOCK_FIRM_DATA;
+    component.userService.config = {};
     fixture.detectChanges();
   });
 

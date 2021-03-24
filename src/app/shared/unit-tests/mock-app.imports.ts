@@ -111,6 +111,7 @@ import {PastSavingsComponent} from '../../savings-calculator/past-savings/past-s
 import {ClientConfigsComponent} from '../../admin/client-configs/client-configs.component';
 import {AddEditConfigComponent} from '../../admin/client-configs/add-edit-config/add-edit-config.component';
 import {AceEditorModule} from 'ng2-ace-editor';
+import {FirmDiscountsComponent} from '../../firm/firm-discounts/firm-discounts.component';
 
 
 export const IMPORTS = [
@@ -214,7 +215,8 @@ export const DECLARATIONS = [
   SavingsFirmGridComponent,
   PastSavingsComponent,
   ClientConfigsComponent,
-  AddEditConfigComponent
+  AddEditConfigComponent,
+  FirmDiscountsComponent
 ];
 
 export const PROVIDERS = [
