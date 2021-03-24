@@ -126,6 +126,7 @@ import { PastSavingsComponent } from './savings-calculator/past-savings/past-sav
 import { ClientConfigsComponent } from './admin/client-configs/client-configs.component';
 import { AddEditConfigComponent } from './admin/client-configs/add-edit-config/add-edit-config.component';
 import {AceEditorModule} from 'ng2-ace-editor';
+import { FirmDiscountsComponent } from './firm/firm-discounts/firm-discounts.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -202,7 +203,8 @@ export function initHttp(service: HttpService) {
     SavingsFirmGridComponent,
     PastSavingsComponent,
     ClientConfigsComponent,
-    AddEditConfigComponent
+    AddEditConfigComponent,
+    FirmDiscountsComponent
   ],
   entryComponents: [
     PillComponent,
@@ -211,7 +213,8 @@ export function initHttp(service: HttpService) {
     AnnotaionsModalComponent,
     HelpModalComponent,
     SavingsFirmGridComponent,
-    AddEditConfigComponent
+    AddEditConfigComponent,
+    FirmDiscountsComponent
   ],
   imports: [
     HttpClientModule,
