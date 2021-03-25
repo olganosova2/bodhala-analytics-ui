@@ -105,8 +105,6 @@ export class DiscountsService {
       const filteredDiscounts = discounts.filter(e => e.client_matter_type === pa) || [];
       result.push(this.buildTableRow(filteredDiscounts));
     }
-    // pa.totalDiscount = pa.total * pa.discount_pct / 100;
-    // pa.discountMissed = (pa.total * pa.expected_pct / 100) - (pa.total * pa.discount_pct / 100);
     return result;
   }
   buildTableRow(discounts: Array<IDiscount>): IDiscountsTable {
@@ -118,12 +116,18 @@ export class DiscountsService {
     let expectedPct = 0;
     let actualPct = 0;
     let total = 0;
-    let discountMissed = 0;
-    let totalDiscount = 0;
     for (const discount of discounts) {
       expectedPct += discount.expected_pct;
       actualPct += discount.discount_pct;
-      total += discount.total
+      total += discount.total;
+    }
+    result.discount_pct = actualPct / count;
+    result.expected_pct = expectedPct / count;
+    result.total = total;
+    result.totalDiscount = result.total * result.discount_pct / 100;
+    result.discountMissed = (result.total * result.expected_pct / 100) - (result.total * result.discount_pct / 100);
+    if (result.discountMissed < 0) {
+      result.discountMissed = 0;
     }
     return result;
   }
