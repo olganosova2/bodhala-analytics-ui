@@ -9,6 +9,8 @@
     <div class="clear-both"></div>
   </div>
   <mat-dialog-content>
+    <div *ngIf="discounts.length === 0">No discounts for <span class="font-bold">{{firm.name}}</span></div>
+    <div *ngIf="discounts.length>0">
     <div class="chart-div">
       <chart [options]="options" (load)="saveInstance($event.context)"></chart>
     </div>
@@ -31,5 +33,6 @@
         <td><span *ngIf="pa.discountMissed">$</span>{{pa.discountMissed  | number:'1.0-0'}}</td>
       </tr>
     </table>
+    </div>
   </mat-dialog-content>
 </div>

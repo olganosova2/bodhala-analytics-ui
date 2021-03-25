@@ -15,6 +15,27 @@ export interface IDiscountsTable {
   totalDiscount?: number;
   discountMissed?: number;
 }
+export interface IPracticeAreaInvoice {
+  client_matter_type: string;
+  num_invoices: number;
+  total: number;
+}
+export enum DiscountPaTypes {
+  Client = 'client',
+  Bodhala = 'bodhala'
+}
+export interface IDiscount {
+  client_matter_type: string;
+  client_matter_id: string;
+  invoice_number: string;
+  discount_type_id: number;
+  discount_type: string;
+  total: number;
+  discount_pct: number;
+  expected_pct: number;
+  actual_discount: number;
+  expected_discount: number;
+}
 
 export const discountsChart = {
   chart: {
@@ -47,7 +68,7 @@ export const discountsChart = {
   },
   tooltip: {
     headerFormat: null,
-    // pointFormat: '<span style="color:{series.color};padding:0">{series.name}: </span>' +
+    // pointFormat: '<span style=color:{series.color};padding:0>{series.name}: </span>' +
     //   '<span><b>{point.y:.1f} %</b></span>',
     footerFormat: null,
     pointFormat: '{series.name}: {point.y:.1f} %',
@@ -63,6 +84,7 @@ export const discountsChart = {
   series: []
 };
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -70,11 +92,40 @@ export class DiscountsService {
 
   constructor() { }
 
-  calculateTableData(pas: Array<IDiscountsTable>): void {
-    for (const pa of pas) {
-      pa.totalDiscount = pa.total * pa.discount_pct / 100;
-      pa.discountMissed = (pa.total * pa.expected_pct / 100) - (pa.total * pa.discount_pct / 100);
+  calculateTableData(discounts: Array<IDiscount>, allPAs: Array<IPracticeAreaInvoice>): Array<IDiscountsTable> {
+    const result = [];
+    const groupedByPa = [];
+    const distinctPaNames = [];
+    for (const discount of discounts) {
+      if (distinctPaNames.indexOf(discount.client_matter_type) < 0) {
+        distinctPaNames.push(discount.client_matter_type);
+      }
     }
+    for (const pa of distinctPaNames) {
+      const filteredDiscounts = discounts.filter(e => e.client_matter_type === pa) || [];
+      result.push(this.buildTableRow(filteredDiscounts));
+    }
+    // pa.totalDiscount = pa.total * pa.discount_pct / 100;
+    // pa.discountMissed = (pa.total * pa.expected_pct / 100) - (pa.total * pa.discount_pct / 100);
+    return result;
+  }
+  buildTableRow(discounts: Array<IDiscount>): IDiscountsTable {
+    const result = { pa: '', discount_pct: 0, expected_pct: 0, total: 0, totalDiscount: 0, discountMissed: 0};
+    const count = discounts.length;
+    if (count === 0) {
+      return result;
+    }
+    let expectedPct = 0;
+    let actualPct = 0;
+    let total = 0;
+    let discountMissed = 0;
+    let totalDiscount = 0;
+    for (const discount of discounts) {
+      expectedPct += discount.expected_pct;
+      actualPct += discount.discount_pct;
+      total += discount.total
+    }
+    return result;
   }
   buildChartCategories(pas: Array<IDiscountsTable>): Array<string> {
     const result = [];

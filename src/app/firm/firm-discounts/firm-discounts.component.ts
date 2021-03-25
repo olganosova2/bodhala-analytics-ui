@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {IFirm} from '../firm.model';
-import {discountsChart, DiscountsService, IDiscountsTable, mockFirmDiscounts} from './discounts.service';
+import {DiscountPaTypes, discountsChart, DiscountsService, IDiscount, IDiscountsTable, IPracticeAreaInvoice, mockFirmDiscounts} from './discounts.service';
 import {FiltersService} from '../../shared/services/filters.service';
 
 @Component({
@@ -19,7 +19,9 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
   chartData: any;
   firm: IFirm;
   discountsConfig: any;
-  tableData: Array<IDiscountsTable> = mockFirmDiscounts;
+  tableData: Array<IDiscountsTable> = [];
+  discounts: Array<IDiscount> = [];
+  practiceAreasInvoices: Array<IPracticeAreaInvoice> = [];
   constructor(public dialogRef: MatDialogRef<FirmDiscountsComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private httpService: HttpService,
@@ -29,9 +31,31 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.firm = Object.assign({}, this.data.firm);
-    this.discountsConfig = Object.assign({}, this.data.discountsConfig);
-    // this.discountServ.calculateTableData(this.tableData);
-    this.setUpChartOptions();
+    this.discountsConfig = Object.assign({}, this.data.config);
+    if (this.discountsConfig && this.discountsConfig.discount_pa_type === DiscountPaTypes.Client) {
+       this.getDiscountsByClientPAs();
+     }
+
+  }
+  getDiscountsByClientPAs(): void {
+    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const arr = [];
+    arr.push(this.firm.id.toString());
+    params.firms = JSON.stringify(arr);
+    params.firmId = this.firm.id;
+    this.pendingRequest = this.httpService.makeGetRequest('getDiscountsByClientPAs', params).subscribe(
+      (data: any) => {
+        this.discounts = data.result.discounts || [];
+        this.practiceAreasInvoices = data.result.practice_areas || [];
+        if (this.discounts.length > 0) {
+          this.tableData = this.discountServ.calculateTableData(this.discounts, this.practiceAreasInvoices);
+          this.setUpChartOptions();
+        }
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
   setUpChartOptions(): void {
     this.options = Object.assign({}, discountsChart);
@@ -40,12 +64,6 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
   }
-  // getDiscountsByClientPAs(): void {
-  //   const params = this.filtersService.getCurrentUserCombinedFilters();
-  //   const arr = [];
-  //   arr.push(this.firm.id.toString());
-  //   params.firms = JSON.stringify(arr);
-  // }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
