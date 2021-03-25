@@ -3,12 +3,12 @@ import {IFirm} from '../firm.model';
 
 export const mockFirmDiscounts = [
   { pa: 'Carlyle Corporate/Fund', discount_pct: 8.6, expected_pct: 7.5, total: 89148055, totalDiscount: 21024189, discountMissed: 0},
-  { pa: 'Carlyle M&A', discount_pct: 4.3, expected_pct: 0, total: 2944415, totalDiscount: 127121, discountMissed: 0 },
+  { pa: 'Carlyle M&A', discount_pct: 11.8, expected_pct: 7.5, total: 2944415, totalDiscount: 127121, discountMissed: 0 },
   { pa: 'Carlyle Real Estate', discount_pct: 8.9, expected_pct: 7.5, total: 11870625, totalDiscount: 2838826, discountMissed: 0 },
 ];
 export const mockFirmDiscountsTable = [
   { pa: 'Carlyle Corporate/Fund', discount_pct: 8.6, expected_pct: 7.5, total: 69089743, totalDiscount: 5941717.89, discountMissed: 0},
-  { pa: 'Carlyle M&A', discount_pct: 4.3, expected_pct: 0, total: 2944415, totalDiscount: 126609.87, discountMissed: 0 },
+  { pa: 'Carlyle M&A', discount_pct: 11.8, expected_pct: 7.5, total: 2944415, totalDiscount: 347441.03, discountMissed: 0 },
   { pa: 'Carlyle Real Estate', discount_pct: 8.9, expected_pct: 7.5, total: 9199734, totalDiscount: 818766.35, discountMissed: 0 },
   { pa: 'Total', discount_pct: null, expected_pct: null, total: 81233893, totalDiscount: 6887104.11, discountMissed: null },
 ];
