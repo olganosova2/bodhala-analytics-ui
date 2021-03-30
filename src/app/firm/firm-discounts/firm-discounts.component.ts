@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {IFirm} from '../firm.model';
-import {discountsChart, DiscountsService, IDiscountsTable, mockFirmDiscounts} from './discounts.service';
+import {discountsChart, DiscountsService, IDiscountsTable, mockFirmDiscounts, mockFirmDiscountsTable} from './discounts.service';
 import {FiltersService} from '../../shared/services/filters.service';
 
 @Component({
@@ -20,6 +20,7 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
   firm: IFirm;
   discountsConfig: any;
   tableData: Array<IDiscountsTable> = mockFirmDiscounts;
+  dataForTable = mockFirmDiscountsTable;
   constructor(public dialogRef: MatDialogRef<FirmDiscountsComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private httpService: HttpService,
@@ -40,12 +41,6 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
   }
-  // getDiscountsByClientPAs(): void {
-  //   const params = this.filtersService.getCurrentUserCombinedFilters();
-  //   const arr = [];
-  //   arr.push(this.firm.id.toString());
-  //   params.firms = JSON.stringify(arr);
-  // }
   ngOnDestroy() {
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
