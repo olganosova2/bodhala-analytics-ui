@@ -1,0 +1,52 @@
+calculateTableData(discounts: Array<IDiscount>, allPAs: Array<IPracticeAreaInvoice>): Array<IDiscountsTable> {
+    const result = [];
+    const distinctPaNames = [];
+    for (const discount of discounts) {
+      if (distinctPaNames.indexOf(discount.client_matter_type) < 0) {
+        distinctPaNames.push(discount.client_matter_type);
+      }
+    }
+    for (const pa of distinctPaNames) {
+      const filteredDiscounts = discounts.filter(e => e.client_matter_type === pa) || [];
+      const totalPA = allPAs.find(e => e.client_matter_type === pa);
+      const paTotal = totalPA ? totalPA.total : 0;
+      result.push(this.buildTableRow(filteredDiscounts, paTotal));
+    }
+    return result;
+  }
+  buildTableRow(discounts: Array<IDiscount>, paTotal: number): IDiscountsTable {
+    const result = { pa: '', discount_pct: 0, expected_pct: 0, total: 0, totalDiscount: 0, discountMissed: 0, numInvoices: 0};
+    const count = discounts.length;
+    if (count === 0) {
+      return result;
+    }
+    let expectedPct = 0;
+    let actualPct = 0;
+    let total = 0;
+    let actualDiscount = 0;
+    let expectedDiscount = 0;
+    const uniqueInvoices = [];
+    for (const discount of discounts) {
+      expectedPct += discount.expected_pct;
+      actualPct += discount.discount_pct;
+      total += discount.total;
+      actualDiscount += discount.actual_discount;
+      expectedDiscount += discount.expected_discount;
+      result.pa = discount.client_matter_type;
+      if (uniqueInvoices.indexOf(discount.invoice_number) < 0) {
+        uniqueInvoices.push(discount.invoice_number);
+      }
+    }
+    result.discount_pct = actualDiscount / paTotal * 100;
+    result.expected_pct = expectedPct / count;
+    result.total = paTotal;
+    result.totalDiscount = actualDiscount;
+    result.discountMissed = paTotal * result.expected_pct / 100 - actualDiscount;
+    result.numInvoices = uniqueInvoices.length;
+    // result.totalDiscount = result.total * result.discount_pct / 100;
+    // result.discountMissed = (result.total * result.expected_pct / 100) - (result.total * result.discount_pct / 100);
+    if (result.discountMissed < 0) {
+      result.discountMissed = 0;
+    }
+    return result;
+  }

@@ -21,6 +21,8 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
   discountsConfig: any;
   tableData: Array<IDiscountsTable> = [];
   discounts: Array<IDiscount> = [];
+  subTotalAmtInvoices: number = 0;
+  subTotalInvoices: number = 0;
   practiceAreasInvoices: Array<IPracticeAreaInvoice> = [];
   constructor(public dialogRef: MatDialogRef<FirmDiscountsComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -32,22 +34,25 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.firm = Object.assign({}, this.data.firm);
     this.discountsConfig = Object.assign({}, this.data.config);
-    if (this.discountsConfig && this.discountsConfig.discount_pa_type === DiscountPaTypes.Client) {
-       this.getDiscountsByClientPAs();
+    if (this.discountsConfig && this.discountsConfig.discount_pa_type) {
+       this.getDiscountsAndPAs();
      }
 
   }
-  getDiscountsByClientPAs(): void {
+  getDiscountsAndPAs(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     const arr = [];
     arr.push(this.firm.id.toString());
     params.firms = JSON.stringify(arr);
     params.firmId = this.firm.id;
+    params.discountType = this.discountsConfig.discount_pa_type;
     this.pendingRequest = this.httpService.makeGetRequest('getDiscountsByClientPAs', params).subscribe(
       (data: any) => {
         this.discounts = data.result.discounts || [];
         this.practiceAreasInvoices = data.result.practice_areas || [];
-        if (this.discounts.length > 0) {
+        if (this.practiceAreasInvoices.length > 0) {
+          this.subTotalAmtInvoices = this.discountServ.calculateSubTotalWithInvoices(this.practiceAreasInvoices);
+          this.subTotalInvoices = this.discountServ.calculateSubTotalInvoices(this.practiceAreasInvoices);
           this.tableData = this.discountServ.calculateTableData(this.discounts, this.practiceAreasInvoices);
           this.setUpChartOptions();
         }
