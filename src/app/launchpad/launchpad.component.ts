@@ -6,6 +6,7 @@ import { columns } from './launchpad.model';
 import {AppStateService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
 import {UserService} from 'bodhala-ui-common';
+import {ExecutiveSummaryComponent} from './executive-summary/executive-summary.component';
 
 @Component({
   selector: 'bd-launchpad',
@@ -17,6 +18,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   selectedTabIndex: number = 0;
   @ViewChild('launchpad')
   container: ElementRef;
+  excludeFilters = ['dates'];
 
   @ViewChild('insights', { read: ElementRef })
   insights: ElementRef;
@@ -24,6 +26,7 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   cards: Array<any> = []; // cards;
   requests = {};
   columns = columns;
+  @ViewChild(ExecutiveSummaryComponent) executiveSummaryTablesComp: ExecutiveSummaryComponent;
 
   constructor(
     public filtersService: FiltersService,
@@ -56,6 +59,10 @@ export class LaunchpadComponent implements OnInit, OnDestroy {
   }
   changeTab(evt): void {
     this.selectedTabIndex = evt.index;
+
+  }
+  refreshExecutiveSummaryData(evt): void {
+    this.executiveSummaryTablesComp.refreshData();
 
   }
   ngOnDestroy() {

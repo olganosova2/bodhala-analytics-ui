@@ -8,6 +8,8 @@ import { DatePipe } from '@angular/common';
 import * as _moment from 'moment';
 import * as config from '../../shared/services/config';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
+import {EsTableComponent} from './es-table/es-table.component';
+import {SpendOverviewComponent} from './spend-overview/spend-overview.component';
 
 const moment = _moment;
 
@@ -24,19 +26,9 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   upperDateRange: string;
   notes: Array<IUiAnnotation> = [];
   uiId: string = config.UI_ANNOTATIONS_IDS.executiveSummary;
-  // errorMessage: any;
-  // summary: any;
-  // isLoaded: boolean = false;
-  // cards: Array<any> = [];
-  // requests = {};
-  // columns = columns;
-  // pendingRequest: Subscription;
-  // topFirms: Array<ITopFirmES>;
-  // topFirmsByPA: Array<ITopFirmES>;
-  // topMatters: Array<ITopMatterES>;
-  // topMattersByPA: Array<ITopMatterES>;
-  // topTKs: Array<ITopTimekeeper>;
-  // topTKsByPA: Array<ITopTimekeeper>;
+  @ViewChild(EsTableComponent) executiveSummaryTablesComp: EsTableComponent;
+  @ViewChild(SpendOverviewComponent) executiveSummaryOverviewComp: SpendOverviewComponent;
+
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -49,7 +41,7 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const params = this.filtersService.getCurrentUserCombinedFilters();
+    const params = this.filtersService.getCurrentUserCombinedFilters(true);
     params.startdate = '';
     params.enddate = '';
     this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
@@ -84,6 +76,11 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'executiveSummary', null);
     }, 200);
+  }
+  refreshData(): void {
+
+    this.executiveSummaryTablesComp.getExecutiveSummaryData();
+    this.executiveSummaryOverviewComp.getSpendOverview();
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

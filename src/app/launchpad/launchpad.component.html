@@ -8,6 +8,14 @@
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
   </div>
+  <div id="filtersdiv" *ngIf="selectedTabIndex === 1">
+    <lib-bd-filters
+      (sendFilters)="refreshExecutiveSummaryData($event)"
+      [pageName]="pageName"
+      [collapsed]="appStateService.layout.isCollapsed"
+      [excludeFilters]="excludeFilters"
+    ></lib-bd-filters>
+  </div>
   <div #insights style="display: block">
     <bd-insights (insightsLoaded)="onCardLoaded()" #insights></bd-insights>
   </div>
