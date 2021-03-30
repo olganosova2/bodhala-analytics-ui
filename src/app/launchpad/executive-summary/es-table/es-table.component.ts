@@ -52,7 +52,7 @@ export class EsTableComponent implements OnInit {
 
   getExecutiveSummaryData(): void {
     this.isLoaded = false;
-    const params = this.filtersService.getCurrentUserCombinedFilters(true);
+    const params = this.filtersService.getCurrentUserCombinedFilters(false);
     const lastYear = moment(this.maxDate).year();
     const d = new Date(lastYear, 0 , 1);
     const janOne = new Date(d).toISOString().slice(0, 10);
