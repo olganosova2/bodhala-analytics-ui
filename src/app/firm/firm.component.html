@@ -19,7 +19,7 @@
     </mat-slide-toggle>
     <button [ngClass]="userService.hasEntitlement('analytics.expenses') ? 'primary-button ml20':'primary-button'" *ngIf="firmId && userService.hasEntitlement('analytics.firm.ratecard')" (click)="viewReportCard()">View Report Card</button>
     <button *ngIf="firmId && discountsConfig" (click)="openDiscounts()" class="primary-button ml5">View Discounts</button>
-    <lib-bd-annotations *ngIf="userService.hasEntitlement('ui.annotations')"  #annotations></lib-bd-annotations>
+    <lib-bd-annotations *ngIf="userService.hasEntitlement('ui.annotations')" (notesUpdated)="loadNotes($event)"  #annotations></lib-bd-annotations>
     <bd-firm-dropdown></bd-firm-dropdown>
   </div>
   <div class="p-grid">
@@ -109,6 +109,9 @@
   </div>
   <div class="p-grid mt15">
       <bd-utbms [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('analytics.utbms.codes')" style="width: 100%"></bd-utbms>
+  </div>
+  <div class="mt15">
+    <lib-bd-annotations-display [notes]="notes"></lib-bd-annotations-display>
   </div>
 </div>
 

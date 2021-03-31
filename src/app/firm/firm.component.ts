@@ -15,6 +15,7 @@ import {UtbmsComponent} from './utbms/utbms.component';
 import {MatDialog} from '@angular/material/dialog';
 import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {FirmDiscountsComponent} from './firm-discounts/firm-discounts.component';
+import {IUiAnnotation} from '../shared/components/annotations/model';
 
 @Component({
   selector: 'bd-firm',
@@ -34,6 +35,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestFirm: Subscription;
   discountsConfig: any;
+  notes: Array<IUiAnnotation> = [];
   @ViewChild(BillingTotalsComponent) billingTotals: BillingTotalsComponent;
   @ViewChild(TopTimekeepersComponent) topTKs: TopTimekeepersComponent;
   @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
@@ -129,6 +131,9 @@ export class FirmComponent implements OnInit, OnDestroy {
         this.discountsConfig = configs[0].json_config;
       }
     }
+  }
+  loadNotes(notes: Array<IUiAnnotation>): void {
+    this.notes = Object.assign([], notes);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
