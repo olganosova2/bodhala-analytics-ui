@@ -20,6 +20,7 @@ import {NgZone} from '@angular/core';
 import {MOCK_OVERSTAFFING} from './mock-data/saving-calc-mock';
 import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
 import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
+import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
 
 export const ngWindow = {
   location: {
@@ -86,6 +87,8 @@ export class DataStub {
         return of({result: TOP_FIRMS});
       case 'getAnnotations':
         return of({result: MOCK_ANNOTATIONS.result[0]});
+      case 'saveClientConfig':
+        return of({result: {}});
       default:
         return of([]);
     }
@@ -186,6 +189,12 @@ export class DataStub {
         return of(MOCK_CLIENT_SAVINGS);
       case 'getPastSavings':
         return of(MOCK_PAST_SAVINGS);
+      case 'getClientConfigs':
+        return of(MOCK_CLIENT_CONFIGS);
+      case 'getClientDistinctConfigNames':
+        return of(MOCK_DISTINCT_NAMES);
+      case 'getConfigByName':
+        return of(MOCK_SAMPLE_CONFIGS);
       default:
         return of([]);
     }
@@ -196,6 +205,8 @@ export class DataStub {
     switch (url) {
       case 'deleteSavedExport':
         return of([]);
+      case 'deleteClientConfig':
+        return of({ result: {}});
       default:
         return of([]);
     }
@@ -306,6 +317,14 @@ export class ActivatedRouteMock {
     observer.next(urlParams);
     observer.complete();
   });
+}
+export class CommonServiceStub {
+  public getTrainingMaterialsArticle(id: string): void {
+    return;
+  }
+  public openHelpArticle(id: string): void {
+    return;
+  }
 }
 
 export class MatDialogMock {

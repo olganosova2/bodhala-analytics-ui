@@ -11,6 +11,7 @@ import {FiltersService} from '../../shared/services/filters.service';
 import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 import {MOCK_METRIC} from '../../shared/unit-tests/mock-data/savings-calculator';
+import {CommonService} from '../../shared/services/common.service';
 
 describe('SavingsWidgetComponent', () => {
   let component: SavingsWidgetComponent;
@@ -34,7 +35,8 @@ describe('SavingsWidgetComponent', () => {
           { provide: ActivatedRoute, useClass: ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
-          { provide: UserService, useClass: mockServices.UserStub }
+          { provide: UserService, useClass: mockServices.UserStub },
+          { provide: CommonService, useClass: mockServices.CommonServiceStub }
         ]
       }
     });

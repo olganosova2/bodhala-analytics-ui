@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {SAVINGS_CALCULATOR_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
+import {FRESH_DESK_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {UtilService} from 'bodhala-ui-common';
 import {IDropDown} from '../shared/models/prime-ng';
 import * as _moment from 'moment';
@@ -134,7 +134,7 @@ export class SavingsCalculatorService {
       result.percentLabel = 'Last Year';
       result.maxRange = 100;
       result.tooltip = 'Bodhala defines \'block billing\' as a single billing entry greater than 4 hours. This suggests imprecise billing habits by the timekeeper. Reducing the percentage of work that is block billed leads to savings.';
-      result.articleId = SAVINGS_CALCULATOR_ARTICLES.BlockBilling;
+      result.articleId = FRESH_DESK_ARTICLES.BlockBilling;
     }
     if (type === SavingMetrics.Overstaffing) {
       const osRecord = record as IOverstaffingData;
@@ -153,7 +153,7 @@ export class SavingsCalculatorService {
       }
       result.maxRange = 50;
       result.tooltip = 'Bodhala recommends that no more than four (4) timekeepers be allowed to invoice for the same internal law firm meeting. Reducing the staffing at these internal law firms meetings can be a substantial source of savings.';
-      result.articleId = SAVINGS_CALCULATOR_ARTICLES.Overstaffing;
+      result.articleId = FRESH_DESK_ARTICLES.Overstaffing;
       result.overstaffingNumber = SAVINGS_CALCULATOR_CONFIG.overstaffingNumber;
     }
     if (type === SavingMetrics.DelayedBilling) {
@@ -196,7 +196,7 @@ export class SavingsCalculatorService {
     result.title = 'Rate Increase Prevention';
     result.percentLabel = 'Average for 3 years';
     result.tooltip = 'Law firms typically increase their rates on an annual basis - often at a rate above the rate of inflation. If these rate increases are limited to or capped at a nominal amount, the savings can really add up.';
-    result.articleId = SAVINGS_CALCULATOR_ARTICLES.RateIncrease;
+    result.articleId = FRESH_DESK_ARTICLES.RateIncrease;
     const tkClassificationsProcessed = [];
     for (const key of Object.keys(tkClassifications)) {
       if (key === 'partner' || key === 'associate') {

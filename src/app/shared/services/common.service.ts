@@ -6,6 +6,9 @@ import {HttpService, UserService} from 'bodhala-ui-common';
 import { FiltersService } from './filters.service';
 
 import {IUiAnnotation} from '../components/annotations/model';
+import {HELP_MODAL_CONFIG} from './config';
+import {HelpModalComponent} from '../components/help-modal/help-modal.component';
+import {MatDialog} from '@angular/material/dialog';
 export interface IClient {
   bh_client_id: number;
   org_id: number;
@@ -24,13 +27,15 @@ export class CommonService {
   exportImage = null;
   pdfLoading: boolean = false;
   pendingRequest: Subscription;
+  pendingRequestHelp: Subscription;
   editorStyle = {
     height: '150px'
   };
 
   constructor(public httpService: HttpService,
               public userService: UserService,
-              public filtersService: FiltersService) {}
+              public filtersService: FiltersService,
+              public dialog: MatDialog) {}
 
   clearTitles(): void {
     this.pageSubtitle = '';
@@ -195,5 +200,17 @@ export class CommonService {
   }
   scrollToId(el: HTMLElement): void {
     el.scrollIntoView();
+  }
+  openHelpArticle(articleId: string): void {
+    const params = {id: articleId};
+    this.pendingRequestHelp = this.httpService.makeGetRequest('getTrainingMaterialsArticle', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          const article = data.result;
+          const modalConfig = {...HELP_MODAL_CONFIG, data: Object.assign([], article)};
+          const dialogRef = this.dialog.open(HelpModalComponent, {...modalConfig });
+        }
+      }
+    );
   }
 }

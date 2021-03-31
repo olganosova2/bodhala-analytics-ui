@@ -1,0 +1,35 @@
+<div class="ml20">
+  <div mat-dialog-title>
+    <div class="pull-left">
+      <h4>Discount</h4>
+    </div>
+    <div class="pull-right">
+      <button mat-flat-button class="btn-grey ml10" [mat-dialog-close]="false">Close</button>
+    </div>
+    <div class="clear-both"></div>
+  </div>
+  <mat-dialog-content>
+    <div class="chart-div">
+      <chart [options]="options" (load)="saveInstance($event.context)"></chart>
+    </div>
+    <div class="text-sm">*=Confirmed</div>
+    <table class="full-width">
+      <tr class="table-row tr-row font-bold">
+        <td>Practice Area</td>
+        <td>Expected Discount</td>
+        <td>Actual Discount*</td>
+        <td>Total Fees</td>
+        <td>Discount Savings</td>
+        <td>Savings Missed</td>
+      </tr>
+      <tr *ngFor="let pa of dataForTable;let i=$index;" class="table-row tr-row">
+        <td class="font-bold">{{pa.pa}}</td>
+        <td>{{pa.expected_pct  | number:'1.1-1'}}<span *ngIf="pa.expected_pct">%</span></td>
+        <td>{{pa.discount_pct  | number:'1.1-1'}}<span *ngIf="pa.discount_pct">%</span></td>
+        <td>${{pa.total  | number:'1.0-0'}}</td>
+        <td>${{pa.totalDiscount  | number:'1.2-2'}}</td>
+        <td><span *ngIf="pa.discountMissed">$</span>{{pa.discountMissed  | number:'1.0-0'}}</td>
+      </tr>
+    </table>
+  </mat-dialog-content>
+</div>

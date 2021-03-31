@@ -67,7 +67,7 @@ export const END_POINTS_URLS = {
   getSavedExports: {url: BASE_URL + 'analytics/getSavedExports', showLoading: true},
   deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
   reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true},
-  getTrainingMaterialsArticle: {url: BASE_URL + 'analytics/getTrainingMaterialsArticle', showLoading: false},
+  getTrainingMaterialsArticle: {url: BASE_URL + 'public/getTrainingMaterialsArticle', showLoading: false},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
   getPracticeAreas: {url: BASE_URL + 'client/getPracticeAreas', showLoading: true},
   getPracticeAreasAndId: {url: BASE_URL + 'client/getPracticeAreasAndId', showLoading: true},
@@ -86,6 +86,11 @@ export const END_POINTS_URLS = {
   updateBenchmarkPA: {url: BASE_URL + 'admin/benchmarking/saveBenchmarkPAs', showLoading: true},
   getEffectiveRates: {url: BASE_URL + 'admin/getEffectiveRates', showLoading: true},
   getEffectiveRatesForAllClients: {url: BASE_URL + 'admin/getEffectiveRatesForAllClients', showLoading: true},
+  getClientConfigs: {url: BASE_URL + 'admin/getClientConfigs', showLoading: true},
+  saveClientConfig: {url: BASE_URL + 'admin/saveClientConfig', showLoading: true},
+  deleteClientConfig: {url: BASE_URL + 'admin/deleteClientConfig', showLoading: true},
+  getClientDistinctConfigNames: {url: BASE_URL + 'admin/getClientDistinctConfigNames', showLoading: true},
+  getConfigByName: {url: BASE_URL + 'admin/getConfigByName', showLoading: true},
 
 };
 
@@ -98,6 +103,7 @@ export const ROUTES = [
   {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'},
   {name: 'analytics.benchmarking.setup', routePath: 'analytics-ui/benchmarks-setup', fragment: '/benchmarks-setup'},
   {name: 'app.rate.increase', routePath: 'analytics-ui/admin/rate-increase', fragment: '/rate-increase'},
+  {name: 'app.client.configs', routePath: 'analytics-ui/admin/client-configs', fragment: '/client-configs'},
   {name: 'analytics.pastsavings', routePath: 'analytics-ui/past-savings', fragment: '/past-savings'},
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
@@ -152,7 +158,7 @@ export const SAVINGS_CALCULATOR_CONFIG = {
   idealNumberOfPplInMeetings: 0.5,
   overstaffingNumber: '3',
   detailsDialogConfig : {
-    height: '80vh',
+    height: '85vh',
     width: '80vw',
   },
   topFirmsNumber: 10,
@@ -163,10 +169,11 @@ export const HELP_MODAL_CONFIG = {
     height: '100%',
     width: '900px',
   };
-export const SAVINGS_CALCULATOR_ARTICLES = {
+export const FRESH_DESK_ARTICLES = {
   BlockBilling: '24000060478',
   Overstaffing: '24000060537',
   RateIncrease: '24000060502',
+  EntityConfig: '24000066545'
 };
 export const UI_ANNOTATIONS_IDS = {
   executiveSummary: 'ExecutiveSummary'

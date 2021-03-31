@@ -12,6 +12,10 @@ import {SpendByMonthComponent} from './spend-by-month/spend-by-month.component';
 import {DiversityComponent} from './diversity/diversity.component';
 import {ScoreTrendComponent} from './score-trend/score-trend.component';
 import {UtbmsComponent} from './utbms/utbms.component';
+import {MatDialog} from '@angular/material/dialog';
+import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
+import {FirmDiscountsComponent} from './firm-discounts/firm-discounts.component';
+import {IUiAnnotation} from '../shared/components/annotations/model';
 
 @Component({
   selector: 'bd-firm',
@@ -30,6 +34,8 @@ export class FirmComponent implements OnInit, OnDestroy {
   helpText: string = 'The data points included below show current firmographic information on this law firm';
   pendingRequest: Subscription;
   pendingRequestFirm: Subscription;
+  discountsConfig: any;
+  notes: Array<IUiAnnotation> = [];
   @ViewChild(BillingTotalsComponent) billingTotals: BillingTotalsComponent;
   @ViewChild(TopTimekeepersComponent) topTKs: TopTimekeepersComponent;
   @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
@@ -44,12 +50,13 @@ export class FirmComponent implements OnInit, OnDestroy {
               public appStateService: AppStateService,
               public filtersService: FiltersService,
               public userService: UserService,
+              public dialog: MatDialog,
               public commonServ: CommonService) {
     this.commonServ.pageTitle = 'Firms';
   }
 
   ngOnInit() {
-
+    this.checkDiscountsPermission();
     this.route.paramMap.subscribe(params => {
       this.firmId = params.get('id');
       this.loadFirm();
@@ -109,7 +116,25 @@ export class FirmComponent implements OnInit, OnDestroy {
   viewReportCard(): void {
     this.router.navigate(['/analytics-ui/firm/report-card/', this.firmId]);
   }
-
+  openDiscounts(): void {
+    const packaged = { firm: this.firm, config: this.discountsConfig};
+    const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], packaged)};
+    const dialogRef = this.dialog.open(FirmDiscountsComponent, {...modalConfig, disableClose: false });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+  checkDiscountsPermission(): void {
+    const configDiscount = this.userService.config['analytics.discounts'];
+    if (configDiscount) {
+      const configs = configDiscount.configs || [];
+      if (configs.length > 0) {
+        this.discountsConfig = configs[0].json_config;
+      }
+    }
+  }
+  loadNotes(notes: Array<IUiAnnotation>): void {
+    this.notes = Object.assign([], notes);
+  }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
