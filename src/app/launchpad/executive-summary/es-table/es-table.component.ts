@@ -52,7 +52,7 @@ export class EsTableComponent implements OnInit {
 
   getExecutiveSummaryData(): void {
     this.isLoaded = false;
-    const params = this.filtersService.getCurrentUserCombinedFilters(true);
+    const params = this.filtersService.getCurrentUserCombinedFilters(false);
     const lastYear = moment(this.maxDate).year();
     const d = new Date(lastYear, 0 , 1);
     const janOne = new Date(d).toISOString().slice(0, 10);
@@ -110,7 +110,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
+        // firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
@@ -162,7 +162,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
+        // firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
@@ -187,7 +187,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
+        // firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
