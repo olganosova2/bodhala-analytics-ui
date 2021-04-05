@@ -77,6 +77,8 @@ export const END_POINTS_URLS = {
   getOverstaffing: {url: BASE_URL + 'analytics/getOverstaffing', showLoading: true},
   getSavingsCalculatorTable: {url: BASE_URL + 'analytics/getSavingsCalculatorTable', showLoading: false},
   getPastSavings: {url: BASE_URL + 'analytics/getPastSavings', showLoading: true},
+  getDiscountsByClientPAs: {url: BASE_URL + 'analytics/getDiscountsByClientPAs', showLoading: true},
+  // getDiscountsByClientPAs
 
 
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
