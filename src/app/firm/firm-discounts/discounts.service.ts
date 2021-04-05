@@ -111,6 +111,15 @@ export class DiscountsService {
     }
     return result;
   }
+  calculateTableTotals(records: Array<IDiscountsTable>): any {
+    const result = {  total: 0, totalDiscount: 0, discountMissed: 0};
+    for (const rec of records) {
+      result.total += rec.total;
+      result.totalDiscount += rec.totalDiscount;
+      result.discountMissed += rec.discountMissed;
+    }
+    return result;
+  }
   buildTableRow(discounts: Array<IDiscount>, paAll: IPracticeAreaInvoice): IDiscountsTable {
     const result = { pa: '', discount_pct: 0, expected_pct: 0, total: 0, totalDiscount: 0, discountMissed: 0, numInvoices: 0, numDiscountedInvoices: 0};
     const count = discounts.length;

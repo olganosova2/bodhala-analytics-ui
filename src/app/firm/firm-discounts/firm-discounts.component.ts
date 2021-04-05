@@ -23,6 +23,7 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
   discounts: Array<IDiscount> = [];
   subTotalAmtInvoices: number = 0;
   subTotalInvoices: number = 0;
+  totals: any = {};
   practiceAreasInvoices: Array<IPracticeAreaInvoice> = [];
   constructor(public dialogRef: MatDialogRef<FirmDiscountsComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -54,6 +55,7 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
           this.subTotalAmtInvoices = this.discountServ.calculateSubTotalWithInvoices(this.practiceAreasInvoices);
           this.subTotalInvoices = this.discountServ.calculateSubTotalInvoices(this.practiceAreasInvoices);
           this.tableData = this.discountServ.calculateTableData(this.discounts, this.practiceAreasInvoices);
+          this.totals = this.discountServ.calculateTableTotals(this.tableData);
           this.setUpChartOptions();
         }
       },

@@ -39,6 +39,14 @@
         <td>${{pa.totalDiscount  | number:'1.0-0'}}</td>
         <td><span *ngIf="pa.discountMissed">$</span>{{pa.discountMissed  | number:'1.0-0'}}</td>
       </tr>
+      <tr class="table-row tr-row font-bold">
+        <td class="font-bold">Total</td>
+        <td></td>
+        <td></td>
+        <td>${{totals.total  | number:'1.0-0'}}</td>
+        <td>${{totals.totalDiscount  | number:'1.0-0'}}</td>
+        <td>${{totals.discountMissed  | number:'1.0-0'}}</td>
+      </tr>
     </table>
     </div>
   </mat-dialog-content>
