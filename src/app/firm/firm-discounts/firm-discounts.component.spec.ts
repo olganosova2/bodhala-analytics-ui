@@ -8,6 +8,7 @@ import {SpendTrendChartComponent} from '../firm-rate-card/spend-trend-chart/spen
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
 
 describe('FirmDiscountsComponent', () => {
   let component: FirmDiscountsComponent;
@@ -44,9 +45,15 @@ describe('FirmDiscountsComponent', () => {
     fixture = TestBed.createComponent(FirmDiscountsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    component.data.firm = MOCK_FIRM;
+    component.data.config = {
+      discount_pa_type: 'bodhala',
+      sub_practice_are: 'generic_filter_3'
+    };
   });
 
   it('should create FirmDiscountsComponent', () => {
+    component.ngOnInit();
     expect(component).toBeTruthy();
   });
 });
