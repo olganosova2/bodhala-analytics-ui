@@ -161,8 +161,8 @@ export class SavingsCalculatorService {
       if (record.delayed_billing.length > 0) {
         bbRecord = record.delayed_billing[0] as IDelayedBillingRow;
       }
-      result.percent = 50;
-      result.origPercent = 50;
+      result.percent = 10;
+      result.origPercent = 10;
       result.total = bbRecord.total_spend || 0;
       result.title = 'Delayed Billing';
       result.percentLabel = 'Last Year';
@@ -394,7 +394,10 @@ export class SavingsCalculatorService {
     const topFirms = allFirms || [];
     const overstaffingData = data.overstaffing[0].overstaffing || [];
     const rateIncreaseData = data.rate_increase[0].rate_increase || [];
-    const delayedBillingData = data.delayed_billing[0].delayed_billing || [];
+    let delayedBillingData = [];
+    if (data.delayed_billing.length > 0) {
+      delayedBillingData = data.delayed_billing[0].delayed_billing || [];
+    }
     const lastYear = moment(data.rate_increase[0].end_date).year();
     for (const firm of topFirms) {
       const recordForTable  = {} as ISavingsRecord;
@@ -411,8 +414,10 @@ export class SavingsCalculatorService {
       recordForTable.rate_increase = this.calculateRateIncreaseForTable(firmRateIncrease, lastYear,  rateIncreaseMetric);
       recordForTable.total += recordForTable.rate_increase;
       const firmDelayedBilling = delayedBillingData.filter(e => e.bh_lawfirm_id === firm.bh_lawfirm_id) || [];
-      recordForTable.delayed_billing = this.calculateDelayedBillingForTable(firmDelayedBilling, delayedBillingMetric);
-      recordForTable.total += recordForTable.delayed_billing;
+      if (delayedBillingMetric) {
+        recordForTable.delayed_billing = this.calculateDelayedBillingForTable(firmDelayedBilling, delayedBillingMetric);
+        recordForTable.total += recordForTable.delayed_billing;
+      }
       result.push(recordForTable);
     }
     return result;
