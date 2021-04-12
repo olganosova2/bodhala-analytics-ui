@@ -29,6 +29,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   metrics: Array<IMetric> = [];
   tableRecords: Array<ISavingsRecord> = [];
   pageName: string = 'app.client-dashboard.savings-calculator';
+  showDelayedBilling: boolean = false;
   @ViewChild(SavingsWidgetComponent) bbWidget: SavingsWidgetComponent;
   @ViewChild(ProgressSemiCircleComponent) bdProgress: ProgressSemiCircleComponent;
 
@@ -45,6 +46,9 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.userService.hasEntitlement('analytics.savings.dellayed.billing')) {
+      this.showDelayedBilling = true;
+    }
     this.getSavingsCalculator(null);
   }
 
@@ -54,6 +58,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
     this.calcDataTable = null;
     const params = this.filtersService.getCurrentUserCombinedFilters();
     params.numberOfYears = SAVINGS_CALCULATOR_CONFIG.numberOfYears;
+    params.showDelayedBilling = this.showDelayedBilling;
     this.pendingRequest = this.httpService.makeGetRequest('getSavingsCalculator', params).subscribe(
       (data: any) => {
         if (data.result) {
@@ -72,6 +77,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
     const params = this.filtersService.getCurrentUserCombinedFilters();
     params.overstaffingNumber = 3;
     params.numberOfYears = SAVINGS_CALCULATOR_CONFIG.numberOfYears;
+    params.showDelayedBilling = this.showDelayedBilling;
     this.pendingRequest = this.httpService.makeGetRequest('getSavingsCalculatorTable', params).subscribe(
       (data: any) => {
         if (data.result) {
@@ -124,7 +130,7 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       const metricOverstaffing = this.savingsService.createMetricsRecord(this.calcData.overstaffing[this.currentYear], SavingMetrics.Overstaffing);
       this.metrics.push(metricOverstaffing);
     }
-    if (this.calcData.delayed_billing && this.calcData.delayed_billing.length > 0) {
+    if (this.showDelayedBilling && this.calcData.delayed_billing && this.calcData.delayed_billing.length > 0) {
       const metricDelayedBilling = this.savingsService.createMetricsRecord(this.calcData.delayed_billing[this.currentYear], SavingMetrics.DelayedBilling);
       this.metrics.push(metricDelayedBilling);
     }

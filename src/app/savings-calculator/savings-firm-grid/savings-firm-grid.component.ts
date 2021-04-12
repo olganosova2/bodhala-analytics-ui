@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
 import {ISavingsRecord} from '../savings-calculator.service';
 import {GridOptions} from 'ag-grid-community';
+import {UserService} from 'bodhala-ui-common';
 
 @Component({
   selector: 'bd-savings-firm-grid',
@@ -21,11 +22,16 @@ export class SavingsFirmGridComponent implements OnInit, AfterViewInit {
   firstLoad: boolean = true;
   subTotalBB: number = 0;
   subTotal: number = 0;
+  showDelayedBilling: boolean = false;
   constructor( public dialogRef: MatDialogRef<SavingsFirmGridComponent>,
+               public userService: UserService,
                @Inject(MAT_DIALOG_DATA) public data: Array<ISavingsRecord>,
                public agGridService: AgGridService) { }
 
   ngOnInit(): void {
+    if (this.userService.hasEntitlement('analytics.savings.dellayed.billing')) {
+      this.showDelayedBilling = true;
+    }
     this.defaultColumn = this.agGridService.getDefaultColumn();
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState('SavingsByFirmGrid');
@@ -35,6 +41,10 @@ export class SavingsFirmGridComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     setTimeout(() => {
+      if (this.savedState) {
+        const colDB = this.savedState.find(e => e.colId === 'delayed_billing') || {};
+        colDB.hide = !this.showDelayedBilling;
+      }
       this.agGridService.restoreGrid(this.savedState, this.gridOptions);
       for (const rec of this.data) {
         this.subTotal += rec.total;
@@ -49,7 +59,7 @@ export class SavingsFirmGridComponent implements OnInit, AfterViewInit {
       {headerName: 'Block Billing', field: 'bb',  cellRenderer: this.agGridService.roundCurrencyCellRenderer,  ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
       {headerName: 'Rate Increase', field: 'rate_increase',  cellRenderer: this.agGridService.roundCurrencyCellRenderer,  ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
       {headerName: 'Internal Meetings', field: 'overstaffing',  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
-      {headerName: 'Delayed Billing', field: 'delayed_billing',  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
+      {headerName: 'Delayed Billing', field: 'delayed_billing', hide: !this.showDelayedBilling,  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, width: 150, comparator: this.agGridService.zeroNumberComparator },
       {headerName: 'Total', field: 'total',  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, width: 150, sort: 'desc', comparator: this.agGridService.zeroNumberComparator }
     ];
   }
