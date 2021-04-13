@@ -43,6 +43,7 @@ describe('ClientConfigsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ClientConfigsComponent);
     component = fixture.componentInstance;
+    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
     fixture.detectChanges();
   });
 
@@ -64,7 +65,7 @@ describe('ClientConfigsComponent', () => {
     const result = component.loadGrid();
     expect(component.selectedClient.org_id).toBe(1);
   });
-  xit('should openModal', () => {
+  it('should openModal', () => {
     component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
     spyOn(component.dialog, 'open').and.callThrough();
     const newItem = component.createNewConfig();
@@ -84,7 +85,7 @@ describe('ClientConfigsComponent', () => {
     component.deleteConfig(item);
     expect(component).toBeTruthy();
   });
-  xit('should openDeleteDialog', () => {
+  it('should openDeleteDialog', () => {
     component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
     spyOn(component.dialog, 'open').and.callThrough();
     component.openDeleteDialog({data: 123});
@@ -98,7 +99,7 @@ describe('ClientConfigsComponent', () => {
     const result = component.deleteCellRenderer({ id: 1});
     expect(result).toBeTruthy();
   });
-  xit('should edit', () => {
+  it('should edit', () => {
     spyOn(component.dialog, 'open').and.callThrough();
     try {
     component.edit({data: 123});
