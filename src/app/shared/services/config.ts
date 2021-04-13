@@ -7,24 +7,14 @@ export const IS_LOCAL = window.location.host.indexOf('127.0.0.1') >= 0 ? true : 
 export const SAVED_FILTERS_NAME = 'ELEMENTS_dataFilters_';
 
 export const END_POINTS_URLS = {
+  // top level common
   errorStub: {url: BASE_URL + 'errorStub', showLoading: false},
   getCurrentUser: {url: BASE_URL + 'getCurrentUser', showLoading: false},
   getClientCounts: {url: BASE_URL + 'analytics/getClientCounts', showLoading: true},
   getUserSideBar: {url: BASE_URL + 'user-sidebar.json', showLoading: true},
   getMenuItems: {url: BASE_URL + 'user-sidebar.json', showLoading: false},
   keepAlive: {url: BASE_URL + 'keepalive', showLoading: false},
-  getTopMatters: {url: BASE_URL + 'analytics/getTopMatters', showLoading: true},
-  getTopMattersForFirm: {url: BASE_URL + 'analytics/getTopMatters', showLoading: false},
-  getTopFirms: {url: BASE_URL + 'analytics/getTopFirms', showLoading: true},
-  getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
-  spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
-  getTopLeadPartners: {url: BASE_URL + 'analytics/getTopLeadPartners', showLoading: true},
-  getMattersByHighestAverageRate: {url: `${BASE_URL}analytics/getMattersByHighestAverageRate`, showLoading: true},
-  getActiveSpend: {url: BASE_URL + 'analytics/getActiveSpend', showLoading: true},
-  getInvoiceIQReports: {url: BASE_URL + 'analytics/getInvoiceIQReportsAndTotals', showLoading: true},
-  getBlockBillingFirms: {url: BASE_URL + 'analytics/getBlockBillingFirms', showLoading: true},
-  getClientInsights: {url: BASE_URL + 'client/insights', showLoading: true},
-
+  // filters
   getOptionsForFilter: {url: BASE_URL + 'analytics/getOptionsForFilter?&threshold=4', showLoading: false},
   getOptionsForTag: {url: BASE_URL + 'analytics/matter/tagtype/{id}/options', showLoading: false},
   getFilters: {url: BASE_URL + 'analytics/getFilters', showLoading: true},
@@ -32,10 +22,24 @@ export const END_POINTS_URLS = {
   deleteView: {url: BASE_URL + 'analytics/view/{id}', showLoading: false},
   oldSavedViews: {url: BASE_URL + 'admin/savedviews', showLoading: false},
   getDateRange: {url: BASE_URL + 'analytics/getMinMaxDates', showLoading: false},
+  getAnnotations: {url: BASE_URL + 'client/annotations', showLoading: false},
+  // launchpad
+  getClientInsights: {url: BASE_URL + 'client/insights', showLoading: true},
+  getTopMatters: {url: BASE_URL + 'analytics/getTopMatters', showLoading: true},
+  getTopMattersForFirm: {url: BASE_URL + 'analytics/getTopMatters', showLoading: false},
+  getTopFirms: {url: BASE_URL + 'analytics/getTopFirms', showLoading: true},
+  getTopMattersAndLeadPartners: {url: BASE_URL + 'analytics/getTopMattersAndLeadPartners', showLoading: true},
+  getTopLeadPartners: {url: BASE_URL + 'analytics/getTopLeadPartners', showLoading: true},
+  getMattersByHighestAverageRate: {url: `${BASE_URL}analytics/getMattersByHighestAverageRate`, showLoading: true},
+  getActiveSpend: {url: BASE_URL + 'analytics/getActiveSpend', showLoading: true},
+  getInvoiceIQReports: {url: BASE_URL + 'analytics/getInvoiceIQReportsAndTotals', showLoading: true},
+  getBlockBillingFirms: {url: BASE_URL + 'analytics/getBlockBillingFirms', showLoading: true},
 
+
+  spendByPracticeAreas: {url: BASE_URL + 'analytics/getTopPracticeAreas', showLoading: true},
+  // firm
   getFirm: {url: BASE_URL + 'lawFirm/{id}', showLoading: false},
   getBillingTotals: {url: BASE_URL + 'analytics/billingTotals', showLoading: false},
-  getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},
   reportCardBillingTotals: {url: BASE_URL + 'analytics/reportCardBillingTotals', showLoading: false},
   getTopTimekeepers: {url: BASE_URL + 'analytics/getTopTimekeepers', showLoading: false},
   spendByMonth: {url: BASE_URL + 'analytics/spendByMonth', showLoading: false},
@@ -43,44 +47,45 @@ export const END_POINTS_URLS = {
   getDiversityData: {url: BASE_URL + 'analytics/getDiversityData', showLoading: false},
   getFirmScore: {url: BASE_URL + 'analytics/playbook/firm/{id}/scores', showLoading: false},
   getFirmTrends: {url: BASE_URL + 'analytics/playbook/firm/{id}/trends', showLoading: false},
-  getPracticeAreaScore: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/scores', showLoading: false},
-  getPracticeAreaTrends: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/trends', showLoading: false},
   getSpendByUtbmsCodes: {url: BASE_URL + 'analytics/getSpendByUtbmsCodes', showLoading: false},
   getPhaseTaxonomySpend: {url: BASE_URL + 'analytics/getPhaseTaxonomySpend', showLoading: false},
+  getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
   getFirmsListByClient: {url: BASE_URL + 'analytics/getFirmListByClient', showLoading: false},
   getMinMaxMatterCost: {url: BASE_URL + 'analytics/getMinMaxMatterCost', showLoading: false},
-  getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
-
-  getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
-  deleteBenchmark: { url: BASE_URL + 'client/benchmarking/deleteBenchmark/{id}', showLoading: true},
-  getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
-
-  getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
-  getBodhalaPracticeArea: {url: BASE_URL + 'analytics/getSpendByBodhalaPATable', showLoading: false},
-  getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
-  getFirmTopSummary: {url: BASE_URL + 'analytics/getFirmTopSummary', showLoading: false},
-  getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
-  getAnnotations: {url: BASE_URL + 'client/annotations', showLoading: false},
-  getSavingsCalculator: {url: BASE_URL + 'analytics/getSavingsCalculator', showLoading: true},
-  spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
   saveExport: {url: BASE_URL + 'analytics/saveExport', showLoading: true},
   getSavedExports: {url: BASE_URL + 'analytics/getSavedExports', showLoading: true},
   deleteSavedExport: {url: BASE_URL + 'analytics/deleteSavedExport', showLoading: true},
   reportCardComparisonBillingTotals: {url: BASE_URL + 'analytics/reportCardComparisonBillingTotals', showLoading: true},
-  getTrainingMaterialsArticle: {url: BASE_URL + 'public/getTrainingMaterialsArticle', showLoading: false},
+  getDiscountsByClientPAs: {url: BASE_URL + 'analytics/getDiscountsByClientPAs', showLoading: true},
+  spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
+  // executive summary
+  getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},
+  getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
+  // practice areas
+  getPracticeArea: {url: BASE_URL + 'analytics/getSpendByMatterTypeTable', showLoading: false},
+  getBodhalaPracticeArea: {url: BASE_URL + 'analytics/getSpendByBodhalaPATable', showLoading: false},
+  getPracticeAreasListByClient: {url: BASE_URL + 'analytics/getPracticeAreaListByClient', showLoading: false},
+  getPracticeAreaScore: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/scores', showLoading: false},
+  getPracticeAreaTrends: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/trends', showLoading: false},
   getPracticeAreas: {url: BASE_URL + 'client/getPracticeAreas', showLoading: true},
   getPracticeAreasAndId: {url: BASE_URL + 'client/getPracticeAreasAndId', showLoading: true},
+  // benchmarks
+  getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
+  deleteBenchmark: { url: BASE_URL + 'client/benchmarking/deleteBenchmark/{id}', showLoading: true},
   saveBenchmark: {url: BASE_URL + 'client/benchmarking/saveBenchmark', showLoading: true},
   saveBenchmarkPAs: {url: BASE_URL + 'client/benchmarking/saveBenchmarkPAs', showLoading: true},
+  // savings calculator
+  getSavingsCalculator: {url: BASE_URL + 'analytics/getSavingsCalculator', showLoading: true},
   getRatesForCategoryAndLawyer:  {url: BASE_URL + 'client/getRatesForCategoryAndLawyer', showLoading: true},
   getOverstaffing: {url: BASE_URL + 'analytics/getOverstaffing', showLoading: true},
   getSavingsCalculatorTable: {url: BASE_URL + 'analytics/getSavingsCalculatorTable', showLoading: false},
   getPastSavings: {url: BASE_URL + 'analytics/getPastSavings', showLoading: true},
-  getDiscountsByClientPAs: {url: BASE_URL + 'analytics/getDiscountsByClientPAs', showLoading: true},
-  // getDiscountsByClientPAs
-
-
+  getTrainingMaterialsArticle: {url: BASE_URL + 'public/getTrainingMaterialsArticle', showLoading: false},
+  // TBD
+  getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
+  getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
+  // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
   getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},
   getAdminBenchmark: {url: BASE_URL + 'admin/benchmarking/benchmarks/{id}'},
