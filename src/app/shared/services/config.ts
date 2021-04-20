@@ -82,6 +82,8 @@ export const END_POINTS_URLS = {
   getSavingsCalculatorTable: {url: BASE_URL + 'analytics/getSavingsCalculatorTable', showLoading: false},
   getPastSavings: {url: BASE_URL + 'analytics/getPastSavings', showLoading: true},
   getTrainingMaterialsArticle: {url: BASE_URL + 'public/getTrainingMaterialsArticle', showLoading: false},
+  // matter
+  getCirpMatterSummary:  {url: BASE_URL + 'analytics/getCirpMatterSummary', showLoading: true},
   // TBD
   getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
