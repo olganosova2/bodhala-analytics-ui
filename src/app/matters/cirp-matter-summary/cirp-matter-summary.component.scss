@@ -1,0 +1,17 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables";
+.cirp-panel-wrapper {
+  padding: 24px 16px 16px 24px;
+  width: 100%;
+  background-color: $body-color;
+  color: #fff;
+  border: 1px solid $body-color;
+  border-radius: $cirp-card-panel-radius;
+}
+.summary-table-title {
+  padding: 10px 0;
+  font-size: 1.675rem;
+}
+.table-row {
+  height: 40px;
+}

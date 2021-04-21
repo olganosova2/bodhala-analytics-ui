@@ -5,6 +5,10 @@ import {FiltersService} from '../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CommonService} from '../../shared/services/common.service';
 import {Subscription} from 'rxjs';
+import {ICirpMatterSummary, ICirpTimekeeper, IClientPA} from './cirp.service';
+import * as _moment from 'moment';
+
+const moment = _moment;
 
 @Component({
   selector: 'bd-cirp-matter-summary',
@@ -14,7 +18,11 @@ import {Subscription} from 'rxjs';
 export class CirpMatterSummaryComponent implements OnInit {
   errorMessage: any;
   matterId: string;
+  practiceAreaType: string = IClientPA.client;
   pendingRequest: Subscription;
+  matterSummary: ICirpMatterSummary;
+  totalSpend: number = 0;
+  timekeepers: Array<ICirpTimekeeper> = [];
   constructor(private route: ActivatedRoute,
               public router: Router,
               private httpService: HttpService,
@@ -22,15 +30,26 @@ export class CirpMatterSummaryComponent implements OnInit {
               public filtersService: FiltersService,
               public userService: UserService,
               public dialog: MatDialog,
-              public commonServ: CommonService) { }
+              public commonServ: CommonService) {
+      this.commonServ.pageTitle = 'Cirp Matter Summary';
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.matterId = decodeURIComponent(params.get('id'));
       if (this.matterId) {
+        this.initConfig();
         this.loadSummary();
       }
     });
+  }
+  initConfig(): void {
+    if (this.userService.config && this.userService.config['analytics.practice.bodhala.areas']) {
+      const configs = this.userService.config['analytics.practice.bodhala.areas'].configs || [];
+      if (configs.length > 0) {
+        this.practiceAreaType = configs[0].value || IClientPA.client;
+      }
+    }
   }
   loadSummary(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters(true);
@@ -42,12 +61,30 @@ export class CirpMatterSummaryComponent implements OnInit {
     params.matterId = this.matterId;
     this.pendingRequest = this.httpService.makeGetRequest('getCirpMatterSummary', params).subscribe(
       (data: any) => {
-        const firms = data.result;
+        if (data.result && data.result.matter_summary.length > 0) {
+          this.matterSummary = Object.assign({}, data.result.matter_summary[0]);
+          this.processMatterSummary();
+        }
+        if (data.result && data.result.timekeepers.length > 0) {
+          this.timekeepers = Object.assign([], data.result.timekeepers);
+          this.processTimeKeepers();
+        }
       },
       err => {
         this.errorMessage = err;
       }
     );
+  }
+  processMatterSummary(): void {
+      this.commonServ.pageSubtitle = this.matterSummary.matter_name;
+      this.totalSpend = this.matterSummary.total;
+  }
+  processTimeKeepers(): void {
+    for (const tk of this.timekeepers) {
+      const subTotal = this.totalSpend || 1;
+      tk.spend_percent = tk.total_billed / subTotal * 100;
+
+    }
   }
 
 }
