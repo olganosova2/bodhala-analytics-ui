@@ -9,27 +9,45 @@
     <div class="clear-both"></div>
   </div>
   <mat-dialog-content>
-    <div class="chart-div">
+    <h5><span *ngIf="discountsConfig && discountsConfig.discount_pa_type === 'client'">Client</span>
+      <span *ngIf="discountsConfig && discountsConfig.discount_pa_type === 'bodhala'">Smart</span>
+      Practice Areas Summary
+    </h5>
+<!--    {{ subTotalAmtInvoices | number:'1.0-0'}} -  {{ subTotalInvoices | number:'1.0-0'}}-->
+<!--    <div *ngIf="discounts.length === 0">No discounts for <span class="font-bold">{{firm.name}}</span></div>-->
+    <div>
+    <div class="chart-div" [hidden]="discounts.length === 0">
       <chart [options]="options" (load)="saveInstance($event.context)"></chart>
     </div>
     <div class="text-sm">*=Confirmed</div>
-    <table class="full-width">
+    <table class="full-width mb20">
       <tr class="table-row tr-row font-bold">
-        <td>Practice Area</td>
-        <td>Expected Discount</td>
-        <td>Actual Discount*</td>
+        <td>&nbsp;</td>
+<!--        <td># Invoices</td>-->
+        <td>Expected</td>
+        <td>Actual*</td>
         <td>Total Fees</td>
         <td>Discount Savings</td>
         <td>Savings Missed</td>
       </tr>
-      <tr *ngFor="let pa of dataForTable;let i=$index;" class="table-row tr-row">
+      <tr *ngFor="let pa of tableData;let i=$index;" class="table-row tr-row">
         <td class="font-bold">{{pa.pa}}</td>
-        <td>{{pa.expected_pct  | number:'1.1-1'}}<span *ngIf="pa.expected_pct">%</span></td>
-        <td>{{pa.discount_pct  | number:'1.1-1'}}<span *ngIf="pa.discount_pct">%</span></td>
+<!--        <td>{{pa.numInvoices}}</td>-->
+        <td>{{pa.expected_pct  | number:'1.0-1'}}<span *ngIf="pa.expected_pct">%</span></td>
+        <td>{{pa.discount_pct  | number:'1.0-1'}}<span *ngIf="pa.discount_pct">%</span></td>
         <td>${{pa.total  | number:'1.0-0'}}</td>
-        <td>${{pa.totalDiscount  | number:'1.2-2'}}</td>
+        <td>${{pa.totalDiscount  | number:'1.0-0'}}</td>
         <td><span *ngIf="pa.discountMissed">$</span>{{pa.discountMissed  | number:'1.0-0'}}</td>
       </tr>
+      <tr class="table-row tr-row font-bold">
+        <td class="font-bold">Total</td>
+        <td></td>
+        <td></td>
+        <td>${{totals.total  | number:'1.0-0'}}</td>
+        <td>${{totals.totalDiscount  | number:'1.0-0'}}</td>
+        <td>${{totals.discountMissed  | number:'1.0-0'}}</td>
+      </tr>
     </table>
+    </div>
   </mat-dialog-content>
 </div>
