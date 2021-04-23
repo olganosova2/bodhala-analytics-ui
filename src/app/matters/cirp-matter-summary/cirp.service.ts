@@ -12,6 +12,7 @@ export interface ICirpMatterSummary {
   line_item_date: string;
   total: number;
   expenses: number;
+  daysSince?: string;
 }
 export interface ISpecialty {
   id: number;

@@ -78,12 +78,14 @@ export class CirpMatterSummaryComponent implements OnInit {
   processMatterSummary(): void {
       this.commonServ.pageSubtitle = this.matterSummary.matter_name;
       this.totalSpend = this.matterSummary.total;
+      const start = moment(this.matterSummary.line_item_date);
+      const end =  moment();
+      this.matterSummary.daysSince = (end.diff(start, 'days')).toString();
   }
   processTimeKeepers(): void {
     for (const tk of this.timekeepers) {
       const subTotal = this.totalSpend || 1;
       tk.spend_percent = tk.total_billed / subTotal * 100;
-
     }
   }
 

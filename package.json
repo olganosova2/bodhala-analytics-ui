@@ -13,6 +13,8 @@
     "build-prod": "ng build --base-href /analytics-ui/ --configuration production",
     "test": "ng test --browsers=ChromeHeadless",
     "test1": "ng test --code-coverage --browsers=ChromeHeadless",
+    "test14": "node_modules/node/bin/node node_modules/.bin/ng test --browsers=ChromeHeadless",
+    "test14C": "node_modules/node/bin/node node_modules/.bin/ng test --code-coverage --browsers=ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -60,6 +62,7 @@
     "ngx-daterangepicker-material": "^2.2.0",
     "ngx-file-drop": "^8.0.7",
     "ngx-quill": "^12.0.1",
+    "node": "^14.16.1",
     "pdfmake": "^0.1.65",
     "primeflex": "^2.0.0",
     "primeicons": "^4.0.0",
