@@ -127,6 +127,7 @@ import { ClientConfigsComponent } from './admin/client-configs/client-configs.co
 import { AddEditConfigComponent } from './admin/client-configs/add-edit-config/add-edit-config.component';
 import {AceEditorModule} from 'ng2-ace-editor';
 import { FirmDiscountsComponent } from './firm/firm-discounts/firm-discounts.component';
+import { CirpMatterSummaryComponent } from './matters/cirp-matter-summary/cirp-matter-summary.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -204,7 +205,8 @@ export function initHttp(service: HttpService) {
     PastSavingsComponent,
     ClientConfigsComponent,
     AddEditConfigComponent,
-    FirmDiscountsComponent
+    FirmDiscountsComponent,
+    CirpMatterSummaryComponent
   ],
   entryComponents: [
     PillComponent,
