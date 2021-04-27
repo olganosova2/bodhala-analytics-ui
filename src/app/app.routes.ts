@@ -43,8 +43,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/benchmarks-setup', component: BenchmarkingSetupComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/past-savings', component: PastSavingsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'past-savings', component: PastSavingsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'cirp-matter-summary/:id', component: CirpMatterSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'analytics-ui/cirp-matter-summary/:id', component: CirpMatterSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/matter-cirp-summary', component: CirpMatterSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/benchmark-edit/:id', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
