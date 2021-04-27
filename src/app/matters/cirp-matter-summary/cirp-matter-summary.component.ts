@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -18,11 +18,13 @@ const moment = _moment;
 export class CirpMatterSummaryComponent implements OnInit {
   errorMessage: any;
   matterId: string;
+  matterName: string;
   practiceAreaType: string = IClientPA.client;
   pendingRequest: Subscription;
   matterSummary: ICirpMatterSummary;
   totalSpend: number = 0;
   timekeepers: Array<ICirpTimekeeper> = [];
+
   constructor(private route: ActivatedRoute,
               public router: Router,
               private httpService: HttpService,
@@ -31,18 +33,21 @@ export class CirpMatterSummaryComponent implements OnInit {
               public userService: UserService,
               public dialog: MatDialog,
               public commonServ: CommonService) {
-      this.commonServ.pageTitle = 'Cirp Matter Summary';
+    this.commonServ.pageTitle = 'Cirp Matter Summary';
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.matterId = decodeURIComponent(params.get('id'));
-      if (this.matterId) {
-        this.initConfig();
-        this.loadSummary();
-      }
-    });
+    this.route.queryParams
+      .subscribe(params => {
+        this.matterId = decodeURIComponent(params.id);
+        this.matterName = decodeURIComponent(params.matter);
+        if (this.matterId) {
+          this.initConfig();
+          this.loadSummary();
+        }
+      });
   }
+
   initConfig(): void {
     if (this.userService.config && this.userService.config['analytics.practice.bodhala.areas']) {
       const configs = this.userService.config['analytics.practice.bodhala.areas'].configs || [];
@@ -51,6 +56,7 @@ export class CirpMatterSummaryComponent implements OnInit {
       }
     }
   }
+
   loadSummary(): void {
     const params = this.filtersService.getCurrentUserCombinedFilters(true);
     const arr = [];
@@ -62,7 +68,13 @@ export class CirpMatterSummaryComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest('getCirpMatterSummary', params).subscribe(
       (data: any) => {
         if (data.result && data.result.matter_summary.length > 0) {
-          this.matterSummary = Object.assign({}, data.result.matter_summary[0]);
+          const records = data.result.matter_summary;
+          if (this.matterName && records.length > 1) {
+            const matter = records.find(e => e.matter_name === this.matterName);
+            this.matterSummary = Object.assign({}, matter);
+          } else {
+            this.matterSummary = Object.assign({}, data.result.matter_summary[0]);
+          }
           this.processMatterSummary();
         }
         if (data.result && data.result.timekeepers.length > 0) {
@@ -75,13 +87,15 @@ export class CirpMatterSummaryComponent implements OnInit {
       }
     );
   }
+
   processMatterSummary(): void {
-      this.commonServ.pageSubtitle = this.matterSummary.matter_name;
-      this.totalSpend = this.matterSummary.total;
-      const start = moment(this.matterSummary.line_item_date);
-      const end =  moment();
-      this.matterSummary.daysSince = (end.diff(start, 'days')).toString();
+    this.commonServ.pageSubtitle = this.matterSummary.matter_name;
+    this.totalSpend = this.matterSummary.total;
+    const start = moment(this.matterSummary.line_item_date);
+    const end = moment();
+    this.matterSummary.daysSince = (end.diff(start, 'days')).toString();
   }
+
   processTimeKeepers(): void {
     for (const tk of this.timekeepers) {
       const subTotal = this.totalSpend || 1;
