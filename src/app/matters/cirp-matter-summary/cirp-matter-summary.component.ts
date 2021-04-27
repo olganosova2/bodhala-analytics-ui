@@ -40,7 +40,10 @@ export class CirpMatterSummaryComponent implements OnInit {
     this.route.queryParams
       .subscribe(params => {
         this.matterId = decodeURIComponent(params.id);
-        this.matterName = decodeURIComponent(params.matter);
+        const matterName = params.matter;
+        if (matterName && matterName !== undefined) {
+          this.matterName = decodeURIComponent(matterName);
+        }
         if (this.matterId) {
           this.initConfig();
           this.loadSummary();
