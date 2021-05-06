@@ -1,0 +1,215 @@
+<hr>
+<div>
+  <h5>Recommendation {{index + 1}}<span *ngIf="selectedType"> - {{selectedType}}</span></h5>
+  <button mat-flat-button type="button" style="float: right; width: 40px; border: none; background-color: #e1e2e3;" (click)="deleteRecommendation()"><em class="icon-trash"></em></button>
+  <mat-vertical-stepper #stepper>
+    <mat-step [stepControl]="firstFormGroup" errorMessage="Type is required.">
+      <form [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Select a recommendation type</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-select formControlName="firstCtrl" required (selectionChange)="typeChange($event)">
+            <mat-option *ngFor="let recommendation of recommendationTypes" [value]="recommendation.value">{{recommendation.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+
+    </mat-step>
+
+    <!-- Discount Progression -->
+
+    <mat-step [stepControl]="secondFormGroup" *ngIf="selectedType === 'Discount'" errorMessage="Firm is required.">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Select a firm</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="secondCtrl" required (selectionChange)="getFirmPracticeAreas($event)">
+            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="thirdFormGroup" *ngIf="selectedType === 'Discount'" errorMessage="Practice Area is required.">
+      <form [formGroup]="thirdFormGroup">
+        <ng-template matStepLabel>Select a practice area</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="thirdCtrl" required (selectionChange)="getFirmPAStats($event)">
+            <mat-option *ngFor="let area of firmPracticeAreas" [value]="area">{{area}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="fourthFormGroup" *ngIf="selectedType === 'Discount'" errorMessage="Current discount % is required.">
+      <form [formGroup]="fourthFormGroup">
+        <ng-template matStepLabel>Enter current discount percentage</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Current Discount</mat-label>
+          <input matInput type="number" formControlName="fourthCtrl" required>
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="fifthFormGroup" *ngIf="selectedType === 'Discount'" errorMessage="Recommended discount % is required.">
+      <form [formGroup]="fifthFormGroup">
+        <ng-template matStepLabel>Enter recommended discount percentage</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Rec. Discount</mat-label>
+          <input matInput type="number" formControlName="fifthCtrl" required>
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="sixthFormGroup" *ngIf="selectedType === 'Discount'" errorMessage="Growth projection % is required.">
+      <form [formGroup]="sixthFormGroup">
+        <ng-template matStepLabel>Enter projected growth in spend for this Firm/PA</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Proj. Growth</mat-label>
+          <input matInput type="number" formControlName="sixthCtrl" required (change)="calcDiscountEffect()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="seventhFormGroup" *ngIf="selectedType === 'Discount'" errorMessage="Recommended description is required.">
+      <div *ngIf="ytdFirmData">
+
+        <ul>
+          <li>
+            Total {{selectedFirmName}} Spend for {{mostRecentYear - 1}} (last full year w/ data) for PA, {{selectedPracticeArea}}, with {{fourthFormGroup.value.fourthCtrl}}% discount: <b>${{lastFullYearFirmData[0].total_billed | number:'1.0-0'}}</b>
+          </li>
+          <li>
+            Estimated {{mostRecentYear}} Spend with {{fourthFormGroup.value.fourthCtrl}}% discount (and {{sixthFormGroup.value.sixthCtrl}}% growth): <b>${{estimatedSpendWithOldDisc | number:'1.0-0'}}</b>
+          </li>
+          <li>
+            Estimated {{mostRecentYear}} Spend with negotiated {{fifthFormGroup.value.fifthCtrl}}% {{mostRecentYear}} discount: <b>${{estimatedSpendWithRecommendedDisc | number:'1.0-0'}}</b>
+          </li>
+          <li *ngIf="differenceInSpend > 0">
+            Estimated Savings: <span style="color: green;"><b>${{differenceInSpend | number:'1.0-0'}}</b></span>
+          </li>
+          <li *ngIf="differenceInSpend === 0">
+            Estimated Difference: <b>$0</b>
+          </li>
+          <li *ngIf="differenceInSpend < 0">
+            Estimated Loss: <span style="color: red;"><b>${{differenceInSpend | number:'1.0-0'}}</b></span>
+          </li>
+        </ul>
+
+      </div>
+      <form [formGroup]="seventhFormGroup">
+        <ng-template matStepLabel>Write the recommendation description</ng-template>
+          <quill-editor [styles]="commonServ.editorStyle" formControlName="seventhCtrl"
+                      [modules]="quillConfig"></quill-editor>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Done</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Modify Staffing Progression -->
+
+    <mat-step [stepControl]="secondFormGroup" *ngIf="selectedType === 'Modify Staffing Allocation'" errorMessage="Firm is required.">
+      <form [formGroup]="secondFormGroup">
+        <ng-template matStepLabel>Select a firm</ng-template>
+        <mat-form-field>
+          <mat-select [formControl]="firmSelection" required (selectionChange)="getFirmStaffing($event)">
+            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="thirdFormGroup" *ngIf="selectedType === 'Modify Staffing Allocation'">
+      <div *ngFor="for let staffingData of firmStaffingData">
+        <span>Year: {{staffingData.year}}</span>
+        <span>Partner % of Hours Worked: {{staffingData.partner_percent}}</span>
+        <span>Avg. Partner Rate: {{staffingData.avg_partner_rate}}</span>
+        <span>Associate % of Hours Worked: {{staffingData.associate_percent}}</span>
+        <span>Avg. Associate Rate: {{staffingData.avg_associate_rate}}</span>
+      </div>
+
+      <form [formGroup]="thirdFormGroup">
+        <ng-template matStepLabel>Select the desired levels of partner and associate work</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Partner %</mat-label>
+          <input matInput type="number" [formControl]="desiredAssociatePct" required>
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+      </form>
+
+      <form [formGroup]="fourthFormGroup">
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Associate %</mat-label>
+          <input matInput type="number" [formControl]="desiredAssociatePct" required>
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+  </mat-vertical-stepper>
+  <!-- <p-dropdown [options]="recommendationTypes" [(ngModel)]="newRecommendation.type_id" placeholder="Select recommendation type"
+              (onChange)="typeChange($event)"></p-dropdown> -->
+
+
+
+
+  <!-- <div *ngIf="selectedType === 'Discount'" class="mt10">
+    <p-dropdown [options]="firmOptions" [(ngModel)]="newRecommendation.bh_lawfirm_id" placeholder="Select firm"
+                (onChange)="getFirmStats($event)" [style]="{width:'250px'}" [filter]="true" filterBy="label"></p-dropdown>
+
+    <div style="display: inline;">
+      <h6>Firm Stats:</h6>
+
+    </div>
+  </div>
+
+  <div *ngIf="selectedType === 'Modify Staffing Allocation'" class="mt10">
+    <p-dropdown [options]="firmOptions" [(ngModel)]="newRecommendation.bh_lawfirm_id" placeholder="Select firm"
+                (onChange)="getFirmStaffing($event)" [style]="{width:'250px'}" [filter]="true" filterBy="label"></p-dropdown>
+
+    <div style="display: inline;">
+      <h6>Firm Staffing (past two years):</h6>
+
+      <div *ngFor="let staffingData of firmStaffingData">
+
+
+      </div>
+
+    </div>
+  </div> -->
+</div>
+
+

@@ -100,6 +100,14 @@ export const END_POINTS_URLS = {
   deleteClientConfig: {url: BASE_URL + 'admin/deleteClientConfig', showLoading: true},
   getClientDistinctConfigNames: {url: BASE_URL + 'admin/getClientDistinctConfigNames', showLoading: true},
   getConfigByName: {url: BASE_URL + 'admin/getConfigByName', showLoading: true},
+  getClientRecommendationReports: {url: BASE_URL + 'admin/getClientRecommendationReports', showLoading: true},
+  getRecommendationTypes: {url: BASE_URL + 'admin/getRecommendationTypes', showLoading: true},
+  getAnalyticsFirmsByClient: {url: BASE_URL + 'adminx/getAnalyticsFirmsByClient', showLoading: true},
+  getPracticeAreaListByClientAdmin: {url: BASE_URL + 'admin/getPracticeAreaListByClient', showLoading: true},
+  getAdminFirmStats: {url: BASE_URL + 'admin/getFirmStats', showLoading: true},
+  getFirmStaffing: {url: BASE_URL + 'admin/getFirmStaffing', showLoading: true},
+  getPracticeAreasByFirm: {url: BASE_URL + 'admin/getPracticeAreasByFirm', showLoading: true},
+  saveRecommendationReport: {url: BASE_URL + 'admin/recommendation-report', showLoading: true},
 
 };
 

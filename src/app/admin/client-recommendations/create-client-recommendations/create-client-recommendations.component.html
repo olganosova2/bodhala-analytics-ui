@@ -1,0 +1,23 @@
+<div class="panel-wrapper mt20 ml10 mr10 mb20">
+  <h4>Create Client Recommendation Report</h4>
+  <mat-form-field appearance="outline" class="half-width">
+    <input type="text" matInput [(ngModel)]="newReport.title"  placeholder="Report Title" required
+           maxlength="255" name="reportTitle">
+  </mat-form-field>
+  <div class="pull-right mb20">
+    <button class="primary-button mr5" (click)="addRec()">Add Recommendation</button>
+    <button class="primary-button mr5" (click)="save()" [disabled]="!validSave || newReport.title.length === 0 || newReport.recommendations.length === 0">Save</button>
+    <button class="primary-button" [routerLink]="'/analytics-ui/admin/client-recommendations'" style="background-color: #dedede; color: #2e373c;">Cancel</button>
+  </div>
+
+  <div *ngFor="let rec of newReport.recommendations; let i = index">
+    <bd-add-edit-recommendation [recommendationTypes]="recommendationTypes" [firmOptions]="firmOptions" [index]="i" [clientPracticeAreaSetting]="clientPracticeAreaSetting"
+                                [paOptions]="paOptions" [paGroupOptions]="paGroupOptions" [clientPracticeAreaSetting]="clientPracticeAreaSetting"
+                                [selectedClientId]="selectedClientId" [newReport]="newReport" (typeSelected)="updateSave($event)">
+    </bd-add-edit-recommendation>
+  </div>
+
+</div>
+
+
+

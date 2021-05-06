@@ -1,0 +1,33 @@
+<div>
+  <h4>Manage Client Recommendations</h4>
+  <!-- <i class="fa fa-info-circle pointer-hand ml5" (click)="openHelp()"></i> -->
+
+  <div>
+    <div class="mb10 mt10">
+      Please select a client:
+    </div>
+    <bd-client-drop-down (clientSelected)="loadRecommendationReports($event)"></bd-client-drop-down>
+    <!-- <lib-bd-annotations *ngIf="selectedClient" (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations> -->
+  </div>
+
+  <div *ngIf="selectedClient">
+    <div class="pull-right mb20">
+        <button class="primary-button" (click)="addNew()">Add New +</button>
+    </div>
+    <div class="clear-both"></div>
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%;"
+      [ngStyle]="{'height': agGridService.setGridHeight(clientRecommendationReports, paginationPageSize) +'px'}"
+      class="ag-theme-alpine"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [sideBar]="sideBarConfig"
+      (displayedColumnsChanged)="saveGridConfig($event)"
+      (sortChanged)="saveGridConfig($event);"
+      (columnResized)="saveGridConfig($event);"
+      [suppressAggFuncInHeader]="true"
+      [gridOptions]="gridOptions">
+  </ag-grid-angular>
+  </div>
+</div>

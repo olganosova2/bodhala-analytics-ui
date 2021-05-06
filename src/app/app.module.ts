@@ -51,6 +51,7 @@ import {appRouterConfig} from './app.routes';
 import { InjectionToken } from '@angular/core';
 import { QuillModule } from 'ngx-quill';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { MatStepperModule } from '@angular/material/stepper';
 
 
 import {SliderModule} from 'primeng/slider';
@@ -128,6 +129,9 @@ import { AddEditConfigComponent } from './admin/client-configs/add-edit-config/a
 import {AceEditorModule} from 'ng2-ace-editor';
 import { FirmDiscountsComponent } from './firm/firm-discounts/firm-discounts.component';
 import { CirpMatterSummaryComponent } from './matters/cirp-matter-summary/cirp-matter-summary.component';
+import { ClientRecommendationsComponent } from './admin/client-recommendations/client-recommendations.component';
+import { CreateClientRecommendationsComponent } from './admin/client-recommendations/create-client-recommendations/create-client-recommendations.component';
+import { AddEditRecommendationComponent } from './admin/client-recommendations/create-client-recommendations/add-edit-recommendation/add-edit-recommendation.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -206,7 +210,10 @@ export function initHttp(service: HttpService) {
     ClientConfigsComponent,
     AddEditConfigComponent,
     FirmDiscountsComponent,
-    CirpMatterSummaryComponent
+    CirpMatterSummaryComponent,
+    ClientRecommendationsComponent,
+    CreateClientRecommendationsComponent,
+    AddEditRecommendationComponent
   ],
   entryComponents: [
     PillComponent,
@@ -234,6 +241,7 @@ export function initHttp(service: HttpService) {
     MatFormFieldModule,
     MatGridListModule,
     MatSelectModule,
+    MatStepperModule,
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,

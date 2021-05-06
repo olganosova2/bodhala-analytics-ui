@@ -17,6 +17,8 @@ import {RateIncreaseComponent} from './admin/rate-increase/rate-increase.compone
 import {PastSavingsComponent} from './savings-calculator/past-savings/past-savings.component';
 import {ClientConfigsComponent} from './admin/client-configs/client-configs.component';
 import {CirpMatterSummaryComponent} from './matters/cirp-matter-summary/cirp-matter-summary.component';
+import {ClientRecommendationsComponent} from './admin/client-recommendations/client-recommendations.component';
+import {CreateClientRecommendationsComponent} from './admin/client-recommendations/create-client-recommendations/create-client-recommendations.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -50,6 +52,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/benchmark-add', component: AddEditBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/rate-increase', component: RateIncreaseComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/client-configs', component: ClientConfigsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/client-recommendations', component: ClientRecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/client-recommendations/new/:clientId', component: CreateClientRecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   // ClientConfigsComponent,
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];
