@@ -1,0 +1,41 @@
+<div>
+  <div class="mb15 text-right">
+    <a href="/cirp"><span class="href-link-primary">Back to Reviews</span></a>
+  </div>
+  <div class="cirp-panel-wrapper p-grid ml5" *ngIf="matterSummary">
+    <div class="p-col-4 text-center">
+      <div>Total Spend</div>
+      <div class="summary-table-title">${{totalSpend | number:'1.0-0'}}</div>
+    </div>
+    <div class="p-col-4 text-center">
+      <div>Start Date</div>
+      <div class="summary-table-title">{{matterSummary.line_item_date | date:'mediumDate' }}</div>
+      <div>{{ matterSummary.daysSince}} days</div>
+    </div>
+    <div class="p-col-4 text-center">
+      <div *ngIf="practiceAreaType === 'Smart Practice Areas'">
+        <div >Smart Practice Area</div>
+        <div class="summary-table-title">{{matterSummary.smart_pa }}</div>
+      </div>
+      <div *ngIf="practiceAreaType !== 'Smart Practice Areas'">
+        <div>Client Practice Area</div>
+        <div class="summary-table-title">{{matterSummary.client_matter_type }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel-wrapper mt15 ml5">
+    <h5>Top Time Keepers</h5>
+    <table class="full-width">
+      <tr class="table-row font-bold"><td>Name</td><td>Total Spend</td><td>% of Spend</td><td>Classification</td><td>Specialty</td></tr>
+      <tr *ngFor="let tk of timekeepers" class="table-row">
+        <td>{{tk.name}}</td>
+        <td>${{tk.total_billed | number:'1.0-0'}}</td>
+        <td>{{ tk.spend_percent | number:'1.2-2'}}%</td>
+        <td>{{tk.seniority}}</td>
+        <td>
+          <div *ngFor="let spec of tk.specialty;let i=$index;" [ngClass]="{'font-bold': spec.is_primary && tk.specialty.length > 1}">{{spec.value}}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

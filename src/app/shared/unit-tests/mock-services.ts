@@ -22,6 +22,7 @@ import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
 import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
 import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
 import {MOCK_SMART_PAS} from './mock-data/discounts';
+import {MOCK_CIRP_SUMMARY} from './mock-data/cirp-matter-summary';
 
 export const ngWindow = {
   location: {
@@ -198,6 +199,8 @@ export class DataStub {
         return of(MOCK_SAMPLE_CONFIGS);
       case 'getDiscountsByClientPAs':
         return of(MOCK_SMART_PAS);
+      case 'getCirpMatterSummary':
+        return of(MOCK_CIRP_SUMMARY);
       default:
         return of([]);
     }

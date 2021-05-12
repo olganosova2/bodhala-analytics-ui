@@ -75,9 +75,9 @@ export class AppComponent implements OnDestroy {
 
     this.resetIdle();
 
-    this.saveInterval = setInterval(() => {
-      this.keepAlive();
-    }, KEEP_ALIVE_SEC);
+    // this.saveInterval = setInterval(() => {
+    //   this.keepAlive();
+    // }, KEEP_ALIVE_SEC);
 
   }
   resetIdle() {
