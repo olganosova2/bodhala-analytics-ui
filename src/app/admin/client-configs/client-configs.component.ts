@@ -55,9 +55,9 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn},
-      {headerName: 'Name', field: 'name', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: 'Name', field: 'name', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1},
       {headerName: 'Description', field: 'description', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'Value', field: 'value', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: 'Value', field: 'value', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1},
       {headerName: 'Edit', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)},
       {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.openDeleteDialog.bind(this)},
     ];

@@ -23,6 +23,7 @@ import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
 import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
 import {MOCK_SMART_PAS} from './mock-data/discounts';
 import {MOCK_CIRP_SUMMARY} from './mock-data/cirp-matter-summary';
+import {MOCK_WORK_DISTRIBUTION} from './mock-data/work-distribution';
 
 export const ngWindow = {
   location: {
@@ -201,6 +202,8 @@ export class DataStub {
         return of(MOCK_SMART_PAS);
       case 'getCirpMatterSummary':
         return of(MOCK_CIRP_SUMMARY);
+      case 'getTkWorkDistribution':
+        return of(MOCK_WORK_DISTRIBUTION);
       default:
         return of([]);
     }

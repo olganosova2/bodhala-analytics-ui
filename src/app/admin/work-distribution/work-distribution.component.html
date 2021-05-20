@@ -1,0 +1,22 @@
+<div>
+  <h4>Average Work Distribution
+  </h4>
+  <div>
+    <div class="mb10 mt10">Please select a client:</div>
+    <bd-client-drop-down (clientSelected)="loadClient($event)"></bd-client-drop-down>
+  </div>
+  <div *ngIf="selectedClient">
+    <ag-grid-angular
+        #agGrid
+        style="width: 100%;"
+        [ngStyle]="{'height': agGridService.setGridHeight(workRecords, 12) +'px'}"
+        class="ag-theme-alpine"
+        [sideBar]="sideBarConfig"
+        (displayedColumnsChanged)="saveGridConfig($event)"
+        (sortChanged)="saveGridConfig($event);"
+        (columnResized)="saveGridConfig($event);"
+        [suppressAggFuncInHeader]="true"
+        [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </div>
+</div>

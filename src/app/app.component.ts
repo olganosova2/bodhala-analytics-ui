@@ -32,7 +32,7 @@ export class AppComponent implements OnDestroy {
   errorMessage: any;
   private saveInterval: any;
   ieVersion: string = '';
-  @ViewChild(LeftSideBarComponent) leftSidenav: TopTimekeepersComponent;
+  @ViewChild(LeftSideBarComponent) leftSidenav: LeftSideBarComponent;
 
   constructor(public router: Router,
               private location: Location,

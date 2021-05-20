@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
+import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {CommonService} from '../../shared/services/common.service';
@@ -32,6 +32,7 @@ export class CirpMatterSummaryComponent implements OnInit {
               public filtersService: FiltersService,
               public userService: UserService,
               public dialog: MatDialog,
+              public utilService: UtilService,
               public commonServ: CommonService) {
     this.commonServ.pageTitle = 'Cirp Matter Summary';
   }
@@ -40,7 +41,10 @@ export class CirpMatterSummaryComponent implements OnInit {
     this.route.queryParams
       .subscribe(params => {
         this.matterId = decodeURIComponent(params.id);
-        this.matterName = decodeURIComponent(params.matter);
+        const matterName = params.matter;
+        if (matterName && matterName !== undefined) {
+          this.matterName = decodeURIComponent(matterName);
+        }
         if (this.matterId) {
           this.initConfig();
           this.loadSummary();
@@ -69,12 +73,14 @@ export class CirpMatterSummaryComponent implements OnInit {
       (data: any) => {
         if (data.result && data.result.matter_summary.length > 0) {
           const records = data.result.matter_summary;
+          let matter = Object.assign({}, data.result.matter_summary[0]);
           if (this.matterName && records.length > 1) {
-            const matter = records.find(e => e.matter_name === this.matterName);
-            this.matterSummary = Object.assign({}, matter);
-          } else {
-            this.matterSummary = Object.assign({}, data.result.matter_summary[0]);
+            matter = records.find(e => e.matter_name === this.matterName);
           }
+          if (matter) {
+            this.matterSummary = Object.assign({}, matter);
+          }
+          this.calculateTotals(records);
           this.processMatterSummary();
         }
         if (data.result && data.result.timekeepers.length > 0) {
@@ -87,10 +93,15 @@ export class CirpMatterSummaryComponent implements OnInit {
       }
     );
   }
-
+  calculateTotals(records: Array<ICirpMatterSummary>): void {
+    let total = 0;
+    for (const rec of records) {
+      total += rec.total;
+    }
+    this.totalSpend = total;
+  }
   processMatterSummary(): void {
-    this.commonServ.pageSubtitle = this.matterSummary.matter_name;
-    this.totalSpend = this.matterSummary.total;
+    this.commonServ.pageSubtitle = this.matterName;
     const start = moment(this.matterSummary.line_item_date);
     const end = moment();
     this.matterSummary.daysSince = (end.diff(start, 'days')).toString();
