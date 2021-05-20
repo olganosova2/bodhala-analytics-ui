@@ -90,7 +90,7 @@ export class WorkDistributionComponent implements OnInit, OnDestroy {
   }
   saveGridConfig(evt: any): void {
     const state = evt;
-    // this.agGridService.saveState('ClientConfigsGrid', this.gridOptions); TODO
+    this.agGridService.saveState('ClientConfigsGrid', this.gridOptions);
   }
 
   ngOnDestroy() {
