@@ -1,0 +1,56 @@
+.footer-div {
+  font-size: 22px;
+  text-align: center;
+  font-family: 'Sharp Sans';
+}
+
+.logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rec {
+  padding-top: 1em;
+}
+
+th {
+  border: 1px solid black;
+  padding: 4px;
+  background: #cccccc;
+}
+
+td {
+  border: 1px solid black;
+  padding: 4px;
+}
+
+table {
+  margin: auto;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+
+.flex-container {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 40px;
+  .info-block {
+    text-align: center;
+    flex-grow: 1;
+    background: #fafafa;
+    padding: 30px;
+    margin: 0 10px;
+  }
+}
+
+.rec-details{
+  display: flex;
+  .main {
+    width: 100%;
+    margin-right: 40px;
+    margin-left: 40px;
+  }
+}

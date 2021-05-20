@@ -1,13 +1,10 @@
 <div>
   <h4>Manage Client Recommendations</h4>
-  <!-- <i class="fa fa-info-circle pointer-hand ml5" (click)="openHelp()"></i> -->
-
   <div>
     <div class="mb10 mt10">
       Please select a client:
     </div>
     <bd-client-drop-down (clientSelected)="loadRecommendationReports($event)"></bd-client-drop-down>
-    <!-- <lib-bd-annotations *ngIf="selectedClient" (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations> -->
   </div>
 
   <div *ngIf="selectedClient">

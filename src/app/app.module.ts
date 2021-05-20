@@ -132,6 +132,9 @@ import { CirpMatterSummaryComponent } from './matters/cirp-matter-summary/cirp-m
 import { ClientRecommendationsComponent } from './admin/client-recommendations/client-recommendations.component';
 import { CreateClientRecommendationsComponent } from './admin/client-recommendations/create-client-recommendations/create-client-recommendations.component';
 import { AddEditRecommendationComponent } from './admin/client-recommendations/create-client-recommendations/add-edit-recommendation/add-edit-recommendation.component';
+import { ViewClientRecommendationComponent } from './admin/client-recommendations/view-client-recommendation/view-client-recommendation.component';
+import { RecommendationsComponent } from './recommendations/recommendations.component';
+import { ViewRecommendationsComponent } from './recommendations/view-recommendations/view-recommendations.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -213,7 +216,10 @@ export function initHttp(service: HttpService) {
     CirpMatterSummaryComponent,
     ClientRecommendationsComponent,
     CreateClientRecommendationsComponent,
-    AddEditRecommendationComponent
+    AddEditRecommendationComponent,
+    ViewClientRecommendationComponent,
+    RecommendationsComponent,
+    ViewRecommendationsComponent
   ],
   entryComponents: [
     PillComponent,

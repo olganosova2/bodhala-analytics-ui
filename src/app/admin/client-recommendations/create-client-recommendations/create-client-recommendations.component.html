@@ -1,22 +1,34 @@
 <div class="panel-wrapper mt20 ml10 mr10 mb20">
-  <h4>Create Client Recommendation Report</h4>
-  <mat-form-field appearance="outline" class="half-width">
+  <h4 *ngIf="!editMode">Create Client Recommendation Report</h4>
+  <h4 *ngIf="editMode">Edit Client Recommendation Report</h4>
+
+  <mat-form-field appearance="outline" class="half-width" *ngIf="newReport">
     <input type="text" matInput [(ngModel)]="newReport.title"  placeholder="Report Title" required
            maxlength="255" name="reportTitle">
   </mat-form-field>
+
   <div class="pull-right mb20">
     <button class="primary-button mr5" (click)="addRec()">Add Recommendation</button>
-    <button class="primary-button mr5" (click)="save()" [disabled]="!validSave || newReport.title.length === 0 || newReport.recommendations.length === 0">Save</button>
+    <button *ngIf="!editMode" class="primary-button mr5" (click)="openModal()" [disabled]="!validSave || newReport.title.length === 0 || newReport.recommendations.length === 0">Create Report</button>
+    <button *ngIf="editMode" class="primary-button mr5" (click)="openModal()" [disabled]="!validSave || newReport.title.length === 0 || newReport.recommendations.length === 0">Update Report</button>
     <button class="primary-button" [routerLink]="'/analytics-ui/admin/client-recommendations'" style="background-color: #dedede; color: #2e373c;">Cancel</button>
   </div>
 
-  <div *ngFor="let rec of newReport.recommendations; let i = index">
-    <bd-add-edit-recommendation [recommendationTypes]="recommendationTypes" [firmOptions]="firmOptions" [index]="i" [clientPracticeAreaSetting]="clientPracticeAreaSetting"
-                                [paOptions]="paOptions" [paGroupOptions]="paGroupOptions" [clientPracticeAreaSetting]="clientPracticeAreaSetting"
-                                [selectedClientId]="selectedClientId" [newReport]="newReport" (typeSelected)="updateSave($event)">
-    </bd-add-edit-recommendation>
-  </div>
+  <div *ngIf="newReport">
 
+    <mat-tab-group animationDuration="0ms" [selectedIndex]="step">
+      <mat-tab *ngFor="let rec of newReport.recommendations; let i = index; let last = last; let first = first;"
+      label="{{i + 1}} - {{rec.selected_type}}" class="rate-panel" (opened)="setStep(i)" style="background: white !important">
+
+      <bd-add-edit-recommendation [recommendationTypes]="recommendationTypes" [firmOptions]="firmOptions" [index]="i" [clientPracticeAreaSetting]="clientPracticeAreaSetting"
+        [paOptions]="paOptions" [paGroupOptions]="paGroupOptions" [clientPracticeAreaSetting]="clientPracticeAreaSetting"
+        [selectedClientId]="selectedClientId" [newReport]="newReport" (typeSelected)="updateSave($event)" [editMode]="editMode">
+      </bd-add-edit-recommendation>
+
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
 </div>
 
 
