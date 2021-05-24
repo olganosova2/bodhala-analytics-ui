@@ -202,7 +202,7 @@
           </tr>
         </table>
       </div>
-      <div *ngIf="firmStaffingData.length === 0">
+      <div *ngIf="firmStaffingData === undefined || firmStaffingData === null">
         No data for this firm in this calendar year or in the last full year of data
       </div>
       <form [formGroup]="staffingForm">
@@ -263,7 +263,7 @@
           </tr>
         </table>
       </div>
-      <div *ngIf="firmStaffingData.length === 0">
+      <div *ngIf="firmStaffingData === undefined || firmStaffingData === null">
         No data for this firm in this calendar year or in the last full year of data
       </div>
 
@@ -528,7 +528,7 @@
         <ng-template matStepLabel>Select a practice area</ng-template>
         <mat-form-field>
           <mat-select formControlName="practiceArea" required (selectionChange)="getFirmsByPracticeArea()">
-            <mat-option *ngFor="let pa of firmPracticeAreas" [value]="pa.value">{{pa.label}}</mat-option>
+            <mat-option *ngFor="let pa of paOptions" [value]="pa.value">{{pa.label}}</mat-option>
           </mat-select>
         </mat-form-field>
         <div>

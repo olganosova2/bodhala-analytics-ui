@@ -3,7 +3,7 @@ import {CommonService} from '../../../../shared/services/common.service';
 import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {RecommendationService} from '../../recommendation.service'
+import {RecommendationService} from '../../recommendation.service';
 import {IRecommendationReport, IRecommendation} from '../../client-recommendations-model';
 import {Subscription} from 'rxjs';
 import * as config from '../../../../shared/services/config';
@@ -172,16 +172,11 @@ export class AddEditRecommendationComponent implements OnInit {
 
   ngOnInit(): void {
     this.newRecommendation = this.newReport.recommendations[this.index];
-
-    console.log("newRecommendation : ", this.newRecommendation);
-    console.log("PAs : ", this.paOptions, this.paGroupOptions);
-    console.log("firms : ", this.firmOptions);
     if (this.newRecommendation.id) {
       const filteredType = this.recommendationTypes.filter(type => type.value === this.newRecommendation.type_id);
       if (filteredType.length > 0) {
         this.selectedType = filteredType[0].label;
       }
-      console.log("selected Type of saved rec: ", this.selectedType)
       this.typeForm.patchValue({
         typeId: this.newRecommendation.type_id
       });
@@ -281,7 +276,6 @@ export class AddEditRecommendationComponent implements OnInit {
     });
 
     this.blockBillingForm.statusChanges.subscribe(result => {
-      console.log("bbForm status change: ", result, this.blockBillingForm)
       this.typeSelected.emit(result);
     });
     this.blockBillingForm.valueChanges.subscribe(data => {
@@ -306,13 +300,12 @@ export class AddEditRecommendationComponent implements OnInit {
           this.newRecommendation.is_smart_practice_area = true;
         }
       }
-      console.log("firm change data: ", data);
       this.newRecommendation.previous_firm_ids = data.previousFirms;
       this.newRecommendation.recommended_firm_ids = data.newFirms;
       this.newRecommendation.comment = data.comment;
       if (data.previousFirms) {
         this.previousFirmNames = [];
-        for (let previousFirm of data.previousFirms) {
+        for (const previousFirm of data.previousFirms) {
           const previousFirmName = this.firmPAOptions.filter(firm => firm.value === previousFirm);
           if (previousFirmName.length > 0) {
             this.previousFirmNames.push(previousFirmName[0].label);
@@ -321,7 +314,7 @@ export class AddEditRecommendationComponent implements OnInit {
       }
       if (data.newFirms) {
         this.newFirmNames = [];
-        for (let newFirm of data.newFirms) {
+        for (const newFirm of data.newFirms) {
           const newFirmName = this.firmPAOptions.filter(firm => firm.value === newFirm);
           if (newFirmName.length > 0) {
             this.newFirmNames.push(newFirmName[0].label);
@@ -334,7 +327,6 @@ export class AddEditRecommendationComponent implements OnInit {
       this.newRecommendation.type_id = data.typeId;
     });
 
-    console.log("clientPracticeAreaSetting: ", this.clientPracticeAreaSetting);
     if (this.clientPracticeAreaSetting === 'Client Practice Areas' || this.clientPracticeAreaSetting === undefined || this.clientPracticeAreaSetting === null) {
       this.newRecommendation.is_smart_practice_area = false;
     } else if (this.clientPracticeAreaSetting === 'Smart Practice Areas') {
@@ -383,11 +375,7 @@ export class AddEditRecommendationComponent implements OnInit {
     const filteredType = this.recommendationTypes.filter(type => type.value === evt.value);
     this.selectedType = filteredType[0].label;
     this.newRecommendation.selected_type = this.selectedType;
-    console.log("newRec: ", this.newRecommendation)
-    console.log("filteredType: ", filteredType)
-
     this.typeSelected.emit('VALID');
-    console.log("selectedType: ", this.selectedType)
   }
 
   getPracticeAreasByFirm(): void {
@@ -400,14 +388,11 @@ export class AddEditRecommendationComponent implements OnInit {
     if (filteredFirmName.length > 0) {
       this.selectedFirmName = filteredFirmName[0].label;
     }
-    console.log("firmSelection: ", this.selectedFirmName)
-    console.log("get firm PAs params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getPracticeAreasByFirm', params).subscribe(
       (data: any) => {
-        console.log("firm pas: ", data);
 
-        let bodhalaPracticeAreas = data.result.bodhala;
-        let clientPracticeAreas = data.result.clients;
+        const bodhalaPracticeAreas = data.result.bodhala;
+        const clientPracticeAreas = data.result.clients;
         this.paGroupOptions = [];
 
         if (data.result) {
@@ -417,14 +402,14 @@ export class AddEditRecommendationComponent implements OnInit {
               this.firmPracticeAreas.push({label: '-- None --', value: null});
             }
             for (const pa of clientPracticeAreas) {
-              this.firmPracticeAreas.push({label: pa['client_matter_type'], value: pa['client_matter_type']});
+              this.firmPracticeAreas.push({label: pa.client_matter_type, value: pa.client_matter_type});
             }
           } else if (this.clientPracticeAreaSetting === 'Smart Practice Areas') {
             if (this.selectedType !== 'Discount') {
               this.firmPracticeAreas.push({label: '-- None --', value: null});
             }
             for (const pa of bodhalaPracticeAreas) {
-              this.firmPracticeAreas.push({label: pa['client_matter_type'], value: pa['client_matter_type']});
+              this.firmPracticeAreas.push({label: pa.client_matter_type, value: pa.client_matter_type});
             }
           } else if (this.clientPracticeAreaSetting === 'Both') {
             this.paGroupOptions = [
@@ -443,23 +428,21 @@ export class AddEditRecommendationComponent implements OnInit {
                   this.firmPracticeAreas.push({label: '-- None --', value: null});
                 }
                 for (const practiceArea of bodhalaPracticeAreas) {
-                  group.items.push({label: practiceArea['client_matter_type'] + ' - [Smart]', value: practiceArea['client_matter_type'] + ' - [Smart]'});
+                  group.items.push({label: practiceArea.client_matter_type + ' - [Smart]', value: practiceArea.client_matter_type + ' - [Smart]'});
                 }
               }
               else if (group.label === 'Client Practice Areas') {
                 for (const practiceArea of clientPracticeAreas) {
-                  group.items.push({label: practiceArea['client_matter_type'], value: practiceArea['client_matter_type']});
+                  group.items.push({label: practiceArea.client_matter_type, value: practiceArea.client_matter_type});
                 }
               }
             }
           } else {
             this.firmPracticeAreas.push({label: '-- None --', value: null});
             for (const pa of clientPracticeAreas) {
-              this.firmPracticeAreas.push(pa['client_matter_type'])
+              this.firmPracticeAreas.push(pa.client_matter_type);
             }
           }
-
-          console.log("firmPracticeAreas: ", this.firmPracticeAreas)
         }
         if (this.selectedType === 'Reduce / Eliminate Block Billing') {
           this.getFirmBlockBillingData();
@@ -476,11 +459,13 @@ export class AddEditRecommendationComponent implements OnInit {
 
   async getFirmPAStats(evt: any): Promise<void> {
     const result = await this.recommendationService.getDiscountData(this.newRecommendation, this.selectedClientId, this.clientPracticeAreaSetting);
-    this.ytdFirmData = result['ytd'];
-    this.lastFullYearFirmData = result['prior_year'];
-    this.mostRecentYear = result['most_recent_year'];
+    this.ytdFirmData = result.ytd;
+    this.lastFullYearFirmData = result.prior_year;
+    this.mostRecentYear = result.most_recent_year;
     if (this.newRecommendation.id) {
       this.getDiscountSavings();
+    } else {
+      this.newRecommendation.year = this.mostRecentYear;
     }
   }
 
@@ -491,21 +476,25 @@ export class AddEditRecommendationComponent implements OnInit {
     }
     if (this.newRecommendation.id) {
       this.getStaffingAllocationSavings();
+    } else {
+      this.newRecommendation.year = this.mostRecentYear;
     }
   }
 
   async getFirmRateIncreaseData(): Promise<void> {
-    console.log("new rec in getFirmRateIncreaseData: ", this.newRecommendation)
     const firmParam = [];
     firmParam.push(this.newRecommendation.bh_lawfirm_id.toString());
     const paParam = [];
     const result = await this.recommendationService.getRateIncreaseData(this.newRecommendation, this.selectedClientId, this.clientPracticeAreaSetting);
-    this.firmRateIncreaseData = result['data'];
+    this.firmRateIncreaseData = result.data;
     if (this.firmRateIncreaseData.length > 0) {
       this.mostRecentYear = this.firmRateIncreaseData[0].year;
     }
-    this.rateIncreasePreventionSavings = result['savings'];
-    this.rateIncreasePreventionDetails = result['details'];
+    if (this.newRecommendation.id === null) {
+      this.newRecommendation.year = this.mostRecentYear + 1;
+    }
+    this.rateIncreasePreventionSavings = result.savings;
+    this.rateIncreasePreventionDetails = result.details;
   }
 
   getFirmsByPracticeArea(): void {
@@ -514,13 +503,11 @@ export class AddEditRecommendationComponent implements OnInit {
       practiceArea: this.newRecommendation.practice_area,
       paType: this.clientPracticeAreaSetting
     };
-    console.log("PA params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getFirmsByPracticeArea', params).subscribe(
       (data: any) => {
-        console.log("firmPAdata: ", data);
         if (data.result) {
           if (data.result.length > 0) {
-            for (let firm of data.result) {
+            for (const firm of data.result) {
               let tier;
               if (firm.tier) {
                 tier = firm.tier.toString();
@@ -528,26 +515,25 @@ export class AddEditRecommendationComponent implements OnInit {
                 tier = 'N/A';
               }
               firm.blended_rate = firm.blended_rate.toFixed(2);
-              this.firmPAOptions.push({label: firm.firm_name + ' (Tier: ' + tier + ', Blended Rate: $' + firm.blended_rate + ')', value: firm.bh_lawfirm_id})
+              this.firmPAOptions.push({label: firm.firm_name + ' (Tier: ' + tier + ', Blended Rate: $' + firm.blended_rate + ')', value: firm.bh_lawfirm_id});
             }
           }
         }
         if (this.selectedType === 'Rate Increase Prevention / Reduction') {
           this.getFirmRateIncreaseData();
         } else if (this.selectedType === 'Shift Work From Firm(s) to Firm(s)') {
-          console.log("firmChangeForm: ", this.firmChangeForm)
-          if (this.firmChangeForm.value.previousFirms) {
+          if (this.newRecommendation.previous_firm_ids) {
             this.previousFirmNames = [];
-            for (let previousFirm of this.firmChangeForm.value.previousFirms) {
+            for (const previousFirm of this.newRecommendation.previous_firm_ids) {
               const previousFirmName = this.firmPAOptions.filter(firm => firm.value === previousFirm);
               if (previousFirmName.length > 0) {
                 this.previousFirmNames.push(previousFirmName[0].label);
               }
             }
           }
-          if (this.firmChangeForm.value.newFirms) {
+          if (this.newRecommendation.recommended_firm_ids) {
             this.newFirmNames = [];
-            for (let newFirm of this.firmChangeForm.value.newFirms) {
+            for (const newFirm of this.newRecommendation.recommended_firm_ids) {
               const newFirmName = this.firmPAOptions.filter(firm => firm.value === newFirm);
               if (newFirmName.length > 0) {
                 this.newFirmNames.push(newFirmName[0].label);
@@ -555,7 +541,6 @@ export class AddEditRecommendationComponent implements OnInit {
             }
           }
         }
-        console.log("this.firmPAOptions: ", this.firmPAOptions);
       },
       err => {
         this.errorMessage = err;
@@ -570,45 +555,44 @@ export class AddEditRecommendationComponent implements OnInit {
     }
     if (this.newRecommendation.id) {
       this.getBlockBillingSavings();
+    } else {
+      this.newRecommendation.year = this.mostRecentYear;
     }
   }
 
   getDiscountSavings(): void {
     const result = this.recommendationService.calcDiscountSavings(this.lastFullYearFirmData, this.newRecommendation);
-    this.estimatedSpendWithOldDisc = result['estimated_spend_with_old_disc'];
-    this.estimatedSpendWithRecommendedDiscLower = result['estimated_spend_with_rec_disc_lower'];
-    this.estimatedSpendWithRecommendedDiscUpper = result['estimated_spend_with_rec_disc_upper'];
-    this.differenceInSpendLower = result['diff_in_spend_lower'];
-    this.differenceInSpendUpper = result['diff_in_spend_upper'];
+    this.estimatedSpendWithOldDisc = result.estimated_spend_with_old_disc;
+    this.estimatedSpendWithRecommendedDiscLower = result.estimated_spend_with_rec_disc_lower;
+    this.estimatedSpendWithRecommendedDiscUpper = result.estimated_spend_with_rec_disc_upper;
+    this.differenceInSpendLower = result.diff_in_spend_lower;
+    this.differenceInSpendUpper = result.diff_in_spend_upper;
   }
 
   getStaffingAllocationSavings(): void {
     const result = this.recommendationService.calcStaffingAllocationSavings(this.firmStaffingData, this.newRecommendation, this.mostRecentYear);
-    this.estimatedSpendWithOldStaffing = result['estimated_spend_with_old_staffing'];
-    this.estimatedSpendWithNewStaffing = result['estimated_spend_with_rec_staffing'];
-    this.differenceInSpend = result['diff_in_spend'];
+    this.estimatedSpendWithOldStaffing = result.estimated_spend_with_old_staffing;
+    this.estimatedSpendWithNewStaffing = result.estimated_spend_with_rec_staffing;
+    this.differenceInSpend = result.diff_in_spend;
   }
 
   getBlockBillingSavings(): void {
     const result = this.recommendationService.calcBlockBillingSavings(this.firmBlockBillingData, this.newRecommendation, this.mostRecentYear);
-    this.unacceptableBlockBillingAmount = result['unacceptable_bb_amount'];
-    this.estimatedBlockBillingSavings = result['estimated_bb_savings'];
+    this.unacceptableBlockBillingAmount = result.unacceptable_bb_amount;
+    this.estimatedBlockBillingSavings = result.estimated_bb_savings;
   }
 
   calcRateIncreasePreventionSavings(): void {
-    const rateIncreaseData = this.recommendationService.calculateRateIncreaseSavingsForFirm(this.firmRateIncreaseData, this.mostRecentYear, this.newRecommendation.desired_rate_increase_pct);
-    this.rateIncreasePreventionSavings = rateIncreaseData['savings'];
-    this.rateIncreasePreventionDetails = rateIncreaseData['classificationData'];
+    const result = this.recommendationService.calculateRateIncreaseSavingsForFirm(this.firmRateIncreaseData, this.mostRecentYear, this.newRecommendation.desired_rate_increase_pct);
+    this.rateIncreasePreventionSavings = result.savings;
+    this.rateIncreasePreventionDetails = result.classificationData;
   }
 
   deleteRecommendation(): void {
-    console.log("deleteevt: ", this.newRecommendation, this.index);
     if (this.newRecommendation.id) {
-      this.openDeleteDialog()
+      this.openDeleteDialog();
     } else {
-      // this.newReport.recommendations.pop();
       this.newReport.recommendations.splice(this.index, 1);
-      console.log("newReport: ", this.newReport)
       if (this.newReport.recommendations.length === 0) {
         this.typeSelected.emit('INVALID');
       }
@@ -625,8 +609,6 @@ export class AddEditRecommendationComponent implements OnInit {
           if (this.newReport.recommendations.length === 0) {
             this.typeSelected.emit('INVALID');
           }
-          // not able to save here until they update a pre-existing rec, but if we emit a VALID for the opposite case,
-          // possiblity of a save w/o all fields
         }
       },
       err => {

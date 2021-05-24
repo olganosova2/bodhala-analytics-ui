@@ -1,6 +1,6 @@
 export interface IRecommendationReport {
   id: number;
-  bh_client_id: number
+  bh_client_id: number;
   title: string;
   recommendations: IRecommendation[];
   created_on: string;

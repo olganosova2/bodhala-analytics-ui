@@ -78,7 +78,7 @@ export class ClientRecommendationsComponent implements OnInit {
         this.clientRecommendationReports = this.clientRecommendationReports.filter(report => report.deleted_on === null);
         this.clientRecommendationReports = this.clientRecommendationReports.sort(this.utilService.dynamicSort('-created_on'));
         const pipe = new DatePipe('en-US');
-        for (let report of this.clientRecommendationReports) {
+        for (const report of this.clientRecommendationReports) {
           report.created_on = pipe.transform(report.created_on, 'shortDate');
         }
         this.loadGrid();

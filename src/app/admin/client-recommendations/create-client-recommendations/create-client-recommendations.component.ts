@@ -63,14 +63,9 @@ export class CreateClientRecommendationsComponent implements OnInit {
     this.recommendationTypes = [];
     this.firmOptions = [];
     this.paOptions = [];
-
-    console.log("CONSTRUCTOR: ", this.selectedClientId, this.selectedOrgId, this.reportId);
-    console.log("paOptions: ", this.paOptions);
   }
 
   async ngOnInit(): Promise<void> {
-    console.log("selectedOrgId: ", this.selectedOrgId)
-    console.log("reportId: ", this.reportId)
     this.recommendationTypes = await this.recommendationService.getRecommendationTypes();
     this.firmOptions = await this.recommendationService.getFirms(this.selectedClientId);
 
@@ -79,7 +74,7 @@ export class CreateClientRecommendationsComponent implements OnInit {
       this.newReport = this.constructNewReport();
     } else {
       this.newReport = await this.recommendationService.getReport(this.reportId);
-      for (let rec of this.newReport.recommendations) {
+      for (const rec of this.newReport.recommendations) {
         const selectedType = this.recommendationTypes.filter(type => type.value === rec.type_id);
         if (selectedType.length > 0) {
           rec.selected_type = selectedType[0].label;
@@ -87,21 +82,7 @@ export class CreateClientRecommendationsComponent implements OnInit {
       }
     }
 
-    this.getOrgPracticeAreaSetting();
-
-    if (this.selectedOrgId) {
-      if ('analytics.practice.bodhala.areas' in this.userService.config) {
-        const userConfigs = Object.values(this.userService.config);
-        for (const config of userConfigs) {
-          if (config.configs[0].description === 'config for analytics practice areas') {
-            this.clientPracticeAreaSetting = config.configs[0].value;
-            break;
-          }
-        }
-      }
-    }
-
-    console.log("neReport", this.newReport);
+    this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
   }
 
   constructNewReport(): IRecommendationReport {
@@ -119,38 +100,18 @@ export class CreateClientRecommendationsComponent implements OnInit {
     };
   }
 
-  getOrgPracticeAreaSetting(): void {
-    const params = {id: this.selectedOrgId};
-    this.pendingRequest = this.httpService.makeGetRequest('getOrgPracticeAreaSetting', params).subscribe(
-      (data: any) => {
-        console.log("data: ", data);
-        if (data.result) {
-          if (data.result.enabled) {
-            this.clientPracticeAreaSetting = data.result.enabled.value;
-          } else {
-            this.clientPracticeAreaSetting = 'Client Practice Areas';
-          }
-        }
-      },
-      err => {
-        this.errorMessage = err;
-      }
-    );
-  }
-
   getClientPracticeAreas(): void {
     const params = {clientId: this.selectedClientId};
     this.pendingRequest = this.httpService.makeGetRequest('getPracticeAreaListByClientAdmin', params).subscribe(
       (data: any) => {
-        console.log("getClientPracticeAreas: ", data);
         if (!data.result) {
           return;
         }
 
         let practiceAreasList = [];
 
-        let bodhalaPracticeAreas = data.result.bodhala;
-        let clientPracticeAreas = data.result.clients;
+        const bodhalaPracticeAreas = data.result.bodhala;
+        const clientPracticeAreas = data.result.clients;
 
         if (this.clientPracticeAreaSetting === 'Client Practice Areas' || this.clientPracticeAreaSetting === undefined || this.clientPracticeAreaSetting === null) {
           practiceAreasList = clientPracticeAreas;
@@ -158,8 +119,8 @@ export class CreateClientRecommendationsComponent implements OnInit {
         } else if (this.clientPracticeAreaSetting === 'Smart Practice Areas') {
           bodhalaPracticeAreas.sort();
           const newList = [];
-          for (let practiceArea of bodhalaPracticeAreas) {
-            practiceArea = practiceArea + ' - [Smart]';
+          for (const practiceArea of bodhalaPracticeAreas) {
+            // practiceArea = practiceArea + ' - [Smart]';
             newList.push(practiceArea);
           }
           practiceAreasList = newList;
@@ -202,12 +163,9 @@ export class CreateClientRecommendationsComponent implements OnInit {
 
   save(): void {
     const payload = this.newReport;
-    console.log("saving: ", payload);
     this.pendingRequest = this.httpService.makePostRequest('saveRecommendationReport', payload).subscribe(
       (data: any) => {
-        console.log("data: ", data);
         this.newReport = data.result;
-        console.log("newReport: ", this.newReport);
         if (this.newReport) {
           this.router.navigate(['/analytics-ui/admin/client-recommendations/view/', this.newReport.id], {queryParams: {
             clientId: this.selectedClientId,
@@ -222,7 +180,7 @@ export class CreateClientRecommendationsComponent implements OnInit {
   }
 
   addRec(): void {
-    let newRec = {
+    const newRec = {
       id: null,
       report_id: null,
       type_id: null,
@@ -258,13 +216,10 @@ export class CreateClientRecommendationsComponent implements OnInit {
     };
     this.newReport.recommendations.push(newRec);
     this.updateSave('INVALID');
-    console.log('setting step: ', this.newReport.recommendations, this.newReport.recommendations.length);
     this.setStep(this.newReport.recommendations.length - 1);
-
   }
 
   updateSave(event: any): void {
-    console.log("updateSave: ", event);
     if (this.newReport.recommendations.length > 0) {
       const recommendationsWithoutType = this.newReport.recommendations.filter(rec => rec.type_id === null);
 
@@ -273,13 +228,9 @@ export class CreateClientRecommendationsComponent implements OnInit {
       } else {
         this.validSave = false;
       }
-      console.log("recommendationsWithoutType: ", recommendationsWithoutType);
     } else {
       this.validSave = false;
     }
-    console.log("reportInParent: ", this.newReport);
-    // console.log("Valid?: ", this.validSave)
-
   }
 
   openModal(): void {
@@ -290,7 +241,7 @@ export class CreateClientRecommendationsComponent implements OnInit {
       modalText = 'Update report, ' + this.newReport.title + '? The updated report will be visible by the client immediately upon saving';
     } else {
       modalTitle = 'Confirm Report Creation';
-      modalText = 'Create report, ' + this.newReport.title + '? The report will be viewable to clients immediately upon creation.'
+      modalText = 'Create report, ' + this.newReport.title + '? The report will be viewable to clients immediately upon creation.';
     }
     const modalConfig = {...confirmDialogConfig, data: {title: modalTitle, text: modalText}};
 

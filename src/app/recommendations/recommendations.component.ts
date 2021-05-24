@@ -52,7 +52,6 @@ ngOnInit(): void {
   this.sideBarConfig = this.agGridService.getDefaultSideBar();
   this.savedState = this.agGridService.getSavedState('ClientConfigsGrid');
   this.gridOptions = this.agGridService.getDefaultGridOptions();
-  console.log("userService: ", this.userService);
   this.initColumns();
   this.getClientRecommendationReports();
 }
@@ -75,12 +74,11 @@ initColumns(): void {
     const params = { clientId: this.userService.currentUser.client_info_id };
     this.pendingRequest = this.httpService.makeGetRequest('getClientRecommendationReports', params).subscribe(
       (data: any) => {
-        console.log("data: ", data);
         this.recommendationReports = data.result || [];
         // this.recommendationReports = this.recommendationReports.filter(report => report.deleted_on === null);
         this.recommendationReports = this.recommendationReports.sort(this.utilService.dynamicSort('-created_on'));
         const pipe = new DatePipe('en-US');
-        for (let report of this.recommendationReports) {
+        for (const report of this.recommendationReports) {
           report.created_on = pipe.transform(report.created_on, 'shortDate');
         }
         this.loadGrid();

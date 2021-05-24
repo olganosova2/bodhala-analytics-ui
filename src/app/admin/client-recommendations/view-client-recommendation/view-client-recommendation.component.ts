@@ -80,7 +80,7 @@ export class ViewClientRecommendationComponent implements OnInit {
       this.selectedOrgId = Number(params.orgId);
       this.selectedClientId = Number(params.clientId);
     });
-
+    this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
     this.recommendationTypes = await this.recommendationService.getRecommendationTypes();
     this.firmOptions = await this.recommendationService.getFirms(this.selectedClientId);
     this.report = await this.recommendationService.getReport(this.reportId);
@@ -88,24 +88,31 @@ export class ViewClientRecommendationComponent implements OnInit {
   }
 
   processRecommendations(): void {
-    for (let recommendation of this.report.recommendations) {
-      console.log("rec: ", recommendation);
+    for (const recommendation of this.report.recommendations) {
       const selectedType = this.recommendationTypes.filter(type => type.value === recommendation.type_id);
-      recommendation.selected_type = selectedType[0].label;
+      if (selectedType !== undefined && selectedType.length > 0) {
+        recommendation.selected_type = selectedType[0].label;
+      }
 
       if (recommendation.selected_type !== 'Shift Work From Firm(s) to Firm(s)') {
         const selectedFirm = this.firmOptions.filter(type => type.value === recommendation.bh_lawfirm_id);
-        recommendation.firm_name = selectedFirm[0].label;
+        if (selectedFirm !== undefined && selectedFirm.length > 0) {
+          recommendation.firm_name = selectedFirm[0].label;
+        }
       } else {
         recommendation.previous_firm_names = [];
         recommendation.recommended_firm_names = [];
-        for (let firm of recommendation.previous_firm_ids) {
+        for (const firm of recommendation.previous_firm_ids) {
           const selectedFirm = this.firmOptions.filter(type => type.value === firm);
-          recommendation.previous_firm_names.push(selectedFirm[0].label);
+          if (selectedFirm !== undefined && selectedFirm.length > 0) {
+            recommendation.previous_firm_names.push(selectedFirm[0].label);
+          }
         }
-        for (let firm of recommendation.recommended_firm_ids) {
+        for (const firm of recommendation.recommended_firm_ids) {
           const selectedFirm = this.firmOptions.filter(type => type.value === firm);
-          recommendation.recommended_firm_names.push(selectedFirm[0].label);
+          if (selectedFirm !== undefined && selectedFirm.length > 0) {
+            recommendation.recommended_firm_names.push(selectedFirm[0].label);
+          }
         }
       }
     }
@@ -113,24 +120,21 @@ export class ViewClientRecommendationComponent implements OnInit {
   }
 
   async changeTab(evt: any): Promise<void> {
-    console.log("evt: ", evt);
-    console.log("rec: ", this.report.recommendations[evt.index], this.report.recommendations[evt.index].selected_type);
     if (this.report.recommendations[evt.index].selected_type === 'Discount') {
       const result = await this.recommendationService.getDiscountData(this.report.recommendations[evt.index], this.selectedClientId, this.clientPracticeAreaSetting);
-      const discountData = this.recommendationService.calcDiscountSavings(result['prior_year'], this.report.recommendations[evt.index]);
+      const discountData = this.recommendationService.calcDiscountSavings(result.prior_year, this.report.recommendations[evt.index]);
       this.lastFullYearFirmData = result.prior_year;
       this.mostRecentYear = result.most_recent_year;
-      this.differenceInSpendLower = discountData['diff_in_spend_lower'];
-      this.differenceInSpendUpper = discountData['diff_in_spend_upper'];
-      this.estimatedSpendWithOldDisc = discountData['estimated_spend_with_old_disc'];
-      this.estimatedSpendWithRecommendedDiscLower = discountData['estimated_spend_with_rec_disc_lower'];
-      this.estimatedSpendWithRecommendedDiscUpper = discountData['estimated_spend_with_rec_disc_upper'];
+      this.differenceInSpendLower = discountData.diff_in_spend_lower;
+      this.differenceInSpendUpper = discountData.diff_in_spend_upper;
+      this.estimatedSpendWithOldDisc = discountData.estimated_spend_with_old_disc;
+      this.estimatedSpendWithRecommendedDiscLower = discountData.estimated_spend_with_rec_disc_lower;
+      this.estimatedSpendWithRecommendedDiscUpper = discountData.estimated_spend_with_rec_disc_upper;
       this.selectedFirmName = this.report.recommendations[evt.index].firm_name;
       this.selectedPracticeArea = this.report.recommendations[evt.index].practice_area;
 
     } else if (this.report.recommendations[evt.index].selected_type === 'Shift Work From Firm(s) to Firm(s)') {
       const result = await this.recommendationService.getFirmsByPracticeArea(this.report.recommendations[evt.index], this.selectedClientId, this.clientPracticeAreaSetting);
-      console.log("SHIFT REZ: ", result);
       this.previousFirmsData = result.previous;
       this.recommendedFirmsData = result.recommended;
     } else if (this.report.recommendations[evt.index].selected_type === 'Reduce / Eliminate Block Billing') {
@@ -149,7 +153,7 @@ export class ViewClientRecommendationComponent implements OnInit {
       if (this.firmStaffingData.length > 0) {
         mostRecentYear = this.firmStaffingData[0].year;
       }
-      const staffingData = this.recommendationService.calcStaffingAllocationSavings(this.firmStaffingData, this.report.recommendations[evt.index], mostRecentYear)
+      const staffingData = this.recommendationService.calcStaffingAllocationSavings(this.firmStaffingData, this.report.recommendations[evt.index], mostRecentYear);
       this.estimatedSpendWithOldStaffing = staffingData.estimated_spend_with_old_staffing;
       this.estimatedSpendWithNewStaffing = staffingData.estimated_spend_with_rec_staffing;
       this.differenceInSpend = staffingData.diff_in_spend;

@@ -14,25 +14,45 @@ export class RecommendationService {
 
   constructor(private httpService: HttpService) { }
 
-  getRecommendationTypes(): Promise<any> {
+  async getRecommendationTypes(): Promise<any> {
     let apiCall = '';
     if (window.location.toString().includes('admin')) {
       apiCall = 'getRecommendationTypes';
     } else {
-      apiCall = 'getRecommendationTypesClient'
+      apiCall = 'getRecommendationTypesClient';
     }
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest(apiCall).subscribe(
         (data: any) => {
-          let recommendationTypes = [];
+          const recommendationTypes = [];
           if (data.result) {
-            for (let res of data.result) {
-              recommendationTypes.push({label: res.name, value: res.id})
+            for (const res of data.result) {
+              recommendationTypes.push({label: res.name, value: res.id});
             }
           }
-          console.log("returning types: ", recommendationTypes);
           resolve(recommendationTypes);
-          // return recommendationTypes;
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  async getOrgPracticeAreaSetting(selectedOrgId: number): Promise<string> {
+    const params = {id: selectedOrgId};
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getOrgPracticeAreaSetting', params).subscribe(
+        (data: any) => {
+        let clientPracticeAreaSetting;
+        if (data.result) {
+          if (data.result.enabled) {
+            clientPracticeAreaSetting = data.result.enabled.value;
+          } else {
+            clientPracticeAreaSetting = 'Client Practice Areas';
+          }
+        }
+        resolve(clientPracticeAreaSetting);
         },
         err => {
           return {error: err};
@@ -46,7 +66,7 @@ export class RecommendationService {
     if (window.location.toString().includes('admin')) {
       apiCall = 'getFirmsByClient';
     } else {
-      apiCall = 'getFirmsListByClient'
+      apiCall = 'getFirmsListByClient';
     }
     const params = {clientId: selectedClientId};
 
@@ -56,11 +76,10 @@ export class RecommendationService {
           if (!data.result) {
             return;
           }
-          let firmOptions = [];
+          const firmOptions = [];
           for (const firm of data.result) {
             firmOptions.push({label: firm.law_firm_name, value: firm.id});
           }
-          console.log("returning firms: ", firmOptions);
           resolve(firmOptions);
         },
         err => {
@@ -75,7 +94,7 @@ export class RecommendationService {
     if (window.location.toString().includes('admin')) {
       apiCall = 'getRecommendationReport';
     } else {
-      apiCall = 'getRecommendationReportClient'
+      apiCall = 'getRecommendationReportClient';
     }
     const params = {reportId: selectedReportId};
     return new Promise((resolve, reject) => {
@@ -84,7 +103,7 @@ export class RecommendationService {
           if (!data.result) {
             return;
           }
-          let report = data.result;
+          const report = data.result;
           resolve(report);
         },
         err => {
@@ -94,24 +113,23 @@ export class RecommendationService {
     });
   }
 
-  getDiscountData(recommendation: any, clientId: number, paSetting: string): Promise<any> {
+  getDiscountData(recommendation: any, selectedClientId: number, paSetting: string): Promise<any> {
     let apiCall = '';
     if (window.location.toString().includes('admin')) {
       apiCall = 'getAdminFirmStats';
     } else {
-      apiCall = 'getFirmStatsClient'
+      apiCall = 'getFirmStatsClient';
     }
     const params = {
-      clientId: clientId,
+      clientId: selectedClientId,
       clientMatterType: recommendation.practice_area,
       firmId: recommendation.bh_lawfirm_id,
-      paType: paSetting
+      paType: paSetting,
+      year: recommendation.year
     };
-    console.log("params: ", params);
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest(apiCall, params).subscribe(
         (data: any) => {
-          console.log("firm stats: ", data);
           let ytdFirmData;
           let mostRecentYear;
           let lastFullYearFirmData;
@@ -139,28 +157,34 @@ export class RecommendationService {
     });
   }
 
-  getBlockBillingData(recommendation: any, clientId: number, paSetting: string): Promise<any> {
+  getBlockBillingData(recommendation: any, selectedClientId: number, paSetting: string): Promise<any> {
     let params;
+    let apiCall = '';
+    if (window.location.toString().includes('admin')) {
+      apiCall = 'getFirmBlockBillingData';
+    } else {
+      apiCall = 'getFirmBlockBillingDataClient';
+    }
     if (recommendation.practice_area !== null) {
       params = {
-        clientId: clientId,
+        clientId: selectedClientId,
         firmId: recommendation.bh_lawfirm_id,
         practiceArea: recommendation.practice_area,
-        paType: paSetting
+        paType: paSetting,
+        year: recommendation.year
       };
     } else {
       params = {
-        clientId: clientId,
+        clientId: selectedClientId,
         firmId: recommendation.bh_lawfirm_id,
-        paType: paSetting
+        paType: paSetting,
+        year: recommendation.year
       };
     }
 
-    console.log("BB params: ", params);
     return new Promise((resolve, reject) => {
-      return this.httpService.makeGetRequest('getFirmBlockBillingDataClient', params).subscribe(
+      return this.httpService.makeGetRequest(apiCall, params).subscribe(
         (data: any) => {
-          console.log("BB data: ", data);
           let firmBlockBillingData;
           let mostRecentYear;
           if (data.result) {
@@ -169,7 +193,7 @@ export class RecommendationService {
               mostRecentYear = firmBlockBillingData[0].year;
             }
           }
-          resolve(firmBlockBillingData)
+          resolve(firmBlockBillingData);
         },
         err => {
           return {error: err};
@@ -178,63 +202,71 @@ export class RecommendationService {
     });
   }
 
-  getRateIncreaseData(recommendation: any, clientId: number, paSetting: string): Promise<any> {
-    console.log("new rec in getFirmRateIncreaseData: ", recommendation)
+  getRateIncreaseData(recommendation: any, selectedClientId: number, paSetting: string): Promise<any> {
     const firmParam = [];
     firmParam.push(recommendation.bh_lawfirm_id.toString());
     const paParam = [];
-
+    let apiCall = '';
+    if (window.location.toString().includes('admin')) {
+      apiCall = 'getFirmRateIncreaseData';
+    } else {
+      apiCall = 'getFirmRateIncreaseDataClient';
+    }
     let params;
     if (recommendation.practice_area === null) {
       params = {
-        clientId: clientId,
+        clientId: selectedClientId,
         firms: JSON.stringify(firmParam),
+        year: recommendation.year
       };
     } else if (recommendation.practice_area !== null && paSetting === 'Client Practice Areas') {
       paParam.push(recommendation.practice_area);
       params = {
-        clientId: clientId,
+        clientId: selectedClientId,
         firms: JSON.stringify(firmParam),
-        practiceAreas: JSON.stringify(paParam)
+        practiceAreas: JSON.stringify(paParam),
+        year: recommendation.year
       };
     } else if (recommendation.practice_area !== null && paSetting === 'Smart Practice Areas') {
       paParam.push(recommendation.practice_area);
       params = {
-        clientId: clientId,
+        clientId: selectedClientId,
         firms: JSON.stringify(firmParam),
-        bdPracticeAreas: JSON.stringify(paParam)
+        bdPracticeAreas: JSON.stringify(paParam),
+        year: recommendation.year
       };
     } else if (recommendation.practice_area !== null && paSetting === 'Both') {
       if (recommendation.practice_area.includes('[Smart]')) {
         const formattedPA = recommendation.practice_area.split(' - [Smart]')[0];
         paParam.push(formattedPA);
         params = {
-          clientId: clientId,
+          clientId: selectedClientId,
           firms: JSON.stringify(firmParam),
-          bdPracticeAreas: JSON.stringify(paParam)
+          bdPracticeAreas: JSON.stringify(paParam),
+          year: recommendation.year
         };
       } else {
         paParam.push(recommendation.practice_area);
         params = {
-          clientId: clientId,
+          clientId: selectedClientId,
           firms: JSON.stringify(firmParam),
-          practiceAreas: JSON.stringify(paParam)
+          practiceAreas: JSON.stringify(paParam),
+          year: recommendation.year
         };
       }
     } else {
       paParam.push(recommendation.practice_area);
       params = {
-        clientId: clientId,
+        clientId: selectedClientId,
         firms: JSON.stringify(firmParam),
-        practiceAreas: JSON.stringify(paParam)
+        practiceAreas: JSON.stringify(paParam),
+        year: recommendation.year
       };
     }
-    console.log("rate increase params: ", params);
 
     return new Promise((resolve, reject) => {
-      return this.httpService.makeGetRequest('getFirmRateIncreaseDataClient', params).subscribe(
+      return this.httpService.makeGetRequest(apiCall, params).subscribe(
         (data: any) => {
-          console.log("rate increase data: ", data);
           let firmRateIncreaseData;
           let rateIncreasePreventionSavings;
           let rateIncreasePreventionDetails;
@@ -243,11 +275,11 @@ export class RecommendationService {
             if (firmRateIncreaseData.length > 0) {
               const mostRecentYear = firmRateIncreaseData[0].year;
               const rateIncreaseData = this.calculateRateIncreaseSavingsForFirm(firmRateIncreaseData, mostRecentYear, recommendation.desired_rate_increase_pct);
-              rateIncreasePreventionSavings = rateIncreaseData['savings'];
-              rateIncreasePreventionDetails = rateIncreaseData['classificationData'];
+              rateIncreasePreventionSavings = rateIncreaseData.savings;
+              rateIncreasePreventionDetails = rateIncreaseData.classificationData;
             }
-        }
-        resolve({data: firmRateIncreaseData, savings: rateIncreasePreventionSavings, details: rateIncreasePreventionDetails});
+          }
+          resolve({data: firmRateIncreaseData, savings: rateIncreasePreventionSavings, details: rateIncreasePreventionDetails});
         },
         err => {
           return {error: err};
@@ -256,18 +288,18 @@ export class RecommendationService {
     });
   }
 
-  getStaffingData(recommendation: IRecommendation, clientId: number): Promise<any> {
+  getStaffingData(recommendation: IRecommendation, selectedClientId: number): Promise<any> {
     let apiCall = '';
     if (window.location.toString().includes('admin')) {
       apiCall = 'getFirmStaffing';
     } else {
-      apiCall = 'getFirmStaffingClient'
+      apiCall = 'getFirmStaffingClient';
     }
     const params = {
-      clientId: clientId,
-      firmId: recommendation.bh_lawfirm_id
+      clientId: selectedClientId,
+      firmId: recommendation.bh_lawfirm_id,
+      year: recommendation.year
     };
-    console.log("params: ", params);
 
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest(apiCall, params).subscribe(
@@ -291,30 +323,29 @@ export class RecommendationService {
       practiceArea: recommendation.practice_area,
       paType: paSetting
     };
-    console.log("PA params: ", params);
-    console.log("PA rec: ", recommendation)
+
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getFirmsByPracticeAreaClient', params).subscribe(
         (data: any) => {
-          let previousFirmsData = [];
-          let recommendedFirmsData = [];
+          const previousFirmsData = [];
+          const recommendedFirmsData = [];
           if (data.result) {
             if (data.result.length > 0) {
-              for (let firm of data.result) {
-                if (firm.blended_rate !== null && firm.blended_rate !== undefined) {
-                  firm.blended_rate = firm.blended_rate.toFixed(2);
+              for (const firm of data.result) {
+                if (firm.blended_rate !== null && firm.blended_rate !== undefined && typeof(firm.blended_rate) !== 'string') {
+                  firm.formatted_blended_rate = firm.blended_rate.toFixed(2);
                 }
-                let tier;
+                let formattedTier;
                 if (firm.tier) {
-                  tier = firm.tier.toString();
+                  formattedTier = firm.tier.toString();
                 } else {
-                  tier = 'N/A';
+                  formattedTier = 'N/A';
                 }
                 if (recommendation.previous_firm_ids.includes(firm.bh_lawfirm_id)) {
-                  previousFirmsData.push({tier: tier, blended_rate: firm.blended_rate, firm: firm.firm_name})
+                  previousFirmsData.push({tier: formattedTier, blended_rate: firm.formatted_blended_rate, firm: firm.firm_name});
                 }
                 if (recommendation.recommended_firm_ids.includes(firm.bh_lawfirm_id)) {
-                  recommendedFirmsData.push({tier: tier, blended_rate: firm.blended_rate, firm: firm.firm_name})
+                  recommendedFirmsData.push({tier: formattedTier, blended_rate: firm.formatted_blended_rate, firm: firm.firm_name});
                 }
 
               }
@@ -331,8 +362,6 @@ export class RecommendationService {
 
   calculateIncreaseRateValue(val: number, classifications: any): number {
     let result = 0;
-    console.log("val: ", val);
-    console.log("classifications: ", classifications);
     if (!classifications || classifications.length === 0) {
       return result;
     }
@@ -342,7 +371,7 @@ export class RecommendationService {
     return result;
   }
 
-  calculateRateIncreaseSavingsForFirm(records: Array<any>, lastYear: number, rateIncreaseLimit: number): Object {
+  calculateRateIncreaseSavingsForFirm(records: Array<any>, lastYear: number, rateIncreaseLimit: number): any {
     let result = 0;
     const distinctYears = [];
     const yearRecords = [];
@@ -367,7 +396,6 @@ export class RecommendationService {
       }
     }
     const tkClassificationsProcessed = [];
-    console.log("yearRecords: ", yearRecords)
     for (const key of Object.keys(tkClassifications)) {
       if (key === 'partner' || key === 'associate') {
         tkClassificationsProcessed.push(this.createRateIncreaseClassification(key, yearRecords));
@@ -375,9 +403,6 @@ export class RecommendationService {
     }
     const processed = tkClassificationsProcessed;
     result = this.calculateIncreaseRateValue(rateIncreaseLimit, processed);
-    console.log("records ", records)
-    console.log("processed ", processed)
-    console.log("rate inc result: ", result);
 
     return {savings: result, classificationData: processed};
   }
@@ -413,7 +438,6 @@ export class RecommendationService {
   }
 
   calcDiscountSavings(lastFullYearFirmData: any, recommendation: IRecommendation): any {
-    console.log("calcDiscountSavings: ", recommendation)
     let estimatedSpendWithOldDisc = 0;
     let estimatedSpendWithRecommendedDiscLower = 0;
     let estimatedSpendWithRecommendedDiscUpper = 0;
@@ -443,7 +467,7 @@ export class RecommendationService {
     let estimatedSpendWithNewStaffing = 0;
     let differenceInSpend = 0;
     if (getStaffingData.length > 0) {
-      lastFullYearStaffingData = getStaffingData[0]
+      lastFullYearStaffingData = getStaffingData[0];
     }
     if (lastFullYearStaffingData) {
 
@@ -468,11 +492,10 @@ export class RecommendationService {
     let unacceptableBlockBillingAmount = 0;
     let estimatedBlockBillingSavings = 0;
     if (getBlockBillingData.length > 0) {
-      lastFullYearBBData = getBlockBillingData[0]
+      lastFullYearBBData = getBlockBillingData[0];
     }
-    console.log("lastFullYearBBData: ", lastFullYearBBData);
     if (lastFullYearBBData) {
-      let blockBillingPctDiff = (lastFullYearBBData.bb_percent - recommendation.desired_block_billing_pct) / 100;
+      const blockBillingPctDiff = (lastFullYearBBData.bb_percent - recommendation.desired_block_billing_pct) / 100;
       unacceptableBlockBillingAmount = lastFullYearBBData.total_attorney_billed * blockBillingPctDiff;
       estimatedBlockBillingSavings = unacceptableBlockBillingAmount * .2;
     }
