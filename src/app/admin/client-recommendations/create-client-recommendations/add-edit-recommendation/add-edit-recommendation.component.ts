@@ -438,9 +438,11 @@ export class AddEditRecommendationComponent implements OnInit {
               }
             }
           } else {
-            this.firmPracticeAreas.push({label: '-- None --', value: null});
+            if (this.selectedType !== 'Discount') {
+              this.firmPracticeAreas.push({label: '-- None --', value: null});
+            }
             for (const pa of clientPracticeAreas) {
-              this.firmPracticeAreas.push(pa.client_matter_type);
+              this.firmPracticeAreas.push({label: pa.client_matter_type, value: pa.client_matter_type});
             }
           }
         }
