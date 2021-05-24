@@ -1,0 +1,308 @@
+<div class="panel-wrapper mt20 ml10 mr10 mb20">
+  <div class="panel-title">
+    <h3 *ngIf="report">{{report.title}}</h3>
+    <div style="display: inline !important; float: right !important;">
+      <button class="primary-button mr10" (click)="edit()">Edit</button>
+      <button class="primary-button" [routerLink]="'/analytics-ui/admin/client-recommendations'" style="background-color: #dedede; color: #2e373c;">Back</button>
+    </div>
+  </div>
+  <div *ngIf="report">
+    <mat-tab-group animationDuration="0ms" [selectedIndex]="step" (selectedTabChange)="changeTab($event)">
+      <mat-tab *ngFor="let rec of report.recommendations; let i = index; let last = last; let first = first;"
+      label="{{i + 1}} - {{rec.selected_type}}" class="rate-panel" (opened)="setStep(i)" style="background: rgb(168, 125, 125) !important">
+
+      <!-- Display discount recommendations -->
+        <div *ngIf="rec.selected_type === 'Discount'" class="rec">
+          <div class="rec-details">
+            <div class="main">
+              <div class="flex-container">
+                <div class="info-block" style="width: 33%;">
+                  <div>Firm:</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.firm_name}}</span></div>
+                </div>
+                <div class="info-block" style="width: 33%;">
+                  <div>Practice Area:</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.practice_area}}</span></div>
+                </div>
+                <div class="info-block" style="width: 33%;">
+                  <div>Current Discount:</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.current_discount_pct}}%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rec-details">
+            <div class="main">
+              <div class="flex-container">
+                <div class="info-block" style="width: 33%;">
+                  <div>Recommended Discount (lower):</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.recommended_discount_pct_lower_range}}%</span></div>
+                </div>
+                <div class="info-block" style="width: 33%;">
+                  <div>Recommended Discount (upper):</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.recommended_discount_pct_upper_range}}%</span></div>
+                </div>
+                <div class="info-block" style="width: 33%;">
+                  <div>Projected Spend Increase:</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.spend_increase_pct}}%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="lastFullYearFirmData && lastFullYearFirmData.length > 0">
+            <table>
+              <tr>
+                <th style="width: 15%; text-overflow: wrap;">Total {{selectedFirmName}} {{selectedPracticeArea}} Spend for {{mostRecentYear - 1}} with {{rec.current_discount_pct}}% discount</th>
+                <th style="width: 15%; text-overflow: wrap;">Estimated {{mostRecentYear}} Spend with {{rec.current_discount_pct}}% discount</th>
+                <th style="width: 15%; text-overflow: wrap;">Estimated {{mostRecentYear}} Spend with negotiated {{rec.recommended_discount_pct_lower_range}}% {{mostRecentYear}} discount</th>
+                <th style="width: 15%; text-overflow: wrap;">Estimated {{mostRecentYear}} Spend with negotiated {{rec.recommended_discount_pct_upper_range}}% {{mostRecentYear}} discount</th>
+                <th>Estimated<span *ngIf="differenceInSpendLower > 0"> Savings</span><span *ngIf="differenceInSpendLower === 0"> Difference</span><span *ngIf="differenceInSpendLower < 0"> Loss</span> ({{rec.recommended_discount_pct_lower_range}}% discount)</th>
+                <th>Estimated<span *ngIf="differenceInSpendUpper > 0"> Savings</span><span *ngIf="differenceInSpendUpper === 0"> Difference</span><span *ngIf="differenceInSpendUpper < 0"> Loss</span> ({{rec.recommended_discount_pct_upper_range}}% discount)</th>
+              </tr>
+              <tr>
+                <td style="width: 15%;">${{lastFullYearFirmData[0].total_billed | number:'1.0-0'}}</td>
+                <td style="width: 15%;">${{estimatedSpendWithOldDisc | number:'1.0-0'}}</td>
+                <td style="width: 15%;">${{estimatedSpendWithRecommendedDiscLower | number:'1.0-0'}}</td>
+                <td style="width: 15%;">${{estimatedSpendWithRecommendedDiscUpper | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="differenceInSpendLower > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpendLower | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="differenceInSpendUpper > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpendUpper | number:'1.0-0'}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <b>Comment: </b>
+          <p [innerHTML]="rec.comment"></p>
+        </div>
+
+        <!-- Display rate increase recommendations -->
+        <div *ngIf="rec.selected_type === 'Rate Increase Prevention / Reduction'" class="rec">
+
+          <div class="flex-container">
+            <div class="info-block" [ngStyle]="rec.practice_area !== null ? {'width': '33%'} : {'width': '50%'}">
+              <div>Firm:</div>
+              <div><span class="totals-badge" style="background-color: black;">{{rec.firm_name}}</span></div>
+            </div>
+            <div class="info-block" *ngIf="rec.practice_area" style="width: 33%;">
+              <div>Practice Area:</div>
+              <div><span class="totals-badge" style="background-color: black;">{{rec.practice_area}}</span></div>
+            </div>
+            <div class="info-block" [ngStyle]="rec.practice_area !== null ? {'width': '33%'} : {'width': '50%'}" >
+              <div>Recommended Rate Increase Limit:</div>
+              <div><span class="totals-badge" style="background-color: black;">{{rec.desired_rate_increase_pct}}%</span></div>
+            </div>
+          </div>
+
+          <div *ngIf="rateIncreasePreventionSavings && rateIncreasePreventionDetails">
+            <h6>Rate Increase Data for {{rec.firm_name}}<span *ngIf="rec.practice_area"> in PA: {{rec.practice_area}}</span>:</h6>
+            <table>
+              <tr>
+                <th>Classification</th>
+                <th>Avg. Rate Increase (Last 3 Years)</th>
+                <th>Total Hours - {{mostRecentYear}}</th>
+                <th>Avg. Rate - {{mostRecentYear}}</th>
+              </tr>
+              <tr *ngFor="let row of rateIncreasePreventionDetails">
+                <td>{{row.title}}</td>
+                <td>{{(row.avgRateIncrease * 100) | number:'1.2-2'}}%</td>
+                <td>{{row.totalHours}}</td>
+                <td>${{row.lastYearRate | number:'1.2-2'}}</td>
+              </tr>
+            </table>
+
+            <table>
+              <tr>
+                <th>{{mostRecentYear + 1}} Potential Savings w/ {{rec.desired_rate_increase_pct}}% Rate Increase</th>
+              </tr>
+              <tr>
+                <td style="font-weight: 700;" [ngStyle]="rateIncreasePreventionSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{rateIncreasePreventionSavings | number:'1.0-0'}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <b>Comment: </b>
+          <p [innerHTML]="rec.comment"></p>
+        </div>
+
+        <!-- Display staffing recommendations -->
+        <div *ngIf="rec.selected_type === 'Modify Staffing Allocation'" class="rec">
+
+          <div class="rec-details">
+            <div class="main">
+              <div class="flex-container">
+                <div class="info-block" style="width: 20%;">
+                  <div>Firm:</div><br>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.firm_name}}</span></div>
+                </div>
+                <div class="info-block" style="width: 20%;">
+                  <div>Projected Spend Increase:</div><br>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.spend_increase_pct}}%</span></div>
+                </div>
+                <div class="info-block" style="width: 20%;">
+                  <div>Recommended Partner % of Hours Worked:</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.desired_partner_pct_of_hours_worked}}%</span></div>
+                </div>
+                <div class="info-block" style="width: 20%;">
+                  <div>Recommended Associate % of Hours Worked:</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.desired_associate_pct_of_hours_worked}}%</span></div>
+                </div>
+                <div class="info-block" style="width: 20%;">
+                  <div>Recommended Paralegal % of Hours Worked:</div>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.desired_paralegal_pct_of_hours_worked}}%</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="firmStaffingData && firmStaffingData.length > 0">
+            <h6>Historical Staffing Data for {{rec.firm_name}}:</h6>
+            <table>
+              <tr>
+                <th>Year</th>
+                <th>Partner % of Hours Worked</th>
+                <th>Avg. Partner Rate</th>
+                <th>Associate % of Hours Worked</th>
+                <th>Avg. Associate Rate</th>
+                <th>Paralegal % of Hours Worked</th>
+                <th>Avg. Paralegal Rate</th>
+              </tr>
+              <tr *ngFor="let data of firmStaffingData">
+                <td>{{data.year}}</td>
+                <td>{{data.partner_percent  | number:'1.2-2'}}%</td>
+                <td>${{data.avg_partner_rate | number:'1.2-2'}}</td>
+                <td>{{data.associate_percent  | number:'1.2-2'}}%</td>
+                <td>${{data.avg_associate_rate | number:'1.2-2'}}</td>
+                <td>{{data.paralegal_percent  | number:'1.2-2'}}%</td>
+                <td>${{data.avg_paralegal_rate | number:'1.2-2'}}</td>
+              </tr>
+            </table>
+
+            <h6>Potential Staffing Savings for {{rec.firm_name}}:</h6>
+            <table>
+              <tr>
+                <th style="width: 200px;">Estimated {{mostRecentYear}} spend with {{mostRecentYear - 1}} Staffing Allocation (and {{rec.spend_increase_pct}}% growth)</th>
+                <th style="width: 200px;">Estimated {{mostRecentYear}} spend with Recommended Staffing Allocation (and {{rec.spend_increase_pct}}% growth)</th>
+                <th style="width: 200px;">Estimated<span *ngIf="differenceInSpend > 0"> Savings</span><span *ngIf="differenceInSpend === 0"> Difference</span><span *ngIf="differenceInSpend < 0"> Loss</span></th>
+              </tr>
+              <tr>
+                <td style="width: 200px;">${{estimatedSpendWithOldStaffing | number:'1.0-0'}}</td>
+                <td style="width: 200px;">${{estimatedSpendWithNewStaffing | number:'1.0-0'}}</td>
+                <td *ngIf="differenceInSpend > 0" style="font-weight: 700;" [ngStyle]="differenceInSpend > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpend | number:'1.0-0'}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <b>Comment: </b>
+          <p [innerHTML]="rec.comment"></p>
+        </div>
+
+        <!-- Display block billing recommendations -->
+        <div *ngIf="rec.selected_type === 'Reduce / Eliminate Block Billing'" class="rec">
+          <div class="flex-container">
+            <div class="info-block" [ngStyle]="rec.practice_area !== null ? {'width': '33%'} : {'width': '50%'}">
+              <div>Firm:</div>
+              <div><span class="totals-badge" style="background-color: black;">{{rec.firm_name}}</span></div>
+            </div>
+            <div class="info-block" *ngIf="rec.practice_area" style="width: 33%;">
+              <div>Practice Area:</div>
+              <div><span class="totals-badge" style="background-color: black;">{{rec.practice_area}}</span></div>
+            </div>
+            <div class="info-block" [ngStyle]="rec.practice_area !== null ? {'width': '33%'} : {'width': '50%'}" >
+              <div>Recommended Block Billing Threshold:</div>
+              <div><span class="totals-badge" style="background-color: black;">{{rec.desired_block_billing_pct}}%</span></div>
+            </div>
+          </div>
+
+          <div *ngIf="firmBlockBillingData && firmBlockBillingData.length > 0">
+            <h6>Historical Block Billing Data for {{rec.firm_name}}:</h6>
+            <table>
+              <tr>
+                <th>Year</th>
+                <th>Block Billing %</th>
+                <th>Total Attorney Billed</th>
+                <th>Total Block Billed</th>
+              </tr>
+              <tr *ngFor="let data of firmBlockBillingData">
+                <td>{{data.year}}</td>
+                <td>{{data.bb_percent  | number:'1.2-2'}}%</td>
+                <td>${{data.total_attorney_billed | number:'1.0-0'}}</td>
+                <td>${{data.total_block_billed | number:'1.0-0'}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <div *ngIf="estimatedBlockBillingSavings && unacceptableBlockBillingAmount">
+            <h6>Potential {{mostRecentYear}} Block Billing Savings for {{rec.firm_name}}:</h6>
+            <table>
+              <tr>
+                <th>Recommended Block Billing % for {{mostRecentYear}}</th>
+                <th>Excessive Block Billing total for {{mostRecentYear - 1}}</th>
+                <th>{{mostRecentYear}} Block Billing savings opportunity</th>
+              </tr>
+              <tr>
+                <td>{{rec.desired_block_billing_pct}}%</td>
+                <td>${{unacceptableBlockBillingAmount | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="estimatedBlockBillingSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{estimatedBlockBillingSavings | number:'1.0-0'}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <b>Comment: </b>
+          <p [innerHTML]="rec.comment"></p>
+        </div>
+
+        <!-- Display shift work recommendations -->
+        <div *ngIf="rec.selected_type === 'Shift Work From Firm(s) to Firm(s)'" class="rec">
+
+          <div class="rec-details">
+            <div class="main">
+              <div class="flex-container">
+                <div class="info-block" style="width: 30%;">
+                  <div>Practice Area:</div><br>
+                  <div><span class="totals-badge" style="background-color: black;">{{rec.practice_area}}</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h6>Shift work from: </h6>
+          <table>
+            <tr>
+              <th width="300px;">Firm</th>
+              <th width="75px;">Tier</th>
+              <th width="200px;">Blended Rate</th>
+            </tr>
+            <tr *ngFor="let firm of previousFirmsData">
+              <td>{{firm.firm}}</td>
+              <td>{{firm.tier}}</td>
+              <td>${{firm.blended_rate | number:'1.2-2'}}</td>
+            </tr>
+          </table>
+
+          <h6>Shift work to: </h6>
+          <table>
+            <tr>
+              <th width="300px;">Firm</th>
+              <th width="75px;">Tier</th>
+              <th width="200px;">Blended Rate</th>
+            </tr>
+            <tr *ngFor="let firm of recommendedFirmsData">
+              <td>{{firm.firm}}</td>
+              <td>{{firm.tier}}</td>
+              <td>${{firm.blended_rate | number:'1.2-2'}}</td>
+            </tr>
+          </table>
+
+
+          <b>Comment: </b>
+          <p [innerHTML]="rec.comment"></p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+  </div>
+  <div class="footer-div">
+    Powered by <img src="../../analytics-ui/assets/images/new_logo.png">
+  </div>
+
+</div>
