@@ -135,6 +135,7 @@ import { AddEditRecommendationComponent } from './admin/client-recommendations/c
 import { ViewClientRecommendationComponent } from './admin/client-recommendations/view-client-recommendation/view-client-recommendation.component';
 import { RecommendationsComponent } from './recommendations/recommendations.component';
 import { ViewRecommendationsComponent } from './recommendations/view-recommendations/view-recommendations.component';
+import { WorkDistributionComponent } from './admin/work-distribution/work-distribution.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -219,7 +220,8 @@ export function initHttp(service: HttpService) {
     AddEditRecommendationComponent,
     ViewClientRecommendationComponent,
     RecommendationsComponent,
-    ViewRecommendationsComponent
+    ViewRecommendationsComponent,
+    WorkDistributionComponent
   ],
   entryComponents: [
     PillComponent,

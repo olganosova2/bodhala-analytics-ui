@@ -22,6 +22,7 @@ import {CreateClientRecommendationsComponent} from './admin/client-recommendatio
 import {ViewClientRecommendationComponent} from './admin/client-recommendations/view-client-recommendation/view-client-recommendation.component';
 import {RecommendationsComponent} from './recommendations/recommendations.component';
 import {ViewRecommendationsComponent} from './recommendations/view-recommendations/view-recommendations.component';
+import {WorkDistributionComponent} from './admin/work-distribution/work-distribution.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -63,5 +64,6 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/client-recommendations/edit/:clientId', component: CreateClientRecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/client-recommendations/view/:reportId', component: ViewClientRecommendationComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   // ClientConfigsComponent,
+  {path: 'analytics-ui/admin/work-distribution', component: WorkDistributionComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

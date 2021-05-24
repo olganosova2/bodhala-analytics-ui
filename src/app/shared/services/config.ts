@@ -129,20 +129,22 @@ export const END_POINTS_URLS = {
   deleteClientRecommendationReport: {url: BASE_URL + 'admin/deleteRecommendationReport', showLoading: true},
   deleteClientRecommendation: {url: BASE_URL + 'admin/deleteClientRecommendation', showLoading: true},
 
+  getTkWorkDistribution: {url: BASE_URL + 'admin/getTkWorkDistribution', showLoading: true},
 
 };
 
 export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
-  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/'},
+  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/', refreshNav: true},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
-  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'},
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea', refreshNav: true},
   {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'},
   {name: 'analytics.benchmarking.setup', routePath: 'analytics-ui/benchmarks-setup', fragment: '/benchmarks-setup'},
   {name: 'app.rate.increase', routePath: 'analytics-ui/admin/rate-increase', fragment: '/rate-increase'},
   {name: 'app.client.configs', routePath: 'analytics-ui/admin/client-configs', fragment: '/client-configs'},
   {name: 'analytics.pastsavings', routePath: 'analytics-ui/past-savings', fragment: '/past-savings'},
+  {name: 'app.work.distribution', routePath: 'analytics-ui/admin/work-distribution', fragment: '/work-distribution'},
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
