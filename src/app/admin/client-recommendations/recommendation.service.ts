@@ -120,13 +120,24 @@ export class RecommendationService {
     } else {
       apiCall = 'getFirmStatsClient';
     }
-    const params = {
-      clientId: selectedClientId,
-      clientMatterType: recommendation.practice_area,
-      firmId: recommendation.bh_lawfirm_id,
-      paType: paSetting,
-      year: recommendation.year
-    };
+    let params;
+    if (recommendation.year !== undefined && recommendation.year !== null) {
+      params = {
+        clientId: selectedClientId,
+        clientMatterType: recommendation.practice_area,
+        firmId: recommendation.bh_lawfirm_id,
+        paType: paSetting,
+        year: recommendation.year
+      };
+    } else {
+      params = {
+        clientId: selectedClientId,
+        clientMatterType: recommendation.practice_area,
+        firmId: recommendation.bh_lawfirm_id,
+        paType: paSetting
+      };
+    }
+
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest(apiCall, params).subscribe(
         (data: any) => {
