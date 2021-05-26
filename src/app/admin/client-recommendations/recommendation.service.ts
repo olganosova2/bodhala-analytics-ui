@@ -121,21 +121,16 @@ export class RecommendationService {
       apiCall = 'getFirmStatsClient';
     }
     let params;
-    if (recommendation.year !== undefined && recommendation.year !== null) {
-      params = {
-        clientId: selectedClientId,
-        clientMatterType: recommendation.practice_area,
-        firmId: recommendation.bh_lawfirm_id,
-        paType: paSetting,
-        year: recommendation.year
-      };
-    } else {
-      params = {
-        clientId: selectedClientId,
-        clientMatterType: recommendation.practice_area,
-        firmId: recommendation.bh_lawfirm_id,
-        paType: paSetting
-      };
+
+    params = {
+      clientId: selectedClientId,
+      clientMatterType: recommendation.practice_area,
+      firmId: recommendation.bh_lawfirm_id,
+      paType: paSetting
+    };
+
+    if (recommendation.id && recommendation.year) {
+      params.year = recommendation.year;
     }
 
     return new Promise((resolve, reject) => {
@@ -181,16 +176,17 @@ export class RecommendationService {
         clientId: selectedClientId,
         firmId: recommendation.bh_lawfirm_id,
         practiceArea: recommendation.practice_area,
-        paType: paSetting,
-        year: recommendation.year
+        paType: paSetting
       };
     } else {
       params = {
         clientId: selectedClientId,
         firmId: recommendation.bh_lawfirm_id,
-        paType: paSetting,
-        year: recommendation.year
+        paType: paSetting
       };
+    }
+    if (recommendation.id && recommendation.year) {
+      params.year = recommendation.year;
     }
 
     return new Promise((resolve, reject) => {
@@ -227,24 +223,21 @@ export class RecommendationService {
     if (recommendation.practice_area === null) {
       params = {
         clientId: selectedClientId,
-        firms: JSON.stringify(firmParam),
-        year: recommendation.year
+        firms: JSON.stringify(firmParam)
       };
     } else if (recommendation.practice_area !== null && paSetting === 'Client Practice Areas') {
       paParam.push(recommendation.practice_area);
       params = {
         clientId: selectedClientId,
         firms: JSON.stringify(firmParam),
-        practiceAreas: JSON.stringify(paParam),
-        year: recommendation.year
+        practiceAreas: JSON.stringify(paParam)
       };
     } else if (recommendation.practice_area !== null && paSetting === 'Smart Practice Areas') {
       paParam.push(recommendation.practice_area);
       params = {
         clientId: selectedClientId,
         firms: JSON.stringify(firmParam),
-        bdPracticeAreas: JSON.stringify(paParam),
-        year: recommendation.year
+        bdPracticeAreas: JSON.stringify(paParam)
       };
     } else if (recommendation.practice_area !== null && paSetting === 'Both') {
       if (recommendation.practice_area.includes('[Smart]')) {
@@ -253,16 +246,14 @@ export class RecommendationService {
         params = {
           clientId: selectedClientId,
           firms: JSON.stringify(firmParam),
-          bdPracticeAreas: JSON.stringify(paParam),
-          year: recommendation.year
+          bdPracticeAreas: JSON.stringify(paParam)
         };
       } else {
         paParam.push(recommendation.practice_area);
         params = {
           clientId: selectedClientId,
           firms: JSON.stringify(firmParam),
-          practiceAreas: JSON.stringify(paParam),
-          year: recommendation.year
+          practiceAreas: JSON.stringify(paParam)
         };
       }
     } else {
@@ -270,9 +261,12 @@ export class RecommendationService {
       params = {
         clientId: selectedClientId,
         firms: JSON.stringify(firmParam),
-        practiceAreas: JSON.stringify(paParam),
-        year: recommendation.year
+        practiceAreas: JSON.stringify(paParam)
       };
+    }
+
+    if (recommendation.id && recommendation.year) {
+      params.year = recommendation.year;
     }
 
     return new Promise((resolve, reject) => {
@@ -306,11 +300,15 @@ export class RecommendationService {
     } else {
       apiCall = 'getFirmStaffingClient';
     }
-    const params = {
+    let params;
+    params = {
       clientId: selectedClientId,
-      firmId: recommendation.bh_lawfirm_id,
-      year: recommendation.year
+      firmId: recommendation.bh_lawfirm_id
     };
+
+    if (recommendation.id && recommendation.year) {
+      params.year = recommendation.year;
+    }
 
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest(apiCall, params).subscribe(
