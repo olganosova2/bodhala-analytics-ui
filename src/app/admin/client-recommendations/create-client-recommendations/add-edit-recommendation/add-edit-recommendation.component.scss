@@ -1,0 +1,32 @@
+.mat-input-sm{
+  width: 160px !important;
+  height: 40px;
+
+  .mat-form-field-infix {
+    padding: .5em 0 .5em 0 !important;
+  }
+}
+
+.mat-input-med{
+  width: 200px !important;
+  height: 40px;
+
+  .mat-form-field-infix {
+    padding: .5em 0 .5em 0 !important;
+  }
+}
+
+th {
+  border: 1px solid black;
+  padding: 4px;
+  background: #cccccc;
+}
+
+td {
+  border: 1px solid black;
+  padding: 4px;
+}
+
+table {
+  margin-bottom: 1em;
+}

@@ -51,6 +51,7 @@ import {appRouterConfig} from './app.routes';
 import { InjectionToken } from '@angular/core';
 import { QuillModule } from 'ngx-quill';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { MatStepperModule } from '@angular/material/stepper';
 
 
 import {SliderModule} from 'primeng/slider';
@@ -128,6 +129,12 @@ import { AddEditConfigComponent } from './admin/client-configs/add-edit-config/a
 import {AceEditorModule} from 'ng2-ace-editor';
 import { FirmDiscountsComponent } from './firm/firm-discounts/firm-discounts.component';
 import { CirpMatterSummaryComponent } from './matters/cirp-matter-summary/cirp-matter-summary.component';
+import { ClientRecommendationsComponent } from './admin/client-recommendations/client-recommendations.component';
+import { CreateClientRecommendationsComponent } from './admin/client-recommendations/create-client-recommendations/create-client-recommendations.component';
+import { AddEditRecommendationComponent } from './admin/client-recommendations/create-client-recommendations/add-edit-recommendation/add-edit-recommendation.component';
+import { ViewClientRecommendationComponent } from './admin/client-recommendations/view-client-recommendation/view-client-recommendation.component';
+import { RecommendationsComponent } from './recommendations/recommendations.component';
+import { ViewRecommendationsComponent } from './recommendations/view-recommendations/view-recommendations.component';
 import { WorkDistributionComponent } from './admin/work-distribution/work-distribution.component';
 
 export const WindowToken = new InjectionToken('Window');
@@ -208,6 +215,12 @@ export function initHttp(service: HttpService) {
     AddEditConfigComponent,
     FirmDiscountsComponent,
     CirpMatterSummaryComponent,
+    ClientRecommendationsComponent,
+    CreateClientRecommendationsComponent,
+    AddEditRecommendationComponent,
+    ViewClientRecommendationComponent,
+    RecommendationsComponent,
+    ViewRecommendationsComponent,
     WorkDistributionComponent
   ],
   entryComponents: [
@@ -236,6 +249,7 @@ export function initHttp(service: HttpService) {
     MatFormFieldModule,
     MatGridListModule,
     MatSelectModule,
+    MatStepperModule,
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,

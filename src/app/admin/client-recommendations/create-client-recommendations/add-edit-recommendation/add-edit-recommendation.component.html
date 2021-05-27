@@ -1,0 +1,622 @@
+<div style="padding-top: 1em;">
+  <h5>Recommendation {{index + 1}}<span *ngIf="selectedType"> - {{selectedType}}</span></h5>
+  <button mat-flat-button type="button" style="float: right; width: 40px; border: none; background-color: #e1e2e3;" (click)="deleteRecommendation()"><em class="icon-trash"></em></button>
+  <mat-vertical-stepper #stepper>
+    <mat-step [stepControl]="typeForm" errorMessage="Type is required.">
+      <form [formGroup]="typeForm">
+        <ng-template matStepLabel>Select a recommendation type</ng-template>
+        <mat-form-field appearance="fill">
+          <mat-select formControlName="typeId" required (selectionChange)="typeChange($event)">
+            <mat-option *ngFor="let recommendation of recommendationTypes" [value]="recommendation.value">{{recommendation.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+
+    </mat-step>
+
+    <!-- Discount Progression -->
+
+    <mat-step [stepControl]="discountForm" *ngIf="selectedType === 'Discount'" errorMessage="Firm is required."
+              #firmStep [hasError]="firmStep.interacted && firmStep.isErrorState && discountForm.value.firm === null">
+      <form [formGroup]="discountForm">
+        <ng-template matStepLabel>Select a firm</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="firm" required (selectionChange)="getPracticeAreasByFirm()">
+            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="discountForm" *ngIf="selectedType === 'Discount' && clientPracticeAreaSetting === 'Both'" errorMessage="Practice Area is required."
+              #paStep [hasError]="paStep.interacted && paStep.isErrorState && discountForm.value.practiceArea === null">
+      <form [formGroup]="discountForm">
+        <ng-template matStepLabel>Select a practice area</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" required (selectionChange)="getFirmPAStats($event)">
+            <mat-optgroup *ngFor="let group of paGroupOptions" [label]="group.label">
+              <mat-option *ngFor="let area of group.items" [value]="area.value">{{area.label}}</mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="discountForm" *ngIf="selectedType === 'Discount' && clientPracticeAreaSetting !== 'Both'" errorMessage="Practice Area is required."
+              #paStep [hasError]="paStep.interacted && paStep.isErrorState && discountForm.value.practiceArea === null">
+      <form [formGroup]="discountForm">
+        <ng-template matStepLabel>Select a practice area</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" required (selectionChange)="getFirmPAStats($event)">
+            <mat-option *ngFor="let area of firmPracticeAreas" [value]="area.value">{{area.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="discountForm" *ngIf="selectedType === 'Discount'" errorMessage="Current discount % is required."
+              #currentDiscStep [hasError]="currentDiscStep.interacted && currentDiscStep.isErrorState && discountForm.value.currentDiscPct === null">
+      <form [formGroup]="discountForm">
+        <ng-template matStepLabel>Enter current discount percentage</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Current Discount</mat-label>
+          <input matInput type="number" formControlName="currentDiscPct" required>
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="discountForm" *ngIf="selectedType === 'Discount'" errorMessage="Recommended discount % is required."
+              #recommendedDiscStep [hasError]="recommendedDiscStep.interacted && recommendedDiscStep.isErrorState && discountForm.value.recommendedDiscPctLower === null && discountForm.value.recommendedDiscPctUpper === null">
+      <form [formGroup]="discountForm">
+        <ng-template matStepLabel>Enter recommended discount percentage range</ng-template>
+        <mat-form-field class="mat-input-med">
+          <mat-label>Rec. Discount Lower Range</mat-label>
+          <input matInput type="number" formControlName="recommendedDiscPctLower" required (change)="getDiscountSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+
+        <mat-form-field class="mat-input-med">
+          <mat-label>Rec. Discount Upper Range</mat-label>
+          <input matInput type="number" formControlName="recommendedDiscPctUpper" required (change)="getDiscountSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="discountForm" *ngIf="selectedType === 'Discount'" [hasError]="false">
+      <form [formGroup]="discountForm">
+        <ng-template matStepLabel>Enter projected growth in spend for this Firm/PA</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Proj. Growth</mat-label>
+          <input matInput type="number" formControlName="projectedSpendIncrease" (change)="getDiscountSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="discountForm" *ngIf="selectedType === 'Discount'" errorMessage="Recommendation description is required."
+              #commentStep [hasError]="commentStep.interacted && commentStep.isErrorState && discountForm.value.comment === null">
+      <div *ngIf="ytdFirmData && lastFullYearFirmData && lastFullYearFirmData.length > 0">
+        <table>
+          <tr>
+            <th style="width: 15%; text-overflow: wrap;">Total {{selectedFirmName}} {{selectedPracticeArea}} Spend for {{mostRecentYear - 1}} with {{discountForm.value.currentDiscPct}}% discount</th>
+            <th style="width: 15%; text-overflow: wrap;">Estimated {{mostRecentYear}} Spend with {{discountForm.value.currentDiscPct}}% discount</th>
+            <th style="width: 15%; text-overflow: wrap;">Estimated {{mostRecentYear}} Spend with negotiated {{discountForm.value.recommendedDiscPctLower}}% {{mostRecentYear}} discount</th>
+            <th style="width: 15%; text-overflow: wrap;">Estimated {{mostRecentYear}} Spend with negotiated {{discountForm.value.recommendedDiscPctUpper}}% {{mostRecentYear}} discount</th>
+            <th>Estimated<span *ngIf="differenceInSpendLower > 0"> Savings</span><span *ngIf="differenceInSpendLower === 0"> Difference</span><span *ngIf="differenceInSpendLower < 0"> Loss</span> ({{discountForm.value.recommendedDiscPctLower}}% discount)</th>
+            <th>Estimated<span *ngIf="differenceInSpendUpper > 0"> Savings</span><span *ngIf="differenceInSpendUpper === 0"> Difference</span><span *ngIf="differenceInSpendUpper < 0"> Loss</span> ({{discountForm.value.recommendedDiscPctUpper}}% discount)</th>
+          </tr>
+          <tr>
+            <td style="width: 15%;">${{lastFullYearFirmData[0].total_billed | number:'1.0-0'}}</td>
+            <td style="width: 15%;">${{estimatedSpendWithOldDisc | number:'1.0-0'}}</td>
+            <td style="width: 15%;">${{estimatedSpendWithRecommendedDiscLower | number:'1.0-0'}}</td>
+            <td style="width: 15%;">${{estimatedSpendWithRecommendedDiscUpper | number:'1.0-0'}}</td>
+            <td style="font-weight: 700;" [ngStyle]="differenceInSpendLower > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpendLower | number:'1.0-0'}}</td>
+            <td style="font-weight: 700;" [ngStyle]="differenceInSpendUpper > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpendUpper | number:'1.0-0'}}</td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="lastFullYearFirmData.length === 0">
+        No spend for this firm/PA combination in this calendar year or in the last full year of data
+      </div>
+      <form [formGroup]="discountForm">
+        <ng-template matStepLabel>Write the recommendation description</ng-template>
+          <quill-editor [styles]="commonServ.editorStyle" formControlName="comment"
+                      [modules]="quillConfig"></quill-editor>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="goToTop()">Done</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Modify Staffing Progression -->
+
+    <mat-step [stepControl]="staffingForm" *ngIf="selectedType === 'Modify Staffing Allocation'" errorMessage="Firm is required."
+              #firmStep [hasError]="firmStep.interacted && firmStep.isErrorState && staffingForm.value.firm === null">
+      <form [formGroup]="staffingForm">
+        <ng-template matStepLabel>Select a firm</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="firm" required (selectionChange)="getFirmStaffing()">
+            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="staffingForm" *ngIf="selectedType === 'Modify Staffing Allocation'" errorMessage="Staffing allocation is required."
+              #allocationStep [hasError]="allocationStep.interacted && allocationStep.isErrorState && staffingForm.value.desiredPartnerPct === null
+              && staffingForm.value.desiredAssociatePct === null && staffingForm.value.desiredParalegalPct === null">
+
+      <div *ngIf="firmStaffingData && firmStaffingData.length > 0">
+        <table>
+          <tr>
+            <th>Year</th>
+            <th>Partner % of Hours Worked</th>
+            <th>Avg. Partner Rate</th>
+            <th>Associate % of Hours Worked</th>
+            <th>Avg. Associate Rate</th>
+            <th>Paralegal % of Hours Worked</th>
+            <th>Avg. Paralegal Rate</th>
+          </tr>
+          <tr *ngFor="let data of firmStaffingData">
+            <td>{{data.year}}</td>
+            <td>{{data.partner_percent  | number:'1.2-2'}}%</td>
+            <td>${{data.avg_partner_rate | number:'1.2-2'}}</td>
+            <td>{{data.associate_percent  | number:'1.2-2'}}%</td>
+            <td>${{data.avg_associate_rate | number:'1.2-2'}}</td>
+            <td>{{data.paralegal_percent  | number:'1.2-2'}}%</td>
+            <td>${{data.avg_paralegal_rate | number:'1.2-2'}}</td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="firmStaffingData === undefined || firmStaffingData === null">
+        No data for this firm in this calendar year or in the last full year of data
+      </div>
+      <form [formGroup]="staffingForm">
+        <ng-template matStepLabel>Enter recommended staffing allocation</ng-template>
+        <mat-form-field class="mat-input-med">
+          <mat-label>Rec. Partner %</mat-label>
+          <input matInput type="number" formControlName="desiredPartnerPct" required (change)="getStaffingAllocationSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+
+        <mat-form-field class="mat-input-med">
+          <mat-label>Rec. Associate %</mat-label>
+          <input matInput type="number" formControlName="desiredAssociatePct" required (change)="getStaffingAllocationSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+
+        <mat-form-field class="mat-input-med">
+          <mat-label>Rec. Paralegal %</mat-label>
+          <input matInput type="number" formControlName="desiredParalegalPct" required (change)="getStaffingAllocationSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="staffingForm" *ngIf="selectedType === 'Modify Staffing Allocation'" [hasError]="false">
+      <form [formGroup]="staffingForm">
+        <ng-template matStepLabel>Enter projected growth in spend for this Firm</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Proj. Growth</mat-label>
+          <input matInput type="number" formControlName="projectedSpendIncrease" (change)="getStaffingAllocationSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="staffingForm" *ngIf="selectedType === 'Modify Staffing Allocation'" errorMessage="Recommendation description is required."
+              #commentStep [hasError]="commentStep.interacted && commentStep.isErrorState && staffingForm.value.comment === null">
+
+      <div *ngIf="firmStaffingData && firmStaffingData.length > 0">
+        <table>
+          <tr>
+            <th style="width: 200px; text-overflow: wrap;">Estimated {{mostRecentYear}} spend with {{mostRecentYear - 1}} Staffing Allocation (and {{staffingForm.value.projectedSpendIncrease}}% growth)</th>
+            <th style="width: 200px; text-overflow: wrap;">Estimated {{mostRecentYear}} spend with Recommended Staffing Allocation (and {{staffingForm.value.projectedSpendIncrease}}% growth)</th>
+            <th style="width: 200px; text-overflow: wrap;">Estimated<span *ngIf="differenceInSpend > 0"> Savings</span><span *ngIf="differenceInSpend === 0"> Difference</span><span *ngIf="differenceInSpend < 0"> Loss</span></th>
+          </tr>
+          <tr>
+            <td style="width: 200px; text-overflow: wrap;">${{estimatedSpendWithOldStaffing | number:'1.0-0'}}</td>
+            <td style="width: 200px; text-overflow: wrap;">${{estimatedSpendWithNewStaffing | number:'1.0-0'}}</td>
+            <td style="font-weight: 700;" [ngStyle]="differenceInSpend > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpend | number:'1.0-0'}}</td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="firmStaffingData === undefined || firmStaffingData === null">
+        No data for this firm in this calendar year or in the last full year of data
+      </div>
+
+      <form [formGroup]="staffingForm">
+        <ng-template matStepLabel>Write the recommendation description</ng-template>
+          <quill-editor [styles]="commonServ.editorStyle" formControlName="comment"
+                      [modules]="quillConfig"></quill-editor>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="goToTop()">Done</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Rate Increase Reduction / Prevention Progression -->
+
+    <mat-step [stepControl]="rateForm" *ngIf="selectedType === 'Rate Increase Prevention / Reduction'" errorMessage="Firm is required."
+              #firmStep [hasError]="firmStep.interacted && firmStep.isErrorState && rateForm.value.firm === null">
+      <form [formGroup]="rateForm">
+        <ng-template matStepLabel>Select a firm</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="firm" required (selectionChange)="getPracticeAreasByFirm()">
+            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="rateForm" *ngIf="selectedType === 'Rate Increase Prevention / Reduction' && clientPracticeAreaSetting !== 'Both'" errorMessage="Practice Area is required." [hasError]="false">
+      <form [formGroup]="rateForm">
+        <ng-template matStepLabel>Select a practice area (optional)</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" (selectionChange)="getFirmRateIncreaseData()">
+            <mat-option *ngFor="let area of firmPracticeAreas" [value]="area.value">{{area.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="rateForm" *ngIf="selectedType === 'Rate Increase Prevention / Reduction' && clientPracticeAreaSetting === 'Both'" [hasError]="false">
+      <form [formGroup]="rateForm">
+        <ng-template matStepLabel>Select a practice area (optional)</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" (selectionChange)="getFirmRateIncreaseData()">
+            <mat-optgroup *ngFor="let group of paGroupOptions" [label]="group.label">
+              <mat-option *ngFor="let area of group.items" [value]="area.value">{{area.label}}</mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="rateForm" *ngIf="selectedType === 'Rate Increase Prevention / Reduction'" errorMessage="Rate increase limit is required"
+              #increaseLimitStep [hasError]="increaseLimitStep.interacted && increaseLimitStep.isErrorState && rateForm.value.desiredRateIncreasePct === null">
+      <div *ngIf="rateIncreasePreventionDetails && rateIncreasePreventionDetails.length > 0">
+        <table>
+          <tr>
+            <th>Classification</th>
+            <th>Avg. Rate Increase (Last 3 Years)</th>
+            <th>Total Hours - {{mostRecentYear}}</th>
+            <th>Avg. Rate - {{mostRecentYear}}</th>
+          </tr>
+          <tr *ngFor="let row of rateIncreasePreventionDetails">
+            <td>{{row.title}}</td>
+            <td>{{(row.avgRateIncrease * 100) | number:'1.2-2'}}%</td>
+            <td>{{row.totalHours}}</td>
+            <td>${{row.lastYearRate | number:'1.2-2'}}</td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="rateIncreasePreventionDetails === undefined || rateIncreasePreventionDetails === null">
+        No rate increase data available for this firm <span *ngIf="newRecommendation.practice_area !== null"> and PA</span>. Select another firm and/or PA.
+      </div>
+      <form [formGroup]="rateForm">
+        <ng-template matStepLabel>Enter recommended rate increase limit</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Rate Increase Limit</mat-label>
+          <input matInput type="number" formControlName="desiredRateIncreasePct" (change)="calcRateIncreasePreventionSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="rateForm" *ngIf="selectedType === 'Rate Increase Prevention / Reduction'" errorMessage="Recommendation description is required."
+              #commentStep [hasError]="commentStep.interacted && commentStep.isErrorState && rateForm.value.comment === null">
+      <div *ngIf="rateIncreasePreventionSavings && rateIncreasePreventionDetails">
+        <table>
+          <tr>
+            <th>Classification</th>
+            <th>Avg. Rate Increase (Last 3 Years)</th>
+            <th>Total Hours - {{mostRecentYear}}</th>
+            <th>Avg. Rate - {{mostRecentYear}}</th>
+          </tr>
+          <tr *ngFor="let row of rateIncreasePreventionDetails">
+            <td>{{row.title}}</td>
+            <td>{{(row.avgRateIncrease * 100) | number:'1.2-2'}}%</td>
+            <td>{{row.totalHours}}</td>
+            <td>${{row.lastYearRate | number:'1.2-2'}}</td>
+          </tr>
+        </table>
+
+        <table style="margin-top: 1em; margin-bottom: 1em;">
+          <tr>
+            <th>Recommended Rate Increase % Limit</th>
+            <th>{{mostRecentYear + 1}} Potential Savings</th>
+          </tr>
+          <tr>
+            <td>{{newRecommendation.desired_rate_increase_pct | number:'1.2-2'}}%</td>
+            <td style="font-weight: 700;" [ngStyle]="rateIncreasePreventionSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{rateIncreasePreventionSavings | number:'1.0-0'}}</td>
+          </tr>
+        </table>
+      </div>
+      <form [formGroup]="rateForm">
+        <ng-template matStepLabel>Write the recommendation description</ng-template>
+          <quill-editor [styles]="commonServ.editorStyle" formControlName="comment"
+                      [modules]="quillConfig"></quill-editor>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="goToTop()">Done</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Reduce / Eliminate Block Billing Progression -->
+
+    <mat-step [stepControl]="blockBillingForm" *ngIf="selectedType === 'Reduce / Eliminate Block Billing'" errorMessage="Firm is required."
+              #firmStep [hasError]="firmStep.interacted && firmStep.isErrorState && blockBillingForm.value.firm === null">
+      <form [formGroup]="blockBillingForm">
+        <ng-template matStepLabel>Select a firm</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="firm" required (selectionChange)="getPracticeAreasByFirm()">
+            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="blockBillingForm" *ngIf="selectedType === 'Reduce / Eliminate Block Billing' && clientPracticeAreaSetting !== 'Both'" errorMessage="Practice Area is required."
+              #paStep [hasError]="false">
+      <form [formGroup]="blockBillingForm">
+        <ng-template matStepLabel>Select a practice area (optional)</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" (selectionChange)="getFirmBlockBillingData()">
+            <mat-option *ngFor="let pa of firmPracticeAreas" [value]="pa.value">{{pa.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="blockBillingForm" *ngIf="selectedType === 'Reduce / Eliminate Block Billing' && clientPracticeAreaSetting === 'Both'" errorMessage="Practice Area is required."
+              #paStep [hasError]="false">
+      <form [formGroup]="blockBillingForm">
+        <ng-template matStepLabel>Select a practice area (optional)</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" (selectionChange)="getFirmBlockBillingData()">
+            <mat-optgroup *ngFor="let group of paGroupOptions" [label]="group.label">
+              <mat-option *ngFor="let area of group.items" [value]="area.value">{{area.label}}</mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="blockBillingForm" *ngIf="selectedType === 'Reduce / Eliminate Block Billing'" errorMessage="Recommended block billing % is required."
+              #blockBillingPctStep [hasError]="blockBillingPctStep.interacted && blockBillingPctStep.isErrorState && blockBillingForm.value.recommendedBlockBillingPct === null">
+
+      <div *ngIf="firmBlockBillingData && firmBlockBillingData.length > 0">
+        <table>
+          <tr>
+            <th>Year</th>
+            <th>Block Billing %</th>
+            <th>Total Attorney Billed</th>
+            <th>Total Block Billed</th>
+          </tr>
+          <tr *ngFor="let data of firmBlockBillingData">
+            <td>{{data.year}}</td>
+            <td>{{data.bb_percent  | number:'1.2-2'}}%</td>
+            <td>${{data.total_attorney_billed | number:'1.0-0'}}</td>
+            <td>${{data.total_block_billed | number:'1.0-0'}}</td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="firmBlockBillingData && firmBlockBillingData.length === 0">
+        No data for this firm in this calendar year or in the last full year of data
+      </div>
+      <form [formGroup]="blockBillingForm">
+        <ng-template matStepLabel>Enter the recommended block billing %</ng-template>
+        <mat-form-field class="mat-input-sm">
+          <mat-label>Rec. Block Billing %</mat-label>
+          <input matInput type="number" formControlName="recommendedBlockBillingPct" (change)="getBlockBillingSavings()">
+          <span matSuffix>&nbsp;%</span>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="blockBillingForm" *ngIf="selectedType === 'Reduce / Eliminate Block Billing'" errorMessage="Recommendation description is required."
+              #commentStep [hasError]="commentStep.interacted && commentStep.isErrorState && blockBillingForm.value.comment === null">
+
+      <div *ngIf="estimatedBlockBillingSavings && unacceptableBlockBillingAmount">
+
+        <table style="margin-bottom: 1em;">
+          <tr>
+            <th>Recommended Block Billing % for {{mostRecentYear}}</th>
+            <th>Excessive Block Billing total for {{mostRecentYear - 1}}</th>
+            <th>{{mostRecentYear}} Block Billing savings opportunity</th>
+          </tr>
+          <tr>
+            <td>{{blockBillingForm.value.recommendedBlockBillingPct}}%</td>
+            <td>${{unacceptableBlockBillingAmount | number:'1.0-0'}}</td>
+            <td style="font-weight: 700;" [ngStyle]="estimatedBlockBillingSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{estimatedBlockBillingSavings | number:'1.0-0'}}</td>
+          </tr>
+        </table>
+      </div>
+      <form [formGroup]="blockBillingForm">
+        <ng-template matStepLabel>Write the recommendation description</ng-template>
+          <quill-editor [styles]="commonServ.editorStyle" formControlName="comment"
+                      [modules]="quillConfig"></quill-editor>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="goToTop()">Done</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <!-- Shift Work From Firm(s) to Firm(s) Progression -->
+
+    <mat-step [stepControl]="firmChangeForm" *ngIf="selectedType === 'Shift Work From Firm(s) to Firm(s)' && clientPracticeAreaSetting !== 'Both'" errorMessage="Practice Area is required."
+              #paStep [hasError]="paStep.interacted && paStep.isErrorState && firmChangeForm.value.practiceArea === null">
+      <form [formGroup]="firmChangeForm">
+        <ng-template matStepLabel>Select a practice area</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" required (selectionChange)="getFirmsByPracticeArea()">
+            <mat-option *ngFor="let pa of paOptions" [value]="pa.value">{{pa.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="firmChangeForm" *ngIf="selectedType === 'Shift Work From Firm(s) to Firm(s)' && clientPracticeAreaSetting === 'Both'" errorMessage="Practice Area is required."
+              #paStep [hasError]="paStep.interacted && paStep.isErrorState && firmChangeForm.value.practiceArea === null">
+      <form [formGroup]="firmChangeForm">
+        <ng-template matStepLabel>Select a practice area</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="practiceArea" required (selectionChange)="getFirmsByPracticeArea()">
+            <mat-optgroup *ngFor="let group of paGroupOptions" [label]="group.label">
+              <mat-option *ngFor="let area of group.items" [value]="area.value">{{area.label}}</mat-option>
+            </mat-optgroup>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="firmChangeForm" *ngIf="selectedType === 'Shift Work From Firm(s) to Firm(s)'" errorMessage="Previous firm(s) are required."
+              #previousFirms [hasError]="previousFirms.interacted && previousFirms.isErrorState && firmChangeForm.value.previousFirms === null">
+      <form [formGroup]="firmChangeForm">
+        <ng-template matStepLabel>Select firm(s) who work should be shifted away from</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="previousFirms" required multiple>
+            <mat-option *ngFor="let firm of firmPAOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="firmChangeForm" *ngIf="selectedType === 'Shift Work From Firm(s) to Firm(s)'" errorMessage="Recommended firm(s) are required."
+              #newFirms [hasError]="newFirms.interacted && newFirms.isErrorState && firmChangeForm.value.newFirms === null">
+      <form [formGroup]="firmChangeForm">
+        <ng-template matStepLabel>Select firm(s) who work should be shifted to</ng-template>
+        <mat-form-field>
+          <mat-select formControlName="newFirms" required multiple>
+            <mat-option *ngFor="let firm of firmPAOptions" [value]="firm.value">{{firm.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="firmChangeForm" *ngIf="selectedType === 'Shift Work From Firm(s) to Firm(s)'" errorMessage="Recommendation description is required."
+              #commentStep [hasError]="commentStep.interacted && commentStep.isErrorState && firmChangeForm.value.comment === null">
+      <div *ngIf="newFirmNames.length > 0 && previousFirmNames.length > 0">
+        <b>Shift work from:</b>
+        <ul>
+          <li *ngFor="let firm of previousFirmNames"> {{firm}}
+          </li>
+        </ul>
+
+        <b>Shift work to:</b>
+        <ul>
+          <li *ngFor="let firm of newFirmNames"> {{firm}}
+          </li>
+        </ul>
+
+      </div>
+      <form [formGroup]="firmChangeForm">
+        <ng-template matStepLabel>Write the recommendation description</ng-template>
+          <quill-editor [styles]="commonServ.editorStyle" formControlName="comment"
+                      [modules]="quillConfig"></quill-editor>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="goToTop()">Done</button>
+        </div>
+      </form>
+    </mat-step>
+
+
+  </mat-vertical-stepper>
+</div>
+
+
