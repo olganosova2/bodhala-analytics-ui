@@ -68,7 +68,7 @@ export class CreateClientRecommendationsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.recommendationTypes = await this.recommendationService.getRecommendationTypes();
     this.firmOptions = await this.recommendationService.getFirms(this.selectedClientId);
-
+    this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
     this.getClientPracticeAreas();
     if (!this.editMode) {
       this.newReport = this.constructNewReport();
@@ -81,8 +81,6 @@ export class CreateClientRecommendationsComponent implements OnInit {
         }
       }
     }
-
-    this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
   }
 
   constructNewReport(): IRecommendationReport {
