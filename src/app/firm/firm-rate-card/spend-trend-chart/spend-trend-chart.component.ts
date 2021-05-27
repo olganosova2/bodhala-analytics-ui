@@ -16,6 +16,7 @@ export enum TrendChart {
   MATTER_COST = 'MATTER_COST',
   PARTNER_HOURS = 'PARTNER_HOURS',
   ASSOCIATE_HOURS = 'ASSOCIATE_HOURS',
+  PARALEGAL_HOURS = 'PARALEGAL_HOURS',
   AVG_MATTER_DURATION = 'AVG_MATTER_DURATION',
   BLENDED_RATE = 'BLENDED_RATE',
   BODHALA_PRICE_INDEX = 'BODHALA_PRICE_INDEX',
@@ -86,6 +87,7 @@ export class SpendTrendChartComponent implements OnInit {
       if (rec.total_hours > 0 && rec.total_hours !== null && rec.total_hours !== undefined) {
         rec.partner_hours_percent = (rec.partner_hours / rec.total_hours) * 100;
         rec.associate_hours_percent = (rec.associate_hours / rec.total_hours) * 100;
+        rec.paralegal_hours_percent = (rec.paralegal_hours / rec.total_hours) * 100;
         rec.blended_rate = this.calcBlendedRate(rec);
         rec.bodhala_price_index = this.calcBPI(rec);
       }
@@ -334,6 +336,9 @@ export class SpendTrendChartComponent implements OnInit {
         break;
       case TrendChart.ASSOCIATE_HOURS:
         result = [year, rec.associate_hours_percent];
+        break;
+      case TrendChart.PARALEGAL_HOURS:
+        result = [year, rec.paralegal_hours_percent];
         break;
       case TrendChart.AVG_MATTER_DURATION:
         result = [year, rec.avg_duration_days];

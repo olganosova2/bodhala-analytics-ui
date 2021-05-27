@@ -166,6 +166,15 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
       diff: this.otherFirms.total_associate_hours_prct_diff
     });
     this.totalsRC.push({
+      icon: 'icon-briefcase',
+      total: this.totalsRaw.total_paralegal_hours_prct,
+      name: 'Paralegal Hours Worked',
+      format: 'percent',
+      svg: 'avg_par_rate',
+      avg: this.otherFirms.total_paralegal_hours_prct,
+      diff: this.otherFirms.total_paralegal_hours_prct_diff
+    });
+    this.totalsRC.push({
       icon: 'icon-calendar',
       total: this.totalsRaw.avg_matter_duration.avg_duration || 0,
       name: 'Matter Duration (days)',
@@ -227,11 +236,13 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
     const totalHrs = totalsRaw.total_hours || 1;
     totalsRaw.total_partner_hours_prct = (totalsRaw.total_partner_hours * 100 / totalHrs);
     totalsRaw.total_associate_hours_prct = (totalsRaw.total_associate_hours * 100 / totalHrs);
+    totalsRaw.total_paralegal_hours_prct = (totalsRaw.total_paralegal_hours * 100 / totalHrs);
   }
 
   calculateDiffs(totalsRaw: any, otherFirms: any): void {
     otherFirms.avg_matter_cost_diff = 0;
     otherFirms.total_associate_hours_prct_diff = 0;
+    otherFirms.total_paralegal_hours_prct_diff = 0;
     otherFirms.total_partner_hours_prct_diff = 0;
     otherFirms.avg_matter_duration_diff = 0;
     otherFirms.avg_partner_rate_diff = 0;
@@ -280,6 +291,14 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         otherFirms.total_associate_hours_prct_diff *= -1;
       } else {
         otherFirms.total_associate_hours_prct_diff = ((totalsRaw.total_associate_hours_prct / otherFirms.total_associate_hours_prct) - 1) * 100;
+      }
+    }
+    if (otherFirms.total_paralegal_hours_prct > 0 && otherFirms.total_paralegal_hours_prct !== undefined && otherFirms.total_paralegal_hours_prct !== null) {
+      if (otherFirms.total_paralegal_hours_prct > totalsRaw.total_paralegal_hours_prct) {
+        otherFirms.total_paralegal_hours_prct_diff = (1 - (totalsRaw.total_paralegal_hours_prct / otherFirms.total_paralegal_hours_prct)) * 100;
+        otherFirms.total_paralegal_hours_prct_diff *= -1;
+      } else {
+        otherFirms.total_paralegal_hours_prct_diff = ((totalsRaw.total_paralegal_hours_prct / otherFirms.total_paralegal_hours_prct) - 1) * 100;
       }
     }
 
