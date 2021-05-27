@@ -154,11 +154,10 @@ export class ViewRecommendationsComponent implements OnInit {
 
     } else if (this.report.recommendations[evt.index].selected_type === 'Modify Staffing Allocation') {
       this.firmStaffingData = await this.recommendationService.getStaffingData(this.report.recommendations[evt.index], this.userService.currentUser.client_info_id);
-      let mostRecentYear = 0;
       if (this.firmStaffingData.length > 0) {
-        mostRecentYear = this.firmStaffingData[0].year;
+        this.mostRecentYear = this.firmStaffingData[0].year;
       }
-      const staffingData = this.recommendationService.calcStaffingAllocationSavings(this.firmStaffingData, this.report.recommendations[evt.index], mostRecentYear);
+      const staffingData = this.recommendationService.calcStaffingAllocationSavings(this.firmStaffingData, this.report.recommendations[evt.index], this.mostRecentYear);
       this.estimatedSpendWithOldStaffing = staffingData.estimated_spend_with_old_staffing;
       this.estimatedSpendWithNewStaffing = staffingData.estimated_spend_with_rec_staffing;
       this.differenceInSpend = staffingData.diff_in_spend;
