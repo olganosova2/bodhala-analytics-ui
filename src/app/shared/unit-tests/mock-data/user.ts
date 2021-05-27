@@ -57,3 +57,4 @@ export const CURRENT_USER = {
   },
   "error": null
 }
+
