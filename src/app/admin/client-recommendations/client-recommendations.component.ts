@@ -1,29 +1,27 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonService, IClient} from '../../shared/services/common.service';
+import {IRecommendationReport} from './client-recommendations-model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
-import {IClientRateIncreases} from '../rate-increase/rate-increase.component';
-import {IEntityConfig} from './client-configs-model';
-import {IBenchmarkSetupFormatted} from '../../benchmarking-setup/benchmarking-setup-model';
-import * as config from '../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
-import {FRESH_DESK_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
-import {AddEditConfigComponent} from './add-edit-config/add-edit-config.component';
+import {FRESH_DESK_ARTICLES} from '../../shared/services/config';
+import { DatePipe } from '@angular/common';
+import {confirmDialogConfig} from '../../shared/services/config';
 
 @Component({
-  selector: 'bd-client-configs',
-  templateUrl: './client-configs.component.html',
-  styleUrls: ['./client-configs.component.scss']
+  selector: 'bd-client-recommendations',
+  templateUrl: './client-recommendations.component.html',
+  styleUrls: ['./client-recommendations.component.scss']
 })
-export class ClientConfigsComponent implements OnInit, OnDestroy {
+export class ClientRecommendationsComponent implements OnInit {
   pendingRequest: Subscription;
   pendingRequestDelete: Subscription;
   errorMessage: any;
   selectedClient: IClient;
-  clientConfigs: Array<IEntityConfig> = [];
+  clientRecommendationReports: Array<IRecommendationReport> = [];
   paginationPageSize: number = 10;
   gridOptions: GridOptions;
   savedState: any;
@@ -42,7 +40,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
               public utilService: UtilService,
               public dialog: MatDialog,
               public agGridService: AgGridService) {
-    this.commonServ.pageTitle = 'Manage Clients Configs';
+    this.commonServ.pageTitle = 'Manage Clients Recommendations';
   }
 
   ngOnInit(): void {
@@ -55,27 +53,34 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn},
-      {headerName: 'Name', field: 'name', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1},
-      {headerName: 'Description', field: 'description', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'Value', field: 'value', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1},
+      {headerName: 'Title', field: 'title', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: '# of Recommendations', field: 'num_recommendations', ...this.defaultColumn, flex: 1},
+      {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)},
       {headerName: 'Edit', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)},
       {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.openDeleteDialog.bind(this)},
     ];
   }
-  loadConfigs(client: IClient): void {
+
+  loadRecommendationReports(client: IClient): void {
     this.selectedClient = client;
     if (this.selectedClient) {
-      this.getClientConfigs();
+      this.getClientRecommendationReports();
       this.commonServ.pageSubtitle = this.selectedClient.org_name;
     }
-
   }
-  getClientConfigs(): void {
+
+  getClientRecommendationReports(): void {
     const params = { clientId: this.selectedClient.bh_client_id };
-    this.pendingRequest = this.httpService.makeGetRequest<IEntityConfig>('getClientConfigs', params).subscribe(
+    this.pendingRequest = this.httpService.makeGetRequest('getRecommendationReportsAdmin', params).subscribe(
       (data: any) => {
-        this.clientConfigs = data.result || [];
-        this.clientConfigs = this.clientConfigs.sort(this.utilService.dynamicSort('name'));
+        this.clientRecommendationReports = data.result || [];
+        this.clientRecommendationReports = this.clientRecommendationReports.filter(report => report.deleted_on === null);
+        this.clientRecommendationReports = this.clientRecommendationReports.sort(this.utilService.dynamicSort('-created_on'));
+        const pipe = new DatePipe('en-US');
+        for (const report of this.clientRecommendationReports) {
+          report.created_on = pipe.transform(report.created_on, 'shortDate');
+        }
         this.loadGrid();
       },
       err => {
@@ -83,6 +88,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   loadGrid(): void {
     if (!this.gridOptions.api) {
       return;
@@ -91,61 +97,64 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
       this.defaultState = this.gridOptions.columnApi.getColumnState();
       this.firstLoad = false;
     }
-    this.gridOptions.api.setRowData(this.clientConfigs);
+    this.gridOptions.api.setRowData(this.clientRecommendationReports);
     this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
+
   saveGridConfig(evt: any): void {
     const state = evt;
-    // this.agGridService.saveState('ClientConfigsGrid', this.gridOptions); TODO
+    // this.agGridService.saveState('ClientConfigsGrid', this.gridOptions);
   }
+
+  viewCellRenderer(params: any) {
+    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-eye"></em></button>';
+    return value;
+  }
+
   editCellRenderer(params: any) {
     const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-pencil"></em></button>';
     return value;
   }
+
   deleteCellRenderer(params: any) {
     const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-trash"></em></button>';
     return value;
   }
-  edit(row: any): void {
+
+  view(row: any): void {
     const item = row.data;
-    this.openModal(item);
+    this.router.navigate(['/analytics-ui/admin/client-recommendations/view/', row.data.id], {queryParams: {
+      clientId: this.selectedClient.bh_client_id,
+      orgId: this.selectedClient.org_id
+    }});
   }
-  openModal(item: IEntityConfig): void {
-    const packaged = { config: Object.assign({}, item), records: this.clientConfigs, client: this.selectedClient};
-    const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], packaged)};
-    const dialogRef = this.dialog.open(AddEditConfigComponent, {...modalConfig, disableClose: true });
+
+  edit(row: any): void {
+    this.router.navigate(['/analytics-ui/admin/client-recommendations/edit/', this.selectedClient.bh_client_id], {queryParams: {
+      orgId: this.selectedClient.org_id,
+      reportId: row.data.id
+    }});
+  }
+
+  openDeleteDialog(item: any): void {
+    const modalConfig = {...confirmDialogConfig, data: {title: 'Confirm Delete', item: 'recommendation report'}};
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {...modalConfig, disableClose: true });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getClientConfigs();
+        this.deleteReport(item.data);
       }
     });
 
   }
-  addNew(): void {
-    const newItem = this.createNewConfig();
-    this.openModal(newItem);
-  }
-  createNewConfig(): IEntityConfig {
-    return { id: null, description: '', name: '', value: null, client_id: this.selectedClient.bh_client_id, json_config: null};
-  }
-  openDeleteDialog(row: any): void {
-    const modalConfig = {...config.confirmDialogConfig, data: {title: 'Confirm Delete', item: 'config'}};
-    const dialogRef = this.dialog.open(ConfirmModalComponent, {...modalConfig});
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-       this.deleteConfig(row.data);
-      }
-    });
-  }
-  deleteConfig(item: IEntityConfig): void {
+  deleteReport(item: any): void {
     const params = { id: item.id};
-    this.pendingRequestDelete = this.httpService.makeDeleteRequest('deleteClientConfig', params).subscribe(
+    this.pendingRequestDelete = this.httpService.makeDeleteRequest('deleteClientRecommendationReport', params).subscribe(
       (data: any) => {
         const deleted = data.result;
         if (deleted) {
-          this.getClientConfigs();
+          this.getClientRecommendationReports();
         }
       },
       err => {
@@ -153,17 +162,10 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
       }
     );
   }
-  openHelp(): void {
-    this.commonServ.openHelpArticle(this.helpArticleId);
-  }
-  ngOnDestroy() {
-    this.commonServ.clearTitles();
-    if (this.pendingRequest) {
-      this.pendingRequest.unsubscribe();
-    }
-    if (this.pendingRequestDelete) {
-      this.pendingRequestDelete.unsubscribe();
-    }
-  }
 
+  addNew(): void {
+    this.router.navigate(['/analytics-ui/admin/client-recommendations/new/', this.selectedClient.bh_client_id], {queryParams: {
+      orgId: this.selectedClient.org_id
+    }});
+  }
 }

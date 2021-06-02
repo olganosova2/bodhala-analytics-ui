@@ -2,9 +2,10 @@ import {Component, Input, OnInit, OnChanges, SimpleChanges} from '@angular/core'
 import {IBillingTotalItemReportCard, IFirm} from '../../firm.model';
 import {IPracticeArea} from '../../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {IClientPA} from '../../../matters/cirp-matter-summary/cirp.service';
 
 @Component({
   selector: 'bd-report-card-billing-totals',
@@ -21,6 +22,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
   firstLoad: boolean = true;
   itemTopRowCount: number = 6;
   initialFilterSet: any;
+  metricExcludes: Array<string> = [];
   @Input() isReportCard: boolean = false;
   @Input() isComparison: boolean = false;
   @Input() firm: IFirm;
@@ -34,11 +36,24 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
 
   constructor(public httpService: HttpService,
               public filtersService: FiltersService,
+              public userService: UserService,
               public commonServ: CommonService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.isLoaded = false;
+    this.initConfig();
     this.loadTotals();
+  }
+  initConfig(): void {
+    if (this.userService.config && this.userService.config['report.card.excludes']) {
+      const configs = this.userService.config['report.card.excludes'].configs || [];
+      if (configs.length > 0) {
+        const json =  configs[0].json_config || [];
+        if (Array.isArray(json)){
+          this.metricExcludes = json;
+        }
+      }
+    }
   }
 
   loadTotals(): void {
@@ -138,86 +153,126 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
       avg: this.filtersService.includeExpenses ? this.otherFirms.total_spend_including_expenses.total : this.otherFirms.total_spend.total,
       diff: this.otherFirms.total_spend_diff
     });
-    this.totalsRC.push({
-      icon: 'icon-folder-alt',
-      total: this.filtersService.includeExpenses ? this.totalsRaw.avg_matter_cost_including_expenses.avg_cost : this.totalsRaw.avg_matter_cost.avg_cost || 0,
-      name: 'Avg. Matter Cost',
-      format: 'currency',
-      svg: 'avg_matter_cost',
-      avg: this.filtersService.includeExpenses ? this.otherFirms.avg_matter_cost_including_expenses.avg_cost : this.otherFirms.avg_matter_cost.avg_cost || 0,
-      diff: this.otherFirms.avg_matter_cost_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-energy',
-      total: this.totalsRaw.total_partner_hours_prct,
-      name: 'Partner Hours Worked',
-      format: 'percent',
-      svg: 'partners',
-      avg: this.otherFirms.total_partner_hours_prct,
-      diff: this.otherFirms.total_partner_hours_prct_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-users',
-      total: this.totalsRaw.total_associate_hours_prct,
-      name: 'Associate Hours Worked',
-      format: 'percent',
-      svg: 'avg_ass_matter',
-      avg: this.otherFirms.total_associate_hours_prct,
-      diff: this.otherFirms.total_associate_hours_prct_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-calendar',
-      total: this.totalsRaw.avg_matter_duration.avg_duration || 0,
-      name: 'Matter Duration (days)',
-      svg: 'matter_dur',
-      avg: this.otherFirms.avg_matter_duration.avg_duration || 0,
-      diff: this.otherFirms.avg_matter_duration_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-picture',
-      total: this.totalsRaw.avg_blended_rate,
-      name: 'Blended Rate',
-      format: 'currency',
-      svg: 'bills',
-      avg: this.otherFirms.avg_blended_rate,
-      diff: this.otherFirms.avg_blended_rate_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-bar-chart',
-      total: this.totalsRaw.bodhala_price_index,
-      name: 'BPI',
-      format: 'currency',
-      svg: 'bpi',
-      avg: this.otherFirms.bodhala_price_index,
-      diff: this.otherFirms.bodhala_price_index_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-energy',
-      total: this.totalsRaw.avg_partner_rate,
-      name: 'Avg. Partner Rate',
-      format: 'number2',
-      svg: 'partners',
-      avg: this.otherFirms.avg_partner_rate,
-      diff: this.otherFirms.avg_partner_rate_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-users',
-      total: this.totalsRaw.avg_associate_rate,
-      name: 'Avg. Assoc. Rate',
-      format: 'number2',
-      svg: 'avg_ass_matter',
-      avg: this.otherFirms.avg_associate_rate,
-      diff: this.otherFirms.avg_associate_rate_diff
-    });
-    this.totalsRC.push({
-      icon: 'icon-briefcase',
-      total: this.totalsRaw.avg_paralegal_legal_assistant_rate,
-      name: 'Avg. Paralegal Rate',
-      format: 'number2',
-      svg: 'avg_par_rate',
-      avg: this.otherFirms.avg_paralegal_legal_assistant_rate,
-      diff: this.otherFirms.avg_paralegal_legal_assistant_rate_diff
-    });
+    if (this.metricExcludes.indexOf('MATTER_COST') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-folder-alt',
+        total: this.filtersService.includeExpenses ? this.totalsRaw.avg_matter_cost_including_expenses.avg_cost : this.totalsRaw.avg_matter_cost.avg_cost || 0,
+        name: 'Avg. Matter Cost',
+        format: 'currency',
+        svg: 'avg_matter_cost',
+        avg: this.filtersService.includeExpenses ? this.otherFirms.avg_matter_cost_including_expenses.avg_cost : this.otherFirms.avg_matter_cost.avg_cost || 0,
+        diff: this.otherFirms.avg_matter_cost_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('PARTNER_HOURS') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-energy',
+        total: this.totalsRaw.total_partner_hours_prct,
+        name: 'Partner Hours Worked',
+        format: 'percent',
+        svg: 'partners',
+        avg: this.otherFirms.total_partner_hours_prct,
+        diff: this.otherFirms.total_partner_hours_prct_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('ASSOCIATE_HOURS') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-users',
+        total: this.totalsRaw.total_associate_hours_prct,
+        name: 'Associate Hours Worked',
+        format: 'percent',
+        svg: 'avg_ass_matter',
+        avg: this.otherFirms.total_associate_hours_prct,
+        diff: this.otherFirms.total_associate_hours_prct_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('PARALEGAL_HOURS') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-briefcase',
+        total: this.totalsRaw.total_paralegal_hours_prct,
+        name: 'Paralegal Hours Worked',
+        format: 'percent',
+        svg: 'avg_par_rate',
+        avg: this.otherFirms.total_paralegal_hours_prct,
+        diff: this.otherFirms.total_paralegal_hours_prct_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('AVG_MATTER_DURATION') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-calendar',
+        total: this.totalsRaw.avg_matter_duration.avg_duration || 0,
+        name: 'Matter Duration (days)',
+        svg: 'matter_dur',
+        avg: this.otherFirms.avg_matter_duration.avg_duration || 0,
+        diff: this.otherFirms.avg_matter_duration_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('BLENDED_RATE') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-picture',
+        total: this.totalsRaw.avg_blended_rate,
+        name: 'Blended Rate',
+        format: 'currency',
+        svg: 'bills',
+        avg: this.otherFirms.avg_blended_rate,
+        diff: this.otherFirms.avg_blended_rate_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('BODHALA_PRICE_INDEX') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-bar-chart',
+        total: this.totalsRaw.bodhala_price_index,
+        name: 'BPI',
+        format: 'currency',
+        svg: 'bpi',
+        avg: this.otherFirms.bodhala_price_index,
+        diff: this.otherFirms.bodhala_price_index_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('BLOCK_BILLING') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-clock',
+        total: this.totalsRaw.percent_block_billed,
+        name: 'Total Block Billed',
+        format: 'percent',
+        svg: 'total_bb',
+        avg: this.otherFirms.percent_block_billed,
+        diff: this.otherFirms.percent_block_billed_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('PARTNER_RATE') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-energy',
+        total: this.totalsRaw.avg_partner_rate,
+        name: 'Avg. Partner Rate',
+        format: 'number2',
+        svg: 'partners',
+        avg: this.otherFirms.avg_partner_rate,
+        diff: this.otherFirms.avg_partner_rate_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('ASSOCIATE_RATE') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-users',
+        total: this.totalsRaw.avg_associate_rate,
+        name: 'Avg. Assoc. Rate',
+        format: 'number2',
+        svg: 'avg_ass_matter',
+        avg: this.otherFirms.avg_associate_rate,
+        diff: this.otherFirms.avg_associate_rate_diff
+      });
+    }
+    if (this.metricExcludes.indexOf('PARALEGAL_RATE') < 0) {
+      this.totalsRC.push({
+        icon: 'icon-briefcase',
+        total: this.totalsRaw.avg_paralegal_legal_assistant_rate,
+        name: 'Avg. Paralegal Rate',
+        format: 'number2',
+        svg: 'avg_par_rate',
+        avg: this.otherFirms.avg_paralegal_legal_assistant_rate,
+        diff: this.otherFirms.avg_paralegal_legal_assistant_rate_diff
+      });
+    }
     this.itemTopRowCount = Math.ceil(this.totalsRC.length / 2);
     this.totalsRC[this.itemTopRowCount - 1].lastCell = true;
     this.totalsRC[this.totalsRC.length - 1].lastCell = true;
@@ -227,11 +282,13 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
     const totalHrs = totalsRaw.total_hours || 1;
     totalsRaw.total_partner_hours_prct = (totalsRaw.total_partner_hours * 100 / totalHrs);
     totalsRaw.total_associate_hours_prct = (totalsRaw.total_associate_hours * 100 / totalHrs);
+    totalsRaw.total_paralegal_hours_prct = (totalsRaw.total_paralegal_hours * 100 / totalHrs);
   }
 
   calculateDiffs(totalsRaw: any, otherFirms: any): void {
     otherFirms.avg_matter_cost_diff = 0;
     otherFirms.total_associate_hours_prct_diff = 0;
+    otherFirms.total_paralegal_hours_prct_diff = 0;
     otherFirms.total_partner_hours_prct_diff = 0;
     otherFirms.avg_matter_duration_diff = 0;
     otherFirms.avg_partner_rate_diff = 0;
@@ -239,6 +296,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
     otherFirms.avg_paralegal_legal_assistant_rate_diff = 0;
     otherFirms.avg_blended_rate_diff = 0;
     otherFirms.bodhala_price_index_diff = 0;
+    otherFirms.percent_block_billed_diff = 0;
 
     if (!this.filtersService.includeExpenses && otherFirms.total_spend.total > 0 && otherFirms.total_spend.total !== undefined && otherFirms.total_spend.total !== null) {
       if (otherFirms.total_spend.total > totalsRaw.total_spend.total) {
@@ -280,6 +338,14 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         otherFirms.total_associate_hours_prct_diff *= -1;
       } else {
         otherFirms.total_associate_hours_prct_diff = ((totalsRaw.total_associate_hours_prct / otherFirms.total_associate_hours_prct) - 1) * 100;
+      }
+    }
+    if (otherFirms.total_paralegal_hours_prct > 0 && otherFirms.total_paralegal_hours_prct !== undefined && otherFirms.total_paralegal_hours_prct !== null) {
+      if (otherFirms.total_paralegal_hours_prct > totalsRaw.total_paralegal_hours_prct) {
+        otherFirms.total_paralegal_hours_prct_diff = (1 - (totalsRaw.total_paralegal_hours_prct / otherFirms.total_paralegal_hours_prct)) * 100;
+        otherFirms.total_paralegal_hours_prct_diff *= -1;
+      } else {
+        otherFirms.total_paralegal_hours_prct_diff = ((totalsRaw.total_paralegal_hours_prct / otherFirms.total_paralegal_hours_prct) - 1) * 100;
       }
     }
 
@@ -343,6 +409,15 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         otherFirms.bodhala_price_index_diff *= -1;
       } else {
         otherFirms.bodhala_price_index_diff = ((totalsRaw.bodhala_price_index / otherFirms.bodhala_price_index) - 1) * 100;
+      }
+    }
+
+    if (otherFirms.percent_block_billed > 0 && otherFirms.percent_block_billed !== undefined && otherFirms.percent_block_billed !== null) {
+      if (otherFirms.percent_block_billed > totalsRaw.percent_block_billed) {
+        otherFirms.percent_block_billed_diff = (1 - (totalsRaw.percent_block_billed / otherFirms.percent_block_billed)) * 100;
+        otherFirms.percent_block_billed_diff *= -1;
+      } else {
+        otherFirms.percent_block_billed_diff = ((totalsRaw.percent_block_billed / otherFirms.percent_block_billed) - 1) * 100;
       }
     }
 

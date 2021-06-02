@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
 import { Subscription} from 'rxjs';
-import {Router} from '@angular/router';
+import {NavigationStart, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 
@@ -30,7 +30,7 @@ export class AppComponent implements OnDestroy {
   errorMessage: any;
   private saveInterval: any;
   ieVersion: string = '';
-  @ViewChild(LeftSideBarComponent) leftSidenav: TopTimekeepersComponent;
+  @ViewChild(LeftSideBarComponent) leftSidenav: LeftSideBarComponent;
 
   constructor(public router: Router,
               private location: Location,
@@ -50,6 +50,16 @@ export class AppComponent implements OnDestroy {
       this.router.navigateByUrl('/analytics-ui/analytics.html');
     }
     this.appStateService.loadRoutes(config.ROUTES);
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        const url = event.url;
+        for (const route of config.ROUTES) {
+          if (route.fragment && url.indexOf(route.fragment) >= 0 && route.refreshNav) {
+            this.leftSidenav.loadMenu();
+          }
+        }
+      }
+    });
     if (!this.userService.currentUser.isAdmin) {
       this.filtersService.setCurrentUserFilters();
     }

@@ -14,6 +14,9 @@
             [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_HOURS}"
             (click)="changeViewMode(chartTypes.ASSOCIATE_HOURS)">Associate Hours</span>
         <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARALEGAL_HOURS}"
+            (click)="changeViewMode(chartTypes.PARALEGAL_HOURS)">Paralegal Hours</span>
+        <span class="tab-button"
             [ngClass]="{'tab-button-selected': selectedChart === chartTypes.AVG_MATTER_DURATION}"
             (click)="changeViewMode(chartTypes.AVG_MATTER_DURATION)">Avg. Matter Duration</span>
         <span class="tab-button"

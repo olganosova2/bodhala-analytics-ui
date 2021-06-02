@@ -158,6 +158,7 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
     this.sampleConfig = Object.assign({}, configs[0]);
     this.config.name = configs[0].name;
     this.config.value = configs[0].value;
+    this.config.description = configs[0].description;
     this.config.json_config_parsed = JSON.stringify(configs[0].json_config, null, 2);
     if (configs.length > 1) {
       this.config.value = null;

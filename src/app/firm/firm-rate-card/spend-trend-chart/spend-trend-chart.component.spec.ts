@@ -91,4 +91,9 @@ describe('SpendTrendChartComponent', () => {
     component.renderChart(true);
     expect(component.options.series[0].data.length).toBe(0);
   });
+  it('should renderQuarterChart when TrendChart.PARALEGAL_RATE', () => {
+    component.selectedChart = TrendChart.PARALEGAL_RATE;
+    component.renderChart(true);
+    expect(component.options.series[0].data.length).toBe(0);
+  });
 });

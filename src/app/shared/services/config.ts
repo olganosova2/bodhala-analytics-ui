@@ -87,6 +87,17 @@ export const END_POINTS_URLS = {
   // TBD
   getTaskCost: {url: BASE_URL + 'analytics/getTaskSpendByColumn', showLoading: false},
   getLeadAttorneyTable: {url: BASE_URL + 'analytics/getLeadAttorneysTable', showLoading: true},
+
+  // Client Recommendations
+  getClientRecommendationReports: {url: BASE_URL + 'analytics/getRecommendationReports', showLoading: true},
+  getRecommendationTypesClient: {url: BASE_URL + 'analytics/getRecommendationTypes', showLoading: true},
+  getRecommendationReportClient: {url: BASE_URL + 'analytics/getRecommendationReport', showLoading: true},
+  getFirmStatsClient: {url: BASE_URL + 'analytics/getFirmStats', showLoading: true},
+  getFirmBlockBillingDataClient: {url: BASE_URL + 'analytics/getFirmBlockBillingData', showLoading: true},
+  getFirmRateIncreaseDataClient: {url: BASE_URL + 'analytics/getFirmRateIncreaseData', showLoading: true},
+  getFirmStaffingClient: {url: BASE_URL + 'analytics/getFirmStaffing', showLoading: true},
+  getFirmsByPracticeAreaClient: {url: BASE_URL + 'analytics/getFirmsByPracticeArea', showLoading: true},
+
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
   getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},
@@ -100,20 +111,40 @@ export const END_POINTS_URLS = {
   deleteClientConfig: {url: BASE_URL + 'admin/deleteClientConfig', showLoading: true},
   getClientDistinctConfigNames: {url: BASE_URL + 'admin/getClientDistinctConfigNames', showLoading: true},
   getConfigByName: {url: BASE_URL + 'admin/getConfigByName', showLoading: true},
+  getRecommendationReportsAdmin: {url: BASE_URL + 'admin/getClientRecommendationReports', showLoading: true},
+  getRecommendationTypes: {url: BASE_URL + 'admin/getRecommendationTypes', showLoading: true},
+  getAnalyticsFirmsByClient: {url: BASE_URL + 'adminx/getAnalyticsFirmsByClient', showLoading: true},
+  getFirmsByClient: {url: BASE_URL + 'admin/getFirmsByClient', showLoading: true},
+  getPracticeAreaListByClientAdmin: {url: BASE_URL + 'admin/getPracticeAreaListByClient', showLoading: true},
+  getAdminFirmStats: {url: BASE_URL + 'admin/getFirmStats', showLoading: true},
+  getFirmStaffing: {url: BASE_URL + 'admin/getFirmStaffing', showLoading: true},
+  getPracticeAreasByFirm: {url: BASE_URL + 'admin/getPracticeAreasByFirm', showLoading: true},
+  getFirmRateIncreaseData: {url: BASE_URL + 'admin/getFirmRateIncreaseData', showLoading: true},
+  getFirmsByPracticeArea: {url: BASE_URL + 'admin/getFirmsByPracticeArea', showLoading: true},
+  getOrgPracticeAreaSetting: {url: BASE_URL + 'admin/organization/{id}/practiceAreaSettings', showLoading: true},
+  getFirmBlockBillingData: {url: BASE_URL + 'admin/getFirmBlockBillingData', showLoading: true},
+  getRecommendationReport: {url: BASE_URL + 'admin/getRecommendationReport', showLoading: true},
+
+  saveRecommendationReport: {url: BASE_URL + 'admin/recommendation-report', showLoading: true},
+  deleteClientRecommendationReport: {url: BASE_URL + 'admin/deleteRecommendationReport', showLoading: true},
+  deleteClientRecommendation: {url: BASE_URL + 'admin/deleteClientRecommendation', showLoading: true},
+
+  getTkWorkDistribution: {url: BASE_URL + 'admin/getTkWorkDistribution', showLoading: true},
 
 };
 
 export const ROUTES = [
   {name: 'app.client-dashboard.launchpad', routePath: 'analytics-ui/analytics.html', fragment: '/analytics.html'},
-  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/'},
+  {name: 'app.client-dashboard.firm-spend', routePath: null, fragment: '/firm/', refreshNav: true},
   {name: 'analytics.benchmarks', routePath: 'analytics-ui/benchmarking', fragment: '/benchmarking'},
   {name: 'analytics.savings.calculator', routePath: 'analytics-ui/savings-calculator', fragment: '/savings-calculator'},
-  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea'},
+  {name: 'app.client-dashboard.practice-area', routePath: null, fragment: '/practiceArea', refreshNav: true},
   {name: 'app.benchmarking.list', routePath: 'analytics-ui/admin/benchmarks', fragment: '/benchmarks'},
   {name: 'analytics.benchmarking.setup', routePath: 'analytics-ui/benchmarks-setup', fragment: '/benchmarks-setup'},
   {name: 'app.rate.increase', routePath: 'analytics-ui/admin/rate-increase', fragment: '/rate-increase'},
   {name: 'app.client.configs', routePath: 'analytics-ui/admin/client-configs', fragment: '/client-configs'},
   {name: 'analytics.pastsavings', routePath: 'analytics-ui/past-savings', fragment: '/past-savings'},
+  {name: 'app.work.distribution', routePath: 'analytics-ui/admin/work-distribution', fragment: '/work-distribution'},
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];

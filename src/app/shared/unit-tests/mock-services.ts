@@ -23,6 +23,10 @@ import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
 import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
 import {MOCK_SMART_PAS} from './mock-data/discounts';
 import {MOCK_CIRP_SUMMARY} from './mock-data/cirp-matter-summary';
+import {MOCK_RECOMMENDATION_REPORTS, MOCK_RECOMMENDATION_TYPES, MOCK_PA_SETTING, MOCK_RECOMMENDATION_REPORT, MOCK_RECOMMENDATION_DISCOUNT_DATA, MOCK_RECOMMENDATION_STAFFING_DATA,
+  MOCK_RECOMMENDATION_BB_DATA, MOCK_RECOMMENDATION_RATE_DATA, MOCK_FIRM_OPTIONS, MOCK_STAFFING_SAVINGS, MOCK_RATE_INCREASE_SAVINGS, MOCK_SHIFT_WORK_RESULT, MOCK_DISCOUNT_SAVINGS, MOCK_BLOCK_BILLING_TOTALS,
+  MOCK_RECOMMENDATION_TYPES_RESULT, MOCK_RECOMMENDATION_BB_DATA_RESULT, MOCK_FIRMS_BY_PA, MOCK_PRACTICE_AREAS_BY_FIRM} from './mock-data/recommendations';
+import {MOCK_WORK_DISTRIBUTION} from './mock-data/work-distribution';
 
 export const ngWindow = {
   location: {
@@ -32,8 +36,8 @@ export const ngWindow = {
 
 export class UserStub {
   entitlements: [any];
-  config: {};
-  // config: {'analytics.practice.bodhala.areas': {configs: [{description: "config for analytics practice areas", value: "Client Practice Areas", json_config: "Client Practice Areas"}]}};
+  // config: {};
+  config: {'analytics.practice.bodhala.areas': {configs: [{description: 'config for analytics practice areas', value: 'Client Practice Areas', json_config: 'Client Practice Areas'}]}};
   errorMessage: any;
   userId: number = 80;
   currentUser = CURRENT_USER.result.user;
@@ -91,6 +95,10 @@ export class DataStub {
         return of({result: MOCK_ANNOTATIONS.result[0]});
       case 'saveClientConfig':
         return of({result: {}});
+      case 'deleteClientRecommendationReport':
+        return of({result: true});
+      case 'deleteClientRecommendation':
+        return of({result: true});
       default:
         return of([]);
     }
@@ -201,6 +209,49 @@ export class DataStub {
         return of(MOCK_SMART_PAS);
       case 'getCirpMatterSummary':
         return of(MOCK_CIRP_SUMMARY);
+      case 'getRecommendationReportsAdmin':
+        return of(MOCK_RECOMMENDATION_REPORTS);
+      case 'getFirmsByClient':
+        return of(MOCK_FIRMS);
+      case 'getFirmsListByClient':
+        return of(MOCK_FIRMS);
+      case 'getRecommendationReportClient':
+        return of(MOCK_RECOMMENDATION_REPORT);
+      case 'getRecommendationReport':
+        return of(MOCK_RECOMMENDATION_REPORT);
+      case 'getPracticeAreaListByClientAdmin':
+        return of (MOCK_PRACTICE_AREAS);
+      case 'getRecommendationTypesClient':
+        return of(MOCK_RECOMMENDATION_TYPES_RESULT);
+      case 'getRecommendationTypes':
+        return of (MOCK_RECOMMENDATION_TYPES_RESULT);
+      case 'getAdminFirmStats':
+        return of(MOCK_RECOMMENDATION_DISCOUNT_DATA);
+      case 'getFirmStatsClient':
+        return of(MOCK_RECOMMENDATION_DISCOUNT_DATA);
+      case 'getFirmBlockBillingData':
+        return of(MOCK_RECOMMENDATION_BB_DATA_RESULT);
+      case 'getFirmBlockBillingDataClient':
+        return of(MOCK_RECOMMENDATION_BB_DATA_RESULT);
+      case 'getFirmRateIncreaseData':
+        return of(MOCK_RECOMMENDATION_RATE_DATA);
+      case 'getFirmRateIncreaseDataClient':
+        return of(MOCK_RECOMMENDATION_RATE_DATA);
+      case 'getFirmStaffing':
+        return of({result: MOCK_RECOMMENDATION_STAFFING_DATA});
+      case 'getFirmStaffingClient':
+        return of({result: MOCK_RECOMMENDATION_STAFFING_DATA});
+      case 'getOrgPracticeAreaSetting':
+        return of(MOCK_PA_SETTING);
+      case 'getFirmsByPracticeAreaClient':
+        return of(MOCK_FIRMS_BY_PA);
+      case 'getPracticeAreasByFirm':
+        return of(MOCK_PRACTICE_AREAS_BY_FIRM);
+      case 'getFirmsByPracticeArea':
+        return of(MOCK_FIRMS_BY_PA);
+
+      case 'getTkWorkDistribution':
+        return of(MOCK_WORK_DISTRIBUTION);
       default:
         return of([]);
     }
@@ -306,6 +357,48 @@ export class LaunchPadServiceStub {
       topBlockBillers: Promise.resolve({result: []}),
       invoiceIQReports: Promise.resolve({result: []}),
     };
+  }
+}
+
+export class RecommendationsServicesStub {
+  public getRecommendationTypes() {
+    return Promise.resolve(MOCK_RECOMMENDATION_TYPES);
+  }
+  public getOrgPracticeAreaSetting(selectedOrgId: number) {
+    return Promise.resolve(MOCK_PA_SETTING);
+  }
+  public getFirms(selectedClientId: number) {
+    return Promise.resolve(MOCK_FIRM_OPTIONS);
+  }
+  public getReport() {
+    return Promise.resolve(MOCK_RECOMMENDATION_REPORT);
+  }
+  public getDiscountData() {
+    return Promise.resolve(MOCK_RECOMMENDATION_DISCOUNT_DATA);
+  }
+  public getStaffingData() {
+    return Promise.resolve(MOCK_RECOMMENDATION_STAFFING_DATA);
+  }
+  public getRateIncreaseData() {
+    return Promise.resolve(MOCK_RATE_INCREASE_SAVINGS);
+  }
+  public getBlockBillingData() {
+    return Promise.resolve(MOCK_RECOMMENDATION_BB_DATA);
+  }
+  public getFirmsByPracticeArea() {
+    return Promise.resolve(MOCK_FIRMS_BY_PA);
+  }
+  public calcStaffingAllocationSavings() {
+    return(MOCK_STAFFING_SAVINGS);
+  }
+  public calculateRateIncreaseSavingsForFirm() {
+    return(MOCK_RATE_INCREASE_SAVINGS);
+  }
+  public calcDiscountSavings() {
+    return(MOCK_DISCOUNT_SAVINGS);
+  }
+  public calcBlockBillingSavings() {
+    return(MOCK_BLOCK_BILLING_TOTALS);
   }
 }
 
