@@ -114,6 +114,7 @@ import {AceEditorModule} from 'ng2-ace-editor';
 import {FirmDiscountsComponent} from '../../firm/firm-discounts/firm-discounts.component';
 import {CirpMatterSummaryComponent} from '../../matters/cirp-matter-summary/cirp-matter-summary.component';
 import {WorkDistributionComponent} from '../../admin/work-distribution/work-distribution.component';
+import {WorkDistributionByPaComponent} from '../../admin/work-distribution/work-distribution-by-pa/work-distribution-by-pa.component';
 
 
 export const IMPORTS = [
@@ -220,7 +221,8 @@ export const DECLARATIONS = [
   AddEditConfigComponent,
   FirmDiscountsComponent,
   CirpMatterSummaryComponent,
-  WorkDistributionComponent
+  WorkDistributionComponent,
+  WorkDistributionByPaComponent
 ];
 
 export const PROVIDERS = [

@@ -1,0 +1,18 @@
+<div>
+  <div>
+    <ag-grid-angular
+        #agGrid
+        style="width: 100%;"
+        [ngStyle]="{'height': agGridService.setGridHeight(workRecordsByPA, paginationPageSize) +'px'}"
+        class="ag-theme-alpine"
+        [pagination]="true"
+        [paginationPageSize]="paginationPageSize"
+        [sideBar]="sideBarConfig"
+        (displayedColumnsChanged)="saveGridConfig($event)"
+        (sortChanged)="saveGridConfig($event);"
+        (columnResized)="saveGridConfig($event);"
+        [suppressAggFuncInHeader]="true"
+        [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </div>
+</div>

@@ -130,6 +130,7 @@ export const END_POINTS_URLS = {
   deleteClientRecommendation: {url: BASE_URL + 'admin/deleteClientRecommendation', showLoading: true},
 
   getTkWorkDistribution: {url: BASE_URL + 'admin/getTkWorkDistribution', showLoading: true},
+  getTkWorkDistributionByPA: {url: BASE_URL + 'admin/getTkWorkDistributionByPA', showLoading: true},
 
 };
 
