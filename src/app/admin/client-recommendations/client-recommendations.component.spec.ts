@@ -60,15 +60,15 @@ describe('ClientRecommendationsComponent', () => {
   //   expect(component.selectedClient.org_id).toBe(1);
   // });
   it('should editCellRenderer recommendations', () => {
-    const result = component.viewCellRenderer({ id: 1});
+    const result = component.viewCellRenderer();
     expect(result).toBeTruthy();
   });
   it('should editCellRenderer recommendations', () => {
-    const result = component.editCellRenderer({ id: 1});
+    const result = component.editCellRenderer();
     expect(result).toBeTruthy();
   });
   it('should deleteCellRenderer recommendations', () => {
-    const result = component.deleteCellRenderer({ id: 1});
+    const result = component.deleteCellRenderer();
     expect(result).toBeTruthy();
   });
 

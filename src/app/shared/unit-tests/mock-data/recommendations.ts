@@ -117,6 +117,7 @@ export const MOCK_RECOMMENDATION_REPORT = {
     "id": 60,
     "bh_client_id": 89,
     "title": "testing year save",
+    "published": true,
     "created_by": "889",
     "created_on": "2021-05-20T17:29:05.166989",
     "deleted_by": null,
