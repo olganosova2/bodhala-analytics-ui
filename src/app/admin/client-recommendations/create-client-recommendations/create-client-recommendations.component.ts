@@ -87,6 +87,7 @@ export class CreateClientRecommendationsComponent implements OnInit {
     return {
       id: null,
       title: '',
+      published: false,
       bh_client_id: this.selectedClientId,
       recommendations: [],
       created_on: '',
@@ -236,10 +237,14 @@ export class CreateClientRecommendationsComponent implements OnInit {
     let modalTitle = '';
     if (this.newReport.id) {
       modalTitle = 'Confirm Report Update';
-      modalText = 'Update report, ' + this.newReport.title + '? The updated report will be visible by the client immediately upon saving';
+      if (this.newReport.published) {
+        modalText = 'Update report, ' + this.newReport.title + '? Because this is a published report, the updates will be immediately visible by the client.';
+      } else {
+        modalText = 'Update report, ' + this.newReport.title + '? This report is not currently viewable by the client. You must publish the report for the client to view the updates.';
+      }
     } else {
       modalTitle = 'Confirm Report Creation';
-      modalText = 'Create report, ' + this.newReport.title + '? The report will be viewable to clients immediately upon creation.';
+      modalText = 'Create report, ' + this.newReport.title + '? The report will only be visible to clients after publishing.';
     }
     const modalConfig = {...confirmDialogConfig, data: {title: modalTitle, text: modalText}};
 

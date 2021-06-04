@@ -99,6 +99,8 @@ export class DataStub {
         return of({result: true});
       case 'deleteClientRecommendation':
         return of({result: true});
+      case 'publishClientRecommendation':
+        return of({result: true, error: null});
       default:
         return of([]);
     }

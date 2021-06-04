@@ -75,7 +75,7 @@ initColumns(): void {
     this.pendingRequest = this.httpService.makeGetRequest('getClientRecommendationReports', params).subscribe(
       (data: any) => {
         this.recommendationReports = data.result || [];
-        // this.recommendationReports = this.recommendationReports.filter(report => report.deleted_on === null);
+        this.recommendationReports = this.recommendationReports.filter(report => report.published === true);
         this.recommendationReports = this.recommendationReports.sort(this.utilService.dynamicSort('-created_on'));
         const pipe = new DatePipe('en-US');
         for (const report of this.recommendationReports) {
