@@ -98,6 +98,14 @@ export class WorkDistributionComponent implements OnInit, OnDestroy {
   }
   changeTab(evt: any): void {
     this.selectedTabIndex = evt.index;
+    if (this.selectedTabIndex === 0 && this.selectedClient) {
+      this.commonServ.pageSubtitle = this.selectedClient.org_name;
+    } else if (this.selectedTabIndex === 0 && !this.selectedClient) {
+      this.commonServ.pageSubtitle = 'By Client';
+    }
+    else {
+      this.commonServ.pageSubtitle = 'By BD Practice Area';
+    }
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

@@ -50,4 +50,16 @@ describe('WorkDistributionComponent', () => {
     component.loadClient(client);
     expect(component.selectedClient.org_id).toBe(1);
   });
+  it('should changeTab to 0', () => {
+    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
+    const evt = { index: 0};
+    component.changeTab(evt);
+    expect(component.selectedTabIndex).toBe(0);
+  });
+  it('should changeTab to 1', () => {
+    component.selectedClient = null;
+    const evt = { index: 1};
+    component.changeTab(evt);
+    expect(component.selectedTabIndex).toBe(1);
+  });
 });
