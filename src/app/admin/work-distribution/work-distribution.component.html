@@ -1,22 +1,32 @@
 <div>
-  <h4>Average Work Distribution
+  <h4 class="mb20">Average Work Distribution
   </h4>
-  <div>
-    <div class="mb10 mt10">Please select a client:</div>
-    <bd-client-drop-down (clientSelected)="loadClient($event)"></bd-client-drop-down>
-  </div>
-  <div *ngIf="selectedClient">
-    <ag-grid-angular
-        #agGrid
-        style="width: 100%;"
-        [ngStyle]="{'height': agGridService.setGridHeight(workRecords, 12) +'px'}"
-        class="ag-theme-alpine"
-        [sideBar]="sideBarConfig"
-        (displayedColumnsChanged)="saveGridConfig($event)"
-        (sortChanged)="saveGridConfig($event);"
-        (columnResized)="saveGridConfig($event);"
-        [suppressAggFuncInHeader]="true"
-        [gridOptions]="gridOptions">
-    </ag-grid-angular>
-  </div>
+  <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
+    <mat-tab label="By Client">
+      <div>
+        <div class="mb10 mt10">Please select a client:</div>
+        <bd-client-drop-down (clientSelected)="loadClient($event)"></bd-client-drop-down>
+      </div>
+      <div *ngIf="selectedClient">
+        <ag-grid-angular
+            #agGrid
+            style="width: 100%;"
+            [ngStyle]="{'height': agGridService.setGridHeight(workRecords, 12) +'px'}"
+            class="ag-theme-alpine"
+            [sideBar]="sideBarConfig"
+            (displayedColumnsChanged)="saveGridConfig($event)"
+            (sortChanged)="saveGridConfig($event);"
+            (columnResized)="saveGridConfig($event);"
+            [suppressAggFuncInHeader]="true"
+            [gridOptions]="gridOptions">
+        </ag-grid-angular>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="By BD Practice Area">
+      <bd-work-distribution-by-pa></bd-work-distribution-by-pa>
+    </mat-tab>
+
+  </mat-tab-group>
+
 </div>

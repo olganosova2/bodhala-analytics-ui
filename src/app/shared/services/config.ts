@@ -131,6 +131,7 @@ export const END_POINTS_URLS = {
 
   getTkWorkDistribution: {url: BASE_URL + 'admin/getTkWorkDistribution', showLoading: true},
   publishRecommendationReport: {url: BASE_URL + 'admin/publishRecommendationReport', showLoading: true},
+  getTkWorkDistributionByPA: {url: BASE_URL + 'admin/getTkWorkDistributionByPA', showLoading: true},
 
 };
 

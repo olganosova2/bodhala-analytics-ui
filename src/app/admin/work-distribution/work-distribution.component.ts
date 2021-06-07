@@ -6,8 +6,9 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {MatDialog} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
 import {GridOptions} from 'ag-grid-community';
-import {IWorkDistribution} from './work-distrubution-model';
+import {IWorkDistribution, IWorkDistributionByPA} from './work-distrubution-model';
 import {IEntityConfig} from '../client-configs/client-configs-model';
+import {IClientPA} from '../../matters/cirp-matter-summary/cirp.service';
 
 @Component({
   selector: 'bd-work-distribution',
@@ -16,15 +17,18 @@ import {IEntityConfig} from '../client-configs/client-configs-model';
 })
 export class WorkDistributionComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
+  pendingRequestPA: Subscription;
   errorMessage: any;
   selectedClient: IClient;
   workRecords: Array<IWorkDistribution> = [];
+  workRecordsByPA: Array<IWorkDistributionByPA> = [];
   gridOptions: GridOptions;
   savedState: any;
   sideBarConfig: any;
   defaultColumn: any;
   defaultState: any;
   firstLoad: boolean = true;
+  selectedTabIndex: number = 0;
   constructor(private route: ActivatedRoute,
               public router: Router,
               private httpService: HttpService,
@@ -60,8 +64,8 @@ export class WorkDistributionComponent implements OnInit, OnDestroy {
   loadClient(client: IClient): void {
     this.selectedClient = client;
     if (this.selectedClient) {
-      this.getClientData();
       this.commonServ.pageSubtitle = this.selectedClient.org_name;
+      this.getClientData();
     }
   }
   getClientData(): void {
@@ -92,7 +96,9 @@ export class WorkDistributionComponent implements OnInit, OnDestroy {
     const state = evt;
     this.agGridService.saveState('WorkDistributionGrid', this.gridOptions);
   }
-
+  changeTab(evt: any): void {
+    this.selectedTabIndex = evt.index;
+  }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {

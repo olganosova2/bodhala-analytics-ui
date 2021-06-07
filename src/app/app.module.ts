@@ -137,6 +137,7 @@ import { RecommendationsComponent } from './recommendations/recommendations.comp
 import { ViewRecommendationsComponent } from './recommendations/view-recommendations/view-recommendations.component';
 import { WorkDistributionComponent } from './admin/work-distribution/work-distribution.component';
 import { PublishCheckboxComponent } from './admin/client-recommendations/publish-checkbox/publish-checkbox.component';
+import { WorkDistributionByPaComponent } from './admin/work-distribution/work-distribution-by-pa/work-distribution-by-pa.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -224,6 +225,8 @@ export function initHttp(service: HttpService) {
     ViewRecommendationsComponent,
     WorkDistributionComponent,
     PublishCheckboxComponent
+    WorkDistributionComponent,
+    WorkDistributionByPaComponent
   ],
   entryComponents: [
     PillComponent,
