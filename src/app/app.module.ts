@@ -110,7 +110,6 @@ import { AnnotaionsModalComponent } from './shared/components/annotations/annota
 import { SafePipe } from './shared/pipes/safe.pipe';
 import { AnnotationLabelsComponent } from './shared/components/annotations/annotation-labels/annotation-labels.component';
 import {ClickOutsideModule} from 'ng-click-outside';
-import { SavedReportsModalComponent } from './firm/saved-reports-modal/saved-reports-modal.component';
 import { SpendTrendChartComponent } from './firm/firm-rate-card/spend-trend-chart/spend-trend-chart.component';
 import { ReportCardBillingTotalsComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-totals.component';
 import { ReportCardBillingTotalItemComponent } from './firm/firm-rate-card/report-card-billing-totals/report-card-billing-total-item/report-card-billing-total-item.component';
