@@ -122,3 +122,249 @@ export const MOCK_WORK_DISTRIBUTION = {
   }],
   "error": null
 }
+
+export const MOCK_WORK_DISTRIBUTION_BY_PA = {
+  "result": [{
+    "client_matter_type": "Acquisition Finance",
+    "bh_classification": "associate",
+    "total_spend": 47997,
+    "total_hours": 273.8
+  }, {
+    "client_matter_type": "Acquisition Finance",
+    "bh_classification": "partner",
+    "total_spend": 56461,
+    "total_hours": 141.8
+  }, {
+    "client_matter_type": "Antitrust",
+    "bh_classification": "associate",
+    "total_spend": 21977,
+    "total_hours": 26
+  }, {
+    "client_matter_type": "Antitrust",
+    "bh_classification": "paralegal",
+    "total_spend": 3596,
+    "total_hours": 13.3
+  }, {
+    "client_matter_type": "Asset-Backed",
+    "bh_classification": "associate",
+    "total_spend": 47997,
+    "total_hours": 273.8
+  }, {
+    "client_matter_type": "Asset-Backed",
+    "bh_classification": "partner",
+    "total_spend": 56461,
+    "total_hours": 141.8
+  }, {
+    "client_matter_type": "Banking & Credit",
+    "bh_classification": "associate",
+    "total_spend": 4123114.05,
+    "total_hours": 14314.9
+  }, {
+    "client_matter_type": "Banking & Credit",
+    "bh_classification": "other",
+    "total_spend": 751376.76,
+    "total_hours": 3162.3
+  }, {
+    "client_matter_type": "Banking & Credit",
+    "bh_classification": "paralegal",
+    "total_spend": 1065303.78,
+    "total_hours": 4834
+  }, {
+    "client_matter_type": "Banking & Credit",
+    "bh_classification": "partner",
+    "total_spend": 3626763.84,
+    "total_hours": 81462.33
+  }, {
+    "client_matter_type": "Banking & Credit",
+    "bh_classification": null,
+    "total_spend": 35742585.9318,
+    "total_hours": 2238880.09
+  }, {
+    "client_matter_type": "Bankruptcy",
+    "bh_classification": "associate",
+    "total_spend": 875899,
+    "total_hours": 2870.4921
+  }, {
+    "client_matter_type": "Bankruptcy",
+    "bh_classification": "paralegal",
+    "total_spend": 192983,
+    "total_hours": 1388.7951
+  }, {
+    "client_matter_type": "Bankruptcy",
+    "bh_classification": "partner",
+    "total_spend": 992568.5,
+    "total_hours": 3200.4919
+  }, {
+    "client_matter_type": "Bankruptcy",
+    "bh_classification": null,
+    "total_spend": 0,
+    "total_hours": 0
+  }, {
+    "client_matter_type": "CFIUS",
+    "bh_classification": "associate",
+    "total_spend": 21977,
+    "total_hours": 26
+  }, {
+    "client_matter_type": "CFIUS",
+    "bh_classification": "paralegal",
+    "total_spend": 3596,
+    "total_hours": 13.3
+  }, {
+    "client_matter_type": "Capital Markets",
+    "bh_classification": "associate",
+    "total_spend": 1194369.88,
+    "total_hours": 2312.3
+  }, {
+    "client_matter_type": "Capital Markets",
+    "bh_classification": "other",
+    "total_spend": 39951.84,
+    "total_hours": 157
+  }, {
+    "client_matter_type": "Capital Markets",
+    "bh_classification": "paralegal",
+    "total_spend": 63811.81,
+    "total_hours": 247.4
+  }, {
+    "client_matter_type": "Capital Markets",
+    "bh_classification": "partner",
+    "total_spend": 1587343.34,
+    "total_hours": 3627.8
+  }, {
+    "client_matter_type": "Capital Markets",
+    "bh_classification": null,
+    "total_spend": 50075607.77,
+    "total_hours": 3460.6
+  }, {
+    "client_matter_type": "Cartel",
+    "bh_classification": "associate",
+    "total_spend": 21977,
+    "total_hours": 26
+  }, {
+    "client_matter_type": "Cartel",
+    "bh_classification": "paralegal",
+    "total_spend": 3596,
+    "total_hours": 13.3
+  }, {
+    "client_matter_type": "Energy",
+    "bh_classification": "associate",
+    "total_spend": 613078.155,
+    "total_hours": 4327.3
+  }, {
+    "client_matter_type": "Energy",
+    "bh_classification": "other",
+    "total_spend": 138.71,
+    "total_hours": 2.2
+  }, {
+    "client_matter_type": "Energy",
+    "bh_classification": "paralegal",
+    "total_spend": 17786.255,
+    "total_hours": 279.6
+  }, {
+    "client_matter_type": "Energy",
+    "bh_classification": "partner",
+    "total_spend": 679457.45,
+    "total_hours": 4087.4
+  }, {
+    "client_matter_type": "Energy",
+    "bh_classification": null,
+    "total_spend": 0,
+    "total_hours": 0
+  }, {
+    "client_matter_type": "Funds",
+    "bh_classification": "associate",
+    "total_spend": 2520387.7486,
+    "total_hours": 16625.6486
+  }, {
+    "client_matter_type": "Funds",
+    "bh_classification": "other",
+    "total_spend": 581598.349,
+    "total_hours": 4321.3
+  }, {
+    "client_matter_type": "Funds",
+    "bh_classification": "paralegal",
+    "total_spend": 83792.5351,
+    "total_hours": 1060.7
+  }, {
+    "client_matter_type": "Funds",
+    "bh_classification": "partner",
+    "total_spend": 3787109.8702,
+    "total_hours": 21746.9901
+  }, {
+    "client_matter_type": "Funds",
+    "bh_classification": null,
+    "total_spend": 92796.44,
+    "total_hours": 22
+  }, {
+    "client_matter_type": "Health Care",
+    "bh_classification": "associate",
+    "total_spend": 61212.42,
+    "total_hours": 395.8
+  }, {
+    "client_matter_type": "Health Care",
+    "bh_classification": "other",
+    "total_spend": 112346.2483,
+    "total_hours": 763.3
+  }, {
+    "client_matter_type": "Health Care",
+    "bh_classification": "paralegal",
+    "total_spend": 992.31,
+    "total_hours": 11.9
+  }, {
+    "client_matter_type": "Health Care",
+    "bh_classification": "partner",
+    "total_spend": 94426.151,
+    "total_hours": 582.9
+  }, {
+    "client_matter_type": "Health Care",
+    "bh_classification": null,
+    "total_spend": 0,
+    "total_hours": 0
+  }, {
+    "client_matter_type": "Labor & Employment",
+    "bh_classification": "associate",
+    "total_spend": 53509.259,
+    "total_hours": 318.4987
+  }, {
+    "client_matter_type": "Labor & Employment",
+    "bh_classification": "paralegal",
+    "total_spend": 1628.8072,
+    "total_hours": 20.4
+  }, {
+    "client_matter_type": "Labor & Employment",
+    "bh_classification": "partner",
+    "total_spend": 45368.3897,
+    "total_hours": 258.4
+  }, {
+    "client_matter_type": "Labor & Employment",
+    "bh_classification": null,
+    "total_spend": 0,
+    "total_hours": 0
+  }, {
+    "client_matter_type": "M&A",
+    "bh_classification": "associate",
+    "total_spend": 72500.045,
+    "total_hours": 400.1
+  }, {
+    "client_matter_type": "M&A",
+    "bh_classification": "other",
+    "total_spend": 363214.205,
+    "total_hours": 2009.5
+  }, {
+    "client_matter_type": "M&A",
+    "bh_classification": "paralegal",
+    "total_spend": 24699.345,
+    "total_hours": 328.2
+  }, {
+    "client_matter_type": "M&A",
+    "bh_classification": "partner",
+    "total_spend": 2168699.045,
+    "total_hours": 10420.6
+  }, {
+    "client_matter_type": "M&A",
+    "bh_classification": null,
+    "total_spend": 0,
+    "total_hours": 0
+  }],
+  "error": null
+}
+

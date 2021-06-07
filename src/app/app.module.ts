@@ -103,6 +103,7 @@ import { SavingsWidgetComponent } from './savings-calculator/savings-widget/savi
 import { ProgressSemiCircleComponent } from './savings-calculator/progress-semi-circle/progress-semi-circle.component';
 import { OverstaffingGridComponent } from './savings-calculator/overstaffing-grid/overstaffing-grid.component';
 import {BaseCell} from './launchpad/card/cells/base-cell';
+import { SavedReportsModalComponent } from './firm/saved-reports-modal/saved-reports-modal.component';
 import { TaskCostComponent } from './task-cost/task-cost.component';
 import { AnnotationsComponent } from './shared/components/annotations/annotations.component';
 import { AnnotaionsModalComponent } from './shared/components/annotations/annotaions-modal/annotaions-modal.component';
@@ -136,6 +137,7 @@ import { ViewClientRecommendationComponent } from './admin/client-recommendation
 import { RecommendationsComponent } from './recommendations/recommendations.component';
 import { ViewRecommendationsComponent } from './recommendations/view-recommendations/view-recommendations.component';
 import { WorkDistributionComponent } from './admin/work-distribution/work-distribution.component';
+import { WorkDistributionByPaComponent } from './admin/work-distribution/work-distribution-by-pa/work-distribution-by-pa.component';
 import { PublishCheckboxComponent } from './admin/client-recommendations/publish-checkbox/publish-checkbox.component';
 
 export const WindowToken = new InjectionToken('Window');
@@ -224,6 +226,8 @@ export function initHttp(service: HttpService) {
     ViewRecommendationsComponent,
     WorkDistributionComponent,
     PublishCheckboxComponent
+    WorkDistributionComponent,
+    WorkDistributionByPaComponent
   ],
   entryComponents: [
     PillComponent,
