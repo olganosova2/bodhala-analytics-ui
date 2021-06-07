@@ -225,8 +225,7 @@ export function initHttp(service: HttpService) {
     RecommendationsComponent,
     ViewRecommendationsComponent,
     WorkDistributionComponent,
-    PublishCheckboxComponent
-    WorkDistributionComponent,
+    PublishCheckboxComponent,
     WorkDistributionByPaComponent
   ],
   entryComponents: [
