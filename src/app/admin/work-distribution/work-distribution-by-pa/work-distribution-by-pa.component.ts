@@ -46,9 +46,9 @@ export class WorkDistributionByPaComponent implements OnInit, OnDestroy {
     this.gridOptions.columnDefs = [
       {headerName: 'BD Practice Area', field: 'client_matter_type', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  floatingFilter: true},
       {headerName: 'Classification', field: 'bh_classification', ...this.defaultColumn,  filter: 'agTextColumnFilter',  floatingFilter: true},
-      {headerName: 'Spend', field: 'total_spend', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn,  floatingFilter: true},
+      {headerName: 'Total Spend For Class', field: 'total_spend', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn,  floatingFilter: true},
       {headerName: '% of Total Spend', field: 'total_spend_per', cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn,  floatingFilter: true},
-      {headerName: 'Hours', field: 'total_hours', cellRenderer: this.agGridService.roundNumberCellRenderer, ...this.defaultColumn,  floatingFilter: true },
+      {headerName: 'Total Hours For Class', field: 'total_hours', cellRenderer: this.agGridService.roundNumberCellRenderer, ...this.defaultColumn,  floatingFilter: true },
       {headerName: '% of Total Hours', field: 'total_hours_per', cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn,  floatingFilter: true},
       {headerName: 'Total Spend', field: 'sub_total_spend', cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn,  floatingFilter: true},
       {headerName: 'Total Hours', field: 'sub_total_hours', cellRenderer: this.agGridService.roundNumberCellRenderer, ...this.defaultColumn,  floatingFilter: true },
@@ -80,7 +80,7 @@ export class WorkDistributionByPaComponent implements OnInit, OnDestroy {
   }
   saveGridConfig(evt: any): void {
     const state = evt;
-    // this.agGridService.saveState('WorkDistributionByPaGrid', this.gridOptions);
+    this.agGridService.saveState('WorkDistributionByPaGrid', this.gridOptions);
   }
   processRecords(records: Array<IWorkDistributionByPA>): void {
     const pas = [];
@@ -98,8 +98,10 @@ export class WorkDistributionByPaComponent implements OnInit, OnDestroy {
       if (found) {
         rec.sub_total_spend = found.sub_total_spend;
         rec.sub_total_hours = found.sub_total_hours;
-        rec.total_spend_per = rec.total_spend / rec.sub_total_spend * 100;
-        rec.total_hours_per = rec.total_hours / rec.sub_total_hours * 100;
+        const subSpend = rec.sub_total_spend || 1;
+        const subHours = rec.sub_total_hours || 1;
+        rec.total_spend_per = rec.total_spend / subSpend * 100;
+        rec.total_hours_per = rec.total_hours / subHours * 100;
       }
     }
     records = records.filter(e => e.bh_classification !== null && e.bh_classification !== undefined);
