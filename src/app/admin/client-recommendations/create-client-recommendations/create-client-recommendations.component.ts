@@ -66,10 +66,13 @@ export class CreateClientRecommendationsComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
+    this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
+    await this.getClientPracticeAreas();
     this.recommendationTypes = await this.recommendationService.getRecommendationTypes();
     this.firmOptions = await this.recommendationService.getFirms(this.selectedClientId);
-    this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
-    this.getClientPracticeAreas();
+    // this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
+    // this.getClientPracticeAreas();
+
     if (!this.editMode) {
       this.newReport = this.constructNewReport();
     } else {
@@ -99,7 +102,7 @@ export class CreateClientRecommendationsComponent implements OnInit {
     };
   }
 
-  getClientPracticeAreas(): void {
+  async getClientPracticeAreas(): Promise<void> {
     const params = {clientId: this.selectedClientId};
     this.pendingRequest = this.httpService.makeGetRequest('getPracticeAreaListByClientAdmin', params).subscribe(
       (data: any) => {
