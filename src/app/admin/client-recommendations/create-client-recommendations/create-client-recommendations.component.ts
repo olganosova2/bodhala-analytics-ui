@@ -70,8 +70,6 @@ export class CreateClientRecommendationsComponent implements OnInit {
     await this.getClientPracticeAreas();
     this.recommendationTypes = await this.recommendationService.getRecommendationTypes();
     this.firmOptions = await this.recommendationService.getFirms(this.selectedClientId);
-    // this.clientPracticeAreaSetting = await this.recommendationService.getOrgPracticeAreaSetting(this.selectedOrgId);
-    // this.getClientPracticeAreas();
 
     if (!this.editMode) {
       this.newReport = this.constructNewReport();

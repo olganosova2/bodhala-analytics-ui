@@ -525,14 +525,12 @@ export class AddEditRecommendationComponent implements OnInit {
           if (this.selectedType === 'Rate Increase Prevention / Reduction') {
             this.getFirmRateIncreaseData();
           } else if (this.selectedType === 'Shift Work From Firm(s) to Firm(s)') {
-            // let previousLabel;
             if (this.newRecommendation.previous_firm_ids) {
               this.previousFirmNames = [];
               for (const previousFirm of this.newRecommendation.previous_firm_ids) {
                 const previousFirmName = this.firmPAOptions.filter(firm => firm.value === previousFirm);
                 if (previousFirmName.length > 0) {
                   this.previousFirmNames.push(previousFirmName[0].label);
-                  // previousLabel += previousFirmName[0].label
                 }
               }
             }
