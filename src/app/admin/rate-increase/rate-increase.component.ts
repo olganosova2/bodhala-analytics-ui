@@ -59,8 +59,8 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      {headerName: 'Client', field: 'name', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1},
-      {headerName: 'Client ID', field: 'id', ...this.defaultColumn},
+      {headerName: 'Client', field: 'name', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
+      {headerName: 'Client ID', field: 'id', ...this.defaultColumn, floatingFilter: true},
       {headerName: '3-Yr Avg Parner', field: 'partnerAvgIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
       {headerName: 'Last Year Partner', field: 'partnerLastIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
       {headerName: '3-Yr Avg Associate', field: 'associateAvgIncrease',  cellRenderer: this.agGridService.roundToPercentNumberCellRenderer, ...this.defaultColumn },
