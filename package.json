@@ -47,6 +47,7 @@
     "chart.js": "^2.9.3",
     "classlist.js": "^1.1.20150312",
     "core-js": "^3.6.5",
+    "file-saver": "^2.0.5",
     "font-awesome": "^4.7.0",
     "fontawesome": "4.5.0",
     "highcharts": "^8.2.0",
@@ -98,6 +99,6 @@
     "typescript": "~3.9.7"
   },
   "resolutions": {
-    "jspdf/file-saver": "github:eligrey/FileSaver.js#e865e37af9f9947ddcced76b549e27dc45c1cb2e"
+    "jspdf/file-saver": "file-saver"
   }
 }
