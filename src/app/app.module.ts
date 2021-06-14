@@ -138,6 +138,7 @@ import { ViewRecommendationsComponent } from './recommendations/view-recommendat
 import { WorkDistributionComponent } from './admin/work-distribution/work-distribution.component';
 import { PublishCheckboxComponent } from './admin/client-recommendations/publish-checkbox/publish-checkbox.component';
 import { WorkDistributionByPaComponent } from './admin/work-distribution/work-distribution-by-pa/work-distribution-by-pa.component';
+import { LawFirmDuplicatesComponent } from './admin/law-firm-duplicates/law-firm-duplicates.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -225,7 +226,8 @@ export function initHttp(service: HttpService) {
     ViewRecommendationsComponent,
     WorkDistributionComponent,
     PublishCheckboxComponent,
-    WorkDistributionByPaComponent
+    WorkDistributionByPaComponent,
+    LawFirmDuplicatesComponent
   ],
   entryComponents: [
     PillComponent,

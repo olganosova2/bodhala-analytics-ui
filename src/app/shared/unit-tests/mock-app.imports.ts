@@ -115,6 +115,7 @@ import {FirmDiscountsComponent} from '../../firm/firm-discounts/firm-discounts.c
 import {CirpMatterSummaryComponent} from '../../matters/cirp-matter-summary/cirp-matter-summary.component';
 import {WorkDistributionComponent} from '../../admin/work-distribution/work-distribution.component';
 import {WorkDistributionByPaComponent} from '../../admin/work-distribution/work-distribution-by-pa/work-distribution-by-pa.component';
+import {LawFirmDuplicatesComponent} from '../../admin/law-firm-duplicates/law-firm-duplicates.component';
 
 
 export const IMPORTS = [
@@ -222,7 +223,8 @@ export const DECLARATIONS = [
   FirmDiscountsComponent,
   CirpMatterSummaryComponent,
   WorkDistributionComponent,
-  WorkDistributionByPaComponent
+  WorkDistributionByPaComponent,
+  LawFirmDuplicatesComponent
 ];
 
 export const PROVIDERS = [
