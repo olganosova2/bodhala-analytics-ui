@@ -170,7 +170,7 @@ export class AddEditRecommendationComponent implements OnInit {
               public dialog: MatDialog,
               public recommendationService: RecommendationService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.newRecommendation = this.newReport.recommendations[this.index];
     if (this.newRecommendation.id) {
       const filteredType = this.recommendationTypes.filter(type => type.value === this.newRecommendation.type_id);
@@ -205,14 +205,15 @@ export class AddEditRecommendationComponent implements OnInit {
         });
 
       } else if (this.selectedType === 'Shift Work From Firm(s) to Firm(s)') {
-        this.getFirmsByPracticeArea();
+        await this.getFirmsByPracticeArea();
         this.firmChangeForm.patchValue({
           practiceArea: this.newRecommendation.practice_area,
           previousFirms: this.newRecommendation.previous_firm_ids,
           newFirms: this.newRecommendation.recommended_firm_ids,
           comment: this.newRecommendation.comment
         });
-
+        // this.firmChangeForm.get('previousFirms').setValue(this.newRecommendation.previous_firm_ids);
+        // this.firmChangeForm.get('newFirms').setValue(this.newRecommendation.recommended_firm_ids);
       } else if (this.selectedType === 'Reduce / Eliminate Block Billing') {
         this.getPracticeAreasByFirm();
         this.blockBillingForm.patchValue({
@@ -451,7 +452,6 @@ export class AddEditRecommendationComponent implements OnInit {
         } else if (this.selectedType === 'Rate Increase Prevention / Reduction') {
           this.getFirmRateIncreaseData();
         }
-
       },
       err => {
         this.errorMessage = err;
@@ -499,55 +499,58 @@ export class AddEditRecommendationComponent implements OnInit {
     this.rateIncreasePreventionDetails = result.details;
   }
 
-  getFirmsByPracticeArea(): void {
+  async getFirmsByPracticeArea(): Promise<void> {
     const params = {
       clientId: this.selectedClientId,
       practiceArea: this.newRecommendation.practice_area,
       paType: this.clientPracticeAreaSetting
     };
-    this.pendingRequest = this.httpService.makeGetRequest('getFirmsByPracticeArea', params).subscribe(
-      (data: any) => {
-        if (data.result) {
-          if (data.result.length > 0) {
-            for (const firm of data.result) {
-              let tier;
-              if (firm.tier) {
-                tier = firm.tier.toString();
-              } else {
-                tier = 'N/A';
+    return new Promise((resolve, reject) => {
+      this.pendingRequest = this.httpService.makeGetRequest('getFirmsByPracticeArea', params).subscribe(
+        (data: any) => {
+          if (data.result) {
+            if (data.result.length > 0) {
+              for (const firm of data.result) {
+                let tier;
+                if (firm.tier) {
+                  tier = firm.tier.toString();
+                } else {
+                  tier = 'N/A';
+                }
+                firm.blended_rate = firm.blended_rate.toFixed(2);
+                this.firmPAOptions.push({label: firm.firm_name + ' (Tier: ' + tier + ', Blended Rate: $' + firm.blended_rate + ')', value: firm.bh_lawfirm_id});
               }
-              firm.blended_rate = firm.blended_rate.toFixed(2);
-              this.firmPAOptions.push({label: firm.firm_name + ' (Tier: ' + tier + ', Blended Rate: $' + firm.blended_rate + ')', value: firm.bh_lawfirm_id});
             }
           }
+          if (this.selectedType === 'Rate Increase Prevention / Reduction') {
+            this.getFirmRateIncreaseData();
+          } else if (this.selectedType === 'Shift Work From Firm(s) to Firm(s)') {
+            if (this.newRecommendation.previous_firm_ids) {
+              this.previousFirmNames = [];
+              for (const previousFirm of this.newRecommendation.previous_firm_ids) {
+                const previousFirmName = this.firmPAOptions.filter(firm => firm.value === previousFirm);
+                if (previousFirmName.length > 0) {
+                  this.previousFirmNames.push(previousFirmName[0].label);
+                }
+              }
+            }
+            if (this.newRecommendation.recommended_firm_ids) {
+              this.newFirmNames = [];
+              for (const newFirm of this.newRecommendation.recommended_firm_ids) {
+                const newFirmName = this.firmPAOptions.filter(firm => firm.value === newFirm);
+                if (newFirmName.length > 0) {
+                  this.newFirmNames.push(newFirmName[0].label);
+                }
+              }
+            }
+          }
+          resolve();
+        },
+        err => {
+          this.errorMessage = err;
         }
-        if (this.selectedType === 'Rate Increase Prevention / Reduction') {
-          this.getFirmRateIncreaseData();
-        } else if (this.selectedType === 'Shift Work From Firm(s) to Firm(s)') {
-          if (this.newRecommendation.previous_firm_ids) {
-            this.previousFirmNames = [];
-            for (const previousFirm of this.newRecommendation.previous_firm_ids) {
-              const previousFirmName = this.firmPAOptions.filter(firm => firm.value === previousFirm);
-              if (previousFirmName.length > 0) {
-                this.previousFirmNames.push(previousFirmName[0].label);
-              }
-            }
-          }
-          if (this.newRecommendation.recommended_firm_ids) {
-            this.newFirmNames = [];
-            for (const newFirm of this.newRecommendation.recommended_firm_ids) {
-              const newFirmName = this.firmPAOptions.filter(firm => firm.value === newFirm);
-              if (newFirmName.length > 0) {
-                this.newFirmNames.push(newFirmName[0].label);
-              }
-            }
-          }
-        }
-      },
-      err => {
-        this.errorMessage = err;
-      }
-    );
+      );
+    });
   }
 
   async getFirmBlockBillingData(): Promise<void> {
