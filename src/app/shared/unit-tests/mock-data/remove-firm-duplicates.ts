@@ -1,0 +1,51 @@
+export const MOCK_LAW_FIRM_DUPLICATES = {
+  "result": [{
+    "saved_alias": {
+      "modified_on": null,
+      "deleted_on": null,
+      "created_on": "2021-06-14T10:03:00.550446",
+      "alias_date": null,
+      "alias_type": "OTHER",
+      "alias_lower_case": "les traducteurs conseils 2",
+      "id": 160,
+      "client_id": null,
+      "modified_by": null,
+      "deleted_by": null,
+      "created_by": "1",
+      "alias_display": null,
+      "alias_raw": "Les Traducteurs Conseils 2",
+      "firm_id": 33217
+    },
+    "updated_ade_records": {
+      "analytics_data_enhanced": 1,
+      "analytics_budget_enhanced": 0,
+      "analytics_lawfirm_discount": 0,
+      "analytics_firm_report": 0,
+      "analytics_lawfirm_client": 0,
+      "analytics_invoice_detail": 0,
+      "analytics_data_enhanced_dupes": 0,
+      "analytics_lead_attorney": 0,
+      "analytics_lead_partner": 0,
+      "analytics_matter_firm_counsel": 0,
+      "analytics_suggested_firm": 0,
+      "benchmark": 0,
+      "lawyer_info": 0,
+      "law_firm_contact": 0,
+      "law_firm_standard_rate": 0,
+      "law_firm_stats_by_year": 0,
+      "law_firm_tk_classification_rate_limit": 0,
+      "lawfirm_generic_tag": 0,
+      "lawfirm_tier_practice_area_mapping": 0,
+      "master_lawyer_index": 0,
+      "cirp_review": 0,
+      "phase_taxonomy_staging_data": 0,
+      "phase_taxonomy_training_data": 0,
+      "pq_timekeeper_class_detail": 0,
+      "recommendation": 0,
+      "saved_pdf_export": 0
+    },
+    "deleted_firm_result": 1,
+    "firm_id": 30382
+  }],
+  "error": []
+}

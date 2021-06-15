@@ -17,7 +17,6 @@ import {IClientPA} from '../../matters/cirp-matter-summary/cirp.service';
 })
 export class WorkDistributionComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  pendingRequestPA: Subscription;
   errorMessage: any;
   selectedClient: IClient;
   workRecords: Array<IWorkDistribution> = [];

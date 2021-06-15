@@ -27,6 +27,7 @@ import {MOCK_RECOMMENDATION_REPORTS, MOCK_RECOMMENDATION_TYPES, MOCK_PA_SETTING,
   MOCK_RECOMMENDATION_BB_DATA, MOCK_RECOMMENDATION_RATE_DATA, MOCK_FIRM_OPTIONS, MOCK_STAFFING_SAVINGS, MOCK_RATE_INCREASE_SAVINGS, MOCK_SHIFT_WORK_RESULT, MOCK_DISCOUNT_SAVINGS, MOCK_BLOCK_BILLING_TOTALS,
   MOCK_RECOMMENDATION_TYPES_RESULT, MOCK_RECOMMENDATION_BB_DATA_RESULT, MOCK_FIRMS_BY_PA, MOCK_PRACTICE_AREAS_BY_FIRM} from './mock-data/recommendations';
 import {MOCK_WORK_DISTRIBUTION, MOCK_WORK_DISTRIBUTION_BY_PA} from './mock-data/work-distribution';
+import {MOCK_LAW_FIRM_DUPLICATES} from './mock-data/remove-firm-duplicates';
 
 export const ngWindow = {
   location: {
@@ -101,6 +102,8 @@ export class DataStub {
         return of({result: true});
       case 'publishClientRecommendation':
         return of({result: true, error: null});
+      case 'removeLawFirmDupes':
+        return of(MOCK_LAW_FIRM_DUPLICATES);
       default:
         return of([]);
     }
