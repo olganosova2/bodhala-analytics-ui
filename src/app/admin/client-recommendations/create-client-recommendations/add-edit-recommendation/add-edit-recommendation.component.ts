@@ -472,6 +472,10 @@ export class AddEditRecommendationComponent implements OnInit {
   }
 
   async getFirmStaffing(): Promise<void> {
+    const filteredFirmName = this.firmOptions.filter(firm => firm.value === this.newRecommendation.bh_lawfirm_id);
+    if (filteredFirmName.length > 0) {
+      this.selectedFirmName = filteredFirmName[0].label;
+    }
     this.firmStaffingData = await this.recommendationService.getStaffingData(this.newRecommendation, this.selectedClientId);
     if (this.firmStaffingData.length > 0) {
       this.mostRecentYear = this.firmStaffingData[0].year;
@@ -567,29 +571,29 @@ export class AddEditRecommendationComponent implements OnInit {
 
   getDiscountSavings(): void {
     const result = this.recommendationService.calcDiscountSavings(this.lastFullYearFirmData, this.newRecommendation);
-    this.estimatedSpendWithOldDisc = result.estimated_spend_with_old_disc;
-    this.estimatedSpendWithRecommendedDiscLower = result.estimated_spend_with_rec_disc_lower;
-    this.estimatedSpendWithRecommendedDiscUpper = result.estimated_spend_with_rec_disc_upper;
-    this.differenceInSpendLower = result.diff_in_spend_lower;
-    this.differenceInSpendUpper = result.diff_in_spend_upper;
+    this.estimatedSpendWithOldDisc = this.recommendationService.roundNumber(result.estimated_spend_with_old_disc);
+    this.estimatedSpendWithRecommendedDiscLower = this.recommendationService.roundNumber(result.estimated_spend_with_rec_disc_lower);
+    this.estimatedSpendWithRecommendedDiscUpper = this.recommendationService.roundNumber(result.estimated_spend_with_rec_disc_upper);
+    this.differenceInSpendLower = this.recommendationService.roundNumber(result.diff_in_spend_lower);
+    this.differenceInSpendUpper = this.recommendationService.roundNumber(result.diff_in_spend_upper);
   }
 
   getStaffingAllocationSavings(): void {
     const result = this.recommendationService.calcStaffingAllocationSavings(this.firmStaffingData, this.newRecommendation, this.mostRecentYear);
-    this.estimatedSpendWithOldStaffing = result.estimated_spend_with_old_staffing;
-    this.estimatedSpendWithNewStaffing = result.estimated_spend_with_rec_staffing;
-    this.differenceInSpend = result.diff_in_spend;
+    this.estimatedSpendWithOldStaffing = this.recommendationService.roundNumber(result.estimated_spend_with_old_staffing);
+    this.estimatedSpendWithNewStaffing = this.recommendationService.roundNumber(result.estimated_spend_with_rec_staffing);
+    this.differenceInSpend = this.recommendationService.roundNumber(result.diff_in_spend);
   }
 
   getBlockBillingSavings(): void {
     const result = this.recommendationService.calcBlockBillingSavings(this.firmBlockBillingData, this.newRecommendation, this.mostRecentYear);
     this.unacceptableBlockBillingAmount = result.unacceptable_bb_amount;
-    this.estimatedBlockBillingSavings = result.estimated_bb_savings;
+    this.estimatedBlockBillingSavings = this.recommendationService.roundNumber(result.estimated_bb_savings);
   }
 
   calcRateIncreasePreventionSavings(): void {
     const result = this.recommendationService.calculateRateIncreaseSavingsForFirm(this.firmRateIncreaseData, this.mostRecentYear, this.newRecommendation.desired_rate_increase_pct);
-    this.rateIncreasePreventionSavings = result.savings;
+    this.rateIncreasePreventionSavings = this.recommendationService.roundNumber(result.savings);
     this.rateIncreasePreventionDetails = result.classificationData;
   }
 

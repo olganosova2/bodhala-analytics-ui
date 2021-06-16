@@ -7,10 +7,21 @@
     </div>
   </div>
   <div *ngIf="report">
+    <b>Report Created on: </b> {{report.created_on}}
+  </div>
+  <div *ngIf="report">
     <mat-tab-group animationDuration="0ms" [selectedIndex]="step" (selectedTabChange)="changeTab($event)">
       <mat-tab *ngFor="let rec of report.recommendations; let i = index; let last = last; let first = first;"
       label="{{i + 1}} - {{rec.selected_type}}" class="rate-panel" (opened)="setStep(i)" style="background: rgb(168, 125, 125) !important">
-
+      <div *ngIf="rec.year">
+        <b>Recommendation for: </b> {{rec.year}}
+        <div *ngIf="rec.selected_type === 'Discount' || rec.selected_type === 'Modify Staffing Allocation' || rec.selected_type === 'Reduce / Eliminate Block Billing'">
+          <b>Recommendation based on data from: </b> {{rec.year - 1}}
+        </div>
+        <div *ngIf="rec.selected_type === 'Rate Increase Prevention / Reduction'">
+          <b>Recommendation based on data from: </b> {{rec.year - 3}} - {{rec.year - 1}}
+        </div>
+      </div>
       <!-- Display discount recommendations -->
         <div *ngIf="rec.selected_type === 'Discount'" class="rec">
           <div class="rec-details">
@@ -63,11 +74,11 @@
               </tr>
               <tr>
                 <td style="width: 15%;">${{lastFullYearFirmData[0].total_billed | number:'1.0-0'}}</td>
-                <td style="width: 15%;">${{estimatedSpendWithOldDisc | number:'1.0-0'}}</td>
-                <td style="width: 15%;">${{estimatedSpendWithRecommendedDiscLower | number:'1.0-0'}}</td>
-                <td style="width: 15%;">${{estimatedSpendWithRecommendedDiscUpper | number:'1.0-0'}}</td>
-                <td style="font-weight: 700;" [ngStyle]="differenceInSpendLower > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpendLower | number:'1.0-0'}}</td>
-                <td style="font-weight: 700;" [ngStyle]="differenceInSpendUpper > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpendUpper | number:'1.0-0'}}</td>
+                <td style="width: 15%;">~ ${{estimatedSpendWithOldDisc | number:'1.0-0'}}</td>
+                <td style="width: 15%;">~ ${{estimatedSpendWithRecommendedDiscLower | number:'1.0-0'}}</td>
+                <td style="width: 15%;">~ ${{estimatedSpendWithRecommendedDiscUpper | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="differenceInSpendLower > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">~ ${{differenceInSpendLower | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="differenceInSpendUpper > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">~ ${{differenceInSpendUpper | number:'1.0-0'}}</td>
               </tr>
             </table>
           </div>
@@ -116,7 +127,7 @@
                 <th>{{mostRecentYear + 1}} Potential Savings w/ {{rec.desired_rate_increase_pct}}% Rate Increase</th>
               </tr>
               <tr>
-                <td style="font-weight: 700;" [ngStyle]="rateIncreasePreventionSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{rateIncreasePreventionSavings | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="rateIncreasePreventionSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">~ ${{rateIncreasePreventionSavings | number:'1.0-0'}}</td>
               </tr>
             </table>
           </div>
@@ -186,9 +197,9 @@
                 <th style="width: 200px;">Estimated<span *ngIf="differenceInSpend > 0"> Savings</span><span *ngIf="differenceInSpend === 0"> Difference</span><span *ngIf="differenceInSpend < 0"> Loss</span></th>
               </tr>
               <tr>
-                <td style="width: 200px;">${{estimatedSpendWithOldStaffing | number:'1.0-0'}}</td>
-                <td style="width: 200px;">${{estimatedSpendWithNewStaffing | number:'1.0-0'}}</td>
-                <td style="font-weight: 700;" [ngStyle]="differenceInSpend > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{differenceInSpend | number:'1.0-0'}}</td>
+                <td style="width: 200px;">~ ${{estimatedSpendWithOldStaffing | number:'1.0-0'}}</td>
+                <td style="width: 200px;">~ ${{estimatedSpendWithNewStaffing | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="differenceInSpend > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">~ ${{differenceInSpend | number:'1.0-0'}}</td>
               </tr>
             </table>
           </div>
@@ -243,7 +254,7 @@
               <tr>
                 <td>{{rec.desired_block_billing_pct}}%</td>
                 <td>${{unacceptableBlockBillingAmount | number:'1.0-0'}}</td>
-                <td style="font-weight: 700;" [ngStyle]="estimatedBlockBillingSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">${{estimatedBlockBillingSavings | number:'1.0-0'}}</td>
+                <td style="font-weight: 700;" [ngStyle]="estimatedBlockBillingSavings > 0 ? {'color': 'green', 'background-color': '#87E184'} : {'color': 'red', 'background-color': '#FC615A'}">~ ${{estimatedBlockBillingSavings | number:'1.0-0'}}</td>
               </tr>
             </table>
           </div>
