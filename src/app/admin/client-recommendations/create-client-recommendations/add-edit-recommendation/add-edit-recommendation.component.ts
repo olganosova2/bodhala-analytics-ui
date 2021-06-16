@@ -44,8 +44,8 @@ export class AddEditRecommendationComponent implements OnInit {
   estimatedSpendWithRecommendedDiscLower: number = 0;
   estimatedSpendWithRecommendedDiscUpper: number = 0;
   firmPAOptions: SelectItem[] = [];
-  previousFirmNames: string[];
-  newFirmNames: string[];
+  previousFirmNames: string[] = [];
+  newFirmNames: string[] = [];
 
   estimatedSpendWithOldStaffing: number = 0;
   estimatedSpendWithNewStaffing: number = 0;
