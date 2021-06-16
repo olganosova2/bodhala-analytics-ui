@@ -407,6 +407,19 @@ export class RecommendationsServicesStub {
   public calcBlockBillingSavings() {
     return(MOCK_BLOCK_BILLING_TOTALS);
   }
+  public roundNumber(unroundedNumber: number) {
+    if (unroundedNumber !== null && unroundedNumber !== undefined) {
+      if (unroundedNumber < 10000) {
+        unroundedNumber = Math.ceil(unroundedNumber / 1000) * 1000;
+      } else if (unroundedNumber >= 10000) {
+        unroundedNumber = Math.ceil(unroundedNumber / 10000) * 10000;
+      }
+    } else {
+      unroundedNumber = 0;
+    }
+
+    return unroundedNumber;
+  }
 }
 
 export class ActivatedRouteMock {

@@ -511,4 +511,18 @@ export class RecommendationService {
     return({unacceptable_bb_amount: unacceptableBlockBillingAmount,
             estimated_bb_savings: estimatedBlockBillingSavings});
   }
+
+  roundNumber(unroundedNumber: number): number {
+    if (unroundedNumber !== null && unroundedNumber !== undefined) {
+      if (unroundedNumber < 10000) {
+        unroundedNumber = Math.ceil(unroundedNumber / 1000) * 1000;
+      } else if (unroundedNumber >= 10000) {
+        unroundedNumber = Math.ceil(unroundedNumber / 10000) * 10000;
+      }
+    } else {
+      unroundedNumber = 0;
+    }
+
+    return unroundedNumber;
+  }
 }
