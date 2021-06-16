@@ -130,11 +130,11 @@ export class ViewRecommendationsComponent implements OnInit {
       const discountData = this.recommendationService.calcDiscountSavings(result.prior_year, this.report.recommendations[evt.index]);
       this.lastFullYearFirmData = result.prior_year;
       this.mostRecentYear = result.most_recent_year;
-      this.differenceInSpendLower = discountData.diff_in_spend_lower;
-      this.differenceInSpendUpper = discountData.diff_in_spend_upper;
-      this.estimatedSpendWithOldDisc = discountData.estimated_spend_with_old_disc;
-      this.estimatedSpendWithRecommendedDiscLower = discountData.estimated_spend_with_rec_disc_lower;
-      this.estimatedSpendWithRecommendedDiscUpper = discountData.estimated_spend_with_rec_disc_upper;
+      this.differenceInSpendLower = this.recommendationService.roundNumber(discountData.diff_in_spend_lower);
+      this.differenceInSpendUpper = this.recommendationService.roundNumber(discountData.diff_in_spend_upper);
+      this.estimatedSpendWithOldDisc = this.recommendationService.roundNumber(discountData.estimated_spend_with_old_disc);
+      this.estimatedSpendWithRecommendedDiscLower = this.recommendationService.roundNumber(discountData.estimated_spend_with_rec_disc_lower);
+      this.estimatedSpendWithRecommendedDiscUpper = this.recommendationService.roundNumber(discountData.estimated_spend_with_rec_disc_upper);
       this.selectedFirmName = this.report.recommendations[evt.index].firm_name;
       this.selectedPracticeArea = this.report.recommendations[evt.index].practice_area;
 
@@ -150,7 +150,7 @@ export class ViewRecommendationsComponent implements OnInit {
       }
       const bbSavings = this.recommendationService.calcBlockBillingSavings(this.firmBlockBillingData, this.report.recommendations[evt.index], this.mostRecentYear);
       this.unacceptableBlockBillingAmount = bbSavings.unacceptable_bb_amount;
-      this.estimatedBlockBillingSavings = bbSavings.estimated_bb_savings;
+      this.estimatedBlockBillingSavings = this.recommendationService.roundNumber(bbSavings.estimated_bb_savings);
 
     } else if (this.report.recommendations[evt.index].selected_type === 'Modify Staffing Allocation') {
       this.firmStaffingData = await this.recommendationService.getStaffingData(this.report.recommendations[evt.index], this.userService.currentUser.client_info_id);
@@ -158,14 +158,14 @@ export class ViewRecommendationsComponent implements OnInit {
         this.mostRecentYear = this.firmStaffingData[0].year;
       }
       const staffingData = this.recommendationService.calcStaffingAllocationSavings(this.firmStaffingData, this.report.recommendations[evt.index], this.mostRecentYear);
-      this.estimatedSpendWithOldStaffing = staffingData.estimated_spend_with_old_staffing;
-      this.estimatedSpendWithNewStaffing = staffingData.estimated_spend_with_rec_staffing;
-      this.differenceInSpend = staffingData.diff_in_spend;
+      this.estimatedSpendWithOldStaffing = this.recommendationService.roundNumber(staffingData.estimated_spend_with_old_staffing);
+      this.estimatedSpendWithNewStaffing = this.recommendationService.roundNumber(staffingData.estimated_spend_with_rec_staffing);
+      this.differenceInSpend = this.recommendationService.roundNumber(staffingData.diff_in_spend);
 
     } else if (this.report.recommendations[evt.index].selected_type === 'Rate Increase Prevention / Reduction') {
       const result = await this.recommendationService.getRateIncreaseData(this.report.recommendations[evt.index], this.userService.currentUser.client_info_id, this.clientPracticeAreaSetting);
       this.rateIncreasePreventionDetails = result.details;
-      this.rateIncreasePreventionSavings = result.savings;
+      this.rateIncreasePreventionSavings = this.recommendationService.roundNumber(result.savings);
       if (result.data.length > 0) {
         this.mostRecentYear = result.data[0].year;
       }
