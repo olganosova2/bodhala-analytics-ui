@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService, IClient} from '../../shared/services/common.service';
 import {IRecommendationReport} from './client-recommendations-model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, ConfirmModalComponent, GenericConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
@@ -10,6 +10,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {FRESH_DESK_ARTICLES} from '../../shared/services/config';
 import { DatePipe } from '@angular/common';
 import {confirmDialogConfig} from '../../shared/services/config';
+import {PublishCheckboxComponent} from './publish-checkbox/publish-checkbox.component';
 
 @Component({
   selector: 'bd-client-recommendations',
@@ -57,6 +58,7 @@ export class ClientRecommendationsComponent implements OnInit {
       {headerName: '# of Recommendations', field: 'num_recommendations', ...this.defaultColumn, flex: 1},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)},
+      {headerName: 'Published', field: 'published',  ...this.defaultColumn, width: 100, suppressMenu: true,  cellRendererFramework: PublishCheckboxComponent},
       {headerName: 'Edit', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)},
       {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.openDeleteDialog.bind(this)},
     ];
@@ -75,7 +77,6 @@ export class ClientRecommendationsComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest('getRecommendationReportsAdmin', params).subscribe(
       (data: any) => {
         this.clientRecommendationReports = data.result || [];
-        this.clientRecommendationReports = this.clientRecommendationReports.filter(report => report.deleted_on === null);
         this.clientRecommendationReports = this.clientRecommendationReports.sort(this.utilService.dynamicSort('-created_on'));
         const pipe = new DatePipe('en-US');
         for (const report of this.clientRecommendationReports) {
@@ -106,17 +107,17 @@ export class ClientRecommendationsComponent implements OnInit {
     // this.agGridService.saveState('ClientConfigsGrid', this.gridOptions);
   }
 
-  viewCellRenderer(params: any) {
+  viewCellRenderer() {
     const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-eye"></em></button>';
     return value;
   }
 
-  editCellRenderer(params: any) {
+  editCellRenderer() {
     const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-pencil"></em></button>';
     return value;
   }
 
-  deleteCellRenderer(params: any) {
+  deleteCellRenderer() {
     const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-trash"></em></button>';
     return value;
   }

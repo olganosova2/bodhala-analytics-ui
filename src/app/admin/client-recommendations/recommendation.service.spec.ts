@@ -246,4 +246,14 @@ describe('RecommendationService', () => {
     expect(result.estimated_bb_savings).toEqual(53977.45032);
   }));
 
+
+  it('should roundNumber RecommendationService', () => {
+    const recService: RecommendationService = TestBed.inject(RecommendationService);
+    let rounded = recService.roundNumber(7560);
+    expect(rounded).toEqual(8000);
+
+    rounded = recService.roundNumber(12500);
+    expect(rounded).toEqual(20000);
+  });
+
 });

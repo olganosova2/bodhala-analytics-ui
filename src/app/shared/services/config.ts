@@ -130,6 +130,9 @@ export const END_POINTS_URLS = {
   deleteClientRecommendation: {url: BASE_URL + 'admin/deleteClientRecommendation', showLoading: true},
 
   getTkWorkDistribution: {url: BASE_URL + 'admin/getTkWorkDistribution', showLoading: true},
+  publishRecommendationReport: {url: BASE_URL + 'admin/publishRecommendationReport', showLoading: true},
+  getTkWorkDistributionByPA: {url: BASE_URL + 'admin/getTkWorkDistributionByPA', showLoading: true},
+  removeLawFirmDupes: {url: BASE_URL + 'admin/removeLawFirmDupes', showLoading: true},
 
 };
 
@@ -145,6 +148,7 @@ export const ROUTES = [
   {name: 'app.client.configs', routePath: 'analytics-ui/admin/client-configs', fragment: '/client-configs'},
   {name: 'analytics.pastsavings', routePath: 'analytics-ui/past-savings', fragment: '/past-savings'},
   {name: 'app.work.distribution', routePath: 'analytics-ui/admin/work-distribution', fragment: '/work-distribution'},
+  {name: 'app.lawfirm.duplicates', routePath: 'analytics-ui/admin/law-firm-duplicates', fragment: '/law-firm-duplicates'},
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];

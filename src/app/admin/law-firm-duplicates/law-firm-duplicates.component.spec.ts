@@ -1,16 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkDistributionComponent } from './work-distribution.component';
+import { LawFirmDuplicatesComponent } from './law-firm-duplicates.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {ClientConfigsComponent} from '../client-configs/client-configs.component';
+import {WorkDistributionComponent} from '../work-distribution/work-distribution.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
 
-describe('WorkDistributionComponent', () => {
-  let component: WorkDistributionComponent;
-  let fixture: ComponentFixture<WorkDistributionComponent>;
+describe('LawFirmDuplicatesComponent', () => {
+  let component: LawFirmDuplicatesComponent;
+  let fixture: ComponentFixture<LawFirmDuplicatesComponent>;
+
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
@@ -21,7 +22,7 @@ describe('WorkDistributionComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(WorkDistributionComponent, {
+    }).overrideComponent(LawFirmDuplicatesComponent, {
       set: {
         providers: [
           AppStateService,
@@ -37,29 +38,28 @@ describe('WorkDistributionComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(WorkDistributionComponent);
+    fixture = TestBed.createComponent(LawFirmDuplicatesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create WorkDistributionComponent', () => {
+  it('should create LawFirmDuplicatesComponent', () => {
     expect(component).toBeTruthy();
   });
-  it('should loadClient', () => {
-    const client = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
-    component.loadClient(client);
-    expect(component.selectedClient.org_id).toBe(1);
+  it('should checkInvalid when valid', () => {
+    component.firmIdsText = '1,2';
+    const result = component.checkInvalid();
+    expect(result).toBe(true);
   });
-  it('should changeTab to 0', () => {
-    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
-    const evt = { index: 0};
-    component.changeTab(evt);
-    expect(component.selectedTabIndex).toBe(0);
+  it('should checkInvalid when not valid', () => {
+    component.firmIdsText = '';
+    const result = component.checkInvalid();
+    expect(result).toBe(true);
   });
-  it('should changeTab to 1', () => {
-    component.selectedClient = null;
-    const evt = { index: 1};
-    component.changeTab(evt);
-    expect(component.selectedTabIndex).toBe(1);
+  it('should cleanUpDuplicates', () => {
+    component.primaryId = 1;
+    component.firmIdsText = '1,2';
+    component.cleanUpDuplicates();
+    expect(component.primaryId).toBeTruthy();
   });
 });

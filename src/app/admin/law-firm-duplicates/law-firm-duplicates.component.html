@@ -1,0 +1,36 @@
+<div class="panel-wrapper pl10">
+  <h4 class="mb20">Law Firm Duplicates</h4>
+  <ngb-alert type="danger" *ngIf="apiErrors.length > 0">
+    <div class="font-red font-bold" *ngFor="let error of apiErrors">
+      <span>{{error}}</span>
+    </div>
+  </ngb-alert>
+  <ngb-alert type="success" *ngIf="apiResults.length > 0">
+    <div class="font-green font-bold" *ngFor="let result of apiResults">
+      <div *ngIf="apiResults.length > 1" class="mb5">Firm ID {{result?.firm_id}}</div>
+      <div class="mb5" *ngFor="let item of result?.formattedResults">
+        Table {{item?.table}} - {{item?.count}} records have been updated for Firm ID {{result?.firm_id}}
+      </div>
+      <div class="mb5">{{result?.deleted_firm_result}} record was deleted from law_firm table for Firm ID {{result?.firm_id}}</div>
+    </div>
+  </ngb-alert>
+
+  <div class="font-green font-bold" *ngFor="let error of apiErrors">
+    <span>{{error}}</span>
+  </div>
+  <div class="font-italic">
+    Primary Firm ID
+  </div>
+  <mat-form-field appearance="outline" [style.width.px]=200>
+    <input type="number" matInput [(ngModel)]="primaryId" autocomplete="chrome-off"  required
+           maxlength="100" name="primaryId">
+  </mat-form-field>
+  <div class="font-italic">
+    Duplicate Firm IDs separated by comma
+  </div>
+  <mat-form-field appearance="outline" [style.width.px]=200>
+  <input type="text" matInput [(ngModel)]="firmIdsText" autocomplete="chrome-off"  placeholder="E.g. 100, 200, 150" required
+          maxlength="100" name="firmIdsText">
+  </mat-form-field>
+  <button mat-flat-button color="primary" [disabled]="checkInvalid()" (click)="cleanUpDuplicates()">Remove Duplicates</button>
+</div>

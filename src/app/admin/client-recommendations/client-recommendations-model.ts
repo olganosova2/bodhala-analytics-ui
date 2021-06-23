@@ -2,6 +2,7 @@ export interface IRecommendationReport {
   id: number;
   bh_client_id: number;
   title: string;
+  published: boolean;
   recommendations: IRecommendation[];
   created_on: string;
   created_by: string;
