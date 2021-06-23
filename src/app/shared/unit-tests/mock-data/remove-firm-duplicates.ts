@@ -3,18 +3,18 @@ export const MOCK_LAW_FIRM_DUPLICATES = {
     "saved_alias": {
       "modified_on": null,
       "deleted_on": null,
-      "created_on": "2021-06-14T10:03:00.550446",
+      "created_on": "2021-06-15T14:20:09.863705",
       "alias_date": null,
       "alias_type": "OTHER",
-      "alias_lower_case": "les traducteurs conseils 2",
-      "id": 160,
+      "alias_lower_case": "tannenbaum helpern syracuse & hirschtritt 2",
+      "id": 164,
       "client_id": null,
       "modified_by": null,
       "deleted_by": null,
       "created_by": "1",
       "alias_display": null,
-      "alias_raw": "Les Traducteurs Conseils 2",
-      "firm_id": 33217
+      "alias_raw": "Tannenbaum Helpern Syracuse & Hirschtritt 2",
+      "firm_id": 33219
     },
     "updated_ade_records": {
       "analytics_data_enhanced": 1,
@@ -26,7 +26,7 @@ export const MOCK_LAW_FIRM_DUPLICATES = {
       "analytics_data_enhanced_dupes": 0,
       "analytics_lead_attorney": 0,
       "analytics_lead_partner": 0,
-      "analytics_matter_firm_counsel": 0,
+      "analytics_matter_firm_counsel": 1,
       "analytics_suggested_firm": 0,
       "benchmark": 0,
       "lawyer_info": 0,
@@ -42,10 +42,12 @@ export const MOCK_LAW_FIRM_DUPLICATES = {
       "phase_taxonomy_training_data": 0,
       "pq_timekeeper_class_detail": 0,
       "recommendation": 0,
-      "saved_pdf_export": 0
+      "saved_pdf_export": 0,
+      "smart_category_firm": 0,
+      "rate_card_recommend_firm": 0
     },
     "deleted_firm_result": 1,
-    "firm_id": 30382
+    "firm_id": 31408
   }],
   "error": []
 }

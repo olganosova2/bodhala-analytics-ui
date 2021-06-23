@@ -116,6 +116,9 @@ import {CirpMatterSummaryComponent} from '../../matters/cirp-matter-summary/cirp
 import {WorkDistributionComponent} from '../../admin/work-distribution/work-distribution.component';
 import {WorkDistributionByPaComponent} from '../../admin/work-distribution/work-distribution-by-pa/work-distribution-by-pa.component';
 import {LawFirmDuplicatesComponent} from '../../admin/law-firm-duplicates/law-firm-duplicates.component';
+import {SubscriptionListComponent} from '../../admin/subscription-list/subscription-list.component';
+import {SubscriptionGridComponent} from '../../admin/subscription-list/subscription-grid/subscription-grid.component';
+import {CheckboxCellComponent} from '../components/checkbox-cell/checkbox-cell.component';
 
 
 export const IMPORTS = [
@@ -224,7 +227,10 @@ export const DECLARATIONS = [
   CirpMatterSummaryComponent,
   WorkDistributionComponent,
   WorkDistributionByPaComponent,
-  LawFirmDuplicatesComponent
+  LawFirmDuplicatesComponent,
+  SubscriptionListComponent,
+  SubscriptionGridComponent,
+  CheckboxCellComponent
 ];
 
 export const PROVIDERS = [
