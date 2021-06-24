@@ -5,6 +5,7 @@ export interface ITopFirm {
   firm_name: string;
   firm_logo_url: string;
   total_billed: number;
+  total_afa_closed: number;
   total_expenses: number;
   total_billed_all: number;
   total_expenses_all: number;
