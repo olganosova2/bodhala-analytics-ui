@@ -123,6 +123,9 @@ export class SavingsCalculatorComponent implements OnInit, OnDestroy {
       this.metrics.push(metricBB);
     }
     if (this.calcData.rate_increase && this.calcData.rate_increase.length > 0) {
+      if (this.userService.currentUser.client_info_id === 1494) {
+        this.calcData.rate_increase = this.calcData.rate_increase.reverse();
+      }
       const metricRateIncrease = this.savingsService.createRateIncreaseRecord(this.calcData.rate_increase);
       this.metrics.push(metricRateIncrease);
     }

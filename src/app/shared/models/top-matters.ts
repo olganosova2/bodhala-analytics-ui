@@ -6,6 +6,7 @@ export interface ITopMatter {
   client_matter_type: string;
   total_spend: number;
   total_expenses: number;
+  total_afa: number;
   lead_partner_id: string | Array<string>;
   lead_partner_name: string | Array<string>;
   lawfirm_id: string | Array<string>;

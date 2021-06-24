@@ -118,7 +118,7 @@
               "budgets": [
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "7mb"
+                  "maximumWarning": "10mb"
                 }
               ],
               "fileReplacements": [
