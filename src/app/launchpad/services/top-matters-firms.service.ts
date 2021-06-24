@@ -69,10 +69,8 @@ export class TopMattersFirmsService {
       if (rec.lawfirm_id instanceof Array) {
         rec.lawfirm_id = rec.lawfirm_id[0] || '';
       }
-      const sum = this.filters.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
-      if (this.filters.includeExpenses) {
-        rec.total_spend = sum;
-      }
+      const sum = this.filters.includeExpenses ? rec.total_spend + rec.total_expenses + rec.total_afa : rec.total_spend + rec.total_afa;
+      rec.total_spend = sum;
       rec.y = Math.round(sum);
       processedRecods.push(rec);
       // processedRecods[0].bio_image_url = 'https://bodhala-assets.s3.amazonaws.com/img/firms/00001/profiles/aeea2542-6952-11e7-80bc-061c87c9764f.jpg';
@@ -81,11 +79,9 @@ export class TopMattersFirmsService {
   }
   processTopFirms(records: Array<ITopFirm>): Array<ITopFirm> {
     for (const rec of records) {
-      const sum = this.filters.includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
-      const total = this.filters.includeExpenses ? (rec.total_billed_all + rec.total_expenses_all) : rec.total_billed_all || 1;
-      if (this.filters.includeExpenses) {
-        rec.total_billed = sum;
-      }
+      const sum = this.filters.includeExpenses ? rec.total_billed + rec.total_expenses + rec.total_afa_closed : rec.total_billed + rec.total_afa_closed;
+      const total = this.filters.includeExpenses ? (rec.total_billed_all + rec.total_expenses_all + rec.total_afa_closed) : (rec.total_billed_all + rec.total_afa_closed) || 1;
+      rec.total_billed = sum;
       rec.total_percent = sum / total * 100;
       rec.y = Math.round(sum);
       rec.name = rec.firm_name;
