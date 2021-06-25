@@ -16,6 +16,7 @@ describe('SubscriptionGridComponent', () => {
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
+  const colData = { value: 1127, data: { org_id: 232}, colDef: {field: 'feature_1117'}};
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -47,5 +48,21 @@ describe('SubscriptionGridComponent', () => {
 
   it('should create SubscriptionGridComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should add subscription', () => {
+    component.addSubscription(colData);
+    expect(colData.value).toBe(1127);
+  });
+  it('should delete subscription', () => {
+    component.deleteSubscription(colData);
+    expect(colData.value).toBe(null);
+  });
+  it('should update subscription when true', () => {
+    component.updateSubscription(colData, true);
+    expect(colData.value).toBe(1127);
+  });
+  it('should update subscription when false', () => {
+    component.updateSubscription(colData, false);
+    expect(colData.value).toBe(null);
   });
 });

@@ -4491,3 +4491,24 @@ export const MOCK_SUBSCRIPTION_GROUP_DATA = {
     }
   ]
 }
+
+export const MOCK_ADD_SUBSCRIPTION_RESPONSE = {
+  "result": {
+    "id": 1127,
+    "user_id": null,
+    "org_id": 63,
+    "role_id": null,
+    "base_feature": false,
+    "feature_id": 18,
+    "feature_version": "0.1",
+    "note": null,
+    "feature": {
+      "id": 18,
+      "name": "analytics.calculated.leverage",
+      "description": "Analytics Calculated Leverage",
+      "feature_group": "ANALYTICS"
+    }
+  },
+  "error": null
+}
+

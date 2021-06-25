@@ -153,6 +153,8 @@ export const ROUTES = [
   {name: 'app.work.distribution', routePath: 'analytics-ui/admin/work-distribution', fragment: '/work-distribution'},
   {name: 'app.lawfirm.duplicates', routePath: 'analytics-ui/admin/law-firm-duplicates', fragment: '/law-firm-duplicates'},
   {name: 'app.subscription.list', routePath: 'analytics-ui/admin/subscription-list', fragment: '/subscription-list'},
+  {name: 'app.client.recommendations', routePath: 'analytics-ui/admin/client-recommendations', fragment: '/client-recommendations'},
+  // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
 ];
