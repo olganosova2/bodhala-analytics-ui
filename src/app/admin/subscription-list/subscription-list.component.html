@@ -1,0 +1,8 @@
+<div>
+  <h4 class="mb20">Manage Clients Subscription List</h4>
+  <mat-tab-group animationDuration="0ms" *ngIf="subscriptionGroups.length > 0">
+    <mat-tab *ngFor="let group of subscriptionGroups" label="{{group.groupName}}">
+      <bd-subscription-grid [groupData]="group"></bd-subscription-grid>
+    </mat-tab>
+  </mat-tab-group>
+</div>

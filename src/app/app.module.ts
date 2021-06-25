@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {AgGridModule} from 'ag-grid-angular';
 import 'ag-grid-enterprise';
+import {LicenseManager} from 'ag-grid-enterprise';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -32,6 +33,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {CheckboxModule} from 'primeng/checkbox';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -139,6 +141,9 @@ import { WorkDistributionComponent } from './admin/work-distribution/work-distri
 import { PublishCheckboxComponent } from './admin/client-recommendations/publish-checkbox/publish-checkbox.component';
 import { WorkDistributionByPaComponent } from './admin/work-distribution/work-distribution-by-pa/work-distribution-by-pa.component';
 import { LawFirmDuplicatesComponent } from './admin/law-firm-duplicates/law-firm-duplicates.component';
+import { SubscriptionListComponent } from './admin/subscription-list/subscription-list.component';
+import { SubscriptionGridComponent } from './admin/subscription-list/subscription-grid/subscription-grid.component';
+import { CheckboxCellComponent } from './shared/components/checkbox-cell/checkbox-cell.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -227,7 +232,10 @@ export function initHttp(service: HttpService) {
     WorkDistributionComponent,
     PublishCheckboxComponent,
     WorkDistributionByPaComponent,
-    LawFirmDuplicatesComponent
+    LawFirmDuplicatesComponent,
+    SubscriptionListComponent,
+    SubscriptionGridComponent,
+    CheckboxCellComponent
   ],
   entryComponents: [
     PillComponent,
@@ -263,6 +271,7 @@ export function initHttp(service: HttpService) {
     MatIconModule,
     MatMenuModule,
     MatCheckboxModule,
+    CheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatExpansionModule,
