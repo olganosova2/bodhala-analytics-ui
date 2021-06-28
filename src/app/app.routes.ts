@@ -24,6 +24,7 @@ import {RecommendationsComponent} from './recommendations/recommendations.compon
 import {ViewRecommendationsComponent} from './recommendations/view-recommendations/view-recommendations.component';
 import {WorkDistributionComponent} from './admin/work-distribution/work-distribution.component';
 import {LawFirmDuplicatesComponent} from './admin/law-firm-duplicates/law-firm-duplicates.component';
+import {SubscriptionListComponent} from './admin/subscription-list/subscription-list.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -64,8 +65,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/client-recommendations/new/:clientId', component: CreateClientRecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/client-recommendations/edit/:clientId', component: CreateClientRecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/client-recommendations/view/:reportId', component: ViewClientRecommendationComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
-  // LawFirmDuplicatesComponent,
   {path: 'analytics-ui/admin/work-distribution', component: WorkDistributionComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/law-firm-duplicates', component: LawFirmDuplicatesComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/subscription-list', component: SubscriptionListComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

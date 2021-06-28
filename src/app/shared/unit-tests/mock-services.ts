@@ -28,6 +28,7 @@ import {MOCK_RECOMMENDATION_REPORTS, MOCK_RECOMMENDATION_TYPES, MOCK_PA_SETTING,
   MOCK_RECOMMENDATION_TYPES_RESULT, MOCK_RECOMMENDATION_BB_DATA_RESULT, MOCK_FIRMS_BY_PA, MOCK_PRACTICE_AREAS_BY_FIRM} from './mock-data/recommendations';
 import {MOCK_WORK_DISTRIBUTION, MOCK_WORK_DISTRIBUTION_BY_PA} from './mock-data/work-distribution';
 import {MOCK_LAW_FIRM_DUPLICATES} from './mock-data/remove-firm-duplicates';
+import {MOCK_ADD_SUBSCRIPTION_RESPONSE, MOCK_SUBSCRIPTIONS} from './mock-data/subscriptions';
 
 export const ngWindow = {
   location: {
@@ -81,6 +82,7 @@ export class DataStub {
   public downloadAttachment() {
   }
 
+
   public makePostRequest(url: string, request: any): Observable<any> {
     switch (url) {
       case 'deleteMatter':
@@ -104,6 +106,8 @@ export class DataStub {
         return of({result: true, error: null});
       case 'removeLawFirmDupes':
         return of(MOCK_LAW_FIRM_DUPLICATES);
+      case 'addSubscription':
+        return of(MOCK_ADD_SUBSCRIPTION_RESPONSE);
       default:
         return of([]);
     }
@@ -259,6 +263,8 @@ export class DataStub {
         return of(MOCK_WORK_DISTRIBUTION);
       case 'getTkWorkDistributionByPA':
         return of(MOCK_WORK_DISTRIBUTION_BY_PA);
+      case 'getSubscriptionsList':
+        return of(MOCK_SUBSCRIPTIONS);
       default:
         return of([]);
     }
@@ -270,6 +276,8 @@ export class DataStub {
       case 'deleteSavedExport':
         return of([]);
       case 'deleteClientConfig':
+        return of({ result: {}});
+      case 'deleteSubscription':
         return of({ result: {}});
       default:
         return of([]);

@@ -107,6 +107,9 @@ export class WorkDistributionByPaComponent implements OnInit, OnDestroy {
     records = records.filter(e => e.bh_classification !== null && e.bh_classification !== undefined);
     this.workRecordsByPA = Object.assign([], records);
   }
+  saveValue(evt: any): void {
+    const x = evt;
+  }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
