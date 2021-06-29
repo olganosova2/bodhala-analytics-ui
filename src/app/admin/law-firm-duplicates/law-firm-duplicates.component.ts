@@ -46,7 +46,6 @@ export class LawFirmDuplicatesComponent implements OnInit {
       (data: any) => {
         if (data.error && Array.isArray(data.error) && data.error.length > 0) {
           this.apiErrors =  Object.assign([], data.error);
-          return;
         }
         this.apiResults  = data.result || [];
         this.formatResults();
