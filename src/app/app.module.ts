@@ -144,6 +144,7 @@ import { LawFirmDuplicatesComponent } from './admin/law-firm-duplicates/law-firm
 import { SubscriptionListComponent } from './admin/subscription-list/subscription-list.component';
 import { SubscriptionGridComponent } from './admin/subscription-list/subscription-grid/subscription-grid.component';
 import { CheckboxCellComponent } from './shared/components/checkbox-cell/checkbox-cell.component';
+import { LedesImportsComponent } from './admin/ledes-imports/ledes-imports.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -235,7 +236,8 @@ export function initHttp(service: HttpService) {
     LawFirmDuplicatesComponent,
     SubscriptionListComponent,
     SubscriptionGridComponent,
-    CheckboxCellComponent
+    CheckboxCellComponent,
+    LedesImportsComponent
   ],
   entryComponents: [
     PillComponent,
