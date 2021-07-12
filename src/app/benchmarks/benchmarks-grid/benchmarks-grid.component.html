@@ -30,6 +30,9 @@
   <div class="p-col-2" *ngIf="firmDetail">
     Representative Peer Firms
   </div>
+  <div class="p-col-1" *ngIf="bmService.showWorkInfo">
+    Hours of Work %
+  </div>
 
 </div>
 <ng-container *ngFor="let row of dataRows;let index = $index">

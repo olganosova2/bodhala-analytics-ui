@@ -15,6 +15,13 @@ export interface IBenchmarkRate {
   mid_partner?: IBenchmarkMetrics;
   senior_partner?: IBenchmarkMetrics;
 }
+export interface IPaData {
+  client_matter_type: string;
+  firm_hours: number;
+  total_hours: number;
+  firm_billed: number;
+  tk_level: string;
+}
 export interface IBenchmark {
   id: number;
   year?: string;
@@ -23,6 +30,7 @@ export interface IBenchmark {
   practice_area?: string;
   peers: Array<string>;
   rates: IBenchmarkRate;
+  pa_data?: Array<IPaData>;
 }
 export interface IRowBenchmark {
   id?: number;
@@ -34,6 +42,7 @@ export interface IRowBenchmark {
   tier: string;
   peers: Array<string>;
   rates: IBenchmarkRate;
+  pa_data?: Array<IPaData>;
 }
 export interface IBenchmarkOverviewRow {
   id?: number;
@@ -58,6 +67,8 @@ export interface IBenchmarkOverviewRow {
   nonEmptyAssociate?: number;
   nonEmptyPartner?: number;
   highestChildrenRate?: number;
+  hoursOfWorkPercent?: number;
+  firmHours?: number;
 }
 export enum RateStatuses  {
   Poor = 'Poor',
