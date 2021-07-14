@@ -286,8 +286,17 @@ export class BenchmarkService {
     if (!this.showWorkInfo || !paData || paData.length === 0) {
       return result;
     }
-
-    return result;
+    const found = paData.find(e => e.tk_level === TK_LEVELS_SHORT_MAP[key]);
+    if (!found) {
+      return result;
+    }
+    let firmTotals = 0;
+    for (const rec of paData) {
+      firmTotals += rec.firm_hours;
+    }
+    const tkHours = found.firm_hours || 0;
+    const tkPercent = Math.round((tkHours / (firmTotals || 1) * 100) * 10) / 10;
+    return ' (' + tkPercent.toString() + '%)';
   }
 
 
