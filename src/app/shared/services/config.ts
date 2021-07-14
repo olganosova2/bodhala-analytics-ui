@@ -137,6 +137,7 @@ export const END_POINTS_URLS = {
   deleteSubscription: { url: BASE_URL + 'admin/entityFeature/{id}', showLoading: false},
   addSubscription: { url: BASE_URL + 'admin/entityFeature', showLoading: false},
   getAutoLEDESImports: { url: BASE_URL + 'admin/getAutoLEDESImports', showLoading: false},
+  // downloadAttachment: { url: BASE_URL + 'downloadAttachment', showLoading: false},
 
 };
 

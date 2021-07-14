@@ -2,14 +2,17 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {Subscription} from 'rxjs';
-import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, GenericConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {GridOptions} from 'ag-grid-community';
 import {DropdownModule} from 'primeng/dropdown';
 import {SelectItem} from 'primeng/api';
 import {ILedesImport} from './ledes-imports-model';
 import {AgGridService} from 'bodhala-ui-elements';
-import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER } from '@angular/cdk/overlay/overlay-directives';
+import { DatePipe } from '@angular/common';
+import {MatDialog} from '@angular/material/dialog';
+import {confirmDialogConfig} from '../../shared/services/config';
+import {ImportDetailComponent} from './import-detail/import-detail.component';
 
 
 
@@ -21,6 +24,8 @@ import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER } from '@angular/cdk/ove
 export class LedesImportsComponent implements OnInit {
   pendingRequest: Subscription;
   errorMessage: any;
+  defaultColDef;
+  detailCellRendererParams;
   daysOptions: SelectItem[] = [{label: 'Yesterday', value: 1},
                                {label: 'Last 7 Days', value: 7},
                                {label: 'Last 2 Weeks', value: 14},
@@ -44,7 +49,9 @@ export class LedesImportsComponent implements OnInit {
               public userService: UserService,
               public utilService: UtilService,
               public commonServ: CommonService,
-              public agGridService: AgGridService) {
+              public agGridService: AgGridService,
+              public datePipe: DatePipe,
+              public matDialog: MatDialog) {
     this.commonServ.pageTitle = 'Auto LEDES Imports';
   }
 
@@ -56,18 +63,65 @@ export class LedesImportsComponent implements OnInit {
     this.initColumns();
     this.getLEDESImports();
   }
+
+  openModal(upload): void {
+    console.log("upload: ", upload);
+    const modalConfig = {...confirmDialogConfig, data: {title: 'Confirm Re-run', text: 'Please confirm that you would like to re-run this LEDES file.'}};
+
+    const dialogRef = this.matDialog.open(GenericConfirmModalComponent, {
+      ...modalConfig,
+      disableClose: false
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // this.reRunImport();
+      }
+    });
+  }
+
+  openDetailModal(data): void {
+    console.log("IMPORT: ", data);
+    this.matDialog.open(ImportDetailComponent, {
+      data: data
+    });
+  }
+
   initColumns(): void {
+    this.gridOptions.masterDetail = true;
+    this.gridOptions.detailRowHeight = 450;
+
     this.gridOptions.columnDefs = [
-      {headerName: 'Client', field: 'name', ...this.defaultColumn, floatingFilter: true, width: 300},
-      {headerName: 'Firms', field: 'name', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, width: 300},
-      {headerName: 'Status', field: 'status', ...this.defaultColumn, floatingFilter: true, width: 140},
-      {headerName: '# Imported', field: 'num_imported', ...this.defaultColumn, floatingFilter: true, width: 140},
-      {headerName: '# Failed', field: 'num_failed', ...this.defaultColumn, floatingFilter: true, width: 140},
-      {headerName: 'Files', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-      {headerName: 'Errors', cellRenderer: this.errorsCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-      {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-      {headerName: 'Re-run', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true}
+      {headerName: 'Client', field: 'client_name', ...this.defaultColumn, floatingFilter: true, width: 350, pinned: true, cellRenderer: 'agGroupCellRenderer'},
+      {headerName: '# Successful Uploads', field: 'num_imported_uploads', ...this.defaultColumn, floatingFilter: true, width: 180},
+      {headerName: '# Failed Uploads', field: 'num_failed_uploads', ...this.defaultColumn, floatingFilter: true, width: 180},
+      {headerName: '# Successful Ingests', field: 'num_imported_ingests', ...this.defaultColumn, floatingFilter: true, width: 180},
+      {headerName: '# Failed Ingests', field: 'num_failed_ingests', ...this.defaultColumn, floatingFilter: true, width: 180},
+      // {headerName: 'Files', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
+      // {headerName: 'Errors', cellRenderer: this.errorsCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
+      // {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
+      // {headerName: 'Re-run', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true}
     ];
+
+    this.defaultColDef = { flex: 1 };
+    this.gridOptions.detailCellRendererParams = {
+      detailGridOptions: {
+        columnDefs: [
+          {headerName: 'Client', field: 'client_name', width: 240, filter: 'text', sortable: true},
+          {headerName: 'Firm', field: 'firm_name',  width: 240, sortable: true, resizable: true},
+          {headerName: 'Created On', field: 'created_at', sortable: true, resizable: true},
+          {headerName: 'Successfully Uploaded', field: 'is_uploaded', cellRenderer: this.booleanCellRenderer, ...this.defaultColumn, width: 140},
+          {headerName: 'Successfully Ingested', field: 'is_ingested', cellRenderer: this.booleanCellRenderer,...this.defaultColumn, width: 140},
+          {headerName: 'Rejection Reason', field: 'rejected_reason', ...this.defaultColumn, width: 250},
+          {headerName: 'Files/Errors', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 120, suppressMenu: true, onCellClicked: this.openDetailModal.bind(this)},
+          {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
+          {headerName: 'Re-run', cellRenderer: this.reRunCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true, onCellClicked: this.openModal.bind(this)}
+        ]
+      },
+      getDetailRowData: (paramsIncoming) => {
+        console.log("paramsIncoming: ", paramsIncoming);
+        paramsIncoming.successCallback(paramsIncoming.data.data);
+      },
+    };
   }
 
 
@@ -78,7 +132,7 @@ export class LedesImportsComponent implements OnInit {
       (data: any) => {
         console.log("Data: ", data);
         this.imports = data.result || [];
-        this.imports = this.imports.sort(this.utilService.dynamicSort('created_on'));
+        this.processData();
         this.loadGrid();
       },
       err => {
@@ -99,22 +153,102 @@ export class LedesImportsComponent implements OnInit {
     this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
 
+  processData(): void {
+    this.imports = this.groupBy(this.imports)
+    // for (const rec of this.imports) {
+    //   rec.name = 'Test';
+    // }
+    for (let rec of this.imports) {
+      console.log("rec: " , rec);
+      rec.num_imported_uploads = 0;
+      rec.num_failed_uploads = 0;
+      rec.num_imported_ingests = 0;
+      rec.num_failed_ingests = 0;
+      rec.data = rec.data.sort(this.utilService.dynamicSort('-created_at'));
+      for (let d of rec.data) {
+        d.created_at = this.datePipe.transform(d.created_at, 'short');
+        if (d.adu !== null) {
+          d.firm_name = d.adu.searched_firm.name;
+        } else {
+          d.firm_name = null;
+        }
+        if (d.is_ingested === true) {
+          rec.num_imported_ingests++;
+        } else {
+          rec.num_failed_ingests++;
+        }
+        if (d.is_uploaded === true) {
+          rec.num_imported_uploads++;
+        } else {
+          rec.num_failed_uploads++;
+        }
+      }
+
+    }
+    console.log("IMP: ", this.imports);
+    this.imports = this.imports.sort(this.utilService.dynamicSort('-created_at'));
+  }
+
   saveGridConfig(evt: any): void {
     const state = evt;
     // this.agGridService.saveState('AutoLEDESGrid', this.gridOptions); TODO
   }
 
   filesCellRenderer(params: any) {
-    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-docs"></em></button>';
+    const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-docs"></em></button>';
     return value;
   }
-  errorsCellRenderer(params: any) {
-    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-warning"></em></button>';
-    return value;
-  }
+  // errorsCellRenderer(params: any) {
+  //   const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><i class="fa fa-exclamation-triangle"></i></button>';
+  //   return value;
+  // }
   viewCellRenderer(params: any) {
-    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-eye"></em></button>';
+    const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-eye"></em></button>';
     return value;
+  }
+  reRunCellRenderer(params: any) {
+    // if (params.data.is_ingested === true && params.data.is_uploaded === true)
+    const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-equalizer"></em></button>';
+    return value;
+  }
+
+  // viewImportDetail(): void {
+  //   this.router.navigate(['/analytics-ui/firm/report-card/', this.firmId]);
+  // }
+
+  booleanCellRenderer(params: any) {
+    if (params.value) {
+      return 'Yes';
+    } else {
+      return 'No';
+    }
+  }
+
+  groupBy(imports: any) {
+    const result = imports.reduce((acc, d) => {
+      console.log("acc: ", acc)
+      console.log("d: ", d)
+      const found = acc.find(a => a.client === d.client);
+      const value = {
+        adu: d.adu,
+        client: d.client,
+        client_id: d.client_id,
+        client_name: d.client_name,
+        created_at: d.created_at,
+        etag: d.etag,
+        is_uploaded: d.is_uploaded_PROD,
+        is_ingested: d.is_ingested_PROD,
+        original_name: d.original_name,
+        rejected_reason: d.rejected_reason_PROD
+      };
+      if (!found) {
+        acc.push({client: d.client, client_name: d.client_name, data: [value]});
+      } else {
+        found.data.push(value);
+      }
+      return acc;
+    }, []);
+    return result;
   }
 
 }
