@@ -51,8 +51,18 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
         this.errorMessage = err;
       }
     );
-
   }
+  // getRateIncrease(): void {
+  //   const params = {client_id: this.userService.currentUser.client_info_id, num_years: 3};
+  //   this.pendingRequest = this.httpService.makeGetRequest('getRateIncreaseByFirm', params).subscribe(
+  //     (data: any) => {
+  //      const x = data.result;
+  //     },
+  //     err => {
+  //       this.errorMessage = err;
+  //     }
+  //   );
+  // }
   getPAs(): void {
     this.areasOptions = [];
     let pas = this.allBenchmarks.filter(e => e.year === this.year);
