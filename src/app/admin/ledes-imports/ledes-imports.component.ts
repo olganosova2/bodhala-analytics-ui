@@ -112,8 +112,8 @@ export class LedesImportsComponent implements OnInit {
           {headerName: 'Successfully Uploaded', field: 'is_uploaded', cellRenderer: this.booleanCellRenderer, ...this.defaultColumn, width: 140},
           {headerName: 'Successfully Ingested', field: 'is_ingested', cellRenderer: this.booleanCellRenderer,...this.defaultColumn, width: 140},
           {headerName: 'Rejection Reason', field: 'rejected_reason', ...this.defaultColumn, width: 250},
-          {headerName: 'Files/Errors', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 120, suppressMenu: true, onCellClicked: this.openDetailModal.bind(this)},
-          {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
+          {headerName: 'Files/Errors', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 120, tooltipField: 'file_tooltip', suppressMenu: true, onCellClicked: this.openDetailModal.bind(this)},
+          // {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
           {headerName: 'Re-run', cellRenderer: this.reRunCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true, onCellClicked: this.openModal.bind(this)}
         ]
       },
@@ -155,9 +155,6 @@ export class LedesImportsComponent implements OnInit {
 
   processData(): void {
     this.imports = this.groupBy(this.imports)
-    // for (const rec of this.imports) {
-    //   rec.name = 'Test';
-    // }
     for (let rec of this.imports) {
       console.log("rec: " , rec);
       rec.num_imported_uploads = 0;
@@ -166,11 +163,12 @@ export class LedesImportsComponent implements OnInit {
       rec.num_failed_ingests = 0;
       rec.data = rec.data.sort(this.utilService.dynamicSort('-created_at'));
       for (let d of rec.data) {
+        d.file_tooltip = 'Click to view import details';
         d.created_at = this.datePipe.transform(d.created_at, 'short');
         if (d.adu !== null) {
           d.firm_name = d.adu.searched_firm.name;
         } else {
-          d.firm_name = null;
+          d.firm_name = 'N/A';
         }
         if (d.is_ingested === true) {
           rec.num_imported_ingests++;
@@ -202,19 +200,11 @@ export class LedesImportsComponent implements OnInit {
   //   const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><i class="fa fa-exclamation-triangle"></i></button>';
   //   return value;
   // }
-  viewCellRenderer(params: any) {
-    const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-eye"></em></button>';
-    return value;
-  }
   reRunCellRenderer(params: any) {
     // if (params.data.is_ingested === true && params.data.is_uploaded === true)
     const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-equalizer"></em></button>';
     return value;
   }
-
-  // viewImportDetail(): void {
-  //   this.router.navigate(['/analytics-ui/firm/report-card/', this.firmId]);
-  // }
 
   booleanCellRenderer(params: any) {
     if (params.value) {
@@ -239,7 +229,7 @@ export class LedesImportsComponent implements OnInit {
         is_uploaded: d.is_uploaded_PROD,
         is_ingested: d.is_ingested_PROD,
         original_name: d.original_name,
-        rejected_reason: d.rejected_reason_PROD
+        rejected_reason: d.rejected_reason_PROD + ' ' + d.content_length
       };
       if (!found) {
         acc.push({client: d.client, client_name: d.client_name, data: [value]});
