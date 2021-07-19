@@ -32,7 +32,7 @@ export class LedesImportsComponent implements OnInit {
                                {label: 'Last Month', value: 30},
                                {label: 'Last 3 Months', value: 90}];
   selectedDateRange: number = 7;
-  dropdownWidth: any = {'width': '325px'};
+  dropdownWidth: any = {width: '325px'};
   imports: Array<ILedesImport> = [];
   paginationPageSize: number = 10;
   gridOptions: GridOptions;
@@ -65,7 +65,6 @@ export class LedesImportsComponent implements OnInit {
   }
 
   openModal(upload): void {
-    console.log("upload: ", upload);
     const modalConfig = {...confirmDialogConfig, data: {title: 'Confirm Re-run', text: 'Please confirm that you would like to re-run this LEDES file.'}};
 
     const dialogRef = this.matDialog.open(GenericConfirmModalComponent, {
@@ -79,10 +78,9 @@ export class LedesImportsComponent implements OnInit {
     });
   }
 
-  openDetailModal(data): void {
-    console.log("IMPORT: ", data);
+  openDetailModal(detail): void {
     this.matDialog.open(ImportDetailComponent, {
-      data: data
+      data: detail
     });
   }
 
@@ -110,15 +108,14 @@ export class LedesImportsComponent implements OnInit {
           {headerName: 'Firm', field: 'firm_name',  width: 240, sortable: true, resizable: true},
           {headerName: 'Created On', field: 'created_at', sortable: true, resizable: true},
           {headerName: 'Successfully Uploaded', field: 'is_uploaded', cellRenderer: this.booleanCellRenderer, ...this.defaultColumn, width: 140},
-          {headerName: 'Successfully Ingested', field: 'is_ingested', cellRenderer: this.booleanCellRenderer,...this.defaultColumn, width: 140},
+          {headerName: 'Successfully Ingested', field: 'is_ingested', cellRenderer: this.booleanCellRenderer, ...this.defaultColumn, width: 140},
           {headerName: 'Rejection Reason', field: 'rejected_reason', ...this.defaultColumn, width: 250},
-          {headerName: 'Files/Errors', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 120, tooltipField: 'file_tooltip', suppressMenu: true, onCellClicked: this.openDetailModal.bind(this)},
+          {headerName: 'Files/Errors', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 120, tooltipField: 'file_tooltip', suppressMenu: true, onCellClicked: this.openDetailModal.bind(this)}
           // {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-          {headerName: 'Re-run', cellRenderer: this.reRunCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true, onCellClicked: this.openModal.bind(this)}
+          // {headerName: 'Re-run', cellRenderer: this.reRunCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true, onCellClicked: this.openModal.bind(this)}
         ]
       },
       getDetailRowData: (paramsIncoming) => {
-        console.log("paramsIncoming: ", paramsIncoming);
         paramsIncoming.successCallback(paramsIncoming.data.data);
       },
     };
@@ -126,11 +123,9 @@ export class LedesImportsComponent implements OnInit {
 
 
   getLEDESImports(): void {
-    console.log("hello!", this.selectedDateRange);
     const params = { range: this.selectedDateRange };
     this.pendingRequest = this.httpService.makeGetRequest<ILedesImport>('getAutoLEDESImports', params).subscribe(
       (data: any) => {
-        console.log("Data: ", data);
         this.imports = data.result || [];
         this.processData();
         this.loadGrid();
@@ -154,15 +149,14 @@ export class LedesImportsComponent implements OnInit {
   }
 
   processData(): void {
-    this.imports = this.groupBy(this.imports)
-    for (let rec of this.imports) {
-      console.log("rec: " , rec);
+    this.imports = this.groupBy(this.imports);
+    for (const rec of this.imports) {
       rec.num_imported_uploads = 0;
       rec.num_failed_uploads = 0;
       rec.num_imported_ingests = 0;
       rec.num_failed_ingests = 0;
       rec.data = rec.data.sort(this.utilService.dynamicSort('-created_at'));
-      for (let d of rec.data) {
+      for (const d of rec.data) {
         d.file_tooltip = 'Click to view import details';
         d.created_at = this.datePipe.transform(d.created_at, 'short');
         if (d.adu !== null) {
@@ -180,10 +174,12 @@ export class LedesImportsComponent implements OnInit {
         } else {
           rec.num_failed_uploads++;
         }
+        if (d.rejected_reason === '') {
+          d.rejected_reason = 'N/A';
+        }
       }
 
     }
-    console.log("IMP: ", this.imports);
     this.imports = this.imports.sort(this.utilService.dynamicSort('-created_at'));
   }
 
@@ -216,8 +212,6 @@ export class LedesImportsComponent implements OnInit {
 
   groupBy(imports: any) {
     const result = imports.reduce((acc, d) => {
-      console.log("acc: ", acc)
-      console.log("d: ", d)
       const found = acc.find(a => a.client === d.client);
       const value = {
         adu: d.adu,
@@ -229,7 +223,7 @@ export class LedesImportsComponent implements OnInit {
         is_uploaded: d.is_uploaded_PROD,
         is_ingested: d.is_ingested_PROD,
         original_name: d.original_name,
-        rejected_reason: d.rejected_reason_PROD + ' ' + d.content_length
+        rejected_reason: d.rejected_reason_PROD
       };
       if (!found) {
         acc.push({client: d.client, client_name: d.client_name, data: [value]});

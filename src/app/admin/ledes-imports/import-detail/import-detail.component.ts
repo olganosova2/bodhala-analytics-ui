@@ -17,7 +17,6 @@ export class ImportDetailComponent implements OnInit {
               public httpService: HttpService) { }
 
   ngOnInit(): void {
-    console.log("this.data: ", this.data);
     if (this.data.data.adu !== null) {
       this.data.data.adu.created_on = this.datePipe.transform(this.data.data.adu.created_on, 'short');
     }
@@ -25,8 +24,6 @@ export class ImportDetailComponent implements OnInit {
 
   downloadAttachment() {
     const BASE_URL = environment.apiUrl;
-    console.log("BASE: ", BASE_URL);
-    // this.httpService.downloadAttachment('downloadAttachment', this.data.data.adu.attachment_id);
     window.open(BASE_URL + 'downloadAttachment' + '?id=' + this.data.data.adu.attachment_id, '_blank', '');
   }
 
