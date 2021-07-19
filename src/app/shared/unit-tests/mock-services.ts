@@ -29,6 +29,7 @@ import {MOCK_RECOMMENDATION_REPORTS, MOCK_RECOMMENDATION_TYPES, MOCK_PA_SETTING,
 import {MOCK_WORK_DISTRIBUTION, MOCK_WORK_DISTRIBUTION_BY_PA} from './mock-data/work-distribution';
 import {MOCK_LAW_FIRM_DUPLICATES} from './mock-data/remove-firm-duplicates';
 import {MOCK_ADD_SUBSCRIPTION_RESPONSE, MOCK_SUBSCRIPTIONS} from './mock-data/subscriptions';
+import {MOCK_LEDES_IMPORTS} from './mock-data/ledes-imports';
 
 export const ngWindow = {
   location: {
@@ -265,6 +266,8 @@ export class DataStub {
         return of(MOCK_WORK_DISTRIBUTION_BY_PA);
       case 'getSubscriptionsList':
         return of(MOCK_SUBSCRIPTIONS);
+      case 'getAutoLEDESImports':
+        return of(MOCK_LEDES_IMPORTS);
       default:
         return of([]);
     }

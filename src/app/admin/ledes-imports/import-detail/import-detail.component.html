@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Import Detail for: {{data.data.original_name}}</h1>
+<div mat-dialog-content>
+    <p><b>Client:</b> {{data.data.client_name}}</p>
+    <p><b>Firm:</b> {{data.data.firm_name}}</p>
+    <p><b>Created At:</b> {{data.data.created_at}}</p>
+    <p *ngIf="data.data.is_uploaded"><b>Uploaded:</b> Yes</p>
+    <p *ngIf="!data.data.is_uploaded"><b>Uploaded:</b> No</p>
+    <p *ngIf="data.data.is_ingested"><b>Ingested:</b> Yes</p>
+    <p *ngIf="!data.data.is_ingested"><b>Ingested:</b> No</p>
+    <div *ngIf="data.data.adu !== null" style="padding-top: 10px;">
+      <h5>ADU Details/Upload Stats</h5>
+      <table>
+        <tr>
+          <th>File Name</th>
+          <th>Status</th>
+          <th>Batch ID</th>
+          <th>Contains Rejected File</th>
+          <th>Created On</th>
+          <th *ngIf="data.data.adu.job_status !== null"># of Line Items</th>
+          <th *ngIf="data.data.adu.job_status !== null"># of Rejected Line Items</th>
+          <th *ngIf="data.data.adu.job_status !== null"># of Duplicated Line Items</th>
+          <th *ngIf="data.data.adu.job_status !== null"># of Timekeepers</th>
+          <th *ngIf="data.data.adu.job_status !== null">Total Billed</th>
+        </tr>
+        <tr>
+          <td (click)="downloadAttachment()" style="cursor: pointer; text-decoration: underline;"><em class="icon-doc"></em>{{data.data.original_name}}</td>
+          <td>{{data.data.adu.status}}</td>
+          <td>{{data.data.adu.bh_batch_id}}</td>
+          <td *ngIf="data.data.adu.has_rejected_file">Yes</td>
+          <td *ngIf="!data.data.adu.has_rejected_file">No</td>
+          <td>{{data.data.adu.created_on}}</td>
+          <td *ngIf="data.data.adu.job_status !== null">{{data.data.adu.job_status.upload_stats.line_items}}</td>
+          <td *ngIf="data.data.adu.job_status !== null">{{data.data.adu.job_status.upload_stats.rejected}}</td>
+          <td *ngIf="data.data.adu.job_status !== null">{{data.data.adu.job_status.upload_stats.dup_items}}</td>
+          <td *ngIf="data.data.adu.job_status !== null">{{data.data.adu.job_status.upload_stats.timekeepers}}</td>
+          <td *ngIf="data.data.adu.job_status !== null">${{data.data.adu.job_status.upload_stats.total_billed | number:'1.0-0'}}</td>
+        </tr>
+      </table>
+    </div>
+</div>
