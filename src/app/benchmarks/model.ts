@@ -19,6 +19,7 @@ export interface IPaData {
   client_matter_type: string;
   firm_hours: number;
   total_hours: number;
+  total_billed?: number;
   firm_billed: number;
   tk_level: string;
 }
@@ -68,6 +69,7 @@ export interface IBenchmarkOverviewRow {
   nonEmptyPartner?: number;
   highestChildrenRate?: number;
   hoursOfWorkPercent?: number;
+  potentialSavings?: number;
   firmHours?: number;
 }
 export enum RateStatuses  {

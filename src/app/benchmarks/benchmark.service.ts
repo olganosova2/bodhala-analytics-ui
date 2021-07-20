@@ -81,6 +81,7 @@ export class BenchmarkService {
       bmRow.highestChildrenRate = 0;
       bmRow.childrenRates = this.formatChildRates(bmRow, bm.rates, bm.pa_data);
       bmRow.hoursOfWorkPercent = this.calculateHoursOfWork(bm);
+      bmRow.potentialSavings = this.calculatePotentailSavings(bm)
       result.push(bmRow);
       this.calculateAverages(bmRow, bm.rates);
     }
@@ -491,6 +492,7 @@ export class BenchmarkService {
     }
     return result;
   }
+
   calculateHoursOfWork(bm: IBenchmark): number {
     const result = 0;
     if (!this.showWorkInfo || !bm.pa_data || bm.pa_data.length === 0) {
@@ -501,5 +503,28 @@ export class BenchmarkService {
       firmHr += rec.firm_hours || 0;
     }
     return firmHr / bm.pa_data[0].total_hours * 100;
+  }
+  calculatePotentailSavings(bm: IBenchmark): number {
+    let result = 0;
+    const rates = bm.rates;
+    if (!this.showWorkInfo || !bm.pa_data || bm.pa_data.length === 0) {
+      return result;
+    }
+    for (const key in rates) {
+      if (rates.hasOwnProperty(key)) {
+        const rateData = rates[key] as IBenchmarkMetrics;
+        const found = bm.pa_data.find(e => e.tk_level === TK_LEVELS_SHORT_MAP[key]);
+        if (!found) {
+          continue;
+        }
+        const low = rateData.low || 0;
+        const high = rateData.high || 0;
+        const avg = (low + high) / 2;
+        const psuobr = avg * found.firm_hours * 1.03;
+        const firmTotalLastYear = found.firm_billed;
+        result += (psuobr - firmTotalLastYear);
+      }
+    }
+    return result;
   }
 }
