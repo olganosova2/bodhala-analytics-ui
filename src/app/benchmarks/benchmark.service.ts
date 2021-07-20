@@ -81,7 +81,7 @@ export class BenchmarkService {
       bmRow.highestChildrenRate = 0;
       bmRow.childrenRates = this.formatChildRates(bmRow, bm.rates, bm.pa_data);
       bmRow.hoursOfWorkPercent = this.calculateHoursOfWork(bm);
-      bmRow.potentialSavings = this.calculatePotentailSavings(bm)
+      bmRow.potentialSavings = this.calculatePotentailSavings(bm);
       result.push(bmRow);
       this.calculateAverages(bmRow, bm.rates);
     }
