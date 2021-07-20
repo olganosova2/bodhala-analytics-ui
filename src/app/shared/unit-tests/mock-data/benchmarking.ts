@@ -249,7 +249,26 @@ export const MOCK_BENCHMARKS =  {
         "street": 680,
         "yoy_rate_increase": 10
       }
-    }
+    },
+    "pa_data": [{
+      "client_matter_type": "Banking & Credit",
+      "firm_hours": 1081,
+      "total_hours": 4582.3,
+      "firm_billed": 854220.2,
+      "tk_level": ""
+    }, {
+      "client_matter_type": "Banking & Credit",
+      "firm_hours": 697.5,
+      "total_hours": 4582.3,
+      "firm_billed": 597060,
+      "tk_level": "JR ASS"
+    }, {
+      "client_matter_type": "Banking & Credit",
+      "firm_hours": 570.6,
+      "total_hours": 4582.3,
+      "firm_billed": 456480,
+      "tk_level": "SR ASS"
+    }]
   }, {
     "benchmark_id": 2,
     "year": '2020',

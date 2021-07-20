@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IBenchmarkOverviewRow} from '../model';
+import {BenchmarkService} from '../benchmark.service';
 
 @Component({
   selector: 'bd-benchmarks-grid',
@@ -9,7 +10,7 @@ import {IBenchmarkOverviewRow} from '../model';
 export class BenchmarksGridComponent implements OnInit {
   @Input() dataRows: Array<IBenchmarkOverviewRow> = [];
   @Input() firmDetail: boolean = false;
-  constructor() { }
+  constructor(public bmService: BenchmarkService) { }
 
   ngOnInit() {
   }

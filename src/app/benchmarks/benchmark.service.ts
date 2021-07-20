@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
-import {IBenchmark, IBenchmarkMetrics, IBenchmarkOverviewRow, IBenchmarkRate, IRowBenchmark, RateStatuses} from './model';
+import {IBenchmark, IBenchmarkMetrics, IBenchmarkOverviewRow, IBenchmarkRate, IPaData, IRowBenchmark, RateStatuses} from './model';
 import {of, throwError} from 'rxjs';
 import {TOP_MATTERS} from '../shared/unit-tests/mock-data/top-matters';
 import {TOP_FIRMS} from '../shared/unit-tests/mock-data/top-firms';
 import {IBenchmarkSetupFormatted, IBMPracticeArea, ICollectionRates} from '../benchmarking-setup/benchmarking-setup-model';
+import {UserService} from 'bodhala-ui-common';
 
 export enum BM_COLORS {
   Poor = '#FE3F56',
@@ -11,6 +12,14 @@ export enum BM_COLORS {
   Excellent = '#3EDB73',
   Default = '#E9F1F4'
 }
+export const TK_LEVELS_SHORT_MAP = {
+  junior_associate : 'JR ASS',
+  mid_associate: 'MID ASS',
+  senior_associate: 'SR ASS',
+  junior_partner: 'JR PART',
+  mid_partner: 'MID PART',
+  senior_partner: 'SR PART'
+};
 export const TK_LEVELS_MAP = {
   'Associate - 1st Year': 'junior_associate',
   'Associate - 2nd Year': 'junior_associate',
@@ -50,10 +59,13 @@ export const RATE_TABLE_HEADERS = ['', 'Client Rate', 'Low', 'High', 'Street', '
 export class BenchmarkService {
   highestBarAvg: number;
   showChart: boolean = true;
+  showWorkInfo: boolean = false;
 
-  constructor() {
+  constructor(userService: UserService) {
+    if (userService.hasEntitlement('analytics.benchmarks.workinfo')) {
+      this.showWorkInfo = true;
+    }
   }
-
   buildOverviewRows(benchmarks: Array<IBenchmark>): Array<IBenchmarkOverviewRow> {
     const result = [];
     this.highestBarAvg = 0;
@@ -67,14 +79,16 @@ export class BenchmarkService {
       bmRow.peers.push('And Others');
       bmRow.rates = Object.assign({}, bm.rates);
       bmRow.highestChildrenRate = 0;
-      bmRow.childrenRates = this.formatChildRates(bmRow, bm.rates);
+      bmRow.childrenRates = this.formatChildRates(bmRow, bm.rates, bm.pa_data);
+      bmRow.hoursOfWorkPercent = this.calculateHoursOfWork(bm);
+      bmRow.potentialSavings = this.calculatePotentailSavings(bm)
       result.push(bmRow);
       this.calculateAverages(bmRow, bm.rates);
     }
     return result;
   }
 
-  formatChildRates(parent: IBenchmarkOverviewRow, rates: IBenchmarkRate): Array<IBenchmarkOverviewRow> {
+  formatChildRates(parent: IBenchmarkOverviewRow, rates: IBenchmarkRate, paData: Array<IPaData>): Array<IBenchmarkOverviewRow> {
     let result = [];
     const associateArray = [];
     const partnerArray = [];
@@ -93,7 +107,7 @@ export class BenchmarkService {
         parent.highestChildrenRate = highest;
       }
       const row = {} as IBenchmarkOverviewRow;
-      row.name = this.getRateName(key);
+      row.name = this.getRateName(key) + this.getRateNamePostFix(key, paData);
       row.tier = parent.tier;
       row.isChild = true;
       row.street = rate.street;
@@ -267,6 +281,23 @@ export class BenchmarkService {
         return '';
     }
     return result;
+  }
+  getRateNamePostFix(key: string, paData: Array<IPaData>): string {
+    const result = '';
+    if (!this.showWorkInfo || !paData || paData.length === 0) {
+      return result;
+    }
+    const found = paData.find(e => e.tk_level === TK_LEVELS_SHORT_MAP[key]);
+    if (!found) {
+      return result;
+    }
+    let firmTotals = 0;
+    for (const rec of paData) {
+      firmTotals += rec.firm_hours;
+    }
+    const tkHours = found.firm_hours || 0;
+    const tkPercent = Math.round((tkHours / (firmTotals || 1) * 100) * 10) / 10;
+    return ' (' + tkPercent.toString() + '%)';
   }
 
 
@@ -457,6 +488,41 @@ export class BenchmarkService {
     for (const rate of streetRates) {
       if (result.indexOf(rate.firm_name) < 0 && rate.firm_name !== firmName) {
         result.push(rate.firm_name);
+      }
+    }
+    return result;
+  }
+
+  calculateHoursOfWork(bm: IBenchmark): number {
+    const result = 0;
+    if (!this.showWorkInfo || !bm.pa_data || bm.pa_data.length === 0) {
+      return result;
+    }
+    let firmHr = 0;
+    for (const rec of bm.pa_data) {
+      firmHr += rec.firm_hours || 0;
+    }
+    return firmHr / bm.pa_data[0].total_hours * 100;
+  }
+  calculatePotentailSavings(bm: IBenchmark): number {
+    let result = 0;
+    const rates = bm.rates;
+    if (!this.showWorkInfo || !bm.pa_data || bm.pa_data.length === 0) {
+      return result;
+    }
+    for (const key in rates) {
+      if (rates.hasOwnProperty(key)) {
+        const rateData = rates[key] as IBenchmarkMetrics;
+        const found = bm.pa_data.find(e => e.tk_level === TK_LEVELS_SHORT_MAP[key]);
+        if (!found) {
+          continue;
+        }
+        const low = rateData.low || 0;
+        const high = rateData.high || 0;
+        const avg = (low + high) / 2;
+        const psuobr = avg * found.firm_hours * 1.03;
+        const firmTotalLastYear = found.firm_billed;
+        result += (psuobr - firmTotalLastYear);
       }
     }
     return result;

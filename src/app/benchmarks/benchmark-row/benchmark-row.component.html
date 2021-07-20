@@ -38,9 +38,15 @@
 <!--  <div class="p-col-1">-->
 <!--    {{ dataRow?.avg_yoy_rate_increase | number:'1.2-2'  }}%-->
 <!--  </div>-->
-  <div class="p-col-2" *ngIf="isFirmDetail && dataRow.peers">
+  <div class="p-col-1" *ngIf="isFirmDetail && dataRow.peers">
     <span class="text-underline pointer-hand"  *ngIf="dataRow.peers.length > 0" (mouseenter)="showPeers($event, op3)" (mouseleave)="showPeers($event, op3)">
       See Firms</span>
+  </div>
+  <div class="p-col-1" *ngIf="bmService.showWorkInfo">
+    <span *ngIf="dataRow?.hoursOfWorkPercent else nulls">{{ dataRow?.hoursOfWorkPercent | number:'1.2-2'  }}%</span>
+  </div>
+  <div class="p-col-1" *ngIf="bmService.showWorkInfo">
+    <span *ngIf="dataRow?.potentialSavings else nulls">${{ dataRow?.potentialSavings | number:'1.0-0' }}</span>
   </div>
 </div>
 <div *ngIf="dataRow.isExpanded && dataRow.childrenRates">
