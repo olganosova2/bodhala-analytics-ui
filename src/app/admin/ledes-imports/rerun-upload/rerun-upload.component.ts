@@ -99,7 +99,7 @@ export class RerunUploadComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.reRunUpload(firmId);
+        this.reRunUpload(firmId, this.firmName);
       }
     });
   }
@@ -119,7 +119,7 @@ export class RerunUploadComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.reRunUpload(firm.id);
+        this.reRunUpload(firm.id, firm.name);
       }
     });
   }
@@ -179,10 +179,10 @@ export class RerunUploadComponent implements OnInit {
     );
   }
 
-  reRunUpload(firm: number): void {
+  reRunUpload(firm: number, name: string): void {
     const params = {
       firmId: firm,
-      firmName: this.firmName,
+      firmName: name,
       client: this.data.client,
       etag: this.data.etag
     };
