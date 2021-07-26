@@ -65,7 +65,7 @@ describe('RerunUploadComponent', () => {
   });
 
   it('should reRunUpload RerunUploadComponent', () => {
-    component.reRunUpload(30224);
+    component.reRunUpload(30224, 'Lorium Law');
     expect(component.fileReUploaded).toBeTruthy();
   });
 });
