@@ -1,0 +1,48 @@
+.upload {
+  padding-top: 1em;
+}
+
+.flex-container {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 40px;
+  .info-block {
+    text-align: center;
+    flex-grow: 1;
+    background: #fafafa;
+    padding: 30px;
+    margin: 0 10px;
+  }
+}
+
+.upload-details {
+  display: flex;
+  .main {
+    width: 100%;
+    margin-right: 40px;
+    margin-left: 40px;
+  }
+}
+
+.header {
+  font-weight: 700;
+  padding-top: .5em;
+}
+
+th {
+  border: 1px solid black;
+  padding: 4px;
+  background: #cccccc;
+}
+
+td {
+  border: 1px solid black;
+  padding: 4px;
+}
+
+table {
+  margin: auto;
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+

@@ -138,6 +138,9 @@ export const END_POINTS_URLS = {
   deleteSubscription: { url: BASE_URL + 'admin/entityFeature/{id}', showLoading: false},
   addSubscription: { url: BASE_URL + 'admin/entityFeature', showLoading: false},
   getAutoLEDESImports: { url: BASE_URL + 'admin/getAutoLEDESImports', showLoading: false},
+  createFirm: { url: BASE_URL + 'admin/createFirm', showLoading: false},
+  reuploadLedes: { url: BASE_URL + 'admin/reuploadLedes', showLoading: false},
+  findFirm: { url: BASE_URL + 'admin/findFirm', showLoading: false},
   // downloadAttachment: { url: BASE_URL + 'downloadAttachment', showLoading: false},
 
 };

@@ -146,6 +146,7 @@ import { SubscriptionGridComponent } from './admin/subscription-list/subscriptio
 import { CheckboxCellComponent } from './shared/components/checkbox-cell/checkbox-cell.component';
 import { LedesImportsComponent } from './admin/ledes-imports/ledes-imports.component';
 import { ImportDetailComponent } from './admin/ledes-imports/import-detail/import-detail.component';
+import { RerunUploadComponent } from './admin/ledes-imports/rerun-upload/rerun-upload.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -239,7 +240,8 @@ export function initHttp(service: HttpService) {
     SubscriptionGridComponent,
     CheckboxCellComponent,
     LedesImportsComponent,
-    ImportDetailComponent
+    ImportDetailComponent,
+    RerunUploadComponent
   ],
   entryComponents: [
     PillComponent,
