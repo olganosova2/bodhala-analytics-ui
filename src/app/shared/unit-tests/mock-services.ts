@@ -29,7 +29,7 @@ import {MOCK_RECOMMENDATION_REPORTS, MOCK_RECOMMENDATION_TYPES, MOCK_PA_SETTING,
 import {MOCK_WORK_DISTRIBUTION, MOCK_WORK_DISTRIBUTION_BY_PA} from './mock-data/work-distribution';
 import {MOCK_LAW_FIRM_DUPLICATES} from './mock-data/remove-firm-duplicates';
 import {MOCK_ADD_SUBSCRIPTION_RESPONSE, MOCK_SUBSCRIPTIONS} from './mock-data/subscriptions';
-import {MOCK_LEDES_IMPORTS} from './mock-data/ledes-imports';
+import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND_FIRM_RESULT} from './mock-data/ledes-imports';
 
 export const ngWindow = {
   location: {
@@ -109,6 +109,12 @@ export class DataStub {
         return of(MOCK_LAW_FIRM_DUPLICATES);
       case 'addSubscription':
         return of(MOCK_ADD_SUBSCRIPTION_RESPONSE);
+      case 'createFirm':
+        return of(MOCK_CREATE_FIRM_RESULT);
+      case 'findFirm':
+        return of(MOCK_FIND_FIRM_RESULT);
+      case 'reuploadLedes':
+        return of({result: true});
       default:
         return of([]);
     }
@@ -470,6 +476,10 @@ export class MockNgZone extends NgZone {
   run(fn: Function): any {
     return fn();
   }
+}
+
+export class LedesImportServiceStub {
+  public data = MOCK_UPLOAD_DATA;
 }
 
 

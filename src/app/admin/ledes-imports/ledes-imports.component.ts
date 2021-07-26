@@ -13,7 +13,7 @@ import { DatePipe } from '@angular/common';
 import {MatDialog} from '@angular/material/dialog';
 import {confirmDialogConfig} from '../../shared/services/config';
 import {ImportDetailComponent} from './import-detail/import-detail.component';
-
+import {LedesImportsService} from './ledes-imports.service';
 
 
 @Component({
@@ -51,7 +51,8 @@ export class LedesImportsComponent implements OnInit {
               public commonServ: CommonService,
               public agGridService: AgGridService,
               public datePipe: DatePipe,
-              public matDialog: MatDialog) {
+              public matDialog: MatDialog,
+              private ledesImportsService: LedesImportsService) {
     this.commonServ.pageTitle = 'Auto LEDES Imports';
   }
 
@@ -110,9 +111,8 @@ export class LedesImportsComponent implements OnInit {
           {headerName: 'Successfully Uploaded', field: 'is_uploaded', cellRenderer: this.booleanCellRenderer, ...this.defaultColumn, width: 140},
           {headerName: 'Successfully Ingested', field: 'is_ingested', cellRenderer: this.booleanCellRenderer, ...this.defaultColumn, width: 140},
           {headerName: 'Rejection Reason', field: 'rejected_reason', ...this.defaultColumn, width: 250},
-          {headerName: 'Files/Errors', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 120, tooltipField: 'file_tooltip', suppressMenu: true, onCellClicked: this.openDetailModal.bind(this)}
-          // {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-          // {headerName: 'Re-run', cellRenderer: this.reRunCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true, onCellClicked: this.openModal.bind(this)}
+          {headerName: 'Files/Errors', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 120, tooltipField: 'file_tooltip', suppressMenu: true, onCellClicked: this.openDetailModal.bind(this)},
+          {headerName: 'Re-run', cellRenderer: this.reRunCellRenderer,  ...this.defaultColumn, width: 120,  tooltipField: 'rerun_tooltip', suppressMenu: true, onCellClicked: this.rerun.bind(this)}
         ]
       },
       getDetailRowData: (paramsIncoming) => {
@@ -158,6 +158,7 @@ export class LedesImportsComponent implements OnInit {
       rec.data = rec.data.sort(this.utilService.dynamicSort('-created_at'));
       for (const d of rec.data) {
         d.file_tooltip = 'Click to view import details';
+        d.rerun_tooltip = 'If an upload had any issues, click here to resolve them and re-run';
         d.created_at = this.datePipe.transform(d.created_at, 'short');
         if (d.adu !== null) {
           d.firm_name = d.adu.searched_firm.name;
@@ -210,6 +211,11 @@ export class LedesImportsComponent implements OnInit {
     }
   }
 
+  rerun(row: any): void {
+    this.ledesImportsService.data = row.data;
+    this.router.navigate(['/analytics-ui/admin/ledes-imports/', row.data.client_id]);
+  }
+
   groupBy(imports: any) {
     const result = imports.reduce((acc, d) => {
       const found = acc.find(a => a.client === d.client);
@@ -223,7 +229,11 @@ export class LedesImportsComponent implements OnInit {
         is_uploaded: d.is_uploaded_PROD,
         is_ingested: d.is_ingested_PROD,
         original_name: d.original_name,
-        rejected_reason: d.rejected_reason_PROD
+        rejected_reason: d.rejected_reason_PROD,
+        message_replyto: d.message_replyto,
+        message_sender: d.message_sender,
+        message_recipients: d.message_recipients,
+        message_subject: d.message_subject
       };
       if (!found) {
         acc.push({client: d.client, client_name: d.client_name, data: [value]});
