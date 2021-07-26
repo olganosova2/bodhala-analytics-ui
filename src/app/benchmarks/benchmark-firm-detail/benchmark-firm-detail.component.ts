@@ -46,7 +46,8 @@ export class BenchmarkFirmDetailComponent implements OnInit, OnDestroy {
       });
   }
   getBenchmarks(): void {
-    this.pendingRequest = this.httpService.makeGetRequest('getBenchmarks').subscribe(
+    const params = this.benchmarkServ.showWorkInfo ? { work_info: this.benchmarkServ.showWorkInfo} : null;
+    this.pendingRequest = this.httpService.makeGetRequest('getBenchmarks', params).subscribe(
       (data: any) => {
         this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result);
         this.processBenchmarks();
@@ -104,7 +105,7 @@ export class BenchmarkFirmDetailComponent implements OnInit, OnDestroy {
     this.clearData();
     const filtered = this.allBenchmarks.filter(e => e.year.toString() === this.year.toString() && e.firm_id.toString() === this.firmId.toString());
     for (const bm of filtered) {
-      const row = { id: bm.benchmark_id, name: bm.name, tier: bm.tier, peers: bm.peers, rates: bm.rates, year: bm.year };
+      const row = { id: bm.benchmark_id, name: bm.name, tier: bm.tier, peers: bm.peers, rates: bm.rates, year: bm.year, pa_data: bm.pa_data };
       this.benchmarks.push(row);
     }
     // this.benchmarks = MOCK_BM_FIRMS;
