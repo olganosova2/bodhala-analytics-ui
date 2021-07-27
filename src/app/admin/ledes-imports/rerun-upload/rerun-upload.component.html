@@ -8,7 +8,7 @@
     </div> -->
   </div>
 
-  <div class="upload">
+  <div class="upload" *ngIf="data !== null && data !== undefined">
     <div class="upload-details">
       <div class="main">
         <div class="flex-container">
@@ -29,7 +29,7 @@
 
           <div class="info-block" style="width: 20%;">
             <div>Rejection Reason:</div>
-            <div><span class="totals-badge" style="background-color: black;">{{data.rejected_reason}}</span></div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.rejected_reason_PROD}}</span></div>
           </div>
 
           <div class="info-block" style="width: 20%;">
@@ -42,23 +42,23 @@
     </div>
   </div>
 
-  <div class="upload">
+  <div class="upload" *ngIf="data !== null && data !== undefined">
     <div class="upload-details">
       <div class="main">
         <div class="flex-container">
           <div class="info-block" style="width: 20%;">
             <div>Uploaded:</div>
             <div>
-              <span class="totals-badge" style="background-color: black;" *ngIf="data.is_uploaded">Yes</span>
-              <span class="totals-badge" style="background-color: black;" *ngIf="!data.is_uploaded">No</span>
+              <span class="totals-badge" style="background-color: black;" *ngIf="data.is_uploaded_PROD">Yes</span>
+              <span class="totals-badge" style="background-color: black;" *ngIf="!data.is_uploaded_PROD">No</span>
             </div>
           </div>
 
           <div class="info-block" style="width: 20%;">
             <div>Ingested:</div>
             <div>
-              <span class="totals-badge" style="background-color: black;" *ngIf="data.is_ingested">Yes</span>
-              <span class="totals-badge" style="background-color: black;" *ngIf="!data.is_ingested">No</span>
+              <span class="totals-badge" style="background-color: black;" *ngIf="data.is_ingested_PROD">Yes</span>
+              <span class="totals-badge" style="background-color: black;" *ngIf="!data.is_ingested_PROD">No</span>
             </div>
           </div>
 

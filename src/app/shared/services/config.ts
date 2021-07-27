@@ -141,6 +141,7 @@ export const END_POINTS_URLS = {
   createFirm: { url: BASE_URL + 'admin/createFirm', showLoading: false},
   reuploadLedes: { url: BASE_URL + 'admin/reuploadLedes', showLoading: false},
   findFirm: { url: BASE_URL + 'admin/findFirm', showLoading: false},
+  getLEDESUpload: { url: BASE_URL + 'admin/getLEDESUpload', showLoading: false},
   // downloadAttachment: { url: BASE_URL + 'downloadAttachment', showLoading: false},
 
 };
