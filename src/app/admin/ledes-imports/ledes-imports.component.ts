@@ -213,7 +213,9 @@ export class LedesImportsComponent implements OnInit {
 
   rerun(row: any): void {
     this.ledesImportsService.data = row.data;
-    this.router.navigate(['/analytics-ui/admin/ledes-imports/', row.data.client_id]);
+    this.router.navigate(['/analytics-ui/admin/ledes-imports/', row.data.client_id], {queryParams: {
+      etag: row.data.etag
+    }});
   }
 
   groupBy(imports: any) {

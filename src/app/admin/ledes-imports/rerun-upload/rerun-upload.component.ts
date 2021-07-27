@@ -23,6 +23,7 @@ export class RerunUploadComponent implements OnInit {
   errorMessage: any;
   data: any;
   clientId: number;
+  etag: string;
   firmMappingError: boolean;
   messageURLs: string[] = [];
   firmServiceProvider: boolean = false;
@@ -50,14 +51,40 @@ export class RerunUploadComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.clientId = Number(params.get('clientId'));
     });
-    this.data = this.ledesImportsService.data;
-    if (this.data.rejected_reason.includes('not find firm')) {
-      this.firmMappingError = true;
-    } else {
-      this.firmMappingError = false;
-    }
-    this.ledesImportsService.data = undefined;
-    this.mapMessageURLs();
+    this.route.queryParams.subscribe(params => {
+      this.etag = params.etag;
+    });
+    this.getLEDESUpload();
+  }
+
+  getLEDESUpload(): void {
+    const params = { etag: this.etag };
+    this.pendingRequest = this.httpService.makeGetRequest('getLEDESUpload', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          if (data.result.length > 0) {
+            this.data = data.result[0];
+            if (this.data.rejected_reason_PROD.includes('not find firm')) {
+              this.firmMappingError = true;
+            } else {
+              this.firmMappingError = false;
+            }
+            if (this.data.adu) {
+              if (this.data.adu.searched_firm) {
+                this.data.firm_name = this.data.adu.searched_firm.name;
+              }
+            } else {
+              this.data.firm_name = 'N/A';
+            }
+            this.ledesImportsService.data = undefined;
+            this.mapMessageURLs();
+          }
+        }
+      },
+      err => {
+        this.errorMessage = err;
+      }
+    );
   }
 
   mapMessageURLs(): void {
