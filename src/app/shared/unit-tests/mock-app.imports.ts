@@ -121,6 +121,7 @@ import {SubscriptionGridComponent} from '../../admin/subscription-list/subscript
 import {CheckboxCellComponent} from '../components/checkbox-cell/checkbox-cell.component';
 import {LedesImportsComponent} from '../../admin/ledes-imports/ledes-imports.component';
 import {ImportDetailComponent} from '../../admin/ledes-imports/import-detail/import-detail.component';
+import {YoyRateIncreaseComponent} from '../../savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
 
 
 export const IMPORTS = [
@@ -232,6 +233,8 @@ export const DECLARATIONS = [
   LawFirmDuplicatesComponent,
   SubscriptionListComponent,
   SubscriptionGridComponent,
+  CheckboxCellComponent,
+  YoyRateIncreaseComponent
   CheckboxCellComponent,
   LedesImportsComponent,
   ImportDetailComponent
