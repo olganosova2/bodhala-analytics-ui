@@ -119,6 +119,7 @@ import {LawFirmDuplicatesComponent} from '../../admin/law-firm-duplicates/law-fi
 import {SubscriptionListComponent} from '../../admin/subscription-list/subscription-list.component';
 import {SubscriptionGridComponent} from '../../admin/subscription-list/subscription-grid/subscription-grid.component';
 import {CheckboxCellComponent} from '../components/checkbox-cell/checkbox-cell.component';
+import {YoyRateIncreaseComponent} from '../../savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
 
 
 export const IMPORTS = [
@@ -230,7 +231,8 @@ export const DECLARATIONS = [
   LawFirmDuplicatesComponent,
   SubscriptionListComponent,
   SubscriptionGridComponent,
-  CheckboxCellComponent
+  CheckboxCellComponent,
+  YoyRateIncreaseComponent
 ];
 
 export const PROVIDERS = [
