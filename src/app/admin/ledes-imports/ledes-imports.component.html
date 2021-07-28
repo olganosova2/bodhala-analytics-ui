@@ -1,0 +1,24 @@
+<div>
+  <h4>Auto LEDES Imports</h4>
+
+  <div class="timespan">
+    View imports from:
+    <p-dropdown [options]="daysOptions" [(ngModel)]="selectedDateRange" ngDefaultControl (onChange)="getLEDESImports()" placeholder="{{selectedDateRange}}" [style]="dropdownWidth"></p-dropdown>
+  </div>
+
+  <ag-grid-angular
+    #agGrid
+    style="width: 100%;"
+    [ngStyle]="{'height': agGridService.setGridHeight(imports, paginationPageSize) +'px'}"
+    class="ag-theme-alpine"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [sideBar]="sideBarConfig"
+    (displayedColumnsChanged)="saveGridConfig($event)"
+    (sortChanged)="saveGridConfig($event);"
+    (columnResized)="saveGridConfig($event);"
+    [suppressAggFuncInHeader]="true"
+    [gridOptions]="gridOptions">
+  </ag-grid-angular>
+
+</div>
