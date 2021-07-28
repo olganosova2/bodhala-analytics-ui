@@ -242,7 +242,7 @@ export function initHttp(service: HttpService) {
     CheckboxCellComponent,
     LedesImportsComponent,
     ImportDetailComponent,
-    RerunUploadComponent
+    RerunUploadComponent,
     CheckboxCellComponent,
     YoyRateIncreaseComponent
   ],
