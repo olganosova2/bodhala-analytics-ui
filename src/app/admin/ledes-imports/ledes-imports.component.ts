@@ -14,7 +14,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {confirmDialogConfig} from '../../shared/services/config';
 import {ImportDetailComponent} from './import-detail/import-detail.component';
 import {LedesImportsService} from './ledes-imports.service';
-import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER } from '@angular/cdk/overlay/overlay-directives';
 
 
 @Component({
