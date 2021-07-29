@@ -73,7 +73,7 @@ describe('RerunUploadComponent', () => {
     spyOn(component.matDialog, 'open').and.callThrough();
     try {
       component.openModal();
-      component.openReRunModalSearchedFirm({id: 1, name: 'Test'})
+      component.openReRunModalSearchedFirm({id: 1, name: 'Test'});
     } catch (err) {
     }
     expect(component.matDialog.open).toHaveBeenCalled();
