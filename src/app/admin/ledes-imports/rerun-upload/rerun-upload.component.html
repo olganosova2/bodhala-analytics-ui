@@ -136,14 +136,14 @@
         <mat-tab label="Create New" class="rate-panel" style="background: white !important">
           <p *ngIf="!fileReUploaded && fileReUploaded !== null">The ingestion for {{data.original_name}} failed. Log in as a {{data.client_name}} user and go to the Uploads page to see why the upload failed or ping a developer.</p>
           <p *ngIf="fileReUploaded && fileReUploaded !== null"><i class="fa fa-check" style="color: green; padding-right: 5px;"></i>{{data.original_name}} has been successfully ingested. Log in as a {{data.client_name}} user and go to the Uploads page to check the status.</p>
-          <button class="primary-button" [ngClass]="{'button-disabled': firmName.length === 0}" style="float: right; background-color: green; color: white; margin-top: .5em"
-          [disabled]="firmName.length === 0" (click)="openModal()">+ Create</button>
+
           <p class="header">Firm Name</p>
-          <mat-form-field appearance="outline" class="half-width">
+          <mat-form-field appearance="outline" class="half-width"  style="width: 50% !important; padding-right: 1em;">
             <input type="text" matInput [(ngModel)]="firmName" placeholder="Add new firm name. Firm names must be unique." required
                    maxlength="255" name="firmName">
           </mat-form-field>
-
+          <button class="primary-button" [ngClass]="{'button-disabled': firmName.length === 0}" style="background-color: green; color: white; margin-top: .5em"
+          [disabled]="firmName.length === 0" (click)="openModal()">+ Create</button>
           <p class="header">Firm Type</p>
           <mat-checkbox color="primary" [(ngModel)]="firmServiceProvider"></mat-checkbox> ALSP/Service Provider?
 
