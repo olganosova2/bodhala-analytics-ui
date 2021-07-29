@@ -68,4 +68,14 @@ describe('RerunUploadComponent', () => {
     component.reRunUpload(30224, 'Lorium Law');
     expect(component.fileReUploaded).toBeTruthy();
   });
+
+  it('should openModals RerunUploadComponent', () => {
+    spyOn(component.matDialog, 'open').and.callThrough();
+    try {
+      component.openModal();
+      component.openReRunModalSearchedFirm({id: 1, name: 'Test'})
+    } catch (err) {
+    }
+    expect(component.matDialog.open).toHaveBeenCalled();
+  });
 });

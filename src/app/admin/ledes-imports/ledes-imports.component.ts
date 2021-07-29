@@ -14,6 +14,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {confirmDialogConfig} from '../../shared/services/config';
 import {ImportDetailComponent} from './import-detail/import-detail.component';
 import {LedesImportsService} from './ledes-imports.service';
+import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER } from '@angular/cdk/overlay/overlay-directives';
 
 
 @Component({
@@ -124,8 +125,14 @@ export class LedesImportsComponent implements OnInit {
 
   getLEDESImports(): void {
     const params = { range: this.selectedDateRange };
+    if (this.gridOptions.api !== undefined) {
+      this.gridOptions.api.showLoadingOverlay();
+    }
     this.pendingRequest = this.httpService.makeGetRequest<ILedesImport>('getAutoLEDESImports', params).subscribe(
       (data: any) => {
+        if (this.gridOptions.api !== undefined) {
+          this.gridOptions.api.hideOverlay();
+        }
         this.imports = data.result || [];
         this.processData();
         this.loadGrid();
