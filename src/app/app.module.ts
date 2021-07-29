@@ -147,6 +147,7 @@ import { CheckboxCellComponent } from './shared/components/checkbox-cell/checkbo
 import { LedesImportsComponent } from './admin/ledes-imports/ledes-imports.component';
 import { ImportDetailComponent } from './admin/ledes-imports/import-detail/import-detail.component';
 import { RerunUploadComponent } from './admin/ledes-imports/rerun-upload/rerun-upload.component';
+import { YoyRateIncreaseComponent } from './savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -242,6 +243,8 @@ export function initHttp(service: HttpService) {
     LedesImportsComponent,
     ImportDetailComponent,
     RerunUploadComponent
+    CheckboxCellComponent,
+    YoyRateIncreaseComponent
   ],
   entryComponents: [
     PillComponent,
