@@ -124,8 +124,14 @@ export class LedesImportsComponent implements OnInit {
 
   getLEDESImports(): void {
     const params = { range: this.selectedDateRange };
+    if (this.gridOptions.api !== undefined) {
+      this.gridOptions.api.showLoadingOverlay();
+    }
     this.pendingRequest = this.httpService.makeGetRequest<ILedesImport>('getAutoLEDESImports', params).subscribe(
       (data: any) => {
+        if (this.gridOptions.api !== undefined) {
+          this.gridOptions.api.hideOverlay();
+        }
         this.imports = data.result || [];
         this.processData();
         this.loadGrid();
