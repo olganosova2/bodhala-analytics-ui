@@ -232,7 +232,16 @@ a:hover {
   color: $body-color;
   text-decoration: underline;
 }
-
+.light-badge {
+  background-color: #fff;
+  color: $body-color;
+  border: 1px solid $body-color;
+  border-radius: 16px;
+  padding: 4px 16px;
+  min-width: 100px;
+  display: inline-block;
+  text-align: center;
+}
 .href-link-secondary {
   cursor: pointer;
   color: $secondary-link;
