@@ -122,6 +122,7 @@ import {CheckboxCellComponent} from '../components/checkbox-cell/checkbox-cell.c
 import {LedesImportsComponent} from '../../admin/ledes-imports/ledes-imports.component';
 import {ImportDetailComponent} from '../../admin/ledes-imports/import-detail/import-detail.component';
 import {YoyRateIncreaseComponent} from '../../savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
+import {YoyDrillByTkComponent} from '../../savings-calculator/yoy-rate-increase/yoy-drill-by-tk/yoy-drill-by-tk.component';
 
 
 export const IMPORTS = [
@@ -236,7 +237,8 @@ export const DECLARATIONS = [
   CheckboxCellComponent,
   LedesImportsComponent,
   ImportDetailComponent,
-  YoyRateIncreaseComponent
+  YoyRateIncreaseComponent,
+  YoyDrillByTkComponent
 ];
 
 export const PROVIDERS = [

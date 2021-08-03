@@ -44,14 +44,15 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState(AG_GRID_NAME);
     this.gridOptions = this.agGridService.getDefaultGridOptions();
+    this.gridOptions.rowHeight = 20;
     this.initColumns();
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      {headerName: '#', field: 'id', ...this.defaultColumn, sort: 'desc'},
-      {headerName: 'Client', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2},
-      {headerName: 'Firm', field: 'firm', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'text',  flex: 2 },
-      {headerName: 'Year', field: 'year', ...this.defaultColumn},
+      {headerName: '#', field: 'id', ...this.defaultColumn, sort: 'desc', floatingFilter: true},
+      {headerName: 'Client', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2, floatingFilter: true},
+      {headerName: 'Firm', field: 'firm', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'text',  flex: 2 , floatingFilter: true},
+      {headerName: 'Year', field: 'year', ...this.defaultColumn, floatingFilter: true},
       {headerName: 'View', field: 'id', ...this.defaultColumn, cellRendererFramework: RouterLinkRendererComponent,
         cellRendererParams: {
           inRouterLink: '/analytics-ui/admin/benchmark-edit/',
