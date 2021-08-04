@@ -25,6 +25,9 @@ import {ViewRecommendationsComponent} from './recommendations/view-recommendatio
 import {WorkDistributionComponent} from './admin/work-distribution/work-distribution.component';
 import {LawFirmDuplicatesComponent} from './admin/law-firm-duplicates/law-firm-duplicates.component';
 import {SubscriptionListComponent} from './admin/subscription-list/subscription-list.component';
+import {LedesImportsComponent} from './admin/ledes-imports/ledes-imports.component';
+import {RerunUploadComponent} from './admin/ledes-imports/rerun-upload/rerun-upload.component';
+import {YoyRateIncreaseComponent} from './savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -54,6 +57,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/matter-cirp-summary', component: CirpMatterSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/recommendations', component: RecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/recommendations/view/:reportId', component: ViewRecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  // YoyRateIncreaseComponent
+  {path: 'analytics-ui/yoy-rate-increase', component: YoyRateIncreaseComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
@@ -68,5 +73,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/work-distribution', component: WorkDistributionComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/law-firm-duplicates', component: LawFirmDuplicatesComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/subscription-list', component: SubscriptionListComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/ledes-imports', component: LedesImportsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/ledes-imports/:clientId', component: RerunUploadComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

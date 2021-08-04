@@ -97,6 +97,7 @@ export const END_POINTS_URLS = {
   getFirmRateIncreaseDataClient: {url: BASE_URL + 'analytics/getFirmRateIncreaseData', showLoading: true},
   getFirmStaffingClient: {url: BASE_URL + 'analytics/getFirmStaffing', showLoading: true},
   getFirmsByPracticeAreaClient: {url: BASE_URL + 'analytics/getFirmsByPracticeArea', showLoading: true},
+  getRateIncreaseByFirm: {url: BASE_URL + 'analytics/getRateIncreaseByFirm', showLoading: true},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -136,6 +137,12 @@ export const END_POINTS_URLS = {
   getSubscriptionsList: {url: BASE_URL + 'admin/getSubscriptionsList', showLoading: true},
   deleteSubscription: { url: BASE_URL + 'admin/entityFeature/{id}', showLoading: false},
   addSubscription: { url: BASE_URL + 'admin/entityFeature', showLoading: false},
+  getAutoLEDESImports: { url: BASE_URL + 'admin/getAutoLEDESImports', showLoading: false},
+  createFirm: { url: BASE_URL + 'admin/createFirm', showLoading: false},
+  reuploadLedes: { url: BASE_URL + 'admin/reuploadLedes', showLoading: false},
+  findFirm: { url: BASE_URL + 'admin/findFirm', showLoading: false},
+  getLEDESUpload: { url: BASE_URL + 'admin/getLEDESUpload', showLoading: false},
+  // downloadAttachment: { url: BASE_URL + 'downloadAttachment', showLoading: false},
 
 };
 
@@ -154,6 +161,8 @@ export const ROUTES = [
   {name: 'app.lawfirm.duplicates', routePath: 'analytics-ui/admin/law-firm-duplicates', fragment: '/law-firm-duplicates'},
   {name: 'app.subscription.list', routePath: 'analytics-ui/admin/subscription-list', fragment: '/subscription-list'},
   {name: 'app.client.recommendations', routePath: 'analytics-ui/admin/client-recommendations', fragment: '/client-recommendations'},
+  {name: 'app.yoy.rate.increase', routePath: 'analytics-ui/yoy-rate-increase', fragment: '/yoy-rate-increase'},
+  {name: 'app.ledes.imports', routePath: 'analytics-ui/admin/ledes-imports', fragment: '/ledes-imports'},
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},

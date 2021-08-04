@@ -1,0 +1,162 @@
+<bd-error-messages></bd-error-messages>
+<div class="panel-wrapper mt20 ml10 mr10 mb20">
+  <div class="panel-title">
+    <h3>Failed LEDES Import Details</h3>
+    <!-- <div style="display: inline !important; float: right !important;">
+      <button class="primary-button mr10" (click)="edit()">Edit</button>
+      <button class="primary-button" [routerLink]="'/analytics-ui/admin/client-recommendations'" style="background-color: #dedede; color: #2e373c;">Back</button>
+    </div> -->
+  </div>
+
+  <div class="upload" *ngIf="data !== null && data !== undefined">
+    <div class="upload-details">
+      <div class="main">
+        <div class="flex-container">
+          <div class="info-block" style="width: 20%;">
+            <div>Client:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.client_name}}</span></div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>Firm:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.firm_name}}</span></div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>Created At:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.created_at}}</span></div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>Rejection Reason:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.rejected_reason_PROD}}</span></div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>File Name:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.original_name}}</span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="upload" *ngIf="data !== null && data !== undefined">
+    <div class="upload-details">
+      <div class="main">
+        <div class="flex-container">
+          <div class="info-block" style="width: 20%;">
+            <div>Uploaded:</div>
+            <div>
+              <span class="totals-badge" style="background-color: black;" *ngIf="data.is_uploaded_PROD">Yes</span>
+              <span class="totals-badge" style="background-color: black;" *ngIf="!data.is_uploaded_PROD">No</span>
+            </div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>Ingested:</div>
+            <div>
+              <span class="totals-badge" style="background-color: black;" *ngIf="data.is_ingested_PROD">Yes</span>
+              <span class="totals-badge" style="background-color: black;" *ngIf="!data.is_ingested_PROD">No</span>
+            </div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>Message Sender:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.message_sender}}</span></div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>Message Reply To:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.message_replyto}}</span></div>
+          </div>
+
+          <div class="info-block" style="width: 20%;">
+            <div>Message Recipients:</div>
+            <div><span class="totals-badge" style="background-color: black;">{{data.message_recipients}}</span></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="firmMappingError">
+    <i class="fa fa-exclamation-triangle" style="font-size: 24px; color: orange;"></i> The firm could not be found. This is either because the firm does not exist in the database,
+    or that the url and json_config records for the <code>law_firm</code> record are null.
+
+    <div style="padding-top: 2em;">
+      <h5>Find Firm</h5>
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Find Existing" class="rate-panel" style="background: white !important">
+
+          <p class="header">Firm Name</p>
+          <mat-form-field appearance="outline" class="half-width" style="width: 50% !important; padding-right: 1em;">
+            <input type="text" matInput [(ngModel)]="firmNameSearch" placeholder="Search for a firm; e.g: 'Acme'. Please enter 4 of more characters" required
+                   maxlength="255" name="firmNameSearch" [disabled]="searching">
+          </mat-form-field>
+            <button class="primary-button" [ngClass]="{'button-disabled': searching}" style="background-color: green; color: white; margin-top: .5em"
+                    [disabled]="searching" (click)="findFirm()">Search</button>
+            <p *ngIf="searching"><i class="fa fa-refresh fa-spin"></i> Searching firms... one moment</p>
+            <div *ngIf="firmMatches !== null">
+              <p *ngIf="firmMatches.length === 0">No results. Enter another search term.</p>
+
+              <div *ngIf="firmMatches.length > 0">
+                <p *ngIf="!fileReUploaded && fileReUploaded !== null">The ingestion for {{data.original_name}} failed. Log in as a {{data.client_name}} user and go to the Uploads page to see why the upload failed or ping a developer.</p>
+                <p *ngIf="fileReUploaded && fileReUploaded !== null"><i class="fa fa-check" style="color: green; padding-right: 5px;"></i>{{data.original_name}} has been successfully ingested. Log in as a {{data.client_name}} user and go to the Uploads page to check the status.</p>
+                <p *ngIf="matchType === 'EXACT'">An exact match was found.</p>
+                <table>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Name Type</th>
+                    <th>Score</th>
+                    <th></th>
+                  </tr>
+
+                  <tr *ngFor="let firmMatch of firmMatches">
+                    <td>{{firmMatch.id}}</td>
+                    <td>{{firmMatch.name}}</td>
+                    <td>{{firmMatch.name_type}}</td>
+                    <td>{{firmMatch.score}}</td>
+                    <td>
+                      <button class="primary-button" style="background-color: green; color: white;"
+                              [disabled]="searching" (click)="openReRunModalSearchedFirm(firmMatch)"><i class="fa fa-check" style="padding-right: 5px;"></i>Choose</button>
+                    </td>
+                  </tr>
+                </table>
+
+              </div>
+            </div>
+
+        </mat-tab>
+
+
+        <mat-tab label="Create New" class="rate-panel" style="background: white !important">
+          <p *ngIf="!fileReUploaded && fileReUploaded !== null">The ingestion for {{data.original_name}} failed. Log in as a {{data.client_name}} user and go to the Uploads page to see why the upload failed or ping a developer.</p>
+          <p *ngIf="fileReUploaded && fileReUploaded !== null"><i class="fa fa-check" style="color: green; padding-right: 5px;"></i>{{data.original_name}} has been successfully ingested. Log in as a {{data.client_name}} user and go to the Uploads page to check the status.</p>
+
+          <p class="header">Firm Name</p>
+          <mat-form-field appearance="outline" class="half-width"  style="width: 50% !important; padding-right: 1em;">
+            <input type="text" matInput [(ngModel)]="firmName" placeholder="Add new firm name. Firm names must be unique." required
+                   maxlength="255" name="firmName">
+          </mat-form-field>
+          <button class="primary-button" [ngClass]="{'button-disabled': firmName.length === 0}" style="background-color: green; color: white; margin-top: .5em"
+          [disabled]="firmName.length === 0" (click)="openModal()">+ Create</button>
+          <p class="header">Firm Type</p>
+          <mat-checkbox color="primary" [(ngModel)]="firmServiceProvider"></mat-checkbox> ALSP/Service Provider?
+
+
+        </mat-tab>
+      </mat-tab-group>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+
+

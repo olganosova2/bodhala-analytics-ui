@@ -40,8 +40,8 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
     this.getBenchmarks();
   }
   getBenchmarks(): void {
-    const params = { clientId: this.userService.currentUser.id, year: this.year, practiceArea: this.practiceAreaId};
-    this.pendingRequest = this.httpService.makeGetRequest('getBenchmarks').subscribe(
+    const params = this.benchmarkServ.showWorkInfo ? { work_info: this.benchmarkServ.showWorkInfo} : null;
+    this.pendingRequest = this.httpService.makeGetRequest('getBenchmarks', params).subscribe(
       (data: any) => {
         this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result) || [];
         this.noRecords = this.allBenchmarks.length === 0;
@@ -51,7 +51,6 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
         this.errorMessage = err;
       }
     );
-
   }
   getPAs(): void {
     this.areasOptions = [];
@@ -86,7 +85,7 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
     this.benchmarksRows = [];
     const filtered = this.allBenchmarks.filter(e => e.year === this.year && e.name === this.practiceAreaId);
     for (const bm of filtered) {
-      const row = { id: bm.firm_id, name: bm.firm_name, tier: bm.tier, peers: bm.peers, rates: bm.rates, year: bm.year };
+      const row = { id: bm.firm_id, name: bm.firm_name, tier: bm.tier, peers: bm.peers, rates: bm.rates, year: bm.year, pa_data: bm.pa_data };
       this.benchmarks.push(row);
     }
     // this.benchmarks = MOCK_BM_FIRMS;
