@@ -64,9 +64,9 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
       {headerName: 'Timekeeper', field: 'timekeeper_name', ...this.defaultColumn, filter: 'agTextColumnFilter', width: 200}
     ];
     const defs = [];
-    this.buildColumns(defs, YoYMetricTypes.Rate);
-    this.buildColumns(defs, YoYMetricTypes.Spend);
-    this.buildColumns(defs, YoYMetricTypes.Increase);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Rate, this.years);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Spend, this.years);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Increase, this.years);
     this.gridOptions.columnDefs = [...defaultColumns, ...defs];
     this.firstLoad = false;
   }
@@ -81,26 +81,6 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
       return;
     }
     node.expanded = true;
-  }
-
-  buildColumns(defs: Array<any>, type: string): void {
-    const groupColumn = {headerName: this.yoyService.getHeaderGroupName(type), marryChildren: true, children: []};
-    let cnt = 0;
-    for (const y of this.years) {
-      if ((y === this.years[0] && type === YoYMetricTypes.Increase) || (y === this.years[this.years.length - 1] && type === YoYMetricTypes.Spend)) {
-        continue;
-      }
-      const header = y.toString(); // this.getHeaderName(type, y);
-      const fieldName = y.toString() + '_' + type;
-      const renderer = type === YoYMetricTypes.Increase ? this.agGridService.roundToPercentNumberCellRenderer : this.agGridService.roundCurrencyCellRenderer;
-      const col = {headerName: header, field: fieldName, cellRenderer: renderer, ...this.defaultColumn, floatingFilter: true, width: 105};
-      if (cnt === 0) {
-        col.cellStyle = {'border-left': '1px solid lightgray'};
-      }
-      groupColumn.children.push(col);
-      cnt++;
-    }
-    defs.push(groupColumn);
   }
 
   getRateIncrease(): void {

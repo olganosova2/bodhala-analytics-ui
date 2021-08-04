@@ -55,30 +55,11 @@ export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
       {headerName: 'Classification', field: 'bh_classification', ...this.defaultColumn,  filter: 'agTextColumnFilter',  floatingFilter: true}
    ];
     const defs = [];
-    this.buildColumns(defs, YoYMetricTypes.Rate);
-    this.buildColumns(defs, YoYMetricTypes.Spend);
-    this.buildColumns(defs, YoYMetricTypes.Increase);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Rate, this.years);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Spend, this.years);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Increase, this.years);
     this.gridOptions.columnDefs = [...defaultColumns, ...defs];
     this.firstLoad = false;
-  }
-  buildColumns(defs: Array<any>, type: string): void {
-    const groupColumn  = { headerName: this.yoyService.getHeaderGroupName(type), marryChildren: true, children: []};
-    let cnt = 0;
-    for (const y of this.years) {
-      if ((y === this.years[0] && type === YoYMetricTypes.Increase) || (y === this.years[this.years.length - 1] && type === YoYMetricTypes.Spend)) {
-        continue;
-      }
-      const header = y.toString(); // this.getHeaderName(type, y);
-      const fieldName = y.toString() + '_' + type;
-      const renderer = type === YoYMetricTypes.Increase ? this.agGridService.roundToPercentNumberCellRenderer : this.agGridService.roundCurrencyCellRenderer;
-      const col = {headerName: header, field: fieldName,  cellRenderer: renderer, ...this.defaultColumn, floatingFilter: true, width: 105 };
-      if (cnt === 0) {
-        col.cellStyle = {'border-left': '1px solid lightgray'};
-      }
-      groupColumn.children.push(col);
-      cnt ++;
-    }
-    defs.push(groupColumn);
   }
   getRateIncrease(): void {
     const params = {client_id: this.userService.currentUser.client_info_id, num_years: 3};

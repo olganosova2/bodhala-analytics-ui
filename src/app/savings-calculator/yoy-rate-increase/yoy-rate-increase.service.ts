@@ -3,14 +3,37 @@ import {UtilService} from 'bodhala-ui-common';
 import {YoYMetricTypes} from './yoy-rate-increase-model';
 import {CommonService} from '../../shared/services/common.service';
 import {TrendChart} from '../../firm/score-trend/score-trend.component';
+import {AgGridService} from 'bodhala-ui-elements';
 
 @Injectable({
   providedIn: 'root'
 })
 export class YoyRateIncreaseService {
-
+  defaultColumn: any;
   constructor(private utilService: UtilService,
-              public commonServ: CommonService) {
+              public commonServ: CommonService,
+              public agGridService: AgGridService) {
+    this.defaultColumn = this.agGridService.getDefaultColumn();
+  }
+  buildColumns(defs: Array<any>, type: string, years: Array<number>): void {
+    const groupColumn = {headerName: this.getHeaderGroupName(type), marryChildren: true, children: []};
+    let cnt = 0;
+    for (const y of years) {
+      if ((y === years[0] && type === YoYMetricTypes.Increase) || (y === years[years.length - 1] && type === YoYMetricTypes.Spend)) {
+        continue;
+      }
+      const header = y.toString();
+      const fieldName = y.toString() + '_' + type;
+      const renderer = type === YoYMetricTypes.Increase ? this.agGridService.roundToPercentNumberCellRenderer : this.agGridService.roundCurrencyCellRenderer;
+      const col = {headerName: header, field: fieldName, cellRenderer: renderer, ...this.defaultColumn, floatingFilter: true, width: 105};
+      if (cnt === 0) {
+        col.cellStyle = {'border-left': '1px solid lightgray'};
+      }
+      col.cellClass = type === YoYMetricTypes.Increase ? this.getIncreaseClass : null;
+      groupColumn.children.push(col);
+      cnt++;
+    }
+    defs.push(groupColumn);
   }
 
   calculaterateIncrease(line: any, years: Array<number>): void {
@@ -119,6 +142,16 @@ export class YoyRateIncreaseService {
         break;
       default:
         break;
+    }
+    return result;
+  }
+  getIncreaseClass(params: any) {
+    let result = null;
+    if (params.value > 0) {
+      result = 'color-red';
+    }
+    if (params.value < 0) {
+      result = 'font-green';
     }
     return result;
   }

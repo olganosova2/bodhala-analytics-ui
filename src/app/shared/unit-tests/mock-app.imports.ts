@@ -58,7 +58,7 @@ import {SpendByMonthComponent} from '../../firm/spend-by-month/spend-by-month.co
 import {DiversityComponent} from '../../firm/diversity/diversity.component';
 import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bodhala-chart-legend.component';
 import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
-import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
+import {AgGridService, BodhalaUiElementsModule} from 'bodhala-ui-elements';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ChartModule } from 'angular2-highcharts';
 import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
@@ -255,6 +255,7 @@ export const PROVIDERS = [
   TopMattersFirmsService,
   DatePipe,
   CommonService,
+  AgGridService,
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },
