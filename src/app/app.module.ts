@@ -245,8 +245,7 @@ export function initHttp(service: HttpService) {
     ImportDetailComponent,
     RerunUploadComponent,
     YoyRateIncreaseComponent,
-    YoyDrillByTkComponent
-    RerunUploadComponent,
+    YoyDrillByTkComponent,
     CheckboxCellComponent,
     YoyRateIncreaseComponent
   ],

@@ -235,8 +235,6 @@ export const DECLARATIONS = [
   SubscriptionListComponent,
   SubscriptionGridComponent,
   CheckboxCellComponent,
-  YoyRateIncreaseComponent
-  CheckboxCellComponent,
   LedesImportsComponent,
   ImportDetailComponent,
   YoyRateIncreaseComponent,
