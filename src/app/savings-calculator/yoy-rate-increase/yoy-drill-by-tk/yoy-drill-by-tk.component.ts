@@ -27,6 +27,7 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
   paginationPageSize: any = 25;
   years: Array<number> = [];
   linesForGrid: Array<any> = [];
+  gridApi: any;
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -70,11 +71,8 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
     this.gridOptions.columnDefs = [...defaultColumns, ...defs];
     this.firstLoad = false;
   }
-  onGridReady(evt): void {
-    // this.gridOptions.api.forEachNode((n) => this.openNode(n));
-    // setTimeout(() => {
-    //   this.gridOptions.api.redrawRows();
-    // }, );
+  onGridReady(params): void {
+    this.gridApi = params.api;
   }
   openNode(node: any): void {
     if (!node.group || node.field !== 'firm_name') {
@@ -146,6 +144,7 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
     }
     return minNum * this.gridOptions.rowHeight  + 50;
   }
+
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
