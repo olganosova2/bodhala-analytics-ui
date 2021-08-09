@@ -51,9 +51,7 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
     this.gridOptions = {  suppressMenuHide: true, rowHeight: 40 };
     this.gridOptions.headerHeight = 30;
     this.gridOptions.groupRowAggNodes = this.yoyService.calculateAggFunc;
-    setTimeout(() => {
-      this.getRateIncrease();
-    }, 100); // TODO remove
+    this.getRateIncrease();
   }
 
   initColumns(): void {
