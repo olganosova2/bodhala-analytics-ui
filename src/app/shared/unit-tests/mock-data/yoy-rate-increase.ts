@@ -1,94 +1,151 @@
 export const MOCK_YOY_RATE_INCREASE = {
-  "result": [{
-    "total_billed": 3283.5,
-    "total_afa": 0,
-    "total_spend": 3283.5,
-    "total_hours": 19.9,
-    "effective_rate": 165,
-    "bh_lawfirm_id": 642,
-    "firm_name": "Adams & Graham",
-    "bh_classification": "associate",
-    "year": 2020
-  }, {
-    "total_billed": 17250,
-    "total_afa": 0,
-    "total_spend": 17250,
-    "total_hours": 88.4,
-    "effective_rate": 195.1357,
-    "bh_lawfirm_id": 642,
-    "firm_name": "Adams & Graham",
-    "bh_classification": "partner",
-    "year": 2020
-  }, {
-    "total_billed": 2871,
-    "total_afa": 0,
-    "total_spend": 2871,
-    "total_hours": 19.9,
-    "effective_rate": 144.2713,
-    "bh_lawfirm_id": 642,
-    "firm_name": "Adams & Graham",
-    "bh_classification": "associate",
-    "year": 2019
-  }, {
-    "total_billed": 22400,
-    "total_afa": 0,
-    "total_spend": 22400,
-    "total_hours": 114,
-    "effective_rate": 196.4912,
-    "bh_lawfirm_id": 642,
-    "firm_name": "Adams & Graham",
-    "bh_classification": "partner",
-    "year": 2019
-  }, {
-    "total_billed": 75100,
-    "total_afa": 0,
-    "total_spend": 75100,
-    "total_hours": 383,
-    "effective_rate": 196.0835,
-    "bh_lawfirm_id": 642,
-    "firm_name": "Adams & Graham",
-    "bh_classification": "partner",
-    "year": 2018
-  }, {
-    "total_billed": 206233,
-    "total_afa": 0,
-    "total_spend": 206233,
-    "total_hours": 491.9,
-    "effective_rate": 419.2579,
-    "bh_lawfirm_id": 991,
-    "firm_name": "Akerman LLP",
-    "bh_classification": "associate",
-    "year": 2020
-  }, {
-    "total_billed": 131924,
-    "total_afa": 0,
-    "total_spend": 131924,
-    "total_hours": 317.2,
-    "effective_rate": 415.9016,
-    "bh_lawfirm_id": 991,
-    "firm_name": "Akerman LLP",
-    "bh_classification": "partner",
-    "year": 2020
-  }, {
-    "total_billed": 103427.1,
-    "total_afa": 0,
-    "total_spend": 103427.1,
-    "total_hours": 319,
-    "effective_rate": 324.2228,
-    "bh_lawfirm_id": 991,
-    "firm_name": "Akerman LLP",
-    "bh_classification": "associate",
-    "year": 2019
-  }, {
-    "total_billed": 176053.55,
-    "total_afa": 0,
-    "total_spend": 176053.55,
-    "total_hours": 453.1,
-    "effective_rate": 388.5534,
-    "bh_lawfirm_id": 991,
-    "firm_name": "Akerman LLP",
-    "bh_classification": "partner",
-    "year": 2019
+  "result": {
+    "start_date": "2018-01-01",
+    "end_date": "2021-03-22",
+    "rate_increases": [{
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "associate",
+      "year": 2020,
+      "tk_level": "MID ASS",
+      "timekeeper_name": "Americo Cisneros",
+      "bh_timekeeper_id": "e5f9610c-c980-11e9-b113-83aa076bfa71",
+      "total_billed": 3283.5,
+      "total_afa": 0,
+      "total_spend": 3283.5,
+      "total_hours": 19.9,
+      "effective_rate": 165
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2020,
+      "tk_level": "MID PART",
+      "timekeeper_name": "Scott T Clark",
+      "bh_timekeeper_id": "e5669214-c980-11e9-b113-d34b6be443db",
+      "total_billed": 11610,
+      "total_afa": 0,
+      "total_spend": 11610,
+      "total_hours": 60.2,
+      "effective_rate": 192.8571
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2020,
+      "tk_level": "SR PART",
+      "timekeeper_name": "Craig Vittitoe",
+      "bh_timekeeper_id": "e578130e-c980-11e9-b113-63865ba3ad9a",
+      "total_billed": 1960,
+      "total_afa": 0,
+      "total_spend": 1960,
+      "total_hours": 9.8,
+      "effective_rate": 200
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2020,
+      "tk_level": "SR PART",
+      "timekeeper_name": "Scott T Clark",
+      "bh_timekeeper_id": "e5669214-c980-11e9-b113-d34b6be443db",
+      "total_billed": 3680,
+      "total_afa": 0,
+      "total_spend": 3680,
+      "total_hours": 18.4,
+      "effective_rate": 200
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "associate",
+      "year": 2019,
+      "tk_level": "MID ASS",
+      "timekeeper_name": "Americo Cisneros",
+      "bh_timekeeper_id": "e5f9610c-c980-11e9-b113-83aa076bfa71",
+      "total_billed": 2871,
+      "total_afa": 0,
+      "total_spend": 2871,
+      "total_hours": 19.9,
+      "effective_rate": 144.2713
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2019,
+      "tk_level": "MID PART",
+      "timekeeper_name": "Scott T Clark",
+      "bh_timekeeper_id": "e5669214-c980-11e9-b113-d34b6be443db",
+      "total_billed": 15220,
+      "total_afa": 0,
+      "total_spend": 15220,
+      "total_hours": 77.1,
+      "effective_rate": 197.4059
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2019,
+      "tk_level": "SR PART",
+      "timekeeper_name": "Barry Ray",
+      "bh_timekeeper_id": "e5828e92-c980-11e9-b113-c38faf7519bf",
+      "total_billed": 2040,
+      "total_afa": 0,
+      "total_spend": 2040,
+      "total_hours": 10.2,
+      "effective_rate": 200
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2019,
+      "tk_level": "SR PART",
+      "timekeeper_name": "Craig Vittitoe",
+      "bh_timekeeper_id": "e578130e-c980-11e9-b113-63865ba3ad9a",
+      "total_billed": 5140,
+      "total_afa": 0,
+      "total_spend": 5140,
+      "total_hours": 26.7,
+      "effective_rate": 192.5093
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2018,
+      "tk_level": "MID PART",
+      "timekeeper_name": "Barry Ray",
+      "bh_timekeeper_id": "e5828e92-c980-11e9-b113-c38faf7519bf",
+      "total_billed": 2340,
+      "total_afa": 0,
+      "total_spend": 2340,
+      "total_hours": 11.7,
+      "effective_rate": 200
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2018,
+      "tk_level": "MID PART",
+      "timekeeper_name": "Scott T Clark",
+      "bh_timekeeper_id": "e5669214-c980-11e9-b113-d34b6be443db",
+      "total_billed": 59640,
+      "total_afa": 0,
+      "total_spend": 59640,
+      "total_hours": 304.3,
+      "effective_rate": 195.9907
+    }, {
+      "bh_lawfirm_id": 642,
+      "firm_name": "Adams & Graham",
+      "bh_classification": "partner",
+      "year": 2018,
+      "tk_level": "SR PART",
+      "timekeeper_name": "Barry Ray",
+      "bh_timekeeper_id": "e5828e92-c980-11e9-b113-c38faf7519bf",
+      "total_billed": 20,
+      "total_afa": 0,
+      "total_spend": 20,
+      "total_hours": 0.1,
+      "effective_rate": 200
+    }]
   }
-  ]
 }
+

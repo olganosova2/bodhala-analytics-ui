@@ -522,7 +522,7 @@ export class BenchmarkService {
         const avg = (low + high) / 2;
         const psuobr = avg * found.firm_hours * 1.03;
         const firmTotalLastYear = found.firm_billed;
-        result += (psuobr - firmTotalLastYear);
+        result += (firmTotalLastYear - psuobr);
       }
     }
     return result;

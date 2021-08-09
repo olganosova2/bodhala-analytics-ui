@@ -14,6 +14,9 @@ export interface IYoyRateIncreaseRaw {
   firm_name: string;
   bh_classification: string;
   year: number;
+  tk_level?: string;
+  timekeeper_name?: string;
+  bh_timekeeper_id?: string;
 }
 export interface IYoYFirmsAndClassifications {
   firm_name: string;

@@ -148,6 +148,7 @@ import { LedesImportsComponent } from './admin/ledes-imports/ledes-imports.compo
 import { ImportDetailComponent } from './admin/ledes-imports/import-detail/import-detail.component';
 import { RerunUploadComponent } from './admin/ledes-imports/rerun-upload/rerun-upload.component';
 import { YoyRateIncreaseComponent } from './savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
+import { YoyDrillByTkComponent } from './savings-calculator/yoy-rate-increase/yoy-drill-by-tk/yoy-drill-by-tk.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -242,6 +243,9 @@ export function initHttp(service: HttpService) {
     CheckboxCellComponent,
     LedesImportsComponent,
     ImportDetailComponent,
+    RerunUploadComponent,
+    YoyRateIncreaseComponent,
+    YoyDrillByTkComponent
     RerunUploadComponent,
     CheckboxCellComponent,
     YoyRateIncreaseComponent
