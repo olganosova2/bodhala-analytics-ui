@@ -2,23 +2,31 @@
   <bd-ie-banner></bd-ie-banner>
   <bd-error-messages></bd-error-messages>
   <h4 class="mb10 ml10">YoY % Rate Increase feature by Firm and Classification</h4>
-  <div *ngIf="!firstLoad && linesForGrid.length > 0" class="mt20">
-    <div class="full-width mb10">
-      <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
-      <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
-    </div>
-    <ag-grid-angular
-        #agGrid
-        style="width: 100%;"
-        [ngStyle]="{'height': (agGridService.setGridHeight(linesForGrid, paginationPageSize) + 70) +'px'}"
-        [pagination]="true"
-        [paginationPageSize]="paginationPageSize"
-        class="ag-theme-alpine"
-        [sideBar]="sideBarConfig"
-        [rowData]="linesForGrid"
-        [showOpenedGroup]="true"
-        [suppressAggFuncInHeader]="true"
-        [gridOptions]="gridOptions">
-    </ag-grid-angular>
-  </div>
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="By Firm, Granular Classification and Timekeeper">
+      <bd-yoy-drill-by-tk></bd-yoy-drill-by-tk>
+    </mat-tab>
+    <mat-tab label="By Firm and Classification">
+      <div *ngIf="!firstLoad && linesForGrid.length > 0" class="mt20">
+        <div class="full-width mb10">
+          <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
+          <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+        </div>
+        <ag-grid-angular
+            #agGrid
+            style="width: 100%;"
+            [ngStyle]="{'height': (agGridService.setGridHeight(linesForGrid, paginationPageSize) + 70) +'px'}"
+            [pagination]="true"
+            [paginationPageSize]="paginationPageSize"
+            class="ag-theme-alpine"
+            [sideBar]="sideBarConfig"
+            [rowData]="linesForGrid"
+            [showOpenedGroup]="true"
+            [suppressAggFuncInHeader]="true"
+            [gridOptions]="gridOptions">
+        </ag-grid-angular>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
 </div>

@@ -1,0 +1,21 @@
+<div *ngIf="!firstLoad && linesForGrid.length > 0" class="mt20">
+  <div class="full-width mb10">
+    <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
+    <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+  </div>
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%;"
+      [ngStyle]="{'height': (setGridHeight(linesForGrid, paginationPageSize) + 70) +'px'}"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      class="ag-theme-alpine"
+      [autoGroupColumnDef]="autoGroupColumnDef"
+      [sideBar]="sideBarConfig"
+      [rowData]="linesForGrid"
+      [showOpenedGroup]="true"
+      [suppressAggFuncInHeader]="true"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)">
+  </ag-grid-angular>
+</div>
