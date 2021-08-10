@@ -46,4 +46,9 @@ describe('YoyRateIncreaseComponent', () => {
   it('should create YoyRateIncreaseComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should changePageSize', () => {
+    const params = { value: 10};
+    component.changePageSize(params);
+    expect(component.paginationPageSize).toBe(10);
+  });
 });

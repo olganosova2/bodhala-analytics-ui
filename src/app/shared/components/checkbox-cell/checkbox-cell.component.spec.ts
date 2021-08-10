@@ -50,4 +50,9 @@ describe('CheckboxCellComponent', () => {
   it('should create CheckboxCellComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should refresh', () => {
+    const params = { checked: false};
+    const result = component.refresh(params);
+    expect(result).toBe(false);
+  });
 });

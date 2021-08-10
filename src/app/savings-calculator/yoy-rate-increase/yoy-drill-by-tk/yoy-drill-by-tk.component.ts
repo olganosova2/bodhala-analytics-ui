@@ -72,13 +72,6 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
   onGridReady(params): void {
     this.gridApi = params.api;
   }
-  openNode(node: any): void {
-    if (!node.group || node.field !== 'firm_name') {
-      return;
-    }
-    node.expanded = true;
-  }
-
   getRateIncrease(): void {
     const params = {client_id: this.userService.currentUser.client_info_id, num_years: 3, drill_down: true};
     this.pendingRequest = this.httpService.makeGetRequest<IYoyRateIncreaseRaw>('getRateIncreaseByFirm', params).subscribe(

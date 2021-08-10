@@ -30,6 +30,7 @@ import {MOCK_WORK_DISTRIBUTION, MOCK_WORK_DISTRIBUTION_BY_PA} from './mock-data/
 import {MOCK_LAW_FIRM_DUPLICATES} from './mock-data/remove-firm-duplicates';
 import {MOCK_ADD_SUBSCRIPTION_RESPONSE, MOCK_SUBSCRIPTIONS} from './mock-data/subscriptions';
 import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND_FIRM_RESULT, MOCK_LEDES_IMPORT} from './mock-data/ledes-imports';
+import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 
 export const ngWindow = {
   location: {
@@ -276,6 +277,8 @@ export class DataStub {
         return of(MOCK_LEDES_IMPORTS);
       case 'getLEDESUpload':
         return of(MOCK_LEDES_IMPORT);
+      case 'getRateIncreaseByFirm':
+        return of(MOCK_YOY_RATE_INCREASE);
       default:
         return of([]);
     }
