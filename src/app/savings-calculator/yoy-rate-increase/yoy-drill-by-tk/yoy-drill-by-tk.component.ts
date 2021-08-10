@@ -51,9 +51,7 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
     this.gridOptions = {  suppressMenuHide: true, rowHeight: 40 };
     this.gridOptions.headerHeight = 30;
     this.gridOptions.groupRowAggNodes = this.yoyService.calculateAggFunc;
-    setTimeout(() => {
-      this.getRateIncrease();
-    }, 100); // TODO remove
+    this.getRateIncrease();
   }
 
   initColumns(): void {
@@ -74,13 +72,6 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
   onGridReady(params): void {
     this.gridApi = params.api;
   }
-  openNode(node: any): void {
-    if (!node.group || node.field !== 'firm_name') {
-      return;
-    }
-    node.expanded = true;
-  }
-
   getRateIncrease(): void {
     const params = {client_id: this.userService.currentUser.client_info_id, num_years: 3, drill_down: true};
     this.pendingRequest = this.httpService.makeGetRequest<IYoyRateIncreaseRaw>('getRateIncreaseByFirm', params).subscribe(
