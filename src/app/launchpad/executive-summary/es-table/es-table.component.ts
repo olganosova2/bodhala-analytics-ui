@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import { FiltersService } from '../../../shared/services/filters.service';
 // import { MatIconRegistry } from "@angular/material/icon";
 // import { DomSanitizer } from "@angular/platform-browser";
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
 import { columns, ITopFirmES, ITopMatterES, ITopTimekeeper } from '../executive-summary.model';
 import * as config from '../../../shared/services/config';
@@ -44,6 +44,7 @@ export class EsTableComponent implements OnInit {
     private filtersService: FiltersService,
     public httpService: HttpService,
     public commonServ: CommonService,
+    public userService: UserService,
     ) { }
 
   ngOnInit() {
@@ -285,6 +286,10 @@ export class EsTableComponent implements OnInit {
     }
   }
   processMattersData(): void {
+    let savedMatters = localStorage.getItem('updated_matters_' + this.userService.currentUser.id.toString());
+    if (savedMatters) {
+      savedMatters = JSON.parse(savedMatters);
+    }
     for (const matter of this.topMatters) {
       if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
         matter.avg_partner_rate = matter.total_partner_billed / matter.total_partner_hours;
@@ -293,6 +298,12 @@ export class EsTableComponent implements OnInit {
       if (matter.total_hours > 0 && matter.total_hours !== null) {
         matter.partner_percent_hours_worked = matter.total_partner_hours / matter.total_hours;
       }
+      if (savedMatters !== undefined && savedMatters !== null) {
+        const savedName = savedMatters[matter.id];
+        if (savedName !== undefined) {
+          matter.name = savedName;
+        }
+      }
     }
     for (const matter of this.topMattersByPA) {
       if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
@@ -300,6 +311,12 @@ export class EsTableComponent implements OnInit {
       }
       if (matter.total_hours > 0 && matter.total_hours !== null) {
         matter.partner_percent_hours_worked = matter.total_partner_hours / matter.total_hours;
+      }
+      if (savedMatters !== undefined && savedMatters !== null) {
+        const savedName = savedMatters[matter.id];
+        if (savedName !== undefined) {
+          matter.name = savedName;
+        }
       }
     }
 

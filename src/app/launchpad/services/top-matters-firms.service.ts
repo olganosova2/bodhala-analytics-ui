@@ -4,7 +4,7 @@ import { HttpParams, HttpClient } from '@angular/common/http';
 
 import { ITopMatter } from '../../shared/models/top-matters';
 import { ITopAverageMatter } from '../../shared/models/top-average-matters';
-import { UtilService, HttpService } from 'bodhala-ui-common';
+import { UtilService, HttpService, UserService } from 'bodhala-ui-common';
 import { FiltersService } from '../../shared/services/filters.service';
 import { map } from 'rxjs/operators';
 
@@ -25,7 +25,8 @@ export class TopMattersFirmsService {
     private http: HttpService,
     private httpClient: HttpClient,
     public filters: FiltersService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    public userService: UserService
   ) { }
 
   fetchMatters(smartPAs: boolean) {
@@ -59,6 +60,10 @@ export class TopMattersFirmsService {
   processTopMatters(records: Array<ITopMatter>): Array<ITopMatter> {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
+    let savedMatters = localStorage.getItem('updated_matters_' + this.userService.currentUser.id.toString());
+    if (savedMatters) {
+      savedMatters = JSON.parse(savedMatters);
+    }
     for (const rec of records) {
       if (rec.lead_partner_name instanceof Array) {
         rec.lead_partner_name = rec.lead_partner_name[0] || 'N/A';
@@ -68,6 +73,12 @@ export class TopMattersFirmsService {
       }
       if (rec.lawfirm_id instanceof Array) {
         rec.lawfirm_id = rec.lawfirm_id[0] || '';
+      }
+      if (savedMatters !== undefined && savedMatters !== null) {
+        const savedName = savedMatters[rec.id];
+        if (savedName !== undefined) {
+          rec.name = savedName;
+        }
       }
       const sum = this.filters.includeExpenses ? rec.total_spend + rec.total_expenses + rec.total_afa : rec.total_spend + rec.total_afa;
       rec.total_spend = sum;
