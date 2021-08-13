@@ -59,12 +59,12 @@ describe('PracticeAreaDropdownComponent', () => {
     expect(component.dropdownWidth.width).toBe('325px');
   });
   it('should getPracticeAreasList with name > 45', () => {
-    component.clientMatterType = 'PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCTS LIA';
+    component.currentPracticeArea = 'PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCTS LIA';
     component.getPracticeAreasList();
     expect(component.dropdownWidth.width).toBe('425px');
   });
   it('should getPracticeAreasList with name > 55', () => {
-    component.clientMatterType = 'PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCT';
+    component.currentPracticeArea = 'PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCTS LIABILITY PRODUCT';
     component.getPracticeAreasList();
     expect(component.dropdownWidth.width).toBe('525px');
   });
