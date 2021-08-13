@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CommonService} from '../../../shared/services/common.service';
 import {ActivatedRoute} from '@angular/router';
-import {HttpService, UtilService} from 'bodhala-ui-common';
+import {HttpService, UtilService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 
 @Component({
@@ -22,7 +22,8 @@ export class RateCardTablesComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private httpService: HttpService,
               public filtersService: FiltersService,
-              public utilServ: UtilService) { }
+              public utilServ: UtilService,
+              public userService: UserService) { }
 
   ngOnInit() {
     this.getFirmTopSummary();
@@ -55,9 +56,19 @@ export class RateCardTablesComponent implements OnInit, OnDestroy {
     );
   }
   processData(): void {
+    let savedMatters = localStorage.getItem('updated_matters_' + this.userService.currentUser.id.toString());
+    if (savedMatters) {
+      savedMatters = JSON.parse(savedMatters);
+    }
     if (this.summary.matters) {
       for (const rec of this.summary.matters) {
         rec.total_spend = this.filtersService.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
+        if (savedMatters !== undefined && savedMatters !== null) {
+          const savedName = savedMatters[rec.id];
+          if (savedName !== undefined) {
+            rec.name = savedName;
+          }
+        }
       }
     }
     if (this.summary.timekeepers) {
