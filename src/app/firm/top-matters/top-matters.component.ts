@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IFirm} from '../firm.model';
 import {Subscription} from 'rxjs';
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {ITopMatter} from '../../shared/models/top-matters';
 import {IPracticeArea} from '../../practice-area/practice-area.model';
@@ -21,7 +21,8 @@ export class TopMattersComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
 
   constructor(private httpService: HttpService,
-              public filtersService: FiltersService) {
+              public filtersService: FiltersService,
+              public userService: UserService) {
   }
 
   ngOnInit() {
@@ -58,8 +59,18 @@ export class TopMattersComponent implements OnInit, OnDestroy {
   }
 
   processMatters(): void {
+    let savedMatters = localStorage.getItem('updated_matters_' + this.userService.currentUser.id.toString());
+    if (savedMatters) {
+      savedMatters = JSON.parse(savedMatters);
+    }
     for (const rec of this.matters) {
       rec.sum = this.filtersService.includeExpenses ? rec.total_spend + rec.total_expenses : rec.total_spend;
+      if (savedMatters !== undefined && savedMatters !== null) {
+        const savedName = savedMatters[rec.id];
+        if (savedName !== undefined) {
+          rec.name = savedName;
+        }
+      }
     }
   }
 
