@@ -9,6 +9,7 @@ import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
 import {MOCK_CLIENT_CONFIGS} from '../../shared/unit-tests/mock-data/client-configs';
 import {IEntityConfig} from './client-configs-model';
+import {CommonService} from '../../shared/services/common.service';
 
 describe('ClientConfigsComponent', () => {
   let component: ClientConfigsComponent;
@@ -32,7 +33,8 @@ describe('ClientConfigsComponent', () => {
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},
-          {provide: UserService, useClass: mockServices.UserStub}
+          {provide: UserService, useClass: mockServices.UserStub},
+          { provide: CommonService, useClass: mockServices.CommonServiceStub }
         ]
       }
     })
@@ -50,19 +52,9 @@ describe('ClientConfigsComponent', () => {
   it('should create ClientConfigsComponent', () => {
     expect(component).toBeTruthy();
   });
-  it('should loadConfigs', () => {
-    const client = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
-    component.loadConfigs(client);
-    expect(component.selectedClient.org_id).toBe(1);
-  });
   it('should getClientConfigs', () => {
     component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
     component.getClientConfigs();
-    expect(component.selectedClient.org_id).toBe(1);
-  });
-  it('should loadGrid', () => {
-    component.selectedClient = { org_id: 1, org_name: 'AIG', bh_client_id: 190};
-    const result = component.loadGrid();
     expect(component.selectedClient.org_id).toBe(1);
   });
   it('should openModal', () => {
@@ -106,5 +98,19 @@ describe('ClientConfigsComponent', () => {
     } catch (err) {
     }
     expect(component.dialog.open).toHaveBeenCalled();
+  });
+  it('should Add New', () => {
+    spyOn(component.dialog, 'open').and.callThrough();
+    component.addNew();
+    expect(component.dialog.open).toHaveBeenCalled();
+  });
+  it('should open Help', () => {
+    component.openHelp();
+    expect(component.commonServ).toBeTruthy();
+  });
+  it('should changePageSize', () => {
+    const params = { value: 10};
+    component.changePageSize(params);
+    expect(component.paginationPageSize).toBe(10);
   });
 });
