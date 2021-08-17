@@ -7,7 +7,7 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
-import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES} from '../../../shared/unit-tests/mock-data/client-configs';
+import {MOCK_CLIENT_CONFIGS, MOCK_CLIENTS_CONFIGS_EXTENDED, MOCK_DISTINCT_NAMES} from '../../../shared/unit-tests/mock-data/client-configs';
 import {IEntityConfig} from '../client-configs-model';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 
@@ -45,7 +45,7 @@ describe('AddEditConfigComponent', () => {
     fixture = TestBed.createComponent(AddEditConfigComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    component.allConfigs = MOCK_CLIENT_CONFIGS.result as unknown as Array<IEntityConfig>;
+    component.allConfigs = MOCK_CLIENTS_CONFIGS_EXTENDED.result as unknown as Array<IEntityConfig>;
   });
 
   it('should create AddEditConfigComponent', () => {
@@ -78,13 +78,15 @@ describe('AddEditConfigComponent', () => {
     component.config.name = 'analytics.pastsavings';
     component.config.value = null;
     component.config.id = null;
+    component.config.client_id = 190;
     const result = component.checkDuplicates();
     expect(result).toBe(true);
   });
   it('should checkDuplicates', () => {
-    component.config.name = 'analytics.pastsavings';
+    component.config.name = 'analytics.genericFilter2.name';
     component.config.value = null;
-    component.config.id = 10172;
+    component.config.id = 26;
+    component.config.client_id = 87;
     const result = component.checkDuplicates();
     expect(result).toBe(false);
   });

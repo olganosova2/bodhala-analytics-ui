@@ -2,28 +2,31 @@
   <h4>Manage Client Configs
     <i class="fa fa-info-circle pointer-hand ml5" (click)="openHelp()"></i>
   </h4>
-  <div>
-    <div class="mb10 mt10">Please select a client:</div>
-    <bd-client-drop-down (clientSelected)="loadConfigs($event)"></bd-client-drop-down>
-  </div>
-  <div *ngIf="selectedClient">
+  <div *ngIf="!firstLoad && clientConfigs.length > 0">
     <div class="pull-right mb20">
         <button class="primary-button" (click)="addNew()">Add New +</button>
     </div>
     <div class="clear-both"></div>
+    <div class="full-width mb10">
+      <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
+      <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+    </div>
   <ag-grid-angular
       #agGrid
       style="width: 100%;"
-      [ngStyle]="{'height': agGridService.setGridHeight(clientConfigs, paginationPageSize) +'px'}"
+      [ngStyle]="{'height': (agGridService.setGridHeight(clientConfigs, paginationPageSize) + 50) +'px'}"
       class="ag-theme-alpine"
       [pagination]="true"
       [paginationPageSize]="paginationPageSize"
       [sideBar]="sideBarConfig"
+      [rowData]="clientConfigs"
       (displayedColumnsChanged)="saveGridConfig($event)"
       (sortChanged)="saveGridConfig($event);"
       (columnResized)="saveGridConfig($event);"
       [suppressAggFuncInHeader]="true"
-      [gridOptions]="gridOptions">
+      [getRowNodeId]="getRowNodeId"
+      [gridOptions]="gridOptions"
+      (gridReady)="onGridReady($event)">
   </ag-grid-angular>
   </div>
 </div>

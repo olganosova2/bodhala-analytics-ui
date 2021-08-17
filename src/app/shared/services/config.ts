@@ -108,6 +108,7 @@ export const END_POINTS_URLS = {
   getEffectiveRates: {url: BASE_URL + 'admin/getEffectiveRates', showLoading: true},
   getEffectiveRatesForAllClients: {url: BASE_URL + 'admin/getEffectiveRatesForAllClients', showLoading: true},
   getClientConfigs: {url: BASE_URL + 'admin/getClientConfigs', showLoading: true},
+  getAllConfigsExtended: {url: BASE_URL + 'admin/getAllConfigsExtended', showLoading: true},
   saveClientConfig: {url: BASE_URL + 'admin/saveClientConfig', showLoading: true},
   deleteClientConfig: {url: BASE_URL + 'admin/deleteClientConfig', showLoading: true},
   getClientDistinctConfigNames: {url: BASE_URL + 'admin/getClientDistinctConfigNames', showLoading: true},

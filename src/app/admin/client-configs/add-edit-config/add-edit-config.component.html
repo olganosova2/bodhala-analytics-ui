@@ -1,7 +1,7 @@
 <div>
   <div mat-dialog-title>
     <div class="pull-left">
-      <h4><span *ngIf="!config.id">Add Config</span><span *ngIf="config.id">Edit Config</span> for {{ client.org_name }}</h4>
+      <h4><span *ngIf="!config.id">Add Config</span><span *ngIf="config.id">Edit Config</span></h4>
     </div>
     <div class="pull-right">
       <button mat-flat-button color="primary" (click)="saveConfig()" [disabled]="!validateForm() || inProgress">Save</button>
@@ -11,8 +11,26 @@
   </div>
   <mat-dialog-content>
     <div>
+      <ngb-alert type="danger" *ngIf="errorMessage">
+        <span class="text-sm">{{errorMessage}}</span>
+      </ngb-alert>
+      <div>Client ID</div>
+      <mat-form-field appearance="outline" style="width:200px ! important">
+        <input type="number" matInput [(ngModel)]="config.client_id" autocomplete="chrome-off"  required
+               maxlength="4" name="primaryId">
+      </mat-form-field>
+      <div>Org ID</div>
+      <mat-form-field appearance="outline" style="width:200px ! important">
+        <input type="number" matInput [(ngModel)]="config.org_id" autocomplete="chrome-off"  required
+               maxlength="4" name="primaryId">
+      </mat-form-field>
+      <div>User ID</div>
+      <mat-form-field appearance="outline" style="width:200px ! important">
+        <input type="number" matInput [(ngModel)]="config.user_id" autocomplete="chrome-off"  required
+               maxlength="4" name="primaryId">
+      </mat-form-field>
       <div>Name*</div>
-      <div class="error-mes-sm" *ngIf="this.checkDuplicates()">Error: Duplicate Name and Value</div>
+      <div class="error-mes-sm" *ngIf="formInvalid">Error: Duplicate Name and Value</div>
       <mat-form-field appearance="outline" class="full-width">
         <input type="text" matInput [(ngModel)]="config.name" autocomplete="chrome-off"  placeholder="Name" required (input)="filterNames($event.target.value)"
              (focus)="filterNames(null)"  maxlength="255" [matAutocomplete]="auto" name="configName">
