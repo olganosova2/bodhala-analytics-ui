@@ -20,7 +20,7 @@ import {NgZone} from '@angular/core';
 import {MOCK_OVERSTAFFING} from './mock-data/saving-calc-mock';
 import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
 import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
-import {MOCK_CLIENT_CONFIGS, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
+import {MOCK_CLIENT_CONFIGS, MOCK_CLIENTS_CONFIGS_EXTENDED, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
 import {MOCK_SMART_PAS} from './mock-data/discounts';
 import {MOCK_CIRP_SUMMARY} from './mock-data/cirp-matter-summary';
 import {MOCK_RECOMMENDATION_REPORTS, MOCK_RECOMMENDATION_TYPES, MOCK_PA_SETTING, MOCK_RECOMMENDATION_REPORT, MOCK_RECOMMENDATION_DISCOUNT_DATA, MOCK_RECOMMENDATION_STAFFING_DATA,
@@ -218,6 +218,8 @@ export class DataStub {
         return of(MOCK_PAST_SAVINGS);
       case 'getClientConfigs':
         return of(MOCK_CLIENT_CONFIGS);
+      case 'getAllConfigsExtended':
+        return of(MOCK_CLIENTS_CONFIGS_EXTENDED);
       case 'getClientDistinctConfigNames':
         return of(MOCK_DISTINCT_NAMES);
       case 'getConfigByName':
