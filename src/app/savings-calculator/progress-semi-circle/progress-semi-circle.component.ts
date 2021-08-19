@@ -23,7 +23,6 @@ export class ProgressSemiCircleComponent implements OnInit, AfterViewInit {
   }
   updateValues(t: number, percent: number): void {
     this.total = t;
-    // this.grandTotal = gt;
     this.percent  = percent;
     const transform = 'rotate(' + (45 + (this.percent * 1.8)) + 'deg)';
     this.renderer.setStyle(this.bar.nativeElement, 'transform', transform);

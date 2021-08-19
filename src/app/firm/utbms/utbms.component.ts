@@ -1,13 +1,10 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 
 import {
-  IBillingTotalItem,
   IUTBMSData,
-  IFirm,
   UTBMSChartOptions,
   taxonomyChartOptions,
-  utbmsPieDonut,
-  ITaxonomyData, trendChart,
+  ITaxonomyData
 } from '../firm.model';
 import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
@@ -21,7 +18,6 @@ import {FiltersService} from '../../shared/services/filters.service';
   styleUrls: ['./utbms.component.scss']
 })
 export class UtbmsComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   chartData: IUTBMSData;
   taxonomyChartData: ITaxonomyData;
   pendingRequest: Subscription;
@@ -104,9 +100,6 @@ export class UtbmsComponent implements OnInit, OnDestroy {
         if (this.chartData !== undefined) {
           this.formatChartSeries();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
 
@@ -133,9 +126,6 @@ export class UtbmsComponent implements OnInit, OnDestroy {
           this.formatChartSeriesTaxonomy();
         }
 
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -61,9 +61,6 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest<string>('getClientDistinctConfigNames').subscribe(
       (data: any) => {
         this.distinctNames = data.result;
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -165,9 +162,6 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
         if (configs && configs.length > 0) {
           this.formatSampleConfig(configs);
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

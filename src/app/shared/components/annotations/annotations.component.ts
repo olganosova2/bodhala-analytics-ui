@@ -4,15 +4,10 @@ import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../services/filters.service';
 import {CommonService} from '../../services/common.service';
 import {Subscription} from 'rxjs';
-import {SAVINGS_CALCULATOR_CONFIG} from '../../services/config';
-import {OverstaffingGridComponent} from '../../../savings-calculator/overstaffing-grid/overstaffing-grid.component';
 import {MatDialog} from '@angular/material/dialog';
 import {AnnotaionsModalComponent} from './annotaions-modal/annotaions-modal.component';
 import {IUiAnnotation} from './model';
 
-export const URL_PARAM_MAP = [
-  {path: '/analytics-ui/firm/report-card/', id: 'firmId'}
-];
 export const NOTES_DIALOG_CONFIG = {
     height: '90vh',
     width: '80vw',
@@ -27,7 +22,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   parameters: any;
   notes: Array<IUiAnnotation> = [];
-  errorMessage: any;
   url: string;
   @Input() isPublicDefault: boolean = false;
   @Input() uiId: string;
@@ -64,9 +58,6 @@ export class AnnotationsComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.notes = data.result || [];
         this.notesUpdated.emit(this.notes);
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

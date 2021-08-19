@@ -1,4 +1,4 @@
-import {Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
@@ -8,9 +8,8 @@ import {SelectItem} from 'primeng/api';
 import * as _moment from 'moment';
 import {IBenchmarkSetup, IBenchmarkSetupFormatted, IBMPracticeArea, IFirmWithGroupId, IPracticeAreaDD} from './benchmarking-setup-model';
 import {IDropDown} from '../shared/models/prime-ng';
-import {IBenchmark, IRowBenchmark} from '../benchmarks/model';
-import {IBenchmarkPracticeArea} from '../admin/admin-benchmarks/admin-benchmarks-model';
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {IRowBenchmark} from '../benchmarks/model';
+import {MatDialog} from '@angular/material/dialog';
 
 import * as config from '../shared/services/config';
 
@@ -26,7 +25,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
   pendingRequestBM: Subscription;
   pendingRequestPA: Subscription;
   pendingRequestRates: Subscription;
-  errorMessage: any;
   showWizard: boolean = false;
   allBenchmarks: Array<IRowBenchmark> = [];
   yearBenchmarks: Array<IBenchmarkSetupFormatted> = [];
@@ -85,9 +83,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
         this.allBenchmarks = data.result || [];
         this.yearBenchmarks = this.benchmarkServ.formatBenchmarksForSetup(this.allBenchmarks, this.selectedYear);
         this.noResults = this.yearBenchmarks.length === 0;
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -102,9 +97,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
         for (const firm of this.firms) {
           this.firmOptions.push({label: firm.firm_name, value: firm.bh_lawfirm_id});
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -112,9 +104,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
     this.pendingRequestPA = this.httpService.makeGetRequest('getPracticeAreasAndId').subscribe(
       (data: any) => {
         this.practiceAreasList = data.result || [];
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -197,9 +186,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
         }
         newPa.peers = this.benchmarkServ.formatPeers(streetRates, this.benchmark.firm_name);
         newPa.rates = Object.assign({}, this.benchmarkServ.processCollectionRates(records, streetRates));
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
     return true;
@@ -258,9 +244,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
         const res = data.result;
         this.reset();
         this.getBenchmarks();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -289,9 +272,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.reset();
         this.getBenchmarks();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -310,9 +290,6 @@ export class BenchmarkingSetupComponent implements OnInit, OnDestroy {
         const bm = data.result;
         this.reset();
         this.getBenchmarks();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -17,7 +17,6 @@ import {Subscription} from 'rxjs';
 export class SubscriptionGridComponent implements OnInit, OnDestroy {
   pendingRequestAdd: Subscription;
   pendingRequestDelete: Subscription;
-  errorMessage: any;
   gridOptions: GridOptions;
   savedState: any;
   sideBarConfig: any;
@@ -74,9 +73,6 @@ export class SubscriptionGridComponent implements OnInit, OnDestroy {
             colData.value = data.result.id;
             colData.data[this.getSubscriptionFieldName(featureId)] = data.result.id;
           }
-        },
-        err => {
-          this.errorMessage = err;
         }
       );
     } else {
@@ -85,9 +81,6 @@ export class SubscriptionGridComponent implements OnInit, OnDestroy {
         (data: any) => {
             colData.value = null;
             colData.data[this.getSubscriptionFieldName(featureId)] = null;
-        },
-        err => {
-          this.errorMessage = err;
         }
       );
     }

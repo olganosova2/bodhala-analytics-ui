@@ -16,8 +16,6 @@ export class SavingsFirmGridComponent implements OnInit, AfterViewInit {
   savedState: any;
   sideBarConfig: any;
   defaultColumn: any;
-  totalRecords: number = 0;
-  gridHeight: number = 629;
   defaultState: any;
   firstLoad: boolean = true;
   subTotalBB: number = 0;

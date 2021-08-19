@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
-import {UtilService} from 'bodhala-ui-common';
 import {YoYMetricTypes} from './yoy-rate-increase-model';
 import {CommonService} from '../../shared/services/common.service';
-import {TrendChart} from '../../firm/score-trend/score-trend.component';
 import {AgGridService} from 'bodhala-ui-elements';
 
 @Injectable({
@@ -10,8 +8,7 @@ import {AgGridService} from 'bodhala-ui-elements';
 })
 export class YoyRateIncreaseService {
   defaultColumn: any;
-  constructor(private utilService: UtilService,
-              public commonServ: CommonService,
+  constructor(public commonServ: CommonService,
               public agGridService: AgGridService) {
     this.defaultColumn = this.agGridService.getDefaultColumn();
   }

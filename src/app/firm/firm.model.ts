@@ -110,13 +110,6 @@ export interface IDiversityData {
 }
 
 export interface IUTBMSData {
-  // code: string;
-  // description: string;
-  // subcodes: string[];
-  // total_billed: number;
-  // total_hours: number;
-  // activitydata: any[];
-  // taskdata: any[];
   activitydata: any[];
   taskdata: any[];
 }
@@ -549,6 +542,4 @@ export const genderChartOptions = {...pieDonut, ...genderAdditionalOptions};
 export const minorityChartOptions = {...pieDonut, ...minorityAdditionalOptions};
 export const UTBMSChartOptions = {...utbmsPieDonut, ...UTBMSAdditionalOptions};
 export const taxonomyChartOptions = {...taxonomyPieDonut, ...taxonomyAdditionalOptions};
-// export const UTBMSChartOptions = {...pieDonut};
-// export const taxonomyChartOptions = {...pieDonut};
 

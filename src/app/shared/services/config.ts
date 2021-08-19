@@ -1,5 +1,4 @@
 import {environment} from '../../../environments/environment';
-import {Input} from '@angular/core';
 
 export const BASE_URL = environment.apiUrl;
 export const HOST = environment.host;
@@ -143,7 +142,7 @@ export const END_POINTS_URLS = {
   reuploadLedes: { url: BASE_URL + 'admin/reuploadLedes', showLoading: false},
   findFirm: { url: BASE_URL + 'admin/findFirm', showLoading: false},
   getLEDESUpload: { url: BASE_URL + 'admin/getLEDESUpload', showLoading: false},
-  // downloadAttachment: { url: BASE_URL + 'downloadAttachment', showLoading: false},
+
 
 };
 

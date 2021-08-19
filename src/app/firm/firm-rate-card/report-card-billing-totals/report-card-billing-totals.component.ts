@@ -5,7 +5,6 @@ import {Subscription} from 'rxjs';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
 import {FiltersService} from '../../../shared/services/filters.service';
-import {IClientPA} from '../../../matters/cirp-matter-summary/cirp.service';
 
 @Component({
   selector: 'bd-report-card-billing-totals',
@@ -13,7 +12,6 @@ import {IClientPA} from '../../../matters/cirp-matter-summary/cirp.service';
   styleUrls: ['./report-card-billing-totals.component.scss']
 })
 export class ReportCardBillingTotalsComponent implements OnChanges {
-  errorMessage: any;
   totalsRaw: any;
   otherFirms: any;
   totalsRC: Array<IBillingTotalItemReportCard> = [];
@@ -131,10 +129,6 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         this.formatItems();
         this.isLoaded = true;
         this.filtersChanged = false;
-      },
-      err => {
-        this.errorMessage = err;
-        this.isLoaded = true;
       }
     );
   }

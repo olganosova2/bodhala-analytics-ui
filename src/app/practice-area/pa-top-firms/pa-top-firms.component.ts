@@ -13,7 +13,6 @@ import * as config from '../../shared/services/config';
   styleUrls: ['./pa-top-firms.component.scss']
 })
 export class PaTopFirmsComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   firms: Array<IFirmData> = [];
   firmsData: Array<IFirmData> = [];
   helpText: string = 'Total billed for each firm display how much was spent at each firm for this Practice Area.';
@@ -59,9 +58,6 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
             dateRange[0].firstChild.textContent = 'Active Data Range: ' + newMinDate.toString() + ' - ' + newMaxDate.toString();
           }
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -82,9 +78,6 @@ export class PaTopFirmsComponent implements OnInit, OnDestroy {
           this.firms = this.firms.slice(0, 10);
         }
 
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

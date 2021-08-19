@@ -18,7 +18,6 @@
           <div class="p-grid">
             <div class="ui-3 pr20" *ngIf="logoUrl">
               <img [src]="logoUrl" alt="logo"/>
-    <!--          <img src="assets/images/aig-logo.png"/>-->
             </div>
             <div class="ui-9">
               <h2>{{commonServ.pageSubtitle}}</h2>
@@ -41,7 +40,6 @@
           <button *ngIf="savedReports.length > 0" #tooltip="matTooltip" matTooltip="View saved reports for {{commonServ.pageSubtitle}}" class="primary-button ml20" (click)="showSavedReports()">Saved</button>
         </div>
       </div>
-      <!-- <div class="pull-right mt10"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div> -->
 
       <div class="clear-both"></div>
       <hr/>
@@ -60,13 +58,6 @@
           <bd-rate-card-tables *ngIf="firmId && firm && practiceArea.practice_area" [firmId]="firmId" [practiceArea]="practiceArea.practice_area" [smartPAs]="smartPAs"></bd-rate-card-tables>
           <hr *ngIf="firmId && firm && practiceArea.practice_area" id="hrEnd"/>
         </div>
-        <!-- <div *ngFor="let pa of practiceAreas;let i= index" class="mb30 mt40">
-          <h4 class="mb10"><span>{{pa}}</span></h4>
-          <bd-report-card-billing-totals [firm]="firm" [isReportCard]="true" [practiceArea]="pa" #billingTotals
-                             *ngIf="firmId && firm && pa"></bd-report-card-billing-totals>
-          <bd-rate-card-tables *ngIf="firmId && firm && pa" [firmId]="firmId" [practiceArea]="pa"></bd-rate-card-tables>
-          <hr *ngIf="firmId && firm && pa" id="hrEnd_{{i}}"/>
-        </div> -->
       </div>
       <div [hidden]="!commonServ.pdfLoading">
         <h4>Annotations</h4>
@@ -97,7 +88,6 @@
         </div>
       </div>
       <div class="pull-right">
-        <!-- <lib-bd-annotations (notesUpdated)="loadNotes($event)" #annotations></lib-bd-annotations> -->
         <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
           <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
         </button>

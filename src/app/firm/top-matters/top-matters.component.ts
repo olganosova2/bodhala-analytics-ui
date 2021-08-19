@@ -12,7 +12,6 @@ import {IPracticeArea} from '../../practice-area/practice-area.model';
   styleUrls: ['./top-matters.component.scss']
 })
 export class TopMattersComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   matters: Array<ITopMatter> = [];
   @Input() practiceArea: IPracticeArea;
   @Input() firmId: number;
@@ -51,9 +50,6 @@ export class TopMattersComponent implements OnInit, OnDestroy {
         this.matters = data.result || [];
         this.matters = this.matters.slice(0, 10);
         this.processMatters();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

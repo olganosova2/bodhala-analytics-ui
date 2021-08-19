@@ -54,6 +54,7 @@ export interface IFirmData {
     name: string;
     total_billed: number;
     per_of_spend: number;
+    total_billed_all?: number;
 }
 
 export interface IPracticeAreaData {
@@ -77,6 +78,7 @@ export interface IBillingTotalItem {
 
 export interface ILeadPartner {
     id: string;
+    firm_id?: number;
     name: string;
     firm: string;
     lawfirm_id: number;

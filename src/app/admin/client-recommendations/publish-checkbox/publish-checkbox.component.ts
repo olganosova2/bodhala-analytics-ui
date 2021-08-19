@@ -1,5 +1,4 @@
 import { Component, OnDestroy } from '@angular/core';
-
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { IAfterGuiAttachedParams } from 'ag-grid-community';
 import {Subscription} from 'rxjs';
@@ -21,7 +20,6 @@ import * as config from '../../../shared/services/config';
 export class PublishCheckboxComponent implements ICellRendererAngularComp, OnDestroy  {
   params: any;
   pendingRequest: Subscription;
-  errorMessage: any;
 
   constructor(private httpService: HttpService,
               public appStateService: AppStateService,
@@ -74,9 +72,6 @@ export class PublishCheckboxComponent implements ICellRendererAngularComp, OnDes
     this.pendingRequest = this.httpService.makePostRequest('publishRecommendationReport', params).subscribe(
       (data: any) => {
         const published = data.result;
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -21,13 +21,11 @@ import {PaTopLeadPartnersComponent} from './pa-top-lead-partners/pa-top-lead-par
   styleUrls: ['./practice-area.component.scss']
 })
 export class PracticeAreaComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   clientMatterType: string;
   practiceArea: IPracticeArea;
   pageName: string = 'app.client-dashboard.practice-area-detail';
   pageType: string = 'Practice Areas';
   excludeFilters = ['practice areas', 'threshold'];
-  practiceAreaData: IPracticeAreaData;
   rightColsCount: number = 12;
   pendingRequest: Subscription;
   pendingRequestPracticeArea: Subscription;
@@ -97,9 +95,6 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
             }
           }
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

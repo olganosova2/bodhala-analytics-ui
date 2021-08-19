@@ -1,8 +1,5 @@
 import {Injectable} from '@angular/core';
 import {IBenchmark, IBenchmarkMetrics, IBenchmarkOverviewRow, IBenchmarkRate, IPaData, IRowBenchmark, RateStatuses} from './model';
-import {of, throwError} from 'rxjs';
-import {TOP_MATTERS} from '../shared/unit-tests/mock-data/top-matters';
-import {TOP_FIRMS} from '../shared/unit-tests/mock-data/top-firms';
 import {IBenchmarkSetupFormatted, IBMPracticeArea, ICollectionRates} from '../benchmarking-setup/benchmarking-setup-model';
 import {UserService} from 'bodhala-ui-common';
 

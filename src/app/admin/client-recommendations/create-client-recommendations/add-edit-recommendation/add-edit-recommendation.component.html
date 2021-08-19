@@ -8,11 +8,6 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="typeId" [options]="recommendationTypes"
                     placeholder="Select a recommendation type" (onChange)="typeChange($event)" >
         </p-dropdown>
-        <!-- <mat-form-field appearance="fill">
-          <mat-select formControlName="typeId" required (selectionChange)="typeChange($event)">
-            <mat-option *ngFor="let recommendation of recommendationTypes" [value]="recommendation.value">{{recommendation.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperNext>Next</button>
         </div>
@@ -186,11 +181,6 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="firm" [options]="firmOptions"
                       [filter]="true" placeholder="Select a firm" (onChange)="getFirmStaffing()" >
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="firm" required (selectionChange)="getFirmStaffing()">
-            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -316,11 +306,6 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="firm" [options]="firmOptions"
                       [filter]="true" placeholder="Select a firm" (onChange)="getPracticeAreasByFirm()" >
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="firm" required (selectionChange)="getPracticeAreasByFirm()">
-            <mat-option *ngFor="let firm of firmOptions" [value]="firm.value">{{firm.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -334,11 +319,7 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="practiceArea" [options]="firmPracticeAreas"
                       [filter]="true" placeholder="Select a practice area (optional)" (onChange)="getFirmRateIncreaseData()" >
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="practiceArea" (selectionChange)="getFirmRateIncreaseData()">
-            <mat-option *ngFor="let area of firmPracticeAreas" [value]="area.value">{{area.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
+
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -352,13 +333,7 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="practiceArea" [options]="paGroupOptions"
                       [filter]="true" placeholder="Select a practice area (optional)" (onChange)="getFirmRateIncreaseData()" [group]="true">
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="practiceArea" (selectionChange)="getFirmRateIncreaseData()">
-            <mat-optgroup *ngFor="let group of paGroupOptions" [label]="group.label">
-              <mat-option *ngFor="let area of group.items" [value]="area.value">{{area.label}}</mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field> -->
+
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -469,11 +444,6 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="practiceArea" [options]="firmPracticeAreas"
                       [filter]="true" placeholder="Select a practice area (optional)" (onChange)="getFirmBlockBillingData()" >
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="practiceArea" (selectionChange)="getFirmBlockBillingData()">
-            <mat-option *ngFor="let pa of firmPracticeAreas" [value]="pa.value">{{pa.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -488,13 +458,6 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="practiceArea" [options]="paGroupOptions"
                       [filter]="true" placeholder="Select a practice area (optional)" (onChange)="getFirmBlockBillingData()" [group]="true">
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="practiceArea" (selectionChange)="getFirmBlockBillingData()">
-            <mat-optgroup *ngFor="let group of paGroupOptions" [label]="group.label">
-              <mat-option *ngFor="let area of group.items" [value]="area.value">{{area.label}}</mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -576,11 +539,7 @@
         <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="practiceArea" [options]="paOptions"
                     [filter]="true" placeholder="Select a practice area" (onChange)="getFirmsByPracticeArea()" >
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="practiceArea" required (selectionChange)="getFirmsByPracticeArea()">
-            <mat-option *ngFor="let pa of paOptions" [value]="pa.value">{{pa.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
+
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -595,13 +554,6 @@
         <p-dropdown   formControlName="practiceArea" class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" [options]="paGroupOptions"
                       [filter]="true" placeholder="Select a practice area" (onChange)="getFirmsByPracticeArea()" [group]="true">
         </p-dropdown>
-        <!-- <mat-form-field>
-          <mat-select formControlName="practiceArea" required (selectionChange)="getFirmsByPracticeArea()">
-            <mat-optgroup *ngFor="let group of paGroupOptions" [label]="group.label">
-              <mat-option *ngFor="let area of group.items" [value]="area.value">{{area.label}}</mat-option>
-            </mat-optgroup>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -617,11 +569,6 @@
         </ng-template>
         <p-multiSelect formControlName="previousFirms" [style]="{width:'700px'}" [showToggleAll]="false" appendTo="body" placeholder="Select firm(s)" [options]="firmPAOptions" [filter]="true">
         </p-multiSelect>
-        <!-- <mat-form-field>
-          <mat-select formControlName="previousFirms" required multiple>
-            <mat-option *ngFor="let firm of firmPAOptions" [value]="firm.value">{{firm.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>
@@ -637,11 +584,6 @@
         </ng-template>
         <p-multiSelect formControlName="newFirms" [style]="{width:'700px'}" [displaySelectedLabel]="true" [showToggleAll]="false" appendTo="body" placeholder="Select firm(s)" [options]="firmPAOptions" [filter]="true">
         </p-multiSelect>
-        <!-- <mat-form-field>
-          <mat-select formControlName="newFirms" required multiple>
-            <mat-option *ngFor="let firm of firmPAOptions" [value]="firm.value">{{firm.label}}</mat-option>
-          </mat-select>
-        </mat-form-field> -->
         <div>
           <button mat-button matStepperPrevious>Back</button>
           <button mat-button matStepperNext>Next</button>

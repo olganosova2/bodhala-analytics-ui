@@ -62,7 +62,6 @@ export class LaunchPadService {
     if (this.userService.hasEntitlement('analytics.reports')) {
       requests.invoiceIQReports = this.invoiceIqService.fetchIQReports();
     }
-    // TODO - add all requests here
     return requests;
   }
   configureCards(): Array<any> {

@@ -1,12 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import { FiltersService } from '../../../shared/services/filters.service';
-// import { MatIconRegistry } from "@angular/material/icon";
-// import { DomSanitizer } from "@angular/platform-browser";
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
-import { columns, ITopFirmES, ITopMatterES, ITopTimekeeper } from '../executive-summary.model';
-import * as config from '../../../shared/services/config';
+import { ITopFirmES, ITopMatterES, ITopTimekeeper } from '../executive-summary.model';
 import * as _moment from 'moment';
 
 const moment = _moment;
@@ -26,7 +23,6 @@ export class EsTableComponent implements OnInit {
   topTKsByPA: Array<ITopTimekeeper>;
   topPracticeArea: string;
   isLoaded: boolean = false;
-  errorMessage: any;
   pendingRequest: Subscription;
   @Input() maxDate: string;
   formatter = new Intl.NumberFormat('en-US', {
@@ -85,10 +81,6 @@ export class EsTableComponent implements OnInit {
           this.processTKData();
         }
         this.isLoaded = true;
-      },
-      err => {
-        this.errorMessage = err;
-        this.isLoaded = true;
       }
     );
   }
@@ -111,7 +103,6 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        // firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';

@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService} from '../../../shared/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppStateService, HttpService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
-import * as config from '../../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
 import {SelectItem} from 'primeng/api';
 import { RecommendationService } from '../recommendation.service';
@@ -19,7 +18,6 @@ import { DatePipe } from '@angular/common';
 })
 export class ViewClientRecommendationComponent implements OnInit {
   pendingRequest: Subscription;
-  errorMessage: any;
   selectedClientId: number;
   selectedOrgId: number;
   reportId: number;
@@ -30,16 +28,11 @@ export class ViewClientRecommendationComponent implements OnInit {
   clientPracticeAreaSetting: string = null;
   recommendationTypes: SelectItem[] = [];
   firmOptions: SelectItem[] = [];
-  previousFirmNames: string[] = [];
-  newFirmNames: string[] = [];
 
   lastFullYearFirmData: any[];
-  ytdFirmData: any[];
   firmStaffingData: any[] = [];
   firmBlockBillingData: any[] = [];
-  firmRateIncreaseData: any[] = [];
   mostRecentYear: number;
-  firmPracticeAreas: string[];
   differenceInSpendLower: number;
   differenceInSpendUpper: number;
   estimatedSpendWithOldDisc: number;
@@ -63,7 +56,6 @@ export class ViewClientRecommendationComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               public router: Router,
-              private httpService: HttpService,
               public appStateService: AppStateService,
               public commonServ: CommonService,
               public utilService: UtilService,

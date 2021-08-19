@@ -1,4 +1,4 @@
-import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {CommonService} from '../../shared/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -20,7 +20,6 @@ const moment = _moment;
 })
 export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   maxDate: string;
   lowerDateRange: string;
   upperDateRange: string;
@@ -28,7 +27,6 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   uiId: string = config.UI_ANNOTATIONS_IDS.executiveSummary;
   @ViewChild(EsTableComponent) executiveSummaryTablesComp: EsTableComponent;
   @ViewChild(SpendOverviewComponent) executiveSummaryOverviewComp: SpendOverviewComponent;
-
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -48,7 +46,6 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data) {
           this.maxDate = data.result.max;
-
           const lastYear = moment(this.maxDate).year();
           const d = new Date(lastYear, 0 , 1);
           const janOne = new Date(d).toISOString().slice(0, 10);
@@ -56,9 +53,6 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
           this.upperDateRange = this.datepipe.transform(this.maxDate, 'mediumDate');
 
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -78,7 +72,6 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
     }, 200);
   }
   refreshData(): void {
-
     this.executiveSummaryTablesComp.getExecutiveSummaryData();
     this.executiveSummaryOverviewComp.getSpendOverview();
   }

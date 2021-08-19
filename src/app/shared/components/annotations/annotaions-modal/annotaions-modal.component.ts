@@ -1,7 +1,5 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MenuItem} from 'primeng/api';
-import {IOverstaffingRow} from '../../../../savings-calculator/savings-calculator.service';
 import {IUiAnnotation} from '../model';
 import {HttpService, UserService, UtilService, ConfirmModalComponent} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
@@ -18,7 +16,6 @@ const moment = _moment;
 })
 export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewInit {
   pendingRequest: Subscription;
-  errorMessage: any;
   url: string;
   uiId: string;
   newNote: IUiAnnotation;
@@ -111,9 +108,6 @@ export class AnnotaionsModalComponent implements OnInit, OnDestroy, AfterViewIni
             params.dropDownOpened = false;
           }
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
