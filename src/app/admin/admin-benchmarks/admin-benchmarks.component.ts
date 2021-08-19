@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {CommonService, IClient} from '../../shared/services/common.service';
+import { CommonService } from '../../shared/services/common.service';
 import {BenchmarkService} from '../../benchmarks/benchmark.service';
 import {Subscription} from 'rxjs';
 import {AG_GRID_NAME, IAdminBenchmark} from './admin-benchmarks-model';
@@ -23,8 +23,6 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
   savedState: any;
   sideBarConfig: any;
   defaultColumn: any;
-  totalRecords: number = 0;
-  gridHeight: number = 629;
   defaultState: any;
   firstLoad: boolean = true;
   constructor(private route: ActivatedRoute,

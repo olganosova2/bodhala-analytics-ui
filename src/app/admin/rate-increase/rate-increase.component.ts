@@ -24,8 +24,6 @@ export interface IClientRateIncreases {
 })
 export class RateIncreaseComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  pendingRequestClients: Subscription;
-  errorMessage: any;
   clients: Array<IClient> = [];
   rateIncreases: Array<IClientRateIncreases> = [];
   paginationPageSize: number = 10;
@@ -33,8 +31,6 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
   savedState: any;
   sideBarConfig: any;
   defaultColumn: any;
-  totalRecords: number = 0;
-  gridHeight: number = 629;
   defaultState: any;
   firstLoad: boolean = true;
   constructor(private route: ActivatedRoute,
@@ -78,9 +74,6 @@ export class RateIncreaseComponent implements OnInit, OnDestroy {
           this.calculateRates(client.rates, client.org_name, client.bh_client_id);
         }
         this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

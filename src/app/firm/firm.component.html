@@ -11,9 +11,6 @@
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
   </div>
-  <!-- <div class="panel-wrapper full-width mb10">
-    <h4>{{ firm?.name }}</h4>
-  </div> -->
   <div class="mb20" style="height: 36px; line-height: 24px;">
     <mat-slide-toggle *ngIf="userService.hasEntitlement('analytics.expenses')" [checked]="filtersService?.includeExpenses" (change)="toggleExpenses()" class="pt10">Include Expenses
     </mat-slide-toggle>

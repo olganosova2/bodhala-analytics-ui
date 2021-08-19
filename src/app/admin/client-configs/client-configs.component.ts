@@ -5,9 +5,7 @@ import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilSe
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
-import {IClientRateIncreases} from '../rate-increase/rate-increase.component';
 import {IEntityConfig} from './client-configs-model';
-import {IBenchmarkSetupFormatted} from '../../benchmarking-setup/benchmarking-setup-model';
 import * as config from '../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
 import {FRESH_DESK_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
@@ -21,7 +19,6 @@ import {AddEditConfigComponent} from './add-edit-config/add-edit-config.componen
 export class ClientConfigsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestDelete: Subscription;
-  errorMessage: any;
   selectedClient: IClient;
   clientConfigs: Array<IEntityConfig> = [];
   paginationPageSize: number = 10;
@@ -74,10 +71,6 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.clientConfigs = data.result || [];
         this.firstLoad = false;
-        // this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -140,9 +133,6 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
         if (deleted) {
           this.getClientConfigs();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

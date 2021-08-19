@@ -1,17 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService, IClient} from '../shared/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {RecommendationService} from '../admin/client-recommendations/recommendation.service';
-import {IRecommendationReport, IRecommendation} from '../admin/client-recommendations/client-recommendations-model';
+import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {IRecommendationReport} from '../admin/client-recommendations/client-recommendations-model';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
-import * as config from '../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
 import {GridOptions} from 'ag-grid-community';
-import {FRESH_DESK_ARTICLES} from '../shared/services/config';
-import {SelectItem, SelectItemGroup} from 'primeng/api';
-import {confirmDialogConfig} from '../shared/services/config';
 import { DatePipe } from '@angular/common';
 
 
@@ -22,8 +17,6 @@ import { DatePipe } from '@angular/common';
 })
 export class RecommendationsComponent implements OnInit {
   pendingRequest: Subscription;
-  pendingRequestDelete: Subscription;
-  errorMessage: any;
   selectedClient: IClient;
   recommendationReports: Array<IRecommendationReport> = [];
   paginationPageSize: number = 10;
@@ -33,7 +26,6 @@ export class RecommendationsComponent implements OnInit {
   defaultColumn: any;
   defaultState: any;
   firstLoad: boolean = true;
-  helpArticleId: string = FRESH_DESK_ARTICLES.EntityConfig;
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -67,7 +59,6 @@ initColumns(): void {
 
   saveGridConfig(evt: any): void {
     const state = evt;
-    // this.agGridService.saveState('ClientConfigsGrid', this.gridOptions);
   }
 
   getClientRecommendationReports(): void {
@@ -82,9 +73,6 @@ initColumns(): void {
           report.created_on = pipe.transform(report.created_on, 'shortDate');
         }
         this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

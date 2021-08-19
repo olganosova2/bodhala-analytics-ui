@@ -111,7 +111,6 @@ export class FiltersService {
   getEncodedFilters(fs: any): Array<string> {
     const efs = [];
     for (const f of fs) {
-      // efs.push(encodeURIComponent(f));
       efs.push(f);
     }
     return efs;

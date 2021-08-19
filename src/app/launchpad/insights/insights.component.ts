@@ -14,7 +14,6 @@ export class InsightsComponent implements OnInit {
   insights: Array<IInsight> = [];
   selectedInsight: IInsight;
   pendingRequest: Subscription;
-  errorMessage: any;
   @Output() insightsLoaded: EventEmitter<any> = new EventEmitter<boolean>();
   constructor(private httpService: HttpService,
               public utilService: UtilService) { }
@@ -32,9 +31,6 @@ export class InsightsComponent implements OnInit {
             this.insightsLoaded.emit(true);
           });
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

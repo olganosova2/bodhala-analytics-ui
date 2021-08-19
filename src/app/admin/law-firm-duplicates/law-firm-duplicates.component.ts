@@ -5,8 +5,6 @@ import {CommonService} from '../../shared/services/common.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
-import {IWorkDistribution} from '../work-distribution/work-distrubution-model';
-import {tkClassifications} from '../../savings-calculator/savings-calculator.service';
 
 @Component({
   selector: 'bd-law-firm-duplicates',
@@ -15,7 +13,6 @@ import {tkClassifications} from '../../savings-calculator/savings-calculator.ser
 })
 export class LawFirmDuplicatesComponent implements OnInit {
   pendingRequest: Subscription;
-  errorMessage: any;
   apiErrors: Array<string> = [];
   apiResults: Array<any> = [];
   primaryId: number;
@@ -49,9 +46,6 @@ export class LawFirmDuplicatesComponent implements OnInit {
         }
         this.apiResults  = data.result || [];
         this.formatResults();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

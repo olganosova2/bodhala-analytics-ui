@@ -1,12 +1,10 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {CommonService, IClient} from '../../../shared/services/common.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {CommonService} from '../../../shared/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, GenericConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
-import * as config from '../../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
-import {FRESH_DESK_ARTICLES} from '../../../shared/services/config';
 import {SelectItem, SelectItemGroup} from 'primeng/api';
 import {AddEditRecommendationComponent} from './add-edit-recommendation/add-edit-recommendation.component';
 import {confirmDialogConfig} from '../../../shared/services/config';
@@ -20,7 +18,6 @@ import { RecommendationService } from '../recommendation.service';
 })
 export class CreateClientRecommendationsComponent implements OnInit {
   pendingRequest: Subscription;
-  errorMessage: any;
   selectedClientId: number;
   selectedOrgId: number;
   reportId: number;
@@ -154,9 +151,6 @@ export class CreateClientRecommendationsComponent implements OnInit {
         for (const practiceArea of practiceAreasList) {
           this.paOptions.push({label: practiceArea, value: practiceArea});
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -172,9 +166,6 @@ export class CreateClientRecommendationsComponent implements OnInit {
             orgId: this.selectedOrgId
           }});
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

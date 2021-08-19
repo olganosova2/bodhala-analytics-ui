@@ -83,9 +83,6 @@ export class CommonService {
   generatePdfOuter(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
     this.generatePDF(title, divId, firmId);
-    // setTimeout(() => {
-    //   this.generatePDF(title, divId, firmId);
-    // });
   }
 
   generatePDF(title: string, divId: string, firmId: string) {

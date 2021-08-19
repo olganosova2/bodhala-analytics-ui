@@ -4,10 +4,8 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {CommonService} from '../../shared/services/common.service';
 import {BenchmarkService} from '../benchmark.service';
 import {IDropDown} from '../../shared/models/prime-ng';
-import {BM_MOCK_FIRMS, MOCK_BM_FIRMS, MOCK_PRACTICE_AREAS, MOCK_YEARS} from '../../shared/unit-tests/mock-data/benchmarking';
 import {IBenchmark, IBenchmarkOverviewRow, IRowBenchmark} from '../model';
 import {Subscription} from 'rxjs';
-import {IFirm} from '../../firm/firm.model';
 
 @Component({
   selector: 'bd-benchmark-firm-detail',
@@ -15,7 +13,6 @@ import {IFirm} from '../../firm/firm.model';
   styleUrls: ['./benchmark-firm-detail.component.scss', '../benchmark-overview/benchmark-overview.component.scss']
 })
 export class BenchmarkFirmDetailComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   firmId: string;
   year: number;
   firmsOptions: Array<IDropDown> = [];
@@ -51,15 +48,10 @@ export class BenchmarkFirmDetailComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result);
         this.processBenchmarks();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
   getFirms(isLoad: boolean): void {
-    // this.router.navigateByUrl('/', {skipLocationChange: true})
-    //   .then(() => this.router.navigate(['/analytics-ui/benchmarking/firm/', this.firmId]));
     this.firmsOptions = [];
     let firms = this.allBenchmarks.filter(e => e.year.toString() === this.year.toString());
     firms = firms.sort(this.utilService.dynamicSort('firm_name'));
@@ -108,7 +100,6 @@ export class BenchmarkFirmDetailComponent implements OnInit, OnDestroy {
       const row = { id: bm.benchmark_id, name: bm.name, tier: bm.tier, peers: bm.peers, rates: bm.rates, year: bm.year, pa_data: bm.pa_data };
       this.benchmarks.push(row);
     }
-    // this.benchmarks = MOCK_BM_FIRMS;
     this.benchmarksRows =  this.benchmarkServ.buildOverviewRows(this.benchmarks);
     this.updateSubtitle();
   }

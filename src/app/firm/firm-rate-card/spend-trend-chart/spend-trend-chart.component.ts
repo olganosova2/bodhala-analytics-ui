@@ -1,13 +1,10 @@
-import {Component, ElementRef, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import * as _moment from 'moment';
-import {IFirm, spendByQuarterOptions} from '../../firm.model';
-import {IPracticeArea} from '../../../practice-area/practice-area.model';
+import { spendByQuarterOptions} from '../../firm.model';
 import {Subscription} from 'rxjs';
 import {HttpService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {CommonService} from '../../../shared/services/common.service';
-import * as Highcharts from 'highcharts';
-import { BreadcrumbModule } from 'primeng/breadcrumb';
 
 const moment = _moment;
 
@@ -32,8 +29,6 @@ export enum TrendChart {
   styleUrls: ['./spend-trend-chart.component.scss']
 })
 export class SpendTrendChartComponent implements OnInit {
-
-  errorMessage: any;
   summary: any;
   isLoaded: boolean = false;
   spend: Array<any> = [];
@@ -76,9 +71,6 @@ export class SpendTrendChartComponent implements OnInit {
         }
         this.processData();
         this.renderChart(false);
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

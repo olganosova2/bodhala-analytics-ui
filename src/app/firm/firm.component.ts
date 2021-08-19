@@ -23,7 +23,6 @@ import {IUiAnnotation} from '../shared/components/annotations/model';
   styleUrls: ['./firm.component.scss']
 })
 export class FirmComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   firmId: string;
   firm: IFirm;
   pageName: string = 'app.client-dashboard.firm-detail';
@@ -73,9 +72,6 @@ export class FirmComponent implements OnInit, OnDestroy {
           this.firm = firms[0];
           this.commonServ.pageSubtitle = this.firm.name;
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -86,9 +82,6 @@ export class FirmComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.firmData = data.result;
         this.rightColsCount = this.firmData !== null && this.firmData.num_attorneys_range !== null ? 9 : 12;
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

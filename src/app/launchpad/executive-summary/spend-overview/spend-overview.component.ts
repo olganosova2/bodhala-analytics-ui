@@ -2,9 +2,7 @@ import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy, Input
 import { FiltersService } from '../../../shared/services/filters.service';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
-import {CommonService} from '../../../shared/services/common.service';
 import {ISpendOverviewItem} from '../executive-summary.model';
-import { _ } from 'ag-grid-community';
 import * as _moment from 'moment';
 
 const moment = _moment;
@@ -21,7 +19,6 @@ export class SpendOverviewComponent implements OnInit {
   priorYearTotalsRaw: any;
   diffs: any;
   totals: Array<ISpendOverviewItem> = [];
-  errorMessage: any;
   isLoaded: boolean = false;
   itemRowCount: number = 9;
   @Input() maxDate: string;
@@ -59,10 +56,6 @@ export class SpendOverviewComponent implements OnInit {
           this.priorYearTotalsRaw = data.result[priorYear];
         }
         this.formatItems();
-        this.isLoaded = true;
-      },
-      err => {
-        this.errorMessage = err;
         this.isLoaded = true;
       }
     );

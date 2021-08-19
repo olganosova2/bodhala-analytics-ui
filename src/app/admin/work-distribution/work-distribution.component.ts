@@ -6,9 +6,8 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {MatDialog} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
 import {GridOptions} from 'ag-grid-community';
-import {IWorkDistribution, IWorkDistributionByPA} from './work-distrubution-model';
-import {IEntityConfig} from '../client-configs/client-configs-model';
-import {IClientPA} from '../../matters/cirp-matter-summary/cirp.service';
+import {IWorkDistribution} from './work-distrubution-model';
+
 
 @Component({
   selector: 'bd-work-distribution',
@@ -17,10 +16,8 @@ import {IClientPA} from '../../matters/cirp-matter-summary/cirp.service';
 })
 export class WorkDistributionComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   selectedClient: IClient;
   workRecords: Array<IWorkDistribution> = [];
-  workRecordsByPA: Array<IWorkDistributionByPA> = [];
   gridOptions: GridOptions;
   savedState: any;
   sideBarConfig: any;
@@ -74,9 +71,6 @@ export class WorkDistributionComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.workRecords = data.result || [];
         this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

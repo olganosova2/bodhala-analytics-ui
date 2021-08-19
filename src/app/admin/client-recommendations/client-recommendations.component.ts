@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CommonService, IClient} from '../../shared/services/common.service';
 import {IRecommendationReport} from './client-recommendations-model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppStateService, ConfirmModalComponent, GenericConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
@@ -20,7 +20,6 @@ import {PublishCheckboxComponent} from './publish-checkbox/publish-checkbox.comp
 export class ClientRecommendationsComponent implements OnInit {
   pendingRequest: Subscription;
   pendingRequestDelete: Subscription;
-  errorMessage: any;
   selectedClient: IClient;
   clientRecommendationReports: Array<IRecommendationReport> = [];
   paginationPageSize: number = 10;
@@ -83,9 +82,6 @@ export class ClientRecommendationsComponent implements OnInit {
           report.created_on = pipe.transform(report.created_on, 'shortDate');
         }
         this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -157,9 +153,6 @@ export class ClientRecommendationsComponent implements OnInit {
         if (deleted) {
           this.getClientRecommendationReports();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -16,7 +16,6 @@ import {IYoyRateIncreaseRaw, YoYMetricTypes} from '../yoy-rate-increase-model';
 })
 export class YoyDrillByTkComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   gridOptions: GridOptions;
   savedState: any;
   sideBarConfig: any;
@@ -81,9 +80,6 @@ export class YoyDrillByTkComponent implements OnInit, OnDestroy {
           this.processRecords(data.result.rate_increases);
           this.initColumns();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {CommonService} from '../../../../shared/services/common.service';
-import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+import {FormGroup, Validators, FormControl} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {RecommendationService} from '../../recommendation.service';
@@ -8,7 +8,6 @@ import {IRecommendationReport, IRecommendation} from '../../client-recommendatio
 import {Subscription} from 'rxjs';
 import * as config from '../../../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
-import {FRESH_DESK_ARTICLES} from '../../../../shared/services/config';
 import {SelectItem, SelectItemGroup} from 'primeng/api';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import {confirmDialogConfig} from '../../../../shared/services/config';
@@ -24,7 +23,6 @@ import {confirmDialogConfig} from '../../../../shared/services/config';
 export class AddEditRecommendationComponent implements OnInit {
   pendingRequest: Subscription;
   pendingRequestDelete: Subscription;
-  errorMessage: any;
   newRecommendation: IRecommendation;
   selectedType: string;
   selectedFirmName: string;
@@ -36,7 +34,6 @@ export class AddEditRecommendationComponent implements OnInit {
   firmRateIncreaseData: any[] = [];
   mostRecentYear: number;
   firmPracticeAreas: SelectItem[] = [];
-  firmPracticeAreasGroup: SelectItemGroup[];
   quillConfig: any = config.quillConfig;
   differenceInSpendLower: number = 0;
   differenceInSpendUpper: number = 0;
@@ -57,8 +54,6 @@ export class AddEditRecommendationComponent implements OnInit {
   rateIncreasePreventionSavings: number = 0;
   rateIncreasePreventionDetails: any[] = [];
 
-  firstFormGroup: FormGroup;
-  currentForm: FormGroup;
 
   typeForm = new FormGroup({
     typeId: new FormControl('', [
@@ -452,9 +447,6 @@ export class AddEditRecommendationComponent implements OnInit {
         } else if (this.selectedType === 'Rate Increase Prevention / Reduction') {
           this.getFirmRateIncreaseData();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -549,9 +541,6 @@ export class AddEditRecommendationComponent implements OnInit {
             }
           }
           resolve();
-        },
-        err => {
-          this.errorMessage = err;
         }
       );
     });
@@ -619,9 +608,6 @@ export class AddEditRecommendationComponent implements OnInit {
             this.typeSelected.emit('INVALID');
           }
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -13,7 +13,6 @@ import * as config from '../../shared/services/config';
   styleUrls: ['./pa-top-lead-partners.component.scss']
 })
 export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   leadPartners: Array<ILeadPartner> = [];
   helpText: string = 'Total amount billed and Bodhala Price Index for the top Lead Partners in this Practice Area.';
   @Input() clientMatterType: string;
@@ -69,9 +68,6 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
             }
           }
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

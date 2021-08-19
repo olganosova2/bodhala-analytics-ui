@@ -7,8 +7,6 @@ import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {IYoyRateIncreaseRaw, YoYMetricTypes} from './yoy-rate-increase-model';
 import {GridOptions} from 'ag-grid-community';
-import {CheckboxCellComponent} from '../../shared/components/checkbox-cell/checkbox-cell.component';
-import * as config from '../../shared/services/config';
 import {YoyRateIncreaseService} from './yoy-rate-increase.service';
 
 @Component({
@@ -18,7 +16,6 @@ import {YoyRateIncreaseService} from './yoy-rate-increase.service';
 })
 export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   gridOptions: GridOptions;
   savedState: any;
   sideBarConfig: any;
@@ -70,9 +67,6 @@ export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
          this.processRecords(data.result.rate_increases);
          this.initColumns();
        }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

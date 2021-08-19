@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import {Component, ViewChild, ElementRef} from '@angular/core';
 import { ICellRendererParams } from 'ag-grid-community';
-import {AgRendererComponent, ICellRendererAngularComp} from 'ag-grid-angular';
+import {AgRendererComponent} from 'ag-grid-angular';
 
 @Component({
   selector: 'bd-checkbox-cell',
