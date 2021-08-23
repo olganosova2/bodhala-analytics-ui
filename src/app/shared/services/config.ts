@@ -96,7 +96,7 @@ export const END_POINTS_URLS = {
   getFirmRateIncreaseDataClient: {url: BASE_URL + 'analytics/getFirmRateIncreaseData', showLoading: true},
   getFirmStaffingClient: {url: BASE_URL + 'analytics/getFirmStaffing', showLoading: true},
   getFirmsByPracticeAreaClient: {url: BASE_URL + 'analytics/getFirmsByPracticeArea', showLoading: true},
-  getRateIncreaseByFirm: {url: BASE_URL + 'analytics/getRateIncreaseByFirm', showLoading: true},
+  getRateIncreaseByFirm: {url: BASE_URL + 'analytics/getRateIncreaseByFirm', showLoading: false},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},

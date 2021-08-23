@@ -1,4 +1,5 @@
-<div *ngIf="!firstLoad && linesForGrid.length > 0" class="mt20">
+<div class="position-relative" style="min-height: 80vh">
+  <div *ngIf="!firstLoad && linesForGrid.length > 0" class="mt20" >
   <div class="full-width mb10">
     <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
     <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
@@ -18,4 +19,8 @@
       [gridOptions]="gridOptions"
       (gridReady)="onGridReady($event)">
   </ag-grid-angular>
+</div>
+  <div class="spinner-card" [hidden]="!firstLoad">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
 </div>
