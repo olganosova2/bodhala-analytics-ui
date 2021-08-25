@@ -18,15 +18,9 @@
   <div class="p-col-1">
     Partner +/-
   </div>
-  <!-- <div class="p-col-1">
-    Tier
-  </div> -->
   <div class="p-col-1">
     Practice Area<br/>Discount
   </div>
-<!--  <div class="p-col-1">-->
-<!--    Y.O.Y. Increase-->
-<!--  </div>-->
   <div class="p-col-1" *ngIf="firmDetail">
     Representative Peer Firms
   </div>
@@ -36,7 +30,6 @@
   <div class="p-col-1" *ngIf="bmService.showWorkInfo">
     Potential Savings
   </div>
-
 </div>
 <ng-container *ngFor="let row of dataRows;let index = $index">
   <bd-benchmark-row [dataRow]="row"></bd-benchmark-row>

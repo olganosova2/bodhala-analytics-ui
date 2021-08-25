@@ -58,7 +58,7 @@ import {SpendByMonthComponent} from '../../firm/spend-by-month/spend-by-month.co
 import {DiversityComponent} from '../../firm/diversity/diversity.component';
 import {BodhalaChartLegendComponent} from '../components/bodhala-chart-legend/bodhala-chart-legend.component';
 import {ScoreTrendComponent} from '../../firm/score-trend/score-trend.component';
-import {BodhalaUiElementsModule} from 'bodhala-ui-elements';
+import {AgGridService, BodhalaUiElementsModule} from 'bodhala-ui-elements';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ChartModule } from 'angular2-highcharts';
 import {ScoreBadgeComponent} from '../../firm/score-trend/score-badge/score-badge.component';
@@ -122,6 +122,7 @@ import {CheckboxCellComponent} from '../components/checkbox-cell/checkbox-cell.c
 import {LedesImportsComponent} from '../../admin/ledes-imports/ledes-imports.component';
 import {ImportDetailComponent} from '../../admin/ledes-imports/import-detail/import-detail.component';
 import {YoyRateIncreaseComponent} from '../../savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
+import {YoyDrillByTkComponent} from '../../savings-calculator/yoy-rate-increase/yoy-drill-by-tk/yoy-drill-by-tk.component';
 
 
 export const IMPORTS = [
@@ -236,7 +237,8 @@ export const DECLARATIONS = [
   CheckboxCellComponent,
   LedesImportsComponent,
   ImportDetailComponent,
-  YoyRateIncreaseComponent
+  YoyRateIncreaseComponent,
+  YoyDrillByTkComponent
 ];
 
 export const PROVIDERS = [
@@ -253,6 +255,7 @@ export const PROVIDERS = [
   TopMattersFirmsService,
   DatePipe,
   CommonService,
+  AgGridService,
   { provide: FiltersService, useClass: mockServices.FiltersStub },
   { provide: APP_BASE_HREF, useValue: '/' },
   { provide: MatDialogRef, useValue: {} },

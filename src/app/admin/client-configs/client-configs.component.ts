@@ -5,9 +5,7 @@ import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilSe
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
-import {IClientRateIncreases} from '../rate-increase/rate-increase.component';
 import {IEntityConfig} from './client-configs-model';
-import {IBenchmarkSetupFormatted} from '../../benchmarking-setup/benchmarking-setup-model';
 import * as config from '../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
 import {FRESH_DESK_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
@@ -21,7 +19,6 @@ import {AddEditConfigComponent} from './add-edit-config/add-edit-config.componen
 export class ClientConfigsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestDelete: Subscription;
-  errorMessage: any;
   selectedClient: IClient;
   clientConfigs: Array<IEntityConfig> = [];
   paginationPageSize: number = 10;
@@ -31,6 +28,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
   defaultColumn: any;
   defaultState: any;
   firstLoad: boolean = true;
+  gridApi: any;
   helpArticleId: string = FRESH_DESK_ARTICLES.EntityConfig;
 
   constructor(private route: ActivatedRoute,
@@ -51,48 +49,30 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
     this.savedState = this.agGridService.getSavedState('ClientConfigsGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
+    this.getClientConfigs();
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      {headerName: 'ID', field: 'id', ...this.defaultColumn},
-      {headerName: 'Name', field: 'name', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
-      {headerName: 'Description', field: 'description', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'Value', field: 'value', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
+      {headerName: 'ID', field: 'id', ...this.defaultColumn, floatingFilter: true, width: 80},
+      {headerName: 'Client ID', field: 'client_id', ...this.defaultColumn,  floatingFilter: true,  width: 100},
+      {headerName: 'Org. ID', field: 'org_id', ...this.defaultColumn,  floatingFilter: true, width: 100},
+      {headerName: 'Client Name', field: 'client_name', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, flex: 1},
+      {headerName: 'User ID', field: 'user_id', ...this.defaultColumn,  floatingFilter: true, width: 100},
+      {headerName: 'Email', field: 'email', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true,  width: 150},
+      {headerName: 'Entity Name', field: 'name', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true,  flex: 1},
+      // {headerName: 'Description', field: 'description', ...this.defaultColumn,  filter: 'text', floatingFilter: true},
+      {headerName: 'Value', field: 'value', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true,  width: 220},
       {headerName: 'Edit', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)},
       {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.openDeleteDialog.bind(this)},
     ];
   }
-  loadConfigs(client: IClient): void {
-    this.selectedClient = client;
-    if (this.selectedClient) {
-      this.getClientConfigs();
-      this.commonServ.pageSubtitle = this.selectedClient.org_name;
-    }
-
-  }
   getClientConfigs(): void {
-    const params = { clientId: this.selectedClient.bh_client_id };
-    this.pendingRequest = this.httpService.makeGetRequest<IEntityConfig>('getClientConfigs', params).subscribe(
+    this.pendingRequest = this.httpService.makeGetRequest<IEntityConfig>('getAllConfigsExtended').subscribe(
       (data: any) => {
         this.clientConfigs = data.result || [];
-        this.clientConfigs = this.clientConfigs.sort(this.utilService.dynamicSort('name'));
-        this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
+        this.firstLoad = false;
       }
     );
-  }
-  loadGrid(): void {
-    if (!this.gridOptions.api) {
-      return;
-    }
-    if (this.firstLoad) {
-      this.defaultState = this.gridOptions.columnApi.getColumnState();
-      this.firstLoad = false;
-    }
-    this.gridOptions.api.setRowData(this.clientConfigs);
-    this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
   saveGridConfig(evt: any): void {
     const state = evt;
@@ -111,13 +91,19 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
     this.openModal(item);
   }
   openModal(item: IEntityConfig): void {
-    const packaged = { config: Object.assign({}, item), records: this.clientConfigs, client: this.selectedClient};
+    const packaged = { config: Object.assign({}, item), records: this.clientConfigs};
     const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], packaged)};
     const dialogRef = this.dialog.open(AddEditConfigComponent, {...modalConfig, disableClose: true });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
+      if (!result) {
+        return;
+      }
+      if (!item.id) {
         this.getClientConfigs();
+      } else if (result) {
+        const rowNode = this.gridApi.getRowNode(item.id);
+        rowNode.setData(result);
       }
     });
 
@@ -127,7 +113,7 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
     this.openModal(newItem);
   }
   createNewConfig(): IEntityConfig {
-    return { id: null, description: '', name: '', value: null, client_id: this.selectedClient.bh_client_id, json_config: null};
+    return { id: null, description: '', name: '', value: null, client_id: null, user_id: null, org_id: null, client_name: null, json_config: null};
   }
   openDeleteDialog(row: any): void {
     const modalConfig = {...config.confirmDialogConfig, data: {title: 'Confirm Delete', item: 'config'}};
@@ -147,14 +133,21 @@ export class ClientConfigsComponent implements OnInit, OnDestroy {
         if (deleted) {
           this.getClientConfigs();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
   openHelp(): void {
     this.commonServ.openHelpArticle(this.helpArticleId);
+  }
+  changePageSize(evt: any): void {
+    this.paginationPageSize = evt.value;
+    this.gridOptions.api.paginationSetPageSize(this.paginationPageSize);
+  }
+  getRowNodeId(data: any) {
+    return data.id;
+  }
+  onGridReady(params): void {
+    this.gridApi = params.api;
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

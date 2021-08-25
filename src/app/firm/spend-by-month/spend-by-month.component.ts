@@ -14,7 +14,6 @@ const moment = _moment;
   styleUrls: ['./spend-by-month.component.scss']
 })
 export class SpendByMonthComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   spend: Array<any> = [];
   includeExpenses: boolean = false;
   chart: any = {};
@@ -59,9 +58,6 @@ export class SpendByMonthComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.spend = data.result;
         this.renderChart();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

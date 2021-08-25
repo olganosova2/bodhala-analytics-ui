@@ -21,12 +21,12 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
   config: IEntityConfig;
   sampleConfig: IEntityConfig;
   possibleValues: Array<string> = [];
-  client: IClient;
   allConfigs: Array<IEntityConfig> = [];
   distinctNames: Array<string> = [];
   filteredNames: Array<string> = [];
   filteredValues: Array<string> = [];
   inProgress: boolean = false;
+  formInvalid: boolean = false;
 
   constructor(public dialogRef: MatDialogRef<AddEditConfigComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
@@ -36,7 +36,6 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.config = Object.assign({}, this.data.config);
     this.config.json_config_parsed = JSON.stringify(this.config.json_config, null, 2);
-    this.client = Object.assign({}, this.data.client);
     this.allConfigs = this.data.records || [];
     this.getDistinctNames();
   }
@@ -62,41 +61,57 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest<string>('getClientDistinctConfigNames').subscribe(
       (data: any) => {
         this.distinctNames = data.result;
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
 
   saveConfig(): void {
-    if (this.checkDuplicates()) {
+    this.formInvalid = this.checkDuplicates();
+    if (this.formInvalid) {
       return;
     }
+    this.errorMessage = null;
     this.inProgress = true;
     const params = Object.assign({}, this.config);
     this.pendingRequest = this.httpService.makePostRequest('saveClientConfig', params).subscribe(
       (data: any) => {
         const updConfig = data.result;
         if (updConfig) {
+          updConfig.client_name = this.config.client_name;
+          updConfig.email = this.config.email;
+          updConfig.user_name = this.config.user_name;
           this.inProgress = false;
           this.dialogRef.close(updConfig);
         }
-      },
-      err => {
-        this.inProgress = false;
-        this.errorMessage = err;
+        if (data.error) {
+          this.errorMessage = data.error;
+        }
       }
     );
   }
 
   checkDuplicates(): boolean {
     let isDupe = false;
+    let configs = [];
+    if (this.config.user_id) {
+      configs = this.allConfigs.filter(e => e.user_id === this.config.user_id) || [];
+    } else if (this.config.org_id) {
+      configs = this.allConfigs.filter(e => e.org_id === this.config.org_id) || [];
+    } else {
+      configs = this.allConfigs.filter(e => e.client_id === this.config.client_id) || [];
+    }
+    if (configs.length > 0) {
+      isDupe = this.checkDuplicatesDetailed(configs);
+    }
+    return isDupe;
+  }
+  checkDuplicatesDetailed(allConfigs: Array<IEntityConfig>): boolean {
+    let isDupe = false;
     let dupe = null;
     if (!this.config.id) { // new
-      dupe = this.allConfigs.find(e => e.name === this.config.name && (e.value === this.config.value || (!e.value && !this.config.value)));
+      dupe = allConfigs.find(e => e.name === this.config.name && (e.value === this.config.value || (!e.value && !this.config.value)));
     } else {
-      dupe = this.allConfigs.find(e => e.id !== this.config.id && e.name === this.config.name && (e.value === this.config.value || (!e.value && !this.config.value)));
+      dupe = allConfigs.find(e => e.id !== this.config.id && e.name === this.config.name && (e.value === this.config.value || (!e.value && !this.config.value)));
     }
     if (dupe) {
       isDupe = true;
@@ -114,7 +129,7 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
     }
     this.filteredNames = [];
     for (const name of this.distinctNames) {
-      if (name.startsWith(evt)) {
+      if (name.indexOf(evt) >= 0) {
         this.filteredNames.push(name);
       }
     }
@@ -147,9 +162,6 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
         if (configs && configs.length > 0) {
           this.formatSampleConfig(configs);
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -167,6 +179,7 @@ export class AddEditConfigComponent implements OnInit, OnDestroy {
           this.possibleValues.push(config.value);
         }
       }
+      this.possibleValues.sort();
     }
   }
 

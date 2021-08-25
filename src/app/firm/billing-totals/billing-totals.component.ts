@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IBillingTotalItem, IFirm} from '../firm.model';
 import {IPracticeArea} from '../../practice-area/practice-area.model';
-import {Subscription, Subject} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -12,9 +12,7 @@ import {FiltersService} from '../../shared/services/filters.service';
   styleUrls: ['./billing-totals.component.scss']
 })
 export class BillingTotalsComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   totalsRaw: any;
-  otherFirms: any;
   totals: Array<IBillingTotalItem> = [];
   pendingRequest: Subscription;
   isLoaded: boolean = false;
@@ -57,10 +55,6 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.totalsRaw = data.result;
         this.formatItems();
-        this.isLoaded = true;
-      },
-      err => {
-        this.errorMessage = err;
         this.isLoaded = true;
       }
     );

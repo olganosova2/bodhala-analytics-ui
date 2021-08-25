@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {IMetric, IPastSavingsMetric, ISavingsRecord, SavingsCalculatorService} from '../savings-calculator.service';
+import {IPastSavingsMetric, SavingsCalculatorService} from '../savings-calculator.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
@@ -14,7 +14,6 @@ import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
   styleUrls: ['./past-savings.component.scss']
 })
 export class PastSavingsComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   pendingRequest: Subscription;
   calcData: any;
   lastYearSpend = 0;
@@ -73,9 +72,6 @@ export class PastSavingsComponent implements OnInit, OnDestroy {
           this.calcData = data.result;
           this.formatData();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

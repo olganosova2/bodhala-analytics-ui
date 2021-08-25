@@ -11,7 +11,6 @@ import {CommonService} from '../../shared/services/common.service';
   styleUrls: ['./top-timekeepers.component.scss']
 })
 export class TopTimekeepersComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   timekeepers: Array<ITimekeeper> = [];
   helpText: string = 'Hourly rates for each timekeeper display the most current rate for the time period selected.';
   @Input() firmId: number;
@@ -33,9 +32,6 @@ export class TopTimekeepersComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getTopTimekeepers', params).subscribe(
       (data: any) => {
         this.timekeepers = data.result;
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

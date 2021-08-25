@@ -1,14 +1,14 @@
 <div class="content-body-inner-wrapper">
   <bd-ie-banner></bd-ie-banner>
   <bd-error-messages></bd-error-messages>
-  <div id="filtersdiv" *ngIf="selectedTabIndex === 0">
+  <div  *ngIf="selectedTabIndex === 0">
     <lib-bd-filters
       (sendFilters)="receiveMessage($event)"
       [pageName]="pageName"
       [collapsed]="appStateService.layout.isCollapsed"
     ></lib-bd-filters>
   </div>
-  <div id="filtersdiv" *ngIf="selectedTabIndex === 1">
+  <div  *ngIf="selectedTabIndex === 1">
     <lib-bd-filters
       (sendFilters)="refreshExecutiveSummaryData($event)"
       [pageName]="pageName"
@@ -21,7 +21,6 @@
   </div>
 
   <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
-<!-- (selectedTabChange)="hideShowFilters()" -->
     <mat-tab label="Launchpad">
       <div class="launchpad" #launchpad>
         <bd-card *ngFor="let card of cards"

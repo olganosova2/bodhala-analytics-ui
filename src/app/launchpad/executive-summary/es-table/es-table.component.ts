@@ -1,12 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import { FiltersService } from '../../../shared/services/filters.service';
-// import { MatIconRegistry } from "@angular/material/icon";
-// import { DomSanitizer } from "@angular/platform-browser";
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
-import { columns, ITopFirmES, ITopMatterES, ITopTimekeeper } from '../executive-summary.model';
-import * as config from '../../../shared/services/config';
+import { ITopFirmES, ITopMatterES, ITopTimekeeper } from '../executive-summary.model';
 import * as _moment from 'moment';
 
 const moment = _moment;
@@ -26,7 +23,6 @@ export class EsTableComponent implements OnInit {
   topTKsByPA: Array<ITopTimekeeper>;
   topPracticeArea: string;
   isLoaded: boolean = false;
-  errorMessage: any;
   pendingRequest: Subscription;
   @Input() maxDate: string;
   formatter = new Intl.NumberFormat('en-US', {
@@ -44,6 +40,7 @@ export class EsTableComponent implements OnInit {
     private filtersService: FiltersService,
     public httpService: HttpService,
     public commonServ: CommonService,
+    public userService: UserService,
     ) { }
 
   ngOnInit() {
@@ -84,10 +81,6 @@ export class EsTableComponent implements OnInit {
           this.processTKData();
         }
         this.isLoaded = true;
-      },
-      err => {
-        this.errorMessage = err;
-        this.isLoaded = true;
       }
     );
   }
@@ -110,7 +103,6 @@ export class EsTableComponent implements OnInit {
         firm.avg_partner_rate_formatted = '--';
       }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
-        // firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
         firm.avg_matter_cost_formatted = '--';
@@ -285,6 +277,10 @@ export class EsTableComponent implements OnInit {
     }
   }
   processMattersData(): void {
+    let savedMatters = localStorage.getItem('updated_matters_' + this.userService.currentUser.id.toString());
+    if (savedMatters) {
+      savedMatters = JSON.parse(savedMatters);
+    }
     for (const matter of this.topMatters) {
       if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
         matter.avg_partner_rate = matter.total_partner_billed / matter.total_partner_hours;
@@ -293,6 +289,12 @@ export class EsTableComponent implements OnInit {
       if (matter.total_hours > 0 && matter.total_hours !== null) {
         matter.partner_percent_hours_worked = matter.total_partner_hours / matter.total_hours;
       }
+      if (savedMatters !== undefined && savedMatters !== null) {
+        const savedName = savedMatters[matter.id];
+        if (savedName !== undefined) {
+          matter.name = savedName;
+        }
+      }
     }
     for (const matter of this.topMattersByPA) {
       if (matter.total_partner_hours > 0 && (matter.total_partner_hours !== null || matter.total_partner_hours !== undefined)) {
@@ -300,6 +302,12 @@ export class EsTableComponent implements OnInit {
       }
       if (matter.total_hours > 0 && matter.total_hours !== null) {
         matter.partner_percent_hours_worked = matter.total_partner_hours / matter.total_hours;
+      }
+      if (savedMatters !== undefined && savedMatters !== null) {
+        const savedName = savedMatters[matter.id];
+        if (savedName !== undefined) {
+          matter.name = savedName;
+        }
       }
     }
 

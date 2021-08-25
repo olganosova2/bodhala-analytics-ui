@@ -15,7 +15,6 @@ import {BenchmarkService} from '../benchmark.service';
   encapsulation: ViewEncapsulation.None
 })
 export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   practiceAreaId: string;
   year: string;
   areasOptions: Array<IDropDown> = [];
@@ -46,9 +45,6 @@ export class BenchmarkOverviewComponent implements OnInit, OnDestroy {
         this.allBenchmarks = this.benchmarkServ.cleanUpData(data.result) || [];
         this.noRecords = this.allBenchmarks.length === 0;
         this.processBenchmarks();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

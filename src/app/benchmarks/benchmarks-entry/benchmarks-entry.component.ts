@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
-import {FiltersService} from '../../shared/services/filters.service';
 import {CommonService} from '../../shared/services/common.service';
 import {MOCK_PRACTICE_AREAS, MOCK_YEARS} from '../../shared/unit-tests/mock-data/benchmarking';
 import {IDropDown} from '../../shared/models/prime-ng';

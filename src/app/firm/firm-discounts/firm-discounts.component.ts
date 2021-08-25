@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {IFirm} from '../firm.model';
-import {DiscountPaTypes, discountsChart, DiscountsService, IDiscount, IDiscountsTable, IPracticeAreaInvoice, mockFirmDiscounts} from './discounts.service';
+import {discountsChart, DiscountsService, IDiscount, IDiscountsTable, IPracticeAreaInvoice} from './discounts.service';
 import {FiltersService} from '../../shared/services/filters.service';
 
 @Component({
@@ -13,10 +13,8 @@ import {FiltersService} from '../../shared/services/filters.service';
 })
 export class FirmDiscountsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   chart: any = {};
   options: any;
-  chartData: any;
   firm: IFirm;
   discountsConfig: any;
   tableData: Array<IDiscountsTable> = [];
@@ -58,9 +56,6 @@ export class FirmDiscountsComponent implements OnInit, OnDestroy {
           this.totals = this.discountServ.calculateTableTotals(this.tableData);
           this.setUpChartOptions();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

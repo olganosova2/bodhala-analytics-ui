@@ -6,7 +6,6 @@ import {IPracticeArea, paTrendChart} from '../../practice-area/practice-area.mod
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import * as _moment from 'moment';
 import {ScoreBadgeComponent} from './score-badge/score-badge.component';
-import {MOCK_TRENDS_FIRM} from '../../shared/unit-tests/mock-data/score-trend';
 
 const moment = _moment;
 
@@ -31,7 +30,6 @@ export const COLORS = {
   styleUrls: ['./score-trend.component.scss']
 })
 export class ScoreTrendComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   score: any = {};
   trends: any = {};
   includeExpenses: boolean = false;
@@ -86,7 +84,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         }
       }
       this.trends = data[1].result;
-      // this.trends = MOCK_TRENDS_FIRM.result;
       if (this.trends) {
         this.trends.firm_trends = this.trends.firm_trends.sort(this.utilServ.dynamicSort('year'));
         if (this.trends.peer_trends && this.trends.peer_trends.length > 0) {
@@ -101,8 +98,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         this.renderChart();
       }
       this.isLoaded = true;
-    }, err => {
-      this.errorMessage = err;
     });
   }
 
@@ -174,7 +169,6 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
     for (const rec of this.trends.client_trends) {
       result.push(this.buildChartItem(rec));
     }
-    // this.chart.series[1].name = this.userService.currentUser.client_info.org.name + ' Averages';
     if (this.trends.client_trends.length === 0) {
       this.chart.series[0].options.showInLegend = false;
       this.chart.series[1].options.showInLegend = false;
@@ -219,7 +213,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
 
   resizeChart(): void {
     const width = this.trendsDiv.nativeElement.offsetWidth - 40;
-    const height = 400; // this.trendsDiv.nativeElement.offsetHeight;
+    const height = 400;
 
     if (!this.chart || width <= 0) {
       return;

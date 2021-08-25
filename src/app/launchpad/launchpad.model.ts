@@ -15,7 +15,6 @@ export const columns = {
   topMatters: [
     { name: 'Matter', field: 'name', component: LinkComponent, isPrimary: true, href: `${environment.host}${config.outerAppLinks.viewMatter}` + '${id}' },
     { name: 'Spend', format: 'currency', field: 'total_spend', component: PillComponent },
-    // { name: 'Lead Partner', format: 'lawyer', field: 'lead_partner_name', avatar: 'bio_image_url', component: PillComponent },
     { name: 'Lead Partner', field: 'lead_partner_name', component: LinkComponent, isPrimary: false, href: `${environment.host}${config.outerAppLinks.viewLeadPartner}` + '${lead_partner_id}/${lawfirm_id}'},
     { name: 'Practice Area', field: 'client_matter_type', component: LinkComponent, isPrimary: true, route: config.outerAppLinks.viewPracticeAreaDetail, route_params: 'client_matter_type'}
   ],

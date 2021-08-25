@@ -7,8 +7,7 @@ import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {IYoyRateIncreaseRaw, YoYMetricTypes} from './yoy-rate-increase-model';
 import {GridOptions} from 'ag-grid-community';
-import {CheckboxCellComponent} from '../../shared/components/checkbox-cell/checkbox-cell.component';
-import * as config from '../../shared/services/config';
+import {YoyRateIncreaseService} from './yoy-rate-increase.service';
 
 @Component({
   selector: 'bd-yoy-rate-increase',
@@ -17,7 +16,6 @@ import * as config from '../../shared/services/config';
 })
 export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   gridOptions: GridOptions;
   savedState: any;
   sideBarConfig: any;
@@ -35,7 +33,8 @@ export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
               public commonServ: CommonService,
               public utilService: UtilService,
               public dialog: MatDialog,
-              public agGridService: AgGridService) {
+              public agGridService: AgGridService,
+              public yoyService: YoyRateIncreaseService) {
     this.commonServ.pageTitle = 'YoY % Rate Increase feature by Firm and Classification';
   }
 
@@ -53,30 +52,11 @@ export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
       {headerName: 'Classification', field: 'bh_classification', ...this.defaultColumn,  filter: 'agTextColumnFilter',  floatingFilter: true}
    ];
     const defs = [];
-    this.buildColumns(defs, YoYMetricTypes.Rate);
-    this.buildColumns(defs, YoYMetricTypes.Spend);
-    this.buildColumns(defs, YoYMetricTypes.Increase);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Rate, this.years);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Spend, this.years);
+    this.yoyService.buildColumns(defs, YoYMetricTypes.Increase, this.years);
     this.gridOptions.columnDefs = [...defaultColumns, ...defs];
     this.firstLoad = false;
-  }
-  buildColumns(defs: Array<any>, type: string): void {
-    const groupColumn  = { headerName: this.getHeaderGroupName(type), marryChildren: true, children: []};
-    let cnt = 0;
-    for (const y of this.years) {
-      if ((y === this.years[0] && type === YoYMetricTypes.Increase) || (y === this.years[this.years.length - 1] && type === YoYMetricTypes.Spend)) {
-        continue;
-      }
-      const header = y.toString(); // this.getHeaderName(type, y);
-      const fieldName = y.toString() + '_' + type;
-      const renderer = type === YoYMetricTypes.Increase ? this.agGridService.roundToPercentNumberCellRenderer : this.agGridService.roundCurrencyCellRenderer;
-      const col = {headerName: header, field: fieldName,  cellRenderer: renderer, ...this.defaultColumn, floatingFilter: true, width: 105 };
-      if (cnt === 0) {
-        col.cellStyle = {'border-left': '1px solid lightgray'};
-      }
-      groupColumn.children.push(col);
-      cnt ++;
-    }
-    defs.push(groupColumn);
   }
   getRateIncrease(): void {
     const params = {client_id: this.userService.currentUser.client_info_id, num_years: 3};
@@ -87,9 +67,6 @@ export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
          this.processRecords(data.result.rate_increases);
          this.initColumns();
        }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -120,43 +97,8 @@ export class YoyRateIncreaseComponent implements OnInit, OnDestroy {
           line[colIncreasedName] = 0;
         }
       }
-      this.calculaterateIncrease(line);
+      this.yoyService.calculaterateIncrease(line, this.years);
     }
-  }
-  calculaterateIncrease(line: any): void {
-    for (let ix = 0; ix < this.years.length - 1; ix++) {
-      const y =  this.years[ix];
-      const prop1 = y.toString() + '_' + YoYMetricTypes.Rate;
-      const prop2 = (y + 1).toString() + '_' + YoYMetricTypes.Rate;
-      const propIncrease = (y + 1).toString() + '_' + YoYMetricTypes.Increase;
-      const prevYearRate = line[prop1] || 0;
-      const currentYearRate = line[prop2] || 0;
-      if (!prevYearRate || !currentYearRate) {
-        continue;
-      }
-      line[propIncrease] = ((Math.round(currentYearRate) - Math.round(prevYearRate)) / Math.round(prevYearRate)) * 100;
-    }
-  }
-  getHeaderGroupName(word: string): string {
-    let result = '';
-    switch (word) {
-      case  YoYMetricTypes.Rate:
-        result = 'Rates';
-        break;
-      case  YoYMetricTypes.Spend:
-        result = 'Total Spend';
-        break;
-      case  YoYMetricTypes.Increase:
-        result = '% Rate Increase';
-        break;
-      default:
-        result = 'Rates';
-        break;
-    }
-    return result;
-  }
-  getHeaderName(word: string, year: number): string {
-    return this.commonServ.capitalize(word) + ' ' + year.toString();
   }
   changePageSize(evt: any): void {
     this.paginationPageSize = evt.value;

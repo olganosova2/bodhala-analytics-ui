@@ -1,12 +1,10 @@
-import {Component, Input, OnDestroy, OnInit, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA, NgModule} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {Subscription} from 'rxjs';
 import {HttpService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {UserService} from 'bodhala-ui-common';
-import {FormsModule} from '@angular/forms';
-import {DropdownModule} from 'primeng/dropdown';
 import {SelectItem} from 'primeng/api';
 import {SelectItemGroup} from 'primeng/api';
 
@@ -19,21 +17,19 @@ export class PracticeAreaDropdownComponent implements OnInit {
   practiceAreasList: any;
   bodhalaPracticeAreas: any;
   clientPracticeAreas: any;
-  @Input() practiceAreaSetting: string;
-  @Input() clientMatterType: string;
   pendingRequest: Subscription;
-  errorMessage: any;
   practiceAreaOptions: SelectItem[];
   practiceAreaGroupOptions: SelectItemGroup[];
   currentPracticeArea: string;
   dropdownWidth: any = {};
+  @Input() practiceAreaSetting: string;
+  @Input() clientMatterType: string;
 
   constructor(private route: ActivatedRoute,
               private httpService: HttpService,
               public filtersService: FiltersService,
               public router: Router,
               public userService: UserService,
-              public dropdownModule: DropdownModule,
               public commonServ: CommonService) { }
 
   ngOnInit() {
@@ -57,7 +53,9 @@ export class PracticeAreaDropdownComponent implements OnInit {
         this.clientPracticeAreas = data.result.clients;
 
         if (this.practiceAreaSetting === 'Client Practice Areas' || this.practiceAreaSetting === undefined || this.practiceAreaSetting === null) {
-          this.practiceAreasList = this.clientPracticeAreas;
+          for (const practiceArea of this.clientPracticeAreas) {
+            this.practiceAreasList.push(practiceArea[0]);
+          }
           this.practiceAreasList.sort();
         } else if (this.practiceAreaSetting === 'Smart Practice Areas') {
           this.bodhalaPracticeAreas.sort();
@@ -92,7 +90,7 @@ export class PracticeAreaDropdownComponent implements OnInit {
             }
             else if (group.label === 'Client Practice Areas') {
               for (const practiceArea of this.clientPracticeAreas) {
-                group.items.push({label: practiceArea, value: practiceArea});
+                group.items.push({label: practiceArea[0], value: practiceArea[0]});
                 if (practiceArea === this.clientMatterType) {
                   this.currentPracticeArea = practiceArea;
                 }
@@ -120,9 +118,6 @@ export class PracticeAreaDropdownComponent implements OnInit {
         } else {
           this.dropdownWidth[key] = '525px';
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

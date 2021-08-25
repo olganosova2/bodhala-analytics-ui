@@ -4,11 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UtilService, GenericConfirmModalComponent} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
-import * as config from '../../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
-import {SelectItem} from 'primeng/api';
-import { ILedesImport } from '../ledes-imports-model';
-import { DatePipe } from '@angular/common';
 import {LedesImportsService} from '../ledes-imports.service';
 import {confirmDialogConfig} from '../../../shared/services/config';
 
@@ -20,12 +16,10 @@ import {confirmDialogConfig} from '../../../shared/services/config';
 })
 export class RerunUploadComponent implements OnInit {
   pendingRequest: Subscription;
-  errorMessage: any;
   data: any;
   clientId: number;
   etag: string;
   firmMappingError: boolean;
-  messageURLs: string[] = [];
   firmServiceProvider: boolean = false;
   firmName: string = '';
   firmNameSearch: string = '';
@@ -80,9 +74,6 @@ export class RerunUploadComponent implements OnInit {
             this.mapMessageURLs();
           }
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -176,9 +167,6 @@ export class RerunUploadComponent implements OnInit {
                       ', using the firm name/ID of ' + this.firmName + '/' + data.result.id + '.';
           this.openReRunModal(modalText, data.result.id);
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -197,11 +185,6 @@ export class RerunUploadComponent implements OnInit {
             this.matchType = data.result.match_type;
           }
         }
-
-
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -220,9 +203,6 @@ export class RerunUploadComponent implements OnInit {
         } else {
           this.fileReUploaded = false;
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

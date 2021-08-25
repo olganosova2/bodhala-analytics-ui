@@ -2,7 +2,6 @@
   <!-- top navbar-->
   <rfp-header [title]="commonServ.pageTitle" [subtitle]="commonServ.pageSubtitle" class="topnavbar-wrapper"></rfp-header>
   <!-- sidebar-->
-<!--  <rfp-side-bar class="aside"></rfp-side-bar>-->
   <lib-bd-left-side-bar [appUI]="'RFP'" [appRoutes]="appStateService.appRoutes" #leftSidenav
                         [collapsed]="appStateService.layout.isCollapsed" (navigationRequested)="navigateFromMenu($event)"></lib-bd-left-side-bar>
   <!-- Main section-->

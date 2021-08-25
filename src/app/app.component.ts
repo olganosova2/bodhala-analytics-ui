@@ -1,21 +1,18 @@
-import {Component, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {Component, OnDestroy, ViewChild} from '@angular/core';
 import { Subscription} from 'rxjs';
 import {NavigationStart, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 
 import {AppStateService, TimeoutModalComponent, UserService, UtilService} from 'bodhala-ui-common';
-import {MessagingService} from 'bodhala-ui-common';
 import {HttpService} from 'bodhala-ui-common';
 import * as config from './shared/services/config';
 import { environment } from '../environments/environment';
-import {KEEP_ALIVE_SEC} from './shared/services/config';
 import {Title} from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
 import {Keepalive} from '@ng-idle/keepalive';
 import {FiltersService} from './shared/services/filters.service';
 import {CommonService} from './shared/services/common.service';
-import {TopTimekeepersComponent} from './firm/top-timekeepers/top-timekeepers.component';
 import {LeftSideBarComponent} from 'bodhala-ui-elements';
 
 @Component({
@@ -84,11 +81,6 @@ export class AppComponent implements OnDestroy {
     });
 
     this.resetIdle();
-
-    // this.saveInterval = setInterval(() => {
-    //   this.keepAlive();
-    // }, KEEP_ALIVE_SEC);
-
   }
   resetIdle() {
     this.idle.watch();

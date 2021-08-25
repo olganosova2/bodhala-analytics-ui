@@ -16,7 +16,6 @@ const moment = _moment;
   styleUrls: ['./cirp-matter-summary.component.scss']
 })
 export class CirpMatterSummaryComponent implements OnInit {
-  errorMessage: any;
   matterId: string;
   matterName: string;
   practiceAreaType: string = IClientPA.client;
@@ -87,9 +86,6 @@ export class CirpMatterSummaryComponent implements OnInit {
           this.timekeepers = Object.assign([], data.result.timekeepers);
           this.processTimeKeepers();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

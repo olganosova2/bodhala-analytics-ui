@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
@@ -15,7 +15,6 @@ import {Subscription} from 'rxjs';
 })
 export class WorkDistributionByPaComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   gridOptions: GridOptions;
   savedState: any;
   sideBarConfig: any;
@@ -61,9 +60,6 @@ export class WorkDistributionByPaComponent implements OnInit, OnDestroy {
         const records = data.result || [];
         this.processRecords(records);
         this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

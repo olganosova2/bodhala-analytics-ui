@@ -2,7 +2,10 @@ export interface IEntityConfig {
   id: number;
   org_id?: number;
   client_id?: number;
+  client_name?: string;
   user_id?: number;
+  email?: string;
+  user_name?: string;
   description: string;
   name: string;
   value?: any;

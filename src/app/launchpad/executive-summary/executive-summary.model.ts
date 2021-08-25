@@ -1,17 +1,6 @@
 import { environment } from '../../../environments/environment';
 import * as config from '../../shared/services/config';
-import { PillComponent } from './../card/cells/pill/pill.component';
 import { LinkComponent } from './../card/cells/link/link.component';
-import {leadPartnerChartOptions} from '../../shared/models/top-lead-partner';
-import {practicePieChartOptions} from '../../shared/models/practice';
-import {mattersChartOptions} from '../../shared/models/top-matters';
-import {firmsChartOptions} from '../../shared/models/top-firms';
-import { mattersByHighestAverageRateChartOptions } from '../../shared/models/top-average-matters';
-import { activeSpendChart } from '../../shared/models/active-spend';
-import { blockBillerChart } from '../../shared/models/top-block-billers';
-import {iqReportPieChartOptions} from '../../shared/models/invoiceIq';
-import { NumberFilter } from 'ag-grid-community';
-
 
 export interface ISpendOverviewItem {
     total: number;

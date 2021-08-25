@@ -3,9 +3,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {Subscription} from 'rxjs';
 import {AppStateService, GenericConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {FiltersService} from '../../shared/services/filters.service';
 import {GridOptions} from 'ag-grid-community';
-import {DropdownModule} from 'primeng/dropdown';
 import {SelectItem} from 'primeng/api';
 import {ILedesImport} from './ledes-imports-model';
 import {AgGridService} from 'bodhala-ui-elements';
@@ -23,9 +21,7 @@ import {LedesImportsService} from './ledes-imports.service';
 })
 export class LedesImportsComponent implements OnInit {
   pendingRequest: Subscription;
-  errorMessage: any;
   defaultColDef;
-  detailCellRendererParams;
   daysOptions: SelectItem[] = [{label: 'Yesterday', value: 1},
                                {label: 'Last 7 Days', value: 7},
                                {label: 'Last 2 Weeks', value: 14},
@@ -95,10 +91,6 @@ export class LedesImportsComponent implements OnInit {
       {headerName: '# Failed Uploads', field: 'num_failed_uploads', ...this.defaultColumn, floatingFilter: true, width: 180},
       {headerName: '# Successful Ingests', field: 'num_imported_ingests', ...this.defaultColumn, floatingFilter: true, width: 180},
       {headerName: '# Failed Ingests', field: 'num_failed_ingests', ...this.defaultColumn, floatingFilter: true, width: 180},
-      // {headerName: 'Files', cellRenderer: this.filesCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-      // {headerName: 'Errors', cellRenderer: this.errorsCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-      // {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true},
-      // {headerName: 'Re-run', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true}
     ];
 
     this.defaultColDef = { flex: 1 };
@@ -135,9 +127,6 @@ export class LedesImportsComponent implements OnInit {
         this.imports = data.result || [];
         this.processData();
         this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -199,12 +188,7 @@ export class LedesImportsComponent implements OnInit {
     const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-docs"></em></button>';
     return value;
   }
-  // errorsCellRenderer(params: any) {
-  //   const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><i class="fa fa-exclamation-triangle"></i></button>';
-  //   return value;
-  // }
   reRunCellRenderer(params: any) {
-    // if (params.data.is_ingested === true && params.data.is_uploaded === true)
     const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-equalizer"></em></button>';
     return value;
   }

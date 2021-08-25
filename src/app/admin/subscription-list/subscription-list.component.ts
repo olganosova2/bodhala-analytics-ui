@@ -5,7 +5,6 @@ import {CommonService, IClient} from '../../shared/services/common.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
-import {IWorkDistribution} from '../work-distribution/work-distrubution-model';
 import {IFeatureClient, ISubscription, ISubscriptionGroup} from './subscription-list-model';
 
 @Component({
@@ -15,7 +14,6 @@ import {IFeatureClient, ISubscription, ISubscriptionGroup} from './subscription-
 })
 export class SubscriptionListComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  errorMessage: any;
   clientList: Array<IClient> = [];
   clientSubscriptions: Array<IFeatureClient> = [];
   allSubscriptions: Array<ISubscription> = [];
@@ -44,9 +42,6 @@ export class SubscriptionListComponent implements OnInit, OnDestroy {
           this.buildClients();
           this.buildSubscriptionGroups();
         }
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -6,7 +6,6 @@ import {CommonService} from '../shared/services/common.service';
 import {AgGridService} from 'bodhala-ui-elements';
 import {GridOptions} from 'ag-grid-community';
 import {Subscription} from 'rxjs';
-import {LicenseManager} from 'ag-grid-enterprise';
 
 import {AG_GRID_NAME, ITaskCost} from './task-cost.model';
 
@@ -16,7 +15,6 @@ import {AG_GRID_NAME, ITaskCost} from './task-cost.model';
   styleUrls: ['./task-cost.component.scss']
 })
 export class TaskCostComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   pageName: string = 'app.client-dashboard.task-cost';
   pageType: string = 'Task Cost';
   pendingRequest: Subscription;
@@ -74,9 +72,6 @@ export class TaskCostComponent implements OnInit, OnDestroy {
         this.formatLineCode();
         this.taskCostData.sort((a, b) => a.column_name.localeCompare(b.column_name) || a.line_item_task_group.localeCompare(b.line_item_task_group) || a.line_item_task_code_formatted.localeCompare(b.line_item_task_code_formatted));
         this.loadGrid();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
 

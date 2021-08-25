@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
-import {UserService, HttpService, UtilService} from 'bodhala-ui-common';
+import {UserService, HttpService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
-import {GridOptions, Module, _} from 'ag-grid-community';
+import {GridOptions, _} from 'ag-grid-community';
 import { DatePipe } from '@angular/common';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
@@ -19,12 +19,10 @@ export class SavedReportsModalComponent implements OnInit {
   paginationPageSize: number = 10;
   gridOptions: GridOptions;
   pendingRequest: Subscription;
-  errorMessage: any;
   savedState: any;
   sideBarConfig: any;
   defaultColumn: any;
   defaultState: any;
-  savedFilter: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public agGridService: AgGridService,
@@ -32,8 +30,7 @@ export class SavedReportsModalComponent implements OnInit {
               public userService: UserService,
               public httpService: HttpService,
               public datepipe: DatePipe,
-              public router: Router,
-              public utilServ: UtilService) { }
+              public router: Router) { }
 
   ngOnInit(): void {
     this.savedReportData = this.data;
@@ -85,9 +82,6 @@ export class SavedReportsModalComponent implements OnInit {
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate(['analytics-ui/firm/report-card/' + lawfirmId]);
         });
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

@@ -164,7 +164,8 @@
             "codeCoverageExclude": [
               "src/app/shared/unit-tests/*mock*.ts",
               "src/app/shared/components/router-link-renderer/router-link-renderer.component.ts",
-              "src/app/shared/components/client-drop-down/client-drop-down.component.ts"
+              "src/app/shared/components/client-drop-down/client-drop-down.component.ts",
+              "src/app/task-cost/task-cost.component.ts"
             ],
             "styles": [
 

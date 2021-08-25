@@ -6,9 +6,8 @@ import {CommonService} from '../../shared/services/common.service';
 import {IMetric, SavingMetrics, SavingsCalculatorService} from '../savings-calculator.service';
 import { MatDialog } from '@angular/material/dialog';
 import {OverstaffingGridComponent} from '../overstaffing-grid/overstaffing-grid.component';
-import {HELP_MODAL_CONFIG, SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
+import {SAVINGS_CALCULATOR_CONFIG} from '../../shared/services/config';
 import {Subscription} from 'rxjs';
-import {HelpModalComponent} from '../../shared/components/help-modal/help-modal.component';
 
 @Component({
   selector: 'bd-savings-widget',
@@ -19,7 +18,6 @@ export class SavingsWidgetComponent implements OnInit, OnDestroy {
   chart: any = {};
   minRange = 0;
   pendingRequest: Subscription;
-  errorMessage: any;
   isTooltipOpened: boolean = false;
   overstaffingOptions = [];
   @Input() metric: IMetric;
@@ -30,7 +28,6 @@ export class SavingsWidgetComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
               public router: Router,
               public dialog: MatDialog,
-              private httpService: HttpService,
               public appStateService: AppStateService,
               public filtersService: FiltersService,
               public userService: UserService,

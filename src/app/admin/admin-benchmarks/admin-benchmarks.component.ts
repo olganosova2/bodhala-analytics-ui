@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {CommonService, IClient} from '../../shared/services/common.service';
+import { CommonService } from '../../shared/services/common.service';
 import {BenchmarkService} from '../../benchmarks/benchmark.service';
 import {Subscription} from 'rxjs';
 import {AG_GRID_NAME, IAdminBenchmark} from './admin-benchmarks-model';
@@ -23,8 +23,6 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
   savedState: any;
   sideBarConfig: any;
   defaultColumn: any;
-  totalRecords: number = 0;
-  gridHeight: number = 629;
   defaultState: any;
   firstLoad: boolean = true;
   constructor(private route: ActivatedRoute,
@@ -44,14 +42,15 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState(AG_GRID_NAME);
     this.gridOptions = this.agGridService.getDefaultGridOptions();
+    this.gridOptions.rowHeight = 20;
     this.initColumns();
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      {headerName: '#', field: 'id', ...this.defaultColumn, sort: 'desc'},
-      {headerName: 'Client', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2},
-      {headerName: 'Firm', field: 'firm', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'text',  flex: 2 },
-      {headerName: 'Year', field: 'year', ...this.defaultColumn},
+      {headerName: '#', field: 'id', ...this.defaultColumn, sort: 'desc', floatingFilter: true},
+      {headerName: 'Client', field: 'client', ...this.defaultColumn, cellRenderer: this.clientCellRenderer, filter: 'text', flex: 2, floatingFilter: true},
+      {headerName: 'Firm', field: 'firm', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'text',  flex: 2 , floatingFilter: true},
+      {headerName: 'Year', field: 'year', ...this.defaultColumn, floatingFilter: true},
       {headerName: 'View', field: 'id', ...this.defaultColumn, cellRendererFramework: RouterLinkRendererComponent,
         cellRendererParams: {
           inRouterLink: '/analytics-ui/admin/benchmark-edit/',

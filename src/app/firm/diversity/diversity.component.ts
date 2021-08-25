@@ -1,11 +1,8 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {
   genderChartOptions,
-  IBillingTotalItem,
   IDiversityData,
-  IFirm,
-  minorityChartOptions,
-  pieDonut
+  minorityChartOptions
 } from '../firm.model';
 import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
@@ -18,7 +15,6 @@ import {FiltersService} from '../../shared/services/filters.service';
   styleUrls: ['./diversity.component.scss']
 })
 export class DiversityComponent implements OnInit, OnDestroy {
-  errorMessage: any;
   chartData: IDiversityData;
   pendingRequest: Subscription;
   optionsGender: any;
@@ -59,9 +55,6 @@ export class DiversityComponent implements OnInit, OnDestroy {
         }
         this.chartData = this.formatDiversityData(data.result);
         this.formatChartSeries();
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

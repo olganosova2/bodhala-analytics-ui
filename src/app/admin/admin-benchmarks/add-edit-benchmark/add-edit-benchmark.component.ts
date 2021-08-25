@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {CommonService, IBenchmarkFirm, IClient} from '../../../shared/services/common.service';
-import {AgGridService} from 'bodhala-ui-elements';
 import {BenchmarkService} from '../../../benchmarks/benchmark.service';
 import {Subscription} from 'rxjs';
 import {IAdminBenchmark, IBenchmarkPracticeArea} from '../admin-benchmarks-model';
@@ -16,7 +15,6 @@ export class AddEditBenchmarkComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   selectedClient: IClient;
   selectedFirm: IBenchmarkFirm;
-  errorMessage: any;
   benchmarkId: string;
   benchmark: IAdminBenchmark;
   editMode: string;
@@ -58,9 +56,6 @@ export class AddEditBenchmarkComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getAdminBenchmark', params).subscribe(
       (data: any) => {
         this.benchmark = data.result;
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -93,9 +88,6 @@ export class AddEditBenchmarkComponent implements OnInit, OnDestroy {
      this.pendingRequest = this.httpService.makeGetRequest('getFirmsForBenchmark', params).subscribe(
        (data: any) => {
          this.firms = data.result || [];
-       },
-       err => {
-         this.errorMessage = err;
        }
      );
    }
@@ -128,9 +120,6 @@ export class AddEditBenchmarkComponent implements OnInit, OnDestroy {
   savePA(pa: IBenchmarkPracticeArea): void {
     this.httpService.makePostRequest('updateBenchmarkPA', pa).subscribe(
       (data: any) => {
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }

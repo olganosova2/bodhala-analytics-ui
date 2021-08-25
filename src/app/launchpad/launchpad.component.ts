@@ -1,9 +1,9 @@
-import {Component, OnInit, HostListener, ViewChild, ElementRef, OnDestroy} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef, OnDestroy} from '@angular/core';
 import { LaunchPadService } from './launchpad.service';
 import { FiltersService } from '../shared/services/filters.service';
 import {DatePipe} from '@angular/common';
 import { columns } from './launchpad.model';
-import {AppStateService, UtilService} from 'bodhala-ui-common';
+import {AppStateService} from 'bodhala-ui-common';
 import {CommonService} from '../shared/services/common.service';
 import {UserService} from 'bodhala-ui-common';
 import {ExecutiveSummaryComponent} from './executive-summary/executive-summary.component';

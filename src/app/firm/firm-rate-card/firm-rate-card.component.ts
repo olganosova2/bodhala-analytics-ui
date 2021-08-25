@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener,  OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
@@ -7,12 +7,11 @@ import * as config from '../../shared/services/config';
 const moment = _moment;
 const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {IFirm, taxonomyChartOptions} from '../firm.model';
+import {IFirm} from '../firm.model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
 
-import {AnnotationsComponent} from '../../shared/components/annotations/annotations.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
 import {SpendTrendChartComponent} from './spend-trend-chart/spend-trend-chart.component';
 import {ReportCardBillingTotalsComponent} from './report-card-billing-totals/report-card-billing-totals.component';
@@ -26,11 +25,8 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   firmId: string;
   firm: IFirm;
   selectedPracticeArea: string = '';
-  errorMessage: any;
   pendingRequest: Subscription;
-  pendingRequestFirm: Subscription;
   pendingRequestPAs: Subscription;
-  pendingRequestSummary: Subscription;
   practiceAreas: Array<string> = [];
   practiceArea: any = [];
   enddate: string;
@@ -45,8 +41,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   savedReportsAvailable: boolean = false;
   savedReports: Array<any> = [];
   otherFirms: boolean = false;
-  comparing: boolean = false;
-  newStartDate: string;
   percentOfTotal: number;
   minMatterCost: number;
   maxMatterCost: number;
@@ -197,8 +191,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         }
       }
 
-    }, err => {
-      this.errorMessage = err;
     });
   }
 
@@ -229,9 +221,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         const practiceAreas = data.result;
         practiceAreas.sort((a, b) => (a.total_billed > b.total_billed) ? -1 : 1);
         this.practiceArea = practiceAreas[0];
-      },
-      err => {
-        this.errorMessage = err;
       }
       );
     }
@@ -249,9 +238,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         let pas = data.result.map(e => e.id) || [];
         pas = pas.sort();
         this.practiceAreas = [...this.practiceAreas, ...pas];
-      },
-      err => {
-        this.errorMessage = err;
       }
     );
   }
@@ -373,9 +359,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
             this.comparisonEndDate = data.result.max;
             this.getCompareDates(dates);
           }
-        },
-        err => {
-          this.errorMessage = err;
         }
       );
     } else {

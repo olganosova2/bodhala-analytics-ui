@@ -1,5 +1,4 @@
 import {environment} from '../../../environments/environment';
-import {Input} from '@angular/core';
 
 export const BASE_URL = environment.apiUrl;
 export const HOST = environment.host;
@@ -97,7 +96,7 @@ export const END_POINTS_URLS = {
   getFirmRateIncreaseDataClient: {url: BASE_URL + 'analytics/getFirmRateIncreaseData', showLoading: true},
   getFirmStaffingClient: {url: BASE_URL + 'analytics/getFirmStaffing', showLoading: true},
   getFirmsByPracticeAreaClient: {url: BASE_URL + 'analytics/getFirmsByPracticeArea', showLoading: true},
-  getRateIncreaseByFirm: {url: BASE_URL + 'analytics/getRateIncreaseByFirm', showLoading: true},
+  getRateIncreaseByFirm: {url: BASE_URL + 'analytics/getRateIncreaseByFirm', showLoading: false},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -108,6 +107,7 @@ export const END_POINTS_URLS = {
   getEffectiveRates: {url: BASE_URL + 'admin/getEffectiveRates', showLoading: true},
   getEffectiveRatesForAllClients: {url: BASE_URL + 'admin/getEffectiveRatesForAllClients', showLoading: true},
   getClientConfigs: {url: BASE_URL + 'admin/getClientConfigs', showLoading: true},
+  getAllConfigsExtended: {url: BASE_URL + 'admin/getAllConfigsExtended', showLoading: true},
   saveClientConfig: {url: BASE_URL + 'admin/saveClientConfig', showLoading: true},
   deleteClientConfig: {url: BASE_URL + 'admin/deleteClientConfig', showLoading: true},
   getClientDistinctConfigNames: {url: BASE_URL + 'admin/getClientDistinctConfigNames', showLoading: true},
@@ -142,7 +142,7 @@ export const END_POINTS_URLS = {
   reuploadLedes: { url: BASE_URL + 'admin/reuploadLedes', showLoading: false},
   findFirm: { url: BASE_URL + 'admin/findFirm', showLoading: false},
   getLEDESUpload: { url: BASE_URL + 'admin/getLEDESUpload', showLoading: false},
-  // downloadAttachment: { url: BASE_URL + 'downloadAttachment', showLoading: false},
+
 
 };
 
