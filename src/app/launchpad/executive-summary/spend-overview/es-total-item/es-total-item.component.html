@@ -1,5 +1,5 @@
 <div class="cell-item" [ngClass]="{'cell-last': isLastCell}">
-    <div class="cell-label">{{ item.name }}</div>
+    <span class="cell-label-span">{{ item.name }}</span>
     <div class="font-bold mb10 mt10">
       <span class="top-data" *ngIf="item?.format === 'currency'">${{ item.total | number:'1.0-0'}}</span>
       <span class="top-data" *ngIf="item?.format === 'percent'">{{ item.total | number:'1.2-2'}}%</span>
