@@ -10,7 +10,7 @@
 </div>
 <div class="bottom-cell-item" [ngClass]="{'cell-last': isLastCell}">
   <div class="bottom-cell-data">
-    Prior Year
+    <span class="cell-label-span">Prior Year</span>
     <div class="font-bold-bottom">
       <span *ngIf="item?.format === 'currency'">${{ item.priorYearTotal | number:'1.0-0'}} </span>
       <span *ngIf="item?.format === 'percent'">{{ item.priorYearTotal | number:'1.2-2'}}% </span>
