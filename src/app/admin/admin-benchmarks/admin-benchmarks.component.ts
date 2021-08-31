@@ -42,7 +42,6 @@ export class AdminBenchmarksComponent implements OnInit, OnDestroy {
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState(AG_GRID_NAME);
     this.gridOptions = this.agGridService.getDefaultGridOptions();
-    this.gridOptions.rowHeight = 20;
     this.initColumns();
   }
   initColumns(): void {
