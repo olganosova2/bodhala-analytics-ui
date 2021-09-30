@@ -1,5 +1,8 @@
 <div class="mb20">
   <div *ngIf="!firstLoad && groupData" class="mt10">
+    <div class="full-width mb10">
+      <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+    </div>
     <ag-grid-angular
         #agGrid
         style="width: 100%; height:70vh"

@@ -91,6 +91,10 @@ export class SubscriptionGridComponent implements OnInit, OnDestroy {
   getSubscriptionId(colName: string): number {
     return Number(colName.substring(8));
   }
+  changePageSize(evt: any): void {
+    this.paginationPageSize = evt.value;
+    this.gridOptions.api.paginationSetPageSize(this.paginationPageSize);
+  }
   ngOnDestroy() {
     if (this.pendingRequestAdd) {
       this.pendingRequestAdd.unsubscribe();
