@@ -44,6 +44,7 @@ import {CookieService} from 'ngx-cookie-service';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
 import borderRadius from 'highcharts-border-radius';
+import rounded from 'highcharts-rounded-corners/rounded-corners.js';
 import { ChartModule } from 'angular2-highcharts';
 import { DropdownModule } from 'primeng/dropdown';
 import * as CONFIG from './shared/services/config';
@@ -149,6 +150,10 @@ import { ImportDetailComponent } from './admin/ledes-imports/import-detail/impor
 import { RerunUploadComponent } from './admin/ledes-imports/rerun-upload/rerun-upload.component';
 import { YoyRateIncreaseComponent } from './savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
 import { YoyDrillByTkComponent } from './savings-calculator/yoy-rate-increase/yoy-drill-by-tk/yoy-drill-by-tk.component';
+import { QbrExecutiveSummaryComponent } from './qbr/qbr-executive-summary/qbr-executive-summary.component';
+import { YoyNumberWidgetComponent } from './qbr/yoy-number-widget/yoy-number-widget.component';
+import { QbrExecutiveSummaryRightComponent } from './qbr/qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
+rounded(highcharts);
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -245,7 +250,10 @@ export function initHttp(service: HttpService) {
     ImportDetailComponent,
     RerunUploadComponent,
     YoyRateIncreaseComponent,
-    YoyDrillByTkComponent
+    YoyDrillByTkComponent,
+    QbrExecutiveSummaryComponent,
+    YoyNumberWidgetComponent,
+    QbrExecutiveSummaryRightComponent
   ],
   entryComponents: [
     PillComponent,

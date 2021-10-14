@@ -56,6 +56,9 @@ h1, h2, h3, h4, h5, h6, th {
 .font-bold {
   font-weight: 600;
 }
+.font-qbr-primary {
+  color: $qbr-primary;
+}
 
 .no-border {
   border: none;
@@ -155,6 +158,9 @@ h1, h2, h3, h4, h5, h6, th {
 }
 .font-green {
   color: darkgreen !important;
+}
+.font-qbr-green {
+  color: $qbr-green;
 }
 
 .error {
@@ -372,11 +378,17 @@ h1, h2, h3, h4, h5, h6 {
 .no-padding {
   padding: 0 !important;
 }
+.no-margin {
+  margin: 0 !important;
+}
 .no-right-padding {
   padding-right: 0 !important;
 }
 .no-left-padding {
   padding-left: 0 !important;
+}
+.no-padding-top {
+  padding-top: 0 !important;
 }
 // Highcharts legend formatting
 .hc-partner-badge {

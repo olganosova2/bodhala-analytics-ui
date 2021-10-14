@@ -28,6 +28,7 @@ import {SubscriptionListComponent} from './admin/subscription-list/subscription-
 import {LedesImportsComponent} from './admin/ledes-imports/ledes-imports.component';
 import {RerunUploadComponent} from './admin/ledes-imports/rerun-upload/rerun-upload.component';
 import {YoyRateIncreaseComponent} from './savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
+import {QbrExecutiveSummaryComponent} from './qbr/qbr-executive-summary/qbr-executive-summary.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -59,6 +60,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/recommendations/view/:reportId', component: ViewRecommendationsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   // YoyRateIncreaseComponent
   {path: 'analytics-ui/yoy-rate-increase', component: YoyRateIncreaseComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/qbr/executive-summary', component: QbrExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},

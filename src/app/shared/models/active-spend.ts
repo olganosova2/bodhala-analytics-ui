@@ -26,6 +26,12 @@ export const additionalActiveSpendOptions = {
       text: '$ (dollars)'
     }
   },
+  plotOptions: {
+    series: {
+      borderRadiusTopLeft: '50%',
+      borderRadiusTopRight: '50%'
+    }
+  },
   legend: {
     enabled: false
   },

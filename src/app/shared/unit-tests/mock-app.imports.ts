@@ -123,6 +123,9 @@ import {LedesImportsComponent} from '../../admin/ledes-imports/ledes-imports.com
 import {ImportDetailComponent} from '../../admin/ledes-imports/import-detail/import-detail.component';
 import {YoyRateIncreaseComponent} from '../../savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
 import {YoyDrillByTkComponent} from '../../savings-calculator/yoy-rate-increase/yoy-drill-by-tk/yoy-drill-by-tk.component';
+import {QbrExecutiveSummaryComponent} from '../../qbr/qbr-executive-summary/qbr-executive-summary.component';
+import {YoyNumberWidgetComponent} from '../../qbr/yoy-number-widget/yoy-number-widget.component';
+import {QbrExecutiveSummaryRightComponent} from '../../qbr/qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
 
 
 export const IMPORTS = [
@@ -238,7 +241,10 @@ export const DECLARATIONS = [
   LedesImportsComponent,
   ImportDetailComponent,
   YoyRateIncreaseComponent,
-  YoyDrillByTkComponent
+  YoyDrillByTkComponent,
+  QbrExecutiveSummaryComponent,
+  YoyNumberWidgetComponent,
+  QbrExecutiveSummaryRightComponent
 ];
 
 export const PROVIDERS = [

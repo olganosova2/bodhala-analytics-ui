@@ -80,6 +80,11 @@ export class CommonService {
       }
     );
   }
+
+  generatePdfQbr(title: string, divId: string, firmId: string) {
+    this.pdfLoading = true;
+    this.generatePDF(title, divId, firmId);
+  }
   generatePdfOuter(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
     this.generatePDF(title, divId, firmId);
