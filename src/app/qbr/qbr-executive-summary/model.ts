@@ -20,32 +20,5 @@ const executiveSummaryAdditionalOptions = {
 };
 export const executiveSummaryChartOptions = { ... qbrPieChartOptions, ... executiveSummaryAdditionalOptions };
 
-const chartRightOptions = {
-  tooltip : {
-    enabled: false
-  },
-  legend: {
-    show: false,
-    enabled: false
-  },
-  xAxis: [{
-    title: {
-      enabled: false,
-      text: undefined
-    }
-  }],
-  yAxis: [{
-    title: {
-      enabled: false,
-      text: undefined
-    }
-  }],
-  series: [{
-    name: null,
-    colorByPoint: true,
-    data: []
-  }]
-};
 
-export const metricsRightChartOptions = {...baseColumnChartOptions, ...chartRightOptions};
 

@@ -1,3 +1,5 @@
+import {baseColumnChartOptions} from '../shared/models/base-chart';
+
 export interface IQbrMetric {
   label: string;
   directionQoQ: number;
@@ -41,3 +43,54 @@ export const qbrPieChartOptions = {
     enabled: false
   }
 };
+
+const metricsColumnRightOptions = {
+  chart: {
+    type: 'column',
+    spacingTop: 10,
+    width: 800,
+    height: 460,
+  },
+  tooltip : {
+    enabled: false
+  },
+  legend: {
+    show: false,
+    enabled: false
+  },
+  plotOptions: {
+    column: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      colors: ['#FF650F', '#FFC327', '#000000', '#00D1FF'],
+      dataLabels: {
+        enabled: false
+      },
+      showInLegend: true,
+      borderRadiusTopLeft: '50%',
+      borderRadiusTopRight: '50%'
+    }
+  },
+  xAxis: [{
+    title: {
+      enabled: false,
+      text: undefined
+    },
+    labels: {
+      enabled: false
+    }
+  }],
+  yAxis: [{
+    title: {
+      enabled: false,
+      text: undefined
+    }
+  }],
+  series: [{
+    name: null,
+    colorByPoint: true,
+    data: []
+  }]
+};
+
+export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnRightOptions};

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {IQbrMetric} from '../../qbr-model';
-import {metricsRightChartOptions} from '../model';
+import {IQbrMetric, metricsRightChartOptions} from '../../qbr-model';
 
 @Component({
   selector: 'bd-qbr-executive-summary-right',

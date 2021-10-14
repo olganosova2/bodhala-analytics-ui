@@ -83,18 +83,23 @@ export class CommonService {
 
   generatePdfQbr(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
-    this.generatePDF(title, divId, firmId);
+    this.generatePDF(title, divId, firmId, 'l');
   }
   generatePdfOuter(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
     this.generatePDF(title, divId, firmId);
   }
 
-  generatePDF(title: string, divId: string, firmId: string) {
+  generatePDF(title: string, divId: string, firmId: string, orientation: string = 'p') {
     if (title.includes('Rate Card')) {
       this.savePDFExport(firmId);
     }
     this.pdfLoading = true;
+    let adjusters = [1, 1];
+    if (orientation === 'l') {
+      // adjusters = [1.59, 1.52];
+      adjusters = [1.75, 1.52];
+    }
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
     const footerDiv = document.createElement('DIV');
@@ -148,7 +153,8 @@ export class CommonService {
       canvas.getContext('2d');
       this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
 
-      const pdf = new jspdf('p', 'pt', [pdfWidth, pdfHeight]);
+      // const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
+      const pdf = new jspdf(orientation, 'pt', [pdfWidth / adjusters[0], pdfHeight / adjusters[1]]);
       pdf.setFillColor('#FFFFFF');
       pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
       pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
