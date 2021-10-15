@@ -154,6 +154,8 @@ import { QbrExecutiveSummaryComponent } from './qbr/qbr-executive-summary/qbr-ex
 import { YoyNumberWidgetComponent } from './qbr/yoy-number-widget/yoy-number-widget.component';
 import { QbrExecutiveSummaryRightComponent } from './qbr/qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
 rounded(highcharts);
+import { QbrComponent } from './qbr/qbr.component';
+import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -254,6 +256,9 @@ export function initHttp(service: HttpService) {
     QbrExecutiveSummaryComponent,
     YoyNumberWidgetComponent,
     QbrExecutiveSummaryRightComponent
+    YoyDrillByTkComponent,
+    QbrComponent,
+    QbrCreationComponent
   ],
   entryComponents: [
     PillComponent,
