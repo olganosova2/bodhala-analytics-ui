@@ -13,6 +13,7 @@ import {Subscription} from 'rxjs';
 })
 export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
+  pendingRequestQbr: Subscription;
   qbrType: any = 'YoY';
   cardTitle: string;
   percentOfTotalSpend: number = 87;
@@ -45,10 +46,10 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   processRightSideMetrics(): void {
     this.rightSideMetrics = [];
-    this.rightSideMetrics.push({ label: 'BPI', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 3356, icon: 'bpi.svg'});
-    this.rightSideMetrics.push({ label: 'Blended Rate', directionQoQ: -1, percentQoQ: 23, directionYoY: 1, percentYoY: 2, amount: 747, icon: 'bills.svg'});
-    this.rightSideMetrics.push({ label: 'Avg. Partner hourly cost', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 1506, icon: 'partners.svg'});
-    this.rightSideMetrics.push({ label: 'Avg. Associate hourly cost', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 642, icon: 'avg_ass_matter.svg'});
+    this.rightSideMetrics.push({ label: 'BPI', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 3356, amountToCompare: 3010,  icon: 'bpi.svg'});
+    this.rightSideMetrics.push({ label: 'Blended Rate', directionQoQ: -1, percentQoQ: 23, directionYoY: 1, percentYoY: 2, amount: 747, amountToCompare: 790, icon: 'bills.svg'});
+    this.rightSideMetrics.push({ label: 'Avg. Partner hourly cost', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 1506, amountToCompare: 1400, icon: 'partners.svg'});
+    this.rightSideMetrics.push({ label: 'Avg. Associate hourly cost', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 642, amountToCompare: 560, icon: 'avg_ass_matter.svg'});
   }
   processTimekeepersHours(): void {
     this.tkHours = [];
@@ -78,6 +79,9 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
+    }
+    if (this.pendingRequestQbr) {
+      this.pendingRequestQbr.unsubscribe();
     }
   }
 }

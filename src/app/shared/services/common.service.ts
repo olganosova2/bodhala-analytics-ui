@@ -97,7 +97,7 @@ export class CommonService {
     this.pdfLoading = true;
     let adjusters = [1, 1];
     if (orientation === 'l') {
-      // adjusters = [1.59, 1.52];
+      // adjusters = [1.75, 1.52];
       adjusters = [1.75, 1.52];
     }
     const docName = title ? title : 'Export PDF';

@@ -20,12 +20,15 @@ export class QbrExecutiveSummaryRightComponent implements OnInit {
 
   setUpChartOptions(): void {
     this.options = Object.assign({}, metricsRightChartOptions);
-    this.options.series[0].data = [];
   }
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
     const result = this.metrics.map(e => e.amount);
+    const resultToCompare = this.metrics.map(e => e.amountToCompare);
+    const width = this.metrics.length * 205;
+    this.chart.setSize(width, 460, false);
     this.chart.series[0].setData(result);
+    this.chart.series[1].setData(resultToCompare);
   }
 
 }

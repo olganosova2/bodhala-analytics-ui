@@ -10,6 +10,7 @@ export interface IQbrMetric {
   amountToCompare?: number;
   icon?: string;
 }
+
 export const qbrPieChartOptions = {
   chart: {
     height: 290,
@@ -36,8 +37,7 @@ export const qbrPieChartOptions = {
         }
       }
     },
-    series: {
-    }
+    series: {}
   },
   legend: {
     enabled: false
@@ -50,9 +50,6 @@ const metricsColumnRightOptions = {
     spacingTop: 10,
     width: 800,
     height: 460,
-  },
-  tooltip : {
-    enabled: false
   },
   legend: {
     show: false,
@@ -72,10 +69,10 @@ const metricsColumnRightOptions = {
     }
   },
   xAxis: [{
-    title: {
-      enabled: false,
-      text: undefined
-    },
+    // title: {
+    //   enabled: false,
+    //   text: undefined
+    // },
     labels: {
       enabled: false
     }
@@ -86,11 +83,20 @@ const metricsColumnRightOptions = {
       text: undefined
     }
   }],
+  tooltip: {
+    headerFormat: null,
+    pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
+  },
   series: [{
-    name: null,
+    name: 'Last',
     colorByPoint: true,
     data: []
-  }]
+  },
+    {
+      name: 'Previous',
+      colorByPoint: true,
+      data: []
+    }]
 };
 
 export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnRightOptions};
