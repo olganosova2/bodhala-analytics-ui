@@ -10,6 +10,21 @@ export interface IQbrMetric {
   amountToCompare?: number;
   icon?: string;
 }
+export interface IQbrReport {
+  id: 4;
+  start_date: string;
+  end_date: string;
+  report_type: string;
+  created_by: number;
+  created_on: string;
+  title: string;
+  status: string;
+  filters: {
+    name: string;
+    filters: Array<any>;
+  };
+  chosen_metrics: any;
+}
 
 export const qbrPieChartOptions = {
   chart: {

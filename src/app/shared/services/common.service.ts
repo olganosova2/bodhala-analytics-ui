@@ -221,4 +221,19 @@ export class CommonService {
       }
     );
   }
+  getClientPASetting(): string {
+    let result = '';
+    if (this.userService.config !== undefined) {
+      if ('analytics.practice.bodhala.areas' in this.userService.config) {
+        const userConfigs = Object.values(this.userService.config);
+        for (const config of userConfigs) {
+          if (config.configs[0].description === 'config for analytics practice areas') {
+            result = config.configs[0].value;
+            break;
+          }
+        }
+      }
+    }
+    return result;
+  }
 }

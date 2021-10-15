@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CommonService} from '../../shared/services/common.service';
-import {AppStateService, UserService} from 'bodhala-ui-common';
-import {IQbrMetric} from '../qbr-model';
+import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {IQbrMetric, IQbrReport} from '../qbr-model';
 import {executiveSummaryChartOptions} from './model';
 import {Subscription} from 'rxjs';
+import {FiltersService} from '../../shared/services/filters.service';
 
 
 @Component({
@@ -26,17 +27,54 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   tkHours: Array<IQbrMetric> = [];
   rightSideMetrics: Array<IQbrMetric> = [];
   bbMetric: IQbrMetric;
+  qbr: IQbrReport;
+  practiceAreaSetting: string;
   constructor(public commonServ: CommonService,
               public appStateService: AppStateService,
-              public userService: UserService) {
+              public userService: UserService,
+              private httpService: HttpService,
+              public filtersService: FiltersService,
+              public utilService: UtilService) {
     this.commonServ.pageTitle = 'QBR';
     this.commonServ.pageSubtitle = 'Executive Summary';
+    this.practiceAreaSetting = this.commonServ.getClientPASetting();
     this.cardTitle = this.userService.currentUser.client_info.org.name + ' Exec Summary';
   }
 
   ngOnInit(): void {
     this.setUpChartOptions();
+    this.getQbrs();
     this.processRecords();
+  }
+  getQbrs(): void {
+    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
+      (data: any) => {
+        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        if (records.length > 0) {
+          this.qbr = records[0]; // TODO
+          this.qbrType = this.qbr.report_type;
+          this.getQbrData();
+        }
+      }
+    );
+  }
+  getQbrData(): void {
+    const filterParams = {
+      name: 'filters',
+      filters: this.qbr.filters
+    };
+    const payload = {
+      id: this.qbr.id,
+      startDate: this.reportStartDate,
+      endDate: this.reportEndDate,
+      reportType: this.reportType,
+      filters: filterParams,
+      client: this.userService.currentUser.client_info.id,
+      comparisonStartDate: this.comparisonStartDate,
+      comparisonEndDate: this.comparisonEndDate,
+      paSetting: this.practiceAreaSetting,
+      queryString: params
+    };
   }
   processRecords(): void {
     this.totalSpendMetric = {label: 'Total Spend', directionQoQ: 1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 7879678};

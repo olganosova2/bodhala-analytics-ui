@@ -255,7 +255,7 @@ export function initHttp(service: HttpService) {
     YoyDrillByTkComponent,
     QbrExecutiveSummaryComponent,
     YoyNumberWidgetComponent,
-    QbrExecutiveSummaryRightComponent
+    QbrExecutiveSummaryRightComponent,
     YoyDrillByTkComponent,
     QbrComponent,
     QbrCreationComponent
