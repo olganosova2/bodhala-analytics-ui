@@ -98,6 +98,10 @@ export const END_POINTS_URLS = {
   getFirmsByPracticeAreaClient: {url: BASE_URL + 'analytics/getFirmsByPracticeArea', showLoading: true},
   getRateIncreaseByFirm: {url: BASE_URL + 'analytics/getRateIncreaseByFirm', showLoading: false},
 
+  // QBRs
+  getClientQBRs: {url: BASE_URL + 'analytics/getClientQBRs', showLoading: true},
+  generateClientQBR: {url: BASE_URL + 'analytics/generateClientQBR', showLoading: true},
+
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
   getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},

@@ -149,6 +149,8 @@ import { ImportDetailComponent } from './admin/ledes-imports/import-detail/impor
 import { RerunUploadComponent } from './admin/ledes-imports/rerun-upload/rerun-upload.component';
 import { YoyRateIncreaseComponent } from './savings-calculator/yoy-rate-increase/yoy-rate-increase.component';
 import { YoyDrillByTkComponent } from './savings-calculator/yoy-rate-increase/yoy-drill-by-tk/yoy-drill-by-tk.component';
+import { QbrComponent } from './qbr/qbr.component';
+import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -245,7 +247,9 @@ export function initHttp(service: HttpService) {
     ImportDetailComponent,
     RerunUploadComponent,
     YoyRateIncreaseComponent,
-    YoyDrillByTkComponent
+    YoyDrillByTkComponent,
+    QbrComponent,
+    QbrCreationComponent
   ],
   entryComponents: [
     PillComponent,
