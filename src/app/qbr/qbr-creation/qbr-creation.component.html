@@ -2,8 +2,8 @@
 
 
   <div id="filtersdiv">
+    <!-- (sendFilters)="storeFilters($event)" -->
     <lib-bd-filters
-      (sendFilters)="storeFilters($event)"
       [collapsed]="appStateService.layout.isCollapsed"
       [excludeFilters]="excludeFilters"
     ></lib-bd-filters>
@@ -172,12 +172,15 @@
 
       </div>
 
-      <div *ngIf="dataProcessed">
+      <div *ngIf="dataProcessed" style="padding-top: 1.5em;">
+        <div>
+          <h4>Additional Data Points</h4>
+        </div>
         <table style="width: 60%;">
           <tr>
             <th>Title</th>
             <th>Metric</th>
-            <th>Trend</th>
+            <th>{{reportType}} Trend</th>
           </tr>
 
           <tr>
@@ -186,7 +189,6 @@
             <td *ngIf="reportData.total_spend.total === 0">${{reportData.total_spend.total | number:'1.0-0'}}</td>
             <td *ngIf="reportData.total_spend.total > 0">${{reportData.total_spend.total | number:'1.0-0'}}</td>
             <td>{{reportData.total_spend_trend | number:'1.1-1'}}%</td>
-            <td></td>
           </tr>
 
           <tr>
@@ -202,55 +204,491 @@
           </tr>
 
           <tr>
-            <td>Top PA 1 Spend (Report Timeframe)</td>
+            <td>{{topPA.practice_area}} Spend (Report Timeframe)</td>
             <td>${{topPA.total_billed | number:'1.0-0'}}</td>
-            <td></td>
+            <td>{{topPA.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
 
           <tr>
-            <td>Top PA 2 Spend (Report Timeframe)</td>
+            <td>{{secondPA.practice_area}} Spend (Report Timeframe)</td>
             <td>${{secondPA.total_billed | number:'1.0-0'}}</td>
-            <td></td>
+            <td>{{secondPA.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
 
-          <tr>
-            <td>Top PA 1 Top Firms</td>
+          <tr *ngIf="topPATopFirm && topPASecondFirm">
+            <td>{{topPA.practice_area}} Top Firms</td>
             <td>1. {{topPATopFirm.firm_name}}<br>
                 2. {{topPASecondFirm.firm_name}}</td>
             <td></td>
           </tr>
 
           <tr *ngIf="secondPATopFirm && secondPASecondFirm">
-            <td>Top PA 2 Top Firms</td>
+            <td>{{secondPA.practice_area}} Top Firms</td>
             <td>1. {{secondPATopFirm.firm_name}}<br>
                 2. {{secondPASecondFirm.firm_name}}</td>
             <td></td>
           </tr>
+        </table>
 
+          <!-- Top PA Data -->
+        <h5 style="padding-top: 1em;">Top Practice Area: {{topPA.practice_area}}</h5>
+        <table style="width: 60%;">
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>${{topPA.total_billed | number:'1.0-0'}}</td>
+            <td>{{topPA.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>{{topPA.practice_area}} Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{topPA.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{topPA.partner_rate_trend | number:'1.1-1'}}%</td>
           </tr>
 
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{topPA.practice_area}} Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{topPA.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{topPA.assoc_rate_trend | number:'1.1-1'}}%</td>
           </tr>
 
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{topPA.practice_area}} % Partner Hours (Report Timeframe)</td>
+            <td>{{topPA.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPA.partner_hrs_trend | number:'1.1-1'}}%</td>
           </tr>
 
           <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{topPA.practice_area}} % Associate Hours (Report Timeframe)</td>
+            <td>{{topPA.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPA.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{topPA.practice_area}} % Block Billed (Report Timeframe)</td>
+            <td>{{topPA.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{topPA.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{topPA.practice_area}} Blended Rate (Report Timeframe)</td>
+            <td>${{topPA.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{topPA.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{topPA.practice_area}} Bodhala Price Index (Report Timeframe)</td>
+            <td>${{topPA.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{topPA.bpi_trend | number:'1.1-1'}}%</td>
           </tr>
         </table>
+
+        <!-- Top PA Top Firm Data -->
+        <h5 style="padding-top: 1em;">Top PA, Top Firm: {{topPATopFirm.firm_name}}</h5>
+        <table style="width: 60%;">
+          <tr>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>${{topPATopFirm.total_billed | number:'1.0-0'}}</td>
+            <td>{{topPATopFirm.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{topPATopFirm.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{topPATopFirm.partner_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{topPATopFirm.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{topPATopFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Partner Hours (Report Timeframe)</td>
+            <td>{{topPATopFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPATopFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Associate Hours (Report Timeframe)</td>
+            <td>{{topPATopFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPATopFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Block Billed (Report Timeframe)</td>
+            <td>{{topPATopFirm.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{topPATopFirm.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Blended Rate (Report Timeframe)</td>
+            <td>${{topPATopFirm.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{topPATopFirm.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Bodhala Price Index (Report Timeframe)</td>
+            <td>${{topPATopFirm.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{topPATopFirm.bpi_trend | number:'1.1-1'}}%</td>
+          </tr>
+        </table>
+
+        <!-- Top PA Second Firm Data -->
+        <h5 style="padding-top: 1em;">Top PA, Second Firm: {{topPASecondFirm.firm_name}}</h5>
+        <table style="width: 60%;">
+          <tr>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>${{topPASecondFirm.total_billed | number:'1.0-0'}}</td>
+            <td>{{topPASecondFirm.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{topPASecondFirm.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{topPASecondFirm.partner_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{topPASecondFirm.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{topPASecondFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Partner Hours (Report Timeframe)</td>
+            <td>{{topPASecondFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPASecondFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Associate Hours (Report Timeframe)</td>
+            <td>{{topPASecondFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPASecondFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Block Billed (Report Timeframe)</td>
+            <td>{{topPASecondFirm.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{topPASecondFirm.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Blended Rate (Report Timeframe)</td>
+            <td>${{topPASecondFirm.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{topPASecondFirm.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Bodhala Price Index (Report Timeframe)</td>
+            <td>${{topPASecondFirm.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{topPASecondFirm.bpi_trend | number:'1.1-1'}}%</td>
+          </tr>
+        </table>
+
+        <!-- Top PA Top Matter Data -->
+        <h5 style="padding-top: 1em;">Top PA, Top Matter: {{topPAMatter.matter_name}}</h5>
+        <table style="width: 60%;">
+          <tr>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>${{topPAMatter.total_billed | number:'1.0-0'}}</td>
+            <td>{{topPAMatter.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>% of PA Total Billed (Report Timeframe)</td>
+            <td>{{topPAMatter.pct_of_total_spend | number:'1.1-1'}}%</td>
+            <td>{{topPAMatter.pct_of_total_spend_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{topPAMatter.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{topPAMatter.partner_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{topPAMatter.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{topPAMatter.assoc_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Partner Hours (Report Timeframe)</td>
+            <td>{{topPAMatter.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPAMatter.partner_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Associate Hours (Report Timeframe)</td>
+            <td>{{topPAMatter.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{topPAMatter.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Block Billed (Report Timeframe)</td>
+            <td>{{topPAMatter.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{topPAMatter.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Blended Rate (Report Timeframe)</td>
+            <td>${{topPAMatter.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{topPAMatter.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Bodhala Price Index (Report Timeframe)</td>
+            <td>${{topPAMatter.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{topPAMatter.bpi_trend | number:'1.1-1'}}%</td>
+          </tr>
+        </table>
+
+        <!-- Second PA Data -->
+        <h5 style="padding-top: 1em;">Second Practice Area: {{secondPA.practice_area}}</h5>
+        <table style="width: 60%;">
+          <tr>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>${{secondPA.total_billed | number:'1.0-0'}}</td>
+            <td>{{secondPA.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>{{secondPA.practice_area}} Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPA.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{secondPA.partner_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{secondPA.practice_area}} Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPA.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{secondPA.assoc_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{secondPA.practice_area}} % Partner Hours (Report Timeframe)</td>
+            <td>{{secondPA.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPA.partner_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{secondPA.practice_area}} % Associate Hours (Report Timeframe)</td>
+            <td>{{secondPA.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPA.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{secondPA.practice_area}} % Block Billed (Report Timeframe)</td>
+            <td>{{secondPA.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{secondPA.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{secondPA.practice_area}} Blended Rate (Report Timeframe)</td>
+            <td>${{secondPA.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{secondPA.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>{{secondPA.practice_area}} Bodhala Price Index (Report Timeframe)</td>
+            <td>${{secondPA.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{secondPA.bpi_trend | number:'1.1-1'}}%</td>
+          </tr>
+        </table>
+
+        <!-- Second PA Top Firm Data -->
+        <h5 style="padding-top: 1em;">Second PA, Top Firm: {{secondPATopFirm.firm_name}}</h5>
+        <table style="width: 60%;">
+          <tr>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>${{secondPATopFirm.total_billed | number:'1.0-0'}}</td>
+            <td>{{secondPATopFirm.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPATopFirm.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{secondPATopFirm.partner_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPATopFirm.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{secondPATopFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Partner Hours (Report Timeframe)</td>
+            <td>{{secondPATopFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPATopFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Associate Hours (Report Timeframe)</td>
+            <td>{{secondPATopFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPATopFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Block Billed (Report Timeframe)</td>
+            <td>{{secondPATopFirm.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{secondPATopFirm.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Blended Rate (Report Timeframe)</td>
+            <td>${{secondPATopFirm.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{secondPATopFirm.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Bodhala Price Index (Report Timeframe)</td>
+            <td>${{secondPATopFirm.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{secondPATopFirm.bpi_trend | number:'1.1-1'}}%</td>
+          </tr>
+        </table>
+
+        <!-- Second PA Second Firm Data -->
+        <h5 style="padding-top: 1em;">Second PA, Second Firm: {{secondPASecondFirm.firm_name}}</h5>
+        <table style="width: 60%;">
+          <tr>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>${{secondPASecondFirm.total_billed | number:'1.0-0'}}</td>
+            <td>{{secondPASecondFirm.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPASecondFirm.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{secondPASecondFirm.partner_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPASecondFirm.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{secondPASecondFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Partner Hours (Report Timeframe)</td>
+            <td>{{secondPASecondFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPASecondFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Associate Hours (Report Timeframe)</td>
+            <td>{{secondPASecondFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPASecondFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Block Billed (Report Timeframe)</td>
+            <td>{{secondPASecondFirm.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{secondPASecondFirm.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Blended Rate (Report Timeframe)</td>
+            <td>${{secondPASecondFirm.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{secondPASecondFirm.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Bodhala Price Index (Report Timeframe)</td>
+            <td>${{secondPASecondFirm.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{secondPASecondFirm.bpi_trend | number:'1.1-1'}}%</td>
+          </tr>
+        </table>
+
+        <!-- Second PA Top Matter Data -->
+        <h5 style="padding-top: 1em;">Second PA, Top Matter: {{secondPAMatter.matter_name}}</h5>
+        <table style="width: 60%;">
+          <tr>
+            <th>Title</th>
+            <th>Metric</th>
+            <th>{{reportType}} Trend</th>
+          </tr>
+          <tr>
+            <td>Total Billed (Report Timeframe)</td>
+            <td>{{secondPAMatter.total_billed | number:'1.1-1'}}%</td>
+            <td>{{secondPAMatter.total_billed_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>% of PA Total Billed (Report Timeframe)</td>
+            <td>${{secondPAMatter.pct_of_total_spend | number:'1.0-0'}}</td>
+            <td>{{secondPAMatter.pct_of_total_spend_trend | number:'1.1-1'}}%</td>
+          </tr>
+          <tr>
+            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPAMatter.avg_partner_rate | number:'1.0-0'}}</td>
+            <td>{{secondPAMatter.partner_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+            <td>${{secondPAMatter.avg_associate_rate | number:'1.0-0'}}</td>
+            <td>{{secondPAMatter.assoc_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Partner Hours (Report Timeframe)</td>
+            <td>{{secondPAMatter.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPAMatter.partner_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Associate Hours (Report Timeframe)</td>
+            <td>{{secondPAMatter.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+            <td>{{secondPAMatter.assoc_hrs_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>% Block Billed (Report Timeframe)</td>
+            <td>{{secondPAMatter.percent_block_billed | number:'1.1-1'}}%</td>
+            <td>{{secondPAMatter.bb_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Blended Rate (Report Timeframe)</td>
+            <td>${{secondPAMatter.avg_blended_rate | number:'1.0-0'}}</td>
+            <td>{{secondPAMatter.blended_rate_trend | number:'1.1-1'}}%</td>
+          </tr>
+
+          <tr>
+            <td>Bodhala Price Index (Report Timeframe)</td>
+            <td>${{secondPAMatter.bodhala_price_index | number:'1.0-0'}}</td>
+            <td>{{secondPAMatter.bpi_trend | number:'1.1-1'}}%</td>
+          </tr>
+        </table>
+
+
 
       </div>
 
