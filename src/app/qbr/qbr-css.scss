@@ -15,7 +15,22 @@ $size: 13px;
   border: 1px solid #fff;
   border-radius: 8px;
   // font-family: Roboto, "Helvetica Neue", sans-serif;
+  @media screen and (max-width: 1920px) {
+    zoom: 88.5%;
+  }
+  @media screen and (max-width: 1440px) {
+    zoom: 64%;
+  }
+  @media screen and (max-width: 1024px) {
+    zoom: 42%;
+  }
+
 }
+//@media screen and (max-width: 1920px) {
+//  .content-block {
+//    zoom: 88.5%;
+//  }
+//}
 .card-title {
   font-weight: 700;
   font-family: Roboto, "Helvetica Neue", sans-serif;

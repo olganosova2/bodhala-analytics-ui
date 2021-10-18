@@ -27,10 +27,10 @@
             </div>
             <div class="p-md-6 position-relative">
               <div class="cell-center text-center">
-                <bd-yoy-number-widget [label]="'QoQ'" [direction]="totalSpendMetric.directionQoQ"
+                <bd-yoy-number-widget [label]="'QoQ'" [direction]="totalSpendMetric.directionQoQ" *ngIf="qbrType !== 'YoY'"
                                       [increase]="totalSpendMetric.percentQoQ"
                                       [size]="'lg'"></bd-yoy-number-widget>
-                <bd-yoy-number-widget [label]="'YoY'" [direction]="totalSpendMetric.directionYoY"
+                <bd-yoy-number-widget [label]="'YoY'" [direction]="totalSpendMetric.directionYoY" *ngIf="qbrType === 'YoY'"
                                       [increase]="totalSpendMetric.percentYoY"
                                       [size]="'lg'"></bd-yoy-number-widget>
               </div>
@@ -65,10 +65,10 @@
                 <!--chart labels -->
                 <div class="p-md-5 justify-center">
                   <div class="text-center">
-                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="bbMetric.directionQoQ"
+                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="bbMetric.directionQoQ" *ngIf="qbrType !== 'YoY'"
                                           [increase]="bbMetric.percentQoQ"
                                           [size]="'lg'"></bd-yoy-number-widget>
-                    <bd-yoy-number-widget [label]="'YoY'" [direction]="bbMetric.directionYoY"
+                    <bd-yoy-number-widget [label]="'YoY'" [direction]="bbMetric.directionYoY" *ngIf="qbrType === 'YoY'"
                                           [increase]="bbMetric.percentYoY"
                                           [size]="'lg'"></bd-yoy-number-widget>
                   </div>
@@ -81,9 +81,9 @@
                           [ngClass]="{'partner-bar': tk.label === 'Partner', 'associate-bar': tk.label === 'Associate' , 'other-bar': tk.label === 'Other'}"></span>
                       {{tk.label}}
                     </div>
-                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="tk.directionQoQ" [increase]="tk.percentQoQ"
+                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="tk.directionQoQ" [increase]="tk.percentQoQ" *ngIf="qbrType !== 'YoY'"
                                           [size]="'md'"></bd-yoy-number-widget>
-                    <bd-yoy-number-widget [label]="'YoY'" [direction]="tk.directionYoY" [increase]="tk.percentYoY"
+                    <bd-yoy-number-widget [label]="'YoY'" [direction]="tk.directionYoY" [increase]="tk.percentYoY" *ngIf="qbrType === 'YoY'"
                                           [size]="'md'"></bd-yoy-number-widget>
                   </div>
                 </div>

@@ -11,9 +11,9 @@
     <div class="pb20" [ngClass]="{'metrics-div-border': i > 0}">
       <div class="mb20 qbr-dollar-label">${{item.amount | number:'1.0-0'}}</div>
       <div>
-        <bd-yoy-number-widget [label]="'QoQ'" [direction]="item.directionQoQ" [increase]="item.percentQoQ"
+        <bd-yoy-number-widget [label]="'QoQ'" [direction]="item.directionQoQ" [increase]="item.percentQoQ" *ngIf="qbrType !== 'YoY'"
                               [size]="'md'"></bd-yoy-number-widget>
-        <bd-yoy-number-widget [label]="'YoY'" [direction]="item.directionYoY" [increase]="item.percentYoY"
+        <bd-yoy-number-widget [label]="'YoY'" [direction]="item.directionYoY" [increase]="item.percentYoY" *ngIf="qbrType === 'YoY'"
                               [size]="'md'"></bd-yoy-number-widget>
 
       </div>

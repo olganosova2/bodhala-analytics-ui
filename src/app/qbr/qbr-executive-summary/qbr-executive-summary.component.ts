@@ -1,10 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import * as _moment from 'moment';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {IQbrMetric, IQbrReport} from '../qbr-model';
+import {IQbrMetric, IQbrReport, QbrType} from '../qbr-model';
 import {executiveSummaryChartOptions} from './model';
 import {Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
+import {QbrService} from '../qbr.service';
+// import {FiltersService as ElemFiltersService} from 'bodhala-ui-elements';
+
+const moment = _moment;
 
 
 @Component({
@@ -15,7 +20,7 @@ import {FiltersService} from '../../shared/services/filters.service';
 export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestQbr: Subscription;
-  qbrType: any = 'YoY';
+  qbrType: any = QbrType.YoY;
   cardTitle: string;
   percentOfTotalSpend: number = 87;
   percentOfTotalSpendDir: number = 1;
@@ -34,6 +39,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
               public userService: UserService,
               private httpService: HttpService,
               public filtersService: FiltersService,
+              public qbrService: QbrService,
               public utilService: UtilService) {
     this.commonServ.pageTitle = 'QBR';
     this.commonServ.pageSubtitle = 'Executive Summary';
@@ -63,17 +69,18 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
       name: 'filters',
       filters: this.qbr.filters
     };
+    const dates = this.qbrService.formatPayloadDates(this.qbr.start_date, this.qbr.report_type);
     const payload = {
       id: this.qbr.id,
-      startDate: this.reportStartDate,
-      endDate: this.reportEndDate,
-      reportType: this.reportType,
-      filters: filterParams,
+      startDate: dates.startDate,
+      endDate: dates.endDate,
+      reportType: this.qbrType,
+      filters: this.qbr.filters,
       client: this.userService.currentUser.client_info.id,
-      comparisonStartDate: this.comparisonStartDate,
-      comparisonEndDate: this.comparisonEndDate,
+      comparisonStartDate: dates.comparisonStartDate,
+      comparisonEndDate: dates.comparisonEndDate,
       paSetting: this.practiceAreaSetting,
-      queryString: params
+      // queryString: params
     };
   }
   processRecords(): void {

@@ -1,5 +1,10 @@
 import {baseColumnChartOptions} from '../shared/models/base-chart';
 
+export enum QbrType {
+  YoY = 'YoY',
+  QoQAdjacent = 'QoQAdjacent',
+  QoQAnnual = 'QoQAnnual'
+}
 export interface IQbrMetric {
   label: string;
   directionQoQ: number;
@@ -14,7 +19,7 @@ export interface IQbrReport {
   id: 4;
   start_date: string;
   end_date: string;
-  report_type: string;
+  report_type: QbrType;
   created_by: number;
   created_on: string;
   title: string;
@@ -25,7 +30,12 @@ export interface IQbrReport {
   };
   chosen_metrics: any;
 }
-
+export interface IPayloadDates {
+   startDate: string;
+   endDate: string;
+   comparisonStartDate: string;
+   comparisonEndDate: string;
+}
 export const qbrPieChartOptions = {
   chart: {
     height: 290,
