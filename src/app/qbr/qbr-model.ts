@@ -28,6 +28,7 @@ export interface IQbrReport {
     name: string;
     filters: Array<any>;
   };
+  querystring: any;
   chosen_metrics: any;
 }
 export interface IPayloadDates {
@@ -57,7 +58,7 @@ export const qbrPieChartOptions = {
         format: '<b>{point.percentage:.0f} %</b>',
         distance: -50,
         style: {
-          fontSize: 20,
+          fontSize: 18,
           textOutline: false
         }
       }
@@ -113,7 +114,7 @@ const metricsColumnRightOptions = {
     pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
   },
   series: [{
-    name: 'Last',
+    name: 'Current',
     colorByPoint: true,
     data: []
   },

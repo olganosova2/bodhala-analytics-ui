@@ -236,7 +236,7 @@ export const FRESH_DESK_ARTICLES = {
   BlockBilling: '24000060478',
   Overstaffing: '24000060537',
   RateIncrease: '24000060502',
-  EntityConfig: '24000066545'
+  EntityConfig: '24000072358'
 };
 export const UI_ANNOTATIONS_IDS = {
   executiveSummary: 'ExecutiveSummary'

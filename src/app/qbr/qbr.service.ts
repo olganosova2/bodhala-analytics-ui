@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as _moment from 'moment';
-import {IPayloadDates, QbrType} from './qbr-model';
+import {IPayloadDates, IQbrMetric, IQbrReport, QbrType} from './qbr-model';
+import {CommonService} from '../shared/services/common.service';
 
 const moment = _moment;
 
@@ -10,7 +11,7 @@ const moment = _moment;
 export class QbrService {
   firstReport: boolean;
 
-  constructor() { }
+  constructor(public commonService: CommonService) { }
 
   formatPayloadDates(dtStart: string, qbrType: QbrType): IPayloadDates {
     const result = {
@@ -36,6 +37,80 @@ export class QbrService {
       result.comparisonEndDate = moment(dtStart).add(-1, 'days').format();
     }
 
+    return result;
+  }
+  generateEmptyMetric(): IQbrMetric {
+    return {label: '', directionQoQ: 0, percentQoQ: 0, directionYoY: 0, percentYoY: 0, amount: 0};
+  }
+  formatYoYorQoQMetrics(result: IQbrMetric, increase: number, qbrType: QbrType): void {
+    if (qbrType === QbrType.YoY) {
+      result.percentYoY = increase;
+      result.directionYoY = increase >= 0 ? 1 : -1;
+    } else {
+      result.percentQoQ = increase;
+      result.directionQoQ = increase >= 0 ? 1 : -1;
+    }
+  }
+  getOveralSpendMetric(currentMetric: any, compareMetric: any, includeExpenses: boolean, qbrType: QbrType): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = 'Total Spend';
+    if (!currentMetric) {
+      return result;
+    }
+    const currentTotal = includeExpenses ? currentMetric.total_spend_including_expenses : currentMetric.total_spend;
+    const compareTotal = includeExpenses ? compareMetric.total_spend_including_expenses : compareMetric.total_spend;
+    result.amount = currentTotal.total;
+    if (compareTotal.total) {
+      const increase = ((currentTotal.total / compareTotal.total) - 1) * 100;
+      this.formatYoYorQoQMetrics(result, increase, qbrType);
+    }
+    return result;
+  }
+  getBBMetric(currentMetric: any, compareMetric: any, qbrType: QbrType): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = 'Block Billed';
+    if (!currentMetric) {
+      return result;
+    }
+    result.amount  = Math.round(currentMetric.percent_block_billed || 0);
+    if (compareMetric && compareMetric.percent_block_billed) {
+      const increase = ((currentMetric.percent_block_billed / compareMetric.percent_block_billed) - 1) * 100;
+      this.formatYoYorQoQMetrics(result, increase, qbrType);
+    }
+    return result;
+  }
+  getGenericMetric(currentMetric: any, compareMetric: any, propName: string, label: string, qbrType: QbrType, icon: string): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = this.commonService.capitalize(label);
+    result.icon = icon;
+    if (!currentMetric) {
+      return result;
+    }
+    result.amount  = Math.round(currentMetric[propName] || 0);
+    result.amountToCompare = Math.round(compareMetric[propName] || 0);
+    if (compareMetric && compareMetric[propName]) {
+      const increase = ((currentMetric[propName] / compareMetric[propName]) - 1) * 100;
+      this.formatYoYorQoQMetrics(result, increase, qbrType);
+    }
+    return result;
+  }
+  getPercentHours(metric: any): void {
+    metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours);
+    metric.associate_percent_hours_worked = metric.total_hours ? (metric.total_associate_hours / metric.total_hours) * 100 : 0;
+    metric.partner_percent_hours_worked = metric.total_hours ? (metric.total_partner_hours / metric.total_hours) * 100 : 0;
+    metric.other_percent_hours_worked = metric.total_hours ? (metric.total_other_hours / metric.total_hours) * 100 : 0;
+  }
+  getTkHoursRecord(hoursCurrent: any, hoursCompare: any, qbrType: QbrType, classification: string): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = this.commonService.capitalize(classification);
+    if (!hoursCurrent) {
+      return result;
+    }
+    result.amount  = Math.round(hoursCurrent || 0);
+    if (hoursCurrent) {
+      const increase = ((hoursCurrent / hoursCompare) - 1) * 100;
+      this.formatYoYorQoQMetrics(result, increase, qbrType);
+    }
     return result;
   }
 }
