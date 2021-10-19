@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as _moment from 'moment';
 import {IPayloadDates, IQbrMetric, IQbrReport, QbrType} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
+import {IPayloadDates, IPayloadQuarterDates, QbrType} from './qbr-model';
 
 const moment = _moment;
 
@@ -10,6 +11,7 @@ const moment = _moment;
 })
 export class QbrService {
   firstReport: boolean;
+  yoyStartDate: any;
 
   constructor(public commonService: CommonService) { }
 
@@ -111,6 +113,40 @@ export class QbrService {
       const increase = ((hoursCurrent / hoursCompare) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase, qbrType);
     }
+    return result;
+  }
+
+  constructSelectableQuarterDates(startDate): any {
+    const result = {
+      monthNumbers: null,
+      formattedQuarterDates: null
+    };
+    const monthNumbers = [];
+    const formatted = [];
+
+    const firstQuarter = moment(startDate).format('MM');
+    const secondQuarter = moment(startDate).add(3, 'months').format('MM');
+    const thirdQuarter = moment(startDate).add(6, 'months').format('MM');
+    const fourthQuarter = moment(startDate).add(9, 'months').format('MM');
+
+    const firstQuarterFormatted = moment(startDate).format('MM-DD');
+    const secondQuarterFormatted = moment(startDate).add(3, 'months').format('MM-DD');
+    const thirdQuarterFormatted = moment(startDate).add(6, 'months').format('MM-DD');
+    const fourthQuarterFormatted = moment(startDate).add(9, 'months').format('MM-DD');
+
+    formatted.push(firstQuarterFormatted);
+    formatted.push(secondQuarterFormatted);
+    formatted.push(thirdQuarterFormatted);
+    formatted.push(fourthQuarterFormatted);
+
+    monthNumbers.push(Number(firstQuarter));
+    monthNumbers.push(Number(secondQuarter));
+    monthNumbers.push(Number(thirdQuarter));
+    monthNumbers.push(Number(fourthQuarter));
+
+    result.monthNumbers = monthNumbers;
+    result.formattedQuarterDates = formatted;
+
     return result;
   }
 }

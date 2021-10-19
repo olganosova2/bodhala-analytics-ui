@@ -9,7 +9,7 @@ import {MatDialog} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import {confirmDialogConfig} from '../shared/services/config';
 import {QbrService} from './qbr.service';
-import {IReport} from './qbr.model';
+import {IReport} from './qbr-model';
 
 @Component({
   selector: 'bd-qbr',
@@ -54,12 +54,14 @@ export class QbrComponent implements OnInit {
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'Year', field: 'year', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'QBR', field: 'report_type', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'Quarter', field: 'quarterd', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: 'QBR Type', field: 'report_type', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: 'Start Date', field: 'start_date', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: 'End Date', field: 'end_date', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Title', field: 'title', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Author', field: 'author', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)}
+      {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)},
+      // {headerName: 'Edot', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)}
     ];
   }
 
@@ -71,6 +73,13 @@ export class QbrComponent implements OnInit {
         const pipe = new DatePipe('en-US');
         if (this.clientQBRs.length === 0) {
           this.qbrService.firstReport = true;
+        } else {
+          this.qbrService.firstReport = false;
+          const yoyReport = this.clientQBRs.filter(qbr => qbr.report_type === 'YoY');
+          if (yoyReport.length > 0) {
+            this.qbrService.yoyStartDate = yoyReport[0].start_date;
+          }
+          console.log("this.qbrService.yoyStartDate: ", this.qbrService.yoyStartDate);
         }
         for (const report of this.clientQBRs) {
           report.created_on = pipe.transform(report.created_on, 'shortDate');
