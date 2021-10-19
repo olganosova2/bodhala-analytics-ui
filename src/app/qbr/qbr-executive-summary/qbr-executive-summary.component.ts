@@ -49,6 +49,8 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.commonServ.pageSubtitle = 'Executive Summary';
     this.practiceAreaSetting = this.commonServ.getClientPASetting();
     this.cardTitle = this.userService.currentUser.client_info.org.name + ' Exec Summary';
+    this.totalSpendMetric = this.qbrService.generateEmptyMetric();
+    this.bbMetric = this.qbrService.generateEmptyMetric();
   }
 
   ngOnInit(): void {
@@ -77,18 +79,18 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     };
     const dates = this.qbrService.formatPayloadDates(this.qbr.start_date, this.qbr.report_type);
     const payload = {
-      id: this.qbr.id,
+      // id: this.qbr.id,
       startDate: dates.startDate,
       endDate: dates.endDate,
-      reportType: this.qbrType,
-      filters: this.qbr.filters,
+      // reportType: this.qbrType,
+      // filters: this.qbr.filters,
       client: this.userService.currentUser.client_info.id,
       comparisonStartDate: dates.comparisonStartDate,
       comparisonEndDate: dates.comparisonEndDate,
-      paSetting: this.practiceAreaSetting,
+      // paSetting: this.practiceAreaSetting,
       queryString: this.qbr.querystring
     };
-    this.pendingRequest = this.httpService.makePostRequest('generateClientQBR', payload).subscribe(
+    this.pendingRequest = this.httpService.makePostRequest('getQBRExecutiveSummary', payload).subscribe(
       (data: any) => {
         if (data && data.result) {
           this.qbrData = data.result;
@@ -100,6 +102,9 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   processRecords(): void {
     this.currentOverviewMetric = this.qbrData.report_timeframe_metrics;
     this.compareOverviewMetric = this.qbrData.comparison_timeframe_metrics;
+    if (!this.currentOverviewMetric || !this.compareOverviewMetric) {
+      return;
+    }
     this.totalSpendMetric = this.qbrService.getOveralSpendMetric(this.currentOverviewMetric, this.compareOverviewMetric, this.includeExpenses, this.qbrType);
     this.bbMetric = this.qbrService.getBBMetric(this.currentOverviewMetric, this.compareOverviewMetric, this.qbrType);
     this.processTimekeepersHours();
