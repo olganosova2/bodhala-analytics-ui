@@ -18,12 +18,11 @@
 
       <div>
         <label id="report-options-label" style="font-weight: 700;">Report Type:</label>
-        <mat-radio-group aria-labelledby="report-options-label"[(ngModel)]="reportType" name="reportOptions" ngDefaultControl>
+        <mat-radio-group aria-labelledby="report-options-label"[(ngModel)]="reportType" name="reportOptions" ngDefaultControl (change)="updateDateRange()">
           <mat-radio-button [value]="'YoY'" [disabled]="true" style="padding-right: 3em; padding-left: 3em;">Year over Year</mat-radio-button>
           <mat-radio-button [value]="'QoQAdjacent'" [disabled]="firstReport" style="padding-right: 3em;">Quarter over Quarter - Adjacent</mat-radio-button>
           <mat-radio-button [value]="'QoQAnnual'" [disabled]="firstReport">Quarter over Quarter - Annual</mat-radio-button>
         </mat-radio-group>
-
       </div>
 
       <div style="padding-top: 1em;" class="row">
@@ -32,7 +31,7 @@
             you will only be able to use those quarters when creating subsequent QoQ reports. If you select January 1, the quarters will be 1/1 - 3/31, 4/1 - 6/30, 7/1 - 9/30, and 10/1 - 12/31.
             If you select February 1, the quarters will be 2/1 - 4/30, 5/1 - 7/31, 8/1 - 10/31, and 11/1 - 1/31, etc.</p>
 
-            <p>Apply any filtering you want on the dataset by using the filters above. You can view the returned metrics, modify the filters or start date, and click Go to see the updated data.</p>
+            <p>Apply any filtering you want on the dataset by using the filters above. You can view the returned metrics, modify the filters or start date, and click Generate Metrics to see the updated data.</p>
         </div>
 
         <div class="col-sm-4">
@@ -47,6 +46,12 @@
             <div class="font-red" *ngIf="dateForm.hasError('notFirstOfMonth')">
               The selected start date must be the first day of a month
             </div>
+            <div class="font-red" *ngIf="dateForm.hasError('incorrectQuarter')">
+              Based on the data in the initial YoY QBR for {{userService.currentUser.client_info.org.name}}, you can only select one of the following dates for a QBR:
+              <ul>
+                <li *ngFor="let date of formattedQuarterStartDates"> {{date}}</li>
+              </ul>
+            </div>
           </form>
         </div>
 
@@ -60,7 +65,7 @@
           </p>
         </div>
 
-        <div class="col-sm-4" *ngIf="reportEndDate !== null">
+        <div class="col-sm-4" *ngIf="reportEndDate !== null && !dateForm.hasError('notFirstOfMonth') && !dateForm.hasError('incorrectQuarter')">
           <button class="primary-button" (click)="generateMetrics()">Generate Metrics</button>
         </div>
 
@@ -172,7 +177,7 @@
 
       </div>
 
-      <div *ngIf="dataProcessed" style="padding-top: 1.5em;">
+      <div *ngIf="dataProcessed && topPA && secondPA" style="padding-top: 1.5em;">
         <div>
           <h4>Additional Data Points</h4>
         </div>
@@ -231,8 +236,8 @@
         </table>
 
           <!-- Top PA Data -->
-        <h5 style="padding-top: 1em;">Top Practice Area: {{topPA.practice_area}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="topPA">Top Practice Area: {{topPA.practice_area}}</h5>
+        <table style="width: 60%;" *ngIf="topPA">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -287,8 +292,8 @@
         </table>
 
         <!-- Top PA Top Firm Data -->
-        <h5 style="padding-top: 1em;">Top PA, Top Firm: {{topPATopFirm.firm_name}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="topPATopFirm">Top PA, Top Firm: {{topPATopFirm.firm_name}}</h5>
+        <table style="width: 60%;" *ngIf="topPATopFirm">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -343,8 +348,8 @@
         </table>
 
         <!-- Top PA Second Firm Data -->
-        <h5 style="padding-top: 1em;">Top PA, Second Firm: {{topPASecondFirm.firm_name}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="topPASecondFirm">Top PA, Second Firm: {{topPASecondFirm.firm_name}}</h5>
+        <table style="width: 60%;" *ngIf="topPASecondFirm">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -399,8 +404,8 @@
         </table>
 
         <!-- Top PA Top Matter Data -->
-        <h5 style="padding-top: 1em;">Top PA, Top Matter: {{topPAMatter.matter_name}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="topPAMatter">Top PA, Top Matter: {{topPAMatter.matter_name}}</h5>
+        <table style="width: 60%;" *ngIf="topPAMatter">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -460,8 +465,8 @@
         </table>
 
         <!-- Second PA Data -->
-        <h5 style="padding-top: 1em;">Second Practice Area: {{secondPA.practice_area}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="secondPA">Second Practice Area: {{secondPA.practice_area}}</h5>
+        <table style="width: 60%;" *ngIf="secondPA">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -516,8 +521,8 @@
         </table>
 
         <!-- Second PA Top Firm Data -->
-        <h5 style="padding-top: 1em;">Second PA, Top Firm: {{secondPATopFirm.firm_name}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="secondPATopFirm">Second PA, Top Firm: {{secondPATopFirm.firm_name}}</h5>
+        <table style="width: 60%;" *ngIf="secondPATopFirm">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -572,8 +577,8 @@
         </table>
 
         <!-- Second PA Second Firm Data -->
-        <h5 style="padding-top: 1em;">Second PA, Second Firm: {{secondPASecondFirm.firm_name}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="secondPASecondFirm">Second PA, Second Firm: {{secondPASecondFirm.firm_name}}</h5>
+        <table style="width: 60%;" *ngIf="secondPASecondFirm">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -628,8 +633,8 @@
         </table>
 
         <!-- Second PA Top Matter Data -->
-        <h5 style="padding-top: 1em;">Second PA, Top Matter: {{secondPAMatter.matter_name}}</h5>
-        <table style="width: 60%;">
+        <h5 style="padding-top: 1em;" *ngIf="secondPAMatter">Second PA, Top Matter: {{secondPAMatter.matter_name}}</h5>
+        <table style="width: 60%;" *ngIf="secondPAMatter">
           <tr>
             <th>Title</th>
             <th>Metric</th>
@@ -637,12 +642,12 @@
           </tr>
           <tr>
             <td>Total Billed (Report Timeframe)</td>
-            <td>{{secondPAMatter.total_billed | number:'1.1-1'}}%</td>
+            <td>${{secondPAMatter.total_billed | number:'1.0-0'}}</td>
             <td>{{secondPAMatter.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
           <tr>
             <td>% of PA Total Billed (Report Timeframe)</td>
-            <td>${{secondPAMatter.pct_of_total_spend | number:'1.0-0'}}</td>
+            <td>{{secondPAMatter.pct_of_total_spend | number:'1.1-1'}}%</td>
             <td>{{secondPAMatter.pct_of_total_spend_trend | number:'1.1-1'}}%</td>
           </tr>
           <tr>

@@ -36,6 +36,12 @@ export interface IPayloadDates {
    comparisonStartDate: string;
    comparisonEndDate: string;
 }
+export interface IPayloadQuarterDates {
+  firstQuarter: string;
+  secondQuarter: string;
+  thirdQuarter: string;
+  fourthQuarter: string;
+}
 export const qbrPieChartOptions = {
   chart: {
     height: 290,
@@ -123,5 +129,15 @@ const metricsColumnRightOptions = {
       data: []
     }]
 };
+
+export interface IReport {
+  id: number;
+  bh_client_id: number;
+  report_type: string;
+  status: string;
+  title: string;
+  filters: JSON;
+  chosen_metrics: JSON;
+}
 
 export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnRightOptions};

@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import {confirmDialogConfig} from '../../shared/services/config';
 import {FormGroup, Validators, FormControl, ValidatorFn, AbstractControl, ValidationErrors} from '@angular/forms';
 import {QbrService} from '../qbr.service';
-import {IReport} from '../qbr.model';
+import {IReport, QbrType, IPayloadQuarterDates} from '../qbr-model';
 
 
 @Component({
@@ -36,6 +36,9 @@ export class QbrCreationComponent implements OnInit {
   report: IReport = null;
   dataProcessed: boolean = false;
   practiceAreaSetting: string;
+  yoyStartDate: any;
+  quarterStartDates: Array<number> = [];
+  formattedQuarterStartDates: Array<string>;
 
   topPA: any;
   topPATopFirm: any;
@@ -72,10 +75,14 @@ export class QbrCreationComponent implements OnInit {
               private qbrService: QbrService) {
     this.commonServ.pageTitle = 'Create QBR';
     this.commonServ.pageSubtitle = this.userService.currentUser.client_info.org.name;
+    this.practiceAreaSetting = this.commonServ.getClientPASetting();
   }
 
   ngOnInit(): void {
     this.firstReport = this.qbrService.firstReport;
+    this.yoyStartDate = this.qbrService.yoyStartDate;
+
+    console.log("yoyStartDate: ", this.yoyStartDate)
     console.log("first report: ", this.firstReport, this.dateRangeReady)
     console.log("userService: ", this.userService)
     console.log("filterservice: ", this.filtersService)
@@ -83,6 +90,13 @@ export class QbrCreationComponent implements OnInit {
       this.reportType = 'YoY';
     } else {
       this.reportType = 'QoQAdjacent';
+    }
+    if (this.yoyStartDate !== null && this.yoyStartDate !== undefined) {
+      const result = this.qbrService.constructSelectableQuarterDates(this.yoyStartDate);
+      this.quarterStartDates = result.monthNumbers;
+      this.formattedQuarterStartDates = result.formattedQuarterDates;
+      console.log("quarterStartDates: ", this.quarterStartDates);
+      console.log("formattedQuarterStartDates: ", this.formattedQuarterStartDates);
     }
     this.dateForm.addControl('startDate', new FormControl(null, Validators.required));
     this.dateForm.validator =  this.validateStartDate();
@@ -95,47 +109,46 @@ export class QbrCreationComponent implements OnInit {
     this.metricsForm.addControl('blended_rate', new FormControl(false, Validators.required));
     this.metricsForm.addControl('bodhala_price_index', new FormControl(false, Validators.required));
     this.metricsForm.validator = this.validateMetricSelection();
-    if (this.userService.config !== undefined) {
-      if ('analytics.practice.bodhala.areas' in this.userService.config) {
-        const userConfigs = Object.values(this.userService.config);
-        for (const config of userConfigs) {
-          if (config.configs[0].description === 'config for analytics practice areas') {
-            this.practiceAreaSetting = config.configs[0].value;
-            break;
-          }
-        }
-      }
-    }
   }
 
   // storeFilters(event): void {
   //   this.filterSet = event;
   //   console.log("this.filterSet: ", this.filterSet)
   // }
+  // update the date range if the user switches QoQ type
+  updateDateRange(): void {
+    console.log("updateDateRange: ", this.reportType)
+    console.log("form: ", this.dateForm)
+    console.log("comp: ", this.dateForm.controls['startDate'].value, this.reportStartDate)
+    if (this.dateForm.controls['startDate'].value !== null) {
+      const result = this.qbrService.formatPayloadDates(this.dateForm.controls['startDate'].value, QbrType[this.reportType]);
+      console.log("RESULT: ", result);
+      this.reportEndDate = result.endDate;
+      this.comparisonStartDate = result.comparisonStartDate;
+      this.comparisonEndDate = result.comparisonEndDate;
+    }
+  }
 
   validateStartDate(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const checkDay = control.value;
       if (checkDay.startDate !== null && checkDay.startDate !== undefined) {
         const dayOfMonth = checkDay.startDate.getDate();
+        let month = checkDay.startDate.getMonth();
+        month++;
+        console.log("month: ", month)
+        console.log("check: ", !this.quarterStartDates.includes(month))
         if (dayOfMonth !== 1) {
           return {notFirstOfMonth: true};
+        } else if (!this.firstReport && !this.quarterStartDates.includes(month)) {
+          return {incorrectQuarter: true};
         } else {
           this.reportStartDate = checkDay.startDate;
-          if (this.firstReport) {
-            this.reportEndDate = new Date(this.reportStartDate.getFullYear(), this.reportStartDate.getMonth(), this.reportStartDate.getDate());
-            this.reportEndDate.setFullYear(this.reportStartDate.getFullYear() + 1);
-            this.reportEndDate.setDate(this.reportStartDate.getDate() - 1);
-            this.comparisonStartDate = new Date(this.reportStartDate.getFullYear(), this.reportStartDate.getMonth(), this.reportStartDate.getDate());
-            this.comparisonStartDate.setFullYear(this.reportStartDate.getFullYear() - 1);
-            this.comparisonStartDate.setDate(this.reportStartDate.getDate());
-            this.comparisonEndDate = new Date(this.reportStartDate.getFullYear(), this.reportStartDate.getMonth(), this.reportStartDate.getDate());
-            this.comparisonEndDate.setFullYear(this.reportStartDate.getFullYear());
-            this.comparisonEndDate.setDate(this.reportStartDate.getDate() - 1);
-          } else {
-            // for QoQ reports
-
-          }
+          const result = this.qbrService.formatPayloadDates(this.reportStartDate, QbrType[this.reportType]);
+          console.log("RESULT: ", result);
+          this.reportEndDate = result.endDate;
+          this.comparisonStartDate = result.comparisonStartDate;
+          this.comparisonEndDate = result.comparisonEndDate;
         }
       }
       this.dateRangeReady = true;
@@ -182,7 +195,7 @@ export class QbrCreationComponent implements OnInit {
     const serialized = JSON.parse(strObj);
     filterParams.filters = Object.assign([], serialized);
     const params = this.filtersService.getCurrentUserCombinedFilters();
-
+    console.log("params: ", params);
     const payload = {
       id: this.report.id,
       startDate: this.reportStartDate,
@@ -213,71 +226,71 @@ export class QbrCreationComponent implements OnInit {
         }
 
         if (data.result.report_timeframe_top_pas) {
-          this.topPA = {
-            practice_area: data.result.report_timeframe_top_pas[0].practice_area,
-            total_billed: data.result.report_timeframe_top_pas[0].total_billed,
-            expenses: data.result.report_timeframe_top_pas[0].total_expenses,
-            associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].partner_per_hrs_worked,
-            avg_associate_rate: data.result.report_timeframe_top_pas[0].avg_associate_rate,
-            avg_partner_rate: data.result.report_timeframe_top_pas[0].avg_partner_rate,
-            avg_blended_rate: data.result.report_timeframe_top_pas[0].blended_rate,
-            percent_block_billed: data.result.report_timeframe_top_pas[0].block_billed_pct,
-            bodhala_price_index: data.result.report_timeframe_top_pas[0].bpi
-          };
+          if (data.result.report_timeframe_top_pas.length > 0) {
+            this.topPA = {
+              practice_area: data.result.report_timeframe_top_pas[0].practice_area,
+              total_billed: data.result.report_timeframe_top_pas[0].total_billed,
+              expenses: data.result.report_timeframe_top_pas[0].total_expenses,
+              associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].partner_per_hrs_worked,
+              avg_associate_rate: data.result.report_timeframe_top_pas[0].avg_associate_rate,
+              avg_partner_rate: data.result.report_timeframe_top_pas[0].avg_partner_rate,
+              avg_blended_rate: data.result.report_timeframe_top_pas[0].blended_rate,
+              percent_block_billed: data.result.report_timeframe_top_pas[0].block_billed_pct,
+              bodhala_price_index: data.result.report_timeframe_top_pas[0].bpi
+            };
 
-          this.topPATopFirm = {
-            firm_name: data.result.report_timeframe_top_pas[0].firm_name,
-            practice_area: data.result.report_timeframe_top_pas[0].practice_area,
-            expenses: data.result.report_timeframe_top_pas[0].firm_expenses,
-            total_billed: data.result.report_timeframe_top_pas[0].firm_total,
-            associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].firm_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].firm_partner_per_hrs_worked,
-            avg_associate_rate: data.result.report_timeframe_top_pas[0].firm_avg_associate_rate,
-            avg_partner_rate: data.result.report_timeframe_top_pas[0].firm_avg_partner_rate,
-            avg_blended_rate: data.result.report_timeframe_top_pas[0].firm_blended_rate,
-            percent_block_billed: data.result.report_timeframe_top_pas[0].firm_block_billed_pct,
-            bodhala_price_index: data.result.report_timeframe_top_pas[0].firm_bpi
-          };
+            this.topPATopFirm = {
+              firm_name: data.result.report_timeframe_top_pas[0].firm_name,
+              practice_area: data.result.report_timeframe_top_pas[0].practice_area,
+              expenses: data.result.report_timeframe_top_pas[0].firm_expenses,
+              total_billed: data.result.report_timeframe_top_pas[0].firm_total,
+              associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].firm_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].firm_partner_per_hrs_worked,
+              avg_associate_rate: data.result.report_timeframe_top_pas[0].firm_avg_associate_rate,
+              avg_partner_rate: data.result.report_timeframe_top_pas[0].firm_avg_partner_rate,
+              avg_blended_rate: data.result.report_timeframe_top_pas[0].firm_blended_rate,
+              percent_block_billed: data.result.report_timeframe_top_pas[0].firm_block_billed_pct,
+              bodhala_price_index: data.result.report_timeframe_top_pas[0].firm_bpi
+            };
 
-          this.topPASecondFirm = {
-            firm_name: data.result.report_timeframe_top_pas[0].second_firm_name,
-            practice_area: data.result.report_timeframe_top_pas[0].practice_area,
-            expenses: data.result.report_timeframe_top_pas[0].second_firm_expenses,
-            total_billed: data.result.report_timeframe_top_pas[0].second_firm_total,
-            associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].second_firm_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].second_firm_partner_per_hrs_worked,
-            avg_associate_rate: data.result.report_timeframe_top_pas[0].second_firm_avg_associate_rate,
-            avg_partner_rate: data.result.report_timeframe_top_pas[0].second_firm_avg_partner_rate,
-            avg_blended_rate: data.result.report_timeframe_top_pas[0].second_firm_blended_rate,
-            percent_block_billed: data.result.report_timeframe_top_pas[0].second_firm_block_billed_pct,
-            bodhala_price_index: data.result.report_timeframe_top_pas[0].second_firm_bpi
-          };
+            this.topPASecondFirm = {
+              firm_name: data.result.report_timeframe_top_pas[0].second_firm_name,
+              practice_area: data.result.report_timeframe_top_pas[0].practice_area,
+              expenses: data.result.report_timeframe_top_pas[0].second_firm_expenses,
+              total_billed: data.result.report_timeframe_top_pas[0].second_firm_total,
+              associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].second_firm_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].second_firm_partner_per_hrs_worked,
+              avg_associate_rate: data.result.report_timeframe_top_pas[0].second_firm_avg_associate_rate,
+              avg_partner_rate: data.result.report_timeframe_top_pas[0].second_firm_avg_partner_rate,
+              avg_blended_rate: data.result.report_timeframe_top_pas[0].second_firm_blended_rate,
+              percent_block_billed: data.result.report_timeframe_top_pas[0].second_firm_block_billed_pct,
+              bodhala_price_index: data.result.report_timeframe_top_pas[0].second_firm_bpi
+            };
 
-          this.topPAMatter = {
-            matter_name: data.result.report_timeframe_top_pas[0].matter_name,
-            matter_id: data.result.report_timeframe_top_pas[0].matter_id,
-            practice_area: data.result.report_timeframe_top_pas[0].practice_area,
-            expenses: data.result.report_timeframe_top_pas[0].matter_expenses,
-            total_billed: data.result.report_timeframe_top_pas[0].matter_total,
-            associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].matter_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].matter_partner_per_hrs_worked,
-            avg_associate_rate: data.result.report_timeframe_top_pas[0].matter_avg_associate_rate,
-            avg_partner_rate: data.result.report_timeframe_top_pas[0].matter_avg_partner_rate,
-            avg_blended_rate: data.result.report_timeframe_top_pas[0].matter_blended_rate,
-            percent_block_billed: data.result.report_timeframe_top_pas[0].matter_block_billed_pct,
-            bodhala_price_index: data.result.report_timeframe_top_pas[0].matter_bpi
-          };
+            this.topPAMatter = {
+              matter_name: data.result.report_timeframe_top_pas[0].matter_name,
+              matter_id: data.result.report_timeframe_top_pas[0].matter_id,
+              practice_area: data.result.report_timeframe_top_pas[0].practice_area,
+              expenses: data.result.report_timeframe_top_pas[0].matter_expenses,
+              total_billed: data.result.report_timeframe_top_pas[0].matter_total,
+              associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].matter_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].matter_partner_per_hrs_worked,
+              avg_associate_rate: data.result.report_timeframe_top_pas[0].matter_avg_associate_rate,
+              avg_partner_rate: data.result.report_timeframe_top_pas[0].matter_avg_partner_rate,
+              avg_blended_rate: data.result.report_timeframe_top_pas[0].matter_blended_rate,
+              percent_block_billed: data.result.report_timeframe_top_pas[0].matter_block_billed_pct,
+              bodhala_price_index: data.result.report_timeframe_top_pas[0].matter_bpi
+            };
+          }
 
-          if (this.topPA) {
+          if (this.topPA && this.topPAMatter) {
             if (this.topPA.total_billed > 0) {
               const pctOfSpend = (this.topPAMatter.total_billed / this.topPA.total_billed) * 100;
               this.topPAMatter.pct_of_total_spend = pctOfSpend;
             } else {
               this.topPAMatter.pct_of_total_spend = 0;
             }
-          } else {
-            this.topPAMatter.pct_of_total_spend = 0;
           }
 
           if (data.result.report_timeframe_top_pas.length > 1) {
@@ -337,193 +350,206 @@ export class QbrCreationComponent implements OnInit {
               bodhala_price_index: data.result.report_timeframe_top_pas[1].matter_bpi
             };
 
-            if (this.secondPA) {
+            if (this.secondPA && this.secondPAMatter) {
               if (this.secondPA.total_billed > 0) {
                 const pctOfSpend = (this.secondPAMatter.total_billed / this.secondPA.total_billed) * 100;
                 this.secondPAMatter.pct_of_total_spend = pctOfSpend;
               } else {
                 this.secondPAMatter.pct_of_total_spend = 0;
               }
-            } else {
-              this.secondPAMatter.pct_of_total_spend = 0;
             }
           }
         }
 
         if (data.result.comparison_timeframe_top_pas) {
-          if (data.result.comparison_timeframe_top_pas[0].practice_area === this.topPA.practice_area) {
-            this.topPAComparison = {
-              practice_area: data.result.comparison_timeframe_top_pas[0].practice_area,
-              total_billed: data.result.comparison_timeframe_top_pas[0].total_billed,
-              expenses: data.result.comparison_timeframe_top_pas[0].total_expenses,
-              associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].associate_per_hrs_worked,
-              partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].partner_per_hrs_worked,
-              avg_associate_rate: data.result.comparison_timeframe_top_pas[0].avg_associate_rate,
-              avg_partner_rate: data.result.comparison_timeframe_top_pas[0].avg_partner_rate,
-              avg_blended_rate: data.result.comparison_timeframe_top_pas[0].blended_rate,
-              percent_block_billed: data.result.comparison_timeframe_top_pas[0].block_billed_pct,
-              bodhala_price_index: data.result.comparison_timeframe_top_pas[0].bpi
-            };
-            if (data.result.comparison_timeframe_top_pas.length > 1) {
-              this.secondPAComparison = {
-                practice_area: data.result.comparison_timeframe_top_pas[1].practice_area,
-                total_billed: data.result.comparison_timeframe_top_pas[1].total_billed,
-                expenses: data.result.comparison_timeframe_top_pas[1].total_expenses,
-                associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].associate_per_hrs_worked,
-                partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].partner_per_hrs_worked,
-                avg_associate_rate: data.result.comparison_timeframe_top_pas[1].avg_associate_rate,
-                avg_partner_rate: data.result.comparison_timeframe_top_pas[1].avg_partner_rate,
-                avg_blended_rate: data.result.comparison_timeframe_top_pas[1].blended_rate,
-                percent_block_billed: data.result.comparison_timeframe_top_pas[1].block_billed_pct,
-                bodhala_price_index: data.result.comparison_timeframe_top_pas[1].bpi
-              };
-            }
-
-          } else {
-            if (data.result.comparison_timeframe_top_pas.length > 1) {
+          if (data.result.comparison_timeframe_top_pas.length > 0) {
+            if (data.result.comparison_timeframe_top_pas[0].practice_area === this.topPA.practice_area) {
               this.topPAComparison = {
-                practice_area: data.result.comparison_timeframe_top_pas[1].practice_area,
-                total_billed: data.result.comparison_timeframe_top_pas[1].total_billed,
-                expenses: data.result.comparison_timeframe_top_pas[1].total_expenses,
-                associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].associate_per_hrs_worked,
-                partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].partner_per_hrs_worked,
-                avg_associate_rate: data.result.comparison_timeframe_top_pas[1].avg_associate_rate,
-                avg_partner_rate: data.result.comparison_timeframe_top_pas[1].avg_partner_rate,
-                avg_blended_rate: data.result.comparison_timeframe_top_pas[1].blended_rate,
-                percent_block_billed: data.result.comparison_timeframe_top_pas[1].block_billed_pct,
-                bodhala_price_index: data.result.comparison_timeframe_top_pas[1].bpi
+                practice_area: data.result.comparison_timeframe_top_pas[0].practice_area,
+                total_billed: data.result.comparison_timeframe_top_pas[0].total_billed,
+                expenses: data.result.comparison_timeframe_top_pas[0].total_expenses,
+                associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].associate_per_hrs_worked,
+                partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].partner_per_hrs_worked,
+                avg_associate_rate: data.result.comparison_timeframe_top_pas[0].avg_associate_rate,
+                avg_partner_rate: data.result.comparison_timeframe_top_pas[0].avg_partner_rate,
+                avg_blended_rate: data.result.comparison_timeframe_top_pas[0].blended_rate,
+                percent_block_billed: data.result.comparison_timeframe_top_pas[0].block_billed_pct,
+                bodhala_price_index: data.result.comparison_timeframe_top_pas[0].bpi
+              };
+              if (data.result.comparison_timeframe_top_pas.length > 1) {
+                this.secondPAComparison = {
+                  practice_area: data.result.comparison_timeframe_top_pas[1].practice_area,
+                  total_billed: data.result.comparison_timeframe_top_pas[1].total_billed,
+                  expenses: data.result.comparison_timeframe_top_pas[1].total_expenses,
+                  associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].associate_per_hrs_worked,
+                  partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].partner_per_hrs_worked,
+                  avg_associate_rate: data.result.comparison_timeframe_top_pas[1].avg_associate_rate,
+                  avg_partner_rate: data.result.comparison_timeframe_top_pas[1].avg_partner_rate,
+                  avg_blended_rate: data.result.comparison_timeframe_top_pas[1].blended_rate,
+                  percent_block_billed: data.result.comparison_timeframe_top_pas[1].block_billed_pct,
+                  bodhala_price_index: data.result.comparison_timeframe_top_pas[1].bpi
+                };
+              }
+
+            } else {
+              if (data.result.comparison_timeframe_top_pas.length > 1) {
+                this.topPAComparison = {
+                  practice_area: data.result.comparison_timeframe_top_pas[1].practice_area,
+                  total_billed: data.result.comparison_timeframe_top_pas[1].total_billed,
+                  expenses: data.result.comparison_timeframe_top_pas[1].total_expenses,
+                  associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].associate_per_hrs_worked,
+                  partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[1].partner_per_hrs_worked,
+                  avg_associate_rate: data.result.comparison_timeframe_top_pas[1].avg_associate_rate,
+                  avg_partner_rate: data.result.comparison_timeframe_top_pas[1].avg_partner_rate,
+                  avg_blended_rate: data.result.comparison_timeframe_top_pas[1].blended_rate,
+                  percent_block_billed: data.result.comparison_timeframe_top_pas[1].block_billed_pct,
+                  bodhala_price_index: data.result.comparison_timeframe_top_pas[1].bpi
+                };
+              }
+              this.secondPAComparison = {
+                practice_area: data.result.comparison_timeframe_top_pas[0].practice_area,
+                total_billed: data.result.comparison_timeframe_top_pas[0].total_billed,
+                expenses: data.result.comparison_timeframe_top_pas[0].total_expenses,
+                associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].associate_per_hrs_worked,
+                partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].partner_per_hrs_worked,
+                avg_associate_rate: data.result.comparison_timeframe_top_pas[0].avg_associate_rate,
+                avg_partner_rate: data.result.comparison_timeframe_top_pas[0].avg_partner_rate,
+                avg_blended_rate: data.result.comparison_timeframe_top_pas[0].blended_rate,
+                percent_block_billed: data.result.comparison_timeframe_top_pas[0].block_billed_pct,
+                bodhala_price_index: data.result.comparison_timeframe_top_pas[0].bpi
               };
             }
-            this.secondPAComparison = {
-              practice_area: data.result.comparison_timeframe_top_pas[0].practice_area,
-              total_billed: data.result.comparison_timeframe_top_pas[0].total_billed,
-              expenses: data.result.comparison_timeframe_top_pas[0].total_expenses,
-              associate_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].associate_per_hrs_worked,
-              partner_percent_hours_worked: data.result.comparison_timeframe_top_pas[0].partner_per_hrs_worked,
-              avg_associate_rate: data.result.comparison_timeframe_top_pas[0].avg_associate_rate,
-              avg_partner_rate: data.result.comparison_timeframe_top_pas[0].avg_partner_rate,
-              avg_blended_rate: data.result.comparison_timeframe_top_pas[0].blended_rate,
-              percent_block_billed: data.result.comparison_timeframe_top_pas[0].block_billed_pct,
-              bodhala_price_index: data.result.comparison_timeframe_top_pas[0].bpi
-            };
           }
         }
 
         if (data.result.compare_timeframe_top_pa_matter) {
-          this.topPAMatterComparison = {
-            matter_name: data.result.compare_timeframe_top_pa_matter[0].matter_name,
-            matter_id: data.result.compare_timeframe_top_pa_matter[0].matter_id,
-            practice_area: data.result.compare_timeframe_top_pa_matter[0].practice_area,
-            expenses: data.result.compare_timeframe_top_pa_matter[0].matter_expenses,
-            total_billed: data.result.compare_timeframe_top_pa_matter[0].matter_total,
-            associate_percent_hours_worked: data.result.compare_timeframe_top_pa_matter[0].matter_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.compare_timeframe_top_pa_matter[0].matter_partner_per_hrs_worked,
-            avg_associate_rate: data.result.compare_timeframe_top_pa_matter[0].matter_avg_associate_rate,
-            avg_partner_rate: data.result.compare_timeframe_top_pa_matter[0].matter_avg_partner_rate,
-            avg_blended_rate: data.result.compare_timeframe_top_pa_matter[0].matter_blended_rate,
-            percent_block_billed: data.result.compare_timeframe_top_pa_matter[0].matter_block_billed_pct,
-            bodhala_price_index: data.result.compare_timeframe_top_pa_matter[0].matter_bpi
-          };
+          if (data.result.compare_timeframe_top_pa_matter.length > 0) {
+            this.topPAMatterComparison = {
+              matter_name: data.result.compare_timeframe_top_pa_matter[0].matter_name,
+              matter_id: data.result.compare_timeframe_top_pa_matter[0].matter_id,
+              practice_area: data.result.compare_timeframe_top_pa_matter[0].practice_area,
+              expenses: data.result.compare_timeframe_top_pa_matter[0].matter_expenses,
+              total_billed: data.result.compare_timeframe_top_pa_matter[0].matter_total,
+              associate_percent_hours_worked: data.result.compare_timeframe_top_pa_matter[0].matter_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.compare_timeframe_top_pa_matter[0].matter_partner_per_hrs_worked,
+              avg_associate_rate: data.result.compare_timeframe_top_pa_matter[0].matter_avg_associate_rate,
+              avg_partner_rate: data.result.compare_timeframe_top_pa_matter[0].matter_avg_partner_rate,
+              avg_blended_rate: data.result.compare_timeframe_top_pa_matter[0].matter_blended_rate,
+              percent_block_billed: data.result.compare_timeframe_top_pa_matter[0].matter_block_billed_pct,
+              bodhala_price_index: data.result.compare_timeframe_top_pa_matter[0].matter_bpi
+            };
+          }
         }
 
-        if (this.topPAComparison) {
+        if (this.topPAComparison && this.topPAMatterComparison) {
           if (this.topPAComparison.total_billed > 0) {
-            const pctOfSpend = (this.topPAMatterComparison.total_billed / this.topPAComparison.total_billed) * 100;
+            let pctOfSpend = 0;
+            if (this.filtersService.includeExpenses) {
+              pctOfSpend = ((this.topPAMatterComparison.total_billed + this.topPAMatterComparison.expenses) / (this.topPAComparison.total_billed + this.topPAComparison.expenses)) * 100;
+            } else {
+              pctOfSpend = (this.topPAMatterComparison.total_billed / this.topPAComparison.total_billed) * 100;
+            }
             this.topPAMatterComparison.pct_of_total_spend = pctOfSpend;
           } else {
             this.topPAMatterComparison.pct_of_total_spend = 0;
           }
-        } else {
-          this.topPAMatterComparison.pct_of_total_spend = 0;
         }
 
         if (data.result.compare_timeframe_second_pa_matter) {
-          this.secondPAMatterComparison = {
-            matter_name: data.result.compare_timeframe_second_pa_matter[0].matter_name,
-            matter_id: data.result.compare_timeframe_second_pa_matter[0].matter_id,
-            practice_area: data.result.compare_timeframe_second_pa_matter[0].practice_area,
-            expenses: data.result.compare_timeframe_second_pa_matter[0].matter_expenses,
-            total_billed: data.result.compare_timeframe_second_pa_matter[0].matter_total,
-            associate_percent_hours_worked: data.result.compare_timeframe_second_pa_matter[0].matter_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.compare_timeframe_second_pa_matter[0].matter_partner_per_hrs_worked,
-            avg_associate_rate: data.result.compare_timeframe_second_pa_matter[0].matter_avg_associate_rate,
-            avg_partner_rate: data.result.compare_timeframe_second_pa_matter[0].matter_avg_partner_rate,
-            avg_blended_rate: data.result.compare_timeframe_second_pa_matter[0].matter_blended_rate,
-            percent_block_billed: data.result.compare_timeframe_second_pa_matter[0].matter_block_billed_pct,
-            bodhala_price_index: data.result.compare_timeframe_second_pa_matter[0].matter_bpi
-          };
+          if (data.result.compare_timeframe_second_pa_matter.length > 0) {
+            this.secondPAMatterComparison = {
+              matter_name: data.result.compare_timeframe_second_pa_matter[0].matter_name,
+              matter_id: data.result.compare_timeframe_second_pa_matter[0].matter_id,
+              practice_area: data.result.compare_timeframe_second_pa_matter[0].practice_area,
+              expenses: data.result.compare_timeframe_second_pa_matter[0].matter_expenses,
+              total_billed: data.result.compare_timeframe_second_pa_matter[0].matter_total,
+              associate_percent_hours_worked: data.result.compare_timeframe_second_pa_matter[0].matter_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.compare_timeframe_second_pa_matter[0].matter_partner_per_hrs_worked,
+              avg_associate_rate: data.result.compare_timeframe_second_pa_matter[0].matter_avg_associate_rate,
+              avg_partner_rate: data.result.compare_timeframe_second_pa_matter[0].matter_avg_partner_rate,
+              avg_blended_rate: data.result.compare_timeframe_second_pa_matter[0].matter_blended_rate,
+              percent_block_billed: data.result.compare_timeframe_second_pa_matter[0].matter_block_billed_pct,
+              bodhala_price_index: data.result.compare_timeframe_second_pa_matter[0].matter_bpi
+            };
+          }
 
-          if (this.secondPAComparison) {
+          if (this.secondPAComparison && this.secondPAMatterComparison) {
             if (this.secondPAComparison.total_billed > 0) {
-              const pctOfSpend = (this.secondPAMatterComparison.total_billed / this.secondPAComparison.total_billed) * 100;
+              let pctOfSpend = 0;
+              if (this.filtersService.includeExpenses) {
+                pctOfSpend = ((this.secondPAMatterComparison.total_billed + this.secondPAMatterComparison.expenses) / (this.secondPAComparison.total_billed + this.secondPAComparison.expenses)) * 100;
+              } else {
+                pctOfSpend = (this.secondPAMatterComparison.total_billed / this.secondPAComparison.total_billed) * 100;
+              }
               this.secondPAMatterComparison.pct_of_total_spend = pctOfSpend;
             } else {
               this.secondPAMatterComparison.pct_of_total_spend = 0;
             }
-          } else {
-            this.secondPAMatterComparison.pct_of_total_spend = 0;
           }
-
         }
 
         if (data.result.compare_timeframe_top_pa_firms) {
-          this.topPATopFirmComparison = {
-            firm_name: data.result.compare_timeframe_top_pa_firms[0].firm_name,
-            practice_area: data.result.compare_timeframe_top_pa_firms[0].practice_area,
-            expenses: data.result.compare_timeframe_top_pa_firms[0].firm_expenses,
-            total_billed: data.result.compare_timeframe_top_pa_firms[0].total_billed,
-            associate_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].firm_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].firm_partner_per_hrs_worked,
-            avg_associate_rate: data.result.compare_timeframe_top_pa_firms[0].firm_avg_associate_rate,
-            avg_partner_rate: data.result.compare_timeframe_top_pa_firms[0].firm_avg_partner_rate,
-            avg_blended_rate: data.result.compare_timeframe_top_pa_firms[0].firm_blended_rate,
-            percent_block_billed: data.result.compare_timeframe_top_pa_firms[0].firm_block_billed_pct,
-            bodhala_price_index: data.result.compare_timeframe_top_pa_firms[0].firm_bpi
-          };
+          if (data.result.compare_timeframe_top_pa_firms.length > 0) {
+            this.topPATopFirmComparison = {
+              firm_name: data.result.compare_timeframe_top_pa_firms[0].firm_name,
+              practice_area: data.result.compare_timeframe_top_pa_firms[0].practice_area,
+              expenses: data.result.compare_timeframe_top_pa_firms[0].firm_expenses,
+              total_billed: data.result.compare_timeframe_top_pa_firms[0].total_billed,
+              associate_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].firm_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].firm_partner_per_hrs_worked,
+              avg_associate_rate: data.result.compare_timeframe_top_pa_firms[0].firm_avg_associate_rate,
+              avg_partner_rate: data.result.compare_timeframe_top_pa_firms[0].firm_avg_partner_rate,
+              avg_blended_rate: data.result.compare_timeframe_top_pa_firms[0].firm_blended_rate,
+              percent_block_billed: data.result.compare_timeframe_top_pa_firms[0].firm_block_billed_pct,
+              bodhala_price_index: data.result.compare_timeframe_top_pa_firms[0].firm_bpi
+            };
 
-          this.topPASecondFirmComparison = {
-            firm_name: data.result.compare_timeframe_top_pa_firms[0].second_firm_name,
-            practice_area: data.result.compare_timeframe_top_pa_firms[0].practice_area,
-            expenses: data.result.compare_timeframe_top_pa_firms[0].second_firm_expenses,
-            total_billed: data.result.compare_timeframe_top_pa_firms[0].second_firm_total,
-            associate_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].second_firm_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].second_firm_partner_per_hrs_worked,
-            avg_associate_rate: data.result.compare_timeframe_top_pa_firms[0].second_firm_avg_associate_rate,
-            avg_partner_rate: data.result.compare_timeframe_top_pa_firms[0].second_firm_avg_partner_rate,
-            avg_blended_rate: data.result.compare_timeframe_top_pa_firms[0].second_firm_blended_rate,
-            percent_block_billed: data.result.compare_timeframe_top_pa_firms[0].second_firm_block_billed_pct,
-            bodhala_price_index: data.result.compare_timeframe_top_pa_firms[0].second_firm_bpi
-          };
+            this.topPASecondFirmComparison = {
+              firm_name: data.result.compare_timeframe_top_pa_firms[0].second_firm_name,
+              practice_area: data.result.compare_timeframe_top_pa_firms[0].practice_area,
+              expenses: data.result.compare_timeframe_top_pa_firms[0].second_firm_expenses,
+              total_billed: data.result.compare_timeframe_top_pa_firms[0].second_firm_total,
+              associate_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].second_firm_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].second_firm_partner_per_hrs_worked,
+              avg_associate_rate: data.result.compare_timeframe_top_pa_firms[0].second_firm_avg_associate_rate,
+              avg_partner_rate: data.result.compare_timeframe_top_pa_firms[0].second_firm_avg_partner_rate,
+              avg_blended_rate: data.result.compare_timeframe_top_pa_firms[0].second_firm_blended_rate,
+              percent_block_billed: data.result.compare_timeframe_top_pa_firms[0].second_firm_block_billed_pct,
+              bodhala_price_index: data.result.compare_timeframe_top_pa_firms[0].second_firm_bpi
+            };
+          }
         }
 
         if (data.result.compare_timeframe_second_pa_firms) {
-          this.secondPATopFirmComparison = {
-            firm_name: data.result.compare_timeframe_second_pa_firms[0].firm_name,
-            practice_area: data.result.compare_timeframe_second_pa_firms[0].practice_area,
-            expenses: data.result.compare_timeframe_second_pa_firms[0].firm_expenses,
-            total_billed: data.result.compare_timeframe_second_pa_firms[0].total_billed,
-            associate_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].firm_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].firm_partner_per_hrs_worked,
-            avg_associate_rate: data.result.compare_timeframe_second_pa_firms[0].firm_avg_associate_rate,
-            avg_partner_rate: data.result.compare_timeframe_second_pa_firms[0].firm_avg_partner_rate,
-            avg_blended_rate: data.result.compare_timeframe_second_pa_firms[0].firm_blended_rate,
-            percent_block_billed: data.result.compare_timeframe_second_pa_firms[0].firm_block_billed_pct,
-            bodhala_price_index: data.result.compare_timeframe_second_pa_firms[0].firm_bpi
-          };
+          if (data.result.compare_timeframe_second_pa_firms.length) {
+            this.secondPATopFirmComparison = {
+              firm_name: data.result.compare_timeframe_second_pa_firms[0].firm_name,
+              practice_area: data.result.compare_timeframe_second_pa_firms[0].practice_area,
+              expenses: data.result.compare_timeframe_second_pa_firms[0].firm_expenses,
+              total_billed: data.result.compare_timeframe_second_pa_firms[0].total_billed,
+              associate_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].firm_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].firm_partner_per_hrs_worked,
+              avg_associate_rate: data.result.compare_timeframe_second_pa_firms[0].firm_avg_associate_rate,
+              avg_partner_rate: data.result.compare_timeframe_second_pa_firms[0].firm_avg_partner_rate,
+              avg_blended_rate: data.result.compare_timeframe_second_pa_firms[0].firm_blended_rate,
+              percent_block_billed: data.result.compare_timeframe_second_pa_firms[0].firm_block_billed_pct,
+              bodhala_price_index: data.result.compare_timeframe_second_pa_firms[0].firm_bpi
+            };
 
-          this.secondPASecondFirmComparison = {
-            firm_name: data.result.compare_timeframe_second_pa_firms[0].second_firm_name,
-            practice_area: data.result.compare_timeframe_second_pa_firms[0].practice_area,
-            expenses: data.result.compare_timeframe_second_pa_firms[0].second_firm_expenses,
-            total_billed: data.result.compare_timeframe_second_pa_firms[0].second_firm_total,
-            associate_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].second_firm_associate_per_hrs_worked,
-            partner_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].second_firm_partner_per_hrs_worked,
-            avg_associate_rate: data.result.compare_timeframe_second_pa_firms[0].second_firm_avg_associate_rate,
-            avg_partner_rate: data.result.compare_timeframe_second_pa_firms[0].second_firm_avg_partner_rate,
-            avg_blended_rate: data.result.compare_timeframe_second_pa_firms[0].second_firm_blended_rate,
-            percent_block_billed: data.result.compare_timeframe_second_pa_firms[0].second_firm_block_billed_pct,
-            bodhala_price_index: data.result.compare_timeframe_second_pa_firms[0].second_firm_bpi
-          };
+            this.secondPASecondFirmComparison = {
+              firm_name: data.result.compare_timeframe_second_pa_firms[0].second_firm_name,
+              practice_area: data.result.compare_timeframe_second_pa_firms[0].practice_area,
+              expenses: data.result.compare_timeframe_second_pa_firms[0].second_firm_expenses,
+              total_billed: data.result.compare_timeframe_second_pa_firms[0].second_firm_total,
+              associate_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].second_firm_associate_per_hrs_worked,
+              partner_percent_hours_worked: data.result.compare_timeframe_second_pa_firms[0].second_firm_partner_per_hrs_worked,
+              avg_associate_rate: data.result.compare_timeframe_second_pa_firms[0].second_firm_avg_associate_rate,
+              avg_partner_rate: data.result.compare_timeframe_second_pa_firms[0].second_firm_avg_partner_rate,
+              avg_blended_rate: data.result.compare_timeframe_second_pa_firms[0].second_firm_blended_rate,
+              percent_block_billed: data.result.compare_timeframe_second_pa_firms[0].second_firm_block_billed_pct,
+              bodhala_price_index: data.result.compare_timeframe_second_pa_firms[0].second_firm_bpi
+            };
+          }
         }
 
         console.log("topPA: ", this.topPA);
@@ -559,6 +585,10 @@ export class QbrCreationComponent implements OnInit {
         this.calcluateTrendData(this.secondPASecondFirm, this.secondPASecondFirmComparison, false, false);
         this.calcluateTrendData(this.secondPAMatter, this.secondPAMatterComparison, false, true);
         this.dataProcessed = true;
+      },
+      err => {
+        console.log("error: ", err)
+        return {error: err};
       }
     );
   }
@@ -593,53 +623,56 @@ export class QbrCreationComponent implements OnInit {
         }
       }
     } else {
-      // calcluate total_billed trend
+      if (reportTimeframeData && comparisonTimeframeData) {
+        // calcluate total_billed trend
       if (this.filtersService.includeExpenses) {
-        // return to and add expenses
         if (reportTimeframeData.total_billed > 0 && comparisonTimeframeData.total_billed && comparisonTimeframeData.total_billed > 0) {
-          reportTimeframeData.total_billed_trend = ((reportTimeframeData.total_billed / comparisonTimeframeData.total_billed) - 1) * 100;
+          reportTimeframeData.total_billed_trend = (((reportTimeframeData.total_billed + reportTimeframeData.expenses) / (comparisonTimeframeData.total_billed + comparisonTimeframeData.expenses)) - 1) * 100;
         }
       } else {
         if (reportTimeframeData.total_billed > 0 && comparisonTimeframeData.total_billed && comparisonTimeframeData.total_billed > 0) {
           reportTimeframeData.total_billed_trend = ((reportTimeframeData.total_billed / comparisonTimeframeData.total_billed) - 1) * 100;
         }
       }
+      }
     }
 
-    // calculate associate and partner avg. rate trends
-    if (comparisonTimeframeData.avg_partner_rate > 0 && comparisonTimeframeData.avg_partner_rate !== null && comparisonTimeframeData.avg_partner_rate !== undefined) {
-      reportTimeframeData.partner_rate_trend = ((reportTimeframeData.avg_partner_rate / comparisonTimeframeData.avg_partner_rate) - 1) * 100;
-    }
-    if (comparisonTimeframeData.avg_associate_rate > 0 && comparisonTimeframeData.avg_associate_rate !== null && comparisonTimeframeData.avg_associate_rate !== undefined) {
-      reportTimeframeData.assoc_rate_trend = ((reportTimeframeData.avg_associate_rate / comparisonTimeframeData.avg_associate_rate) - 1) * 100;
-    }
+    if (reportTimeframeData && comparisonTimeframeData) {
+      // calculate associate and partner avg. rate trends
+      if (comparisonTimeframeData.avg_partner_rate > 0 && comparisonTimeframeData.avg_partner_rate !== null && comparisonTimeframeData.avg_partner_rate !== undefined) {
+        reportTimeframeData.partner_rate_trend = ((reportTimeframeData.avg_partner_rate / comparisonTimeframeData.avg_partner_rate) - 1) * 100;
+      }
+      if (comparisonTimeframeData.avg_associate_rate > 0 && comparisonTimeframeData.avg_associate_rate !== null && comparisonTimeframeData.avg_associate_rate !== undefined) {
+        reportTimeframeData.assoc_rate_trend = ((reportTimeframeData.avg_associate_rate / comparisonTimeframeData.avg_associate_rate) - 1) * 100;
+      }
 
-    // calculate associate and partner % of hours billed trends
-    if (comparisonTimeframeData.partner_percent_hours_worked > 0 && comparisonTimeframeData.partner_percent_hours_worked !== null && comparisonTimeframeData.partner_percent_hours_worked !== undefined) {
-      reportTimeframeData.partner_hrs_trend = ((reportTimeframeData.partner_percent_hours_worked / comparisonTimeframeData.partner_percent_hours_worked) - 1) * 100;
-    }
-    if (comparisonTimeframeData.associate_percent_hours_worked > 0 && comparisonTimeframeData.associate_percent_hours_worked !== null && comparisonTimeframeData.associate_percent_hours_worked !== undefined) {
-      reportTimeframeData.assoc_hrs_trend = ((reportTimeframeData.associate_percent_hours_worked / comparisonTimeframeData.associate_percent_hours_worked) - 1) * 100;
-    }
+      // calculate associate and partner % of hours billed trends
+      if (comparisonTimeframeData.partner_percent_hours_worked > 0 && comparisonTimeframeData.partner_percent_hours_worked !== null && comparisonTimeframeData.partner_percent_hours_worked !== undefined) {
+        reportTimeframeData.partner_hrs_trend = ((reportTimeframeData.partner_percent_hours_worked / comparisonTimeframeData.partner_percent_hours_worked) - 1) * 100;
+      }
+      if (comparisonTimeframeData.associate_percent_hours_worked > 0 && comparisonTimeframeData.associate_percent_hours_worked !== null && comparisonTimeframeData.associate_percent_hours_worked !== undefined) {
+        reportTimeframeData.assoc_hrs_trend = ((reportTimeframeData.associate_percent_hours_worked / comparisonTimeframeData.associate_percent_hours_worked) - 1) * 100;
+      }
 
-    // calculate block billing trends
-    if (comparisonTimeframeData.percent_block_billed > 0 && comparisonTimeframeData.percent_block_billed !== null && comparisonTimeframeData.percent_block_billed !== undefined) {
-      reportTimeframeData.bb_trend = ((reportTimeframeData.percent_block_billed / comparisonTimeframeData.percent_block_billed) - 1) * 100;
-    }
+      // calculate block billing trends
+      if (comparisonTimeframeData.percent_block_billed > 0 && comparisonTimeframeData.percent_block_billed !== null && comparisonTimeframeData.percent_block_billed !== undefined) {
+        reportTimeframeData.bb_trend = ((reportTimeframeData.percent_block_billed / comparisonTimeframeData.percent_block_billed) - 1) * 100;
+      }
 
-    // calculate bpi trends
-    if (comparisonTimeframeData.bodhala_price_index > 0 && comparisonTimeframeData.bodhala_price_index !== null && comparisonTimeframeData.bodhala_price_index !== undefined) {
-      reportTimeframeData.bpi_trend = ((reportTimeframeData.bodhala_price_index / comparisonTimeframeData.bodhala_price_index) - 1) * 100;
-    }
+      // calculate bpi trends
+      if (comparisonTimeframeData.bodhala_price_index > 0 && comparisonTimeframeData.bodhala_price_index !== null && comparisonTimeframeData.bodhala_price_index !== undefined) {
+        reportTimeframeData.bpi_trend = ((reportTimeframeData.bodhala_price_index / comparisonTimeframeData.bodhala_price_index) - 1) * 100;
+      }
 
-    // calculate blended rate trends
-    if (comparisonTimeframeData.avg_blended_rate > 0 && comparisonTimeframeData.avg_blended_rate !== null && comparisonTimeframeData.avg_blended_rate !== undefined) {
-      reportTimeframeData.blended_rate_trend = ((reportTimeframeData.avg_blended_rate / comparisonTimeframeData.avg_blended_rate) - 1) * 100;
-    }
+      // calculate blended rate trends
+      if (comparisonTimeframeData.avg_blended_rate > 0 && comparisonTimeframeData.avg_blended_rate !== null && comparisonTimeframeData.avg_blended_rate !== undefined) {
+        reportTimeframeData.blended_rate_trend = ((reportTimeframeData.avg_blended_rate / comparisonTimeframeData.avg_blended_rate) - 1) * 100;
+      }
 
-    if (matterData) {
-      if (comparisonTimeframeData.pct_of_total_spend > 0 && comparisonTimeframeData.pct_of_total_spend !== null && comparisonTimeframeData.pct_of_total_spend !== undefined) {
-        reportTimeframeData.pct_of_total_spend_trend = ((reportTimeframeData.pct_of_total_spend / comparisonTimeframeData.pct_of_total_spend) - 1) * 100;
+      if (matterData) {
+        if (comparisonTimeframeData.pct_of_total_spend > 0 && comparisonTimeframeData.pct_of_total_spend !== null && comparisonTimeframeData.pct_of_total_spend !== undefined) {
+          reportTimeframeData.pct_of_total_spend_trend = ((reportTimeframeData.pct_of_total_spend / comparisonTimeframeData.pct_of_total_spend) - 1) * 100;
+        }
       }
     }
 
@@ -647,6 +680,7 @@ export class QbrCreationComponent implements OnInit {
 
   toggleExpenses(): void {
     this.filtersService.includeExpenses = !this.filtersService.includeExpenses;
+    console.log("toggleExpenses: ", this.filtersService.includeExpenses)
     localStorage.setItem('include_expenses_' + this.userService.currentUser.id.toString(), this.filtersService.includeExpenses.toString());
   }
 }
