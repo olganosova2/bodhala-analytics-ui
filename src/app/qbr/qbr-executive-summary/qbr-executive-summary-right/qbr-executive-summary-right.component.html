@@ -1,23 +1,8 @@
 <div class="justify-start">
   <div class="dot-full-right"></div>
-
 <div class="justify-center ml20">
   <div class="qbr-metric-div" *ngFor="let item of metrics;let i=index;">
-    <div class="qbr-metric-header justify-center">
-      <div> <img alt="icon" src="assets/images/{{item.icon}}" class="qbr-icon mb5 mr5 ml5 text-right" [ngClass]="{'qbr-icon-sm': item.label && item.label === 'BPI'}"></div>
-     <div class="qbr-label qbr-label-sm text-center"
-          [ngClass]="{'mt10': item.label && item.label.length < 8, 'mr40': item.label && item.label.indexOf('Associate') < 0, 'mr20': item.label && item.label.indexOf('Associate') > 0}">{{item.label}}</div>
-    </div>
-    <div class="pb20" [ngClass]="{'metrics-div-border': i > 0}">
-      <div class="mb20 qbr-dollar-label">${{item.amount | number:'1.0-0'}}</div>
-      <div>
-        <bd-yoy-number-widget [label]="'QoQ'" [direction]="item.directionQoQ" [increase]="item.percentQoQ" *ngIf="qbrType !== 'YoY'"
-                              [size]="'md'"></bd-yoy-number-widget>
-        <bd-yoy-number-widget [label]="'YoY'" [direction]="item.directionYoY" [increase]="item.percentYoY" *ngIf="qbrType === 'YoY'"
-                              [size]="'md'"></bd-yoy-number-widget>
-
-      </div>
-    </div>
+    <bd-qbr-generic-metric [item]="item" [qbrType]="qbrType" [index]="i"></bd-qbr-generic-metric>
   </div>
 </div>
 </div>

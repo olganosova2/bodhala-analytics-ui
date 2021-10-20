@@ -42,18 +42,13 @@ export class QbrService {
     return result;
   }
   generateEmptyMetric(): IQbrMetric {
-    return {label: '', directionQoQ: 0, percentQoQ: 0, directionYoY: 0, percentYoY: 0, amount: 0};
+    return {label: '', direction: 0, percent: 0,  amount: 0};
   }
-  formatYoYorQoQMetrics(result: IQbrMetric, increase: number, qbrType: QbrType): void {
-    if (qbrType === QbrType.YoY) {
-      result.percentYoY = increase;
-      result.directionYoY = increase >= 0 ? 1 : -1;
-    } else {
-      result.percentQoQ = increase;
-      result.directionQoQ = increase >= 0 ? 1 : -1;
-    }
+  formatYoYorQoQMetrics(result: IQbrMetric, increase: number): void {
+      result.percent = increase;
+      result.direction = increase >= 0 ? 1 : -1;
   }
-  getOveralSpendMetric(currentMetric: any, compareMetric: any, includeExpenses: boolean, qbrType: QbrType): IQbrMetric {
+  getOveralSpendMetric(currentMetric: any, compareMetric: any, includeExpenses: boolean): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Total Spend';
     if (!currentMetric) {
@@ -64,11 +59,11 @@ export class QbrService {
     result.amount = currentTotal.total;
     if (compareTotal.total) {
       const increase = ((currentTotal.total / compareTotal.total) - 1) * 100;
-      this.formatYoYorQoQMetrics(result, increase, qbrType);
+      this.formatYoYorQoQMetrics(result, increase);
     }
     return result;
   }
-  getBBMetric(currentMetric: any, compareMetric: any, qbrType: QbrType): IQbrMetric {
+  getBBMetric(currentMetric: any, compareMetric: any): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Block Billed';
     if (!currentMetric) {
@@ -77,11 +72,11 @@ export class QbrService {
     result.amount  = Math.round(currentMetric.percent_block_billed || 0);
     if (compareMetric && compareMetric.percent_block_billed) {
       const increase = ((currentMetric.percent_block_billed / compareMetric.percent_block_billed) - 1) * 100;
-      this.formatYoYorQoQMetrics(result, increase, qbrType);
+      this.formatYoYorQoQMetrics(result, increase);
     }
     return result;
   }
-  getGenericMetric(currentMetric: any, compareMetric: any, propName: string, label: string, qbrType: QbrType, icon: string): IQbrMetric {
+  getGenericMetric(currentMetric: any, compareMetric: any, propName: string, label: string, icon: string): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = this.commonService.capitalize(label);
     result.icon = icon;
@@ -92,7 +87,7 @@ export class QbrService {
     result.amountToCompare = Math.round(compareMetric[propName] || 0);
     if (compareMetric && compareMetric[propName]) {
       const increase = ((currentMetric[propName] / compareMetric[propName]) - 1) * 100;
-      this.formatYoYorQoQMetrics(result, increase, qbrType);
+      this.formatYoYorQoQMetrics(result, increase);
     }
     return result;
   }
@@ -112,7 +107,7 @@ export class QbrService {
     result.amount  = Math.round(hoursCurrent || 0);
     if (hoursCurrent) {
       const increase = ((hoursCurrent / hoursCompare) - 1) * 100;
-      this.formatYoYorQoQMetrics(result, increase, qbrType);
+      this.formatYoYorQoQMetrics(result, increase);
     }
     return result;
   }

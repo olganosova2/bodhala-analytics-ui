@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {QbrType} from '../qbr-model';
 
 @Component({
   selector: 'bd-yoy-number-widget',
@@ -6,14 +7,16 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./yoy-number-widget.component.scss']
 })
 export class YoyNumberWidgetComponent implements OnInit {
+  @Input() qbrType: QbrType = QbrType.YoY;
   @Input() increase: number;
   @Input() direction: number = 0;
-  @Input() label: string;
+  label: string;
   @Input() size: string = 'lg';
   @Input() light: boolean;
   constructor() { }
 
   ngOnInit(): void {
+    this.label = this.qbrType === QbrType.YoY ? 'YoY' : 'QoQ';
   }
 
 }

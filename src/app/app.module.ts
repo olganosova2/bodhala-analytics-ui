@@ -157,6 +157,7 @@ rounded(highcharts);
 import { QbrComponent } from './qbr/qbr.component';
 import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 import { QbrDeckComponent } from './qbr/qbr-deck/qbr-deck.component';
+import { QbrGenericMetricComponent } from './qbr/qbr-generic-metric/qbr-generic-metric.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -260,7 +261,8 @@ export function initHttp(service: HttpService) {
     YoyDrillByTkComponent,
     QbrComponent,
     QbrCreationComponent,
-    QbrDeckComponent
+    QbrDeckComponent,
+    QbrGenericMetricComponent
   ],
   entryComponents: [
     PillComponent,

@@ -1,11 +1,4 @@
 <div>
-  <div class="pull-right mb10">
-    <button class="primary-button ml20" (click)="commonServ.generatePdfQbr(cardTitle, 'exportDiv', null)"
-            [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
-      <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
-    </button>
-  </div>
-  <div class="clear-both"></div>
   <div class="qbr-wrapper">
     <div class="qbr-panel position-relative" id="exportDiv" #exportDiv>
       <div class="card-title">Executive Summary<span class="dot-full dot-full-online"></span></div>
@@ -25,12 +18,10 @@
             </div>
             <div class="p-md-6 position-relative">
               <div class="cell-center text-center">
-                <bd-yoy-number-widget [label]="'QoQ'" [direction]="totalSpendMetric.directionQoQ" *ngIf="qbrType !== 'YoY'"
-                                      [increase]="totalSpendMetric.percentQoQ"
+                <bd-yoy-number-widget [direction]="totalSpendMetric.direction" [qbrType]="qbrType"
+                                      [increase]="totalSpendMetric.percent"
                                       [size]="'lg'"></bd-yoy-number-widget>
-                <bd-yoy-number-widget [label]="'YoY'" [direction]="totalSpendMetric.directionYoY" *ngIf="qbrType === 'YoY'"
-                                      [increase]="totalSpendMetric.percentYoY"
-                                      [size]="'lg'"></bd-yoy-number-widget>
+
               </div>
             </div>
           </div>
@@ -63,12 +54,8 @@
                 <!--chart labels -->
                 <div class="p-md-5 justify-center">
                   <div class="text-center">
-                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="bbMetric.directionQoQ" *ngIf="qbrType !== 'YoY'"
-                                          [increase]="bbMetric.percentQoQ"
-                                          [size]="'lg'"></bd-yoy-number-widget>
-                    <bd-yoy-number-widget [label]="'YoY'" [direction]="bbMetric.directionYoY" *ngIf="qbrType === 'YoY'"
-                                          [increase]="bbMetric.percentYoY"
-                                          [size]="'lg'"></bd-yoy-number-widget>
+                    <bd-yoy-number-widget  [direction]="bbMetric.direction" [qbrType]="qbrType" [increase]="bbMetric.percent" [size]="'lg'"></bd-yoy-number-widget>
+
                   </div>
                 </div>
                 <div class="p-md-7 justify-center">
@@ -80,10 +67,9 @@
                       <span *ngIf="tkHours.length > 3">{{qbrService.formatShortTKLabel(tk.label)}}</span>
                       <span *ngIf="tkHours.length <= 3">{{ tk.label }}</span>
                     </div>
-                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="tk.directionQoQ" [increase]="tk.percentQoQ" *ngIf="qbrType !== 'YoY'" [light]="tkHours.length > 3"
-                                          [size]="'md'"></bd-yoy-number-widget>
-                    <bd-yoy-number-widget [label]="'YoY'" [direction]="tk.directionYoY" [increase]="tk.percentYoY" *ngIf="qbrType === 'YoY'" [light]="tkHours.length > 3"
-                                          [size]="'md'"></bd-yoy-number-widget>
+                    <bd-yoy-number-widget [direction]="tk.direction" [increase]="tk.percent" [light]="tkHours.length > 3"
+                                          [size]="'md'" [qbrType]="qbrType"></bd-yoy-number-widget>
+
                   </div>
                 </div>
               </div>

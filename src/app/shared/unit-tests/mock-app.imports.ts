@@ -127,6 +127,7 @@ import {QbrExecutiveSummaryComponent} from '../../qbr/qbr-executive-summary/qbr-
 import {YoyNumberWidgetComponent} from '../../qbr/yoy-number-widget/yoy-number-widget.component';
 import {QbrExecutiveSummaryRightComponent} from '../../qbr/qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
 import {QbrDeckComponent} from '../../qbr/qbr-deck/qbr-deck.component';
+import {QbrGenericMetricComponent} from '../../qbr/qbr-generic-metric/qbr-generic-metric.component';
 
 
 export const IMPORTS = [
@@ -246,7 +247,8 @@ export const DECLARATIONS = [
   QbrExecutiveSummaryComponent,
   YoyNumberWidgetComponent,
   QbrExecutiveSummaryRightComponent,
-  QbrDeckComponent
+  QbrDeckComponent,
+  QbrGenericMetricComponent
 ];
 
 export const PROVIDERS = [

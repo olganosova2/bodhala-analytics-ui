@@ -1,1 +1,16 @@
-<p>qbr-deck works!</p>
+<div>
+  <bd-error-messages></bd-error-messages>
+  <div class="pull-right">
+    <button class="primary-button ml20" (click)="commonServ.generatePdfQbr(cardTitle, 'exportDiv', null)"
+            [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+      <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
+    </button>
+  </div>
+  <div class="clear-both"></div>
+  <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
+    <mat-tab label="Executive Summary">
+      <bd-qbr-executive-summary *ngIf="qbr" [qbr]="qbr">
+      </bd-qbr-executive-summary>
+    </mat-tab>
+  </mat-tab-group>
+</div>
