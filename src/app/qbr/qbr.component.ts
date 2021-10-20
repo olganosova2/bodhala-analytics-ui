@@ -79,7 +79,6 @@ export class QbrComponent implements OnInit {
           if (yoyReport.length > 0) {
             this.qbrService.yoyStartDate = yoyReport[0].start_date;
           }
-          console.log("this.qbrService.yoyStartDate: ", this.qbrService.yoyStartDate);
         }
         for (const report of this.clientQBRs) {
           report.created_on = pipe.transform(report.created_on, 'shortDate');
