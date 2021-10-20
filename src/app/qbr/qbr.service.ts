@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as _moment from 'moment';
-import {IPayloadDates, IQbrMetric, IQbrReport, QbrType} from './qbr-model';
+import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
-import {IPayloadDates, IPayloadQuarterDates, QbrType} from './qbr-model';
+
 
 const moment = _moment;
 
@@ -97,9 +97,10 @@ export class QbrService {
     return result;
   }
   getPercentHours(metric: any): void {
-    metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours);
+    metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours + metric.total_paralegal_hours);
     metric.associate_percent_hours_worked = metric.total_hours ? (metric.total_associate_hours / metric.total_hours) * 100 : 0;
     metric.partner_percent_hours_worked = metric.total_hours ? (metric.total_partner_hours / metric.total_hours) * 100 : 0;
+    metric.paralegal_percent_hours_worked = metric.total_hours ? (metric.total_paralegal_hours / metric.total_hours) * 100 : 0;
     metric.other_percent_hours_worked = metric.total_hours ? (metric.total_other_hours / metric.total_hours) * 100 : 0;
   }
   getTkHoursRecord(hoursCurrent: any, hoursCompare: any, qbrType: QbrType, classification: string): IQbrMetric {
@@ -147,6 +148,22 @@ export class QbrService {
     result.monthNumbers = monthNumbers;
     result.formattedQuarterDates = formatted;
 
+    return result;
+  }
+  formatShortTKLabel(tk: string): string {
+    let result = '';
+    if (tk === 'Partner') {
+      result = 'PA';
+    }
+    if (tk === 'Associate') {
+      result = 'AS';
+    }
+    if (tk === 'Paralegal') {
+      result = 'PL';
+    }
+    if (tk === 'Other') {
+      result =  tk;
+    }
     return result;
   }
 }

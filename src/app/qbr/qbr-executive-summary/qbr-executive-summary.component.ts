@@ -38,6 +38,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   includeExpenses: boolean = false;
   currentOverviewMetric: any;
   compareOverviewMetric: any;
+  queryString: string;
   constructor(public commonServ: CommonService,
               public appStateService: AppStateService,
               public userService: UserService,
@@ -60,12 +61,13 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   getQbrs(): void {
     this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
       (data: any) => {
-        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('id'));
         if (records.length > 0) {
           this.qbr = records[0]; // TODO
           this.qbrType = this.qbr.report_type;
           if (this.qbr.querystring && this.qbr.querystring.expenses) {
             this.includeExpenses = this.qbr.querystring.expenses === 'true';
+            this.queryString = this.qbr.querystring;
           }
           this.getQbrData();
         }
@@ -88,9 +90,10 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
       comparisonStartDate: dates.comparisonStartDate,
       comparisonEndDate: dates.comparisonEndDate,
       // paSetting: this.practiceAreaSetting,
-      queryString: this.qbr.querystring
+      //  queryString: this.queryString // this.qbr.querystring
     };
-    this.pendingRequest = this.httpService.makePostRequest('getQBRExecutiveSummary', payload).subscribe(
+    const params = { ... this.qbr.querystring, ... payload };
+    this.pendingRequest = this.httpService.makeGetRequest('getQBRExecutiveSummary', params).subscribe(
       (data: any) => {
         if (data && data.result) {
           this.qbrData = data.result;
@@ -123,7 +126,10 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.qbrService.getPercentHours(this.compareOverviewMetric);
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.partner_percent_hours_worked, this.compareOverviewMetric.partner_percent_hours_worked, this.qbrType, 'Partner'));
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.associate_percent_hours_worked, this.compareOverviewMetric.associate_percent_hours_worked, this.qbrType, 'Associate'));
-    this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.other_percent_hours_worked, this.compareOverviewMetric.other_percent_hours_worked, this.qbrType, 'Other'));
+    this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.paralegal_percent_hours_worked, this.compareOverviewMetric.paralegal_percent_hours_worked, this.qbrType, 'Paralegal'));
+    if (this.currentOverviewMetric.other_percent_hours_worked || this.compareOverviewMetric.other_percent_hours_worked) {
+      this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.other_percent_hours_worked, this.compareOverviewMetric.other_percent_hours_worked, this.qbrType, 'Other'));
+    }
   }
   setUpChartOptions(): void {
     this.optionsHours = Object.assign({}, executiveSummaryChartOptions);

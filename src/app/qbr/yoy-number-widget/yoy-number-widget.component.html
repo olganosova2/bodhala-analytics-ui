@@ -4,4 +4,4 @@
     <em *ngIf=" direction > 0" class="fa fa-arrow-up mr10 ml10"></em>
     <em *ngIf=" direction < 0" class="fa fa-arrow-down mr10 ml10"></em>
   </span>
-  <span>{{ label }}</span></div>
+  <span *ngIf="!light">{{ label }}</span></div>

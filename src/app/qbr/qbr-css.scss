@@ -64,6 +64,27 @@ $size: 13px;
   background-color: $qbr-primary;
   // margin-left: -8px;
 }
+.page-number-circle {
+  width: 52.5px;
+  height: 105px;
+  font-size: 20px;
+  border-bottom-left-radius: 52.5px;
+  border-top-left-radius: 52.5px;
+  display: inline-block;
+  background-color:#F3F3F3;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  .page-number {
+    padding-top: 32px;
+    padding-left:25px;
+    font-size: 24px;
+  }
+  // margin-left: -8px;
+}
+.page-number-circle-wh {
+  background-color: #fff;
+}
 .dot-full-online {
     margin-bottom: -10px;
 }
@@ -126,6 +147,9 @@ $size: 13px;
 }
 .other-bar {
   background-color: $light-gray;
+}
+.paralegal-bar {
+  background-color: $fair-color;
 }
 .metrics-div-border {
   border-left: 2px solid $qbr-border-gray;

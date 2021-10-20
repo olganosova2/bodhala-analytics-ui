@@ -82,10 +82,10 @@ export class QbrCreationComponent implements OnInit {
     this.firstReport = this.qbrService.firstReport;
     this.yoyStartDate = this.qbrService.yoyStartDate;
 
-    console.log("yoyStartDate: ", this.yoyStartDate)
-    console.log("first report: ", this.firstReport, this.dateRangeReady)
-    console.log("userService: ", this.userService)
-    console.log("filterservice: ", this.filtersService)
+    console.log('yoyStartDate: ', this.yoyStartDate)
+    console.log('first report: ', this.firstReport, this.dateRangeReady)
+    console.log('userService: ', this.userService)
+    console.log('filterservice: ', this.filtersService)
     if (this.firstReport) {
       this.reportType = 'YoY';
     } else {
@@ -95,8 +95,8 @@ export class QbrCreationComponent implements OnInit {
       const result = this.qbrService.constructSelectableQuarterDates(this.yoyStartDate);
       this.quarterStartDates = result.monthNumbers;
       this.formattedQuarterStartDates = result.formattedQuarterDates;
-      console.log("quarterStartDates: ", this.quarterStartDates);
-      console.log("formattedQuarterStartDates: ", this.formattedQuarterStartDates);
+      console.log('quarterStartDates: ', this.quarterStartDates);
+      console.log('formattedQuarterStartDates: ', this.formattedQuarterStartDates);
     }
     this.dateForm.addControl('startDate', new FormControl(null, Validators.required));
     this.dateForm.validator =  this.validateStartDate();
@@ -113,16 +113,16 @@ export class QbrCreationComponent implements OnInit {
 
   // storeFilters(event): void {
   //   this.filterSet = event;
-  //   console.log("this.filterSet: ", this.filterSet)
+  //   console.log('this.filterSet: ', this.filterSet)
   // }
   // update the date range if the user switches QoQ type
   updateDateRange(): void {
-    console.log("updateDateRange: ", this.reportType)
-    console.log("form: ", this.dateForm)
-    console.log("comp: ", this.dateForm.controls['startDate'].value, this.reportStartDate)
+    console.log('updateDateRange: ', this.reportType)
+    console.log('form: ', this.dateForm)
+    console.log('comp: ', this.dateForm.controls['startDate'].value, this.reportStartDate)
     if (this.dateForm.controls['startDate'].value !== null) {
       const result = this.qbrService.formatPayloadDates(this.dateForm.controls['startDate'].value, QbrType[this.reportType]);
-      console.log("RESULT: ", result);
+      console.log('RESULT: ', result);
       this.reportEndDate = result.endDate;
       this.comparisonStartDate = result.comparisonStartDate;
       this.comparisonEndDate = result.comparisonEndDate;
@@ -136,8 +136,8 @@ export class QbrCreationComponent implements OnInit {
         const dayOfMonth = checkDay.startDate.getDate();
         let month = checkDay.startDate.getMonth();
         month++;
-        console.log("month: ", month)
-        console.log("check: ", !this.quarterStartDates.includes(month))
+        console.log('month: ', month)
+        console.log('check: ', !this.quarterStartDates.includes(month))
         if (dayOfMonth !== 1) {
           return {notFirstOfMonth: true};
         } else if (!this.firstReport && !this.quarterStartDates.includes(month)) {
@@ -145,7 +145,7 @@ export class QbrCreationComponent implements OnInit {
         } else {
           this.reportStartDate = checkDay.startDate;
           const result = this.qbrService.formatPayloadDates(this.reportStartDate, QbrType[this.reportType]);
-          console.log("RESULT: ", result);
+          console.log('RESULT: ', result);
           this.reportEndDate = result.endDate;
           this.comparisonStartDate = result.comparisonStartDate;
           this.comparisonEndDate = result.comparisonEndDate;
@@ -195,7 +195,7 @@ export class QbrCreationComponent implements OnInit {
     const serialized = JSON.parse(strObj);
     filterParams.filters = Object.assign([], serialized);
     const params = this.filtersService.getCurrentUserCombinedFilters();
-    console.log("params: ", params);
+    console.log('params: ', params);
     const payload = {
       id: this.report.id,
       startDate: this.reportStartDate,
@@ -208,16 +208,16 @@ export class QbrCreationComponent implements OnInit {
       paSetting: this.practiceAreaSetting,
       queryString: params
     };
-    console.log("payload: ", payload);
-    console.log("filterParams: ", filterParams);
+    console.log('payload: ', payload);
+    console.log('filterParams: ', filterParams);
 
     this.pendingRequest = this.httpService.makePostRequest('generateClientQBR', payload).subscribe(
       (data: any) => {
-        console.log("data: ", data)
+        console.log('data: ', data)
         if (data.qbr_record) {
           this.report = data.qbr_record;
         }
-        console.log("report: ", this.report);
+        console.log('report: ', this.report);
         if (data.result.report_timeframe_metrics) {
           this.reportData = data.result.report_timeframe_metrics;
         }
@@ -552,27 +552,27 @@ export class QbrCreationComponent implements OnInit {
           }
         }
 
-        console.log("topPA: ", this.topPA);
-        console.log("topPATopFirm: ", this.topPATopFirm)
-        console.log("topPASecondFirm: ", this.topPASecondFirm)
-        console.log("topPAMatter: ", this.topPAMatter)
+        console.log('topPA: ', this.topPA);
+        console.log('topPATopFirm: ', this.topPATopFirm)
+        console.log('topPASecondFirm: ', this.topPASecondFirm)
+        console.log('topPAMatter: ', this.topPAMatter)
 
-        console.log("topPAComparison: ", this.topPAComparison)
-        console.log("topPATopFirmComparison: ", this.topPATopFirmComparison)
-        console.log("topPASecondFirmComparison: ", this.topPASecondFirmComparison)
-        console.log("topPAMatterComparison: ", this.topPAMatterComparison)
+        console.log('topPAComparison: ', this.topPAComparison)
+        console.log('topPATopFirmComparison: ', this.topPATopFirmComparison)
+        console.log('topPASecondFirmComparison: ', this.topPASecondFirmComparison)
+        console.log('topPAMatterComparison: ', this.topPAMatterComparison)
 
-        console.log("secondPA: ", this.secondPA);
-        console.log("secondPATopFirm: ", this.secondPATopFirm)
-        console.log("secondPASecondFirm: ", this.secondPASecondFirm)
-        console.log("secondPAMatter: ", this.secondPAMatter)
+        console.log('secondPA: ', this.secondPA);
+        console.log('secondPATopFirm: ', this.secondPATopFirm)
+        console.log('secondPASecondFirm: ', this.secondPASecondFirm)
+        console.log('secondPAMatter: ', this.secondPAMatter)
 
-        console.log("secondPAComparison: ", this.secondPAComparison)
-        console.log("secondPATopFirmComparison: ", this.secondPATopFirmComparison)
-        console.log("secondPASecondFirmComparison: ", this.secondPASecondFirmComparison)
-        console.log("secondPAMatterComparison: ", this.secondPAMatterComparison)
-        console.log("report data: ", this.reportData);
-        console.log("comparison data: ", this.comparisonData);
+        console.log('secondPAComparison: ', this.secondPAComparison)
+        console.log('secondPATopFirmComparison: ', this.secondPATopFirmComparison)
+        console.log('secondPASecondFirmComparison: ', this.secondPASecondFirmComparison)
+        console.log('secondPAMatterComparison: ', this.secondPAMatterComparison)
+        console.log('report data: ', this.reportData);
+        console.log('comparison data: ', this.comparisonData);
 
         this.calcluateTrendData(this.reportData, this.comparisonData, true, false);
         this.calcluateTrendData(this.topPA, this.topPAComparison, false, false);
@@ -587,7 +587,7 @@ export class QbrCreationComponent implements OnInit {
         this.dataProcessed = true;
       },
       err => {
-        console.log("error: ", err)
+        console.log('error: ', err)
         return {error: err};
       }
     );
@@ -680,7 +680,7 @@ export class QbrCreationComponent implements OnInit {
 
   toggleExpenses(): void {
     this.filtersService.includeExpenses = !this.filtersService.includeExpenses;
-    console.log("toggleExpenses: ", this.filtersService.includeExpenses)
+    console.log('toggleExpenses: ', this.filtersService.includeExpenses);
     localStorage.setItem('include_expenses_' + this.userService.currentUser.id.toString(), this.filtersService.includeExpenses.toString());
   }
 }

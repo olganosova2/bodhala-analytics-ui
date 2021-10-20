@@ -10,6 +10,7 @@ export class YoyNumberWidgetComponent implements OnInit {
   @Input() direction: number = 0;
   @Input() label: string;
   @Input() size: string = 'lg';
+  @Input() light: boolean;
   constructor() { }
 
   ngOnInit(): void {

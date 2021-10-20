@@ -7,7 +7,7 @@
   </div>
   <div class="clear-both"></div>
   <div class="qbr-wrapper">
-    <div class="qbr-panel" id="exportDiv" #exportDiv>
+    <div class="qbr-panel position-relative" id="exportDiv" #exportDiv>
       <div class="card-title">Executive Summary<span class="dot-full dot-full-online"></span></div>
       <div class="p-grid mt40" *ngIf="currentOverviewMetric && compareOverviewMetric">
         <div class="p-md-6 no-padding">
@@ -20,9 +20,7 @@
               </div>
               <div class="ml20">
                 <div class="qbr-subtitle">{{ totalSpendMetric.amount | number:'1.0-0'}}</div>
-                <bd-yoy-number-widget [label]="' % of Total Spend'" [direction]="percentOfTotalSpendDir"
-                                      [increase]="percentOfTotalSpend"
-                                      [size]="'md'"></bd-yoy-number-widget>
+
               </div>
             </div>
             <div class="p-md-6 position-relative">
@@ -78,12 +76,13 @@
                        [ngClass]="{'metrics-div-border': i > 0}">
                     <div class="qbr-label mb15">
                     <span class="tk-bar-lg"
-                          [ngClass]="{'partner-bar': tk.label === 'Partner', 'associate-bar': tk.label === 'Associate' , 'other-bar': tk.label === 'Other'}"></span>
-                      {{tk.label}}
+                          [ngClass]="{'partner-bar': tk.label === 'Partner', 'associate-bar': tk.label === 'Associate' , 'other-bar': tk.label === 'Other', 'paralegal-bar':  tk.label === 'Paralegal'}"></span>
+                      <span *ngIf="tkHours.length > 3">{{qbrService.formatShortTKLabel(tk.label)}}</span>
+                      <span *ngIf="tkHours.length <= 3">{{ tk.label }}</span>
                     </div>
-                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="tk.directionQoQ" [increase]="tk.percentQoQ" *ngIf="qbrType !== 'YoY'"
+                    <bd-yoy-number-widget [label]="'QoQ'" [direction]="tk.directionQoQ" [increase]="tk.percentQoQ" *ngIf="qbrType !== 'YoY'" [light]="tkHours.length > 3"
                                           [size]="'md'"></bd-yoy-number-widget>
-                    <bd-yoy-number-widget [label]="'YoY'" [direction]="tk.directionYoY" [increase]="tk.percentYoY" *ngIf="qbrType === 'YoY'"
+                    <bd-yoy-number-widget [label]="'YoY'" [direction]="tk.directionYoY" [increase]="tk.percentYoY" *ngIf="qbrType === 'YoY'" [light]="tkHours.length > 3"
                                           [size]="'md'"></bd-yoy-number-widget>
                   </div>
                 </div>
@@ -98,6 +97,9 @@
           <bd-qbr-executive-summary-right [metrics]="rightSideMetrics"
                                           [qbrType]="qbrType"></bd-qbr-executive-summary-right>
         </div>
+      </div>
+      <div class="page-number-circle">
+          <div class="page-number">5</div>
       </div>
     </div>
 
