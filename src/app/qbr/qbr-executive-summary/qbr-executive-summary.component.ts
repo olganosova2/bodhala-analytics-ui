@@ -32,12 +32,12 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   rightSideMetrics: Array<IQbrMetric> = [];
   bbMetric: IQbrMetric;
   qbrId: number;
-  qbrData: any;
   practiceAreaSetting: string;
   includeExpenses: boolean = false;
   currentOverviewMetric: any;
   compareOverviewMetric: any;
   queryString: string;
+  @Input() qbrData: any;
   @Input() qbr: IQbrReport;
   constructor(
               private route: ActivatedRoute,
@@ -48,7 +48,6 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService,
               public qbrService: QbrService,
               public utilService: UtilService) {
-    // this.commonServ.pageSubtitle = 'Executive Summary';
     this.practiceAreaSetting = this.commonServ.getClientPASetting();
     this.cardTitle = this.userService.currentUser.client_info.org.name + ' Exec Summary';
     this.totalSpendMetric = this.qbrService.generateEmptyMetric();
@@ -64,36 +63,10 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
         this.includeExpenses = this.qbr.querystring.expenses === 'true';
         this.queryString = this.qbr.querystring;
       }
-      this.getQbrData();
-    }
-  }
-  getQbrData(): void {
-    const filterParams = {
-      name: 'filters',
-      filters: this.qbr.filters
-    };
-    const dates = this.qbrService.formatPayloadDates(this.qbr.start_date, this.qbr.report_type);
-    const payload = {
-      // id: this.qbr.id,
-      startDate: dates.startDate,
-      endDate: dates.endDate,
-      // reportType: this.qbrType,
-      // filters: this.qbr.filters,
-      client: this.userService.currentUser.client_info.id,
-      comparisonStartDate: dates.comparisonStartDate,
-      comparisonEndDate: dates.comparisonEndDate,
-      // paSetting: this.practiceAreaSetting,
-      //  queryString: this.queryString // this.qbr.querystring
-    };
-    const params = { ... this.qbr.querystring, ... payload };
-    this.pendingRequest = this.httpService.makeGetRequest('getQBRExecutiveSummary', params).subscribe(
-      (data: any) => {
-        if (data && data.result) {
-          this.qbrData = data.result;
-          this.processRecords();
-        }
+      if (this.qbrData) {
+        this.processRecords();
       }
-    );
+    }
   }
   processRecords(): void {
     this.currentOverviewMetric = this.qbrData.report_timeframe_metrics;
