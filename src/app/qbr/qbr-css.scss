@@ -65,6 +65,10 @@ $size: 13px;
   background-color: $qbr-primary;
   // margin-left: -8px;
 }
+.dot-full-right-empty {
+  background-color: #fff;
+
+}
 .page-number-circle {
   width: 52.5px;
   height: 105px;
@@ -94,6 +98,10 @@ $size: 13px;
   border-left: 2px solid $qbr-border-gray;
   margin-top: 0;
   padding-top: 0;
+}
+.gray-border-top {
+  padding-top: 30px;
+  border-top: 2px solid $qbr-border-gray;
 }
 .qbr-label {
   font-size: 20px;
@@ -172,6 +180,18 @@ $size: 13px;
 .qbr-metric-div {
   width: 200px;
   text-align: center;
+}
+.oval-label {
+  border-radius: 31px;
+  font-size: 18px;
+  color: #fff;
+  padding: 2px 20px;
+}
+.oval-label-yellow {
+  background-color: $fair-color;
+}
+.oval-label-black {
+  background-color: #000;
 }
 
 

@@ -12,7 +12,11 @@ export interface IQbrMetric {
   amount: number;
   amountToCompare?: number;
   icon?: string;
-  paName?: string;
+  addInfo?: string;
+}
+export interface IQbrMetricRow {
+  label: string;
+  metrics: Array<IQbrMetric>;
 }
 export interface IQbrReport {
   id: 4;

@@ -10,6 +10,7 @@ export class QbrGenericMetricComponent implements OnInit {
   @Input() qbrType: QbrType;
   @Input() item: IQbrMetric;
   @Input() secondRow: boolean;
+  @Input() multipleRows: boolean;
   @Input() index: number = 0;
   constructor() { }
 

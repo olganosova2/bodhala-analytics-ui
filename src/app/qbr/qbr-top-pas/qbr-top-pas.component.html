@@ -3,30 +3,55 @@
     <div class="qbr-panel position-relative" id="exportPage" #exportPage>
       <div class="card-title">Top Practice Areas<span class="dot-full dot-full-online"></span></div>
       <div class="p-grid mt40">
-        <div class="p-md-6 no-padding">
-          <div class="p-grid gray-border-left">
-            <div class="p-md-12 no-padding">
-              <div>
-                <span class="dot-full-right"></span>
-                <img alt="icon" src="assets/images/bills.svg" class="qbr-icon mb5 mr10 ml10">
-                <span class="qbr-label">Total Spend</span>
-              </div>
+        <div class="p-md-5 no-padding">
+          <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="totalSpendMetric"></bd-qbr-total-spend>
+          <div class="p-grid gray-border-left mt20">
 
-              <div class="ml20">
-                <div *ngFor="let metric of totalSpendMetric">
-                  <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="metric"></bd-qbr-total-spend>
+            <div class="p-md-12 no-padding">
+              <div class="justify-between">
+                <div>
+                  <span class="dot-full-right"></span>
+                  <img alt="icon" src="assets/images/total_bb.svg" class="qbr-icon-sm mb5 mr10 ml20">
+                  <span class="qbr-label">Block Billed</span>
+                </div>
+                <div>
+                  <img alt="icon" src="assets/images/chart-pie.png" class="qbr-icon mb5 mr10 ml10">
+                  <span class="qbr-label mr40">Hours Worked By TimeKeeper Level</span>
                 </div>
               </div>
             </div>
+            <!-- left side charts -->
+            <div class="p-grid">
+              <div class="p-md-5">
+
+              </div>
+              <div class="p-md-7">
+
+              </div>
+            </div>
+
           </div>
-
-          <div class="p-grid gray-border-left mt60">
-
-          </div>
-
         </div>
-        <!--second column-->
-        <div class="p-md-6 no-padding gray-border-left">
+        <!--right side-->
+        <div class="p-md-7 no-padding gray-border-left">
+          <div class="justify-start">
+<!--            <div class="dot-full-right"></div>-->
+            <div class="p-grid">
+              <div *ngFor="let row of rightSideMetrics; let y=index" class="p-md-12">
+<!--                <span class="oval-label justify-center oval-label-yellow">{{ row.label }}</span>-->
+                <div class="justify-center ml20">
+                  <div *ngFor="let item of row.metrics;let i=index;" class="qbr-metric-div">
+                    <bd-qbr-generic-metric [index]="i" [item]="item" [qbrType]="qbrType" [multipleRows]="true" [secondRow]="y>0"></bd-qbr-generic-metric>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!--          <div class="ml10 mt40">-->
+          <!--            <chart (load)="saveInstance($event.context)" [options]="options"></chart>-->
+          <!--          </div>-->
 
         </div>
       </div>

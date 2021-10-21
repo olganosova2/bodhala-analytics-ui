@@ -8,7 +8,7 @@ import {IQbrMetric, QbrType} from '../qbr-model';
 })
 export class QbrTotalSpendComponent implements OnInit {
   @Input() qbrType: QbrType;
-  @Input() totalSpendMetric: IQbrMetric;
+  @Input() totalSpendMetric: Array<IQbrMetric>;
   constructor() { }
 
   ngOnInit(): void {

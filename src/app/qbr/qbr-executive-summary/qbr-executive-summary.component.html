@@ -4,28 +4,7 @@
       <div class="card-title">Executive Summary<span class="dot-full dot-full-online"></span></div>
       <div class="p-grid mt40" *ngIf="currentOverviewMetric && compareOverviewMetric">
         <div class="p-md-6 no-padding">
-          <div class="p-grid gray-border-left">
-            <div class="p-md-6 no-padding">
-              <div>
-                <span class="dot-full-right"></span>
-                <img alt="icon" src="assets/images/bills.svg" class="qbr-icon mb5 mr10 ml10">
-                <span class="qbr-label">{{ totalSpendMetric.label}}</span>
-              </div>
-              <div class="ml20">
-                <div class="qbr-subtitle">{{ totalSpendMetric.amount | number:'1.0-0'}}</div>
-
-              </div>
-            </div>
-            <div class="p-md-6 position-relative">
-              <div class="cell-center text-center">
-                <bd-yoy-number-widget [direction]="totalSpendMetric.direction" [qbrType]="qbrType"
-                                      [increase]="totalSpendMetric.percent"
-                                      [size]="'lg'"></bd-yoy-number-widget>
-
-              </div>
-            </div>
-          </div>
-
+          <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="[totalSpendMetric]"></bd-qbr-total-spend>
           <div class="p-grid gray-border-left mt60">
             <div class="p-md-12 no-padding">
               <div class="justify-between">
