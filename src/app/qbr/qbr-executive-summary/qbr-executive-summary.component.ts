@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Input} from '@angular/core';
 import * as _moment from 'moment';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -7,6 +7,7 @@ import {executiveSummaryChartOptions} from './model';
 import {Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
 import {QbrService} from '../qbr.service';
+import {ActivatedRoute} from '@angular/router';
 // import {FiltersService as ElemFiltersService} from 'bodhala-ui-elements';
 
 const moment = _moment;
@@ -15,15 +16,13 @@ const moment = _moment;
 @Component({
   selector: 'bd-qbr-executive-summary',
   templateUrl: './qbr-executive-summary.component.html',
-  styleUrls: ['./qbr-executive-summary.component.scss', '../qbr-css.scss']
+  styleUrls: ['../qbr-css.scss', './qbr-executive-summary.component.scss' ]
 })
 export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestQbr: Subscription;
   qbrType: any = QbrType.YoY;
   cardTitle: string;
-  percentOfTotalSpend: number = 87;
-  percentOfTotalSpendDir: number = 1;
   chartHours: any;
   chartBB: any;
   optionsBB: any;
@@ -32,75 +31,71 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   tkHours: Array<IQbrMetric> = [];
   rightSideMetrics: Array<IQbrMetric> = [];
   bbMetric: IQbrMetric;
-  qbr: IQbrReport;
+  qbrId: number;
   practiceAreaSetting: string;
-  constructor(public commonServ: CommonService,
+  includeExpenses: boolean = false;
+  currentOverviewMetric: any;
+  compareOverviewMetric: any;
+  queryString: string;
+  @Input() qbrData: any;
+  @Input() qbr: IQbrReport;
+  constructor(
+              private route: ActivatedRoute,
+              public commonServ: CommonService,
               public appStateService: AppStateService,
               public userService: UserService,
               private httpService: HttpService,
               public filtersService: FiltersService,
               public qbrService: QbrService,
               public utilService: UtilService) {
-    this.commonServ.pageTitle = 'QBR';
-    this.commonServ.pageSubtitle = 'Executive Summary';
     this.practiceAreaSetting = this.commonServ.getClientPASetting();
     this.cardTitle = this.userService.currentUser.client_info.org.name + ' Exec Summary';
+    this.totalSpendMetric = this.qbrService.generateEmptyMetric();
+    this.bbMetric = this.qbrService.generateEmptyMetric();
   }
 
   ngOnInit(): void {
     this.setUpChartOptions();
-    this.getQbrs();
-    this.processRecords();
-  }
-  getQbrs(): void {
-    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
-      (data: any) => {
-        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
-        if (records.length > 0) {
-          this.qbr = records[0]; // TODO
-          this.qbrType = this.qbr.report_type;
-          this.getQbrData();
-        }
+    if (this.qbr) {
+      this.qbrId = this.qbr.id;
+      this.qbrType = this.qbr.report_type;
+      if (this.qbr.querystring && this.qbr.querystring.expenses) {
+        this.includeExpenses = this.qbr.querystring.expenses === 'true';
+        this.queryString = this.qbr.querystring;
       }
-    );
-  }
-  getQbrData(): void {
-    const filterParams = {
-      name: 'filters',
-      filters: this.qbr.filters
-    };
-    const dates = this.qbrService.formatPayloadDates(this.qbr.start_date, this.qbr.report_type);
-    const payload = {
-      id: this.qbr.id,
-      startDate: dates.startDate,
-      endDate: dates.endDate,
-      reportType: this.qbrType,
-      filters: this.qbr.filters,
-      client: this.userService.currentUser.client_info.id,
-      comparisonStartDate: dates.comparisonStartDate,
-      comparisonEndDate: dates.comparisonEndDate,
-      paSetting: this.practiceAreaSetting,
-      // queryString: params
-    };
+      if (this.qbrData) {
+        this.processRecords();
+      }
+    }
   }
   processRecords(): void {
-    this.totalSpendMetric = {label: 'Total Spend', directionQoQ: 1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 7879678};
-    this.bbMetric = {label: 'Block Billed', directionQoQ: -1, percentQoQ: 12, directionYoY: 1, percentYoY: 6, amount: 32};
+    this.currentOverviewMetric = this.qbrData.report_timeframe_metrics;
+    this.compareOverviewMetric = this.qbrData.comparison_timeframe_metrics;
+    if (!this.currentOverviewMetric || !this.compareOverviewMetric) {
+      return;
+    }
+    this.totalSpendMetric = this.qbrService.getOveralSpendMetric(this.currentOverviewMetric, this.compareOverviewMetric, this.includeExpenses);
+    this.bbMetric = this.qbrService.getBBMetric(this.currentOverviewMetric, this.compareOverviewMetric);
     this.processTimekeepersHours();
     this.processRightSideMetrics();
   }
   processRightSideMetrics(): void {
     this.rightSideMetrics = [];
-    this.rightSideMetrics.push({ label: 'BPI', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 3356, amountToCompare: 3010,  icon: 'bpi.svg'});
-    this.rightSideMetrics.push({ label: 'Blended Rate', directionQoQ: -1, percentQoQ: 23, directionYoY: 1, percentYoY: 2, amount: 747, amountToCompare: 790, icon: 'bills.svg'});
-    this.rightSideMetrics.push({ label: 'Avg. Partner hourly cost', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 1506, amountToCompare: 1400, icon: 'partners.svg'});
-    this.rightSideMetrics.push({ label: 'Avg. Associate hourly cost', directionQoQ: -1, percentQoQ: 19, directionYoY: 1, percentYoY: 2, amount: 642, amountToCompare: 560, icon: 'avg_ass_matter.svg'});
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bodhala_price_index',  'BPI', 'bpi.svg'));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_blended_rate',  'Blended Rate', 'bills.svg'));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg'));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg'));
   }
   processTimekeepersHours(): void {
     this.tkHours = [];
-    this.tkHours.push({ label: 'Partner', directionQoQ: -1, percentQoQ: 14, directionYoY: 1, percentYoY: 15, amount: 33});
-    this.tkHours.push({ label: 'Associate', directionQoQ: 1, percentQoQ: 16, directionYoY: -1, percentYoY: 17, amount: 20});
-    this.tkHours.push({ label: 'Other', directionQoQ: 1, percentQoQ: 20, directionYoY: -1, percentYoY: 21, amount: 47});
+    this.qbrService.getPercentHours(this.currentOverviewMetric);
+    this.qbrService.getPercentHours(this.compareOverviewMetric);
+    this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.partner_percent_hours_worked, this.compareOverviewMetric.partner_percent_hours_worked, this.qbrType, 'Partner'));
+    this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.associate_percent_hours_worked, this.compareOverviewMetric.associate_percent_hours_worked, this.qbrType, 'Associate'));
+    this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.paralegal_percent_hours_worked, this.compareOverviewMetric.paralegal_percent_hours_worked, this.qbrType, 'Paralegal'));
+    if (this.currentOverviewMetric.other_percent_hours_worked || this.compareOverviewMetric.other_percent_hours_worked) {
+      this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.other_percent_hours_worked, this.compareOverviewMetric.other_percent_hours_worked, this.qbrType, 'Other'));
+    }
   }
   setUpChartOptions(): void {
     this.optionsHours = Object.assign({}, executiveSummaryChartOptions);
@@ -110,7 +105,8 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   saveInstanceHours(chartInstance): void {
     this.chartHours = chartInstance;
-    const result = this.tkHours.map(e => e.amount);
+    let result = this.tkHours.map(e => e.amount);
+    result = result.filter(e => e > 1); // don't path <1 % to chart
     this.chartHours.series[0].setData(result);
   }
   saveInstanceBB(chartInstance): void {
@@ -121,10 +117,6 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.chartBB.series[0].update(this.chartBB.series[0].options);
   }
   ngOnDestroy() {
-    this.commonServ.clearTitles();
-    if (this.pendingRequest) {
-      this.pendingRequest.unsubscribe();
-    }
     if (this.pendingRequestQbr) {
       this.pendingRequestQbr.unsubscribe();
     }

@@ -101,6 +101,7 @@ export const END_POINTS_URLS = {
   // QBRs
   getClientQBRs: {url: BASE_URL + 'analytics/getClientQBRs', showLoading: true},
   generateClientQBR: {url: BASE_URL + 'analytics/generateClientQBR', showLoading: true},
+  getQBRExecutiveSummary: {url: BASE_URL + 'analytics/getQBRExecutiveSummary', showLoading: true},
   getClientQBRData: {url: BASE_URL + 'analytics/getClientQBRData', showLoading: true},
 
   // ADMIN
@@ -237,7 +238,7 @@ export const FRESH_DESK_ARTICLES = {
   BlockBilling: '24000060478',
   Overstaffing: '24000060537',
   RateIncrease: '24000060502',
-  EntityConfig: '24000066545'
+  EntityConfig: '24000072358'
 };
 export const UI_ANNOTATIONS_IDS = {
   executiveSummary: 'ExecutiveSummary'

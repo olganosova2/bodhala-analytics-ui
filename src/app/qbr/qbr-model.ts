@@ -7,10 +7,8 @@ export enum QbrType {
 }
 export interface IQbrMetric {
   label: string;
-  directionQoQ: number;
-  directionYoY: number;
-  percentQoQ: number;
-  percentYoY: number;
+  direction: number;
+  percent: number;
   amount: number;
   amountToCompare?: number;
   icon?: string;
@@ -28,6 +26,7 @@ export interface IQbrReport {
     name: string;
     filters: Array<any>;
   };
+  querystring: any;
   chosen_metrics: any;
 }
 export interface IPayloadDates {
@@ -56,14 +55,14 @@ export const qbrPieChartOptions = {
   title: {text: null},
   plotOptions: {
     pie: {
-      colors: ['#FF632C', '#00D1FF', '#cccccc'],
+      colors: ['#00D1FF', '#FF632C',  '#FFC327', '#cccccc'],
       dataLabels: {
         enabled: true,
         color: 'black',
         format: '<b>{point.percentage:.0f} %</b>',
         distance: -50,
         style: {
-          fontSize: 20,
+          fontSize: 18,
           textOutline: false
         }
       }
@@ -75,7 +74,7 @@ export const qbrPieChartOptions = {
   }
 };
 
-const metricsColumnRightOptions = {
+const metricsColumnESOptions = {
   chart: {
     type: 'column',
     spacingTop: 10,
@@ -90,7 +89,7 @@ const metricsColumnRightOptions = {
     column: {
       allowPointSelect: true,
       cursor: 'pointer',
-      colors: ['#FF650F', '#FFC327', '#000000', '#00D1FF'],
+      colors: [ '#FFC327', '#000000', '#00D1FF', '#FF650F'],
       dataLabels: {
         enabled: false
       },
@@ -100,10 +99,6 @@ const metricsColumnRightOptions = {
     }
   },
   xAxis: [{
-    // title: {
-    //   enabled: false,
-    //   text: undefined
-    // },
     labels: {
       enabled: false
     }
@@ -119,7 +114,7 @@ const metricsColumnRightOptions = {
     pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
   },
   series: [{
-    name: 'Last',
+    name: 'Current',
     colorByPoint: true,
     data: []
   },
@@ -140,4 +135,4 @@ export interface IReport {
   chosen_metrics: JSON;
 }
 
-export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnRightOptions};
+export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};

@@ -215,7 +215,7 @@ export class QbrCreationComponent implements OnInit {
           this.report = data.result;
         }
 
-        this.generateQBRAndMetrics();
+        this.generateQBRAndMetrics(params);
 
 
       },
@@ -227,9 +227,9 @@ export class QbrCreationComponent implements OnInit {
 
   }
 
-  generateQBRAndMetrics(): void {
+  generateQBRAndMetrics(queryString: any): void {
     // console.log("generateQBRAndMetrics report check: ", this.report)
-    const params = this.filtersService.getCurrentUserCombinedFilters();
+    // const params = this.filtersService.getCurrentUserCombinedFilters();
 
     // console.log("params: ", params);
 
@@ -242,8 +242,8 @@ export class QbrCreationComponent implements OnInit {
       paSetting: this.practiceAreaSetting
     };
     // console.log("payload: ", payload);
-
-    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRData', payload).subscribe(
+    const params = { ... queryString, ... payload };
+    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
       (data: any) => {
         // console.log("data: ", data)
         if (data.qbr_record) {
