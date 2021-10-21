@@ -1,0 +1,39 @@
+<div>
+  <div class="qbr-wrapper">
+    <div class="qbr-panel position-relative" id="exportPage" #exportPage>
+      <div class="card-title">Top Practice Areas<span class="dot-full dot-full-online"></span></div>
+      <div class="p-grid mt40">
+        <div class="p-md-6 no-padding">
+          <div class="p-grid gray-border-left">
+            <div class="p-md-12 no-padding">
+              <div>
+                <span class="dot-full-right"></span>
+                <img alt="icon" src="assets/images/bills.svg" class="qbr-icon mb5 mr10 ml10">
+                <span class="qbr-label">Total Spend</span>
+              </div>
+
+              <div class="ml20">
+                <div *ngFor="let metric of totalSpendMetric">
+                  <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="metric"></bd-qbr-total-spend>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-grid gray-border-left mt60">
+
+          </div>
+
+        </div>
+        <!--second column-->
+        <div class="p-md-6 no-padding gray-border-left">
+
+        </div>
+      </div>
+      <div class="page-number-circle">
+        <div class="page-number">5</div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -19,6 +19,10 @@
       <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
       </bd-qbr-executive-summary>
     </mat-tab>
+    <mat-tab label="Top PAs">
+      <bd-qbr-top-pas *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+      </bd-qbr-top-pas>
+    </mat-tab>
     <mat-tab label="All Pages">
       <div id="exportAll" #exportAll>
         <div class="mb20">

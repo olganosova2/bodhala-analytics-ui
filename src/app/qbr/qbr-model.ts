@@ -12,6 +12,7 @@ export interface IQbrMetric {
   amount: number;
   amountToCompare?: number;
   icon?: string;
+  paName?: string;
 }
 export interface IQbrReport {
   id: 4;

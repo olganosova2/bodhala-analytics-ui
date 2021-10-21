@@ -1,0 +1,10 @@
+<div class="p-grid">
+  <div class="p-md-6">
+    <div class="qbr-subtitle">{{ totalSpendMetric.amount | number:'1.0-0'}}</div>
+  </div>
+  <div class="p-md-6 position-relative">
+    <div class="cell-center">
+    <bd-yoy-number-widget [direction]="totalSpendMetric.direction" [qbrType]="qbrType"  [increase]="totalSpendMetric.percent" [size]="'lg'"></bd-yoy-number-widget>
+    </div>
+  </div>
+</div>

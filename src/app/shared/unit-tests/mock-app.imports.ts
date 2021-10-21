@@ -128,6 +128,8 @@ import {YoyNumberWidgetComponent} from '../../qbr/yoy-number-widget/yoy-number-w
 import {QbrExecutiveSummaryRightComponent} from '../../qbr/qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
 import {QbrDeckComponent} from '../../qbr/qbr-deck/qbr-deck.component';
 import {QbrGenericMetricComponent} from '../../qbr/qbr-generic-metric/qbr-generic-metric.component';
+import { QbrTopPasComponent } from '../../qbr/qbr-top-pas/qbr-top-pas.component';
+import {QbrTotalSpendComponent} from '../../qbr/qbr-total-spend/qbr-total-spend.component';
 
 
 export const IMPORTS = [
@@ -248,7 +250,9 @@ export const DECLARATIONS = [
   YoyNumberWidgetComponent,
   QbrExecutiveSummaryRightComponent,
   QbrDeckComponent,
-  QbrGenericMetricComponent
+  QbrGenericMetricComponent,
+  QbrTopPasComponent,
+  QbrTotalSpendComponent
 ];
 
 export const PROVIDERS = [

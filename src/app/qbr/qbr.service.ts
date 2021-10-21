@@ -63,15 +63,30 @@ export class QbrService {
     }
     return result;
   }
+  getOveralSpendMetricPA(currentMetric: any, compareMetric: any, includeExpenses: boolean): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = 'Total Spend';
+    if (!currentMetric) {
+      return result;
+    }
+    const currentTotal = includeExpenses ? currentMetric.total_billed + currentMetric.total_expenses : currentMetric.total_billed;
+    const compareTotal = includeExpenses ? compareMetric.total_billed + compareMetric.total_expenses  : compareMetric.total_billed;
+    result.amount = currentTotal;
+    if (compareTotal) {
+      const increase = ((currentTotal / compareTotal) - 1) * 100;
+      this.formatYoYorQoQMetrics(result, increase);
+    }
+    return result;
+  }
   getBBMetric(currentMetric: any, compareMetric: any): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Block Billed';
     if (!currentMetric) {
       return result;
     }
-    result.amount  = Math.round(currentMetric.percent_block_billed || 0);
-    if (compareMetric && compareMetric.percent_block_billed) {
-      const increase = ((currentMetric.percent_block_billed / compareMetric.percent_block_billed) - 1) * 100;
+    result.amount  = Math.round(currentMetric.block_billed_pct || 0);
+    if (compareMetric && compareMetric.block_billed_pct) {
+      const increase = ((currentMetric.block_billed_pct / compareMetric.block_billed_pct) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
     return result;

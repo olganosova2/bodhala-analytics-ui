@@ -74,6 +74,8 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     if (!this.currentOverviewMetric || !this.compareOverviewMetric) {
       return;
     }
+    this.currentOverviewMetric.block_billed_pct = this.currentOverviewMetric.percent_block_billed;
+    this.compareOverviewMetric.block_billed_pct = this.compareOverviewMetric.percent_block_billed;
     this.totalSpendMetric = this.qbrService.getOveralSpendMetric(this.currentOverviewMetric, this.compareOverviewMetric, this.includeExpenses);
     this.bbMetric = this.qbrService.getBBMetric(this.currentOverviewMetric, this.compareOverviewMetric);
     this.processTimekeepersHours();
