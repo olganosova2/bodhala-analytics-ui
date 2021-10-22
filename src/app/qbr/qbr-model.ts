@@ -130,6 +130,58 @@ const metricsColumnESOptions = {
     }]
 };
 
+const metricsColumnOptions = {
+  chart: {
+    type: 'column',
+    spacingTop: 10,
+    width: 800,
+    height: 380,
+  },
+  legend: {
+    show: false,
+    enabled: false
+  },
+  plotOptions: {
+    column: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: false
+      },
+      showInLegend: true,
+      borderRadiusTopLeft: '50%',
+      borderRadiusTopRight: '50%'
+    }
+  },
+  xAxis: [{
+    labels: {
+      enabled: false
+    }
+  }],
+  yAxis: [{
+    title: {
+      enabled: false,
+      text: undefined
+    }
+  }],
+  tooltip: {
+    headerFormat: null,
+    pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
+  },
+  series: [{
+    name: 'Current',
+    colorByPoint: true,
+    color: '#FFC327',
+    data: []
+  },
+    {
+      name: 'Previous',
+      colorByPoint: true,
+      color: '#000000',
+      data: []
+    }]
+};
+
 export interface IReport {
   id: number;
   bh_client_id: number;
@@ -140,4 +192,5 @@ export interface IReport {
   chosen_metrics: JSON;
 }
 
-export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
+export const metricsRightChartESOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
+export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnOptions};

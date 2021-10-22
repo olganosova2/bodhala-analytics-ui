@@ -1,25 +1,24 @@
-import { Component, OnInit, Input } from '@angular/core';
-import {IQbrMetric, metricsRightChartESOptions, metricsRightChartOptions, QbrType} from '../../qbr-model';
+import {Component, Input, OnInit} from '@angular/core';
+import {IQbrMetric, IQbrMetricRow, metricsRightChartOptions, QbrType} from '../../qbr-model';
 
 @Component({
-  selector: 'bd-qbr-executive-summary-right',
-  templateUrl: './qbr-executive-summary-right.component.html',
-  styleUrls: ['./qbr-executive-summary-right.component.scss', '../../qbr-css.scss']
+  selector: 'bd-generic-metrics-right',
+  templateUrl: './generic-metrics-right.component.html',
+  styleUrls: ['./generic-metrics-right.component.scss']
 })
-export class QbrExecutiveSummaryRightComponent implements OnInit {
+export class GenericMetricsRightComponent implements OnInit {
   options: any;
   chart: any;
   @Input() qbrType: QbrType;
-  @Input() metrics: Array<IQbrMetric> = [];
+  @Input() rightSideMetrics: Array<IQbrMetricRow> = [];
 
   constructor() { }
 
   ngOnInit(): void {
     this.setUpChartOptions();
   }
-
   setUpChartOptions(): void {
-    this.options = Object.assign({}, metricsRightChartESOptions);
+    this.options = Object.assign({}, metricsRightChartOptions);
   }
   saveInstance(chartInstance): void {
     this.chart = chartInstance;

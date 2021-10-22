@@ -160,6 +160,7 @@ import { QbrDeckComponent } from './qbr/qbr-deck/qbr-deck.component';
 import { QbrGenericMetricComponent } from './qbr/qbr-generic-metric/qbr-generic-metric.component';
 import { QbrTopPasComponent } from './qbr/qbr-top-pas/qbr-top-pas.component';
 import { QbrTotalSpendComponent } from './qbr/qbr-total-spend/qbr-total-spend.component';
+import { GenericMetricsRightComponent } from './qbr/qbr-top-pas/generic-metrics-right/generic-metrics-right.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -266,7 +267,8 @@ export function initHttp(service: HttpService) {
     QbrDeckComponent,
     QbrGenericMetricComponent,
     QbrTopPasComponent,
-    QbrTotalSpendComponent
+    QbrTotalSpendComponent,
+    GenericMetricsRightComponent
   ],
   entryComponents: [
     PillComponent,

@@ -5,12 +5,11 @@
       <div class="p-grid mt40">
         <div class="p-md-5 no-padding">
           <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="totalSpendMetric"></bd-qbr-total-spend>
-          <div class="p-grid gray-border-left mt20">
-
+          <div class="p-grid gray-border-left mt40 position-relative">
+            <span class="dot-full-right"></span>
             <div class="p-md-12 no-padding">
-              <div class="justify-between">
+              <div class="justify-between ml10">
                 <div>
-                  <span class="dot-full-right"></span>
                   <img alt="icon" src="assets/images/total_bb.svg" class="qbr-icon-sm mb5 mr10 ml20">
                   <span class="qbr-label">Block Billed</span>
                 </div>
@@ -33,30 +32,39 @@
           </div>
         </div>
         <!--right side-->
-        <div class="p-md-7 no-padding gray-border-left">
+        <div class="p-md-7 no-padding gray-border-left position-relative">
           <div class="justify-start">
-<!--            <div class="dot-full-right"></div>-->
+            <div class="dot-full-right"></div>
             <div class="p-grid">
-              <div *ngFor="let row of rightSideMetrics; let y=index" class="p-md-12">
-<!--                <span class="oval-label justify-center oval-label-yellow">{{ row.label }}</span>-->
-                <div class="justify-center ml20">
+              <ng-container *ngFor="let row of rightSideMetrics; let y=index">
+              <div class="p-md-2">
+                <div class="row-badge" [ngClass]="{'row-badge-first': y == 0}">
+                  <span class="oval-label" [ngClass]=" {'oval-label-yellow': y % 2 == 0, 'oval-label-black': y % 2 > 0}">{{ row.label }}</span>
+                </div>
+              </div>
+              <div  class="p-md-10">
+                <div class="justify-center ml20" [ngClass]=" {'gray-border-top': y > 0}">
                   <div *ngFor="let item of row.metrics;let i=index;" class="qbr-metric-div">
                     <bd-qbr-generic-metric [index]="i" [item]="item" [qbrType]="qbrType" [multipleRows]="true" [secondRow]="y>0"></bd-qbr-generic-metric>
                   </div>
                 </div>
               </div>
+              </ng-container>
             </div>
-
+            <div class="p-grid">
+              <div class="p-md-2">&nbsp;
+              </div>
+              <div class="p-md-10">
+                <div class="ml10 mt40">
+<!--                  <chart (load)="saveInstance($event.context)" [options]="options"></chart>-->
+                </div>
+              </div>
+            </div>
           </div>
-
-          <!--          <div class="ml10 mt40">-->
-          <!--            <chart (load)="saveInstance($event.context)" [options]="options"></chart>-->
-          <!--          </div>-->
-
         </div>
       </div>
       <div class="page-number-circle">
-        <div class="page-number">5</div>
+        <div class="page-number">8</div>
       </div>
     </div>
 

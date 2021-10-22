@@ -4,7 +4,7 @@
        [ngClass]="{'mt10': item?.label && item?.label.length < 8, 'mr40': item?.label && item?.label.indexOf('Associate') < 0, 'mr20': item?.label && item?.label.indexOf('Associate') > 0}">{{item?.label}}</div>
 </div>
 <div class="pb20" [ngClass]="{'metrics-div-border': index > 0 && !multipleRows}">
-  <div class="mb20 qbr-dollar-label">${{item?.amount | number:'1.0-0'}}</div>
+  <div class="mb20 qbr-dollar-label" [ngClass]="{'qbr-dollar-label-sm': multipleRows}">${{item?.amount | number:'1.0-0'}}</div>
   <div>
     <bd-yoy-number-widget [direction]="item?.direction" [increase]="item?.percent"  [qbrType]="qbrType"
                           [size]="'md'"></bd-yoy-number-widget>
