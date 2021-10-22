@@ -21,6 +21,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
   itemTopRowCount: number = 6;
   initialFilterSet: any;
   metricExcludes: Array<string> = [];
+  customReport: boolean = false;
   @Input() isReportCard: boolean = false;
   @Input() isComparison: boolean = false;
   @Input() firm: IFirm;
@@ -35,7 +36,13 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
   constructor(public httpService: HttpService,
               public filtersService: FiltersService,
               public userService: UserService,
-              public commonServ: CommonService) {}
+              public commonServ: CommonService) {
+    if (this.userService.config !== undefined) {
+      if ('custom.report.card.metic' in this.userService.config) {
+        this.customReport = true;
+      }
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.isLoaded = false;
@@ -110,6 +117,9 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
       if (!params.hasOwnProperty('maxMatterCost') && this.initialFilterSet.hasOwnProperty('maxMatterCost')) {
         params.maxMatterCost = this.initialFilterSet.maxMatterCost;
       }
+    }
+    if (this.customReport) {
+      params.custom = true;
     }
     this.pendingRequest = this.httpService.makeGetRequest(requestString, params).subscribe(
       (data: any) => {
@@ -267,6 +277,17 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         diff: this.otherFirms.avg_paralegal_legal_assistant_rate_diff
       });
     }
+    if (this.customReport && !this.isComparison) {
+      this.totalsRC.push({
+        icon: 'icon-bar-chart',
+        total: this.totalsRaw.firm_score,
+        name: 'Score',
+        format: 'number2',
+        svg: 'bpi',
+        avg: this.otherFirms.firm_score,
+        diff: this.otherFirms.firm_score_diff
+      });
+    }
     this.itemTopRowCount = Math.ceil(this.totalsRC.length / 2);
     this.totalsRC[this.itemTopRowCount - 1].lastCell = true;
     this.totalsRC[this.totalsRC.length - 1].lastCell = true;
@@ -291,6 +312,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
     otherFirms.avg_blended_rate_diff = 0;
     otherFirms.bodhala_price_index_diff = 0;
     otherFirms.percent_block_billed_diff = 0;
+    otherFirms.firm_score_diff = 0;
 
     if (!this.filtersService.includeExpenses && otherFirms.total_spend.total > 0 && otherFirms.total_spend.total !== undefined && otherFirms.total_spend.total !== null) {
       if (otherFirms.total_spend.total > totalsRaw.total_spend.total) {
@@ -412,6 +434,14 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         otherFirms.percent_block_billed_diff *= -1;
       } else {
         otherFirms.percent_block_billed_diff = ((totalsRaw.percent_block_billed / otherFirms.percent_block_billed) - 1) * 100;
+      }
+    }
+    if (otherFirms.firm_score && otherFirms.firm_score > 0) {
+      if (otherFirms.firm_score > totalsRaw.firm_score) {
+        otherFirms.firm_score_diff = (1 - (totalsRaw.firm_score / otherFirms.firm_score)) * 100;
+        otherFirms.firm_score_diff *= -1;
+      } else {
+        otherFirms.firm_score_diff = ((totalsRaw.firm_score / otherFirms.firm_score) - 1) * 100;
       }
     }
 
