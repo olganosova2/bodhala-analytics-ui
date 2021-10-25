@@ -109,6 +109,13 @@ const metricsColumnESOptions = {
     }
   }],
   yAxis: [{
+    labels: {
+      style: {
+        fontSize: '16px',
+        color: '#8A8A8A'
+      },
+      format: '${value}' // The $ is literally a dollar unit
+    },
     title: {
       enabled: false,
       text: undefined
@@ -151,6 +158,10 @@ const metricsColumnOptions = {
       showInLegend: true,
       borderRadiusTopLeft: '50%',
       borderRadiusTopRight: '50%'
+    },
+    series: {
+      pointWidth: 25,
+      groupPadding: 0.3
     }
   },
   xAxis: [{
@@ -159,6 +170,13 @@ const metricsColumnOptions = {
     }
   }],
   yAxis: [{
+    labels: {
+      style: {
+        fontSize: '16px',
+        color: '#8A8A8A'
+      },
+      format: '${value}' // The $ is literally a dollar unit
+    },
     title: {
       enabled: false,
       text: undefined
@@ -169,14 +187,14 @@ const metricsColumnOptions = {
     pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
   },
   series: [{
+    type: 'column',
     name: 'Current',
-    colorByPoint: true,
     color: '#FFC327',
     data: []
   },
     {
+      type: 'column',
       name: 'Previous',
-      colorByPoint: true,
       color: '#000000',
       data: []
     }]
@@ -193,4 +211,4 @@ export interface IReport {
 }
 
 export const metricsRightChartESOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
-export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnOptions};
+export const metricsRightChartOptions =  {...baseColumnChartOptions, ...metricsColumnOptions};

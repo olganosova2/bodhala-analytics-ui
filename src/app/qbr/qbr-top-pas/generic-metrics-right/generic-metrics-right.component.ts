@@ -4,7 +4,7 @@ import {IQbrMetric, IQbrMetricRow, metricsRightChartOptions, QbrType} from '../.
 @Component({
   selector: 'bd-generic-metrics-right',
   templateUrl: './generic-metrics-right.component.html',
-  styleUrls: ['./generic-metrics-right.component.scss']
+  styleUrls: ['../../qbr-css.scss', './generic-metrics-right.component.scss']
 })
 export class GenericMetricsRightComponent implements OnInit {
   options: any;
@@ -22,12 +22,19 @@ export class GenericMetricsRightComponent implements OnInit {
   }
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
-    const result = this.metrics.map(e => e.amount);
-    const resultToCompare = this.metrics.map(e => e.amountToCompare);
-    const width = this.metrics.length * 205;
-    this.chart.setSize(width, 460, false);
-    this.chart.series[0].setData(result);
-    this.chart.series[1].setData(resultToCompare);
+    if (this.rightSideMetrics.length > 1) {
+      const result = this.rightSideMetrics[0].metrics.map(e => e.amount);
+      const resultToCompare = this.rightSideMetrics[1].metrics.map(e => e.amount);
+      const width = this.rightSideMetrics[0].metrics.length * 205;
+      this.chart.setSize(width, 380, false);
+      this.chart.series[0].options.name = this.rightSideMetrics[0].label;
+      this.chart.series[0].update(this.chart.series[0].options);
+      this.chart.series[1].options.name = this.rightSideMetrics[1].label;
+      this.chart.series[1].update(this.chart.series[1].options);
+      this.chart.series[0].setData(result);
+      this.chart.series[1].setData(resultToCompare);
+
+    }
   }
 
 }

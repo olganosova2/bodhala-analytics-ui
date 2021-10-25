@@ -46,7 +46,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   getQbrs(): void {
     this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
       (data: any) => {
-        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('id'));
         if (records.length > 0) {
           if (this.qbrId) {
             this.qbr = records.find(e => e.id === Number(this.qbrId));

@@ -1,0 +1,18 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+.qbr-label {
+  font-size: 18px;
+}
+:host ::ng-deep {
+  .p-md-5, .p-md-7 {
+    padding: 0 !important;
+  }
+}
+.oval-label {
+  font-size: 14px;
+}
+.dot-full-right {
+  position: absolute;
+  left: 0;
+  top: 0;
+}

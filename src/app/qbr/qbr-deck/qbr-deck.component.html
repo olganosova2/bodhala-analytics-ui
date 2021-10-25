@@ -32,6 +32,10 @@
           </bd-qbr-executive-summary>
         </div>
         <div class="mb20">
+          <bd-qbr-top-pas *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+          </bd-qbr-top-pas>
+        </div>
+        <div class="mb20">
           <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
           </bd-qbr-executive-summary>
         </div>

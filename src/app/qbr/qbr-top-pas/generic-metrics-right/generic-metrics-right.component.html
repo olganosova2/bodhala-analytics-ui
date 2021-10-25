@@ -1,4 +1,4 @@
-<div class="justify-start">
+<div>
   <div class="dot-full-right"></div>
   <div class="p-grid">
     <ng-container *ngFor="let row of rightSideMetrics; let y=index">
@@ -19,8 +19,8 @@
   <div class="p-grid">
     <div class="p-md-2">&nbsp;
     </div>
-    <div class="p-md-10">
-      <div class="ml10 mt40">
+    <div class="p-md-10 no-padding">
+      <div class="">
         <chart (load)="saveInstance($event.context)" [options]="options"></chart>
       </div>
     </div>
