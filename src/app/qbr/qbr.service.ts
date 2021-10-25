@@ -116,11 +116,11 @@ export class QbrService {
   getTkHoursRecord(hoursCurrent: any, hoursCompare: any, qbrType: QbrType, classification: string): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = this.commonService.capitalize(classification);
-    if (!hoursCurrent) {
+    if (!hoursCurrent || !hoursCompare) {
       return result;
     }
     result.amount  = Math.round(hoursCurrent || 0);
-    if (hoursCurrent) {
+    if (hoursCurrent && hoursCompare) {
       const increase = ((hoursCurrent / hoursCompare) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
