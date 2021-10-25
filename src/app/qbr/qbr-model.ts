@@ -77,8 +77,7 @@ export const qbrPieChartOptions = {
         formatter() {
           let per = this.percentage;
           if (per > 5) {
-            const intper = Math.floor(per * 100);
-            per = intper / 100.;
+            per = Math.round(per );
             return  per + '%';
           }
           return null;
@@ -95,6 +94,52 @@ export const qbrPieChartOptions = {
   legend: {
     enabled: false
   }
+};
+const tkHoursPasAdditionalOptions = {
+  chart: {
+    height: 200,
+    width: 200,
+    type: 'pie',
+    marginLeft: null,
+    spacingTop: 0,
+    spacingBottom: 0,
+    marginRight: 0,
+    spacingLeft: 0,
+    spacingRight: 0,
+  },
+  plotOptions: {
+    pie: {
+      pie: {
+        size: '100%'
+      },
+      colors: ['#00D1FF', '#FF632C', '#cccccc'],
+      dataLabels: {
+        enabled: true,
+        color: 'black',
+        // format: '<b>{point.percentage:.0f} %</b>',
+        formatter() {
+          let per = this.percentage;
+          if (per > 5) {
+            per = Math.round(per );
+            return  per + '%';
+          }
+          return null;
+        },
+        distance: -25,
+        style: {
+          fontSize: 12,
+          textOutline: false
+        }
+      }
+    },
+    series: {}
+  },
+  tooltip : { enabled: false },
+  series: [{
+    name: 'Timekeeper Hours',
+    colorByPoint: true,
+    data: []
+  }]
 };
 
 const metricsColumnESOptions = {
@@ -160,7 +205,7 @@ const metricsColumnOptions = {
     type: 'column',
     spacingTop: 10,
     width: 800,
-    height: 380,
+    height: 420,
   },
   legend: {
     show: false,
@@ -249,6 +294,7 @@ const metricsBBOptions = {
       borderRadiusTopRight: '50%'
     },
     series: {
+      pointWidth: 40,
       groupPadding: 0.2
     }
   },
@@ -288,3 +334,4 @@ const metricsBBOptions = {
 export const metricsRightChartESOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
 export const metricsRightChartOptions =  {...baseColumnChartOptions, ...metricsColumnOptions};
 export const metricsBBPasChartOptions =  {...baseColumnChartOptions, ...metricsBBOptions};
+export const tkHoursPasChartOptions = { ... qbrPieChartOptions, ... tkHoursPasAdditionalOptions};

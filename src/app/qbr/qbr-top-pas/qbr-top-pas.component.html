@@ -5,7 +5,7 @@
       <div class="p-grid mt40">
         <div class="p-md-5 no-padding">
           <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="totalSpendMetric"></bd-qbr-total-spend>
-          <div class="p-grid gray-border-left mt40 position-relative">
+          <div class="p-grid gray-border-left mt30 position-relative">
             <span class="dot-full-right"></span>
             <div class="p-md-12 no-padding">
               <div class="justify-between ml10">
@@ -20,13 +20,43 @@
               </div>
             </div>
             <!-- left side charts -->
-            <div class="p-grid mt40 ml5">
-              <div class="p-md-5">
+            <div class="p-md-12 no-padding">
+              <div class="p-grid ml5">
+              <div class="p-md-5 mt20">
                 <chart (load)="saveInstanceBB($event.context)" [options]="optionsBB"></chart>
               </div>
               <div class="p-md-7">
+                <div class="justify-start" *ngFor="let row of tkHours; let i=index">
+                  <div>
+                    <chart [options]="optionsHours[i]" (load)="saveInstanceHours($event.context, i)"></chart>
+                  </div>
+                  <div class="">
+                    <div class="font-bold ml15 mt40">{{ row.label }}</div>
+                    <div class="justify-start mt15">
+                      <div  *ngFor="let tk of row.metrics;let i=index;">
+                        <div class="hours-div" *ngIf="tk.label !== 'Other'">
+                          <div class="qbr-label-xs mb10" >
+                            <span class="tk-bar-sm"
+                                  [ngClass]="{'partner-bar': tk.label === 'Partner', 'associate-bar': tk.label === 'Associate'}"></span>
+                            <span class="pl10">{{ tk.label }}</span>
+                          </div>
+                          <bd-yoy-number-widget [direction]="tk.direction" [increase]="tk.percent" [size]="'sm'" [qbrType]="qbrType"></bd-yoy-number-widget>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="justify-start">
+                        <div class="ml20">
+                          <div class="qbr-label-xs mb10" >
+                            <span class="tk-bar-sm other-bar"></span>
+                            <span class="pl10">Other</span>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
 
               </div>
+            </div>
             </div>
 
           </div>

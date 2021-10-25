@@ -90,8 +90,8 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   processTimekeepersHours(): void {
     this.tkHours = [];
-    this.qbrService.getPercentHours(this.currentOverviewMetric);
-    this.qbrService.getPercentHours(this.compareOverviewMetric);
+    this.qbrService.getPercentHours(this.currentOverviewMetric, true);
+    this.qbrService.getPercentHours(this.compareOverviewMetric, true);
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.partner_percent_hours_worked, this.compareOverviewMetric.partner_percent_hours_worked, this.qbrType, 'Partner'));
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.associate_percent_hours_worked, this.compareOverviewMetric.associate_percent_hours_worked, this.qbrType, 'Associate'));
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.paralegal_percent_hours_worked, this.compareOverviewMetric.paralegal_percent_hours_worked, this.qbrType, 'Paralegal'));

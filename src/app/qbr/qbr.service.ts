@@ -106,8 +106,12 @@ export class QbrService {
     }
     return result;
   }
-  getPercentHours(metric: any): void {
-    metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours + metric.total_paralegal_hours);
+  getPercentHours(metric: any, includeParalegals: boolean): void {
+    if (includeParalegals) {
+      metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours + metric.total_paralegal_hours);
+    } else {
+      metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours);
+    }
     metric.associate_percent_hours_worked = metric.total_hours ? (metric.total_associate_hours / metric.total_hours) * 100 : 0;
     metric.partner_percent_hours_worked = metric.total_hours ? (metric.total_partner_hours / metric.total_hours) * 100 : 0;
     metric.paralegal_percent_hours_worked = metric.total_hours ? (metric.total_paralegal_hours / metric.total_hours) * 100 : 0;
