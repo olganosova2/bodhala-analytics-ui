@@ -20,9 +20,9 @@
               </div>
             </div>
             <!-- left side charts -->
-            <div class="p-grid">
+            <div class="p-grid mt40 ml5">
               <div class="p-md-5">
-
+                <chart (load)="saveInstanceBB($event.context)" [options]="optionsBB"></chart>
               </div>
               <div class="p-md-7">
 

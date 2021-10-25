@@ -4,7 +4,8 @@ import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {QbrService} from '../qbr.service';
-import {IQbrMetric, IQbrReport, QbrType, IQbrMetricRow} from '../qbr-model';
+import {IQbrMetric, IQbrReport, QbrType, IQbrMetricRow, metricsBBPasChartOptions} from '../qbr-model';
+import {executiveSummaryChartOptions} from '../qbr-executive-summary/model';
 
 @Component({
   selector: 'bd-qbr-top-pas',
@@ -15,7 +16,7 @@ export class QbrTopPasComponent implements OnInit {
   qbrType: any = QbrType.YoY;
   chartHours: any;
   chartBB: any;
-  optionsBB: Array<any> = [];
+  optionsBB: any;
   optionsHours: Array<any> = [];
   totalSpendMetric: Array<IQbrMetric> = [];
   tkHours: Array<IQbrMetricRow> = [];
@@ -75,7 +76,18 @@ export class QbrTopPasComponent implements OnInit {
 
   }
   setUpChartOptions(): void {
-
+    this.optionsBB = Object.assign({}, metricsBBPasChartOptions);
+  }
+  saveInstanceBB(chartInstance): void {
+    this.chartBB = chartInstance;
+    const firstPa = this.bbMetric[0].amount;
+    const secondPa = this.bbMetric[1].amount;
+    this.chartBB.series[0].setData([firstPa]);
+    this.chartBB.series[1].setData([secondPa]);
+    this.chartBB.series[0].options.name = this.currentOverviewMetric[0].practice_area;
+    this.chartBB.series[0].update(this.chartBB.series[0].options);
+    this.chartBB.series[1].options.name = this.currentOverviewMetric[1].practice_area;
+    this.chartBB.series[1].update(this.chartBB.series[1].options);
   }
 
 }
