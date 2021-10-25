@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {IBillingTotalItem, IFirm} from '../firm.model';
 import {IPracticeArea} from '../../practice-area/practice-area.model';
 import {Subscription} from 'rxjs';
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
 import {FiltersService} from '../../shared/services/filters.service';
 
@@ -23,7 +23,8 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpService,
               public filtersService: FiltersService,
-              public commonServ: CommonService) { }
+              public commonServ: CommonService) {
+  }
 
   ngOnInit() {
     this.loadTotals();
