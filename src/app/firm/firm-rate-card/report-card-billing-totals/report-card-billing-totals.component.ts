@@ -287,6 +287,16 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         avg: this.otherFirms.firm_score,
         diff: this.otherFirms.firm_score_diff
       });
+      // formatAssessmentLabel
+      this.totalsRC.push({
+        icon: 'icon-picture',
+        total: this.formatAssessmentLabel(this.totalsRaw),
+        name: 'Assessment',
+        format: 'string',
+        svg: 'bills',
+        avg: null,
+        diff: null
+      });
     }
     this.itemTopRowCount = Math.ceil(this.totalsRC.length / 2);
     this.totalsRC[this.itemTopRowCount - 1].lastCell = true;
@@ -446,5 +456,13 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
     }
 
   }
+  formatAssessmentLabel(totalRaw: any): string {
+    let result = 'N/A';
+    if (totalRaw.firm_assessment && totalRaw.firm_assessment.length > 0) {
+      result = totalRaw.firm_assessment[0].assessment;
+    }
+    return result;
+  }
+
 
 }
