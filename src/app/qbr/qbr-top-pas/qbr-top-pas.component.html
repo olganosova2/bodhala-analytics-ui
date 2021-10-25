@@ -32,6 +32,7 @@
                   </div>
                   <div class="">
                     <div class="font-bold ml15 mt40">{{ row.label }}</div>
+
                     <div class="justify-start mt15">
                       <div  *ngFor="let tk of row.metrics;let i=index;">
                         <div class="hours-div" *ngIf="tk.label !== 'Other'">
@@ -53,6 +54,7 @@
                         </div>
                     </div>
                   </div>
+
                 </div>
 
               </div>
