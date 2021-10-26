@@ -9,10 +9,17 @@
   }
 }
 .oval-label {
-  font-size: 14px;
+  font-size: 13px;
+  padding: 1px 20px 3px 10px;
 }
 .dot-full-right {
   position: absolute;
   left: 0;
   top: 0;
+}
+.long-label {
+  position: absolute;
+  white-space: nowrap;
+  left: -5px;
+  top: -30px;
 }

@@ -1,18 +1,14 @@
 <div>
   <div class="qbr-wrapper">
     <div class="qbr-panel position-relative" id="exportPage" #exportPage>
-      <div class="card-title">Top Practice Areas<span class="dot-full dot-full-online"></span></div>
+      <div class="card-title">{{ practiceArea }}: Top Firms<span class="dot-full dot-full-online"></span></div>
       <div class="p-grid mt40" *ngIf="currentOverviewMetric && currentOverviewMetric.length > 0">
         <div class="p-md-5 no-padding">
           <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="totalSpendMetric"></bd-qbr-total-spend>
           <div class="p-grid gray-border-left mt30 position-relative">
             <span class="dot-full-right"></span>
             <div class="p-md-12 no-padding">
-              <div class="justify-between ml10">
-                <div>
-                  <img alt="icon" src="assets/images/total_bb.svg" class="qbr-icon-sm mb5 mr10 ml20 mt2">
-                  <span class="qbr-label">Block Billed</span>
-                </div>
+              <div class="justify-start ml10">
                 <div>
                   <img alt="icon" src="assets/images/chart-pie.png" class="qbr-icon mb5 mr10 ml10">
                   <span class="qbr-label mr40">Hours Worked By TimeKeeper Level</span>
@@ -20,23 +16,25 @@
               </div>
             </div>
             <!-- left side charts -->
-            <div class="p-md-12 no-padding">
-              <div class="p-grid ml5">
-              <div class="p-md-5 mt20">
-                <chart (load)="saveInstanceBB($event.context)" [options]="optionsBB"></chart>
-              </div>
-              <div class="p-md-7">
-                <div class="justify-start" *ngFor="let row of tkHours; let i=index">
-                  <div>
-                    <chart [options]="optionsHours[i]" (load)="saveInstanceHours($event.context, i)"></chart>
-                  </div>
-                  <div class="">
-                    <div class="font-bold ml15 mt40">{{ row.label }}</div>
-                    <bd-qbr-timekeepers [qbrType]="qbrType" [metrics]="row.metrics" [size]="'sm'"></bd-qbr-timekeepers>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="p-md-6 mt10 justify-center" *ngFor="let row of tkHours; let i=index">
+
+
+
+
+                    <div class="text-center">
+                      <div class="justify-center">
+                        <chart [options]="optionsHours[i]" (load)="saveInstanceHours($event.context, i)"></chart>
+                      </div>
+                      <div class="">
+                        <div class="font-bold ml15 mt40">{{ row.label }}</div>
+                        <div class="justify-center">
+                          <bd-qbr-timekeepers [qbrType]="qbrType" [metrics]="row.metrics" [size]="'sm'"></bd-qbr-timekeepers>
+                        </div>
+                      </div>
+                    </div>
+
+
+
             </div>
 
           </div>
@@ -47,7 +45,7 @@
         </div>
       </div>
       <div class="page-number-circle">
-        <div class="page-number">8</div>
+        <div class="page-number">{{this.pageNum}}</div>
       </div>
     </div>
 

@@ -1,0 +1,19 @@
+<div class="justify-start mt15">
+  <div  *ngFor="let tk of metrics;let i=index;">
+    <div class="hours-div" *ngIf="tk.label !== 'Other'">
+      <div class="mb10" [ngClass]="{'qbr-label-sm': size === 'lg', 'qbr-label-xs': size === 'sm'}">
+        <span  [ngClass]="{'tk-bar-lg': size === 'lg', 'tk-bar-sm': size === 'sm', 'partner-bar': tk.label === 'Partner', 'associate-bar': tk.label === 'Associate'}"></span>
+        <span class="pl10">{{ tk.label }}</span>
+      </div>
+      <bd-yoy-number-widget [direction]="tk.direction" [increase]="tk.percent" [size]="size" [qbrType]="qbrType"></bd-yoy-number-widget>
+    </div>
+  </div>
+</div>
+<div class="justify-start">
+  <div class="ml20">
+    <div class="qbr-label-xs mb10" >
+      <span class="tk-bar-sm other-bar"></span>
+      <span class="pl10">Other</span>
+    </div>
+  </div>
+</div>

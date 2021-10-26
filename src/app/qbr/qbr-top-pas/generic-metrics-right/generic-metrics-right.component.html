@@ -2,8 +2,8 @@
   <div class="dot-full-right"></div>
   <div class="p-grid">
     <ng-container *ngFor="let row of rightSideMetrics; let y=index">
-      <div class="p-md-2">
-        <div class="row-badge" [ngClass]="{'row-badge-first': y == 0}">
+      <div class="p-md-2 position-relative">
+        <div *ngIf="this.rightSideMetrics.length > 1" class="row-badge" [ngClass]="{'row-badge-first': y == 0, 'long-label': hasLongLabels}">
           <span class="oval-label" [ngClass]=" {'oval-label-yellow': y % 2 == 0, 'oval-label-black': y % 2 > 0}">{{ row.label }}</span>
         </div>
       </div>

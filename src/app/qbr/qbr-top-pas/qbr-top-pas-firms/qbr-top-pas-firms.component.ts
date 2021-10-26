@@ -1,34 +1,35 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {CommonService} from '../../shared/services/common.service';
+import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {FiltersService} from '../../shared/services/filters.service';
-import {QbrService} from '../qbr.service';
-import {IQbrMetric, IQbrReport, QbrType, IQbrMetricRow, metricsBBPasChartOptions, tkHoursPasChartOptions} from '../qbr-model';
-import {executiveSummaryChartOptions} from '../qbr-executive-summary/model';
+import {FiltersService} from '../../../shared/services/filters.service';
+import {QbrService} from '../../qbr.service';
+import {IQbrMetric, IQbrMetricRow, IQbrReport, metricsBBPasChartOptions, QbrType, tkHoursPasChartOptions} from '../../qbr-model';
 
 @Component({
-  selector: 'bd-qbr-top-pas',
-  templateUrl: './qbr-top-pas.component.html',
-  styleUrls: ['../qbr-css.scss', './qbr-top-pas.component.scss']
+  selector: 'bd-qbr-top-pas-firms',
+  templateUrl: './qbr-top-pas-firms.component.html',
+  styleUrls: ['../../qbr-css.scss', '../qbr-top-pas.component.scss']
 })
-export class QbrTopPasComponent implements OnInit {
+export class QbrTopPasFirmsComponent implements OnInit {
   qbrType: any = QbrType.YoY;
   chartHours: Array<any> = [];
-  chartBB: any;
-  optionsBB: any;
   optionsHours: Array<any> = [];
   totalSpendMetric: Array<IQbrMetric> = [];
   tkHours: Array<IQbrMetricRow> = [];
   rightSideMetrics: Array<IQbrMetricRow> = [];
-  bbMetric: Array<IQbrMetric> = [];
   qbrId: number;
   includeExpenses: boolean = false;
   currentOverviewMetric: Array<any> = [];
   compareOverviewMetric: Array<any> = [];
   queryString: string;
+  practiceArea: string;
+  @Input() pageNum: number = 9;
+  @Input() totalSpend: number = 0;
+  @Input() indexPa: number = 0;
   @Input() qbrData: any;
   @Input() qbr: IQbrReport;
+
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -54,63 +55,52 @@ export class QbrTopPasComponent implements OnInit {
   }
 
   processRecords(): void {
-    this.currentOverviewMetric = this.qbrData.report_timeframe_top_pas || [];
-    const compareOverviewMetric = this.qbrData.comparison_timeframe_top_pas || [];
-    if (this.currentOverviewMetric.length === 0 || compareOverviewMetric.length  === 0) {
-      return;
-    }
-    for (const pa of this.currentOverviewMetric) {
-      const found = compareOverviewMetric.find(e => e.practice_area === pa.practice_area);
-      if (found) {
-        this.compareOverviewMetric.push(found);
-      }
-    }
-    const paLength = this.currentOverviewMetric.length;
-    for (let ix = 0; ix < paLength; ix++) {
+   const currentOverviewMetric = this.qbrData.report_timeframe_top_pas[this.indexPa];
+   if (!currentOverviewMetric) {
+     return;
+   }
+   this.practiceArea = currentOverviewMetric.practice_area;
+   let compareOverviewMetric = this.qbrData.compare_timeframe_top_pa_firms[0];
+   if (this.indexPa === 1) {
+     this.pageNum = this.pageNum + 2;
+     compareOverviewMetric = this.qbrData.compare_timeframe_second_pa_firms[0];
+   }
+   this.currentOverviewMetric.push(this.qbrService.mapProperties(currentOverviewMetric, 'firm_'));
+   this.compareOverviewMetric.push(this.qbrService.mapProperties(compareOverviewMetric, 'firm_'));
+   if (currentOverviewMetric.second_firm_total && currentOverviewMetric.second_firm_total > 0) {
+     this.currentOverviewMetric.push(this.qbrService.mapProperties(currentOverviewMetric, 'second_firm_'));
+     this.compareOverviewMetric.push(this.qbrService.mapProperties(compareOverviewMetric, 'second_firm_'));
+   }
+   const paLength = this.currentOverviewMetric.length;
+   for (let ix = 0; ix < paLength; ix++) {
       if (!this.compareOverviewMetric[ix]) {
         continue;
       }
-      const spendMetric = this.qbrService.getOveralSpendMetricPA(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], this.includeExpenses, false);
-      spendMetric.addInfo = this.currentOverviewMetric[ix].practice_area;
+      const spendMetric = this.qbrService.getOveralSpendMetricPA(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], this.includeExpenses, true);
+      spendMetric.addInfo = this.currentOverviewMetric[ix].firm_name;
       this.totalSpendMetric.push(spendMetric);
-      this.bbMetric.push(this.qbrService.getBBMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix]));
       this.qbrService.getPercentHours(this.currentOverviewMetric[ix], false);
       this.qbrService.getPercentHours(this.compareOverviewMetric[ix], false);
-      const resultTKs = { label: this.currentOverviewMetric[ix].practice_area, metrics: []};
+      const resultTKs = { label: this.currentOverviewMetric[ix].firm_name, metrics: []};
       resultTKs.metrics.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric[ix].partner_percent_hours_worked, this.compareOverviewMetric[ix].partner_percent_hours_worked, this.qbrType, 'Partner'));
       resultTKs.metrics.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric[ix].associate_percent_hours_worked, this.compareOverviewMetric[ix].associate_percent_hours_worked, this.qbrType, 'Associate'));
       if (this.currentOverviewMetric[ix].other_percent_hours_worked || this.compareOverviewMetric[ix].other_percent_hours_worked) {
         resultTKs.metrics.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric[ix].other_percent_hours_worked, this.compareOverviewMetric[ix].other_percent_hours_worked, this.qbrType, 'Other'));
       }
       this.tkHours.push(resultTKs);
-      const result = { label: this.currentOverviewMetric[ix].practice_area, metrics: []};
+      const result = { label: this.currentOverviewMetric[ix].firm_name, metrics: []};
       result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'bpi',  'BPI', 'bpi.svg'));
       result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'blended_rate',  'Blended Rate', 'bills.svg'));
       result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg'));
       result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg'));
       this.rightSideMetrics.push(result);
     }
-    this.setUpChartOptions();
-
+   this.setUpChartOptions();
   }
   setUpChartOptions(): void {
-    this.optionsBB = Object.assign({}, metricsBBPasChartOptions);
     for (const pa of this.currentOverviewMetric) {
       const tkOptions0 = Object.assign({}, tkHoursPasChartOptions);
       this.optionsHours.push(tkOptions0);
-    }
-  }
-  saveInstanceBB(chartInstance): void {
-    this.chartBB = chartInstance;
-    const firstPa = this.bbMetric[0].amount;
-    const secondPa = this.bbMetric[1].amount;
-    this.chartBB.series[0].setData([firstPa]);
-    this.chartBB.series[0].options.name = this.currentOverviewMetric[0].practice_area;
-    this.chartBB.series[0].update(this.chartBB.series[0].options);
-    if (this.currentOverviewMetric.length > 1) {
-      this.chartBB.series[1].setData([secondPa]);
-      this.chartBB.series[1].options.name = this.currentOverviewMetric[1].practice_area;
-      this.chartBB.series[1].update(this.chartBB.series[1].options);
     }
   }
   saveInstanceHours(chartInstance: any, index: number): void {

@@ -97,8 +97,8 @@ export const qbrPieChartOptions = {
 };
 const tkHoursPasAdditionalOptions = {
   chart: {
-    height: 200,
-    width: 200,
+    height: 180,
+    width: 180,
     type: 'pie',
     marginLeft: null,
     spacingTop: 0,
@@ -304,7 +304,7 @@ const metricsBBOptions = {
     }
   }],
   yAxis: [{
-    max: 100,
+    max: 60,
     labels: {
       style: {
         fontSize: '12px',
