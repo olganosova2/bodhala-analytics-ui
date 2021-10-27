@@ -84,6 +84,7 @@ export class QbrTopPasFirmsComponent implements OnInit {
       const resultTKs = { label: this.currentOverviewMetric[ix].firm_name, metrics: []};
       resultTKs.metrics.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric[ix].partner_percent_hours_worked, this.compareOverviewMetric[ix].partner_percent_hours_worked, this.qbrType, 'Partner'));
       resultTKs.metrics.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric[ix].associate_percent_hours_worked, this.compareOverviewMetric[ix].associate_percent_hours_worked, this.qbrType, 'Associate'));
+     // resultTKs.metrics.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric[ix].paralegal_percent_hours_worked, this.compareOverviewMetric[ix].paralegal_percent_hours_worked, this.qbrType, 'Paralegal'));
       if (this.currentOverviewMetric[ix].other_percent_hours_worked || this.compareOverviewMetric[ix].other_percent_hours_worked) {
         resultTKs.metrics.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric[ix].other_percent_hours_worked, this.compareOverviewMetric[ix].other_percent_hours_worked, this.qbrType, 'Other'));
       }

@@ -56,14 +56,22 @@ export class QbrTopPasComponent implements OnInit {
   processRecords(): void {
     this.currentOverviewMetric = this.qbrData.report_timeframe_top_pas || [];
     const compareOverviewMetric = this.qbrData.comparison_timeframe_top_pas || [];
-    if (this.currentOverviewMetric.length === 0 || compareOverviewMetric.length  === 0) {
+    if (compareOverviewMetric.length === 0 && this.currentOverviewMetric.length === 1) { // single PA
+      const formatted = Object.assign({}, this.qbrData.comparison_timeframe_metrics);
+      compareOverviewMetric.push(this.mapSingleComparePA(formatted));
+    }
+    if (this.currentOverviewMetric.length === 0 || compareOverviewMetric.length === 0) {
       return;
     }
-    for (const pa of this.currentOverviewMetric) {
-      const found = compareOverviewMetric.find(e => e.practice_area === pa.practice_area);
-      if (found) {
-        this.compareOverviewMetric.push(found);
+    if (this.currentOverviewMetric.length > 1) {
+      for (const pa of this.currentOverviewMetric) {
+        const found = compareOverviewMetric.find(e => e.practice_area === pa.practice_area);
+        if (found) {
+          this.compareOverviewMetric.push(found);
+        }
       }
+    } else {
+      this.compareOverviewMetric = Object.assign([], compareOverviewMetric);
     }
     const paLength = this.currentOverviewMetric.length;
     for (let ix = 0; ix < paLength; ix++) {
@@ -103,15 +111,23 @@ export class QbrTopPasComponent implements OnInit {
   saveInstanceBB(chartInstance): void {
     this.chartBB = chartInstance;
     const firstPa = this.bbMetric[0].amount;
-    const secondPa = this.bbMetric[1].amount;
     this.chartBB.series[0].setData([firstPa]);
     this.chartBB.series[0].options.name = this.currentOverviewMetric[0].practice_area;
     this.chartBB.series[0].update(this.chartBB.series[0].options);
     if (this.currentOverviewMetric.length > 1) {
+      const secondPa = this.bbMetric[1].amount;
       this.chartBB.series[1].setData([secondPa]);
       this.chartBB.series[1].options.name = this.currentOverviewMetric[1].practice_area;
       this.chartBB.series[1].update(this.chartBB.series[1].options);
     }
+  }
+  mapSingleComparePA(compareMetric: any): any {
+    compareMetric.total_billed = this.includeExpenses ? compareMetric.total_spend_including_expenses : compareMetric.total_spend;
+    compareMetric.total_expenses = 0;
+    compareMetric.block_billed_pct = compareMetric.percent_block_billed;
+    compareMetric.blended_rate = compareMetric.bodhala_price_index;
+    compareMetric.bpi = compareMetric.avg_blended_rate;
+    return compareMetric;
   }
   saveInstanceHours(chartInstance: any, index: number): void {
     this.chartHours[index] = chartInstance;

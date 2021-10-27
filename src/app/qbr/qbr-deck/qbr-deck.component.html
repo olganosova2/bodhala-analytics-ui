@@ -37,7 +37,7 @@
       </bd-qbr-top-pas-firms>
     </mat-tab>
 
-    <mat-tab label="All Pages">
+    <mat-tab label="All Pages" *ngIf="false">
       <div id="exportAll" #exportAll>
         <div class="mb20">
           <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
