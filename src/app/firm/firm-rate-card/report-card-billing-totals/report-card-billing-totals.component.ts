@@ -282,7 +282,7 @@ export class ReportCardBillingTotalsComponent implements OnChanges {
         icon: 'icon-bar-chart',
         total: this.totalsRaw.firm_score,
         name: 'Score',
-        format: 'number2',
+        format: 'number',
         svg: 'bpi',
         avg: this.otherFirms.firm_score,
         diff: this.otherFirms.firm_score_diff
