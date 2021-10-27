@@ -6,7 +6,7 @@
     <div class="font-bold">
       <span *ngIf="itemRC?.format === 'currency'" [ngClass]="{'total-lg' : itemRC.name === 'Outside Counsel Spend' || itemRC.format === 'string'}">${{ itemRC.total | number:'1.0-0'}}</span>
       <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.total | number:'1.2-2'}}%</span>
-      <span *ngIf="itemRC?.format === 'number'">{{ itemRC.total | number:'1.2-2'}}</span>
+      <span *ngIf="itemRC?.format === 'number'">{{ itemRC.total | number:'1.1-1'}}</span>
       <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.total | number:'1.2-2'}}</span>
       <span *ngIf="itemRC?.format === 'string'">{{ itemRC.total }}</span>
       <span *ngIf="!itemRC?.format">{{ itemRC.total | number:'1.0-0' }}</span>
