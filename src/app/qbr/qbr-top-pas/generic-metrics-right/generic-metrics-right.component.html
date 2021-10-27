@@ -1,6 +1,6 @@
-<div>
+<div >
   <div class="dot-full-right"></div>
-  <div class="p-grid">
+  <div class="p-grid p-grid-container" >
     <ng-container *ngFor="let row of rightSideMetrics; let y=index">
       <div class="p-md-2 position-relative">
         <div *ngIf="this.rightSideMetrics.length > 1" class="row-badge" [ngClass]="{'row-badge-first': y == 0, 'long-label': hasLongLabels}">

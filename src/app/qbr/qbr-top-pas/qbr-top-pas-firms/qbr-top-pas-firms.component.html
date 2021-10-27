@@ -5,7 +5,7 @@
       <div class="p-grid mt40" *ngIf="currentOverviewMetric && currentOverviewMetric.length > 0">
         <div class="p-md-5 no-padding">
           <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="totalSpendMetric"></bd-qbr-total-spend>
-          <div class="p-grid gray-border-left mt30 position-relative">
+          <div class="p-grid gray-border-left mt30 position-relative" [ngClass]=" {'height-550': tkHours.length <= 1}">
             <span class="dot-full-right"></span>
             <div class="p-md-12 no-padding">
               <div class="justify-start ml10">
@@ -16,12 +16,8 @@
               </div>
             </div>
             <!-- left side charts -->
-            <div class="p-md-6 mt10 justify-center" *ngFor="let row of tkHours; let i=index">
-
-
-
-
-                    <div class="text-center">
+            <div class="mt10 justify-center" [ngClass]=" {'p-md-6': tkHours.length > 1, 'p-md-12': tkHours.length <= 1}" *ngFor="let row of tkHours; let i=index">
+                <div class="text-center">
                       <div class="justify-center">
                         <chart [options]="optionsHours[i]" (load)="saveInstanceHours($event.context, i)"></chart>
                       </div>
@@ -32,11 +28,7 @@
                         </div>
                       </div>
                     </div>
-
-
-
             </div>
-
           </div>
         </div>
         <!--right side-->
