@@ -19,7 +19,7 @@
       <div class="font-bold">
         <span *ngIf="itemRC?.format === 'currency'">${{ itemRC.avg | number:'1.0-0'}}</span>
         <span *ngIf="itemRC?.format === 'percent'">{{ itemRC.avg | number:'1.2-2'}}%</span>
-        <span *ngIf="itemRC?.format === 'number'">{{ itemRC.avg | number:'1.2-2'}}</span>
+        <span *ngIf="itemRC?.format === 'number'">{{ itemRC.avg | number:'1.1-1'}}</span>
         <span *ngIf="itemRC?.format === 'number2'">${{ itemRC.avg | number:'1.2-2'}}</span>
         <span *ngIf="!itemRC?.format">{{ itemRC.avg | number:'1.0-0' }}</span>
       </div>
