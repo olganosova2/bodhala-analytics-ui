@@ -525,7 +525,7 @@ export class QbrCreationComponent implements OnInit {
               firm_name: data.result.compare_timeframe_top_pa_firms[0].firm_name,
               practice_area: data.result.compare_timeframe_top_pa_firms[0].practice_area,
               expenses: data.result.compare_timeframe_top_pa_firms[0].firm_expenses,
-              total_billed: data.result.compare_timeframe_top_pa_firms[0].total_billed,
+              total_billed: data.result.compare_timeframe_top_pa_firms[0].firm_total,
               associate_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].firm_associate_per_hrs_worked,
               partner_percent_hours_worked: data.result.compare_timeframe_top_pa_firms[0].firm_partner_per_hrs_worked,
               avg_associate_rate: data.result.compare_timeframe_top_pa_firms[0].firm_avg_associate_rate,

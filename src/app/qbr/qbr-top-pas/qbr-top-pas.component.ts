@@ -78,7 +78,7 @@ export class QbrTopPasComponent implements OnInit {
       if (!this.compareOverviewMetric[ix]) {
         continue;
       }
-      const spendMetric = this.qbrService.getOveralSpendMetricPA(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], this.includeExpenses, false);
+      const spendMetric = this.qbrService.getOveralSpendMetricPA(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], this.includeExpenses);
       spendMetric.addInfo = this.currentOverviewMetric[ix].practice_area;
       this.totalSpendMetric.push(spendMetric);
       this.bbMetric.push(this.qbrService.getBBMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix]));
@@ -102,6 +102,10 @@ export class QbrTopPasComponent implements OnInit {
 
   }
   setUpChartOptions(): void {
+    const chartOptions = Object.assign({}, metricsBBPasChartOptions);
+    if (this.currentOverviewMetric.length === 1) {
+      chartOptions.series.pop();
+    }
     this.optionsBB = Object.assign({}, metricsBBPasChartOptions);
     for (const pa of this.currentOverviewMetric) {
       const tkOptions0 = Object.assign({}, tkHoursPasChartOptions);

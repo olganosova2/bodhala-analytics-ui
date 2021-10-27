@@ -76,7 +76,7 @@ export class QbrTopPasFirmsComponent implements OnInit {
       if (!this.compareOverviewMetric[ix]) {
         continue;
       }
-      const spendMetric = this.qbrService.getOveralSpendMetricPA(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], this.includeExpenses, true);
+      const spendMetric = this.qbrService.getOveralSpendMetricPA(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], this.includeExpenses);
       spendMetric.addInfo = this.currentOverviewMetric[ix].firm_name;
       this.totalSpendMetric.push(spendMetric);
       this.qbrService.getPercentHours(this.currentOverviewMetric[ix], false);

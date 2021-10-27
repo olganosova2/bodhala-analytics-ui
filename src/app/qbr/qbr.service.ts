@@ -63,14 +63,14 @@ export class QbrService {
     }
     return result;
   }
-  getOveralSpendMetricPA(currentMetric: any, compareMetric: any, includeExpenses: boolean, isFirm: boolean): IQbrMetric {
+  getOveralSpendMetricPA(currentMetric: any, compareMetric: any, includeExpenses: boolean): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Total Spend';
     if (!currentMetric) {
       return result;
     }
-    const currentTotal = includeExpenses && !isFirm ? currentMetric.total_billed + currentMetric.total_expenses : currentMetric.total_billed;
-    const compareTotal = includeExpenses && !isFirm ? compareMetric.total_billed + compareMetric.total_expenses  : compareMetric.total_billed;
+    const currentTotal = includeExpenses ? currentMetric.total_billed + currentMetric.total_expenses : currentMetric.total_billed;
+    const compareTotal = includeExpenses ? compareMetric.total_billed + compareMetric.total_expenses  : compareMetric.total_billed;
     result.amount = currentTotal;
     if (compareTotal) {
       const increase = ((currentTotal / compareTotal) - 1) * 100;
@@ -136,7 +136,7 @@ export class QbrService {
     metric.firm_id =  source[propPrefix + 'id'];
     metric.total_billed = source[propPrefix + 'total'];
     metric.total_block_billed = source[propPrefix + 'total_block_billed'];
-    metric.total_expenses = 0;
+    metric.total_expenses = source[propPrefix + 'expenses'];
     metric.total_hours = source[propPrefix + 'hours'];
     metric.total_partner_hours = source[propPrefix + 'partner_hours'];
     metric.total_partner_billed = source[propPrefix + 'partner_billed'];
