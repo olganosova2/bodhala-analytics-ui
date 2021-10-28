@@ -222,7 +222,7 @@ export class CommonService {
     );
   }
   getClientPASetting(): string {
-    let result = '';
+    let result = 'Client Practice Areas'; // make default
     if (this.userService.config !== undefined) {
       if ('analytics.practice.bodhala.areas' in this.userService.config) {
         const userConfigs = Object.values(this.userService.config);

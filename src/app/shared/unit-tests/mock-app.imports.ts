@@ -133,6 +133,8 @@ import {QbrTotalSpendComponent} from '../../qbr/qbr-total-spend/qbr-total-spend.
 import {GenericMetricsRightComponent} from '../../qbr/qbr-top-pas/generic-metrics-right/generic-metrics-right.component';
 import {QbrTimekeepersComponent} from '../../qbr/qbr-top-pas/qbr-timekeepers/qbr-timekeepers.component';
 import {QbrTopPasFirmsComponent} from '../../qbr/qbr-top-pas/qbr-top-pas-firms/qbr-top-pas-firms.component';
+import {QbrTopPasMattersComponent} from '../../qbr/qbr-top-pas/qbr-top-pas-matters/qbr-top-pas-matters.component';
+import {QbrAgendaComponent} from '../../qbr/qbr-text-pages/qbr-agenda/qbr-agenda.component';
 
 
 export const IMPORTS = [
@@ -258,7 +260,9 @@ export const DECLARATIONS = [
   QbrTotalSpendComponent,
   GenericMetricsRightComponent,
   QbrTimekeepersComponent,
-  QbrTopPasFirmsComponent
+  QbrTopPasFirmsComponent,
+  QbrTopPasMattersComponent,
+  QbrAgendaComponent
 ];
 
 export const PROVIDERS = [

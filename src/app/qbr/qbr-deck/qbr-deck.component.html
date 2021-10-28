@@ -2,12 +2,18 @@
   <bd-error-messages></bd-error-messages>
   <div class="pull-left" *ngIf="reportDates">
     <div>
-      <b>Selected Time Period: </b>{{reportDates.startDate | date:'mediumDate'}} - {{reportDates.endDate | date:'mediumDate'}}
-      <span class="ml40 mt10 inline-block"><b>Comparison Time Period: </b>{{reportDates.comparisonStartDate | date:'mediumDate'}} - {{reportDates.comparisonEndDate | date:'mediumDate'}}</span>
+      <b>Selected Time Period: </b>{{reportDates.startDate | date:'mediumDate'}}
+      - {{reportDates.endDate | date:'mediumDate'}}
+      <span
+        class="ml40 mt10 inline-block"><b>Comparison Time Period: </b>{{reportDates.comparisonStartDate | date:'mediumDate'}}
+        - {{reportDates.comparisonEndDate | date:'mediumDate'}}</span>
     </div>
 
   </div>
   <div class="pull-right">
+<!--    <button class="primary-button ml20" (click)="printPageArea('exportAll')">Print-->
+<!--      <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>-->
+<!--    </button>-->
     <button class="primary-button ml20" (click)="export()"
             [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
       <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
@@ -15,48 +21,83 @@
   </div>
   <div class="clear-both"></div>
   <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
-
+<!--    <mat-tab label="Agenda">-->
+<!--      <ng-template matTabContent>-->
+<!--        <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">-->
+<!--        </bd-qbr-agenda>-->
+<!--      </ng-template>-->
+<!--    </mat-tab>-->
 
     <mat-tab label="Executive Summary">
-      <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
-      </bd-qbr-executive-summary>
+      <ng-template matTabContent>
+        <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+        </bd-qbr-executive-summary>
+      </ng-template>
     </mat-tab>
 
     <mat-tab label="Top PAs">
-      <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
-      </bd-qbr-top-pas>
+      <ng-template matTabContent>
+        <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
+        </bd-qbr-top-pas>
+      </ng-template>
     </mat-tab>
 
     <mat-tab label="{{currentPAs[0].practice_area}}: Top Firms" *ngIf="qbrData && currentPAs.length > 0">
-      <bd-qbr-top-pas-firms  [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
-      </bd-qbr-top-pas-firms>
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+        </bd-qbr-top-pas-firms>
+      </ng-template>
     </mat-tab>
-
+    <mat-tab label="{{currentPAs[0].practice_area}}: Top Matter" *ngIf="qbrData && currentPAs.length > 0">
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+        </bd-qbr-top-pas-matters>
+      </ng-template>
+    </mat-tab>
     <mat-tab label="{{currentPAs[1].practice_area}}: Top Firms" *ngIf="qbrData && currentPAs.length > 1">
-      <bd-qbr-top-pas-firms  [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
-      </bd-qbr-top-pas-firms>
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
+        </bd-qbr-top-pas-firms>
+      </ng-template>
     </mat-tab>
 
-    <mat-tab label="All Pages" *ngIf="false">
-      <div id="exportAll" #exportAll>
-        <div class="mb20">
-          <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
-          </bd-qbr-executive-summary>
-        </div>
-        <div class="mb20">
-          <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
-          </bd-qbr-top-pas>
-        </div>
-        <div class="mb20" *ngIf="qbrData && currentPAs.length > 0">
-          <bd-qbr-top-pas-firms  [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
-          </bd-qbr-top-pas-firms>
-        </div>
-        <div class="mb20" *ngIf="qbrData && currentPAs.length > 1">
-          <bd-qbr-top-pas-firms  [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
-          </bd-qbr-top-pas-firms>
-        </div>
+    <mat-tab label="{{currentPAs[1].practice_area}}: Top Matter" *ngIf="qbrData && currentPAs.length > 1">
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
+        </bd-qbr-top-pas-matters>
+      </ng-template>
+    </mat-tab>
 
-      </div>
+    <mat-tab label="All Pages" *ngIf="true">
+      <ng-template matTabContent>
+        <div id="exportAll" #exportAll>
+          <div class="">
+            <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-executive-summary>
+          </div>
+          <div class="">
+            <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-top-pas>
+          </div>
+          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-firms>
+          </div>
+          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+            <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-matters>
+          </div>
+          <div class="" *ngIf="qbrData && currentPAs.length > 1">
+            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-firms>
+          </div>
+          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+            <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-matters>
+          </div>
+
+        </div>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>

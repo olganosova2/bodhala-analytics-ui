@@ -78,6 +78,26 @@ export class QbrService {
     }
     return result;
   }
+  getVolumeMetric(currentMetric: any, compareMetric: any, comparePAMetric: any,  includeExpenses: boolean): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = 'PA Volume';
+    if (!currentMetric) {
+      return result;
+    }
+    const currentMatterTotal = includeExpenses ? currentMetric.total_billed + currentMetric.total_expenses : currentMetric.total_billed;
+    const compareMatterTotal = includeExpenses ? compareMetric.total_billed + compareMetric.total_expenses  : compareMetric.total_billed;
+    const currentPATotal = includeExpenses ? currentMetric.pa_total_billed + currentMetric.pa_expenses : currentMetric.pa_total_billed;
+    const comparePATotal = includeExpenses ? comparePAMetric.total_billed + comparePAMetric.total_expenses  : comparePAMetric.total_billed;
+    const currentTotal = ((currentMatterTotal / currentPATotal)) * 100;
+    const compareTotal = ((compareMatterTotal / comparePATotal)) * 100;
+    result.amount = currentTotal;
+    if (compareTotal) {
+      const increase = ((currentTotal / compareTotal) - 1) * 100;
+      // const increase = ((compareTotal / currentTotal)) * 100;
+      this.formatYoYorQoQMetrics(result, increase);
+    }
+    return result;
+  }
   getBBMetric(currentMetric: any, compareMetric: any): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Block Billed';
@@ -120,7 +140,7 @@ export class QbrService {
   getTkHoursRecord(hoursCurrent: any, hoursCompare: any, qbrType: QbrType, classification: string): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = this.commonService.capitalize(classification);
-    if (!hoursCurrent || !hoursCompare) {
+    if (!hoursCurrent) {
       return result;
     }
     result.amount  = Math.round(hoursCurrent || 0);
@@ -130,10 +150,15 @@ export class QbrService {
     }
     return result;
   }
-  mapProperties(source: any, propPrefix): any {
+  mapProperties(source: any, propPrefix, isMatter = false): any {
     const metric = {} as any;
-    metric.firm_name =  source[propPrefix + 'name'];
-    metric.firm_id =  source[propPrefix + 'id'];
+    if (!isMatter) {
+      metric.firm_name =  source[propPrefix + 'name'];
+      metric.firm_id =  source[propPrefix + 'id'];
+    } else {
+      metric.matter_name =  source[propPrefix + 'name'];
+      metric.matter_id =  source[propPrefix + 'id'];
+    }
     metric.total_billed = source[propPrefix + 'total'];
     metric.total_block_billed = source[propPrefix + 'total_block_billed'];
     metric.total_expenses = source[propPrefix + 'expenses'];
@@ -148,6 +173,8 @@ export class QbrService {
     metric.avg_partner_rate = source[propPrefix + 'avg_partner_rate'];
     metric.avg_associate_rate = source[propPrefix + 'avg_associate_rate'];
     metric.bpi = source[propPrefix + 'bpi'];
+    metric.pa_total_billed = source.total_billed;
+    metric.pa_expenses = source.total_expenses;
     return metric;
   }
 

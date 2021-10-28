@@ -48,7 +48,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   getQbrs(): void {
     this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
       (data: any) => {
-        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('id'));
         if (records.length > 0) {
           if (this.qbrId) {
             this.qbr = records.find(e => e.id === Number(this.qbrId));
@@ -82,13 +82,17 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
       (data: any) => {
         if (data && data.result) {
-          this.qbrData = data.result;
-          if (this.qbrData.report_timeframe_metrics) {
+          const response = data.result;
+          if (response && response.report_timeframe_metrics) {
+            if (response.report_timeframe_top_pas && response.report_timeframe_top_pas.length > 2) {
+              response.report_timeframe_top_pas = response.report_timeframe_top_pas.slice(0, 2);
+            }
+            this.qbrData = response;
             const currentTotal = this.includeExpenses ? this.qbrData.report_timeframe_metrics.total_spend_including_expenses : this.qbrData.report_timeframe_metrics.total_spend;
             this.totalSpend = currentTotal.total;
+            this.currentPAs = Object.assign([], this.qbrData.report_timeframe_top_pas) || [];
           }
         }
-        this.currentPAs = Object.assign([], this.qbrData.report_timeframe_top_pas) || [];
       }
     );
   }
@@ -99,6 +103,13 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   export(): void {
     const divId = this.commonServ.pageSubtitle === 'All Pages' ? 'exportAll' : 'exportPage';
     this.commonServ.generatePdfQbr(this.cardTitle, divId, null);
+  }
+  printPageArea(areaID): void{
+    const printContent = document.getElementById(areaID);
+    const WinPrint = window.open('', '', 'width=1930, height=1080');
+    WinPrint.document.write(printContent.innerHTML);
+    WinPrint.document.close();
+
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

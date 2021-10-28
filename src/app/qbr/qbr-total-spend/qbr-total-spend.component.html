@@ -1,4 +1,4 @@
-<div class="p-grid gray-border-left pb20">
+<div class="p-grid gray-border-left position-relative pb20 pl10">
   <div class="p-md-12 no-padding">
     <div>
       <span class="dot-full-right"></span>
@@ -6,7 +6,7 @@
       <span class="qbr-label">Total Spend</span>
     </div>
 
-    <div class="ml20 div-height">
+    <div class="ml20">
       <div *ngFor="let metric of totalSpendMetric;let i = index;">
         <div class="p-grid ">
           <div class="p-md-12">
@@ -14,6 +14,7 @@
           </div>
           <div class="p-md-6">
             <div class="qbr-subtitle">{{ metric.amount | number:'1.0-0'}}</div>
+            <div *ngIf="metric.matterName" class="matter-name ml5">{{metric.matterName}}</div>
           </div>
           <div class="p-md-6">
             <div class="text-center mt15">

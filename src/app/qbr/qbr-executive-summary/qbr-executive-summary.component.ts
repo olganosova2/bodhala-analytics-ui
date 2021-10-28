@@ -115,7 +115,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.chartBB = chartInstance;
     const result = [this.bbMetric.amount, 100 - this.bbMetric.amount];
     this.chartBB.series[0].setData(result);
-    this.chartBB.series[0].options.colors = ['#3EDB73', 'red'];
+    this.chartBB.series[0].options.colors = ['red', '#3EDB73'];
     this.chartBB.series[0].update(this.chartBB.series[0].options);
   }
   ngOnDestroy() {

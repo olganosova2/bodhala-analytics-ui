@@ -5,11 +5,12 @@
       <div class="p-grid mt40" *ngIf="currentOverviewMetric && compareOverviewMetric">
         <div class="p-md-6 no-padding">
           <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="[totalSpendMetric]"></bd-qbr-total-spend>
-          <div class="p-grid gray-border-left mt60">
+          <div class="p-grid gray-border-left position-relative mt60">
+            <span class="dot-full-right"></span>
             <div class="p-md-12 no-padding">
-              <div class="justify-between">
+              <div class="justify-between pl10">
                 <div>
-                  <span class="dot-full-right"></span>
+
                   <img alt="icon" src="assets/images/total_bb.svg" class="qbr-icon-sm mb5 mr10 ml20">
                   <span class="qbr-label">Block Billed</span>
                 </div>
@@ -58,7 +59,7 @@
 
         </div>
         <!--second column-->
-        <div class="p-md-6 no-padding gray-border-left">
+        <div class="p-md-6 no-padding gray-border-left position-relative">
           <bd-qbr-executive-summary-right [metrics]="rightSideMetrics"
                                           [qbrType]="qbrType"></bd-qbr-executive-summary-right>
         </div>

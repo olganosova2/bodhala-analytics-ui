@@ -13,6 +13,7 @@ export interface IQbrMetric {
   amountToCompare?: number;
   icon?: string;
   addInfo?: string;
+  matterName?: string;
 }
 export interface IQbrMetricRow {
   label: string;
@@ -97,8 +98,8 @@ export const qbrPieChartOptions = {
 };
 const tkHoursPasAdditionalOptions = {
   chart: {
-    height: 180,
-    width: 180,
+    height: 200,
+    width: 200,
     type: 'pie',
     marginLeft: null,
     spacingTop: 0,
@@ -137,6 +138,21 @@ const tkHoursPasAdditionalOptions = {
   tooltip : { enabled: false },
   series: [{
     name: 'Timekeeper Hours',
+    colorByPoint: true,
+    data: []
+  }]
+};
+const matterChartsAdditionalOptions = {
+  chart: {
+    height: 310,
+    width: 310,
+    type: 'pie',
+    marginLeft: null,
+    spacingTop: 20
+  },
+  tooltip : { enabled: false },
+  series: [{
+    name: 'Top Matter',
     colorByPoint: true,
     data: []
   }]
@@ -304,7 +320,7 @@ const metricsBBOptions = {
     }
   }],
   yAxis: [{
-    max: 60,
+    max: 50,
     labels: {
       style: {
         fontSize: '12px',
@@ -335,3 +351,5 @@ export const metricsRightChartESOptions = {...baseColumnChartOptions, ...metrics
 export const metricsRightChartOptions =  {...baseColumnChartOptions, ...metricsColumnOptions};
 export const metricsBBPasChartOptions =  {...baseColumnChartOptions, ...metricsBBOptions};
 export const tkHoursPasChartOptions = { ... qbrPieChartOptions, ... tkHoursPasAdditionalOptions};
+export const matterChartOptions = { ... qbrPieChartOptions, ... matterChartsAdditionalOptions};
+// matterChartsAdditionalOptions

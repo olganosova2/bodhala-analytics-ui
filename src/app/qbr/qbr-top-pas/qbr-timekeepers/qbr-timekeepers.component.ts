@@ -11,6 +11,7 @@ export class QbrTimekeepersComponent implements OnInit {
   @Input() qbrType: QbrType;
   @Input() size: string = 'lg';
   @Input() totalSpend: number = 0;
+  @Input() showColumns: boolean = false;
 
   constructor() { }
 
