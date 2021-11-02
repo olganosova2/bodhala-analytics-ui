@@ -1,7 +1,11 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as _moment from 'moment';
 import {IPayloadDates, IQbrMetric, QbrType} from './qbr-model';
+import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
+import { Subscription } from 'rxjs';
+import {HttpService, UtilService} from 'bodhala-ui-common';
+import { DatePipe } from '@angular/common';
 
 
 const moment = _moment;
@@ -10,10 +14,13 @@ const moment = _moment;
   providedIn: 'root'
 })
 export class QbrService {
+  pendingRequest: Subscription;
   firstReport: boolean;
   yoyStartDate: any;
 
-  constructor(public commonService: CommonService) { }
+  constructor(public commonService: CommonService,
+              public utilService: UtilService,
+              private httpService: HttpService) { }
 
   formatPayloadDates(dtStart: string, qbrType: QbrType): IPayloadDates {
     const result = {
@@ -244,5 +251,174 @@ export class QbrService {
         break;
     }
     return result;
+  }
+
+  getQBRRecommendations(reportID: number): Promise<any> {
+    const payload = {
+      qbrID: reportID
+    };
+    return new Promise((resolve, reject) => {
+      return this.pendingRequest = this.httpService.makeGetRequest('getQBRRecommendations', payload).subscribe(
+        (data: any) => {
+          // console.log("rec data: ", data);
+          let recResult;
+          if (data.result) {
+            recResult = data.result;
+            if (data.generic === true) {
+              recResult = this.processGenericRecommendations(recResult);
+            } else {
+              recResult = this.processSavedRecommendations(recResult);
+            }
+          } else {
+            recResult = [];
+          }
+
+          resolve({recommendations: recResult});
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  processGenericRecommendations(recommendations: Array<any>): Array<any> {
+    for (const rec of recommendations) {
+      rec.included = false;
+      rec.practice_area = null;
+      rec.firm_id = null;
+      rec.type = rec.title;
+      rec.sort_order = rec.id;
+      rec.recommendation_type_id = rec.id;
+      rec.id = null;
+      rec.opp_edited = false;
+      rec.metrics_edited = false;
+    }
+    return recommendations;
+  }
+
+  processSavedRecommendations(recommendations: Array<any>): Array<any> {
+    let i = 0;
+    for (const rec of recommendations) {
+      if (rec.section === 'Insights') {
+        rec.notable_metrics = rec.recommendation;
+      }
+      rec.sort_order = i;
+      i++;
+      // console.log("rec: ", rec);
+    }
+    return recommendations;
+  }
+
+  saveRecommendation(rec): Promise<any> {
+    const payload = {
+      insight: rec
+    };
+    // console.log("payload: ", payload);
+    return new Promise((resolve, reject) => {
+      return this.pendingRequest = this.httpService.makePostRequest('saveQBRRecommendation', payload).subscribe(
+        (data: any) => {
+          let recResult;
+          if (data.result) {
+            recResult = data.result;
+          }
+
+          resolve(recResult);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  getClientQBRs(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      return this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
+        (data: any) => {
+          const pipe = new DatePipe('en-US');
+          let clientQBRs;
+          let first;
+          let startDate;
+          clientQBRs = data.result || [];
+          clientQBRs = clientQBRs.sort(this.utilService.dynamicSort('-created_on'));
+          if (clientQBRs.length === 0) {
+            first = true;
+          } else {
+            first = false;
+            // const yoyReport = clientQBRs.filter(qbr => qbr.report_type === 'YoY');
+            const sorted = clientQBRs.sort((a, b) => a.id - b.id);
+            // console.log("sorted: ", sorted)
+            if (sorted.length > 0) {
+              startDate = sorted[0].start_date;
+            }
+            for (const report of clientQBRs) {
+              report.created_on = pipe.transform(report.created_on, 'shortDate');
+            }
+          }
+          resolve({reports: clientQBRs, firstReport: first, firstStartDate: startDate});
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  getClientQBR(reportId: number): Promise<any> {
+    const params = {
+      report: reportId
+    };
+    return new Promise((resolve, reject) => {
+      return this.pendingRequest = this.httpService.makeGetRequest('getClientQBR', params).subscribe(
+        (data: any) => {
+          let clientQBR;
+          clientQBR = data.result || [];
+
+          resolve(clientQBR);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  saveMetrics(report, metricsForm): Promise<any> {
+    const chosenMetrics = {
+      partner_hourly_cost: false,
+      associate_hourly_cost: false,
+      total_spend: false,
+      partner_hours_percent: false,
+      associate_hours_percent: false,
+      block_billing_percent: false,
+      blended_rate: false,
+      bodhala_price_index: false
+    };
+    for (const control in metricsForm.controls) {
+      if (metricsForm.controls.hasOwnProperty(control)) {
+        chosenMetrics[control] = metricsForm.controls[control].value;
+      }
+    }
+
+    const payload = {
+      qbr_id: report.id,
+      metrics: chosenMetrics
+    };
+    return new Promise((resolve, reject) => {
+      return this.pendingRequest = this.httpService.makePostRequest('saveQBRMetrics', payload).subscribe(
+        (data: any) => {
+          let metricsResult;
+          if (data.result) {
+            metricsResult = data.result;
+          }
+
+          resolve(metricsResult);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
   }
 }

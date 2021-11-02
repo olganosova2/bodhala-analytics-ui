@@ -166,6 +166,8 @@ import { QbrTopPasFirmsComponent } from './qbr/qbr-top-pas/qbr-top-pas-firms/qbr
 import { QbrTopPasMattersComponent } from './qbr/qbr-top-pas/qbr-top-pas-matters/qbr-top-pas-matters.component';
 import { QbrAgendaComponent } from './qbr/qbr-text-pages/qbr-agenda/qbr-agenda.component';
 import { QbrDashboardComponent } from './qbr/qbr-dashboard/qbr-dashboard.component';
+import { QbrInsightsComponent } from './qbr/qbr-creation/qbr-insights/qbr-insights.component';
+import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-next-steps/qbr-next-steps.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -279,6 +281,9 @@ export function initHttp(service: HttpService) {
     QbrTopPasMattersComponent,
     QbrAgendaComponent,
     QbrDashboardComponent
+    QbrGenericMetricComponent,
+    QbrInsightsComponent,
+    QbrNextStepsComponent
   ],
   entryComponents: [
     PillComponent,

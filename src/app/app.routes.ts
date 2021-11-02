@@ -66,6 +66,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/qbrs/new', component: QbrCreationComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/yoy-rate-increase', component: YoyRateIncreaseComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/view', component: QbrDeckComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/qbrs/edit/:reportId', component: QbrCreationComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/dashboard', component: QbrDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
