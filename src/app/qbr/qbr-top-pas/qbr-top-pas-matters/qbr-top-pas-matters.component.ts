@@ -72,7 +72,7 @@ export class QbrTopPasMattersComponent implements OnInit {
     if (!currentOverviewMetric || !compareOverviewMetric) {
       return;
     }
-    const comparePARecord = this.qbrData.comparison_timeframe_top_pas ? this.qbrData.comparison_timeframe_top_pas[this.indexPa] : compareOverviewMetric;
+    const comparePARecord = this.qbrData.comparison_timeframe_top_pas && this.qbrData.comparison_timeframe_top_pas.length > 0 ? this.qbrData.comparison_timeframe_top_pas[this.indexPa] : compareOverviewMetric;
     this.practiceArea = currentOverviewMetric.practice_area;
     this.currentOverviewMetric = this.qbrService.mapProperties(currentOverviewMetric, 'matter_', true);
     this.compareOverviewMetric = this.qbrService.mapProperties(compareOverviewMetric, 'matter_', true);

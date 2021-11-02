@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import * as _moment from 'moment';
-import {IPayloadDates, IQbrMetric, QbrType} from './qbr-model';
 import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
 import { Subscription } from 'rxjs';

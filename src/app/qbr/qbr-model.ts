@@ -53,13 +53,13 @@ export interface IReport {
   report_type: string;
   status: string;
   title: string;
-  filters: JSON;
-  chosen_metrics: JSON;
+  filters: any;
+  chosen_metrics: any;
   start_date?: string;
   end_date?: string;
   created_by?: string;
   created_on?: string;
-  querystring?: JSON;
+  querystring?: any;
 }
 export interface IQbrDashboard {
   id: number;
@@ -361,21 +361,9 @@ const metricsBBOptions = {
     }]
 };
 
-export interface IReport {
-  id: number;
-  bh_client_id: number;
-  report_type: string;
-  status: string;
-  title: string;
-  filters: any;
-  chosen_metrics: any;
-  querystring: any;
-  start_date: any;
-}
 
 export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
 export const metricsRightChartESOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
-export const metricsRightChartOptions =  {...baseColumnChartOptions, ...metricsColumnOptions};
 export const metricsBBPasChartOptions =  {...baseColumnChartOptions, ...metricsBBOptions};
 export const tkHoursPasChartOptions = { ... qbrPieChartOptions, ... tkHoursPasAdditionalOptions};
 export const matterChartOptions = { ... qbrPieChartOptions, ... matterChartsAdditionalOptions};

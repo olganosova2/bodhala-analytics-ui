@@ -196,31 +196,19 @@ export class CommonService {
     const exportElement = document.getElementById(divId);
     const footerDiv = document.createElement('DIV');
 
-    const htmlWidth = exportElement.offsetWidth + 20;
-
+    let htmlWidth = exportElement.offsetWidth + 20;
     let htmlHeight = exportElement.offsetHeight;
+    const topLeftMargin =  0; // 15;
+    let pdfWidth = 1920 + (topLeftMargin * 2);
     if (divId === 'exportAll') {
+      htmlWidth = 1920 + 60;
       htmlHeight = htmlHeight + 2200;
+      pdfWidth = 1920 + 30;
     }
-    const topLeftMargin = 15;
-    // const pdfWidth = htmlWidth + (topLeftMargin * 2);
-    // const pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
-    // const pdfWidth = 1920 + (topLeftMargin * 2);
-    // const pdfHeight = 1100;
-    const pdfWidth = 1920 + (topLeftMargin * 2);
     const pdfHeight = 1100;
     const canvasImageWidth = htmlWidth;
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
-
-
-    // console.log("htmlWidth: ", htmlWidth);
-    // console.log("htmlHeight: ", htmlHeight);
-    // console.log("pdfWidth: ", pdfWidth);
-    // console.log("pdfHeight: ", pdfHeight);
-    // console.log("canvasImageWidth: ", canvasImageWidth);
-    // console.log("canvasImageHeight: ", canvasImageHeight);
-    // console.log("totalPDFPages: ", totalPDFPages);
 
     html2canvas(document.getElementById(divId), {
       useCORS: true,
@@ -232,26 +220,15 @@ export class CommonService {
 
       canvas.getContext('2d');
       this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
-
-      // const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
-      // const pdf = new jspdf(orientation, 'pt', [pdfWidth / adjusters[0], pdfHeight / adjusters[1]]);
-      // modifying this does not help show more width / height in either page
       const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
 
       // console.log("pdf: ", pdf);
       pdf.setFillColor('#FFFFFF');
-      // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
       pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
-      // pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
-
       for (let i = 1; i <= totalPDFPages; i++) {
         pdf.addPage(pdfWidth, pdfHeight);
-        // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (6 * i)), canvasImageWidth, canvasImageHeight);
         pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (i / 1.2)), canvasImageWidth, canvasImageHeight);
-        // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i), canvasImageWidth, canvasImageHeight);
         pdf.setFillColor('#FFFFFF');
-        // pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
-        // pdf.rect(0, 0, pdfWidth, (topLeftMargin * 3), 'F');
       }
       pdf.save(docName);
       this.pdfLoading = false;
@@ -319,5 +296,13 @@ export class CommonService {
       }
     }
     return result;
+  }
+  sortDates(valueA: string, valueB: string): number {
+    const dateA = new Date(valueA.substring(0, 10)).getTime();
+    const dateB = new Date(valueB.substring(0, 10)).getTime();
+    if (dateA === dateB) {
+    return 0;
+  }
+    return dateA > dateB ? 1 : -1;
   }
 }

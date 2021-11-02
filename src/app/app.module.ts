@@ -280,8 +280,7 @@ export function initHttp(service: HttpService) {
     QbrTopPasFirmsComponent,
     QbrTopPasMattersComponent,
     QbrAgendaComponent,
-    QbrDashboardComponent
-    QbrGenericMetricComponent,
+    QbrDashboardComponent,
     QbrInsightsComponent,
     QbrNextStepsComponent
   ],

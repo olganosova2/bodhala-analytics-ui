@@ -26,9 +26,11 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
   sideBarConfig: any;
   defaultColumn: any;
   defaultState: any;
+  paginationPageSize: any = 10;
   savedState: any;
   qbrsNumber: number = 0;
   currentNumber: number = 0;
+  noRecordsFound: boolean;
 
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -47,7 +49,6 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     this.defaultColumn = this.agGridService.getDefaultColumn();
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.gridOptions = this.agGridService.getDefaultGridOptions();
-    // this.gridOptions.rowHeight = 100;
     this.savedState = this.agGridService.getSavedState('ClientQBRsDashboard');
     this.initColumns();
     this.getQbrs();
@@ -56,9 +57,9 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn,  sort: 'desc', hide: true},
       {headerName: 'Report Name', field: 'qbrType', ...this.defaultColumn, filter: 'agTextColumnFilter', cellRenderer: this.reportNameCellRenderer, flex: 1},
-      {headerName: 'Report Period', field: 'reportPeriod', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1},
-      {headerName: 'Comparison Period', field: 'comparisonPeriod',  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1},
-      {headerName: 'Created On', field: 'created_on', ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1},
+      {headerName: 'Report Period', field: 'reportPeriod', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
+      {headerName: 'Comparison Period', field: 'comparisonPeriod',  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
+      {headerName: 'Created On', field: 'created_on', ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
       {headerName: 'Focused Practice Areas', field: 'practiceAreas', cellRenderer: this.arrayPASCellRenderer,  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1 },
       {headerName: 'Focused Firms', field: 'firms', cellRenderer: this.arrayFirmCellRenderer,  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 2 },
     ];
@@ -68,6 +69,7 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
       (data: any) => {
         const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
         this.qbrsNumber = records.length;
+        this.noRecordsFound = this.qbrsNumber === 0;
         for (const rec of records) {
           this.getQbrData(rec);
         }
@@ -134,7 +136,7 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     }
     const params = this.filtersService.getCurrentUserCombinedFilters();
     this.gridOptions.api.setRowData(this.qbrs);
-    // this.agGridService.restoreGrid(this.savedState, this.gridOptions);
+    this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
   reportNameCellRenderer(params: any) {
     const id = params.node.data.id;

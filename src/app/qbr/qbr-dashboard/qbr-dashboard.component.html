@@ -1,10 +1,12 @@
 <div>
+  <div *ngIf="noRecordsFound" class="mb10 mt10">No Records found</div>
   <ag-grid-angular
       #agGrid
       style="width: 100%;"
-      [ngStyle]="{'height': agGridService.setGridHeight(qbrs, 10) +'px'}"
+      [ngStyle]="{'height': agGridService.setGridHeight(qbrs, paginationPageSize) +'px'}"
       class="ag-theme-alpine"
-      [pagination]="false"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
       [sideBar]="sideBarConfig"
       (displayedColumnsChanged)="saveGridConfig($event)"
       (sortChanged)="saveGridConfig($event);"
