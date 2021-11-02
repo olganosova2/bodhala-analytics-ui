@@ -11,6 +11,8 @@
 
   </div>
   <div class="pull-right">
+        <button class="primary-button ml20" (click)="goBack()">Back
+        </button>
 <!--    <button class="primary-button ml20" (click)="printPageArea('exportAll')">Print-->
 <!--      <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>-->
 <!--    </button>-->
@@ -21,12 +23,12 @@
   </div>
   <div class="clear-both"></div>
   <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)">
-<!--    <mat-tab label="Agenda">-->
-<!--      <ng-template matTabContent>-->
-<!--        <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">-->
-<!--        </bd-qbr-agenda>-->
-<!--      </ng-template>-->
-<!--    </mat-tab>-->
+    <mat-tab label="Agenda">
+      <ng-template matTabContent>
+        <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+        </bd-qbr-agenda>
+      </ng-template>
+    </mat-tab>
 
     <mat-tab label="Executive Summary">
       <ng-template matTabContent>
@@ -91,7 +93,7 @@
             <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
             </bd-qbr-top-pas-firms>
           </div>
-          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+          <div class="" *ngIf="qbrData && currentPAs.length > 1">
             <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
             </bd-qbr-top-pas-matters>
           </div>

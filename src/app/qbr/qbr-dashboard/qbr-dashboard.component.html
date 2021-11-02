@@ -1,0 +1,16 @@
+<div>
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%;"
+      [ngStyle]="{'height': agGridService.setGridHeight(qbrs, 10) +'px'}"
+      class="ag-theme-alpine"
+      [pagination]="false"
+      [sideBar]="sideBarConfig"
+      (displayedColumnsChanged)="saveGridConfig($event)"
+      (sortChanged)="saveGridConfig($event);"
+      (columnResized)="saveGridConfig($event);"
+      [suppressAggFuncInHeader]="true"
+      [getRowHeight]="getRowHeight"
+      [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>

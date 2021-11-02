@@ -72,7 +72,7 @@ export class QbrTopPasMattersComponent implements OnInit {
     if (!currentOverviewMetric || !compareOverviewMetric) {
       return;
     }
-    const comparePARecord = this.qbrData.comparison_timeframe_top_pas[this.indexPa];
+    const comparePARecord = this.qbrData.comparison_timeframe_top_pas ? this.qbrData.comparison_timeframe_top_pas[this.indexPa] : compareOverviewMetric;
     this.practiceArea = currentOverviewMetric.practice_area;
     this.currentOverviewMetric = this.qbrService.mapProperties(currentOverviewMetric, 'matter_', true);
     this.compareOverviewMetric = this.qbrService.mapProperties(compareOverviewMetric, 'matter_', true);
@@ -112,8 +112,7 @@ export class QbrTopPasMattersComponent implements OnInit {
   }
   saveInstanceHours(chartInstance): void {
     this.chartHours = chartInstance;
-    let result = this.tkHours.map(e => e.amount);
-    result = result.filter(e => e > 1); // don't path <1 % to chart
+    const result = this.tkHours.map(e => e.amount);
     this.chartHours.series[0].options.colors = ['#00D1FF', '#FF632C', '#cccccc'];
     this.chartHours.series[0].setData(result);
   }

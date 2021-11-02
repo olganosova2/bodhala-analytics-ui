@@ -32,6 +32,7 @@ import {QbrExecutiveSummaryComponent} from './qbr/qbr-executive-summary/qbr-exec
 import {QbrComponent} from './qbr/qbr.component';
 import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 import {QbrDeckComponent} from './qbr/qbr-deck/qbr-deck.component';
+import {QbrDashboardComponent} from './qbr/qbr-dashboard/qbr-dashboard.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -64,8 +65,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/qbrs', component: QbrComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/new', component: QbrCreationComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/yoy-rate-increase', component: YoyRateIncreaseComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  // {path: 'analytics-ui/qbr/executive-summary', component: QbrExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/view', component: QbrDeckComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/qbrs/dashboard', component: QbrDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},

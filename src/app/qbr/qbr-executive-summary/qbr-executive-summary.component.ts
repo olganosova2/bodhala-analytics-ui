@@ -107,8 +107,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   saveInstanceHours(chartInstance): void {
     this.chartHours = chartInstance;
-    let result = this.tkHours.map(e => e.amount);
-    result = result.filter(e => e > 1); // don't path <1 % to chart
+    const result = this.tkHours.map(e => e.amount);
     this.chartHours.series[0].setData(result);
   }
   saveInstanceBB(chartInstance): void {

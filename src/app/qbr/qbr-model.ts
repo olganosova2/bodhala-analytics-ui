@@ -55,6 +55,20 @@ export interface IReport {
   title: string;
   filters: JSON;
   chosen_metrics: JSON;
+  start_date?: string;
+  end_date?: string;
+  created_by?: string;
+  created_on?: string;
+  querystring?: JSON;
+}
+export interface IQbrDashboard {
+  id: number;
+  reportPeriod: string;
+  comparisonPeriod: string;
+  qbrType: string;
+  created_on: string;
+  practiceAreas: Array<string>;
+  firms: Array<string>;
 }
 export const qbrPieChartOptions = {
   chart: {
@@ -205,12 +219,12 @@ const metricsColumnESOptions = {
     pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
   },
   series: [{
-    name: 'Current',
+    name: 'Previous',
     colorByPoint: true,
     data: []
   },
     {
-      name: 'Previous',
+      name: 'Current',
       colorByPoint: true,
       data: []
     }]

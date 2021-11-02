@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as _moment from 'moment';
-import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType} from './qbr-model';
+import {IPayloadDates, IQbrMetric, QbrType} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
 
 
@@ -224,6 +224,24 @@ export class QbrService {
     }
     if (tk === 'Other') {
       result =  tk;
+    }
+    return result;
+  }
+  formatQbrType(type: string): string {
+    let result = '';
+    switch (type) {
+      case QbrType.YoY:
+        result = 'Annual QBR';
+        break;
+      case QbrType.QoQAdjacent:
+        result = 'Quarterly Adjacent QBR';
+        break;
+      case QbrType.QoQAnnual:
+        result = 'Quarterly Annual QBR';
+        break;
+      default:
+        result = 'Annual QBR';
+        break;
     }
     return result;
   }

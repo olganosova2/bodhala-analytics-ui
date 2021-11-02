@@ -135,8 +135,7 @@ export class QbrTopPasComponent implements OnInit {
   }
   saveInstanceHours(chartInstance: any, index: number): void {
     this.chartHours[index] = chartInstance;
-    let result = this.tkHours[index].metrics.map(e => e.amount);
-    result = result.filter(e => e > 1); // don't path <1 % to chart
+    const result = this.tkHours[index].metrics.map(e => e.amount);
     this.chartHours[index].series[0].setData(result);
   }
 

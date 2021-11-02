@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -15,7 +15,7 @@ import {Subscription} from 'rxjs';
 export class QbrDeckComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestQbr: Subscription;
-  qbrType: any = QbrType.YoY;
+  qbrType: QbrType = QbrType.YoY;
   qbr: IQbrReport;
   qbrId: number;
   selectedTabIndex: number = 0;
@@ -34,6 +34,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
               private httpService: HttpService,
               public filtersService: FiltersService,
               public qbrService: QbrService,
+              public router: Router,
               public utilService: UtilService) {
       this.commonServ.pageTitle = 'View QBR';
       this.commonServ.pageSubtitle = 'Executive Summary';
@@ -110,6 +111,9 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     WinPrint.document.write(printContent.innerHTML);
     WinPrint.document.close();
 
+  }
+  goBack(): void {
+    this.router.navigate(['/analytics-ui/qbrs/dashboard']);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

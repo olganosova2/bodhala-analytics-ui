@@ -135,6 +135,7 @@ import {QbrTimekeepersComponent} from '../../qbr/qbr-top-pas/qbr-timekeepers/qbr
 import {QbrTopPasFirmsComponent} from '../../qbr/qbr-top-pas/qbr-top-pas-firms/qbr-top-pas-firms.component';
 import {QbrTopPasMattersComponent} from '../../qbr/qbr-top-pas/qbr-top-pas-matters/qbr-top-pas-matters.component';
 import {QbrAgendaComponent} from '../../qbr/qbr-text-pages/qbr-agenda/qbr-agenda.component';
+import {QbrDashboardComponent} from '../../qbr/qbr-dashboard/qbr-dashboard.component';
 
 
 export const IMPORTS = [
@@ -262,7 +263,8 @@ export const DECLARATIONS = [
   QbrTimekeepersComponent,
   QbrTopPasFirmsComponent,
   QbrTopPasMattersComponent,
-  QbrAgendaComponent
+  QbrAgendaComponent,
+  QbrDashboardComponent
 ];
 
 export const PROVIDERS = [

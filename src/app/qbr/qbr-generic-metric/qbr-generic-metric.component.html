@@ -1,5 +1,5 @@
 <div class="qbr-metric-header justify-center" *ngIf="!secondRow">
-  <div> <img alt="icon" src="assets/images/{{item?.icon}}" class="qbr-icon mb5 mr5 ml5 text-right" [ngClass]="{'qbr-icon-sm': item?.label && item?.label === 'BPI'}"></div>
+  <div> <img alt="icon" src="assets/images/{{item?.icon}}" class="qbr-icon mb5 mr5 ml5 text-right" [ngClass]="{'mr10 qbr-icon-sm': item?.label && item?.label === 'BPI'}"></div>
   <div class="qbr-label qbr-label-sm text-center"
        [ngClass]="{'mt10': item?.label && item?.label.length < 8, 'mr40': item?.label && item?.label.indexOf('Associate') < 0, 'mr20': item?.label && item?.label.indexOf('Associate') > 0}">{{item?.label}}</div>
 </div>
