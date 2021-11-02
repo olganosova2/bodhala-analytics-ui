@@ -103,6 +103,11 @@ export const END_POINTS_URLS = {
   generateClientQBR: {url: BASE_URL + 'analytics/generateClientQBR', showLoading: true},
   getQBRExecutiveSummary: {url: BASE_URL + 'analytics/getQBRExecutiveSummary', showLoading: true},
   getClientQBRData: {url: BASE_URL + 'analytics/getClientQBRData', showLoading: true},
+  getQBRRecommendations: {url: BASE_URL + 'analytics/getQBRRecommendations', showLoading: true},
+  getClientRateIncreaseData: {url: BASE_URL + 'analytics/getClientRateIncreaseData', showLoading: true},
+  saveQBRRecommendation: {url: BASE_URL + 'analytics/saveQBRRecommendation', showLoading: true},
+  saveQBRMetrics: {url: BASE_URL + 'analytics/saveQBRMetrics', showLoading: true},
+  getClientQBR: {url: BASE_URL + 'analytics/getClientQBR', showLoading: true},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},

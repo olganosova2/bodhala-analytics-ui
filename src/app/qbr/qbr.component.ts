@@ -42,50 +42,30 @@ export class QbrComponent implements OnInit {
     this.commonServ.pageTitle = this.userService.currentUser.client_info.org.name + ' QBRs';
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.defaultColumn = this.agGridService.getDefaultColumn();
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState('ClientConfigsGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
-    this.getClientQBRs();
+    const result = await this.qbrService.getClientQBRs();
+    this.clientQBRs = result.reports;
+    // console.log("clientQBRs: ", this.clientQBRs)
+    this.loadGrid();
   }
 
   initColumns(): void {
     this.gridOptions.columnDefs = [
-      {headerName: 'Year', field: 'year', ...this.defaultColumn,  filter: 'text', flex: 1},
+      // {headerName: 'Year', field: 'year', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'QBR Type', field: 'report_type', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Start Date', field: 'start_date', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'End Date', field: 'end_date', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'Title', field: 'title', ...this.defaultColumn,  filter: 'text', flex: 1},
+      {headerName: 'Status', field: 'status', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Author', field: 'author', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)},
-      // {headerName: 'Edot', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)}
+      {headerName: 'Edit', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)}
     ];
-  }
-
-  getClientQBRs(): void {
-    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
-      (data: any) => {
-        this.clientQBRs = data.result || [];
-        this.clientQBRs = this.clientQBRs.sort(this.utilService.dynamicSort('-created_on'));
-        const pipe = new DatePipe('en-US');
-        if (this.clientQBRs.length === 0) {
-          this.qbrService.firstReport = true;
-        } else {
-          this.qbrService.firstReport = false;
-          const yoyReport = this.clientQBRs.filter(qbr => qbr.report_type === 'YoY');
-          if (yoyReport.length > 0) {
-            this.qbrService.yoyStartDate = yoyReport[0].start_date;
-          }
-        }
-        for (const report of this.clientQBRs) {
-          report.created_on = pipe.transform(report.created_on, 'shortDate');
-        }
-        this.loadGrid();
-      }
-    );
   }
 
   loadGrid(): void {
@@ -110,9 +90,17 @@ export class QbrComponent implements OnInit {
     return value;
   }
 
+  editCellRenderer() {
+    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-pencil"></em></button>';
+    return value;
+  }
+
   view(row: any): void {
-    const item = row.data;
-    this.router.navigate(['/analytics-ui/admin/client-recommendations/view/', row.data.id]);
+    this.router.navigate(['/analytics-ui/qbrs/view/', row.data.id]);
+  }
+
+  edit(row: any): void {
+    this.router.navigate(['/analytics-ui/qbrs/edit/', row.data.id]);
   }
 
   addNew(): void {

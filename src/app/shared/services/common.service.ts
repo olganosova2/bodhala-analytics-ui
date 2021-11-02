@@ -83,7 +83,7 @@ export class CommonService {
 
   generatePdfQbr(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
-    this.generatePDF(title, divId, firmId, 'l');
+    this.generatePDFLandscape(title, divId, firmId, 'l');
   }
   generatePdfOuter(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
@@ -130,6 +130,14 @@ export class CommonService {
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
 
+    // console.log("htmlWidth: ", htmlWidth);
+    // console.log("htmlHeight: ", htmlHeight);
+    // console.log("pdfWidth: ", pdfWidth);
+    // console.log("pdfHeight: ", pdfHeight);
+    // console.log("canvasImageWidth: ", canvasImageWidth);
+    // console.log("canvasImageHeight: ", canvasImageHeight);
+    // console.log("totalPDFPages: ", totalPDFPages);
+
     if (totalPDFPages > 3) {
       exportElement.removeChild(footerDiv);
       footerDiv.removeChild(logo);
@@ -171,6 +179,82 @@ export class CommonService {
       if (title === 'Executive Summary' || title.includes('Rate Card')) {
         exportElement.removeChild(footerDiv);
       }
+    })
+      .catch(() => {
+        this.pdfLoading = false;
+        /* This is fired when the promise executes without the DOM */
+      });
+  }
+
+  generatePDFLandscape(title: string, divId: string, firmId: string, orientation: string = 'p') {
+    this.pdfLoading = true;
+    let adjusters = [1, 1];
+    if (orientation === 'l') {
+      adjusters = [1.75, 1.52];
+    }
+    const docName = title ? title : 'Export PDF';
+    const exportElement = document.getElementById(divId);
+    const footerDiv = document.createElement('DIV');
+
+    const htmlWidth = exportElement.offsetWidth + 20;
+
+    let htmlHeight = exportElement.offsetHeight;
+    if (divId === 'exportAll') {
+      htmlHeight = htmlHeight + 2200;
+    }
+    const topLeftMargin = 15;
+    // const pdfWidth = htmlWidth + (topLeftMargin * 2);
+    // const pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
+    // const pdfWidth = 1920 + (topLeftMargin * 2);
+    // const pdfHeight = 1100;
+    const pdfWidth = 1920 + (topLeftMargin * 2);
+    const pdfHeight = 1100;
+    const canvasImageWidth = htmlWidth;
+    const canvasImageHeight = htmlHeight;
+    const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
+
+
+    // console.log("htmlWidth: ", htmlWidth);
+    // console.log("htmlHeight: ", htmlHeight);
+    // console.log("pdfWidth: ", pdfWidth);
+    // console.log("pdfHeight: ", pdfHeight);
+    // console.log("canvasImageWidth: ", canvasImageWidth);
+    // console.log("canvasImageHeight: ", canvasImageHeight);
+    // console.log("totalPDFPages: ", totalPDFPages);
+
+    html2canvas(document.getElementById(divId), {
+      useCORS: true,
+      width: htmlWidth,
+      height: htmlHeight,
+      scrollY: -window.scrollY,
+      scrollX: 0
+    }).then(canvas => {
+
+      canvas.getContext('2d');
+      this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
+
+      // const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
+      // const pdf = new jspdf(orientation, 'pt', [pdfWidth / adjusters[0], pdfHeight / adjusters[1]]);
+      // modifying this does not help show more width / height in either page
+      const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
+
+      // console.log("pdf: ", pdf);
+      pdf.setFillColor('#FFFFFF');
+      // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
+      pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
+      // pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
+
+      for (let i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(pdfWidth, pdfHeight);
+        // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (6 * i)), canvasImageWidth, canvasImageHeight);
+        pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (i / 1.2)), canvasImageWidth, canvasImageHeight);
+        // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i), canvasImageWidth, canvasImageHeight);
+        pdf.setFillColor('#FFFFFF');
+        // pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
+        // pdf.rect(0, 0, pdfWidth, (topLeftMargin * 3), 'F');
+      }
+      pdf.save(docName);
+      this.pdfLoading = false;
     })
       .catch(() => {
         this.pdfLoading = false;

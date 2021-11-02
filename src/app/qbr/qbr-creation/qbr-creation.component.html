@@ -16,25 +16,34 @@
     <div class="panel-wrapper mt20">
       <h3>Create QBR</h3>
 
-      <div>
+      <div *ngIf="!reportId">
+        <label id="report-options-label" style="font-weight: 700;">Report Type:</label>
+        <mat-radio-group aria-labelledby="report-options-label"[(ngModel)]="reportType" name="reportOptions" ngDefaultControl (change)="updateDateRange()">
+          <mat-radio-button [value]="'YoY'" style="padding-right: 3em; padding-left: 3em;">Year over Year</mat-radio-button>
+          <mat-radio-button [value]="'QoQAdjacent'" style="padding-right: 3em;">Quarter over Quarter - Adjacent</mat-radio-button>
+          <mat-radio-button [value]="'QoQAnnual'">Quarter over Quarter - Annual</mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div *ngIf="editMode && reportId">
         <label id="report-options-label" style="font-weight: 700;">Report Type:</label>
         <mat-radio-group aria-labelledby="report-options-label"[(ngModel)]="reportType" name="reportOptions" ngDefaultControl (change)="updateDateRange()">
           <mat-radio-button [value]="'YoY'" [disabled]="true" style="padding-right: 3em; padding-left: 3em;">Year over Year</mat-radio-button>
-          <mat-radio-button [value]="'QoQAdjacent'" [disabled]="firstReport" style="padding-right: 3em;">Quarter over Quarter - Adjacent</mat-radio-button>
-          <mat-radio-button [value]="'QoQAnnual'" [disabled]="firstReport">Quarter over Quarter - Annual</mat-radio-button>
+          <mat-radio-button [value]="'QoQAdjacent'" [disabled]="true" style="padding-right: 3em;">Quarter over Quarter - Adjacent</mat-radio-button>
+          <mat-radio-button [value]="'QoQAnnual'" [disabled]="true">Quarter over Quarter - Annual</mat-radio-button>
         </mat-radio-group>
       </div>
 
       <div style="padding-top: 1em;" class="row">
         <div class="col-sm-12">
-          <p *ngIf="firstReport">Select the start date for this initial YoY Report. The date you select will determine the quarters for {{userService.currentUser.client_info.org.name}},
-            you will only be able to use those quarters when creating subsequent QoQ reports. If you select January 1, the quarters will be 1/1 - 3/31, 4/1 - 6/30, 7/1 - 9/30, and 10/1 - 12/31.
+          <p *ngIf="firstReport">Select the start date for this initial QBR. The date you select will determine the quarters for {{userService.currentUser.client_info.org.name}},
+            you will only be able to use those quarters when creating subsequent QBRs. If you select January 1, the quarters will be 1/1 - 3/31, 4/1 - 6/30, 7/1 - 9/30, and 10/1 - 12/31.
             If you select February 1, the quarters will be 2/1 - 4/30, 5/1 - 7/31, 8/1 - 10/31, and 11/1 - 1/31, etc.</p>
 
             <p>Apply any filtering you want on the dataset by using the filters above. You can view the returned metrics, modify the filters or start date, and click Generate Metrics to see the updated data.</p>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-4" *ngIf="formReady">
           <h4>Start Date</h4>
           <form [formGroup]="dateForm">
             <mat-form-field class="dateSelector">
@@ -177,7 +186,14 @@
 
       </div>
 
-      <div *ngIf="dataProcessed && topPA && secondPA" style="padding-top: 1.5em;">
+      <div *ngIf="dataProcessed && recommendations" style="padding-top: 1.5em;">
+        <bd-qbr-insights [recommendations]="recommendations" [topPAs]="topPAs" [topPAFirms]="topPAFirms" [secondPAFirms]="secondPAFirms" [editMode]="editMode"></bd-qbr-insights>
+      </div>
+
+
+
+
+      <div *ngIf="dataProcessed && topPA" style="padding-top: 1.5em;">
         <div>
           <h4>Additional Data Points</h4>
         </div>
@@ -190,9 +206,12 @@
 
           <tr>
             <td>Total Spend</td>
-            <td *ngIf="reportData.total_spend.total < 0">(${{reportData.total_spend.total * -1 | number:'1.0-0'}})</td>
-            <td *ngIf="reportData.total_spend.total === 0">${{reportData.total_spend.total | number:'1.0-0'}}</td>
-            <td *ngIf="reportData.total_spend.total > 0">${{reportData.total_spend.total | number:'1.0-0'}}</td>
+            <td *ngIf="reportData.total_spend.total < 0 && report.querystring['expenses'] === true">(${{reportData.total_spend_including_expenses.total * -1 | number:'1.0-0'}})</td>
+            <td *ngIf="reportData.total_spend.total === 0 && report.querystring['expenses'] === true">${{reportData.total_spend_including_expenses.total | number:'1.0-0'}}</td>
+            <td *ngIf="reportData.total_spend.total > 0 && report.querystring['expenses'] === true">${{reportData.total_spend_including_expenses.total | number:'1.0-0'}}</td>
+            <td *ngIf="reportData.total_spend.total < 0 && report.querystring['expenses'] === false">(${{reportData.total_spend.total * -1 | number:'1.0-0'}})</td>
+            <td *ngIf="reportData.total_spend.total === 0 && report.querystring['expenses'] === false">${{reportData.total_spend.total | number:'1.0-0'}}</td>
+            <td *ngIf="reportData.total_spend.total > 0 && report.querystring['expenses'] === false">${{reportData.total_spend.total | number:'1.0-0'}}</td>
             <td>{{reportData.total_spend_trend | number:'1.1-1'}}%</td>
           </tr>
 
@@ -202,7 +221,7 @@
             <td></td>
           </tr>
 
-          <tr>
+          <tr *ngIf="secondPA">
             <td>Top PA 2</td>
             <td>{{secondPA.practice_area}}</td>
             <td></td>
@@ -210,13 +229,15 @@
 
           <tr>
             <td>{{topPA.practice_area}} Spend (Report Timeframe)</td>
-            <td>${{topPA.total_billed | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === true">${{topPA.total_billed_with_expenses | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === false">${{topPA.total_billed | number:'1.0-0'}}</td>
             <td>{{topPA.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
 
-          <tr>
+          <tr *ngIf="secondPA">
             <td>{{secondPA.practice_area}} Spend (Report Timeframe)</td>
-            <td>${{secondPA.total_billed | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === true">${{secondPA.total_billed_with_expenses | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === false">${{secondPA.total_billed | number:'1.0-0'}}</td>
             <td>{{secondPA.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
 
@@ -227,7 +248,7 @@
             <td></td>
           </tr>
 
-          <tr *ngIf="secondPATopFirm && secondPASecondFirm">
+          <tr *ngIf="secondPA && secondPATopFirm && secondPASecondFirm">
             <td>{{secondPA.practice_area}} Top Firms</td>
             <td>1. {{secondPATopFirm.firm_name}}<br>
                 2. {{secondPASecondFirm.firm_name}}</td>
@@ -245,7 +266,8 @@
           </tr>
           <tr>
             <td>Total Billed (Report Timeframe)</td>
-            <td>${{topPA.total_billed | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === true">${{topPA.total_billed_with_expenses | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === false">${{topPA.total_billed | number:'1.0-0'}}</td>
             <td>{{topPA.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
           <tr>
@@ -301,7 +323,8 @@
           </tr>
           <tr>
             <td>Total Billed (Report Timeframe)</td>
-            <td>${{topPATopFirm.total_billed | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === true">${{topPATopFirm.total_billed_with_expenses | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === false">${{topPATopFirm.total_billed | number:'1.0-0'}}</td>
             <td>{{topPATopFirm.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
           <tr>
@@ -357,7 +380,8 @@
           </tr>
           <tr>
             <td>Total Billed (Report Timeframe)</td>
-            <td>${{topPASecondFirm.total_billed | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === true">${{topPASecondFirm.total_billed_with_expenses | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === false">${{topPASecondFirm.total_billed | number:'1.0-0'}}</td>
             <td>{{topPASecondFirm.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
           <tr>
@@ -413,7 +437,8 @@
           </tr>
           <tr>
             <td>Total Billed (Report Timeframe)</td>
-            <td>${{topPAMatter.total_billed | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === true">${{topPAMatter.total_billed_with_expenses | number:'1.0-0'}}</td>
+            <td *ngIf="report.querystring['expenses'] === false">${{topPAMatter.total_billed | number:'1.0-0'}}</td>
             <td>{{topPAMatter.total_billed_trend | number:'1.1-1'}}%</td>
           </tr>
           <tr>
@@ -465,244 +490,243 @@
         </table>
 
         <!-- Second PA Data -->
-        <h5 style="padding-top: 1em;" *ngIf="secondPA">Second Practice Area: {{secondPA.practice_area}}</h5>
-        <table style="width: 60%;" *ngIf="secondPA">
-          <tr>
-            <th>Title</th>
-            <th>Metric</th>
-            <th>{{reportType}} Trend</th>
-          </tr>
-          <tr>
-            <td>Total Billed (Report Timeframe)</td>
-            <td>${{secondPA.total_billed | number:'1.0-0'}}</td>
-            <td>{{secondPA.total_billed_trend | number:'1.1-1'}}%</td>
-          </tr>
-          <tr>
-            <td>{{secondPA.practice_area}} Avg. Partner Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPA.avg_partner_rate | number:'1.0-0'}}</td>
-            <td>{{secondPA.partner_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+        <div *ngIf="secondPA">
 
-          <tr>
-            <td>{{secondPA.practice_area}} Avg. Associate Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPA.avg_associate_rate | number:'1.0-0'}}</td>
-            <td>{{secondPA.assoc_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+          <h5 style="padding-top: 1em;" *ngIf="secondPA">Second Practice Area: {{secondPA.practice_area}}</h5>
+          <table style="width: 60%;" *ngIf="secondPA">
+            <tr>
+              <th>Title</th>
+              <th>Metric</th>
+              <th>{{reportType}} Trend</th>
+            </tr>
+            <tr>
+              <td>Total Billed (Report Timeframe)</td>
+              <td *ngIf="report.querystring['expenses'] === true">${{secondPA.total_billed_with_expenses | number:'1.0-0'}}</td>
+              <td *ngIf="report.querystring['expenses'] === false">${{secondPA.total_billed | number:'1.0-0'}}</td>
+              <td>{{secondPA.total_billed_trend | number:'1.1-1'}}%</td>
+            </tr>
+            <tr>
+              <td>{{secondPA.practice_area}} Avg. Partner Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPA.avg_partner_rate | number:'1.0-0'}}</td>
+              <td>{{secondPA.partner_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>{{secondPA.practice_area}} % Partner Hours (Report Timeframe)</td>
-            <td>{{secondPA.partner_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPA.partner_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>{{secondPA.practice_area}} Avg. Associate Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPA.avg_associate_rate | number:'1.0-0'}}</td>
+              <td>{{secondPA.assoc_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>{{secondPA.practice_area}} % Associate Hours (Report Timeframe)</td>
-            <td>{{secondPA.associate_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPA.assoc_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>{{secondPA.practice_area}} % Partner Hours (Report Timeframe)</td>
+              <td>{{secondPA.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPA.partner_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>{{secondPA.practice_area}} % Block Billed (Report Timeframe)</td>
-            <td>{{secondPA.percent_block_billed | number:'1.1-1'}}%</td>
-            <td>{{secondPA.bb_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>{{secondPA.practice_area}} % Associate Hours (Report Timeframe)</td>
+              <td>{{secondPA.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPA.assoc_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>{{secondPA.practice_area}} Blended Rate (Report Timeframe)</td>
-            <td>${{secondPA.avg_blended_rate | number:'1.0-0'}}</td>
-            <td>{{secondPA.blended_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>{{secondPA.practice_area}} % Block Billed (Report Timeframe)</td>
+              <td>{{secondPA.percent_block_billed | number:'1.1-1'}}%</td>
+              <td>{{secondPA.bb_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>{{secondPA.practice_area}} Bodhala Price Index (Report Timeframe)</td>
-            <td>${{secondPA.bodhala_price_index | number:'1.0-0'}}</td>
-            <td>{{secondPA.bpi_trend | number:'1.1-1'}}%</td>
-          </tr>
-        </table>
+            <tr>
+              <td>{{secondPA.practice_area}} Blended Rate (Report Timeframe)</td>
+              <td>${{secondPA.avg_blended_rate | number:'1.0-0'}}</td>
+              <td>{{secondPA.blended_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-        <!-- Second PA Top Firm Data -->
-        <h5 style="padding-top: 1em;" *ngIf="secondPATopFirm">Second PA, Top Firm: {{secondPATopFirm.firm_name}}</h5>
-        <table style="width: 60%;" *ngIf="secondPATopFirm">
-          <tr>
-            <th>Title</th>
-            <th>Metric</th>
-            <th>{{reportType}} Trend</th>
-          </tr>
-          <tr>
-            <td>Total Billed (Report Timeframe)</td>
-            <td>${{secondPATopFirm.total_billed | number:'1.0-0'}}</td>
-            <td>{{secondPATopFirm.total_billed_trend | number:'1.1-1'}}%</td>
-          </tr>
-          <tr>
-            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPATopFirm.avg_partner_rate | number:'1.0-0'}}</td>
-            <td>{{secondPATopFirm.partner_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>{{secondPA.practice_area}} Bodhala Price Index (Report Timeframe)</td>
+              <td>${{secondPA.bodhala_price_index | number:'1.0-0'}}</td>
+              <td>{{secondPA.bpi_trend | number:'1.1-1'}}%</td>
+            </tr>
+          </table>
 
-          <tr>
-            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPATopFirm.avg_associate_rate | number:'1.0-0'}}</td>
-            <td>{{secondPATopFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+          <!-- Second PA Top Firm Data -->
+          <h5 style="padding-top: 1em;" *ngIf="secondPATopFirm">Second PA, Top Firm: {{secondPATopFirm.firm_name}}</h5>
+          <table style="width: 60%;" *ngIf="secondPATopFirm">
+            <tr>
+              <th>Title</th>
+              <th>Metric</th>
+              <th>{{reportType}} Trend</th>
+            </tr>
+            <tr>
+              <td>Total Billed (Report Timeframe)</td>
+              <td *ngIf="report.querystring['expenses'] === true">${{secondPATopFirm.total_billed_with_expenses | number:'1.0-0'}}</td>
+              <td *ngIf="report.querystring['expenses'] === false">${{secondPATopFirm.total_billed | number:'1.0-0'}}</td>
+              <td>{{secondPATopFirm.total_billed_trend | number:'1.1-1'}}%</td>
+            </tr>
+            <tr>
+              <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPATopFirm.avg_partner_rate | number:'1.0-0'}}</td>
+              <td>{{secondPATopFirm.partner_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Partner Hours (Report Timeframe)</td>
-            <td>{{secondPATopFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPATopFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPATopFirm.avg_associate_rate | number:'1.0-0'}}</td>
+              <td>{{secondPATopFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Associate Hours (Report Timeframe)</td>
-            <td>{{secondPATopFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPATopFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Partner Hours (Report Timeframe)</td>
+              <td>{{secondPATopFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPATopFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Block Billed (Report Timeframe)</td>
-            <td>{{secondPATopFirm.percent_block_billed | number:'1.1-1'}}%</td>
-            <td>{{secondPATopFirm.bb_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Associate Hours (Report Timeframe)</td>
+              <td>{{secondPATopFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPATopFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>Blended Rate (Report Timeframe)</td>
-            <td>${{secondPATopFirm.avg_blended_rate | number:'1.0-0'}}</td>
-            <td>{{secondPATopFirm.blended_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Block Billed (Report Timeframe)</td>
+              <td>{{secondPATopFirm.percent_block_billed | number:'1.1-1'}}%</td>
+              <td>{{secondPATopFirm.bb_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>Bodhala Price Index (Report Timeframe)</td>
-            <td>${{secondPATopFirm.bodhala_price_index | number:'1.0-0'}}</td>
-            <td>{{secondPATopFirm.bpi_trend | number:'1.1-1'}}%</td>
-          </tr>
-        </table>
+            <tr>
+              <td>Blended Rate (Report Timeframe)</td>
+              <td>${{secondPATopFirm.avg_blended_rate | number:'1.0-0'}}</td>
+              <td>{{secondPATopFirm.blended_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-        <!-- Second PA Second Firm Data -->
-        <h5 style="padding-top: 1em;" *ngIf="secondPASecondFirm">Second PA, Second Firm: {{secondPASecondFirm.firm_name}}</h5>
-        <table style="width: 60%;" *ngIf="secondPASecondFirm">
-          <tr>
-            <th>Title</th>
-            <th>Metric</th>
-            <th>{{reportType}} Trend</th>
-          </tr>
-          <tr>
-            <td>Total Billed (Report Timeframe)</td>
-            <td>${{secondPASecondFirm.total_billed | number:'1.0-0'}}</td>
-            <td>{{secondPASecondFirm.total_billed_trend | number:'1.1-1'}}%</td>
-          </tr>
-          <tr>
-            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPASecondFirm.avg_partner_rate | number:'1.0-0'}}</td>
-            <td>{{secondPASecondFirm.partner_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>Bodhala Price Index (Report Timeframe)</td>
+              <td>${{secondPATopFirm.bodhala_price_index | number:'1.0-0'}}</td>
+              <td>{{secondPATopFirm.bpi_trend | number:'1.1-1'}}%</td>
+            </tr>
+          </table>
 
-          <tr>
-            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPASecondFirm.avg_associate_rate | number:'1.0-0'}}</td>
-            <td>{{secondPASecondFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+          <!-- Second PA Second Firm Data -->
+          <h5 style="padding-top: 1em;" *ngIf="secondPASecondFirm">Second PA, Second Firm: {{secondPASecondFirm.firm_name}}</h5>
+          <table style="width: 60%;" *ngIf="secondPASecondFirm">
+            <tr>
+              <th>Title</th>
+              <th>Metric</th>
+              <th>{{reportType}} Trend</th>
+            </tr>
+            <tr>
+              <td>Total Billed (Report Timeframe)</td>
+              <td *ngIf="report.querystring['expenses'] === true">${{secondPASecondFirm.total_billed_with_expenses | number:'1.0-0'}}</td>
+              <td *ngIf="report.querystring['expenses'] === false">${{secondPASecondFirm.total_billed | number:'1.0-0'}}</td>
+              <td>{{secondPASecondFirm.total_billed_trend | number:'1.1-1'}}%</td>
+            </tr>
+            <tr>
+              <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPASecondFirm.avg_partner_rate | number:'1.0-0'}}</td>
+              <td>{{secondPASecondFirm.partner_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Partner Hours (Report Timeframe)</td>
-            <td>{{secondPASecondFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPASecondFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPASecondFirm.avg_associate_rate | number:'1.0-0'}}</td>
+              <td>{{secondPASecondFirm.assoc_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Associate Hours (Report Timeframe)</td>
-            <td>{{secondPASecondFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPASecondFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Partner Hours (Report Timeframe)</td>
+              <td>{{secondPASecondFirm.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPASecondFirm.partner_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Block Billed (Report Timeframe)</td>
-            <td>{{secondPASecondFirm.percent_block_billed | number:'1.1-1'}}%</td>
-            <td>{{secondPASecondFirm.bb_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Associate Hours (Report Timeframe)</td>
+              <td>{{secondPASecondFirm.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPASecondFirm.assoc_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>Blended Rate (Report Timeframe)</td>
-            <td>${{secondPASecondFirm.avg_blended_rate | number:'1.0-0'}}</td>
-            <td>{{secondPASecondFirm.blended_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Block Billed (Report Timeframe)</td>
+              <td>{{secondPASecondFirm.percent_block_billed | number:'1.1-1'}}%</td>
+              <td>{{secondPASecondFirm.bb_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>Bodhala Price Index (Report Timeframe)</td>
-            <td>${{secondPASecondFirm.bodhala_price_index | number:'1.0-0'}}</td>
-            <td>{{secondPASecondFirm.bpi_trend | number:'1.1-1'}}%</td>
-          </tr>
-        </table>
+            <tr>
+              <td>Blended Rate (Report Timeframe)</td>
+              <td>${{secondPASecondFirm.avg_blended_rate | number:'1.0-0'}}</td>
+              <td>{{secondPASecondFirm.blended_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-        <!-- Second PA Top Matter Data -->
-        <h5 style="padding-top: 1em;" *ngIf="secondPAMatter">Second PA, Top Matter: {{secondPAMatter.matter_name}}</h5>
-        <table style="width: 60%;" *ngIf="secondPAMatter">
-          <tr>
-            <th>Title</th>
-            <th>Metric</th>
-            <th>{{reportType}} Trend</th>
-          </tr>
-          <tr>
-            <td>Total Billed (Report Timeframe)</td>
-            <td>${{secondPAMatter.total_billed | number:'1.0-0'}}</td>
-            <td>{{secondPAMatter.total_billed_trend | number:'1.1-1'}}%</td>
-          </tr>
-          <tr>
-            <td>% of PA Total Billed (Report Timeframe)</td>
-            <td>{{secondPAMatter.pct_of_total_spend | number:'1.1-1'}}%</td>
-            <td>{{secondPAMatter.pct_of_total_spend_trend | number:'1.1-1'}}%</td>
-          </tr>
-          <tr>
-            <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPAMatter.avg_partner_rate | number:'1.0-0'}}</td>
-            <td>{{secondPAMatter.partner_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>Bodhala Price Index (Report Timeframe)</td>
+              <td>${{secondPASecondFirm.bodhala_price_index | number:'1.0-0'}}</td>
+              <td>{{secondPASecondFirm.bpi_trend | number:'1.1-1'}}%</td>
+            </tr>
+          </table>
 
-          <tr>
-            <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
-            <td>${{secondPAMatter.avg_associate_rate | number:'1.0-0'}}</td>
-            <td>{{secondPAMatter.assoc_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+          <!-- Second PA Top Matter Data -->
+          <h5 style="padding-top: 1em;" *ngIf="secondPAMatter">Second PA, Top Matter: {{secondPAMatter.matter_name}}</h5>
+          <table style="width: 60%;" *ngIf="secondPAMatter">
+            <tr>
+              <th>Title</th>
+              <th>Metric</th>
+              <th>{{reportType}} Trend</th>
+            </tr>
+            <tr>
+              <td>Total Billed (Report Timeframe)</td>
+              <td *ngIf="report.querystring['expenses'] === true">${{secondPAMatter.total_billed_with_expenses | number:'1.0-0'}}</td>
+              <td *ngIf="report.querystring['expenses'] === false">${{secondPAMatter.total_billed | number:'1.0-0'}}</td>
+              <td>{{secondPAMatter.total_billed_trend | number:'1.1-1'}}%</td>
+            </tr>
+            <tr>
+              <td>% of PA Total Billed (Report Timeframe)</td>
+              <td>{{secondPAMatter.pct_of_total_spend | number:'1.1-1'}}%</td>
+              <td>{{secondPAMatter.pct_of_total_spend_trend | number:'1.1-1'}}%</td>
+            </tr>
+            <tr>
+              <td>Avg. Partner Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPAMatter.avg_partner_rate | number:'1.0-0'}}</td>
+              <td>{{secondPAMatter.partner_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Partner Hours (Report Timeframe)</td>
-            <td>{{secondPAMatter.partner_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPAMatter.partner_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>Avg. Associate Hourly Cost (Report Timeframe)</td>
+              <td>${{secondPAMatter.avg_associate_rate | number:'1.0-0'}}</td>
+              <td>{{secondPAMatter.assoc_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Associate Hours (Report Timeframe)</td>
-            <td>{{secondPAMatter.associate_percent_hours_worked | number:'1.1-1'}}%</td>
-            <td>{{secondPAMatter.assoc_hrs_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Partner Hours (Report Timeframe)</td>
+              <td>{{secondPAMatter.partner_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPAMatter.partner_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>% Block Billed (Report Timeframe)</td>
-            <td>{{secondPAMatter.percent_block_billed | number:'1.1-1'}}%</td>
-            <td>{{secondPAMatter.bb_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Associate Hours (Report Timeframe)</td>
+              <td>{{secondPAMatter.associate_percent_hours_worked | number:'1.1-1'}}%</td>
+              <td>{{secondPAMatter.assoc_hrs_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>Blended Rate (Report Timeframe)</td>
-            <td>${{secondPAMatter.avg_blended_rate | number:'1.0-0'}}</td>
-            <td>{{secondPAMatter.blended_rate_trend | number:'1.1-1'}}%</td>
-          </tr>
+            <tr>
+              <td>% Block Billed (Report Timeframe)</td>
+              <td>{{secondPAMatter.percent_block_billed | number:'1.1-1'}}%</td>
+              <td>{{secondPAMatter.bb_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-          <tr>
-            <td>Bodhala Price Index (Report Timeframe)</td>
-            <td>${{secondPAMatter.bodhala_price_index | number:'1.0-0'}}</td>
-            <td>{{secondPAMatter.bpi_trend | number:'1.1-1'}}%</td>
-          </tr>
-        </table>
+            <tr>
+              <td>Blended Rate (Report Timeframe)</td>
+              <td>${{secondPAMatter.avg_blended_rate | number:'1.0-0'}}</td>
+              <td>{{secondPAMatter.blended_rate_trend | number:'1.1-1'}}%</td>
+            </tr>
 
-
+            <tr>
+              <td>Bodhala Price Index (Report Timeframe)</td>
+              <td>${{secondPAMatter.bodhala_price_index | number:'1.0-0'}}</td>
+              <td>{{secondPAMatter.bpi_trend | number:'1.1-1'}}%</td>
+            </tr>
+          </table>
+        </div>
 
       </div>
-
     </div>
-
-
-
-
-
   </div>
 </div>
 
