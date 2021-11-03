@@ -81,10 +81,6 @@ export class CommonService {
     );
   }
 
-  generatePdfQbr(title: string, divId: string, firmId: string) {
-    this.pdfLoading = true;
-    this.generatePDFLandscape(title, divId, firmId, 'l');
-  }
   generatePdfOuter(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
     this.generatePDF(title, divId, firmId);
@@ -186,42 +182,16 @@ export class CommonService {
       });
   }
 
-  generatePDFLandscape(title: string, divId: string, firmId: string, orientation: string = 'p') {
+  generatePDFQbr(title: string, divId: string) {
     this.pdfLoading = true;
-    let adjusters = [1, 1];
-    if (orientation === 'l') {
-      adjusters = [1.75, 1.52];
-    }
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
-    const footerDiv = document.createElement('DIV');
-
-    const htmlWidth = exportElement.offsetWidth + 20;
-
-    let htmlHeight = exportElement.offsetHeight;
-    if (divId === 'exportAll') {
-      htmlHeight = htmlHeight + 2200;
-    }
-    const topLeftMargin = 15;
-    // const pdfWidth = htmlWidth + (topLeftMargin * 2);
-    // const pdfHeight = (pdfWidth * 1.5) + (topLeftMargin * 2);
-    // const pdfWidth = 1920 + (topLeftMargin * 2);
-    // const pdfHeight = 1100;
-    const pdfWidth = 1920 + (topLeftMargin * 2);
-    const pdfHeight = 1100;
-    const canvasImageWidth = htmlWidth;
-    const canvasImageHeight = htmlHeight;
+    const htmlHeight = exportElement.offsetHeight;
+    const topLeftMargin =  0;
+    const htmlWidth = 1920;
+    const pdfHeight = 1080;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
 
-
-    // console.log("htmlWidth: ", htmlWidth);
-    // console.log("htmlHeight: ", htmlHeight);
-    // console.log("pdfWidth: ", pdfWidth);
-    // console.log("pdfHeight: ", pdfHeight);
-    // console.log("canvasImageWidth: ", canvasImageWidth);
-    // console.log("canvasImageHeight: ", canvasImageHeight);
-    // console.log("totalPDFPages: ", totalPDFPages);
-
     html2canvas(document.getElementById(divId), {
       useCORS: true,
       width: htmlWidth,
@@ -232,66 +202,12 @@ export class CommonService {
 
       canvas.getContext('2d');
       this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
-
-      // const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
-      // const pdf = new jspdf(orientation, 'pt', [pdfWidth / adjusters[0], pdfHeight / adjusters[1]]);
-      // modifying this does not help show more width / height in either page
-      const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
-
-      // console.log("pdf: ", pdf);
-      pdf.setFillColor('#FFFFFF');
-      // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
-      pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
-      // pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
-
-      for (let i = 1; i <= totalPDFPages; i++) {
-        pdf.addPage(pdfWidth, pdfHeight);
-        // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (6 * i)), canvasImageWidth, canvasImageHeight);
-        pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i) + (topLeftMargin * (i / 1.2)), canvasImageWidth, canvasImageHeight);
-        // pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i), canvasImageWidth, canvasImageHeight);
-        pdf.setFillColor('#FFFFFF');
-        // pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
-        // pdf.rect(0, 0, pdfWidth, (topLeftMargin * 3), 'F');
-      }
-      pdf.save(docName);
-      this.pdfLoading = false;
-    })
-      .catch(() => {
-        this.pdfLoading = false;
-        /* This is fired when the promise executes without the DOM */
-      });
-  }
-  generatePDFQbrAll(title: string, divId: string, numCards: number) {
-    this.pdfLoading = true;
-    const docName = title ? title : 'Export PDF';
-    const exportElement = document.getElementById(divId);
-
-    let htmlWidth = exportElement.offsetWidth + 20;
-    let htmlHeight = exportElement.offsetHeight;
-    const topLeftMargin =  0;
-    const screenWidth = 1920;
-    htmlWidth = screenWidth + 60;
-    const pdfWidth = screenWidth + 30;
-    htmlHeight = htmlHeight + 130 * numCards;
-    const pdfHeight = 1084; //  1084 htmlHeight / numCards;
-    const totalPDFPages = numCards - 1;
-
-    html2canvas(document.getElementById(divId), {
-      useCORS: true,
-      width: htmlWidth,
-      height: htmlHeight,
-      scrollY: -window.scrollY,
-      scrollX: 0
-    }).then(canvas => {
-
-      canvas.getContext('2d');
-      this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
-      const pdf = new jspdf('l', 'pt', [pdfWidth, pdfHeight]);
+      const pdf = new jspdf('l', 'pt', [htmlWidth, pdfHeight]);
 
       pdf.setFillColor('#FFFFFF');
       pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, htmlWidth, htmlHeight);
       for (let i = 1; i <= totalPDFPages; i++) {
-        pdf.addPage(pdfWidth, pdfHeight);
+        pdf.addPage(htmlWidth, pdfHeight);
         pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i), htmlWidth, htmlHeight);
         pdf.setFillColor('#FFFFFF');
       }

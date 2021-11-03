@@ -67,7 +67,7 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
   getQbrs(): void {
     this.pendingRequest = this.httpService.makeGetRequest<IReport>('getClientQBRs').subscribe(
       (data: any) => {
-        let records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
         // records = records.filter(e => e.status === 'COMPLETE'); // TODO uncomment when flow is completed
         this.qbrsNumber = records.length;
         this.noRecordsFound = this.qbrsNumber === 0;
