@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
   selector: 'bd-qbr-agenda',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QbrAgendaComponent implements OnInit {
  agendaItems: Array<any>;
+  @Input() zoom: boolean;
   constructor() {
     this.agendaItems = [
       {num: 'I.', label: 'Progress Update'},

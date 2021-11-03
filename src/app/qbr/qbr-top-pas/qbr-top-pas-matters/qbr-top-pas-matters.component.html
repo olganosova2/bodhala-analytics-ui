@@ -1,6 +1,6 @@
 <div>
   <div class="qbr-wrapper">
-    <div class="qbr-panel position-relative" id="exportPage" #exportPage>
+    <div class="qbr-panel position-relative" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
       <div class="card-title">{{ practiceArea }}: Top matter<span class="dot-full dot-full-online"></span></div>
       <div class="p-grid mt40" *ngIf="currentOverviewMetric">
         <div class="p-md-7 no-padding">

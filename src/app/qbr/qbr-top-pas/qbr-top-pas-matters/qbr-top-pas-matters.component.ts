@@ -36,6 +36,7 @@ export class QbrTopPasMattersComponent implements OnInit {
   @Input() indexPa: number = 0;
   @Input() qbrData: any;
   @Input() qbr: IQbrReport;
+  @Input() zoom: boolean;
 
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,

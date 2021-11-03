@@ -1,6 +1,6 @@
 <div>
   <div class="qbr-wrapper">
-    <div class="qbr-panel position-relative bg-16" id="exportPage" #exportPage>
+    <div class="qbr-panel position-relative bg-1" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
       <div class="card-title">Agenda<span class="dot-full dot-full-online"></span></div>
        <div class="p-grid mt30">
          <div class="p-md-6 gray-border-left position-relative agenda-item" *ngFor="let item of agendaItems">

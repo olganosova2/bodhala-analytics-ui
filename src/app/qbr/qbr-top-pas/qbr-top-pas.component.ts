@@ -29,6 +29,7 @@ export class QbrTopPasComponent implements OnInit {
   queryString: string;
   @Input() qbrData: any;
   @Input() qbr: IQbrReport;
+  @Input() zoom: boolean;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,

@@ -67,7 +67,8 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
   getQbrs(): void {
     this.pendingRequest = this.httpService.makeGetRequest<IReport>('getClientQBRs').subscribe(
       (data: any) => {
-        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        let records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        // records = records.filter(e => e.status === 'COMPLETE'); // TODO uncomment when flow is completed
         this.qbrsNumber = records.length;
         this.noRecordsFound = this.qbrsNumber === 0;
         for (const rec of records) {
@@ -82,7 +83,7 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     qbrLine.id = rec.id;
     qbrLine.reportPeriod = moment(dates.startDate).format('MM/DD/YYYY') + ' - ' +  moment(dates.endDate).format('MM/DD/YYYY');
     qbrLine.comparisonPeriod = moment(dates.comparisonStartDate).format('MM/DD/YYYY') + ' - ' +  moment(dates.comparisonEndDate).format('MM/DD/YYYY');
-    qbrLine.qbrType = this.qbrService.formatQbrType(rec.report_type);
+    qbrLine.qbrType = rec.title ? rec.title : this.qbrService.formatQbrType(rec.report_type);
     qbrLine.created_on = moment(rec.created_on).format('MM/DD/YYYY');
     qbrLine.firms = [];
     qbrLine.practiceAreas = [];

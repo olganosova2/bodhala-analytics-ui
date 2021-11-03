@@ -27,6 +27,8 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   includeExpenses: boolean;
   reportDates: IPayloadDates;
   currentPAs: Array<any> = [];
+  cardNum: number = 14;
+  zoom: boolean = true;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -103,14 +105,12 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   }
   export(): void {
     const divId = this.commonServ.pageSubtitle === 'All Pages' ? 'exportAll' : 'exportPage';
-    this.commonServ.generatePdfQbr(this.cardTitle, divId, null);
-  }
-  printPageArea(areaID): void{
-    const printContent = document.getElementById(areaID);
-    const WinPrint = window.open('', '', 'width=1930, height=1080');
-    WinPrint.document.write(printContent.innerHTML);
-    WinPrint.document.close();
-
+    // this.commonServ.generatePdfQbr(this.cardTitle, divId, null);
+    if (divId === 'exportAll') {
+      this.commonServ.generatePDFQbrAll(this.cardTitle, divId, this.cardNum);
+    } else {
+      this.commonServ.generatePdfQbr(this.cardTitle, divId, null);
+    }
   }
   goBack(): void {
     this.router.navigate(['/analytics-ui/qbrs/dashboard']);

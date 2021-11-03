@@ -39,6 +39,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   queryString: string;
   @Input() qbrData: any;
   @Input() qbr: IQbrReport;
+  @Input() zoom: boolean;
   constructor(
               private route: ActivatedRoute,
               public commonServ: CommonService,
