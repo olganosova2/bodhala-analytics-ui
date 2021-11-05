@@ -1,0 +1,13 @@
+:host ::ng-deep {
+  .p-md-5, .p-md-7 {
+    padding-top: 0 !important;
+    padding-right: 20px !important
+  }
+  .p-md-4 {
+    padding: 0 !important;
+  }
+}
+.hours-div {
+  padding: 0 10px;
+  text-align: center;
+}

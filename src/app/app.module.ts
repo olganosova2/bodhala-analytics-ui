@@ -158,6 +158,14 @@ import { QbrComponent } from './qbr/qbr.component';
 import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 import { QbrDeckComponent } from './qbr/qbr-deck/qbr-deck.component';
 import { QbrGenericMetricComponent } from './qbr/qbr-generic-metric/qbr-generic-metric.component';
+import { QbrTopPasComponent } from './qbr/qbr-top-pas/qbr-top-pas.component';
+import { QbrTotalSpendComponent } from './qbr/qbr-total-spend/qbr-total-spend.component';
+import { GenericMetricsRightComponent } from './qbr/qbr-top-pas/generic-metrics-right/generic-metrics-right.component';
+import { QbrTimekeepersComponent } from './qbr/qbr-top-pas/qbr-timekeepers/qbr-timekeepers.component';
+import { QbrTopPasFirmsComponent } from './qbr/qbr-top-pas/qbr-top-pas-firms/qbr-top-pas-firms.component';
+import { QbrTopPasMattersComponent } from './qbr/qbr-top-pas/qbr-top-pas-matters/qbr-top-pas-matters.component';
+import { QbrAgendaComponent } from './qbr/qbr-text-pages/qbr-agenda/qbr-agenda.component';
+import { QbrDashboardComponent } from './qbr/qbr-dashboard/qbr-dashboard.component';
 import { QbrInsightsComponent } from './qbr/qbr-creation/qbr-insights/qbr-insights.component';
 import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/qbr-next-steps.component';
 import { NextStepInputsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/next-step-inputs/next-step-inputs.component';
@@ -266,6 +274,14 @@ export function initHttp(service: HttpService) {
     QbrCreationComponent,
     QbrDeckComponent,
     QbrGenericMetricComponent,
+    QbrTopPasComponent,
+    QbrTotalSpendComponent,
+    GenericMetricsRightComponent,
+    QbrTimekeepersComponent,
+    QbrTopPasFirmsComponent,
+    QbrTopPasMattersComponent,
+    QbrAgendaComponent,
+    QbrDashboardComponent,
     QbrInsightsComponent,
     QbrNextStepsComponent,
     NextStepInputsComponent

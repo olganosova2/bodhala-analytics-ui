@@ -39,6 +39,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   queryString: string;
   @Input() qbrData: any;
   @Input() qbr: IQbrReport;
+  @Input() zoom: boolean;
   constructor(
               private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -74,6 +75,8 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
     if (!this.currentOverviewMetric || !this.compareOverviewMetric) {
       return;
     }
+    this.currentOverviewMetric.block_billed_pct = this.currentOverviewMetric.percent_block_billed;
+    this.compareOverviewMetric.block_billed_pct = this.compareOverviewMetric.percent_block_billed;
     this.totalSpendMetric = this.qbrService.getOveralSpendMetric(this.currentOverviewMetric, this.compareOverviewMetric, this.includeExpenses);
     this.bbMetric = this.qbrService.getBBMetric(this.currentOverviewMetric, this.compareOverviewMetric);
     this.processTimekeepersHours();
@@ -88,8 +91,8 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   processTimekeepersHours(): void {
     this.tkHours = [];
-    this.qbrService.getPercentHours(this.currentOverviewMetric);
-    this.qbrService.getPercentHours(this.compareOverviewMetric);
+    this.qbrService.getPercentHours(this.currentOverviewMetric, true);
+    this.qbrService.getPercentHours(this.compareOverviewMetric, true);
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.partner_percent_hours_worked, this.compareOverviewMetric.partner_percent_hours_worked, this.qbrType, 'Partner'));
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.associate_percent_hours_worked, this.compareOverviewMetric.associate_percent_hours_worked, this.qbrType, 'Associate'));
     this.tkHours.push(this.qbrService.getTkHoursRecord(this.currentOverviewMetric.paralegal_percent_hours_worked, this.compareOverviewMetric.paralegal_percent_hours_worked, this.qbrType, 'Paralegal'));
@@ -105,15 +108,14 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   saveInstanceHours(chartInstance): void {
     this.chartHours = chartInstance;
-    let result = this.tkHours.map(e => e.amount);
-    result = result.filter(e => e > 1); // don't path <1 % to chart
+    const result = this.tkHours.map(e => e.amount);
     this.chartHours.series[0].setData(result);
   }
   saveInstanceBB(chartInstance): void {
     this.chartBB = chartInstance;
     const result = [this.bbMetric.amount, 100 - this.bbMetric.amount];
     this.chartBB.series[0].setData(result);
-    this.chartBB.series[0].options.colors = ['#3EDB73', 'red'];
+    this.chartBB.series[0].options.colors = ['red', '#3EDB73'];
     this.chartBB.series[0].update(this.chartBB.series[0].options);
   }
   ngOnDestroy() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {IQbrMetric, metricsRightChartOptions, QbrType} from '../../qbr-model';
+import {IQbrMetric, metricsRightChartESOptions, metricsRightChartOptions, QbrType} from '../../qbr-model';
 
 @Component({
   selector: 'bd-qbr-executive-summary-right',
@@ -19,7 +19,7 @@ export class QbrExecutiveSummaryRightComponent implements OnInit {
   }
 
   setUpChartOptions(): void {
-    this.options = Object.assign({}, metricsRightChartOptions);
+    this.options = Object.assign({}, metricsRightChartESOptions);
   }
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
@@ -27,8 +27,8 @@ export class QbrExecutiveSummaryRightComponent implements OnInit {
     const resultToCompare = this.metrics.map(e => e.amountToCompare);
     const width = this.metrics.length * 205;
     this.chart.setSize(width, 460, false);
-    this.chart.series[0].setData(result);
-    this.chart.series[1].setData(resultToCompare);
+    this.chart.series[1].setData(result);
+    this.chart.series[0].setData(resultToCompare);
   }
 
 }

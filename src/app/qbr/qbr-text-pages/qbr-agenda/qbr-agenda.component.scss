@@ -1,0 +1,16 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+.p-grid {
+  width: 70%;
+}
+.agenda-item {
+  font-size: 36px;
+  padding-left: 40px;
+  padding-bottom: 30px;
+  height: 200px;
+}
+:host ::ng-deep {
+  .p-md-6 {
+    padding-top: 0 !important;
+  }
+}

@@ -72,15 +72,50 @@ export class QbrService {
     }
     return result;
   }
+  getOveralSpendMetricPA(currentMetric: any, compareMetric: any, includeExpenses: boolean): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = 'Total Spend';
+    if (!currentMetric) {
+      return result;
+    }
+    const currentTotal = includeExpenses ? currentMetric.total_billed + currentMetric.total_expenses : currentMetric.total_billed;
+    const compareTotal = includeExpenses ? compareMetric.total_billed + compareMetric.total_expenses  : compareMetric.total_billed;
+    result.amount = currentTotal;
+    if (compareTotal) {
+      const increase = ((currentTotal / compareTotal) - 1) * 100;
+      this.formatYoYorQoQMetrics(result, increase);
+    }
+    return result;
+  }
+  getVolumeMetric(currentMetric: any, compareMetric: any, comparePAMetric: any,  includeExpenses: boolean): IQbrMetric {
+    const result = Object.assign({}, this.generateEmptyMetric());
+    result.label = 'PA Volume';
+    if (!currentMetric) {
+      return result;
+    }
+    const currentMatterTotal = includeExpenses ? currentMetric.total_billed + currentMetric.total_expenses : currentMetric.total_billed;
+    const compareMatterTotal = includeExpenses ? compareMetric.total_billed + compareMetric.total_expenses  : compareMetric.total_billed;
+    const currentPATotal = includeExpenses ? currentMetric.pa_total_billed + currentMetric.pa_expenses : currentMetric.pa_total_billed;
+    const comparePATotal = includeExpenses ? comparePAMetric.total_billed + comparePAMetric.total_expenses  : comparePAMetric.total_billed;
+    const currentTotal = ((currentMatterTotal / currentPATotal)) * 100;
+    const compareTotal = ((compareMatterTotal / comparePATotal)) * 100;
+    result.amount = currentTotal;
+    if (compareTotal) {
+      const increase = ((currentTotal / compareTotal) - 1) * 100;
+      // const increase = ((compareTotal / currentTotal)) * 100;
+      this.formatYoYorQoQMetrics(result, increase);
+    }
+    return result;
+  }
   getBBMetric(currentMetric: any, compareMetric: any): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Block Billed';
     if (!currentMetric) {
       return result;
     }
-    result.amount  = Math.round(currentMetric.percent_block_billed || 0);
-    if (compareMetric && compareMetric.percent_block_billed) {
-      const increase = ((currentMetric.percent_block_billed / compareMetric.percent_block_billed) - 1) * 100;
+    result.amount  = Math.round(currentMetric.block_billed_pct || 0);
+    if (compareMetric && compareMetric.block_billed_pct) {
+      const increase = ((currentMetric.block_billed_pct / compareMetric.block_billed_pct) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
     return result;
@@ -100,8 +135,12 @@ export class QbrService {
     }
     return result;
   }
-  getPercentHours(metric: any): void {
-    metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours + metric.total_paralegal_hours);
+  getPercentHours(metric: any, includeParalegals: boolean): void {
+    if (includeParalegals) {
+      metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours + metric.total_paralegal_hours);
+    } else {
+      metric.total_other_hours =  metric.total_hours - (metric.total_partner_hours + metric.total_associate_hours);
+    }
     metric.associate_percent_hours_worked = metric.total_hours ? (metric.total_associate_hours / metric.total_hours) * 100 : 0;
     metric.partner_percent_hours_worked = metric.total_hours ? (metric.total_partner_hours / metric.total_hours) * 100 : 0;
     metric.paralegal_percent_hours_worked = metric.total_hours ? (metric.total_paralegal_hours / metric.total_hours) * 100 : 0;
@@ -114,11 +153,38 @@ export class QbrService {
       return result;
     }
     result.amount  = Math.round(hoursCurrent || 0);
-    if (hoursCurrent) {
+    if (hoursCurrent && hoursCompare) {
       const increase = ((hoursCurrent / hoursCompare) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
     return result;
+  }
+  mapProperties(source: any, propPrefix, isMatter = false): any {
+    const metric = {} as any;
+    if (!isMatter) {
+      metric.firm_name =  source[propPrefix + 'name'];
+      metric.firm_id =  source[propPrefix + 'id'];
+    } else {
+      metric.matter_name =  source[propPrefix + 'name'];
+      metric.matter_id =  source[propPrefix + 'id'];
+    }
+    metric.total_billed = source[propPrefix + 'total'];
+    metric.total_block_billed = source[propPrefix + 'total_block_billed'];
+    metric.total_expenses = source[propPrefix + 'expenses'];
+    metric.total_hours = source[propPrefix + 'hours'];
+    metric.total_partner_hours = source[propPrefix + 'partner_hours'];
+    metric.total_partner_billed = source[propPrefix + 'partner_billed'];
+    metric.total_associate_hours = source[propPrefix + 'associate_hours'];
+    metric.total_associate_billed = source[propPrefix + 'associate_billed'];
+    metric.total_paralegal_hours = source[propPrefix + 'paralegal_hours'];
+    metric.blended_rate = source[propPrefix + 'blended_rate'];
+    metric.block_billed_pct = source[propPrefix + 'block_billed_pct'];
+    metric.avg_partner_rate = source[propPrefix + 'avg_partner_rate'];
+    metric.avg_associate_rate = source[propPrefix + 'avg_associate_rate'];
+    metric.bpi = source[propPrefix + 'bpi'];
+    metric.pa_total_billed = source.total_billed;
+    metric.pa_expenses = source.total_expenses;
+    return metric;
   }
 
   constructSelectableQuarterDates(startDate): any {
@@ -167,6 +233,24 @@ export class QbrService {
     }
     if (tk === 'Other') {
       result =  tk;
+    }
+    return result;
+  }
+  formatQbrType(type: string): string {
+    let result = '';
+    switch (type) {
+      case QbrType.YoY:
+        result = 'Annual QBR';
+        break;
+      case QbrType.QoQAdjacent:
+        result = 'Quarterly Adjacent QBR';
+        break;
+      case QbrType.QoQAnnual:
+        result = 'Quarterly Annual QBR';
+        break;
+      default:
+        result = 'Annual QBR';
+        break;
     }
     return result;
   }

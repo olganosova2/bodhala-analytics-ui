@@ -1,0 +1,14 @@
+.qbr-subtitle {
+  font-size: 42px;
+}
+.matter-name {
+  font-size: 16px;
+}
+:host ::ng-deep {
+  .p-md-12 {
+    padding-bottom: 0 !important;
+  }
+  .p-md-6 {
+    padding-top: 0 !important;
+  }
+}

@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -15,16 +15,21 @@ import {Subscription} from 'rxjs';
 export class QbrDeckComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestQbr: Subscription;
-  qbrType: any = QbrType.YoY;
+  qbrType: QbrType = QbrType.YoY;
   qbr: IQbrReport;
   qbrId: number;
-  selectedTabIndex: number = 0;
+  selectedTabIndex: number = 1;
   cardTitle: string;
+  totalSpend: number = 0;
   practiceAreaSetting: string;
   qbrData: any;
   queryString: string;
   includeExpenses: boolean;
   reportDates: IPayloadDates;
+  currentPAs: Array<any> = [];
+  cardNum: number = 14;
+  zoom: boolean = true;
+  @ViewChild('tabGroup') tabGroup;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -32,6 +37,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
               private httpService: HttpService,
               public filtersService: FiltersService,
               public qbrService: QbrService,
+              public router: Router,
               public utilService: UtilService) {
       this.commonServ.pageTitle = 'View QBR';
       this.commonServ.pageSubtitle = 'Executive Summary';
@@ -41,20 +47,16 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {  this.qbrId = params.qbrId; });
-    this.getQbrs();
+    if (this.qbrId) {
+      this.getQbr();
+    }
   }
-  getQbrs(): void {
-    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRs').subscribe(
+  getQbr(): void {
+    const params = { report: this.qbrId};
+    this.pendingRequest = this.httpService.makeGetRequest('getClientQBR', params).subscribe(
       (data: any) => {
-        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
-        if (records.length > 0) {
-          if (this.qbrId) {
-            this.qbr = records.find(e => e.id === Number(this.qbrId));
-          }
-          if (!this.qbr) {  // for testing default to first one
-            this.qbr = records[0];
-          }
-          this.qbrId = this.qbr.id;
+        if (data.result) {
+          this.qbr = data.result;
           this.qbrType = this.qbr.report_type;
           if (this.qbr.querystring && this.qbr.querystring.expenses) {
             this.includeExpenses = this.qbr.querystring.expenses === 'true';
@@ -80,7 +82,16 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
       (data: any) => {
         if (data && data.result) {
-          this.qbrData = data.result;
+          const response = data.result;
+          if (response && response.report_timeframe_metrics) {
+            if (response.report_timeframe_top_pas && response.report_timeframe_top_pas.length > 2) {
+              response.report_timeframe_top_pas = response.report_timeframe_top_pas.slice(0, 2);
+            }
+            this.qbrData = response;
+            const currentTotal = this.includeExpenses ? this.qbrData.report_timeframe_metrics.total_spend_including_expenses : this.qbrData.report_timeframe_metrics.total_spend;
+            this.totalSpend = currentTotal.total;
+            this.currentPAs = Object.assign([], this.qbrData.report_timeframe_top_pas) || [];
+          }
         }
       }
     );
@@ -90,8 +101,13 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     this.selectedTabIndex = evt.index;
   }
   export(): void {
-    const divId = this.commonServ.pageSubtitle === 'All Pages' ? 'exportAll' : 'exportPage';
-    this.commonServ.generatePdfQbr(this.cardTitle, divId, null);
+    const tabsLength = this.tabGroup._allTabs.length;
+    const activeTab = this.tabGroup.selectedIndex;
+    const divId = (tabsLength - activeTab === 1) ? 'exportAll' : 'exportPage';
+    this.commonServ.generatePDFQbr(this.cardTitle, divId);
+  }
+  goBack(): void {
+    this.router.navigate(['/analytics-ui/qbrs/dashboard']);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

@@ -1,0 +1,45 @@
+<div>
+  <div class="qbr-wrapper">
+    <div class="qbr-panel position-relative" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
+      <div class="card-title">{{ practiceArea }}: Top Firms<span class="dot-full dot-full-online"></span></div>
+      <div class="p-grid mt40" *ngIf="currentOverviewMetric && currentOverviewMetric.length > 0">
+        <div class="p-md-5 no-padding">
+          <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="totalSpendMetric"></bd-qbr-total-spend>
+          <div class="p-grid gray-border-left mt30 position-relative" [ngClass]=" {'height-550': tkHours.length <= 1}">
+            <span class="dot-full-right"></span>
+            <div class="p-md-12 no-padding">
+              <div class="justify-start ml10">
+                <div>
+                  <img alt="icon" src="assets/images/chart-pie.png" class="qbr-icon mb5 mr10 ml10">
+                  <span class="qbr-label mr40">Hours Worked By TimeKeeper Level</span>
+                </div>
+              </div>
+            </div>
+            <!-- left side charts -->
+            <div class="mt10 justify-center" [ngClass]=" {'p-md-6': tkHours.length > 1, 'p-md-12': tkHours.length <= 1}" *ngFor="let row of tkHours; let i=index">
+                <div class="text-center">
+                      <div class="justify-center">
+                        <chart [options]="optionsHours[i]" (load)="saveInstanceHours($event.context, i)"></chart>
+                      </div>
+                      <div class="">
+                        <div class="font-bold ml15 mt40">{{ row.label }}</div>
+                        <div class="justify-center">
+                          <bd-qbr-timekeepers [qbrType]="qbrType" [metrics]="row.metrics" [size]="'sm'"></bd-qbr-timekeepers>
+                        </div>
+                      </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+        <!--right side-->
+        <div class="p-md-7 no-padding gray-border-left position-relative" *ngIf="rightSideMetrics && rightSideMetrics.length > 0">
+          <bd-generic-metrics-right [rightSideMetrics]="rightSideMetrics" [qbrType]="qbrType"></bd-generic-metrics-right>
+        </div>
+      </div>
+      <div class="page-number-circle">
+        <div class="page-number">{{this.pageNum}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,12 +1,12 @@
-<div class="justify-start">
+<div>
   <div class="dot-full-right"></div>
-<div class="justify-center ml20">
-  <div class="qbr-metric-div" *ngFor="let item of metrics;let i=index;">
-    <bd-qbr-generic-metric [item]="item" [qbrType]="qbrType" [index]="i"></bd-qbr-generic-metric>
+  <div class="justify-center ml20">
+    <div *ngFor="let item of metrics;let i=index;" class="qbr-metric-div">
+      <bd-qbr-generic-metric [index]="i" [item]="item" [qbrType]="qbrType"></bd-qbr-generic-metric>
+    </div>
   </div>
 </div>
+<div class="ml10 mt40">
+  <chart (load)="saveInstance($event.context)" [options]="options"></chart>
 </div>
-  <div class="ml10 mt40">
-    <chart [options]="options" (load)="saveInstance($event.context)"></chart>
-  </div>
 
