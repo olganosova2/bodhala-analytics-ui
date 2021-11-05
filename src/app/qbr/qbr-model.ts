@@ -393,7 +393,7 @@ export const recommendationPlaceholderMapping = {
     id: 4,
     opportunity_placeholder: '',
     why_it_matters_placeholder: 'Limiting block billing practices results in more accurate timekeeping and reduces inflationary billing practices.',
-    action_placeholder: '1. Review percentage of block billing \n2. Pay [ Firm ] a reduced amount for block billed work \n3. Communicate to firms the requirement that block billing above 20% of time is not acceptable.'
+    action_placeholder: '1. Review percentage of block billing \n2. Pay [ Firm ] a reduced amount for block billed work \n3. Communicate to [ Firm ] the requirement that block billing above 20% of time is not acceptable.'
   },
   'Shift Work to Other Firms': {
     id: 5,

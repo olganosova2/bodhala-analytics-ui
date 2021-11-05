@@ -37,7 +37,7 @@ export class QbrNextStepsComponent implements OnInit {
               public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    console.log("saved: ", this.savedInsights);
+    // console.log("saved: ", this.savedInsights);
     for (const rec of this.savedInsights) {
       rec.section = 'Next Steps';
       this.nextStepsForm.addControl(rec.sort_order + 'title', new FormControl(rec.title, [Validators.minLength(10), Validators.maxLength(60)]));

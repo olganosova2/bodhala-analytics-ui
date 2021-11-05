@@ -262,7 +262,7 @@ export class QbrService {
     return new Promise((resolve, reject) => {
       return this.pendingRequest = this.httpService.makeGetRequest('getQBRRecommendations', payload).subscribe(
         (data: any) => {
-          console.log("rec data: ", data);
+          // console.log("rec data: ", data);
           let recResult;
           if (data.result) {
             recResult = data.result;
@@ -316,7 +316,7 @@ export class QbrService {
     const payload = {
       insight: rec
     };
-    console.log("payload: ", payload);
+    // console.log("payload: ", payload);
     return new Promise((resolve, reject) => {
       return this.pendingRequest = this.httpService.makePostRequest('saveQBRRecommendation', payload).subscribe(
         (data: any) => {
@@ -350,7 +350,7 @@ export class QbrService {
             first = false;
             // const yoyReport = clientQBRs.filter(qbr => qbr.report_type === 'YoY');
             const sorted = clientQBRs.sort((a, b) => a.id - b.id);
-            console.log("sorted: ", sorted)
+            // console.log("sorted: ", sorted)
             if (sorted.length > 0) {
               startDate = sorted[0].start_date;
             }
@@ -425,9 +425,9 @@ export class QbrService {
   }
 
   calculateDiscountSavings(rec: any, data: any, expenses: boolean, overallNumbers: boolean): any {
-    console.log("calculateDiscountSavings REC: ", rec)
-    console.log("calculateDiscountSavings DATA: ", rec)
-    console.log("calculateDiscountSavings other: ", expenses, overallNumbers)
+    // console.log("calculateDiscountSavings REC: ", rec)
+    // console.log("calculateDiscountSavings DATA: ", rec)
+    // console.log("calculateDiscountSavings other: ", expenses, overallNumbers)
     let estimatedSavings = 0;
     let estimatedSpendWithOldDisc = 0;
     let estimatedSpendWithRecommendedDisc = 0;
@@ -460,7 +460,7 @@ export class QbrService {
         estimatedSavings = estimatedSpendWithOldDisc - estimatedSpendWithRecommendedDisc;
       }
     }
-    console.log("calculateDiscountSavings estimatedSavings: ", estimatedSavings)
+    // console.log("calculateDiscountSavings estimatedSavings: ", estimatedSavings)
     rec.potential_savings = estimatedSavings;
     rec.savingsData = data;
     rec.expenses = expenses;
@@ -470,15 +470,14 @@ export class QbrService {
   }
 
   calculateBlockBillingSavings(rec: any, data: any): any {
-    console.log("calculateBlockBillingSavings rec: ", rec);
-    console.log("calculateBlockBillingSavings data: ", data);
+    // console.log("calculateBlockBillingSavings rec: ", rec);
+    // console.log("calculateBlockBillingSavings data: ", data);
     let estimatedSavings = 0;
     let unacceptableBlockBillingAmount = 0;
     const blockBillingPctDiff = (data.percent_block_billed - rec.desired_block_billing_pct) / 100;
-    console.log("data: ", data.total_partner_billed, data.total_associate_billed);
     unacceptableBlockBillingAmount = (data.total_partner_billed + data.total_associate_billed) * blockBillingPctDiff;
-    console.log("blockBillingPctDiff: ", blockBillingPctDiff)
-    console.log("unacceptableBlockBillingAmount: ", unacceptableBlockBillingAmount)
+    // console.log("blockBillingPctDiff: ", blockBillingPctDiff)
+    // console.log("unacceptableBlockBillingAmount: ", unacceptableBlockBillingAmount)
     estimatedSavings = unacceptableBlockBillingAmount * .2;
     rec.potential_savings = estimatedSavings;
     rec.savingsData = data;
@@ -489,13 +488,13 @@ export class QbrService {
   calculateStaffingAllocationSavings(rec: any, data: any, expenses: boolean, overallNumbers: boolean): any {
     let estimatedSavings = 0;
     let estimatedSpendWithOldStaffing = 0;
-    let estimatedSpendWithNewStaffing = 0
+    let estimatedSpendWithNewStaffing = 0;
     let newPartnerBilled = 0;
     let newAssociateBilled = 0;
     let newParalegalBilled = 0;
-    console.log("calculateStaffingAllocationSavings REC: ", rec);
-    console.log("calculateStaffingAllocationSavings data: ", data);
-    console.log("calculateStaffingAllocationSavings otjers: ", expenses, overallNumbers);
+    // console.log("calculateStaffingAllocationSavings REC: ", rec);
+    // console.log("calculateStaffingAllocationSavings data: ", data);
+    // console.log("calculateStaffingAllocationSavings otjers: ", expenses, overallNumbers);
 
     if (overallNumbers) {
       if (expenses) {
@@ -528,9 +527,9 @@ export class QbrService {
         if (data.avg_paralegal_legal_assistant_rate !== null && data.avg_paralegal_legal_assistant_rate !== undefined) {
           newParalegalBilled = ((data.total_hours * (rec.desired_paralegal_pct_of_hours_worked / 100)) * data.avg_paralegal_legal_assistant_rate);
         }
-        console.log("newPartnerBilled: ", newPartnerBilled, data.avg_partner_rate)
-        console.log("newAssociateBilled: ", newAssociateBilled, data.avg_associate_rate)
-        console.log("newParalegalBilled: ", newParalegalBilled, data.avg_paralegal_legal_assistant_rate)
+        // console.log("newPartnerBilled: ", newPartnerBilled, data.avg_partner_rate)
+        // console.log("newAssociateBilled: ", newAssociateBilled, data.avg_associate_rate)
+        // console.log("newParalegalBilled: ", newParalegalBilled, data.avg_paralegal_legal_assistant_rate)
         estimatedSpendWithNewStaffing = newPartnerBilled + newAssociateBilled + newParalegalBilled;
         estimatedSpendWithNewStaffing = (estimatedSpendWithNewStaffing * (1 + (rec.spend_increase_pct / 100)));
         estimatedSavings = estimatedSpendWithOldStaffing - estimatedSpendWithNewStaffing;
@@ -582,15 +581,15 @@ export class QbrService {
     let estimatedSavings = 0;
     let topFirmEstimatedSpend = 0;
     let secondFirmEstimatedSpend = 0;
-    console.log("topFirmData: ", topFirmData)
-    console.log("secondFirmData: ", secondFirmData)
+    // console.log("topFirmData: ", topFirmData)
+    // console.log("secondFirmData: ", secondFirmData)
     if (topFirmData.avg_blended_rate && secondFirmData.avg_blended_rate) {
       topFirmEstimatedSpend = topFirmData.total_hours * topFirmData.avg_blended_rate;
       secondFirmEstimatedSpend = topFirmData.total_hours * secondFirmData.avg_blended_rate;
       estimatedSavings = topFirmEstimatedSpend - secondFirmEstimatedSpend;
-      console.log("topFirmEstimatedSpend: ", topFirmEstimatedSpend)
-      console.log("secondFirmEstimatedSpend: ", secondFirmEstimatedSpend)
-      console.log("estimatedSavings: ", estimatedSavings)
+      // console.log("topFirmEstimatedSpend: ", topFirmEstimatedSpend)
+      // console.log("secondFirmEstimatedSpend: ", secondFirmEstimatedSpend)
+      // console.log("estimatedSavings: ", estimatedSavings)
     }
     rec.potential_savings = estimatedSavings;
     rec.topFirmData = topFirmData;
