@@ -18,7 +18,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   qbrType: QbrType = QbrType.YoY;
   qbr: IQbrReport;
   qbrId: number;
-  selectedTabIndex: number = 1;
+  selectedTabIndex: number = 4;
   cardTitle: string;
   totalSpend: number = 0;
   practiceAreaSetting: string;

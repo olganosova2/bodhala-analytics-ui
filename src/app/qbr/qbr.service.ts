@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as _moment from 'moment';
-import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping} from './qbr-model';
+import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping, IChoosenMetrics} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
 import { Subscription } from 'rxjs';
 import {HttpService, UtilService} from 'bodhala-ui-common';
@@ -57,12 +57,14 @@ export class QbrService {
   getOveralSpendMetric(currentMetric: any, compareMetric: any, includeExpenses: boolean): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Total Spend';
+    result.keyTrendsLabel = 'Change in Overall Spend';
     if (!currentMetric) {
       return result;
     }
     const currentTotal = includeExpenses ? currentMetric.total_spend_including_expenses : currentMetric.total_spend;
     const compareTotal = includeExpenses ? compareMetric.total_spend_including_expenses : compareMetric.total_spend;
     result.amount = currentTotal.total;
+    result.amountToCompare = compareTotal.total || 0;
     if (compareTotal.total) {
       const increase = ((currentTotal.total / compareTotal.total) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
@@ -107,6 +109,7 @@ export class QbrService {
   getBBMetric(currentMetric: any, compareMetric: any): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = 'Block Billed';
+    result.keyTrendsLabel = 'Hours Block Billed';
     if (!currentMetric) {
       return result;
     }
@@ -120,6 +123,7 @@ export class QbrService {
   getGenericMetric(currentMetric: any, compareMetric: any, propName: string, label: string, icon: string): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = this.commonService.capitalize(label);
+    result.keyTrendsLabel = result.label;
     result.icon = icon;
     if (!currentMetric) {
       return result;
@@ -146,6 +150,7 @@ export class QbrService {
   getTkHoursRecord(hoursCurrent: any, hoursCompare: any, qbrType: QbrType, classification: string): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
     result.label = this.commonService.capitalize(classification);
+    result.keyTrendsLabel = 'Percent ' + result.label + ' Hours';
     if (!hoursCurrent) {
       return result;
     }
@@ -251,6 +256,18 @@ export class QbrService {
     }
     return result;
   }
+  getDefaultChoosenMetrics(): IChoosenMetrics {
+    return {
+      total_spend: true,
+      partner_hourly_cost: true,
+      associate_hourly_cost: true,
+      block_billing_percent: true,
+      partner_hours_percent: true,
+      associate_hours_percent: true,
+      blended_rate: false,
+      bodhala_price_index: false
+    };
+  }
 
   getQBRRecommendations(reportID: number): Promise<any> {
     const payload = {
@@ -259,7 +276,7 @@ export class QbrService {
     return new Promise((resolve, reject) => {
       return this.pendingRequest = this.httpService.makeGetRequest('getQBRRecommendations', payload).subscribe(
         (data: any) => {
-          // console.log("rec data: ", data);
+          // console.log(rec data: , data);
           let recResult;
           if (data.result) {
             recResult = data.result;
@@ -304,7 +321,7 @@ export class QbrService {
       }
       rec.sort_order = i;
       i++;
-      // console.log("rec: ", rec);
+      // console.log(rec: , rec);
     }
     return recommendations;
   }
@@ -313,7 +330,7 @@ export class QbrService {
     const payload = {
       insight: rec
     };
-    // console.log("payload: ", payload);
+    // console.log(payload: , payload);
     return new Promise((resolve, reject) => {
       return this.pendingRequest = this.httpService.makePostRequest('saveQBRRecommendation', payload).subscribe(
         (data: any) => {
@@ -347,7 +364,7 @@ export class QbrService {
             first = false;
             // const yoyReport = clientQBRs.filter(qbr => qbr.report_type === 'YoY');
             const sorted = clientQBRs.sort((a, b) => a.id - b.id);
-            // console.log("sorted: ", sorted)
+            // console.log(sorted: , sorted)
             if (sorted.length > 0) {
               startDate = sorted[0].start_date;
             }

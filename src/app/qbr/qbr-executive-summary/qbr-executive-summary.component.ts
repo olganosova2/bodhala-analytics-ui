@@ -61,7 +61,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
       this.qbrId = this.qbr.id;
       this.qbrType = this.qbr.report_type;
       if (this.qbr.querystring && this.qbr.querystring.expenses) {
-        this.includeExpenses = this.qbr.querystring.expenses === 'true';
+        this.includeExpenses = this.qbr.querystring.expenses === 'true' || this.qbr.querystring.expenses === true;
         this.queryString = this.qbr.querystring;
       }
       if (this.qbrData) {

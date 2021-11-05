@@ -1,0 +1,24 @@
+<div>
+  <div>
+    <div class="qbr-panel position-relative bg-1"  [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
+      <div class="card-title">Key trends<span class="dot-full dot-full-online"></span></div>
+      <div *ngIf="currentOverviewMetric && compareOverviewMetric">
+        <div class="qbr-subtitle">Top metrics to watch</div>
+        <div class="p-grid mt40">
+            <div class="p-md-4 pt10 pl10 pr10" *ngFor="let metric of keyTrendsMetrics;let i = index;">
+              <div class="key-trends-badge" [ngClass]="{'associate-bar': metric.direction > 0, 'green-bar': metric.direction <= 0}">
+                <div class="key-trends-badge-percent">{{ metric.percent | number:'1.1-1'}}%
+                  <em *ngIf="metric.direction > 0" class="fa fa-arrow-up ml10"></em>
+                  <em *ngIf="metric.direction <= 0" class="fa fa-arrow-down ml10"></em>
+                </div>
+                <div class="key-trends-badge-label">{{ metric.keyTrendsLabel}}</div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="page-number-circle page-number-circle-wh">
+        <div class="page-number">6</div>
+      </div>
+    </div>
+  </div>
+</div>

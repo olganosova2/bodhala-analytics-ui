@@ -14,9 +14,6 @@
   <div class="pull-right">
         <button class="primary-button ml20" (click)="goBack()">Back
         </button>
-<!--    <button class="primary-button ml20" (click)="printPageArea('exportAll')">Print-->
-<!--      <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>-->
-<!--    </button>-->
     <button class="primary-button ml20" (click)="export()"
             [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
       <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
@@ -25,10 +22,24 @@
   </div>
   <div class="clear-both"></div>
   <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)"  [(selectedIndex)]="selectedTabIndex" #tabGroup>
+    <!-- Page 1 -->
+    <mat-tab label="1-Cover">
+      <ng-template matTabContent>
+        <bd-qbr-cover *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-qbr-cover>
+      </ng-template>
+    </mat-tab>
     <!-- Page 2 -->
     <mat-tab label="2-Agenda">
       <ng-template matTabContent>
         <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-qbr-agenda>
+      </ng-template>
+    </mat-tab>
+    <!-- Page 4 -->
+    <mat-tab label="4-Scope">
+      <ng-template matTabContent>
+        <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true" [page]="4">
         </bd-qbr-agenda>
       </ng-template>
     </mat-tab>
@@ -38,6 +49,14 @@
       <ng-template matTabContent>
           <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
           </bd-qbr-executive-summary>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 5 -->
+    <mat-tab label="6-Key Trends">
+      <ng-template matTabContent>
+        <bd-qbr-key-trends *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-qbr-key-trends>
       </ng-template>
     </mat-tab>
 
@@ -84,50 +103,21 @@
     <mat-tab label="All Pages" *ngIf="true">
       <ng-template matTabContent>
         <div id="exportAll" #exportAll>
+          <!-- page 1 -->
+          <div>
+            <bd-qbr-cover *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-cover>
+          </div>
+
           <!-- page 2 -->
           <div>
             <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
             </bd-qbr-agenda>
           </div>
-          <!-- Page 5 -->
-          <div class="">
-            <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
-            </bd-qbr-executive-summary>
-          </div>
 
-          <!-- Page 8 -->
-          <div class="">
-            <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
-            </bd-qbr-top-pas>
-          </div>
-
-          <!-- Page 9 -->
-          <div class="" *ngIf="qbrData && currentPAs.length > 0">
-            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
-            </bd-qbr-top-pas-firms>
-          </div>
-
-          <!-- Page 10 -->
-          <div class="" *ngIf="qbrData && currentPAs.length > 0">
-            <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
-            </bd-qbr-top-pas-matters>
-          </div>
-
-          <!-- Page 11 -->
-          <div class="" *ngIf="qbrData && currentPAs.length > 1">
-            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
-            </bd-qbr-top-pas-firms>
-          </div>
-
-          <!-- Page 12 -->
-          <div class="" *ngIf="qbrData && currentPAs.length > 1">
-            <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
-            </bd-qbr-top-pas-matters>
-          </div>
-
-          <!-- page 2 -->
+          <!-- page 4 -->
           <div>
-            <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [page]="4">
             </bd-qbr-agenda>
           </div>
 
@@ -165,6 +155,54 @@
           <div class="" *ngIf="qbrData && currentPAs.length > 1">
             <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
             </bd-qbr-top-pas-matters>
+          </div>
+
+          <!-- page 2 -->
+          <div>
+            <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-agenda>
+          </div>
+
+          <!-- Page 5 -->
+          <div class="">
+            <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-executive-summary>
+          </div>
+
+          <!-- Page 5 -->
+<!--          <div class="">-->
+<!--            <bd-qbr-key-trends *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">-->
+<!--            </bd-qbr-key-trends>-->
+<!--          </div>-->
+
+          <!-- Page 8 -->
+          <div class="">
+            <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-top-pas>
+          </div>
+
+          <!-- Page 9 -->
+          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-firms>
+          </div>
+
+          <!-- Page 10 -->
+          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+            <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-matters>
+          </div>
+
+          <!-- Page 11 -->
+          <div class="" *ngIf="qbrData && currentPAs.length > 1">
+            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-firms>
+          </div>
+
+          <!-- page 4 -->
+          <div>
+            <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [page]="4">
+            </bd-qbr-agenda>
           </div>
 
         </div>

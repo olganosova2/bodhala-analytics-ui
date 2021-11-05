@@ -14,6 +14,8 @@ export interface IQbrMetric {
   icon?: string;
   addInfo?: string;
   matterName?: string;
+  keyTrendsLabel?: string;
+  format?: string;
 }
 export interface IQbrMetricRow {
   label: string;
@@ -34,6 +36,7 @@ export interface IQbrReport {
   };
   querystring: any;
   chosen_metrics: any;
+  modified_on?: string;
 }
 export interface IPayloadDates {
    startDate: string;
@@ -70,6 +73,17 @@ export interface IQbrDashboard {
   practiceAreas: Array<string>;
   firms: Array<string>;
 }
+export interface IChoosenMetrics {
+  total_spend: boolean;
+  partner_hourly_cost: boolean;
+  associate_hourly_cost: boolean;
+  block_billing_percent: boolean;
+  partner_hours_percent: boolean;
+  associate_hours_percent: boolean;
+  blended_rate: boolean;
+  bodhala_price_index: boolean;
+}
+
 export const qbrPieChartOptions = {
   chart: {
     height: 290,
@@ -362,7 +376,7 @@ const metricsBBOptions = {
 };
 
 
-export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
+export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnOptions};
 export const metricsRightChartESOptions = {...baseColumnChartOptions, ...metricsColumnESOptions};
 export const metricsBBPasChartOptions =  {...baseColumnChartOptions, ...metricsBBOptions};
 export const tkHoursPasChartOptions = { ... qbrPieChartOptions, ... tkHoursPasAdditionalOptions};

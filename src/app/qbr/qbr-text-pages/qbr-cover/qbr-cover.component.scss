@@ -1,0 +1,30 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+
+.qbr-panel{
+  padding: 118px 0 87px 128px;
+}
+.qbr-cover-title {
+  font-size: 100px;
+  color: #fff;
+  font-weight: 700;
+}
+.qbr-report-dates {
+  font-size: 50px;
+}
+.qbr-prepared {
+  position: absolute;
+  bottom: 87px;
+  left: 128px;
+  .qbr-prepared-title {
+    font-size: 30px;
+  }
+  .qbr-prepared-email {
+    font-size: 19px;
+  }
+}
+.bd-logo-cover {
+  position: absolute;
+  bottom: 30px;
+  right: 80px;
+}

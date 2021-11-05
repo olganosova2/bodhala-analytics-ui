@@ -1,0 +1,23 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+
+.qbr-subtitle {
+  font-size: 42px;
+  font-weight: 400;
+}
+.key-trends-badge {
+  height: 220px;
+  display: inline-block;
+  border-radius: 240px;
+  color: #fff;
+  padding: 10px 20px 10px 20px;
+  text-align: center;
+  width: 100%
+}
+.key-trends-badge-percent {
+  font-size: 72px;
+}
+.key-trends-badge-label {
+  color: $body-color;
+  font-size: 24px;
+}

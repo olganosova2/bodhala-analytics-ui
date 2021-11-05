@@ -179,6 +179,9 @@ $size: 13px;
 .associate-bar {
   background-color: $brand-orange;
 }
+.green-bar {
+ background-color: #3EDB73;
+}
 .other-bar {
   background-color: $light-gray;
 }
@@ -217,6 +220,10 @@ $size: 13px;
 }
 .height-550 {
   min-height: 530px;
+}
+.bg-cover {
+  background-image: url('/assets/images/qbr-images/BG_Cover.png');
+  background-repeat: no-repeat;
 }
 .bg-1 {
   background-image: url('/assets/images/qbr-images/BG_blue_corner.svg');
