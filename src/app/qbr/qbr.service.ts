@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as _moment from 'moment';
-import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping} from './qbr-model';
+import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping, moneyFormatter} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
 import { Subscription } from 'rxjs';
 import {HttpService, UtilService} from 'bodhala-ui-common';
 import { DatePipe } from '@angular/common';
+import { RecommendationService } from 'src/app/admin/client-recommendations/recommendation.service';
+
 
 
 const moment = _moment;
@@ -19,7 +21,8 @@ export class QbrService {
 
   constructor(public commonService: CommonService,
               public utilService: UtilService,
-              private httpService: HttpService) { }
+              private httpService: HttpService,
+              private recommendationService: RecommendationService) { }
 
   formatPayloadDates(dtStart: string, qbrType: QbrType): IPayloadDates {
     const result = {
@@ -175,7 +178,7 @@ export class QbrService {
     return new Promise((resolve, reject) => {
       return this.pendingRequest = this.httpService.makeGetRequest('getQBRRecommendations', payload).subscribe(
         (data: any) => {
-          // console.log("rec data: ", data);
+          console.log("rec data: ", data);
           let recResult;
           if (data.result) {
             recResult = data.result;
@@ -229,7 +232,7 @@ export class QbrService {
     const payload = {
       insight: rec
     };
-    // console.log("payload: ", payload);
+    console.log("payload: ", payload);
     return new Promise((resolve, reject) => {
       return this.pendingRequest = this.httpService.makePostRequest('saveQBRRecommendation', payload).subscribe(
         (data: any) => {
@@ -263,7 +266,7 @@ export class QbrService {
             first = false;
             // const yoyReport = clientQBRs.filter(qbr => qbr.report_type === 'YoY');
             const sorted = clientQBRs.sort((a, b) => a.id - b.id);
-            // console.log("sorted: ", sorted)
+            console.log("sorted: ", sorted)
             if (sorted.length > 0) {
               startDate = sorted[0].start_date;
             }
@@ -336,4 +339,183 @@ export class QbrService {
       );
     });
   }
+
+  calculateDiscountSavings(rec: any, data: any, expenses: boolean, overallNumbers: boolean): any {
+    console.log("calculateDiscountSavings REC: ", rec)
+    console.log("calculateDiscountSavings DATA: ", rec)
+    console.log("calculateDiscountSavings other: ", expenses, overallNumbers)
+    let estimatedSavings = 0;
+    let estimatedSpendWithOldDisc = 0;
+    let estimatedSpendWithRecommendedDisc = 0;
+    if (overallNumbers) {
+      if (expenses) {
+        estimatedSpendWithOldDisc = (data.total_spend_including_expenses.total * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithOldDisc = estimatedSpendWithOldDisc * ((1 - rec.current_discount_pct) / 100);
+        estimatedSpendWithRecommendedDisc = (data.total_spend_including_expenses.total * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithRecommendedDisc = estimatedSpendWithRecommendedDisc * ((1 - rec.recommended_discount_pct_lower_range) / 100);
+        estimatedSavings = estimatedSpendWithOldDisc - estimatedSpendWithRecommendedDisc;
+      } else {
+        estimatedSpendWithOldDisc = (data.total_spend.total * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithOldDisc = estimatedSpendWithOldDisc * ((1 - rec.current_discount_pct) / 100);
+        estimatedSpendWithRecommendedDisc = (data.total_spend.total * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithRecommendedDisc = estimatedSpendWithRecommendedDisc * ((1 - rec.recommended_discount_pct_lower_range) / 100);
+        estimatedSavings = estimatedSpendWithOldDisc - estimatedSpendWithRecommendedDisc;
+      }
+    } else {
+      if (expenses) {
+        estimatedSpendWithOldDisc = ((data.total_billed + data.total_expenses) * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithOldDisc = estimatedSpendWithOldDisc * ((1 - rec.current_discount_pct) / 100);
+        estimatedSpendWithRecommendedDisc = ((data.total_billed + data.total_expenses) * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithRecommendedDisc = estimatedSpendWithRecommendedDisc * ((1 - rec.recommended_discount_pct_lower_range) / 100);
+        estimatedSavings = estimatedSpendWithOldDisc - estimatedSpendWithRecommendedDisc;
+      } else {
+        estimatedSpendWithOldDisc = (data.total_billed * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithOldDisc = estimatedSpendWithOldDisc * ((1 - rec.current_discount_pct) / 100);
+        estimatedSpendWithRecommendedDisc = (data.total_billed * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSpendWithRecommendedDisc = estimatedSpendWithRecommendedDisc * ((1 - rec.recommended_discount_pct_lower_range) / 100);
+        estimatedSavings = estimatedSpendWithOldDisc - estimatedSpendWithRecommendedDisc;
+      }
+    }
+    console.log("calculateDiscountSavings estimatedSavings: ", estimatedSavings)
+    rec.potential_savings = estimatedSavings;
+    rec.savingsData = data;
+    rec.expenses = expenses;
+    rec.overallNumbers = overallNumbers;
+    rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
+    return rec;
+  }
+
+  calculateBlockBillingSavings(rec: any, data: any): any {
+    console.log("calculateBlockBillingSavings rec: ", rec);
+    console.log("calculateBlockBillingSavings data: ", data);
+    let estimatedSavings = 0;
+    let unacceptableBlockBillingAmount = 0;
+    const blockBillingPctDiff = (data.percent_block_billed - rec.desired_block_billing_pct) / 100;
+    console.log("data: ", data.total_partner_billed, data.total_associate_billed);
+    unacceptableBlockBillingAmount = (data.total_partner_billed + data.total_associate_billed) * blockBillingPctDiff;
+    console.log("blockBillingPctDiff: ", blockBillingPctDiff)
+    console.log("unacceptableBlockBillingAmount: ", unacceptableBlockBillingAmount)
+    estimatedSavings = unacceptableBlockBillingAmount * .2;
+    rec.potential_savings = estimatedSavings;
+    rec.savingsData = data;
+    rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
+    return rec;
+  }
+
+  calculateStaffingAllocationSavings(rec: any, data: any, expenses: boolean, overallNumbers: boolean): any {
+    let estimatedSavings = 0;
+    let estimatedSpendWithOldStaffing = 0;
+    let estimatedSpendWithNewStaffing = 0
+    let newPartnerBilled = 0;
+    let newAssociateBilled = 0;
+    let newParalegalBilled = 0;
+    console.log("calculateStaffingAllocationSavings REC: ", rec);
+    console.log("calculateStaffingAllocationSavings data: ", data);
+    console.log("calculateStaffingAllocationSavings otjers: ", expenses, overallNumbers);
+
+    if (overallNumbers) {
+      if (expenses) {
+        estimatedSpendWithOldStaffing = (data.total_spend_including_expenses.total * (1 + (rec.spend_increase_pct / 100)));
+
+        if (data.avg_partner_rate !== null && data.avg_partner_rate !== undefined) {
+          newPartnerBilled = ((data.total_hours * (rec.desired_partner_pct_of_hours_worked / 100)) * data.avg_partner_rate);
+        }
+        if (data.avg_associate_rate !== null && data.avg_associate_rate !== undefined) {
+          newAssociateBilled = ((data.total_hours * (rec.desired_associate_pct_of_hours_worked / 100)) * data.avg_associate_rate);
+        }
+        if (data.avg_paralegal_rate !== null && data.avg_paralegal_rate !== undefined) {
+          newParalegalBilled = ((data.total_hours * (rec.desired_paralegal_pct_of_hours_worked / 100)) * data.avg_paralegal_rate);
+        }
+
+        estimatedSpendWithNewStaffing = newPartnerBilled + newAssociateBilled + newParalegalBilled + data.total_spend_including_expenses.total_expenses;
+        estimatedSpendWithNewStaffing = (estimatedSpendWithNewStaffing * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSavings = estimatedSpendWithOldStaffing - estimatedSpendWithNewStaffing;
+
+      } else {
+        estimatedSpendWithOldStaffing = (data.total_spend.total * (1 + (rec.spend_increase_pct / 100)));
+
+        if (data.avg_partner_rate !== null && data.avg_partner_rate !== undefined) {
+          newPartnerBilled = ((data.total_hours * (rec.desired_partner_pct_of_hours_worked / 100)) * data.avg_partner_rate);
+
+        }
+        if (data.avg_associate_rate !== null && data.avg_associate_rate !== undefined) {
+          newAssociateBilled = ((data.total_hours * (rec.desired_associate_pct_of_hours_worked / 100)) * data.avg_associate_rate);
+        }
+        if (data.avg_paralegal_legal_assistant_rate !== null && data.avg_paralegal_legal_assistant_rate !== undefined) {
+          newParalegalBilled = ((data.total_hours * (rec.desired_paralegal_pct_of_hours_worked / 100)) * data.avg_paralegal_legal_assistant_rate);
+        }
+        console.log("newPartnerBilled: ", newPartnerBilled, data.avg_partner_rate)
+        console.log("newAssociateBilled: ", newAssociateBilled, data.avg_associate_rate)
+        console.log("newParalegalBilled: ", newParalegalBilled, data.avg_paralegal_legal_assistant_rate)
+        estimatedSpendWithNewStaffing = newPartnerBilled + newAssociateBilled + newParalegalBilled;
+        estimatedSpendWithNewStaffing = (estimatedSpendWithNewStaffing * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSavings = estimatedSpendWithOldStaffing - estimatedSpendWithNewStaffing;
+      }
+    } else {
+      if (expenses) {
+        estimatedSpendWithOldStaffing = ((data.total_billed + data.total_expenses) * (1 + (rec.spend_increase_pct / 100)));
+
+        if (data.avg_partner_rate !== null && data.avg_partner_rate !== undefined) {
+          newPartnerBilled = ((data.total_hours * (rec.desired_partner_pct_of_hours_worked / 100)) * data.avg_partner_rate);
+        }
+        if (data.avg_associate_rate !== null && data.avg_associate_rate !== undefined) {
+          newAssociateBilled = ((data.total_hours * (rec.desired_associate_pct_of_hours_worked / 100)) * data.avg_associate_rate);
+        }
+        if (data.avg_paralegal_rate !== null && data.avg_paralegal_rate !== undefined) {
+          newParalegalBilled = ((data.total_hours * (rec.desired_paralegal_pct_of_hours_worked / 100)) * data.avg_paralegal_rate);
+        }
+
+        estimatedSpendWithNewStaffing = newPartnerBilled + newAssociateBilled + newParalegalBilled + data.expenses;
+        estimatedSpendWithNewStaffing = (estimatedSpendWithNewStaffing * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSavings = estimatedSpendWithOldStaffing - estimatedSpendWithNewStaffing;
+
+      } else {
+        estimatedSpendWithOldStaffing = (data.total_billed * (1 + (rec.spend_increase_pct / 100)));
+        if (data.avg_partner_rate !== null && data.avg_partner_rate !== undefined) {
+          newPartnerBilled = ((data.total_hours * (rec.desired_partner_pct_of_hours_worked / 100)) * data.avg_partner_rate);
+        }
+        if (data.avg_associate_rate !== null && data.avg_associate_rate !== undefined) {
+          newAssociateBilled = ((data.total_hours * (rec.desired_associate_pct_of_hours_worked / 100)) * data.avg_associate_rate);
+        }
+        if (data.avg_paralegal_rate !== null && data.avg_paralegal_rate !== undefined) {
+          newParalegalBilled = ((data.total_hours * (rec.desired_paralegal_pct_of_hours_worked / 100)) * data.avg_paralegal_rate);
+        }
+        estimatedSpendWithNewStaffing = newPartnerBilled + newAssociateBilled + newParalegalBilled;
+        estimatedSpendWithNewStaffing = (estimatedSpendWithNewStaffing * (1 + (rec.spend_increase_pct / 100)));
+        estimatedSavings = estimatedSpendWithOldStaffing - estimatedSpendWithNewStaffing;
+      }
+
+    }
+    rec.potential_savings = estimatedSavings;
+    rec.savingsData = data;
+    rec.expenses = expenses;
+    rec.overallNumbers = overallNumbers;
+    rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
+    return rec;
+  }
+
+  calculateShiftFirmsSavings(rec: any, topFirmData: any, secondFirmData: any): number {
+    let estimatedSavings = 0;
+    let topFirmEstimatedSpend = 0;
+    let secondFirmEstimatedSpend = 0;
+    console.log("topFirmData: ", topFirmData)
+    console.log("secondFirmData: ", secondFirmData)
+    if (topFirmData.avg_blended_rate && secondFirmData.avg_blended_rate) {
+      topFirmEstimatedSpend = topFirmData.total_hours * topFirmData.avg_blended_rate;
+      secondFirmEstimatedSpend = topFirmData.total_hours * secondFirmData.avg_blended_rate;
+      estimatedSavings = topFirmEstimatedSpend - secondFirmEstimatedSpend;
+      console.log("topFirmEstimatedSpend: ", topFirmEstimatedSpend)
+      console.log("secondFirmEstimatedSpend: ", secondFirmEstimatedSpend)
+      console.log("estimatedSavings: ", estimatedSavings)
+    }
+    rec.potential_savings = estimatedSavings;
+    rec.topFirmData = topFirmData;
+    rec.secondFirmData = secondFirmData;
+    rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
+
+    return rec;
+  }
+
+
+
 }

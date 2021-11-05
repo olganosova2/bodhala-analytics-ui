@@ -1,4 +1,4 @@
-@import "../../../../assets/styles/colors.scss";
+@import "../../../../../assets/styles/colors.scss";
 
 .dateSelector {
   width: 75%;
@@ -25,8 +25,4 @@ td {
 
 .textinput-td {
   word-break: break-all;
-}
-
-textarea {
-  word-break: normal;
 }

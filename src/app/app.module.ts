@@ -159,7 +159,8 @@ import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component'
 import { QbrDeckComponent } from './qbr/qbr-deck/qbr-deck.component';
 import { QbrGenericMetricComponent } from './qbr/qbr-generic-metric/qbr-generic-metric.component';
 import { QbrInsightsComponent } from './qbr/qbr-creation/qbr-insights/qbr-insights.component';
-import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-next-steps/qbr-next-steps.component';
+import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/qbr-next-steps.component';
+import { NextStepInputsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/next-step-inputs/next-step-inputs.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -266,7 +267,8 @@ export function initHttp(service: HttpService) {
     QbrDeckComponent,
     QbrGenericMetricComponent,
     QbrInsightsComponent,
-    QbrNextStepsComponent
+    QbrNextStepsComponent,
+    NextStepInputsComponent
   ],
   entryComponents: [
     PillComponent,

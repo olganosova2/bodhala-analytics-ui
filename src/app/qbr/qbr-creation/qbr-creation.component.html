@@ -41,6 +41,8 @@
             If you select February 1, the quarters will be 2/1 - 4/30, 5/1 - 7/31, 8/1 - 10/31, and 11/1 - 1/31, etc.</p>
 
             <p>Apply any filtering you want on the dataset by using the filters above. You can view the returned metrics, modify the filters or start date, and click Generate Metrics to see the updated data.</p>
+            <p>You can modify the filters and start date as much as you wish. The View Report button will take you to a preview of what the report looks like. From there, you will be able to finalize the report
+              or return to this page to make more edits. The View Report button will only be clickable once the Insights & Opportunities and Next Steps sections are complete and valid. Instructions for those sections are below.</p>
         </div>
 
         <div class="col-sm-4" *ngIf="formReady">
@@ -187,7 +189,9 @@
       </div>
 
       <div *ngIf="dataProcessed && recommendations" style="padding-top: 1.5em;">
-        <bd-qbr-insights [recommendations]="recommendations" [topPAs]="topPAs" [topPAFirms]="topPAFirms" [secondPAFirms]="secondPAFirms" [editMode]="editMode"></bd-qbr-insights>
+        <bd-qbr-insights [recommendations]="recommendations" [topPAs]="topPAs" [topPAFirms]="topPAFirms"
+                         [secondPAFirms]="secondPAFirms" [editMode]="editMode" [expenses]="report.querystring.expenses"
+                         [reportData]="reportData" [practiceAreaSetting]="practiceAreaSetting"></bd-qbr-insights>
       </div>
 
 
