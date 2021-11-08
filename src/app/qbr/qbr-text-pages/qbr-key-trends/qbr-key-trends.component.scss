@@ -10,12 +10,15 @@
   display: inline-block;
   border-radius: 240px;
   color: #fff;
-  padding: 10px 20px 10px 20px;
-  text-align: center;
+  padding: 10px 10px 10px 70px;
+  text-align: left;
   width: 100%
 }
 .key-trends-badge-percent {
   font-size: 72px;
+}
+.key-trends-badge-amount {
+  font-size: 25px;
 }
 .key-trends-badge-label {
   color: $body-color;

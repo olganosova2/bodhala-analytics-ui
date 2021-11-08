@@ -11,6 +11,12 @@
                   <em *ngIf="metric.direction > 0" class="fa fa-arrow-up ml10"></em>
                   <em *ngIf="metric.direction <= 0" class="fa fa-arrow-down ml10"></em>
                 </div>
+                <div class="key-trends-badge-amount">
+                  This period
+                  <span *ngIf="metric.format === 'dollar'">$</span>{{metric.amount | number:'1.0-0'}}
+                  <span *ngIf="metric.format === 'percent'">%</span>
+                  <span *ngIf="metric.label === 'Total Spend'"><span *ngIf="metric.direction > 0">more</span><span *ngIf="metric.direction <= 0">less</span> than last</span>
+                </div>
                 <div class="key-trends-badge-label">{{ metric.keyTrendsLabel}}</div>
               </div>
             </div>

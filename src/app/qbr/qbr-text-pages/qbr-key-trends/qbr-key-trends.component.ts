@@ -58,7 +58,7 @@ export class QbrKeyTrendsComponent implements OnInit {
     this.compareOverviewMetric.block_billed_pct = this.compareOverviewMetric.percent_block_billed;
     if (this.choosenMetrics.total_spend) {
       const metric = this.qbrService.getOveralSpendMetric(this.currentOverviewMetric, this.compareOverviewMetric, this.includeExpenses);
-      metric.amount = metric.amount - metric.amountToCompare;
+      metric.amount = Math.abs(metric.amount - metric.amountToCompare);
       metric.format = 'dollar';
       this.keyTrendsMetrics.push(metric);
     }

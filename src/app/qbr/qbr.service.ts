@@ -115,7 +115,7 @@ export class QbrService {
     }
     result.amount  = Math.round(currentMetric.block_billed_pct || 0);
     if (compareMetric && compareMetric.block_billed_pct) {
-      const increase = ((currentMetric.block_billed_pct / compareMetric.block_billed_pct) - 1) * 100;
+      const increase = currentMetric.block_billed_pct - compareMetric.block_billed_pct;
       this.formatYoYorQoQMetrics(result, increase);
     }
     return result;
@@ -154,11 +154,9 @@ export class QbrService {
     if (!hoursCurrent) {
       return result;
     }
-    result.amount  = Math.round(hoursCurrent || 0);
-    if (hoursCurrent && hoursCompare) {
-      const increase = ((hoursCurrent / hoursCompare) - 1) * 100;
-      this.formatYoYorQoQMetrics(result, increase);
-    }
+    result.amount  = hoursCurrent;
+    const increase = hoursCurrent - hoursCompare;
+    this.formatYoYorQoQMetrics(result, increase);
     return result;
   }
   mapProperties(source: any, propPrefix, isMatter = false): any {
