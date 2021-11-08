@@ -1,0 +1,63 @@
+<div>
+  <div>
+    <h4>Next Steps</h4>
+  </div>
+  <p>You can modify the parameters for these recommendations at any time by editing the corresponding Insight in the Insights & Opportunities table, and then clicking Generate Next Steps.</p>
+  <p>Additionally, you can modify the inputs used to calculate the potential savings for a recommendation by clicking the edit icon in the potential savings column.</p>
+
+
+  <form [formGroup]="nextStepsForm">
+    <table>
+      <tr>
+        <th>Header</th>
+        <th>Opportunity</th>
+        <th>Action Recommended</th>
+        <th>Potential Savings</th>
+      </tr>
+
+      <tr *ngFor="let rec of savedInsights">
+        <td (focusout)="saveNextStep(rec)">
+          <input formControlName="{{rec.sort_order + 'title'}}" pInputText class="form-control" type='text' value="{{rec.title}}" minlength="10" maxlength="60"/>
+          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')">
+            Header must be at least 10 characters
+          </mat-error>
+          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
+            Header must be less than 60 characters
+          </mat-error>
+        </td>
+        <td class="textinput-td" (focusout)="saveNextStep(rec)">
+          <textarea formControlName="{{rec.sort_order + 'opportunity'}}" matInput class="form-control" type='text' value="{{rec.opportunity}}" maxlength="200" rows="4" cols="40"></textarea>
+          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')">
+            Opportunity must be at least 40 characters
+          </mat-error>
+          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength')">
+            Opportunity must be less than 200 characters
+          </mat-error>
+        </td>
+        <td class="textinput-td" (focusout)="saveNextStep(rec)">
+          <textarea formControlName="{{rec.sort_order + 'action'}}" matInput class="form-control" value="{{rec.action}}" maxlength="200" rows="4" cols="40"></textarea>
+          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')">
+            This section must be at least 40 characters
+          </mat-error>
+          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength')">
+            This section must be less than 200 characters
+          </mat-error>
+        </td>
+        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation'">
+          {{rec.potential_savings_formatted}}
+          <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
+        </td>
+        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type === 'Custom Recommendation'">
+
+        </td>
+      </tr>
+
+
+
+    </table>
+
+
+
+  </form>
+
+</div>

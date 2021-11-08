@@ -300,6 +300,9 @@ export class RecommendationService {
     if (recommendation.bh_lawfirm_id) {
       firmParam.push(recommendation.bh_lawfirm_id.toString());
     }
+    if (recommendation.firm_id) {
+      firmParam.push(recommendation.firm_id.toString());
+    }
     const paParam = [];
     // let apiCall = '';
     // if (window.location.toString().includes('admin')) {

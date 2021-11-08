@@ -170,6 +170,8 @@ import { QbrInsightsComponent } from './qbr/qbr-creation/qbr-insights/qbr-insigh
 import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-next-steps/qbr-next-steps.component';
 import { QbrCoverComponent } from './qbr/qbr-text-pages/qbr-cover/qbr-cover.component';
 import { QbrKeyTrendsComponent } from './qbr/qbr-text-pages/qbr-key-trends/qbr-key-trends.component';
+import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/qbr-next-steps.component';
+import { NextStepInputsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/next-step-inputs/next-step-inputs.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -287,6 +289,8 @@ export function initHttp(service: HttpService) {
     QbrNextStepsComponent,
     QbrCoverComponent,
     QbrKeyTrendsComponent
+    QbrNextStepsComponent,
+    NextStepInputsComponent
   ],
   entryComponents: [
     PillComponent,

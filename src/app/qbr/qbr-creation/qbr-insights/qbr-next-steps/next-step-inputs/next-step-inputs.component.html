@@ -1,0 +1,60 @@
+<div>
+  <div mat-dialog-title>
+    <div class="pull-left">
+      <h3 mat-dialog-title>Inputs for Next Step: {{data.title}}</h3>
+    </div>
+    <div class="pull-right" style="padding-left: 1em;">
+      <!-- (click)="saveConfig()" -->
+      <!-- [disabled]="!validateForm() || inProgress" -->
+      <button mat-flat-button color="primary" (click)="updateSavings()">Update Savings</button>
+      <button mat-flat-button class="btn-grey ml10" [mat-dialog-close]="false">Cancel</button>
+    </div>
+  </div>
+  <div class="clear-both"></div>
+</div>
+
+
+<mat-dialog-content>
+  <p>You can modify the potential savings for a recommendation by changing the inputs here. <br>Once you have changed the inputs, click Update Savings and the potential savings number will update.</p>
+
+  <div *ngIf="data.type === 'Increase Discounts'">
+    <label for="currentDiscount">Current Discount:</label>
+    <input id="currentDiscount" name="currentDiscount" style="margin-left: 4em; width: 50px;" type="number" [(ngModel)]="data.current_discount_pct"  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">%
+    <br>
+    <label for="recommendedDiscount">Recommended Discount:</label>
+    <input id="recommendedDiscount" name="recommendedDiscount" style="margin-left: .6em; width: 50px;" type="number" [(ngModel)]="data.recommended_discount_pct_lower_range"  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">%
+    <br>
+    <label for="projSpendIncrease">Projected Spend Increase:</label>
+    <input id="projSpendIncrease" name="projSpendIncrease" style="margin-left: .1em; width: 50px;" type="number" [(ngModel)]="data.spend_increase_pct"  min="0">%
+
+  </div>
+
+  <div *ngIf="data.type === 'Prevent Rate Increases'">
+    <label for="recommendedLimit">Recommended Rate Increase Limit:</label>
+    <input id="recommendedLimit" name="recommendedLimit" style="margin-left: .6em; width: 50px;" type="number" [(ngModel)]="data.desired_rate_increase_pct"  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">%
+    <br>
+    <label for="projSpendIncreaseRate">Projected Spend Increase:</label>
+    <input id="projSpendIncreaseRate" name="projSpendIncreaseRate" style="margin-left: 4.75em; width: 50px;" type="number" [(ngModel)]="data.spend_increase_pct"  min="0">%
+  </div>
+
+  <div *ngIf="data.type === 'Partner / Associate Work Allocation'">
+    <label for="partnerAllocation">Partner Allocation:</label>
+    <input id="partnerAllocation" name="partnerAllocation" style="margin-left: 4em; width: 50px;" type="number" [(ngModel)]="data.desired_partner_pct_of_hours_worked"  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">%
+    <br>
+    <label for="associateAllocation">Associate Allocation:</label>
+    <input id="associateAllocation" name="associateAllocation" style="margin-left: 3em; width: 50px;" type="number" [(ngModel)]="data.desired_associate_pct_of_hours_worked"  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">%
+    <br>
+    <label for="paralegalAllocation">Paralegal Allocation:</label>
+    <input id="paralegalAllocation" name="paralegalAllocation" style="margin-left: 3.2em; width: 50px;" type="number" [(ngModel)]="data.desired_paralegal_pct_of_hours_worked"  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">%
+    <br>
+    <label for="projSpendIncreaseAlloc">Projected Spend Increase:</label>
+    <input id="projSpendIncreaseAlloc" name="projSpendIncreaseAlloc" style="margin-left: .5em; width: 50px;" type="number" [(ngModel)]="data.spend_increase_pct"  min="0">%
+  </div>
+
+  <div *ngIf="data.type === 'Decrease Block Billing'">
+    <label for="blockBilling">Recommended Block Billing Limit:</label>
+    <input id="blockBilling" name="blockBilling" style="margin-left: 4em; width: 50px;" type="number" [(ngModel)]="data.desired_block_billing_pct"  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">%
+    <br>
+  </div>
+
+</mat-dialog-content>

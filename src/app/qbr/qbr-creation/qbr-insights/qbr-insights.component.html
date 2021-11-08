@@ -4,21 +4,21 @@
   </div>
 
   <div style="display: inline; float: right;">
-    <!-- add new functionality will be here (click)="generateQBR()"-->
-    <!-- <button class="primary-button">Add New +</button> -->
+    <button mat-button (click)="generateNextSteps()" class="primary-button" style="margin-bottom: 1em;" [disabled]="insightsForm.hasError('notEnoughSelected') || insightsForm.hasError('tooManySelected') || insightsForm.status !== 'VALID'">Generate Next Steps</button><br>
     <button mat-button class="primary-button" [matMenuTriggerFor]="menu">Add New +</button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="addRecommendation('Increase Discounts')">Increase Discounts</button>
       <button mat-menu-item (click)="addRecommendation('Prevent Rate Increases')">Prevent Rate Increases</button>
-      <button mat-menu-item (click)="addRecommendation('Associate Work Allocation')">Associate Work Allocation</button>
-      <button mat-menu-item (click)="addRecommendation('Partner Work Allocation')">Partner Work Allocation</button>
+      <button mat-menu-item (click)="addRecommendation('Partner / Associate Work Allocation')">Partner / Associate Work Allocation</button>
       <button mat-menu-item (click)="addRecommendation('Decrease Block Billing')">Decrease Block Billing</button>
       <button mat-menu-item (click)="addRecommendation('Shift Work to Other Firms')">Shift Work to Other Firms</button>
       <button mat-menu-item (click)="addRecommendation('Custom Recommendation')">Custom Recommendation</button>
     </mat-menu>
   </div>
 
-  <p>You must select 3 of the following Insights to include in this report. You can choose any combination of Insights, including 3 of the same kind.<br>You can add new recommendations using the button to the right.</p>
+  <p>You must select 3 of the following Insights to include in this report. You can choose any combination of Insights, including 3 of the same kind.</p>
+  <p>You can add new recommendations using the button to the right.</p>
+  <p>The Insights you select here will be used to generate the Next Steps recommendations. The Generate Next Steps button will be clickable once 3 Insights have been included and all are valid.</p>
   <div class="font-red" *ngIf="insightsForm.hasError('notEnoughSelected') || insightsForm.hasError('tooManySelected') ">
     You must select exactly 3 Insights to include in the report. Insights will not save if more than 3 are selected.
   </div>
@@ -40,16 +40,40 @@
           <mat-checkbox formControlName="{{rec.sort_order + 'include'}}" (change)="checkboxClicked($event, rec)" [checked]="rec.included"></mat-checkbox>
         </td>
         <td (focusout)="saveInsight(rec)">
-          <input formControlName="{{rec.sort_order + 'title'}}" pInputText class="form-control" type='text' value="{{rec.title}}" />
+          <input formControlName="{{rec.sort_order + 'title'}}" pInputText class="form-control" type='text' value="{{rec.title}}" minlength="10" maxlength="60"/>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'title'].hasError('minlength')">
+            Header must be at least 10 characters
+          </mat-error>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
+            Header must be less than 60 characters
+          </mat-error>
         </td>
         <td class="textinput-td" (focusout)="saveInsight(rec)">
-          <textarea formControlName="{{rec.sort_order + 'opportunity'}}" matInput class="form-control" type='text' value="{{rec.opportunity}}" maxlength="400" rows="4" cols="40"></textarea>
+          <textarea formControlName="{{rec.sort_order + 'opportunity'}}" matInput class="form-control" type='text' value="{{rec.opportunity}}" maxlength="200" rows="4" cols="40"></textarea>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')">
+            Opportunity must be at least 40 characters
+          </mat-error>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength')">
+            Opportunity must be less than 200 characters
+          </mat-error>
         </td>
         <td class="textinput-td" (focusout)="saveInsight(rec)">
-          <textarea formControlName="{{rec.sort_order + 'matters'}}" matInput class="form-control" value="{{rec.why_it_matters}}" maxlength="400" rows="4" cols="40"></textarea>
+          <textarea formControlName="{{rec.sort_order + 'matters'}}" matInput class="form-control" value="{{rec.why_it_matters}}" maxlength="200" rows="4" cols="40"></textarea>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'matters'].hasError('minlength')">
+            This section must be at least 40 characters
+          </mat-error>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'matters'].hasError('maxlength')">
+            This section must be less than 200 characters
+          </mat-error>
         </td>
         <td class="textinput-td" (focusout)="saveInsight(rec)">
-          <textarea formControlName="{{rec.sort_order + 'metrics'}}" matInput class="form-control" type='text' value="{{rec.notable_metrics}}" maxlength="400" rows="4" cols="40"></textarea>
+          <textarea formControlName="{{rec.sort_order + 'metrics'}}" matInput class="form-control" type='text' value="{{rec.notable_metrics}}" maxlength="200" rows="4" cols="40"></textarea>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'metrics'].hasError('minlength')">
+            This section must be at least 40 characters
+          </mat-error>
+          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'metrics'].hasError('maxlength')">
+            This section must be less than 200 characters
+          </mat-error>
         </td>
         <td>
           <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'140px'}" [options]="topPAs"
@@ -57,14 +81,20 @@
           </p-dropdown>
           <!-- (onChange)="typeChange($event)" -->
         </td>
-        <td>
+        <td *ngIf="rec.type !== 'Shift Work to Other Firms'">
           <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'140px'}" [options]="rec.currentFirmOptions"
                     placeholder="Select firm to filter data" (onChange)="updateFirmSelection($event, rec)" formControlName="{{rec.sort_order + 'firm'}}">
           </p-dropdown>
         </td>
+        <td *ngIf="rec.type === 'Shift Work to Other Firms'">
+          Can only select PA
+        </td>
       </tr>
     </table>
   </form>
+</div>
 
 
+<div *ngIf="showNextSteps" style="padding-top: 1em; padding-bottom: 1em;">
+  <bd-qbr-next-steps [savedInsights]="nextSteps"></bd-qbr-next-steps>
 </div>

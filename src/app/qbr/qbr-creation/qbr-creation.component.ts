@@ -93,9 +93,7 @@ export class QbrCreationComponent implements OnInit {
       .subscribe(params => {
         // this.report = this.qbrService.savedQBR;
         this.reportId = Number(params.get('reportId'));
-        // console.log("this.reportId: ", this.reportId)
       });
-    // console.log("pre result")
     const result = await this.qbrService.getClientQBRs();
     // console.log("result: ", result);
     if (result) {
@@ -103,9 +101,8 @@ export class QbrCreationComponent implements OnInit {
       this.yoyStartDate = result.firstStartDate;
     }
     if (this.reportId) {
-      // console.log("right before ")
       this.report = await this.qbrService.getClientQBR(this.reportId);
-      // console.log("lets get it: ", this.report);
+      // console.log("l/ets get it: ", this.report);
     } else {
 
     }
@@ -114,10 +111,6 @@ export class QbrCreationComponent implements OnInit {
       this.editMode = true;
       this.reportType = this.report.report_type;
     }
-
-    // this.firstReport = this.qbrService.firstReport;
-    // this.yoyStartDate = this.qbrService.yoyStartDate;
-    // console.log("editMode: ", this.editMode)
 
     if (!this.editMode) {
       this.reportType = 'YoY';
@@ -282,7 +275,6 @@ export class QbrCreationComponent implements OnInit {
     payload.queryString.expenses = this.filtersService.includeExpenses;
     // console.log("payload: ", payload);
     // console.log("params: ", params);
-    // console.log("filtersService.includeExpenses: ", this.filtersService.includeExpenses)
 
     this.pendingRequest = this.httpService.makePostRequest('generateClientQBR', payload).subscribe(
       (data: any) => {
@@ -293,7 +285,6 @@ export class QbrCreationComponent implements OnInit {
         this.generateQBRMetrics(params);
       },
       err => {
-        // console.log("error: ", err)
         return {error: err};
       }
     );
@@ -301,9 +292,15 @@ export class QbrCreationComponent implements OnInit {
   }
 
   generateQBRMetrics(queryString: any): void {
-    // console.log("generateQBRAndMetrics report check: ", this.report)
-    // const params = this.filtersService.getCurrentUserCombinedFilters();
-
+    if (this.topPAs.length > 0) {
+      this.topPAs = [];
+    }
+    if (this.topPAFirms.length > 0) {
+      this.topPAFirms = [];
+    }
+    if (this.secondPAFirms.length > 0) {
+      this.secondPAFirms = [];
+    }
     const payload = {
       startDate: this.reportStartDate,
       endDate: this.reportEndDate,
@@ -331,11 +328,16 @@ export class QbrCreationComponent implements OnInit {
             this.topPA = {
               practice_area: data.result.report_timeframe_top_pas[0].practice_area,
               total_billed: data.result.report_timeframe_top_pas[0].total_billed,
+              total_hours: data.result.report_timeframe_top_pas[0].total_hours,
+              total_partner_billed: data.result.report_timeframe_top_pas[0].total_partner_billed,
+              total_associate_billed: data.result.report_timeframe_top_pas[0].total_associate_billed,
               expenses: data.result.report_timeframe_top_pas[0].total_expenses,
               associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].associate_per_hrs_worked,
               partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].partner_per_hrs_worked,
+              paralegal_percent_hours_worked: data.result.report_timeframe_top_pas[0].paralegal_per_hrs_worked,
               avg_associate_rate: data.result.report_timeframe_top_pas[0].avg_associate_rate,
               avg_partner_rate: data.result.report_timeframe_top_pas[0].avg_partner_rate,
+              avg_paralegal_rate: data.result.report_timeframe_top_pas[0].avg_paralegal_rate,
               avg_blended_rate: data.result.report_timeframe_top_pas[0].blended_rate,
               percent_block_billed: data.result.report_timeframe_top_pas[0].block_billed_pct,
               bodhala_price_index: data.result.report_timeframe_top_pas[0].bpi
@@ -347,10 +349,15 @@ export class QbrCreationComponent implements OnInit {
               practice_area: data.result.report_timeframe_top_pas[0].practice_area,
               expenses: data.result.report_timeframe_top_pas[0].firm_expenses,
               total_billed: data.result.report_timeframe_top_pas[0].firm_total,
+              total_hours: data.result.report_timeframe_top_pas[0].firm_hours,
+              total_partner_billed: data.result.report_timeframe_top_pas[0].firm_partner_billed,
+              total_associate_billed: data.result.report_timeframe_top_pas[0].firm_associate_billed,
               associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].firm_associate_per_hrs_worked,
               partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].firm_partner_per_hrs_worked,
+              paralegal_percent_hours_worked: data.result.report_timeframe_top_pas[0].firm_paralegal_per_hrs_worked,
               avg_associate_rate: data.result.report_timeframe_top_pas[0].firm_avg_associate_rate,
               avg_partner_rate: data.result.report_timeframe_top_pas[0].firm_avg_partner_rate,
+              avg_paralegal_rate: data.result.report_timeframe_top_pas[0].firm_avg_paralegal_rate,
               avg_blended_rate: data.result.report_timeframe_top_pas[0].firm_blended_rate,
               percent_block_billed: data.result.report_timeframe_top_pas[0].firm_block_billed_pct,
               bodhala_price_index: data.result.report_timeframe_top_pas[0].firm_bpi
@@ -362,10 +369,15 @@ export class QbrCreationComponent implements OnInit {
               practice_area: data.result.report_timeframe_top_pas[0].practice_area,
               expenses: data.result.report_timeframe_top_pas[0].second_firm_expenses,
               total_billed: data.result.report_timeframe_top_pas[0].second_firm_total,
+              total_hours: data.result.report_timeframe_top_pas[0].second_firm_hours,
+              total_partner_billed: data.result.report_timeframe_top_pas[0].second_firm_partner_billed,
+              total_associate_billed: data.result.report_timeframe_top_pas[0].second_firm_associate_billed,
               associate_percent_hours_worked: data.result.report_timeframe_top_pas[0].second_firm_associate_per_hrs_worked,
               partner_percent_hours_worked: data.result.report_timeframe_top_pas[0].second_firm_partner_per_hrs_worked,
+              paralegal_percent_hours_worked: data.result.report_timeframe_top_pas[0].second_firm_paralegal_per_hrs_worked,
               avg_associate_rate: data.result.report_timeframe_top_pas[0].second_firm_avg_associate_rate,
               avg_partner_rate: data.result.report_timeframe_top_pas[0].second_firm_avg_partner_rate,
+              avg_paralegal_rate: data.result.report_timeframe_top_pas[0].second_firm_avg_paralegal_rate,
               avg_blended_rate: data.result.report_timeframe_top_pas[0].second_firm_blended_rate,
               percent_block_billed: data.result.report_timeframe_top_pas[0].second_firm_block_billed_pct,
               bodhala_price_index: data.result.report_timeframe_top_pas[0].second_firm_bpi
@@ -405,11 +417,16 @@ export class QbrCreationComponent implements OnInit {
             this.secondPA = {
               practice_area: data.result.report_timeframe_top_pas[1].practice_area,
               total_billed: data.result.report_timeframe_top_pas[1].total_billed,
+              total_hours: data.result.report_timeframe_top_pas[1].total_hours,
+              total_partner_billed: data.result.report_timeframe_top_pas[1].total_partner_billed,
+              total_associate_billed: data.result.report_timeframe_top_pas[1].total_associate_billed,
               expenses: data.result.report_timeframe_top_pas[1].total_expenses,
               associate_percent_hours_worked: data.result.report_timeframe_top_pas[1].associate_per_hrs_worked,
               partner_percent_hours_worked: data.result.report_timeframe_top_pas[1].partner_per_hrs_worked,
+              paralegal_percent_hours_worked: data.result.report_timeframe_top_pas[1].paralegal_per_hrs_worked,
               avg_associate_rate: data.result.report_timeframe_top_pas[1].avg_associate_rate,
               avg_partner_rate: data.result.report_timeframe_top_pas[1].avg_partner_rate,
+              avg_paralegal_rate: data.result.report_timeframe_top_pas[1].avg_paralegal_rate,
               avg_blended_rate: data.result.report_timeframe_top_pas[1].blended_rate,
               percent_block_billed: data.result.report_timeframe_top_pas[1].block_billed_pct,
               bodhala_price_index: data.result.report_timeframe_top_pas[1].bpi
@@ -421,10 +438,15 @@ export class QbrCreationComponent implements OnInit {
               practice_area: data.result.report_timeframe_top_pas[1].practice_area,
               expenses: data.result.report_timeframe_top_pas[1].firm_expenses,
               total_billed: data.result.report_timeframe_top_pas[1].firm_total,
+              total_hours: data.result.report_timeframe_top_pas[1].firm_hours,
+              total_partner_billed: data.result.report_timeframe_top_pas[1].firm_partner_billed,
+              total_associate_billed: data.result.report_timeframe_top_pas[1].firm_associate_billed,
               associate_percent_hours_worked: data.result.report_timeframe_top_pas[1].firm_associate_per_hrs_worked,
               avg_associate_rate: data.result.report_timeframe_top_pas[1].firm_avg_associate_rate,
               partner_percent_hours_worked: data.result.report_timeframe_top_pas[1].firm_partner_per_hrs_worked,
               avg_partner_rate: data.result.report_timeframe_top_pas[1].firm_avg_partner_rate,
+              avg_paralegal_rate: data.result.report_timeframe_top_pas[1].firm_avg_paralegal_rate,
+              paralegal_percent_hours_worked: data.result.report_timeframe_top_pas[1].firm_paralegal_per_hrs_worked,
               avg_blended_rate: data.result.report_timeframe_top_pas[1].firm_blended_rate,
               percent_block_billed: data.result.report_timeframe_top_pas[1].firm_block_billed_pct,
               bodhala_price_index: data.result.report_timeframe_top_pas[1].firm_bpi
@@ -436,10 +458,15 @@ export class QbrCreationComponent implements OnInit {
               practice_area: data.result.report_timeframe_top_pas[1].practice_area,
               expenses: data.result.report_timeframe_top_pas[1].second_firm_expenses,
               total_billed: data.result.report_timeframe_top_pas[1].second_firm_total,
+              total_hours: data.result.report_timeframe_top_pas[1].second_firm_hours,
+              total_partner_billed: data.result.report_timeframe_top_pas[1].second_firm_partner_billed,
+              total_associate_billed: data.result.report_timeframe_top_pas[1].second_firm_associate_billed,
               associate_percent_hours_worked: data.result.report_timeframe_top_pas[1].second_firm_associate_per_hrs_worked,
               partner_percent_hours_worked: data.result.report_timeframe_top_pas[1].second_firm_partner_per_hrs_worked,
+              paralegal_percent_hours_worked: data.result.report_timeframe_top_pas[1].second_firm_paralegal_per_hrs_worked,
               avg_associate_rate: data.result.report_timeframe_top_pas[1].second_firm_avg_associate_rate,
               avg_partner_rate: data.result.report_timeframe_top_pas[1].second_firm_avg_partner_rate,
+              avg_paralegal_rate: data.result.report_timeframe_top_pas[1].second_firm_avg_paralegal_rate,
               avg_blended_rate: data.result.report_timeframe_top_pas[1].second_firm_blended_rate,
               percent_block_billed: data.result.report_timeframe_top_pas[1].second_firm_block_billed_pct,
               bodhala_price_index: data.result.report_timeframe_top_pas[1].second_firm_bpi
@@ -665,7 +692,8 @@ export class QbrCreationComponent implements OnInit {
             };
           }
         }
-
+        // console.log("topPA: ", this.topPA);
+        // console.log("topPATopFirm: ", this.topPATopFirm);
         this.calcluateTrendData(this.reportData, this.comparisonData, true, false);
         this.calcluateTrendData(this.topPA, this.topPAComparison, false, false);
         this.calcluateTrendData(this.topPATopFirm, this.topPATopFirmComparison, false, false);
@@ -786,7 +814,7 @@ export class QbrCreationComponent implements OnInit {
     this.filtersService.includeExpenses = !this.filtersService.includeExpenses;
     if (this.report.querystring !== null && this.report.querystring !== undefined) {
       this.report.querystring.expenses = !this.report.querystring.expenses;
-      // console.log("Expenses: ", this.report.querystring['expenses']);
+      // console.log("Expenses: ", this.report.querystring.expenses);
     }
     if (this.reportData !== null && this.reportData !== undefined) {
       this.calcluateTrendData(this.reportData, this.comparisonData, true, false);
