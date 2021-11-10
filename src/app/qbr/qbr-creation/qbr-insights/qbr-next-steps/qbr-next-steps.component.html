@@ -4,7 +4,8 @@
   </div>
   <p>You can modify the parameters for these recommendations at any time by editing the corresponding Insight in the Insights & Opportunities table, and then clicking Generate Next Steps.</p>
   <p>Additionally, you can modify the inputs used to calculate the potential savings for a recommendation by clicking the edit icon in the potential savings column.</p>
-
+  <p>The View Report button will take you to a preview of what the report looks like. From there, you will be able to finalize the report
+    or return to this page to make more edits. The View Report button will only be clickable once the Insights & Opportunities and Next Steps sections are complete and valid. Instructions for those sections are below.</p>
 
   <form [formGroup]="nextStepsForm">
     <table>
@@ -48,7 +49,13 @@
           <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
         </td>
         <td (focusout)="saveNextStep(rec)" *ngIf="rec.type === 'Custom Recommendation'">
-
+          <!-- <label>$</label>
+          <input matInput formControlName="{{rec.sort_order + 'savings'}}" type="number" min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"> -->
+          <mat-form-field class="mat-input-sm" appearance="outline">
+          <input type="number" matInput formControlName="{{rec.sort_order + 'savings'}}" placeholder="Savings" autocomplete="off" (focusout)="saveNextStep(rec)"
+                  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+          <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
         </td>
       </tr>
 
@@ -60,4 +67,8 @@
 
   </form>
 
+  <div class="pull-right" style="padding-top: 1em;">
+    <button mat-flat-button class="primary-button" (click)="viewReport()"
+            [disabled]="nextStepsForm.status !== 'VALID'">View Report</button>
+  </div>
 </div>

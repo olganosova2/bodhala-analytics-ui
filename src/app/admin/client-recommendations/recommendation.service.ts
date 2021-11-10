@@ -213,6 +213,8 @@ export class RecommendationService {
     const firmParam = [];
     if (recommendation.bh_lawfirm_id) {
       firmParam.push(recommendation.bh_lawfirm_id.toString());
+    } else if (recommendation.firm_id) {
+      firmParam.push(recommendation.firm_id.toString());
     }
     const paParam = [];
     let apiCall = '';

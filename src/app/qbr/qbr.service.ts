@@ -356,6 +356,8 @@ export class QbrService {
     for (const rec of recommendations) {
       if (rec.section === 'Insights') {
         rec.notable_metrics = rec.recommendation;
+      } else if (rec.section === 'Next Steps') {
+        rec.action = rec.recommendation;
       }
       rec.sort_order = i;
       i++;
@@ -371,6 +373,28 @@ export class QbrService {
     // console.log("payload: ", payload);
     return new Promise((resolve, reject) => {
       return this.pendingRequest = this.httpService.makePostRequest('saveQBRRecommendation', payload).subscribe(
+        (data: any) => {
+          let recResult;
+          if (data.result) {
+            recResult = data.result;
+          }
+
+          resolve(recResult);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  saveNextStep(nextStep): Promise<any> {
+    const payload = {
+      rec: nextStep
+    };
+    // console.log("payload: ", payload);
+    return new Promise((resolve, reject) => {
+      return this.pendingRequest = this.httpService.makePostRequest('saveQBRNextStep', payload).subscribe(
         (data: any) => {
           let recResult;
           if (data.result) {
@@ -402,7 +426,7 @@ export class QbrService {
             first = false;
             // const yoyReport = clientQBRs.filter(qbr => qbr.report_type === 'YoY');
             const sorted = clientQBRs.sort((a, b) => a.id - b.id);
-            // console.log("sorted: ", sorted)
+
             if (sorted.length > 0) {
               startDate = sorted[0].start_date;
             }

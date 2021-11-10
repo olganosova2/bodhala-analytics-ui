@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import {CommonService} from '../../../shared/services/common.service';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -12,6 +12,7 @@ import {IReport, QbrType, recommendationPlaceholderMapping, formatter, moneyForm
 import {SelectItem} from 'primeng/api';
 import { QbrCreationComponent } from '../qbr-creation.component';
 import { RecommendationService } from 'src/app/admin/client-recommendations/recommendation.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'bd-qbr-insights',
@@ -25,6 +26,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   recommendationsProcessed: boolean = false;
   showNextSteps: boolean = false;
   nextSteps: Array<any> = [];
+  nextStepsValid: boolean = false;
   @Input() recommendations: any;
   @Input() topPAs: SelectItem[];
   @Input() topPAFirms: SelectItem[];
@@ -33,6 +35,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   @Input() expenses: boolean;
   @Input() reportData: any;
   @Input() practiceAreaSetting: string;
+  // @ViewChild(QbrNextStepsComponent) nextStepsComp: QbrNextStepsComponent;
 
 
   constructor(private httpService: HttpService,
@@ -42,23 +45,30 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
               public commonServ: CommonService,
               public utilService: UtilService,
               public datepipe: DatePipe,
+              public router: Router,
               private qbrService: QbrService,
-              private parent: QbrCreationComponent,
+              public parent: QbrCreationComponent,
               private recService: RecommendationService) {}
 
   ngOnInit(): void {
     this.insightsForm.validator =  this.validateInsightsSelection();
+    if (this.editMode) {
+      this.nextSteps = this.recommendations.filter(r => r.section === 'Next Steps');
+      this.recommendations = this.recommendations.filter(r => r.section === 'Insights');
+      if (this.nextSteps.length > 0) {
+        this.showNextSteps = true;
+      }
+    }
     this.currentFirmOptions = this.topPAFirms;
     this.processRecommendations();
     // console.log("recs: ", this.recommendations)
+    // console.log("nextSteps: ", this.nextSteps)
     // console.log("INSIGHT EXPENSES: ", this.parent.report.querystring.expenses)
+    // console.log("INSIGHT FORM: ", this.insightsForm)
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // console.log("changes: ", changes);
     if (changes.expenses && !changes.expenses.firstChange) {
-      // console.log("this.expenses: ", this.expenses)
-      // this.processRecommendations();
       for (const rec of this.recommendations) {
         rec.currentFirmOptions = this.currentFirmOptions;
         if (rec.type === 'Increase Discounts') {
@@ -92,6 +102,17 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     }
   }
 
+
+  updateFormStatus(status: string): void {
+    // console.log("updateFormStatus: ", status)
+    if (status === 'VALID') {
+      this.nextStepsValid = true;
+    } else {
+      this.nextStepsValid = false;
+    }
+    // console.log("updateFormStatus: ", status, this.nextStepsValid)
+  }
+
   validateInsightsSelection(): ValidatorFn {
     return (formGroup: FormGroup): ValidationErrors | null => {
       let checked = 0;
@@ -115,209 +136,216 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
   async generateNextSteps(): Promise<void> {
     this.nextSteps = [];
-    for (let rec of this.recommendations) {
+    const savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null}));
+    // console.log("savedInsights: ", savedInsights);
+    for (const rec of this.recommendations) {
       if (rec.included) {
         this.saveInsight(rec);
+      }
+    }
+    for (let savedInsight of savedInsights) {
+      // if (!this.editMode) {
+      //   rec.id = null;
+      // }
+      // let savedInsight = rec;
+      if (savedInsight.included) {
 
-        if (rec.type === 'Increase Discounts') {
-          rec.current_discount_pct = 0;
-          rec.spend_increase_pct = 0;
-          rec.recommended_discount_pct_lower_range = 5;
-          rec.recommended_discount_pct_upper_range = 10;
-          if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
-            const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
+        if (savedInsight.type === 'Increase Discounts') {
+          savedInsight.current_discount_pct = 0;
+          savedInsight.spend_increase_pct = 0;
+          savedInsight.recommended_discount_pct_lower_range = 5;
+          savedInsight.recommended_discount_pct_upper_range = 10;
+          if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
+            const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
             if (elementIndex === 1) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.topPA, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.topPA, this.parent.report.querystring.expenses, false);
             } else if (elementIndex === 2) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.secondPA, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.secondPA, this.parent.report.querystring.expenses, false);
             } else {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
             }
-          } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
-            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if ((savedInsight.practice_area === null || savedInsight.practice_area === undefined) && (savedInsight.firm_id !== null && savedInsight.firm_id !== undefined)) {
+            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (elementIndex === 1) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
             } else if (elementIndex === 2) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
             } else {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
             }
-          } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
-            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if (savedInsight.practice_area !== null && savedInsight.practice_area !== undefined && savedInsight.firm_id !== null && savedInsight.firm_id !== undefined) {
+            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (firmElementIndex === -1) {
-              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === rec.firm_id);
+              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             }
-            const paElementIndex = this.topPAs.findIndex(pa => pa.value === rec.practice_area);
+            const paElementIndex = this.topPAs.findIndex(pa => pa.value === savedInsight.practice_area);
             if (firmElementIndex === 1 && paElementIndex === 1) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
             } else if (firmElementIndex === 1 && paElementIndex === 2) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.secondPATopFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.secondPATopFirm, this.parent.report.querystring.expenses, false);
             } else if (firmElementIndex === 2 && paElementIndex === 1) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
             } else if (firmElementIndex === 2 && paElementIndex === 2) {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.secondPASecondFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.secondPASecondFirm, this.parent.report.querystring.expenses, false);
             } else {
-              rec = this.qbrService.calculateDiscountSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+              savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
             }
           } else {
-            rec = this.qbrService.calculateDiscountSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+            savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
           }
 
 
-        } else if (rec.type === 'Prevent Rate Increases') {
-          rec.spend_increase_pct = 0;
-          rec.desired_rate_increase_pct = 3;
+        } else if (savedInsight.type === 'Prevent Rate Increases') {
+          savedInsight.spend_increase_pct = 0;
+          savedInsight.desired_rate_increase_pct = 3;
 
-          const rateIncreaseData = await this.recService.getRateIncreaseData(rec, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
-          rec.potential_savings = rateIncreaseData.savings;
-          if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
-            const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
+          const rateIncreaseData = await this.recService.getRateIncreaseData(savedInsight, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
+          savedInsight.potential_savings = rateIncreaseData.savings;
+          if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
+            const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
             if (elementIndex === 1) {
-              rec.savingsData = this.parent.topPA;
+              savedInsight.savingsData = this.parent.topPA;
             } else if (elementIndex === 2) {
-              rec.savingsData = this.parent.secondPA;
+              savedInsight.savingsData = this.parent.secondPA;
             } else {
-              rec.savingsData = this.parent.reportData;
+              savedInsight.savingsData = this.parent.reportData;
             }
-          } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
-            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if ((savedInsight.practice_area === null || savedInsight.practice_area === undefined) && (savedInsight.firm_id !== null && savedInsight.firm_id !== undefined)) {
+            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (elementIndex === 1) {
-              rec.savingsData = this.parent.topPATopFirm;
+              savedInsight.savingsData = this.parent.topPATopFirm;
             } else if (elementIndex === 2) {
-              rec.savingsData = this.parent.topPASecondFirm;
+              savedInsight.savingsData = this.parent.topPASecondFirm;
             } else {
-              rec.savingsData = this.parent.reportData;
+              savedInsight.savingsData = this.parent.reportData;
             }
-          } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
-            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if (savedInsight.practice_area !== null && savedInsight.practice_area !== undefined && savedInsight.firm_id !== null && savedInsight.firm_id !== undefined) {
+            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (firmElementIndex === -1) {
-              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === rec.firm_id);
+              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             }
-            const paElementIndex = this.topPAs.findIndex(pa => pa.value === rec.practice_area);
+            const paElementIndex = this.topPAs.findIndex(pa => pa.value === savedInsight.practice_area);
             if (firmElementIndex === 1 && paElementIndex === 1) {
-              rec.savingsData = this.parent.topPATopFirm;
+              savedInsight.savingsData = this.parent.topPATopFirm;
             } else if (firmElementIndex === 1 && paElementIndex === 2) {
-              rec.savingsData = this.parent.secondPATopFirm;
+              savedInsight.savingsData = this.parent.secondPATopFirm;
             } else if (firmElementIndex === 2 && paElementIndex === 1) {
-              rec.savingsData = this.parent.topPASecondFirm;
+              savedInsight.savingsData = this.parent.topPASecondFirm;
             } else if (firmElementIndex === 2 && paElementIndex === 2) {
-              rec.savingsData = this.parent.secondPASecondFirm;
+              savedInsight.savingsData = this.parent.secondPASecondFirm;
             } else {
-              rec.savingsData = this.parent.reportData;
+              savedInsight.savingsData = this.parent.reportData;
             }
           } else {
-            rec.savingsData = this.parent.reportData;
+            savedInsight.savingsData = this.parent.reportData;
           }
           // rec.savingsData =
-          rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
-          rec.practiceAreaSetting = this.practiceAreaSetting;
-        } else if (rec.type === 'Partner / Associate Work Allocation') {
-          rec.desired_partner_pct_of_hours_worked = 35;
-          rec.desired_associate_pct_of_hours_worked = 65;
-          rec.desired_paralegal_pct_of_hours_worked = 0;
-          rec.spend_increase_pct = 0;
+          savedInsight.potential_savings_formatted = moneyFormatter.format(savedInsight.potential_savings);
+          savedInsight.practiceAreaSetting = this.practiceAreaSetting;
+        } else if (savedInsight.type === 'Partner / Associate Work Allocation') {
+          savedInsight.desired_partner_pct_of_hours_worked = 35;
+          savedInsight.desired_associate_pct_of_hours_worked = 65;
+          savedInsight.desired_paralegal_pct_of_hours_worked = 0;
+          savedInsight.spend_increase_pct = 0;
 
-          if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
-            const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
+          if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
+            const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
             if (elementIndex === 1) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.topPA, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.topPA, this.parent.report.querystring.expenses, false);
             } else if (elementIndex === 2) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.secondPA, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.secondPA, this.parent.report.querystring.expenses, false);
             } else {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
             }
-          } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
-            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if ((savedInsight.practice_area === null || savedInsight.practice_area === undefined) && (savedInsight.firm_id !== null && savedInsight.firm_id !== undefined)) {
+            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (elementIndex === 1) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
             } else if (elementIndex === 2) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
             } else {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
             }
-          } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
-            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if (savedInsight.practice_area !== null && savedInsight.practice_area !== undefined && savedInsight.firm_id !== null && savedInsight.firm_id !== undefined) {
+            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (firmElementIndex === -1) {
-              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === rec.firm_id);
+              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             }
-            const paElementIndex = this.topPAs.findIndex(pa => pa.value === rec.practice_area);
+            const paElementIndex = this.topPAs.findIndex(pa => pa.value === savedInsight.practice_area);
             if (firmElementIndex === 1 && paElementIndex === 1) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.topPATopFirm, this.parent.report.querystring.expenses, false);
             } else if (firmElementIndex === 1 && paElementIndex === 2) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.secondPATopFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.secondPATopFirm, this.parent.report.querystring.expenses, false);
             } else if (firmElementIndex === 2 && paElementIndex === 1) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.topPASecondFirm, this.parent.report.querystring.expenses, false);
             } else if (firmElementIndex === 2 && paElementIndex === 2) {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.secondPASecondFirm, this.parent.report.querystring.expenses, false);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.secondPASecondFirm, this.parent.report.querystring.expenses, false);
             } else {
-              rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+              savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
             }
           } else {
-            rec = this.qbrService.calculateStaffingAllocationSavings(rec, this.parent.reportData, this.parent.report.querystring.expenses, true);
+            savedInsight = this.qbrService.calculateStaffingAllocationSavings(savedInsight, this.parent.reportData, this.parent.report.querystring.expenses, true);
           }
 
-        } else if (rec.type === 'Decrease Block Billing') {
-          rec.desired_block_billing_pct = 20;
+        } else if (savedInsight.type === 'Decrease Block Billing') {
+          savedInsight.desired_block_billing_pct = 20;
 
-          if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
-            const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
+          if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
+            const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
             if (elementIndex === 1) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.topPA);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.topPA);
             } else if (elementIndex === 2) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.secondPA);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.secondPA);
             } else {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.reportData);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.reportData);
             }
-          } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
-            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if ((savedInsight.practice_area === null || savedInsight.practice_area === undefined) && (savedInsight.firm_id !== null && savedInsight.firm_id !== undefined)) {
+            const elementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (elementIndex === 1) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.topPATopFirm);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.topPATopFirm);
             } else if (elementIndex === 2) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.topPASecondFirm);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.topPASecondFirm);
             } else {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.reportData);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.reportData);
             }
-          } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
-            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
+          } else if (savedInsight.practice_area !== null && savedInsight.practice_area !== undefined && savedInsight.firm_id !== null && savedInsight.firm_id !== undefined) {
+            let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             if (firmElementIndex === -1) {
-              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === rec.firm_id);
+              firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === savedInsight.firm_id);
             }
-            const paElementIndex = this.topPAs.findIndex(pa => pa.value === rec.practice_area);
+            const paElementIndex = this.topPAs.findIndex(pa => pa.value === savedInsight.practice_area);
             if (firmElementIndex === 1 && paElementIndex === 1) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.topPATopFirm);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.topPATopFirm);
             } else if (firmElementIndex === 1 && paElementIndex === 2) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.secondPATopFirm);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.secondPATopFirm);
             } else if (firmElementIndex === 2 && paElementIndex === 1) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.topPASecondFirm);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.topPASecondFirm);
             } else if (firmElementIndex === 2 && paElementIndex === 2) {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.secondPASecondFirm);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.secondPASecondFirm);
             } else {
-              rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.reportData);
+              savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.reportData);
             }
           } else {
-            rec = this.qbrService.calculateBlockBillingSavings(rec, this.parent.reportData);
+            savedInsight = this.qbrService.calculateBlockBillingSavings(savedInsight, this.parent.reportData);
           }
-        } else if (rec.type === 'Shift Work to Other Firms') {
+        } else if (savedInsight.type === 'Shift Work to Other Firms') {
 
-          const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
+          const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
           // console.log("elem index: ", elementIndex)
           if (elementIndex === 1) {
-            rec = this.qbrService.calculateShiftFirmsSavings(rec, this.parent.topPATopFirm, this.parent.topPASecondFirm);
+            savedInsight = this.qbrService.calculateShiftFirmsSavings(savedInsight, this.parent.topPATopFirm, this.parent.topPASecondFirm);
           } else if (elementIndex === 2) {
-            rec = this.qbrService.calculateShiftFirmsSavings(rec, this.parent.secondPATopFirm, this.parent.secondPASecondFirm);
+            savedInsight = this.qbrService.calculateShiftFirmsSavings(savedInsight, this.parent.secondPATopFirm, this.parent.secondPASecondFirm);
           } else {
-            rec = this.qbrService.calculateShiftFirmsSavings(rec, this.parent.topPATopFirm, this.parent.topPASecondFirm);
+            savedInsight = this.qbrService.calculateShiftFirmsSavings(savedInsight, this.parent.topPATopFirm, this.parent.topPASecondFirm);
           }
 
-
-
-
-        } else if (rec.type === 'Custom Recommendation') {
-          rec.potential_savings = 0;
+        } else if (savedInsight.type === 'Custom Recommendation') {
+          savedInsight.potential_savings = 0;
 
         }
         // rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
-        this.nextSteps.push(rec);
+        this.nextSteps.push(savedInsight);
       }
 
     }
@@ -487,25 +515,23 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       if (rec.id === null || rec.id === undefined) {
         if (rec.type === 'Increase Discounts') {
           if (this.parent.report.querystring.expenses === true) {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.reportData.total_spend_including_expenses.total) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.reportData.total_spend_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.reportData.total_spend_including_expenses.total) + '\nTotal Spend\n' + formatter.format(this.parent.reportData.total_spend_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.reportData.total_spend.total) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.reportData.total_spend_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.reportData.total_spend.total) + '\nTotal Spend\n' + formatter.format(this.parent.reportData.total_spend_trend) + '%\nTotal Spend Trend';
           }
         } else if (rec.type === 'Prevent Rate Increases') {
           rec.desired_rate_increase_pct = 3;
           const rateIncreaseData = await this.recService.getRateIncreaseDataByClient(rec, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
-          // console.log("rateIncreaseData: ", rateIncreaseData)
           if (rateIncreaseData.details) {
             if (rateIncreaseData.details.length > 0) {
-              rec.notable_metrics = 'Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+              rec.notable_metrics = formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
             }
             if (rateIncreaseData.details.length > 1) {
-              rec.notable_metrics += 'Partner Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%';
+              rec.notable_metrics += formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%\nAvg. Partner Rate Increase';
             }
           }
         } else if (rec.type === 'Partner / Associate Work Allocation') {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.reportData.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else if (rec.type === 'Decrease Block Billing') {
           if (this.parent.reportData.bb_trend > 0) {
             rec.opportunity = 'Block billing across all firms from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.reportData.bb_trend) + '%';
@@ -514,13 +540,15 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           } else {
             rec.opportunity = 'Block billing across all firms from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' remained the same.';
           }
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
           this.insightsForm.controls[rec.sort_order + 'opportunity'].setValue(rec.opportunity);
         } else if (rec.type === 'Shift Work to Other Firms') {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
+                                moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         } else if (rec.type === 'Custom Recommendation') {
           rec.notable_metrics = '';
+          rec.opportunity = '';
+          rec.why_it_matters = '';
         }
       }
 
@@ -550,8 +578,17 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       rec.title = this.insightsForm.controls[rec.sort_order.toString() + 'title'].value;
       rec.notable_metrics = this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value;
       rec.why_it_matters = this.insightsForm.controls[rec.sort_order.toString() + 'matters'].value;
-
+      if (rec.opportunity === null) {
+        rec.opportunity = '';
+      }
+      if (rec.notable_metrics === null) {
+        rec.notable_metrics = '';
+      }
+      if (rec.why_it_matters === null) {
+        rec.why_it_matters = '';
+      }
       rec = await this.qbrService.saveRecommendation(rec);
+      // console.log("rec: ", rec);
       const elementIndex = this.recommendations.findIndex(r => r.sort_order === tempSortOrder);
       // console.log("elementIndex: ", elementIndex)
       // console.log("RECOMMENDATIONS: ", this.recommendations);
@@ -592,71 +629,68 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   updateDiscountRecommendation(rec) {
     // console.log("updateDiscountRecommendation: ", rec);
     if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
-      // console.log("IF EVAL: ", rec.metrics_edited, rec.practice_area, rec.firm_id);
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPA.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPA.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPA.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPA.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPA.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPA.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPA.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPA.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPA.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPA.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPA.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPA.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPA.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPA.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPA.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPA.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       } else if (elementIndex === 2) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPA.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPA.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPA.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.secondPA.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPA.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPA.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.secondPA.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.secondPA.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPA.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPA.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPA.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPA.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPA.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPA.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.secondPA.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPA.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       }
     } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
-      // console.log("FIRST ELSE IF EVAL: ", rec.metrics_edited, rec.practice_area, rec.firm_id);
       const elementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
       if (elementIndex === 1) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       } else if (elementIndex === 2) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       }
     } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
-      // console.log("SECOND ELSE IF EVAL: ", rec.metrics_edited, rec.practice_area, rec.firm_id);
       let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
       if (firmElementIndex === -1) {
         firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === rec.firm_id);
@@ -665,87 +699,86 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       if (firmElementIndex === 1 && paElementIndex === 1) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       } else if (firmElementIndex === 1 && paElementIndex === 2) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.secondPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.secondPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       } else if (firmElementIndex === 2 && paElementIndex === 1) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPASecondFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPASecondFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       } else if (firmElementIndex === 2 && paElementIndex === 2) {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPASecondFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPASecondFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPASecondFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.secondPASecondFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPASecondFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPASecondFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.secondPASecondFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.secondPASecondFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPASecondFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       } else {
         if (this.parent.report.querystring.expenses === true) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
-            rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%';
+            rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.topPATopFirm.total_billed_trend) + '%\nTotal Spend Trend';
           }
         }
       }
     } else {
-      // console.log("ELSE EVAL: ", rec.metrics_edited, rec.practice_area, rec.firm_id);
       if (this.parent.report.querystring.expenses === true) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.reportData.total_spend_including_expenses.total) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.reportData.total_spend_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.reportData.total_spend_including_expenses.total) + '\nTotal Spend\n' + formatter.format(this.parent.reportData.total_spend_trend) + '%\nTotal Spend Trend';
         } else {
-          rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.reportData.total_spend_including_expenses.total) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.reportData.total_spend_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.reportData.total_spend_including_expenses.total) + '\nTotal Spend\n' + formatter.format(this.parent.reportData.total_spend_trend) + '%\nTotal Spend Trend';
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nTotal Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.reportData.total_spend.total) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.reportData.total_spend_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.reportData.total_spend.total) + '\nTotal Spend\n' + formatter.format(this.parent.reportData.total_spend_trend) + '%\nTotal Spend Trend';
         } else {
-          rec.notable_metrics = 'Total Spend (Report Timeframe): ' + moneyFormatter.format(this.parent.reportData.total_spend.total) + '\n' + 'Total Spend Trend: ' + formatter.format(this.parent.reportData.total_spend_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.reportData.total_spend.total) + '\nTotal Spend\n' + formatter.format(this.parent.reportData.total_spend_trend) + '%\nTotal Spend Trend';
         }
       }
     }
@@ -757,65 +790,59 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     rec.desired_rate_increase_pct = 3;
     if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
       const rateIncreaseData = await this.recService.getRateIncreaseDataByClient(rec, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
-      // console.log("rateIncreaseData: ", rateIncreaseData)
       if (rateIncreaseData.details) {
         if (rateIncreaseData.details.length > 0) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\n' + rec.practice_area + ' Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics += '\n' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           } else {
-            rec.notable_metrics = rec.practice_area + ' Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics = formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           }
         }
         if (rateIncreaseData.details.length > 1) {
-          rec.notable_metrics += rec.practice_area + ' Partner Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%';
+          rec.notable_metrics += formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%\nAvg. Partner Rate Increase\n';
         }
       }
     } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
-
       const rateIncreaseData = await this.recService.getRateIncreaseData(rec, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
-      // console.log("rateIncreaseData: ", rateIncreaseData)
       if (rateIncreaseData.details) {
         if (rateIncreaseData.details.length > 0) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\n' + rec.firm_name + ' Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics += '\n' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           } else {
-            rec.notable_metrics = rec.firm_name + ' Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics = formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           }
         }
         if (rateIncreaseData.details.length > 1) {
-          rec.notable_metrics += rec.firm_name + ' Partner Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%';
+          rec.notable_metrics += formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%\nAvg. Partner Rate Increase';
         }
       }
 
     } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
-
       const rateIncreaseData = await this.recService.getRateIncreaseData(rec, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
-      // console.log("rateIncreaseData: ", rateIncreaseData)
       if (rateIncreaseData.details) {
         if (rateIncreaseData.details.length > 0) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\n' + rec.firm_name + ' - ' + rec.practice_area + ' Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics += '\n' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           } else {
-            rec.notable_metrics = rec.firm_name + ' - ' + rec.practice_area + ' Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics = formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           }
         }
         if (rateIncreaseData.details.length > 1) {
-          rec.notable_metrics += rec.firm_name + ' - ' + rec.practice_area + ' Partner Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%';
+          rec.notable_metrics += formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%\nAvg. Partner Rate Increase';
         }
       }
     } else {
       const rateIncreaseData = await this.recService.getRateIncreaseDataByClient(rec, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
-      // console.log("rateIncreaseData: ", rateIncreaseData)
       if (rateIncreaseData.details) {
         if (rateIncreaseData.details.length > 0) {
           if (rec.metrics_edited) {
-            rec.notable_metrics += '\nAssociate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics += '\n' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           } else {
-            rec.notable_metrics = 'Associate Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\n';
+            rec.notable_metrics = formatter.format((rateIncreaseData.details[0].avgRateIncrease * 100)) + '%\nAvg. Assoc Rate Increase\n';
           }
         }
         if (rateIncreaseData.details.length > 1) {
-          rec.notable_metrics += 'Partner Rate Increase (Avg. Last 3 Years): ' + formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%';
+          rec.notable_metrics += formatter.format((rateIncreaseData.details[1].avgRateIncrease * 100)) + '%\nAvg. Partner Rate Increase';
         }
       }
     }
@@ -828,54 +855,42 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPA.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPA.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPA.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPA.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPA.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPA.partner_percent_hours_worked) + '%\nPartner % Hrs Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPA.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPA.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPA.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPA.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPA.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPA.partner_percent_hours_worked) +  '%\nPartner % Hrs Billed';
         }
       } else if (elementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPA.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.secondPA.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPA.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.secondPA.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPA.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.secondPA.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPA.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.secondPA.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPA.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.secondPA.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.secondPA.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.secondPA.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.reportData.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.reportData.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       }
     } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
       const elementIndex = this.topPAFirms.findIndex(f => f.value === rec.firm_id);
       if (elementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       } else if (elementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPASecondFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPASecondFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.reportData.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.reportData.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       }
     } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
@@ -888,52 +903,40 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
       if (firmElementIndex === 1 && paElementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       } else if (firmElementIndex === 1 && paElementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.secondPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.secondPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.secondPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.secondPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.secondPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.secondPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.secondPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       } else if (firmElementIndex === 2 && paElementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPASecondFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPASecondFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPASecondFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPASecondFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       } else if (firmElementIndex === 2 && paElementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPASecondFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.secondPASecondFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPASecondFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.secondPASecondFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPASecondFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.secondPASecondFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPASecondFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.secondPASecondFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.secondPASecondFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.secondPASecondFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.secondPASecondFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.secondPASecondFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         } else {
-          rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.assoc_hrs_trend) + '%';
-          rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.topPATopFirm.partner_hrs_trend) + '%';
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.topPATopFirm.partner_percent_hours_worked) + '%\nPartner Hours Billed';
         }
       }
     } else {
       if (rec.metric_edited) {
-        rec.notable_metrics += '\nAssoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.assoc_hrs_trend) + '%';
-        rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.partner_hrs_trend) + '%';
+        rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.reportData.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\nPartner Hours Billed';
       } else {
-        rec.notable_metrics = 'Assoc % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.associate_percent_hours_worked) + '%\n' + 'Assoc % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.assoc_hrs_trend) + '%';
-        rec.notable_metrics += '\nPartner % of Hours Worked (Report Timeframe): ' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\n' + 'Partner % of Hours Worked Trend: ' + formatter.format(this.parent.reportData.partner_hrs_trend) + '%';
+        rec.notable_metrics = moneyFormatter.format(this.parent.reportData.avg_partner_rate) + '\nAvg. Partner Rate\n' + formatter.format(this.parent.reportData.partner_percent_hours_worked) + '%\nPartner Hours Billed';
       }
     }
     this.insightsForm.controls[rec.sort_order + 'metrics'].setValue(rec.notable_metrics);
@@ -945,9 +948,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.topPA.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPA.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.topPA.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPA.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.topPA.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPA.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.topPA.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPA.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.topPA.bb_trend > 0) {
           rec.opportunity = 'Block billing across all firms in ' + this.parent.topPA.practice_area + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.topPA.bb_trend) + '%';
@@ -958,9 +961,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else if (elementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.secondPA.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.secondPA.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.secondPA.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.secondPA.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.secondPA.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.secondPA.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.secondPA.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.secondPA.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.secondPA.bb_trend > 0) {
           rec.opportunity = 'Block billing across all firms in ' + this.parent.secondPA.practice_area + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.secondPA.bb_trend) + '%';
@@ -971,9 +974,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+          rec.notable_metrics = '' + formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.reportData.bb_trend > 0) {
           rec.opportunity = 'Block billing across all firms from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.reportData.bb_trend) + '%';
@@ -987,9 +990,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       const elementIndex = this.topPAFirms.findIndex(f => f.value === rec.firm_id);
       if (elementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.topPATopFirm.bb_trend > 0) {
           rec.opportunity = 'Block billing for ' + this.parent.topPATopFirm.firm_name + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%';
@@ -1000,9 +1003,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else if (elementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.topPASecondFirm.bb_trend > 0) {
           rec.opportunity = 'Block billing for ' + this.parent.topPASecondFirm.firm_name + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%';
@@ -1013,9 +1016,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.reportData.bb_trend > 0) {
           rec.opportunity = 'Block billing across all firms from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.reportData.bb_trend) + '%';
@@ -1033,9 +1036,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       const paElementIndex = this.topPAs.findIndex(pa => pa.value === rec.practice_area);
       if (firmElementIndex === 1 && paElementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.topPATopFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.topPATopFirm.bb_trend > 0) {
           rec.opportunity = 'Block billing for ' + this.parent.topPATopFirm.firm_name + ' in ' + this.parent.topPA.practice_area + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.topPATopFirm.bb_trend) + '%';
@@ -1046,9 +1049,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else if (firmElementIndex === 1 && paElementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.secondPATopFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.secondPATopFirm.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.secondPATopFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.secondPATopFirm.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.secondPATopFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.secondPATopFirm.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.secondPATopFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.secondPATopFirm.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.secondPATopFirm.bb_trend > 0) {
           rec.opportunity = 'Block billing for ' + this.parent.secondPATopFirm.firm_name + ' in ' + this.parent.secondPA.practice_area + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.secondPATopFirm.bb_trend) + '%';
@@ -1059,9 +1062,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else if (firmElementIndex === 2 && paElementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.topPASecondFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.topPASecondFirm.bb_trend > 0) {
           rec.opportunity = 'Block billing for ' + this.parent.topPASecondFirm.firm_name + ' in ' + this.parent.topPA.practice_area + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.topPASecondFirm.bb_trend) + '%';
@@ -1072,9 +1075,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else if (firmElementIndex === 2 && paElementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.secondPASecondFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.secondPASecondFirm.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.secondPASecondFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.secondPASecondFirm.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.secondPASecondFirm.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.secondPASecondFirm.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.secondPASecondFirm.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.secondPASecondFirm.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.secondPASecondFirm.bb_trend > 0) {
           rec.opportunity = 'Block billing for ' + this.parent.secondPASecondFirm.firm_name + ' in ' + this.parent.secondPA.practice_area + ' from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.secondPASecondFirm.bb_trend) + '%';
@@ -1085,9 +1088,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+          rec.notable_metrics += '\n' + formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
         } else {
-          rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+          rec.notable_metrics = formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
         }
         if (this.parent.reportData.bb_trend > 0) {
           rec.opportunity = 'Block billing across all firms from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.reportData.bb_trend) + '%';
@@ -1099,9 +1102,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       }
     } else {
       if (rec.metrics_edited) {
-        rec.notable_metrics += '\nBlock Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+        rec.notable_metrics += '\n' + formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
       } else {
-        rec.notable_metrics = 'Block Billing % (Report Timeframe): ' + formatter.format(this.parent.reportData.percent_block_billed) + '%\n' + 'Block Billing % Trend: ' + formatter.format(this.parent.reportData.bb_trend) + '%';
+        rec.notable_metrics = formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
       }
       if (this.parent.reportData.bb_trend > 0) {
         rec.opportunity = 'Block billing across all firms from ' + this.datepipe.transform(this.parent.reportStartDate, 'mediumDate') + ' to ' + this.datepipe.transform(this.parent.reportEndDate, 'mediumDate') + ' increased by ' + formatter.format(this.parent.reportData.bb_trend) + '%';
@@ -1121,98 +1124,36 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
+                                  moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
+                                moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         }
       } else if (elementIndex === 2) {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPASecondFirm.avg_blended_rate);
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPATopFirm.avg_blended_rate) + '\n' + this.parent.secondPATopFirm.firm_name + ' Blended Rate\n' +
+                                  moneyFormatter.format(this.parent.secondPASecondFirm.avg_blended_rate) + '\n' + this.parent.secondPASecondFirm.firm_name + ' Blended Rate';
         } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPASecondFirm.avg_blended_rate);
+          rec.notable_metrics = moneyFormatter.format(this.parent.secondPATopFirm.avg_blended_rate) + '\n' + this.parent.secondPATopFirm.firm_name + ' Blended Rate\n' +
+                                moneyFormatter.format(this.parent.secondPASecondFirm.avg_blended_rate) + '\n' + this.parent.secondPASecondFirm.firm_name + ' Blended Rate';
         }
       } else {
         if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
+          rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
+                                  moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
+          rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
+                                moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         }
       }
-    } else if ((rec.practice_area === null || rec.practice_area === undefined) && (rec.firm_id !== null && rec.firm_id !== undefined)) {
-      const elementIndex = this.topPAFirms.findIndex(f => f.value === rec.firm_id);
-      if (elementIndex === 1) {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate);
-        }
-      } else if (elementIndex === 2) {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        }
-      } else {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        }
-      }
-    } else if (rec.practice_area !== null && rec.practice_area !== undefined && rec.firm_id !== null && rec.firm_id !== undefined) {
-      let firmElementIndex = this.topPAFirms.findIndex(pa => pa.value === rec.firm_id);
-      if (firmElementIndex === -1) {
-        firmElementIndex = this.secondPAFirms.findIndex(pa => pa.value === rec.firm_id);
-      }
-      const paElementIndex = this.topPAs.findIndex(pa => pa.value === rec.practice_area);
-      if (firmElementIndex === 1 && paElementIndex === 1) {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate);
-        }
-      } else if (firmElementIndex === 1 && paElementIndex === 2) {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPATopFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPATopFirm.avg_blended_rate);
-        }
-      } else if (firmElementIndex === 2 && paElementIndex === 1) {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        }
-      } else if (firmElementIndex === 2 && paElementIndex === 2) {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPASecondFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.secondPA.practice_area + ' - ' + this.parent.secondPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.secondPASecondFirm.avg_blended_rate);
-        }
-      } else {
-        if (rec.metrics_edited) {
-          rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        } else {
-          rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                                'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
-        }
-      }
-    } else {
+    }  else {
       if (rec.metrics_edited) {
-        rec.notable_metrics += '\nBlended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                              'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
+        rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
+                                moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
       } else {
-        rec.notable_metrics = 'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPATopFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' +
-                              'Blended Rate (' + this.parent.topPA.practice_area + ' - ' + this.parent.topPASecondFirm.firm_name + ') Report Timeframe: ' + moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate);
+        rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
+                              moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
       }
     }
     this.insightsForm.controls[rec.sort_order + 'metrics'].setValue(rec.notable_metrics);

@@ -16,6 +16,11 @@
     <div class="panel-wrapper mt20">
       <h3>Create QBR</h3>
 
+      <!-- <div class="pull-right">
+        <button mat-flat-button class="primary-button" (click)="viewReport()" *ngIf="reportEndDate !== null && !dateForm.hasError('notFirstOfMonth') && !dateForm.hasError('incorrectQuarter')"
+                [disabled]="reportEndDate === null || !dateForm.hasError('notFirstOfMonth') || !dateForm.hasError('incorrectQuarter') || insightsValid === false || nextStepsValid === false">View Report</button>
+      </div> -->
+
       <div *ngIf="!reportId">
         <label id="report-options-label" style="font-weight: 700;">Report Type:</label>
         <mat-radio-group aria-labelledby="report-options-label"[(ngModel)]="reportType" name="reportOptions" ngDefaultControl (change)="updateDateRange()">
@@ -35,14 +40,13 @@
       </div>
 
       <div style="padding-top: 1em;" class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="padding-left: 0px;">
           <p *ngIf="firstReport">Select the start date for this initial QBR. The date you select will determine the quarters for {{userService.currentUser.client_info.org.name}},
             you will only be able to use those quarters when creating subsequent QBRs. If you select January 1, the quarters will be 1/1 - 3/31, 4/1 - 6/30, 7/1 - 9/30, and 10/1 - 12/31.
             If you select February 1, the quarters will be 2/1 - 4/30, 5/1 - 7/31, 8/1 - 10/31, and 11/1 - 1/31, etc.</p>
 
             <p>Apply any filtering you want on the dataset by using the filters above. You can view the returned metrics, modify the filters or start date, and click Generate Metrics to see the updated data.</p>
-            <p>You can modify the filters and start date as much as you wish. The View Report button will take you to a preview of what the report looks like. From there, you will be able to finalize the report
-              or return to this page to make more edits. The View Report button will only be clickable once the Insights & Opportunities and Next Steps sections are complete and valid. Instructions for those sections are below.</p>
+            <p>You can modify the filters and start date as much as you wish. You will be able to see a preview of the report once the Insights & Opportunities and Next Steps sections are complete and valid. Instructions for those sections are below.</p>
         </div>
 
         <div class="col-sm-4" *ngIf="formReady">
