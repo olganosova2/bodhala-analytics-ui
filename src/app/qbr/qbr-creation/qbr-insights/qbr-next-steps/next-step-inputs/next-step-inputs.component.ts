@@ -47,6 +47,7 @@ export class NextStepInputsComponent implements OnInit {
     // }
     // console.log("updated data: ", this.data);
     this.dialogRef.close();
+    // console.log("data after: ", this.data)
   }
 
 }

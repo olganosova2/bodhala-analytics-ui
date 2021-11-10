@@ -115,7 +115,6 @@ export class QbrCreationComponent implements OnInit {
     if (!this.editMode) {
       this.reportType = 'YoY';
     }
-
     if (this.report === null || this.report === undefined) {
       this.report = {
         id: null,
