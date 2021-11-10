@@ -18,7 +18,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   qbrType: QbrType = QbrType.YoY;
   qbr: IQbrReport;
   qbrId: number;
-  selectedTabIndex: number = 5;
+  selectedTabIndex: number = 0;
   cardTitle: string;
   totalSpend: number = 0;
   practiceAreaSetting: string;
@@ -106,6 +106,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
           let records = data.result || [];
           records = records.sort(this.utilService.dynamicSort('recommendation_type_id'));
           this.insights = records.filter(e => e.section === QbrRecommendationsType.Insights && e.included === true);
+          this.nextSteps = records.filter(e => e.section === QbrRecommendationsType.NextSteps && e.included === true);
         }
       }
     );

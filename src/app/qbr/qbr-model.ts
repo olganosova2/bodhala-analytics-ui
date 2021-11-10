@@ -41,7 +41,7 @@ export interface IQbrRecommendationSection {
 }
 export enum QbrRecommendationsType {
   Insights = 'Insights',
-  NextSteps = 'NextSteps'
+  NextSteps = 'Next Steps'
 }
 export interface IQbrMetric {
   type?: IQbrMetricType;

@@ -105,6 +105,24 @@ $size: 13px;
   border-top-right-radius: 64px;
   background-color: $brand-blue;
 }
+.black-money-badge {
+  height: 128px;
+  width: 25%;
+  position: absolute;
+  right: 0;
+  top: 120px;
+  border-bottom-left-radius: 64px;
+  border-top-left-radius: 64px;
+  background-color: #000;
+  color: #fff;
+  padding: 22px 25px 0 0;
+  .label {
+    font-size: 20px;
+  }
+  .amount {
+    font-size: 32px;
+  }
+}
 .dot-full-online {
     margin-bottom: -5px;
     margin-left: 3px;

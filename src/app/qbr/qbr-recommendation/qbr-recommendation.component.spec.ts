@@ -41,15 +41,6 @@ describe('QbrRecommendationComponent', () => {
       .compileComponents();
   }));
 
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(QbrExecutiveSummaryComponent);
-    component = fixture.componentInstance;
-    component.qbr = MOCK_QBRS.result[0] as IQbrReport;
-    component.qbrData = MOCK_QBR_DATA.result;
-    fixture.detectChanges();
-  });
-
   beforeEach(() => {
     fixture = TestBed.createComponent(QbrRecommendationComponent);
     component = fixture.componentInstance;

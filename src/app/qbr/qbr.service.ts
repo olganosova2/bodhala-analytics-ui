@@ -199,6 +199,20 @@ export class QbrService {
     }
     return result;
   }
+  shortenString(line: string, numChars: number): string {
+    if (!line || line.length <= numChars) {
+      return line;
+    }
+    const result = line.substring(0, numChars);
+    return result;
+  }
+  formatRecommendationString(line: string): string {
+    if (line) {
+      const beginning = line.indexOf('\n') >= 0 ? '<br/>' : '';
+      return beginning + line.replace(/\n/g, '<br/>');
+    }
+    return '';
+  }
   mapProperties(source: any, propPrefix, isMatter = false): any {
     const metric = {} as any;
     if (!isMatter) {

@@ -32,7 +32,7 @@ export class QbrRecommendationComponent implements OnInit {
               public qbrService: QbrService,
               public utilService: UtilService) {
     this.practiceAreaSetting = this.commonServ.getClientPASetting();
-    this.section = {sectionTitle: '', sectionSubTitle: '', sectionAddInfo: '', recommendations: []};
+    this.section = {sectionTitle: '', sectionSubTitle: '', sectionAddInfo: '', total_savings: 0, recommendations: []};
   }
 
   ngOnInit(): void {
@@ -44,9 +44,10 @@ export class QbrRecommendationComponent implements OnInit {
         this.pageNumber = 7;
         this.section.sectionTitle = 'Insights & opportunities';
         this.section.sectionSubTitle = 'Where you should focus your energy';
-        this.section.sectionAddInfo = 'Here’s how your actions impacted your spend and effort over the past period.';
+        this.section.sectionAddInfo = 'Here are some areas of opportunity to focus on in the next quarter.';
         break;
       case QbrRecommendationsType.NextSteps:
+        this.pageNumber = 13;
         this.section.sectionTitle = 'Next steps: Actions & impact';
         this.section.sectionSubTitle = 'Specific recommendations that will drive impact.';
         break;
@@ -54,6 +55,7 @@ export class QbrRecommendationComponent implements OnInit {
         break;
     }
     for (const recommendation of this.recommendations) {
+      this.section.total_savings += (recommendation.potential_savings || 0);
       this.section.recommendations.push(this.buildRecommendation(recommendation, this.qbrRecommendationType));
     }
   }
@@ -65,11 +67,11 @@ export class QbrRecommendationComponent implements OnInit {
     rec.subhead = recommendation.subtitle;
     rec.notableMetrics = [];
     if (recType === QbrRecommendationsType.Insights) {
-      rec.recommendation = recommendation.why_it_matters;
+      rec.recommendation = this.qbrService.formatRecommendationString(recommendation.why_it_matters);
       this.formatLeftRightMetrics(rec, recommendation, recType);
     } else if (recType === QbrRecommendationsType.NextSteps) {
-      rec.recommendation = recommendation.recommendation;
-      this.formatPotentialSavings(rec, recommendation, recType);
+      rec.recommendation = this.qbrService.formatRecommendationString(recommendation.recommendation);
+      this.formatPotentialSavings(rec, recommendation, rec.notableMetrics, recType);
     }
     return rec;
   }
@@ -112,13 +114,14 @@ export class QbrRecommendationComponent implements OnInit {
         metric.amount = line[0].substring(1);
       }
     }
-    metric.label = line[1];
+    metric.label = this.qbrService.shortenString(line[1], 28);
     metrics.push(metric);
   }
-  formatPotentialSavings(rec: IQbrRecommendation, recommendation: any, recType: QbrRecommendationsType): void {
+  formatPotentialSavings(rec: IQbrRecommendation, recommendation: any, metrics: Array<INotableMetric>, recType: QbrRecommendationsType): void {
     const metric = {} as INotableMetric;
     metric.label = 'Potential savings';
     metric.amount = recommendation.potential_savings || 0;
+    metrics.push(metric);
   }
 
 }
