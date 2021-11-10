@@ -41,7 +41,7 @@ describe('GenericMetricsRightComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GenericMetricsRightComponent);
     component = fixture.componentInstance;
-    component.qbrType =QbrType.YoY;
+    component.qbrType = QbrType.YoY;
     fixture.detectChanges();
   });
 

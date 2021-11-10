@@ -95,6 +95,16 @@ $size: 13px;
 .page-number-circle-wh {
   background-color: #fff;
 }
+.blue-bottom-line {
+  height: 128px;
+  width: 97%;
+  position: absolute;
+  left: 0;
+  bottom: 70px;
+  border-bottom-right-radius: 64px;
+  border-top-right-radius: 64px;
+  background-color: $brand-blue;
+}
 .dot-full-online {
     margin-bottom: -5px;
     margin-left: 3px;
@@ -181,6 +191,9 @@ $size: 13px;
 }
 .green-bar {
  background-color: #3EDB73;
+}
+.black-bar {
+  background-color: $body-color;
 }
 .other-bar {
   background-color: $light-gray;

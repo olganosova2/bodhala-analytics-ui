@@ -138,6 +138,7 @@ import {QbrAgendaComponent} from '../../qbr/qbr-text-pages/qbr-agenda/qbr-agenda
 import {QbrDashboardComponent} from '../../qbr/qbr-dashboard/qbr-dashboard.component';
 import {QbrCoverComponent} from '../../qbr/qbr-text-pages/qbr-cover/qbr-cover.component';
 import {QbrKeyTrendsComponent} from '../../qbr/qbr-text-pages/qbr-key-trends/qbr-key-trends.component';
+import {QbrRecommendationComponent} from '../../qbr/qbr-recommendation/qbr-recommendation.component';
 
 
 export const IMPORTS = [
@@ -268,7 +269,8 @@ export const DECLARATIONS = [
   QbrAgendaComponent,
   QbrDashboardComponent,
   QbrCoverComponent,
-  QbrKeyTrendsComponent
+  QbrKeyTrendsComponent,
+  QbrRecommendationComponent
 ];
 
 export const PROVIDERS = [

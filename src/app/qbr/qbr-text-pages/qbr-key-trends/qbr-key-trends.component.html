@@ -6,8 +6,10 @@
         <div class="qbr-subtitle">Top metrics to watch</div>
         <div class="p-grid mt40">
             <div class="p-md-4 pt10 pl10 pr10" *ngFor="let metric of keyTrendsMetrics;let i = index;">
-              <div class="key-trends-badge" [ngClass]="{'associate-bar': metric.direction > 0, 'green-bar': metric.direction <= 0}">
-                <div class="key-trends-badge-percent">{{ metric.percent | number:'1.1-1'}}%
+              <div class="key-trends-badge" [ngClass]="{'associate-bar': metric.color === 'red', 'green-bar': metric.color === 'green', 'paralegal-bar': metric.color === 'yellow', 'black-bar': metric.color === 'black'}">
+                <div class="key-trends-badge-percent">
+                  {{ metric.percent | number:'1.1-1'}}
+                  %
                   <em *ngIf="metric.direction > 0" class="fa fa-arrow-up ml10"></em>
                   <em *ngIf="metric.direction <= 0" class="fa fa-arrow-down ml10"></em>
                 </div>
@@ -17,7 +19,7 @@
                   <span *ngIf="metric.format === 'percent'">%</span>
                   <span *ngIf="metric.label === 'Total Spend'"><span *ngIf="metric.direction > 0">more</span><span *ngIf="metric.direction <= 0">less</span> than last</span>
                 </div>
-                <div class="key-trends-badge-label">{{ metric.keyTrendsLabel}}</div>
+                <div class="key-trends-badge-label" [ngClass]="{'font-white': metric.color === 'black'}">{{ metric.keyTrendsLabel}}</div>
               </div>
             </div>
         </div>

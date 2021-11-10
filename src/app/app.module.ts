@@ -167,11 +167,11 @@ import { QbrTopPasMattersComponent } from './qbr/qbr-top-pas/qbr-top-pas-matters
 import { QbrAgendaComponent } from './qbr/qbr-text-pages/qbr-agenda/qbr-agenda.component';
 import { QbrDashboardComponent } from './qbr/qbr-dashboard/qbr-dashboard.component';
 import { QbrInsightsComponent } from './qbr/qbr-creation/qbr-insights/qbr-insights.component';
-import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-next-steps/qbr-next-steps.component';
 import { QbrCoverComponent } from './qbr/qbr-text-pages/qbr-cover/qbr-cover.component';
 import { QbrKeyTrendsComponent } from './qbr/qbr-text-pages/qbr-key-trends/qbr-key-trends.component';
 import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/qbr-next-steps.component';
 import { NextStepInputsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/next-step-inputs/next-step-inputs.component';
+import { QbrRecommendationComponent } from './qbr/qbr-recommendation/qbr-recommendation.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -288,9 +288,9 @@ export function initHttp(service: HttpService) {
     QbrInsightsComponent,
     QbrNextStepsComponent,
     QbrCoverComponent,
-    QbrKeyTrendsComponent
-    QbrNextStepsComponent,
-    NextStepInputsComponent
+    QbrKeyTrendsComponent,
+    NextStepInputsComponent,
+    QbrRecommendationComponent
   ],
   entryComponents: [
     PillComponent,

@@ -4,7 +4,7 @@ import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {QbrService} from '../../qbr.service';
-import {IQbrMetric, IQbrMetricRow, IQbrReport, QbrType, matterChartOptions} from '../../qbr-model';
+import {IQbrMetric, IQbrMetricRow, IQbrReport, QbrType, matterChartOptions, IQbrMetricType} from '../../qbr-model';
 
 @Component({
   selector: 'bd-qbr-top-pas-matters',
@@ -87,10 +87,10 @@ export class QbrTopPasMattersComponent implements OnInit {
   }
   processRightSideMetrics(): void {
     this.rightSideMetrics = [];
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bpi',  'BPI', 'bpi.svg'));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bpi',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
     // this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'blended_rate',  'Blended Rate', 'bills.svg'));
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg'));
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg'));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg', IQbrMetricType.PartnerAvgHourlyCost));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg', IQbrMetricType.AssociateAvgHourlyCost));
   }
   processTimekeepersHours(): void {
     this.tkHours = [];

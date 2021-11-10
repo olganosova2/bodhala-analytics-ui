@@ -4,7 +4,7 @@ import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {QbrService} from '../../qbr.service';
-import {IChoosenMetrics, IQbrMetric, IQbrReport, QbrType} from '../../qbr-model';
+import {IChoosenMetrics, IQbrMetric, IQbrMetricType, IQbrReport, QbrType} from '../../qbr-model';
 
 @Component({
   selector: 'bd-qbr-key-trends',
@@ -59,16 +59,14 @@ export class QbrKeyTrendsComponent implements OnInit {
     if (this.choosenMetrics.total_spend) {
       const metric = this.qbrService.getOveralSpendMetric(this.currentOverviewMetric, this.compareOverviewMetric, this.includeExpenses);
       metric.amount = Math.abs(metric.amount - metric.amountToCompare);
-      metric.format = 'dollar';
       this.keyTrendsMetrics.push(metric);
     }
     if (this.choosenMetrics.partner_hourly_cost) {
-      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg');
-      metric.format = 'dollar';
+      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg', IQbrMetricType.PartnerAvgHourlyCost);
       this.keyTrendsMetrics.push(metric);
     }
     if (this.choosenMetrics.associate_hourly_cost) {
-      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg');
+      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg', IQbrMetricType.AssociateAvgHourlyCost);
       metric.format = 'dollar';
       this.keyTrendsMetrics.push(metric);
     }
@@ -76,30 +74,27 @@ export class QbrKeyTrendsComponent implements OnInit {
     this.qbrService.getPercentHours(this.compareOverviewMetric, true);
     if (this.choosenMetrics.partner_hours_percent) {
       const metric = this.qbrService.getTkHoursRecord(this.currentOverviewMetric.partner_percent_hours_worked, this.compareOverviewMetric.partner_percent_hours_worked, this.qbrType, 'Partner');
-      metric.format = 'percent';
       this.keyTrendsMetrics.push(metric);
     }
     if (this.choosenMetrics.associate_hours_percent) {
       const metric = this.qbrService.getTkHoursRecord(this.currentOverviewMetric.associate_percent_hours_worked, this.compareOverviewMetric.associate_percent_hours_worked, this.qbrType, 'Associate');
-      metric.format = 'percent';
       this.keyTrendsMetrics.push(metric);
     }
     if (this.choosenMetrics.block_billing_percent) {
       const metric = this.qbrService.getBBMetric(this.currentOverviewMetric, this.compareOverviewMetric);
-      metric.format = 'percent';
       this.keyTrendsMetrics.push(metric);
     }
     if (this.choosenMetrics.blended_rate) {
-      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_blended_rate',  'Blended Rate', 'bills.svg');
-      metric.format = 'dollar';
+      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_blended_rate',  'Blended Rate', 'bills.svg', IQbrMetricType.BlendedRate);
       this.keyTrendsMetrics.push(metric);
     }
     if (this.choosenMetrics.bodhala_price_index) {
-      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bodhala_price_index',  'BPI', 'bpi.svg');
-      metric.format = 'dollar';
+      const metric = this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bodhala_price_index',  'BPI', 'bpi.svg', IQbrMetricType.BPI);
       this.keyTrendsMetrics.push(metric);
     }
-    // this.bbMetric = this.qbrService.getBBMetric(this.currentOverviewMetric, this.compareOverviewMetric);
+    for (const metric of this.keyTrendsMetrics) {
+      metric.percent = Math.abs(metric.percent);
+    }
 
   }
 

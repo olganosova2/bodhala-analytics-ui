@@ -52,11 +52,19 @@
       </ng-template>
     </mat-tab>
 
-    <!-- Page 5 -->
+    <!-- Page 6 -->
     <mat-tab label="6-Key Trends">
       <ng-template matTabContent>
         <bd-qbr-key-trends *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
         </bd-qbr-key-trends>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 7 -->
+    <mat-tab label="7-Insights" >
+      <ng-template matTabContent>
+        <bd-qbr-recommendation *ngIf="qbr && insights && insights.length > 0"  [qbr]="qbr" [qbrData]="qbrData" [zoom]="true" [qbrRecommendationType]="'Insights'" [recommendations]="insights">
+        </bd-qbr-recommendation>
       </ng-template>
     </mat-tab>
 
@@ -127,6 +135,18 @@
             </bd-qbr-executive-summary>
           </div>
 
+          <!-- Page 6 -->
+          <div>
+            <bd-qbr-key-trends *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-key-trends>
+          </div>
+
+          <!-- Page 7 -->
+          <div>
+            <bd-qbr-recommendation *ngIf="qbr && insights && insights.length > 0"  [qbr]="qbr" [qbrData]="qbrData"  [qbrRecommendationType]="'Insights'" [recommendations]="insights">
+            </bd-qbr-recommendation>
+          </div>
+
           <!-- Page 8 -->
           <div class="">
             <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
@@ -157,17 +177,8 @@
             </bd-qbr-top-pas-matters>
           </div>
 
-          <!-- page 2 -->
-          <div>
-            <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
-            </bd-qbr-agenda>
-          </div>
 
-          <!-- Page 5 -->
-          <div class="">
-            <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
-            </bd-qbr-executive-summary>
-          </div>
+
 
           <!-- Page 5 -->
 <!--          <div class="">-->

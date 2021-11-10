@@ -5,7 +5,46 @@ export enum QbrType {
   QoQAdjacent = 'QoQAdjacent',
   QoQAnnual = 'QoQAnnual'
 }
+export enum IQbrMetricType {
+  OveralSpend = 'OveralSpend',
+  BlockBilling = 'BlockBilling',
+  PartnerHours = 'PartnerHours',
+  AssociateHours = 'AssociateHours',
+  PartnerAvgHourlyCost = 'PartnerAvgHourlyCost',
+  AssociateAvgHourlyCost = 'AssociateAvgHourlyCost',
+  VolumePA = 'VolumePA',
+  Other = 'Other',
+  BPI = 'BPI',
+  BlendedRate = 'BlendedRate'
+}
+export interface INotableMetric {
+  amount?: string;
+  direction?: number;
+  label?: string;
+}
+export interface IQbrRecommendation {
+  icon: string;
+  title: string;
+  headline: string;
+  subhead?: string;
+  opportunity: string;
+  recommendation: string;
+  notableMetrics?: Array<INotableMetric>;
+  potential_savings?: Array<INotableMetric>;
+}
+export interface IQbrRecommendationSection {
+  sectionTitle: string;
+  sectionSubTitle: string;
+  sectionAddInfo?: string;
+  recommendations: Array<IQbrRecommendation>;
+  total_savings?: number;
+}
+export enum QbrRecommendationsType {
+  Insights = 'Insights',
+  NextSteps = 'NextSteps'
+}
 export interface IQbrMetric {
+  type?: IQbrMetricType;
   label: string;
   direction: number;
   percent: number;
@@ -16,6 +55,7 @@ export interface IQbrMetric {
   matterName?: string;
   keyTrendsLabel?: string;
   format?: string;
+  color?: string;
 }
 export interface IQbrMetricRow {
   label: string;
@@ -445,4 +485,3 @@ export const DEFAULT_CHOSEN_METRICS = {
   blended_rate: false,
   bodhala_price_index: false
 };
-

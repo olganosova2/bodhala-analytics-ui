@@ -1,13 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as _moment from 'moment';
-import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping, IChoosenMetrics} from './qbr-model';
-import {IPayloadDates, IQbrMetric, IQbrReport, IPayloadQuarterDates, QbrType, recommendationPlaceholderMapping, moneyFormatter} from './qbr-model';
+import {IChoosenMetrics, IPayloadDates, IQbrMetric, IQbrMetricType, IQbrRecommendationSection, moneyFormatter, QbrType} from './qbr-model';
 import {CommonService} from '../shared/services/common.service';
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 import {HttpService, UtilService} from 'bodhala-ui-common';
-import { DatePipe } from '@angular/common';
-import { RecommendationService } from 'src/app/admin/client-recommendations/recommendation.service';
-
+import {DatePipe} from '@angular/common';
+import {RecommendationService} from 'src/app/admin/client-recommendations/recommendation.service';
 
 
 const moment = _moment;
@@ -52,7 +50,7 @@ export class QbrService {
     return result;
   }
   generateEmptyMetric(): IQbrMetric {
-    return {label: '', direction: 0, percent: 0,  amount: 0};
+    return {type: IQbrMetricType.Other, label: '', direction: 0, percent: 0,  amount: 0};
   }
   formatYoYorQoQMetrics(result: IQbrMetric, increase: number): void {
       result.percent = increase;
@@ -60,6 +58,7 @@ export class QbrService {
   }
   getOveralSpendMetric(currentMetric: any, compareMetric: any, includeExpenses: boolean): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
+    result.type = IQbrMetricType.OveralSpend;
     result.label = 'Total Spend';
     result.keyTrendsLabel = 'Change in Overall Spend';
     if (!currentMetric) {
@@ -73,10 +72,13 @@ export class QbrService {
       const increase = ((currentTotal.total / compareTotal.total) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
+    result.color = this.getMetricColor(result);
+    result.format = 'dollar';
     return result;
   }
   getOveralSpendMetricPA(currentMetric: any, compareMetric: any, includeExpenses: boolean): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
+    result.type = IQbrMetricType.OveralSpend;
     result.label = 'Total Spend';
     if (!currentMetric) {
       return result;
@@ -88,10 +90,13 @@ export class QbrService {
       const increase = ((currentTotal / compareTotal) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
+    result.color = this.getMetricColor(result);
+    result.format = 'dollar';
     return result;
   }
   getVolumeMetric(currentMetric: any, compareMetric: any, comparePAMetric: any,  includeExpenses: boolean): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
+    result.type = IQbrMetricType.VolumePA;
     result.label = 'PA Volume';
     if (!currentMetric) {
       return result;
@@ -108,10 +113,13 @@ export class QbrService {
       // const increase = ((compareTotal / currentTotal)) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
+    result.color = this.getMetricColor(result);
+    result.format = 'percent';
     return result;
   }
   getBBMetric(currentMetric: any, compareMetric: any): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
+    result.type = IQbrMetricType.BlockBilling;
     result.label = 'Block Billed';
     result.keyTrendsLabel = 'Hours Block Billed';
     if (!currentMetric) {
@@ -122,10 +130,13 @@ export class QbrService {
       const increase = currentMetric.block_billed_pct - compareMetric.block_billed_pct;
       this.formatYoYorQoQMetrics(result, increase);
     }
+    result.color = this.getMetricColor(result);
+    result.format = 'percent';
     return result;
   }
-  getGenericMetric(currentMetric: any, compareMetric: any, propName: string, label: string, icon: string): IQbrMetric {
+  getGenericMetric(currentMetric: any, compareMetric: any, propName: string, label: string, icon: string, type: IQbrMetricType): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
+    result.type = type;
     result.label = this.commonService.capitalize(label);
     result.keyTrendsLabel = result.label;
     result.icon = icon;
@@ -138,6 +149,8 @@ export class QbrService {
       const increase = ((currentMetric[propName] / compareMetric[propName]) - 1) * 100;
       this.formatYoYorQoQMetrics(result, increase);
     }
+    result.color = this.getMetricColor(result);
+    result.format = 'dollar';
     return result;
   }
   getPercentHours(metric: any, includeParalegals: boolean): void {
@@ -153,6 +166,7 @@ export class QbrService {
   }
   getTkHoursRecord(hoursCurrent: any, hoursCompare: any, qbrType: QbrType, classification: string): IQbrMetric {
     const result = Object.assign({}, this.generateEmptyMetric());
+    result.type = classification === 'Partner' ? IQbrMetricType.PartnerHours : classification === 'Associate' ? IQbrMetricType.AssociateHours : IQbrMetricType.Other;
     result.label = this.commonService.capitalize(classification);
     result.keyTrendsLabel = 'Percent ' + result.label + ' Hours';
     if (!hoursCurrent) {
@@ -161,6 +175,28 @@ export class QbrService {
     result.amount  = hoursCurrent;
     const increase = hoursCurrent - hoursCompare;
     this.formatYoYorQoQMetrics(result, increase);
+    result.color = this.getMetricColor(result);
+    result.format = 'percent';
+    return result;
+  }
+  getMetricColor(metric: IQbrMetric): string {
+    let result = metric.direction > 0  ? 'red' : 'green';
+    if (metric.type === IQbrMetricType.BlockBilling) {
+      // metric.amount = 21;
+      result = metric.direction > 0 && metric.amount > 20 ? 'red' : metric.direction <= 0 && metric.amount < 20 ? 'green' : 'yellow';
+    }
+    if (metric.type === IQbrMetricType.PartnerHours) {
+      result = metric.amount > 40 ? 'red' : metric.direction > 0 && metric.amount <= 40 ? 'yellow' : 'green';
+    }
+    if (metric.type === IQbrMetricType.AssociateHours) {
+      result = metric.direction < 0 && metric.amount < 60 ? 'red' : metric.direction > 0 && metric.amount > 60 ? 'green' : 'yellow';
+    }
+    if (metric.type === IQbrMetricType.BPI) {
+      result = metric.direction > 0 && metric.amount > 4000 ? 'red' : metric.direction <= 0 && metric.amount < 4000 ? 'green' : 'yellow';
+    }
+    if (metric.type === IQbrMetricType.OveralSpend) {
+      result = 'black';
+    }
     return result;
   }
   mapProperties(source: any, propPrefix, isMatter = false): any {

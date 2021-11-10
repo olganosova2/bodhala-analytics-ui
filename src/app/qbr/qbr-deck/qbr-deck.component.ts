@@ -4,7 +4,7 @@ import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {QbrService} from '../qbr.service';
-import {IPayloadDates, IQbrReport, QbrType} from '../qbr-model';
+import {IPayloadDates, IQbrReport, QbrRecommendationsType, QbrType} from '../qbr-model';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -18,7 +18,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   qbrType: QbrType = QbrType.YoY;
   qbr: IQbrReport;
   qbrId: number;
-  selectedTabIndex: number = 4;
+  selectedTabIndex: number = 5;
   cardTitle: string;
   totalSpend: number = 0;
   practiceAreaSetting: string;
@@ -27,7 +27,8 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   includeExpenses: boolean;
   reportDates: IPayloadDates;
   currentPAs: Array<any> = [];
-  cardNum: number = 14;
+  insights: Array<any> = [];
+  nextSteps: Array<any> = [];
   zoom: boolean = true;
   @ViewChild('tabGroup') tabGroup;
   constructor(private route: ActivatedRoute,
@@ -49,6 +50,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {  this.qbrId = params.qbrId; });
     if (this.qbrId) {
       this.getQbr();
+      this.getQbrRecommendations();
     }
   }
   getQbr(): void {
@@ -92,6 +94,18 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
             this.totalSpend = currentTotal.total;
             this.currentPAs = Object.assign([], this.qbrData.report_timeframe_top_pas) || [];
           }
+        }
+      }
+    );
+  }
+  getQbrRecommendations(): void {
+    const params = { qbrID: this.qbrId};
+    this.pendingRequest = this.httpService.makeGetRequest('getQBRRecommendations', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          let records = data.result || [];
+          records = records.sort(this.utilService.dynamicSort('recommendation_type_id'));
+          this.insights = records.filter(e => e.section === QbrRecommendationsType.Insights && e.included === true);
         }
       }
     );

@@ -4,7 +4,7 @@ import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {QbrService} from '../../qbr.service';
-import {IQbrMetric, IQbrMetricRow, IQbrReport, metricsBBPasChartOptions, QbrType, tkHoursPasChartOptions} from '../../qbr-model';
+import {IQbrMetric, IQbrMetricRow, IQbrMetricType, IQbrReport, QbrType, tkHoursPasChartOptions} from '../../qbr-model';
 
 @Component({
   selector: 'bd-qbr-top-pas-firms',
@@ -91,10 +91,10 @@ export class QbrTopPasFirmsComponent implements OnInit {
       }
       this.tkHours.push(resultTKs);
       const result = { label: this.currentOverviewMetric[ix].firm_name, metrics: []};
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'bpi',  'BPI', 'bpi.svg'));
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'blended_rate',  'Blended Rate', 'bills.svg'));
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg'));
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg'));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'bpi',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'blended_rate',  'Blended Rate', 'bills.svg', IQbrMetricType.BlendedRate));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg', IQbrMetricType.PartnerAvgHourlyCost));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg', IQbrMetricType.AssociateAvgHourlyCost));
       this.rightSideMetrics.push(result);
     }
    this.setUpChartOptions();
