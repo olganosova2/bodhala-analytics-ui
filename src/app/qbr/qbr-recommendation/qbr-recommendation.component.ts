@@ -1,11 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {IQbrRecommendation, IQbrRecommendationSection, IQbrReport, QbrType, QbrRecommendationsType, INotableMetric} from '../qbr-model';
+import {INotableMetric, IQbrRecommendation, IQbrRecommendationSection, IQbrReport, QbrRecommendationsType, QbrType} from '../qbr-model';
 import {ActivatedRoute} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {QbrService} from '../qbr.service';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'bd-qbr-recommendation',
@@ -45,7 +44,11 @@ export class QbrRecommendationComponent implements OnInit {
         this.pageNumber = 7;
         this.section.sectionTitle = 'Insights & opportunities';
         this.section.sectionSubTitle = 'Where you should focus your energy';
-        this.section.sectionAddInfo = 'Here’s how your actions impacted your spend and effort over the past quarter.';
+        this.section.sectionAddInfo = 'Here’s how your actions impacted your spend and effort over the past period.';
+        break;
+      case QbrRecommendationsType.NextSteps:
+        this.section.sectionTitle = 'Next steps: Actions & impact';
+        this.section.sectionSubTitle = 'Specific recommendations that will drive impact.';
         break;
       default:
         break;

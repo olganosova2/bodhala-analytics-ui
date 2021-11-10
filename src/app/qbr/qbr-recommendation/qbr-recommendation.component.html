@@ -2,8 +2,8 @@
   <div class="qbr-wrapper">
     <div class="qbr-panel position-relative bg-2" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
       <div class="card-title">{{section?.sectionTitle}}<span class="dot-full dot-full-online"></span></div>
-      <div class="qbr-rec-subtitle">{{section?.sectionSubTitle}}</div>
-      <div class="qbr-rec-add-info">{{section?.sectionAddInfo}}</div>
+      <div class="qbr-rec-subtitle" *ngIf="section?.sectionSubTitle">{{section?.sectionSubTitle}}</div>
+      <div class="qbr-rec-add-info" *ngIf="section?.sectionAddInfo">{{section?.sectionAddInfo}}</div>
       <div class="p-grid">
         <div class="p-md-4 gray-border-left position-relative" *ngFor="let rec of section.recommendations">
           <span class="dot-full-right"></span>
