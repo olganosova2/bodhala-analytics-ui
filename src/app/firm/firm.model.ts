@@ -67,7 +67,7 @@ export interface IBillingTotalItem {
 export interface IBillingTotalItemReportCard {
   icon: string;
   svg?: string;
-  total: number;
+  total: any;
   total_expenses?: number;
   avg: number;
   diff: number;

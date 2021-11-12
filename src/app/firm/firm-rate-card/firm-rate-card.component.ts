@@ -54,6 +54,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   pageType: string = 'Firm Report Card';
   excludeFilters = ['firms', 'threshold', 'matters', 'practice areas', 'internal'];
   originalQueryString: string;
+  customReport: boolean = false;
   @ViewChild(SpendTrendChartComponent) spendTrendChart: SpendTrendChartComponent;
   @ViewChild(ReportCardBillingTotalsComponent) reportCardBillingTotalsComponent: ReportCardBillingTotalsComponent;
 
