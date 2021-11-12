@@ -576,6 +576,9 @@ export class QbrService {
     rec.savingsData = data;
     rec.expenses = expenses;
     rec.overallNumbers = overallNumbers;
+    if (rec.potential_savings === null || rec.potential_savings === undefined) {
+      rec.potential_savings = 0;
+    }
     rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
     return rec;
   }
@@ -592,6 +595,9 @@ export class QbrService {
     estimatedSavings = unacceptableBlockBillingAmount * .2;
     rec.potential_savings = estimatedSavings;
     rec.savingsData = data;
+    if (rec.potential_savings === null || rec.potential_savings === undefined) {
+      rec.potential_savings = 0;
+    }
     rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
     return rec;
   }
@@ -684,6 +690,9 @@ export class QbrService {
     rec.savingsData = data;
     rec.expenses = expenses;
     rec.overallNumbers = overallNumbers;
+    if (rec.potential_savings === null || rec.potential_savings === undefined) {
+      rec.potential_savings = 0;
+    }
     rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
     return rec;
   }
@@ -705,6 +714,9 @@ export class QbrService {
     rec.potential_savings = estimatedSavings;
     rec.topFirmData = topFirmData;
     rec.secondFirmData = secondFirmData;
+    if (rec.potential_savings === null || rec.potential_savings === undefined) {
+      rec.potential_savings = 0;
+    }
     rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
 
     return rec;

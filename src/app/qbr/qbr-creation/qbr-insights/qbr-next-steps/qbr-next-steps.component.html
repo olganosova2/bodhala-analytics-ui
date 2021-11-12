@@ -44,8 +44,12 @@
             This section must be less than 200 characters
           </mat-error>
         </td>
-        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation'">
+        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation' && rec.potential_savings !== null && rec.potential_savings !== undefined">
           {{rec.potential_savings_formatted}}
+          <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
+        </td>
+        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation' && (rec.potential_savings === null || rec.potential_savings === undefined)">
+          $0
           <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
         </td>
         <td (focusout)="saveNextStep(rec)" *ngIf="rec.type === 'Custom Recommendation'">
