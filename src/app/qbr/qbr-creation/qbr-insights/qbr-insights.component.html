@@ -4,7 +4,7 @@
   </div>
 
   <div style="display: inline; float: right;">
-    <button mat-flat-button (click)="generateNextSteps()" class="primary-button" style="margin-bottom: 1em;" [disabled]="insightsForm.hasError('notEnoughSelected') || insightsForm.hasError('tooManySelected') || insightsForm.status !== 'VALID'">Generate Next Steps</button><br>
+    <button mat-flat-button (click)="generateNextSteps(true)" class="primary-button" style="margin-bottom: 1em;" [disabled]="insightsForm.hasError('notEnoughSelected') || insightsForm.hasError('tooManySelected') || insightsForm.status !== 'VALID'">Generate Next Steps</button><br>
     <button mat-button class="primary-button" [matMenuTriggerFor]="menu">Add New +</button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="addRecommendation('Increase Discounts')">Increase Discounts</button>
