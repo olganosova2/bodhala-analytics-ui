@@ -255,6 +255,12 @@ export class QbrCreationComponent implements OnInit {
       name: 'filters',
       filters: null
     };
+    let title = '';
+    if (this.reportType === 'YoY') {
+      title = 'Annual Business Review for ' + this.userService.currentUser.client_info.org.name;
+    } else {
+      title = 'Quarterly Business Review for ' + this.userService.currentUser.client_info.org.name;
+    }
     const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
     const tempDataFilters = JSON.parse(tempFilters);
     const strObj = JSON.stringify(tempDataFilters.dataFilters);
@@ -269,7 +275,8 @@ export class QbrCreationComponent implements OnInit {
       filters: filterParams,
       client: this.userService.currentUser.client_info.id,
       queryString: params,
-      chosen_metrics: DEFAULT_CHOSEN_METRICS
+      chosen_metrics: DEFAULT_CHOSEN_METRICS,
+      reportTitle: title
     };
     payload.queryString.expenses = this.filtersService.includeExpenses;
     console.log("payload: ", payload);

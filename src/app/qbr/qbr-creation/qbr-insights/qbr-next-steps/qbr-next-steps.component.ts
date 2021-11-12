@@ -120,6 +120,13 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     rec.title = this.nextStepsForm.controls[rec.sort_order.toString() + 'title'].value;
     rec.action = this.nextStepsForm.controls[rec.sort_order.toString() + 'action'].value;
     rec = await this.qbrService.saveNextStep(rec);
+    const elementIndex = this.savedInsights.findIndex(si => si.corresponding_insight_id === rec.corresponding_insight_id);
+    if (elementIndex >= 0) {
+      this.savedInsights[elementIndex].id = rec.id;
+    }
+
+    console.log("saveNextStep rec: ", rec);
+    console.log("saveNextStep savedInsights: ", this.savedInsights);
   }
 
 
