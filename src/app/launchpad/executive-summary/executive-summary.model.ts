@@ -103,6 +103,9 @@ export interface ITopFirmES {
     partners_per_matter: number;
     avg_partner_rate: number;
     avg_partner_rate_formatted: string;
+    avg_associate_rate: number;
+    avg_associate_rate_formatted: string;
+    avg_associate_rate_trend: number;
     partners: number;
     partners_formatted: string;
     avg_partners: number;
