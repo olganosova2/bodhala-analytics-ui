@@ -4,7 +4,7 @@ export const MOCK_QBRS = {
     "start_date": "2019-03-01",
     "end_date": "2019-05-31",
     "report_type": "QoQAdjacent",
-    "created_by": "533",
+    "created_by": 533,
     "created_on": "2021-10-19T16:12:10.938132",
     "title": null,
     "status": "IN PROGRESS",

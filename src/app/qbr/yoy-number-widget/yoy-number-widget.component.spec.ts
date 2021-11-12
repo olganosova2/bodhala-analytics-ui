@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock } from '../../shared/unit-tests/mock-services';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {QbrType} from '../qbr-model';
 
 describe('YoyNumberWidgetComponent', () => {
   let component: YoyNumberWidgetComponent;
@@ -43,6 +44,7 @@ describe('YoyNumberWidgetComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(YoyNumberWidgetComponent);
     component = fixture.componentInstance;
+    component.qbrType = QbrType.YoY;
     fixture.detectChanges();
   });
 

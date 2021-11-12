@@ -100,13 +100,11 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data && data.result) {
           this.processPAsAndFirms(data.result, qbrLine);
-          this.qbrs.push(qbrLine);
-          this.currentNumber ++;
-          if (this.currentNumber === this.qbrsNumber) {
-            this.buildGrid();
-          }
-        } else {
-          this.currentNumber ++;
+        }
+        this.qbrs.push(qbrLine);
+        this.currentNumber ++;
+        if (this.currentNumber === this.qbrsNumber) {
+          this.buildGrid();
         }
       }
     );

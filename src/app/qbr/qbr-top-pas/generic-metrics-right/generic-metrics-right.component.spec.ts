@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GenericMetricsRightComponent } from './generic-metrics-right.component';
+import {GenericMetricsRightComponent} from './generic-metrics-right.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
-import {QbrExecutiveSummaryRightComponent} from '../../qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
+import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {QbrType} from '../../qbr-model';
 
 describe('GenericMetricsRightComponent', () => {
   let component: GenericMetricsRightComponent;
@@ -41,6 +41,7 @@ describe('GenericMetricsRightComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(GenericMetricsRightComponent);
     component = fixture.componentInstance;
+    component.qbrType = QbrType.YoY;
     fixture.detectChanges();
   });
 

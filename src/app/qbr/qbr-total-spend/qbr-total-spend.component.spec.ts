@@ -1,13 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { QbrTotalSpendComponent } from './qbr-total-spend.component';
+import {QbrTotalSpendComponent} from './qbr-total-spend.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {QbrTopPasComponent} from '../qbr-top-pas/qbr-top-pas.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import * as mockServices from '../../shared/unit-tests/mock-services';
+import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
+import {QbrType} from '../qbr-model';
 
 describe('QbrTotalSpendComponent', () => {
   let component: QbrTotalSpendComponent;
@@ -41,6 +41,7 @@ describe('QbrTotalSpendComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(QbrTotalSpendComponent);
     component = fixture.componentInstance;
+    component.qbrType = QbrType.YoY;
     fixture.detectChanges();
   });
 

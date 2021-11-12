@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit, Input} from '@angular/core';
 import * as _moment from 'moment';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {IQbrMetric, IQbrReport, QbrType} from '../qbr-model';
+import {IQbrMetric, IQbrMetricType, IQbrReport, QbrType} from '../qbr-model';
 import {executiveSummaryChartOptions} from './model';
 import {Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
@@ -61,7 +61,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
       this.qbrId = this.qbr.id;
       this.qbrType = this.qbr.report_type;
       if (this.qbr.querystring && this.qbr.querystring.expenses) {
-        this.includeExpenses = this.qbr.querystring.expenses === 'true';
+        this.includeExpenses = this.qbr.querystring.expenses === 'true' || this.qbr.querystring.expenses === true;
         this.queryString = this.qbr.querystring;
       }
       if (this.qbrData) {
@@ -84,10 +84,10 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   processRightSideMetrics(): void {
     this.rightSideMetrics = [];
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bodhala_price_index',  'BPI', 'bpi.svg'));
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_blended_rate',  'Blended Rate', 'bills.svg'));
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg'));
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg'));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bodhala_price_index',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_blended_rate',  'Blended Rate', 'bills.svg', IQbrMetricType.BlendedRate));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg', IQbrMetricType.PartnerAvgHourlyCost));
+    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg', IQbrMetricType.AssociateAvgHourlyCost));
   }
   processTimekeepersHours(): void {
     this.tkHours = [];

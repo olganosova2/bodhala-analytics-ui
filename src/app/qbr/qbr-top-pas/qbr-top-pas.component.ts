@@ -4,7 +4,7 @@ import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {QbrService} from '../qbr.service';
-import {IQbrMetric, IQbrReport, QbrType, IQbrMetricRow, metricsBBPasChartOptions, tkHoursPasChartOptions} from '../qbr-model';
+import {IQbrMetric, IQbrReport, QbrType, IQbrMetricRow, metricsBBPasChartOptions, tkHoursPasChartOptions, IQbrMetricType} from '../qbr-model';
 import {executiveSummaryChartOptions} from '../qbr-executive-summary/model';
 
 @Component({
@@ -45,7 +45,7 @@ export class QbrTopPasComponent implements OnInit {
       this.qbrId = this.qbr.id;
       this.qbrType = this.qbr.report_type;
       if (this.qbr.querystring && this.qbr.querystring.expenses) {
-        this.includeExpenses = this.qbr.querystring.expenses === 'true';
+        this.includeExpenses = this.qbr.querystring.expenses === 'true' || this.qbr.querystring.expenses === true;
         this.queryString = this.qbr.querystring;
       }
       if (this.qbrData) {
@@ -93,10 +93,10 @@ export class QbrTopPasComponent implements OnInit {
       }
       this.tkHours.push(resultTKs);
       const result = { label: this.currentOverviewMetric[ix].practice_area, metrics: []};
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'bpi',  'BPI', 'bpi.svg'));
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'blended_rate',  'Blended Rate', 'bills.svg'));
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg'));
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg'));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'bpi',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'blended_rate',  'Blended Rate', 'bills.svg', IQbrMetricType.BlendedRate));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg', IQbrMetricType.PartnerAvgHourlyCost));
+      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg', IQbrMetricType.AssociateAvgHourlyCost));
       this.rightSideMetrics.push(result);
     }
     this.setUpChartOptions();

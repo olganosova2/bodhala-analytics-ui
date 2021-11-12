@@ -95,6 +95,34 @@ $size: 13px;
 .page-number-circle-wh {
   background-color: #fff;
 }
+.blue-bottom-line {
+  height: 128px;
+  width: 97%;
+  position: absolute;
+  left: 0;
+  bottom: 70px;
+  border-bottom-right-radius: 64px;
+  border-top-right-radius: 64px;
+  background-color: $brand-blue;
+}
+.black-money-badge {
+  height: 128px;
+  width: 25%;
+  position: absolute;
+  right: 0;
+  top: 120px;
+  border-bottom-left-radius: 64px;
+  border-top-left-radius: 64px;
+  background-color: #000;
+  color: #fff;
+  padding: 22px 25px 0 0;
+  .label {
+    font-size: 20px;
+  }
+  .amount {
+    font-size: 32px;
+  }
+}
 .dot-full-online {
     margin-bottom: -5px;
     margin-left: 3px;
@@ -179,6 +207,12 @@ $size: 13px;
 .associate-bar {
   background-color: $brand-orange;
 }
+.green-bar {
+ background-color: #3EDB73;
+}
+.black-bar {
+  background-color: $body-color;
+}
 .other-bar {
   background-color: $light-gray;
 }
@@ -217,6 +251,10 @@ $size: 13px;
 }
 .height-550 {
   min-height: 530px;
+}
+.bg-cover {
+  background-image: url('/assets/images/qbr-images/BG_Cover.png');
+  background-repeat: no-repeat;
 }
 .bg-1 {
   background-image: url('/assets/images/qbr-images/BG_blue_corner.svg');

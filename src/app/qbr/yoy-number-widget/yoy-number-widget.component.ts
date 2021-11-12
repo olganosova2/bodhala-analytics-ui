@@ -17,6 +17,7 @@ export class YoyNumberWidgetComponent implements OnInit {
 
   ngOnInit(): void {
     this.label = this.qbrType === QbrType.YoY ? 'YoY' : 'QoQ';
+    this.increase = Math.abs(this.increase);
   }
 
 }

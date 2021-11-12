@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QbrTopPasComponent } from './qbr-top-pas.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {QbrDeckComponent} from '../qbr-deck/qbr-deck.component';
+import { QbrCoverComponent } from './qbr-cover.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
+import {QbrAgendaComponent} from '../qbr-agenda/qbr-agenda.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActivatedRouteMock } from '../../shared/unit-tests/mock-services';
-import * as mockServices from '../../shared/unit-tests/mock-services';
-import {FiltersService} from '../../shared/services/filters.service';
-import {MOCK_QBR_DATA, MOCK_QBRS} from '../../shared/unit-tests/mock-data/qbr-executive-summary';
-import {IQbrReport} from '../qbr-model';
+import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
+import * as mockServices from '../../../shared/unit-tests/mock-services';
+import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_QBR_DATA, MOCK_QBRS} from '../../../shared/unit-tests/mock-data/qbr-executive-summary';
+import {IQbrReport} from '../../qbr-model';
 
-describe('QbrTopPasComponent', () => {
-  let component: QbrTopPasComponent;
-  let fixture: ComponentFixture<QbrTopPasComponent>;
+describe('QbrCoverComponent', () => {
+  let component: QbrCoverComponent;
+  let fixture: ComponentFixture<QbrCoverComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -25,7 +25,7 @@ describe('QbrTopPasComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(QbrTopPasComponent, {
+    }).overrideComponent(QbrCoverComponent, {
       set: {
         providers: [
           AppStateService,
@@ -40,15 +40,17 @@ describe('QbrTopPasComponent', () => {
       .compileComponents();
   }));
 
+
   beforeEach(() => {
-    fixture = TestBed.createComponent(QbrTopPasComponent);
+    fixture = TestBed.createComponent(QbrCoverComponent);
     component = fixture.componentInstance;
     component.qbr = MOCK_QBRS.result[0] as IQbrReport;
     component.qbrData = MOCK_QBR_DATA.result;
+    component.page = 2;
     fixture.detectChanges();
   });
 
-  it('should create QbrTopPasComponent', () => {
+  it('should create QbrCoverComponent', () => {
     expect(component).toBeTruthy();
   });
 });

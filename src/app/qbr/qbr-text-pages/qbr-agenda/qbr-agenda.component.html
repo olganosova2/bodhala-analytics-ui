@@ -1,16 +1,65 @@
 <div>
   <div class="qbr-wrapper">
     <div class="qbr-panel position-relative bg-1" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
-      <div class="card-title">Agenda<span class="dot-full dot-full-online"></span></div>
-       <div class="p-grid mt30">
-         <div class="p-md-6 gray-border-left position-relative agenda-item" *ngFor="let item of agendaItems">
-           <span class="dot-full-right"></span>
-           {{ item.num}}<br/>
-           {{item.label}}
+      <div *ngIf="page === 2">
+        <div class="card-title">Agenda<span class="dot-full dot-full-online"></span></div>
+         <div class="p-grid agenda-grid mt30">
+           <div class="p-md-6 gray-border-left position-relative agenda-item" *ngFor="let item of agendaItems">
+             <span class="dot-full-right"></span>
+             {{ item.num}}<br/>
+             {{item.label}}
+           </div>
          </div>
-       </div>
+      </div>
+      <div *ngIf="page === 4">
+        <div class="card-title">Scope & parameters<span class="dot-full dot-full-online"></span></div>
+        <div class="p-grid mt60 full-width">
+          <div class="p-md-4 gray-border-left position-relative agenda-item pl10">
+            <span class="dot-full-right"></span>
+            Report Period
+            <div class="scope-info mt10">
+              <ul>
+                <li><span>{{reportDates?.startDate | date:'mediumDate'}} - {{reportDates?.endDate | date:'mediumDate'}}</span></li>
+                <li><span *ngIf="qbr.report_type">{{scopeAnalysis}}</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="p-md-8 gray-border-left position-relative agenda-item">
+            <span class="dot-full-right"></span>
+            Practice Areas
+            <div class="scope-info mt10">
+              <ul *ngIf="qbrData.report_timeframe_top_pas" class="mt20">
+                <li *ngFor="let pa of qbrData.report_timeframe_top_pas">{{pa.practice_area}}</li>
+              </ul>
+            </div>
+          </div>
+          <div class="p-md-4 gray-border-left position-relative agenda-item pl10">
+            <span class="dot-full-right"></span>
+            Comparison Period
+            <div class="scope-info mt10">
+              <ul>
+                <li><span>{{reportDates?.comparisonStartDate | date:'mediumDate'}} - {{reportDates?.comparisonEndDate | date:'mediumDate'}}</span></li>
+                <li><span *ngIf="qbr.report_type">{{scopeAnalysis}}</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="p-md-8 gray-border-left position-relative agenda-item">
+            <span class="dot-full-right"></span>
+            Firms
+            <div *ngIf="qbrData.report_timeframe_top_pas" class="mt20">
+              <div *ngFor="let pa of qbrData.report_timeframe_top_pas" class="scope-info mb10">
+                <div class="font-body mb10">{{pa.practice_area}}</div>
+                <ul>
+                  <li *ngIf="pa.firm_name" class="scope-info mb5">{{pa.firm_name}}</li>
+                  <li *ngIf="pa.second_firm_name" class="scope-info mb5">{{pa.second_firm_name}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="page-number-circle page-number-circle-wh">
-        <div class="page-number">2</div>
+        <div class="page-number">{{page}}</div>
       </div>
     </div>
   </div>
