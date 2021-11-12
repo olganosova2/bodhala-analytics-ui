@@ -9,7 +9,7 @@ import {QbrService} from '../../qbr.service';
 export class MoreYouActComponent implements OnInit {
   @Input() pageNum: number = 13;
   @Input() zoom: boolean;
-  items: Ayya<any> = [];
+  items: Array<any> = [];
   constructor(public qbrService: QbrService) {
     this.items = [
       {label: 'Benchmarking',
