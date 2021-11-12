@@ -1,16 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QbrAgendaComponent } from './qbr-agenda.component';
+import { MoreYouActComponent } from './more-you-act.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
+import {QbrAgendaComponent} from '../qbr-agenda/qbr-agenda.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 
-describe('QbrAgendaComponent', () => {
-  let component: QbrAgendaComponent;
-  let fixture: ComponentFixture<QbrAgendaComponent>;
+describe('MoreYouActComponent', () => {
+  let component: MoreYouActComponent;
+  let fixture: ComponentFixture<MoreYouActComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -22,7 +23,7 @@ describe('QbrAgendaComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(QbrAgendaComponent, {
+    }).overrideComponent(MoreYouActComponent, {
       set: {
         providers: [
           AppStateService,
@@ -37,14 +38,13 @@ describe('QbrAgendaComponent', () => {
       .compileComponents();
   }));
 
-
   beforeEach(() => {
-    fixture = TestBed.createComponent(QbrAgendaComponent);
+    fixture = TestBed.createComponent(MoreYouActComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create QbrAgendaComponent', () => {
+  it('should create MoreYouActComponent', () => {
     expect(component).toBeTruthy();
   });
 });

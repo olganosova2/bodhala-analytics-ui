@@ -30,6 +30,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   insights: Array<any> = [];
   nextSteps: Array<any> = [];
   zoom: boolean = true;
+  pagesCount: number = 0;
   @ViewChild('tabGroup') tabGroup;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -103,10 +104,17 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getQBRRecommendations', params).subscribe(
       (data: any) => {
         if (data.result) {
-          let records = data.result || [];
-          records = records.sort(this.utilService.dynamicSort('recommendation_type_id'));
-          this.insights = records.filter(e => e.section === QbrRecommendationsType.Insights && e.included === true);
-          this.nextSteps = records.filter(e => e.section === QbrRecommendationsType.NextSteps && e.included === true);
+          const records = data.result || [];
+          this.insights = records.filter(e => e.section === QbrRecommendationsType.Insights && e.included === true) || [];
+          if (this.insights.length > 3) {
+            this.insights = this.insights.slice(0, 3);
+          }
+          this.insights = this.insights.sort(this.utilService.dynamicSort('recommendation_type_id'));
+          this.nextSteps = records.filter(e => e.section === QbrRecommendationsType.NextSteps && e.included === true) || [];
+          if (this.nextSteps.length > 3) {
+            this.nextSteps = this.nextSteps.slice(0, 3);
+          }
+          this.nextSteps = this.nextSteps.sort(this.utilService.dynamicSort('recommendation_type_id'));
         }
       }
     );

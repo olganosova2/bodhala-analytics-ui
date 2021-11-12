@@ -24,7 +24,7 @@ export class QbrTopPasFirmsComponent implements OnInit {
   compareOverviewMetric: Array<any> = [];
   queryString: string;
   practiceArea: string;
-  @Input() pageNum: number = 9;
+  @Input() pageNum: number = 8;
   @Input() totalSpend: number = 0;
   @Input() indexPa: number = 0;
   @Input() qbrData: any;
