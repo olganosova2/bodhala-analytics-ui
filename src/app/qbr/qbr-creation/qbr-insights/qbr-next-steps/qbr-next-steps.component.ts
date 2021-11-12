@@ -119,7 +119,14 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     rec.opportunity = this.nextStepsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
     rec.title = this.nextStepsForm.controls[rec.sort_order.toString() + 'title'].value;
     rec.action = this.nextStepsForm.controls[rec.sort_order.toString() + 'action'].value;
-    rec = await this.qbrService.saveNextStep(rec);
+    if (this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')
+        || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')
+        || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')) {
+          return;
+    } else {
+      rec = await this.qbrService.saveNextStep(rec);
+    }
+
     const elementIndex = this.savedInsights.findIndex(si => si.corresponding_insight_id === rec.corresponding_insight_id);
     if (elementIndex >= 0) {
       this.savedInsights[elementIndex].id = rec.id;
@@ -134,10 +141,14 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     const dialogRef = this.dialog.open(NextStepInputsComponent, {
       data: rec
     });
-
     dialogRef.componentInstance.updateNextStepData.subscribe(async data => {
-      console.log("on close data: ", data);
       data = await this.qbrService.saveNextStep(data);
+      const elementIndex = this.savedInsights.findIndex(si => si.corresponding_insight_id === data.corresponding_insight_id);
+      if (elementIndex >= 0) {
+        this.savedInsights[elementIndex].id = data.id;
+      }
+      console.log("DATA: ", data);
+      console.log("savedInsights: ", this.savedInsights);
     });
   }
 

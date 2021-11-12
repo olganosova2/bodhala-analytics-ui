@@ -343,6 +343,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           if (savedInsight.firm_name !== null && savedInsight.firm_name !== undefined) {
             console.log("COME ON BRO: ", savedInsight.action)
             savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', savedInsight.firm_name);
+            savedInsight.action = savedInsight.action.replaceAll('your firms', savedInsight.firm_name);
           } else {
             savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', 'your firms');
           }
@@ -395,6 +396,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           if (savedInsight.firm_name !== null && savedInsight.firm_name !== undefined) {
             console.log("COME ON BRO: ", savedInsight.action)
             savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', savedInsight.firm_name);
+            savedInsight.action = savedInsight.action.replaceAll('your firms', savedInsight.firm_name);
           } else {
             savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', 'your firms');
           }
@@ -505,8 +507,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     rec.firm_id = evt.value;
     console.log("updateFirmSelection evt: ", evt.value)
     console.log("updateFirmSelection rec: ", rec);
+    console.log("updateFirmSelection rec: ", rec);
     // const nameCheck = this.currentFirmOptions.filter(f => f.value === evt.value);
-    const nameCheck = this.currentFirmOptions.filter(f => f.value === rec.firm_id);
+    const nameCheck = rec.currentFirmOptions.filter(f => f.value === evt.value);
     console.log("updateFirmSelection nameCheck: ", nameCheck)
     if (nameCheck.length > 0) {
       rec.firm_name = nameCheck[0].label;
