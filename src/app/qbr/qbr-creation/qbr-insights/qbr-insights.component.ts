@@ -157,7 +157,6 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       for (let insight of savedInsights) {
 
         console.log("insight: ", insight);
-        console.log("nextStepscomp: ", this.nextSteps);
         const savedNextStep = this.nextSteps.filter(ns => ns.corresponding_insight_id === insight.temp_id);
         console.log("savedNextStep: ", savedNextStep)
         if (savedNextStep.length > 0) {
@@ -173,6 +172,15 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           insight.action = savedNextStep[0].action;
           insight.previouslySaved = true;
           insight.section = 'Next Steps';
+          if (insight.firm_id !== null && insight.firm_id !== undefined) {
+            console.log("IF EVAL")
+            const filteredFirm = insight.currentFirmOptions.filter(firm => firm.value === insight.firm_id);
+            console.log("filteredFirm: ", filteredFirm)
+            if (filteredFirm.length > 0) {
+              insight.firm_name = filteredFirm[0].label;
+              console.log("insight.firm_name: ", insight.firm_name)
+            }
+          }
           if (insight.type === 'Increase Discounts') {
             insight.current_discount_pct = savedNextStep[0].current_discount_pct;
             insight.spend_increase_pct = savedNextStep[0].spend_increase_pct;
@@ -186,8 +194,18 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             insight.desired_associate_pct_of_hours_worked = savedNextStep[0].desired_associate_pct_of_hours_worked;
             insight.desired_paralegal_pct_of_hours_worked = savedNextStep[0].desired_paralegal_pct_of_hours_worked;
             insight.spend_increase_pct = savedNextStep[0].spend_increase_pct;
+            if (insight.firm_name !== null && insight.firm_name !== undefined) {
+              insight.action = insight.action.replaceAll('[ Firm ]', insight.firm_name);
+            } else {
+              insight.action = insight.action.replaceAll('[ Firm ]', 'your firms');
+            }
           } else if (insight.type === 'Decrease Block Billing') {
             insight.desired_block_billing_pct = savedNextStep[0].desired_block_billing_pct;
+            if (insight.firm_name !== null && insight.firm_name !== undefined) {
+              insight.action = insight.action.replaceAll('[ Firm ]', insight.firm_name);
+            } else {
+              insight.action = insight.action.replaceAll('[ Firm ]', 'your firms');
+            }
           }
         } else {
             insight.previouslySaved = false;
@@ -201,7 +219,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
     } else {
       savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null, corresponding_insight_id: r.id, previouslySaved: false}));
-      console.log("else eval")
+      console.log("else eval: ", savedInsights)
     }
     // const savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null}));
     console.log("savedInsights: ", savedInsights);
@@ -320,6 +338,14 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             savedInsight.desired_paralegal_pct_of_hours_worked = 0;
             savedInsight.spend_increase_pct = 0;
           }
+          console.log("COME ON BRO: ", savedInsight.firm_name)
+          console.log("COME ON BRO: ", savedInsight.action)
+          if (savedInsight.firm_name !== null && savedInsight.firm_name !== undefined) {
+            console.log("COME ON BRO: ", savedInsight.action)
+            savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', savedInsight.firm_name);
+          } else {
+            savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', 'your firms');
+          }
 
           if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
             const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
@@ -363,6 +389,14 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         } else if (savedInsight.type === 'Decrease Block Billing') {
           if (!savedInsight.previouslySaved) {
             savedInsight.desired_block_billing_pct = 20;
+          }
+          console.log("COME ON BRO: ", savedInsight.firm_name)
+          console.log("COME ON BRO: ", savedInsight.action)
+          if (savedInsight.firm_name !== null && savedInsight.firm_name !== undefined) {
+            console.log("COME ON BRO: ", savedInsight.action)
+            savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', savedInsight.firm_name);
+          } else {
+            savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', 'your firms');
           }
 
           if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
@@ -469,7 +503,11 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
   updateFirmSelection(evt, rec) {
     rec.firm_id = evt.value;
-    const nameCheck = this.currentFirmOptions.filter(f => f.value === evt.value);
+    console.log("updateFirmSelection evt: ", evt.value)
+    console.log("updateFirmSelection rec: ", rec);
+    // const nameCheck = this.currentFirmOptions.filter(f => f.value === evt.value);
+    const nameCheck = this.currentFirmOptions.filter(f => f.value === rec.firm_id);
+    console.log("updateFirmSelection nameCheck: ", nameCheck)
     if (nameCheck.length > 0) {
       rec.firm_name = nameCheck[0].label;
     }
@@ -490,6 +528,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       this.saveInsight(rec);
     }
     console.log("form: ", this.insightsForm);
+    console.log("updateFirmSelection rec.firm_name: ", rec.firm_name);
   }
 
   addRecommendation(recType: string): void {
