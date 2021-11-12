@@ -102,6 +102,12 @@ export class EsTableComponent implements OnInit {
       } else {
         firm.avg_partner_rate_formatted = '--';
       }
+      if (firm.associate_hours > 0 && (firm.associate_hours !== null || firm.associate_hours !== undefined)) {
+        firm.avg_associate_rate = firm.associate_billed / firm.associate_hours;
+        firm.avg_associate_rate_formatted = this.formatter.format(firm.avg_associate_rate);
+      } else {
+        firm.avg_associate_rate_formatted = '--';
+      }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
       } else {
@@ -178,6 +184,12 @@ export class EsTableComponent implements OnInit {
       } else {
         firm.avg_partner_rate_formatted = '--';
       }
+      if (firm.associate_hours > 0 && (firm.associate_hours !== null || firm.associate_hours !== undefined)) {
+        firm.avg_associate_rate = firm.associate_billed / firm.associate_hours;
+        firm.avg_associate_rate_formatted = this.formatter.format(firm.avg_associate_rate);
+      } else {
+        firm.avg_associate_rate_formatted = '--';
+      }
       if (firm.closed_matters > 0 && (firm.closed_matters !== null || firm.closed_matters !== undefined || firm.matter_cost_closed !== null || firm.matter_cost_closed !== undefined)) {
         // firm.avg_matter_cost = (firm.matter_cost_closed + firm.total_afa_closed) / firm.closed_matters;
         firm.avg_matter_cost_formatted = this.formatter.format(firm.avg_matter_cost);
@@ -216,13 +228,14 @@ export class EsTableComponent implements OnInit {
           } else {
             firm.avg_matter_cost_trend = 0;
           }
-
-          if (firm.block_billed_per > 0 && firm.block_billed_per !== null && firm.block_billed_per !== undefined) {
+          if (firm.block_billed_per > 0 && firm.block_billed_per !== null && firm.block_billed_per !== undefined && priorYearFirm.block_billed_per) {
+            firm.block_billed_per *= 100;
+            priorYearFirm.block_billed_per *= 100;
             if (firm.block_billed_per > priorYearFirm.block_billed_per) {
-              firm.block_billed_per_trend = ((firm.block_billed_per / priorYearFirm.block_billed_per) - 1) * 100;
+              firm.block_billed_per_trend = firm.block_billed_per - priorYearFirm.block_billed_per;
             } else {
-              firm.block_billed_per_trend = (1 - (firm.block_billed_per / priorYearFirm.block_billed_per)) * 100;
-              firm.block_billed_per_trend *= -1;
+              firm.block_billed_per_trend = firm.block_billed_per - priorYearFirm.block_billed_per;
+              // firm.block_billed_per_trend *= -1;
             }
           } else {
             firm.block_billed_per_trend = 0;
@@ -259,6 +272,17 @@ export class EsTableComponent implements OnInit {
             }
           } else {
             firm.avg_partner_rate_trend = 0;
+          }
+
+          if (firm.avg_associate_rate > 0 && firm.avg_associate_rate !== null && firm.avg_associate_rate !== undefined) {
+            if (firm.avg_associate_rate > priorYearFirm.avg_associate_rate && priorYearFirm.avg_associate_rate > 0) {
+              firm.avg_associate_rate_trend = ((firm.avg_associate_rate / priorYearFirm.avg_associate_rate) - 1) * 100;
+            } else {
+              firm.avg_associate_rate_trend = (1 - (firm.avg_associate_rate / priorYearFirm.avg_associate_rate)) * 100;
+              firm.avg_associate_rate_trend *= -1;
+            }
+          } else {
+            firm.avg_associate_rate_trend = 0;
           }
 
           if (firm.partners > 0 && firm.partners !== null && firm.partners !== undefined) {

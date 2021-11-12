@@ -159,7 +159,8 @@ export class SpendOverviewComponent implements OnInit {
       }
     }
     if (this.priorYearTotalsRaw.percent_block_billed > 0 && this.priorYearTotalsRaw.percent_block_billed !== null && this.priorYearTotalsRaw.percent_block_billed !== undefined) {
-      blockBilling = ((this.totalsRaw.percent_block_billed / this.priorYearTotalsRaw.percent_block_billed) - 1) * 100;
+      // blockBilling = ((this.totalsRaw.percent_block_billed / this.priorYearTotalsRaw.percent_block_billed) - 1) * 100;
+      blockBilling = this.totalsRaw.percent_block_billed - this.priorYearTotalsRaw.percent_block_billed;
     }
     if (this.priorYearTotalsRaw.avg_blended_rate > 0 && this.priorYearTotalsRaw.avg_blended_rate !== null && this.priorYearTotalsRaw.avg_blended_rate !== undefined) {
       blendedRate = ((this.totalsRaw.avg_blended_rate / this.priorYearTotalsRaw.avg_blended_rate) - 1) * 100;
