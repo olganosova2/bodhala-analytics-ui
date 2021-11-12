@@ -109,6 +109,7 @@ export const END_POINTS_URLS = {
   saveQBRNextStep: {url: BASE_URL + 'analytics/saveQBRNextStep', showLoading: true},
   saveQBRMetrics: {url: BASE_URL + 'analytics/saveQBRMetrics', showLoading: true},
   getClientQBR: {url: BASE_URL + 'analytics/getClientQBR', showLoading: true},
+  deleteQBRRecommendation: {url: BASE_URL + 'analytics/deleteQBRRecommendation', showLoading: true},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},

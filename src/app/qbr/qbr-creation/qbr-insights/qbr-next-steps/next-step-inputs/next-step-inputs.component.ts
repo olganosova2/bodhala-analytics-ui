@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Inject} from '@angular/core';
+import {Component, Input, OnInit, Inject, Output, EventEmitter} from '@angular/core';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import { DatePipe } from '@angular/common';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import {moneyFormatter} from '../../../../qbr-model';
   styleUrls: ['./next-step-inputs.component.scss']
 })
 export class NextStepInputsComponent implements OnInit {
+  @Output() updateNextStepData = new EventEmitter<any>();
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public datePipe: DatePipe,
@@ -24,7 +25,7 @@ export class NextStepInputsComponent implements OnInit {
               public qbrService: QbrService) { }
 
   ngOnInit(): void {
-    // console.log("data: ", this.data);
+    console.log("data: ", this.data);
   }
 
   async updateSavings() {
@@ -39,15 +40,12 @@ export class NextStepInputsComponent implements OnInit {
     } else if (this.data.type === 'Decrease Block Billing') {
       this.data = this.qbrService.calculateBlockBillingSavings(this.data, this.data.savingsData);
     } else if (this.data.type === 'Shift Work to Other Firms') {
-
+      this.data = this.qbrService.calculateShiftFirmsSavings(this.data, this.data.topFirmData, this.data.secondFirmData);
     }
-    // will this be necesarry?
-    // else if (this.data.type === 'Custom Recommendation') {
-
-    // }
-    // console.log("updated data: ", this.data);
+    this.updateNextStepData.emit(this.data);
     this.dialogRef.close();
-    // console.log("data after: ", this.data)
+
+    console.log("data after: ", this.data)
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import {CommonService} from '../../../shared/services/common.service';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -45,26 +45,29 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
               public commonServ: CommonService,
               public utilService: UtilService,
               public datepipe: DatePipe,
+              public changeDetectorRef: ChangeDetectorRef,
               public router: Router,
               private qbrService: QbrService,
               public parent: QbrCreationComponent,
               private recService: RecommendationService) {}
 
   ngOnInit(): void {
-    this.insightsForm.validator =  this.validateInsightsSelection();
+    this.insightsForm.validator = this.validateInsightsSelection();
     if (this.editMode) {
-      this.nextSteps = this.recommendations.filter(r => r.section === 'Next Steps');
-      this.recommendations = this.recommendations.filter(r => r.section === 'Insights');
+      this.nextSteps = this.recommendations.filter(r => r.section === 'Next Steps' && r.deleted_on === null);
+      this.recommendations = this.recommendations.filter(r => r.section === 'Insights' && r.deleted_on === null);
+      console.log("CHECKING LENGTHS: ", this.nextSteps.length, this.recommendations.length)
       if (this.nextSteps.length > 0) {
-        this.showNextSteps = true;
+        // this.showNextSteps = true;
+        this.generateNextSteps(false);
       }
     }
     this.currentFirmOptions = this.topPAFirms;
     this.processRecommendations();
-    // console.log("recs: ", this.recommendations)
-    // console.log("nextSteps: ", this.nextSteps)
-    // console.log("INSIGHT EXPENSES: ", this.parent.report.querystring.expenses)
-    // console.log("INSIGHT FORM: ", this.insightsForm)
+    console.log("recs: ", this.recommendations)
+    console.log("nextSteps: ", this.nextSteps)
+    console.log("INSIGHT EXPENSES: ", this.parent.report.querystring.expenses)
+    console.log("INSIGHT FORM: ", this.insightsForm)
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -102,7 +105,6 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     }
   }
 
-
   updateFormStatus(status: string): void {
     // console.log("updateFormStatus: ", status)
     if (status === 'VALID') {
@@ -134,27 +136,94 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     };
   }
 
-  async generateNextSteps(): Promise<void> {
-    this.nextSteps = [];
-    const savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null}));
-    // console.log("savedInsights: ", savedInsights);
+  async generateNextSteps(updateFromRecs: boolean): Promise<void> {
+    // this.nextSteps = [];
+    let savedInsights;
+    console.log("next steps vars: ", this.editMode, this.nextSteps.length, this.nextSteps)
+
+    // will we need more conditionals for editMode to handle for when they added a new insight? Believe so
+
+    if (this.editMode && this.nextSteps.length > 0 && !updateFromRecs) {
+      savedInsights = this.nextSteps;
+      for (let insight of savedInsights) {
+        insight.previouslySaved = true;
+
+      }
+      console.log("if eval")
+    } else if (this.editMode && this.nextSteps.length > 0 && updateFromRecs) {
+      savedInsights = this.recommendations.map(r => Object.assign({}, r, {temp_id: r.id, id: null}));
+      console.log("else if eval")
+
+      for (let insight of savedInsights) {
+
+        console.log("insight: ", insight);
+        console.log("nextStepscomp: ", this.nextSteps);
+        const savedNextStep = this.nextSteps.filter(ns => ns.corresponding_insight_id === insight.temp_id);
+        console.log("savedNextStep: ", savedNextStep)
+        if (savedNextStep.length > 0) {
+          insight.id = savedNextStep[0].id;
+          if (insight.included === false && insight.id !== null) {
+            console.log("BOOM, BYE BYE")
+            this.qbrService.deleteQBRRecommendation(insight);
+          }
+          insight.corresponding_insight_id = insight.temp_id;
+          insight.sort_order = savedNextStep[0].sort_order;
+          insight.title = savedNextStep[0].title;
+          insight.opportunity = savedNextStep[0].opportunity;
+          insight.action = savedNextStep[0].action;
+          insight.previouslySaved = true;
+          insight.section = 'Next Steps';
+          if (insight.type === 'Increase Discounts') {
+            insight.current_discount_pct = savedNextStep[0].current_discount_pct;
+            insight.spend_increase_pct = savedNextStep[0].spend_increase_pct;
+            insight.recommended_discount_pct_lower_range = savedNextStep[0].recommended_discount_pct_lower_range;
+            insight.recommended_discount_pct_upper_range = savedNextStep[0].recommended_discount_pct_upper_range;
+          } else if (insight.type === 'Prevent Rate Increases') {
+            insight.spend_increase_pct = savedNextStep[0].spend_increase_pct;
+            insight.desired_rate_increase_pct = savedNextStep[0].desired_rate_increase_pct;
+          } else if (insight.type === 'Partner / Associate Work Allocation') {
+            insight.desired_partner_pct_of_hours_worked = savedNextStep[0].desired_partner_pct_of_hours_worked;
+            insight.desired_associate_pct_of_hours_worked = savedNextStep[0].desired_associate_pct_of_hours_worked;
+            insight.desired_paralegal_pct_of_hours_worked = savedNextStep[0].desired_paralegal_pct_of_hours_worked;
+            insight.spend_increase_pct = savedNextStep[0].spend_increase_pct;
+          } else if (insight.type === 'Decrease Block Billing') {
+            insight.desired_block_billing_pct = savedNextStep[0].desired_block_billing_pct;
+          }
+        } else {
+            insight.previouslySaved = false;
+            insight.corresponding_insight_id = insight.temp_id;
+            // other handling needed
+            // need to add a control to the nextSteps form
+        }
+      }
+
+      this.nextSteps = [];
+
+    } else {
+      savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null, corresponding_insight_id: r.id, previouslySaved: false}));
+      console.log("else eval")
+    }
+    // const savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null}));
+    console.log("savedInsights: ", savedInsights);
     for (const rec of this.recommendations) {
+      console.log("out hjere looping: ", rec);
       if (rec.included) {
         this.saveInsight(rec);
       }
     }
     for (let savedInsight of savedInsights) {
-      // if (!this.editMode) {
-      //   rec.id = null;
-      // }
-      // let savedInsight = rec;
+      console.log("savedInsight: ", savedInsight)
+
       if (savedInsight.included) {
 
+
         if (savedInsight.type === 'Increase Discounts') {
-          savedInsight.current_discount_pct = 0;
-          savedInsight.spend_increase_pct = 0;
-          savedInsight.recommended_discount_pct_lower_range = 5;
-          savedInsight.recommended_discount_pct_upper_range = 10;
+          if (!savedInsight.previouslySaved) {
+            savedInsight.current_discount_pct = 0;
+            savedInsight.spend_increase_pct = 0;
+            savedInsight.recommended_discount_pct_lower_range = 5;
+            savedInsight.recommended_discount_pct_upper_range = 10;
+          }
           if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
             const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
             if (elementIndex === 1) {
@@ -196,8 +265,10 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
 
         } else if (savedInsight.type === 'Prevent Rate Increases') {
-          savedInsight.spend_increase_pct = 0;
-          savedInsight.desired_rate_increase_pct = 3;
+          if (!savedInsight.previouslySaved) {
+            savedInsight.spend_increase_pct = 0;
+            savedInsight.desired_rate_increase_pct = 3;
+          }
 
           const rateIncreaseData = await this.recService.getRateIncreaseData(savedInsight, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
           savedInsight.potential_savings = rateIncreaseData.savings;
@@ -243,10 +314,12 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           savedInsight.potential_savings_formatted = moneyFormatter.format(savedInsight.potential_savings);
           savedInsight.practiceAreaSetting = this.practiceAreaSetting;
         } else if (savedInsight.type === 'Partner / Associate Work Allocation') {
-          savedInsight.desired_partner_pct_of_hours_worked = 35;
-          savedInsight.desired_associate_pct_of_hours_worked = 65;
-          savedInsight.desired_paralegal_pct_of_hours_worked = 0;
-          savedInsight.spend_increase_pct = 0;
+          if (!savedInsight.previouslySaved) {
+            savedInsight.desired_partner_pct_of_hours_worked = 35;
+            savedInsight.desired_associate_pct_of_hours_worked = 65;
+            savedInsight.desired_paralegal_pct_of_hours_worked = 0;
+            savedInsight.spend_increase_pct = 0;
+          }
 
           if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
             const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
@@ -288,7 +361,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           }
 
         } else if (savedInsight.type === 'Decrease Block Billing') {
-          savedInsight.desired_block_billing_pct = 20;
+          if (!savedInsight.previouslySaved) {
+            savedInsight.desired_block_billing_pct = 20;
+          }
 
           if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
             const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
@@ -331,7 +406,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         } else if (savedInsight.type === 'Shift Work to Other Firms') {
 
           const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
-          // console.log("elem index: ", elementIndex)
+          console.log("elem index: ", elementIndex)
           if (elementIndex === 1) {
             savedInsight = this.qbrService.calculateShiftFirmsSavings(savedInsight, this.parent.topPATopFirm, this.parent.topPASecondFirm);
           } else if (elementIndex === 2) {
@@ -345,10 +420,18 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
         }
         // rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
-        this.nextSteps.push(savedInsight);
+        if (this.nextSteps.length < 3) {
+          this.nextSteps.push(savedInsight);
+          // this.changeDetectorRef.detectChanges();
+        }
+        if (savedInsight.id !== null) {
+          savedInsight = await this.qbrService.saveNextStep(savedInsight);
+        }
       }
 
     }
+    this.nextSteps = this.nextSteps.slice();
+    console.log("NEXT STEPS: ", this.nextSteps)
     this.showNextSteps = true;
   }
 
@@ -377,10 +460,11 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       this.updateShiftWorkRecommendation(rec);
     }
     if (rec.included) {
+      console.log("THE CULPRIT: ", rec);
       this.saveInsight(rec);
     }
-    // console.log("rec: ", rec);
-    // console.log("form: ", this.insightsForm);
+    console.log("rec: ", rec);
+    console.log("form: ", this.insightsForm);
   }
 
   updateFirmSelection(evt, rec) {
@@ -402,18 +486,19 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       this.updateShiftWorkRecommendation(rec);
     }
     if (rec.included) {
+      console.log("THE CULPRIT 2: ", rec);
       this.saveInsight(rec);
     }
-    // console.log("form: ", this.insightsForm);
+    console.log("form: ", this.insightsForm);
   }
 
   addRecommendation(recType: string): void {
-    // console.log("addRecommendation: ", recType);
-    // console.log("check: ", recommendationPlaceholderMapping[recType]);
+    console.log("addRecommendation: ", recType);
+    console.log("check: ", recommendationPlaceholderMapping[recType]);
     let sortOrder;
     if (this.editMode) {
       const sorted = this.recommendations.sort((a, b) => a.sort_order - b.sort_order);
-      // console.log("sorted: ", sorted);
+      console.log("sorted: ", sorted);
       if (sorted.at(-1)) {
         sortOrder = sorted.at(-1).sort_order + 1;
       } else {
@@ -446,7 +531,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       newRec.qbr_id = this.parent.report.id;
     }
     this.insightsForm.addControl(newRec.sort_order + 'include', new FormControl(newRec.included));
-    this.insightsForm.addControl(newRec.sort_order + 'title', new FormControl(newRec.title, [Validators.minLength(10), Validators.maxLength(60)]));
+    this.insightsForm.addControl(newRec.sort_order + 'title', new FormControl(newRec.title, [Validators.minLength(10), Validators.maxLength(35)]));
     this.insightsForm.addControl(newRec.sort_order + 'opportunity', new FormControl(newRec.opportunity, [Validators.minLength(40), Validators.maxLength(200)]));
     this.insightsForm.addControl(newRec.sort_order + 'matters', new FormControl(newRec.why_it_matters, [Validators.minLength(40), Validators.maxLength(200)]));
     this.insightsForm.addControl(newRec.sort_order + 'firm', new FormControl(newRec.firm_id));
@@ -465,13 +550,13 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       this.updateShiftWorkRecommendation(newRec);
     }
     this.recommendations.push(newRec);
-    // console.log("form after new: ", this.insightsForm);
-    // console.log("recommendations after new: ", this.recommendations);
-    // console.log("newRec: ", newRec);
+    console.log("form after new: ", this.insightsForm);
+    console.log("recommendations after new: ", this.recommendations);
+    console.log("newRec: ", newRec);
   }
 
   async processRecommendations(): Promise<void> {
-    // console.log("processRecommendations")
+    console.log("processRecommendations")
     for (const rec of this.recommendations) {
       rec.section = 'Insights';
       rec.qbr_id = this.parent.report.id;
@@ -490,8 +575,8 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
       if (rec.firm_id !== null && rec.firm_id !== undefined) {
         const filteredFirm = rec.currentFirmOptions.filter(firm => firm.value === rec.firm_id);
-        // console.log("filtered firm: ", filteredFirm)
-        // console.log("currentOptions: ", rec.currentFirmOptions, rec.firm_id)
+        console.log("filtered firm: ", filteredFirm)
+        console.log("currentOptions: ", rec.currentFirmOptions, rec.firm_id)
         if (filteredFirm.length > 0) {
           rec.firm_name = filteredFirm[0].label;
         }
@@ -505,9 +590,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         }
       }
 
-      // console.log("REC PROCESSING: ", rec);
+      console.log("REC PROCESSING: ", rec);
       this.insightsForm.addControl(rec.sort_order + 'include', new FormControl(rec.included));
-      this.insightsForm.addControl(rec.sort_order + 'title', new FormControl(rec.title, [Validators.minLength(10), Validators.maxLength(60)]));
+      this.insightsForm.addControl(rec.sort_order + 'title', new FormControl(rec.title, [Validators.minLength(10), Validators.maxLength(35)]));
       this.insightsForm.addControl(rec.sort_order + 'opportunity', new FormControl(rec.opportunity, [Validators.minLength(40), Validators.maxLength(200)]));
       this.insightsForm.addControl(rec.sort_order + 'matters', new FormControl(rec.why_it_matters, [Validators.minLength(40), Validators.maxLength(200)]));
       this.insightsForm.addControl(rec.sort_order + 'firm', new FormControl(rec.firm_id));
@@ -555,23 +640,23 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       this.insightsForm.addControl(rec.sort_order + 'metrics', new FormControl(rec.notable_metrics, [Validators.minLength(40), Validators.maxLength(200)]));
     }
     this.recommendationsProcessed = true;
-    // console.log("recs now: ", this.recommendations)
-    // console.log("form: ", this.insightsForm)
+    console.log("recs now: ", this.recommendations)
+    console.log("form: ", this.insightsForm)
   }
 
   async checkboxClicked(evt, rec) {
-    // console.log("checkboxClicked evt: ", evt)
-    // console.log("checkboxClicked rec: ", rec)
+    console.log("checkboxClicked evt: ", evt)
+    console.log("checkboxClicked rec: ", rec)
     rec.included = evt.checked;
     const tempSortOrder = rec.sort_order;
     let alreadySaved = false;
     if (rec.id !== null) {
       alreadySaved = true;
     }
-    // console.log("opp", this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value)
-    // console.log("title", this.insightsForm.controls[rec.sort_order.toString() + 'title'].value)
-    // console.log("metrics", this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value)
-    // console.log("matters", this.insightsForm.controls[rec.sort_order.toString() + 'matters'].value)
+    console.log("opp", this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value)
+    console.log("title", this.insightsForm.controls[rec.sort_order.toString() + 'title'].value)
+    console.log("metrics", this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value)
+    console.log("matters", this.insightsForm.controls[rec.sort_order.toString() + 'matters'].value)
 
     if (this.insightsForm.hasError('tooManySelected') !== true) {
       rec.opportunity = this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
@@ -588,10 +673,10 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         rec.why_it_matters = '';
       }
       rec = await this.qbrService.saveRecommendation(rec);
-      // console.log("rec: ", rec);
+      console.log("rec: ", rec);
       const elementIndex = this.recommendations.findIndex(r => r.sort_order === tempSortOrder);
-      // console.log("elementIndex: ", elementIndex)
-      // console.log("RECOMMENDATIONS: ", this.recommendations);
+      console.log("elementIndex: ", elementIndex)
+      console.log("RECOMMENDATIONS: ", this.recommendations);
       if (!alreadySaved) {
         this.recommendations[elementIndex].id = rec.id;
       }
@@ -599,26 +684,39 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   }
 
   async saveInsight(rec) {
-    // console.log("saveInsight: ", rec, this.insightsForm.hasError('tooManySelected') )
+    console.log("saveInsight: ", rec, this.insightsForm.hasError('tooManySelected') )
     let alreadySaved = false;
     const tempSortOrder = rec.sort_order;
     if (rec.id !== null) {
       alreadySaved = true;
     }
-    if (rec.opportunity !== this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value) {
-      rec.opp_edited = true;
+    if (this.insightsForm.controls[rec.sort_order.toString() + 'opportunity']) {
+      if (rec.opportunity !== this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value) {
+        rec.opp_edited = true;
+      }
     }
-    if (rec.notable_metrics !== this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value) {
-      rec.metrics_edited = true;
+    if (this.insightsForm.controls[rec.sort_order.toString() + 'metrics']) {
+      if (rec.notable_metrics !== this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value) {
+        rec.metrics_edited = true;
+      }
     }
-    rec.opportunity = this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
-    rec.title = this.insightsForm.controls[rec.sort_order.toString() + 'title'].value;
-    rec.notable_metrics = this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value;
-    rec.why_it_matters = this.insightsForm.controls[rec.sort_order.toString() + 'matters'].value;
+    console.log("SORT ORDER: ", rec.sort_order)
+    if (this.insightsForm.controls[rec.sort_order.toString() + 'opportunity']) {
+      rec.opportunity = this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
+    }
+    if (this.insightsForm.controls[rec.sort_order.toString() + 'title']) {
+      rec.title = this.insightsForm.controls[rec.sort_order.toString() + 'title'].value;
+    }
+    if (this.insightsForm.controls[rec.sort_order.toString() + 'metrics']) {
+      rec.notable_metrics = this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value;
+    }
+    if (this.insightsForm.controls[rec.sort_order.toString() + 'matters']) {
+      rec.why_it_matters = this.insightsForm.controls[rec.sort_order.toString() + 'matters'].value;
+    }
     if (rec.included === true && this.insightsForm.hasError('tooManySelected') !== true) {
       rec = await this.qbrService.saveRecommendation(rec);
       const elementIndex = this.recommendations.findIndex(r => r.sort_order === tempSortOrder);
-      // console.log("RECOMMENDATIONS: ", this.recommendations);
+      console.log("RECOMMENDATIONS: ", this.recommendations);
       if (!alreadySaved) {
         this.recommendations[elementIndex].id = rec.id;
       }
@@ -627,7 +725,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
 
   updateDiscountRecommendation(rec) {
-    // console.log("updateDiscountRecommendation: ", rec);
+    console.log("updateDiscountRecommendation: ", rec);
     if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {
@@ -786,7 +884,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   }
 
   async updateRateIncreaseRecommendation(rec): Promise<void> {
-    // console.log("updateRateIncreaseRecommendation: ", rec);
+    console.log("updateRateIncreaseRecommendation: ", rec);
     rec.desired_rate_increase_pct = 3;
     if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
       const rateIncreaseData = await this.recService.getRateIncreaseDataByClient(rec, this.userService.currentUser.client_info.id, this.parent.practiceAreaSetting);
@@ -850,7 +948,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   }
 
   updateWorkAllocationRecommendation(rec): void {
-    // console.log("updateWorkAllocationRecommendation: ", rec);
+    console.log("updateWorkAllocationRecommendation: ", rec);
     if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {
@@ -943,7 +1041,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   }
 
   updateBlockBillingRecommendation(rec): void {
-    // console.log("updateBlockBillingRecommendation: ", rec);
+    console.log("updateBlockBillingRecommendation: ", rec);
     if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {
@@ -1119,7 +1217,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   }
 
   updateShiftWorkRecommendation(rec): void {
-    // console.log("updateShiftWorkRecommendation: ", rec);
+    console.log("updateShiftWorkRecommendation: ", rec);
     if ((rec.practice_area !== null && rec.practice_area !== undefined) && (rec.firm_id === null || rec.firm_id === undefined)) {
       const elementIndex = this.topPAs.findIndex(pa => pa.label === rec.practice_area);
       if (elementIndex === 1) {

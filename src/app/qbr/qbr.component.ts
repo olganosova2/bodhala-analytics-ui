@@ -50,7 +50,7 @@ export class QbrComponent implements OnInit {
     this.initColumns();
     const result = await this.qbrService.getClientQBRs();
     this.clientQBRs = result.reports;
-    // console.log("clientQBRs: ", this.clientQBRs)
+    console.log("clientQBRs: ", this.clientQBRs)
     this.loadGrid();
   }
 

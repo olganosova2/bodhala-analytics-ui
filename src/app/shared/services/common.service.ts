@@ -126,13 +126,13 @@ export class CommonService {
     const canvasImageHeight = htmlHeight;
     const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
 
-    // console.log("htmlWidth: ", htmlWidth);
-    // console.log("htmlHeight: ", htmlHeight);
-    // console.log("pdfWidth: ", pdfWidth);
-    // console.log("pdfHeight: ", pdfHeight);
-    // console.log("canvasImageWidth: ", canvasImageWidth);
-    // console.log("canvasImageHeight: ", canvasImageHeight);
-    // console.log("totalPDFPages: ", totalPDFPages);
+    console.log("htmlWidth: ", htmlWidth);
+    console.log("htmlHeight: ", htmlHeight);
+    console.log("pdfWidth: ", pdfWidth);
+    console.log("pdfHeight: ", pdfHeight);
+    console.log("canvasImageWidth: ", canvasImageWidth);
+    console.log("canvasImageHeight: ", canvasImageHeight);
+    console.log("totalPDFPages: ", totalPDFPages);
 
     if (totalPDFPages > 3) {
       exportElement.removeChild(footerDiv);

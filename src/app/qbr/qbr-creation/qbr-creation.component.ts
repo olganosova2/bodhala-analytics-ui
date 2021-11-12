@@ -95,14 +95,14 @@ export class QbrCreationComponent implements OnInit {
         this.reportId = Number(params.get('reportId'));
       });
     const result = await this.qbrService.getClientQBRs();
-    // console.log("result: ", result);
+    console.log("result: ", result);
     if (result) {
       this.firstReport = result.firstReport;
       this.yoyStartDate = result.firstStartDate;
     }
     if (this.reportId) {
       this.report = await this.qbrService.getClientQBR(this.reportId);
-      // console.log("l/ets get it: ", this.report);
+      console.log("l/ets get it: ", this.report);
     } else {
 
     }
@@ -128,7 +128,7 @@ export class QbrCreationComponent implements OnInit {
         start_date: null
       };
     }
-    // console.log("report: ", this.report);
+    console.log("report: ", this.report);
 
     if (this.yoyStartDate !== null && this.yoyStartDate !== undefined) {
       const dateResult = this.qbrService.constructSelectableQuarterDates(this.yoyStartDate);
@@ -272,14 +272,14 @@ export class QbrCreationComponent implements OnInit {
       chosen_metrics: DEFAULT_CHOSEN_METRICS
     };
     payload.queryString.expenses = this.filtersService.includeExpenses;
-    // console.log("payload: ", payload);
-    // console.log("params: ", params);
+    console.log("payload: ", payload);
+    console.log("params: ", params);
 
     this.pendingRequest = this.httpService.makePostRequest('generateClientQBR', payload).subscribe(
       (data: any) => {
         if (data.result) {
           this.report = data.result;
-          // console.log("report: ", this.report);
+          console.log("report: ", this.report);
         }
         this.generateQBRMetrics(params);
       },
@@ -308,12 +308,12 @@ export class QbrCreationComponent implements OnInit {
       comparisonEndDate: this.comparisonEndDate,
       paSetting: this.practiceAreaSetting
     };
-    // console.log("payload: ", payload);
+    console.log("payload: ", payload);
     const params = { ... queryString, ... payload };
-    // console.log("params: ", params);
+    console.log("params: ", params);
     this.pendingRequest = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
       async (data: any) => {
-        // console.log("data: ", data)
+        console.log("data: ", data)
 
         if (data.result.report_timeframe_metrics) {
           this.reportData = data.result.report_timeframe_metrics;
@@ -691,8 +691,8 @@ export class QbrCreationComponent implements OnInit {
             };
           }
         }
-        // console.log("topPA: ", this.topPA);
-        // console.log("topPATopFirm: ", this.topPATopFirm);
+        console.log("topPA: ", this.topPA);
+        console.log("topPATopFirm: ", this.topPATopFirm);
         this.calcluateTrendData(this.reportData, this.comparisonData, true, false);
         this.calcluateTrendData(this.topPA, this.topPAComparison, false, false);
         this.calcluateTrendData(this.topPATopFirm, this.topPATopFirmComparison, false, false);
@@ -707,7 +707,7 @@ export class QbrCreationComponent implements OnInit {
         const recResult = await this.qbrService.getQBRRecommendations(this.report.id);
         this.recommendations = recResult.recommendations;
         this.recommendations = this.recommendations.sort((a, b) => a.id - b.id);
-        // console.log("this.recommendations: ", this.recommendations);
+        console.log("this.recommendations: ", this.recommendations);
         this.dataProcessed = true;
       },
       err => {
@@ -813,7 +813,7 @@ export class QbrCreationComponent implements OnInit {
     this.filtersService.includeExpenses = !this.filtersService.includeExpenses;
     if (this.report.querystring !== null && this.report.querystring !== undefined) {
       this.report.querystring.expenses = !this.report.querystring.expenses;
-      // console.log("Expenses: ", this.report.querystring.expenses);
+      console.log("Expenses: ", this.report.querystring.expenses);
     }
     if (this.reportData !== null && this.reportData !== undefined) {
       this.calcluateTrendData(this.reportData, this.comparisonData, true, false);
