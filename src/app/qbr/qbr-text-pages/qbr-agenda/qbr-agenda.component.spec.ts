@@ -7,6 +7,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_QBR_DATA, MOCK_QBRS} from '../../../shared/unit-tests/mock-data/qbr-executive-summary';
+import {IQbrReport} from '../../qbr-model';
 
 describe('QbrAgendaComponent', () => {
   let component: QbrAgendaComponent;
@@ -41,6 +43,9 @@ describe('QbrAgendaComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(QbrAgendaComponent);
     component = fixture.componentInstance;
+    component.qbr = MOCK_QBRS.result[0] as IQbrReport;
+    component.qbrData = MOCK_QBR_DATA.result;
+    component.pageNum = 2;
     fixture.detectChanges();
   });
 

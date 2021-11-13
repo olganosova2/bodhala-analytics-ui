@@ -46,7 +46,7 @@ describe('QbrCoverComponent', () => {
     component = fixture.componentInstance;
     component.qbr = MOCK_QBRS.result[0] as IQbrReport;
     component.qbrData = MOCK_QBR_DATA.result;
-    component.page = 2;
+    component.pageNum = 1;
     fixture.detectChanges();
   });
 
