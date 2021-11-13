@@ -142,13 +142,19 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
       data: rec
     });
     dialogRef.componentInstance.updateNextStepData.subscribe(async data => {
-      data = await this.qbrService.saveNextStep(data);
-      const elementIndex = this.savedInsights.findIndex(si => si.corresponding_insight_id === data.corresponding_insight_id);
-      if (elementIndex >= 0) {
-        this.savedInsights[elementIndex].id = data.id;
+      if (this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')
+        || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')
+        || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')) {
+          return;
+      } else {
+        data = await this.qbrService.saveNextStep(data);
+        const elementIndex = this.savedInsights.findIndex(si => si.corresponding_insight_id === data.corresponding_insight_id);
+        if (elementIndex >= 0) {
+          this.savedInsights[elementIndex].id = data.id;
+        }
+        console.log("DATA: ", data);
+        console.log("savedInsights: ", this.savedInsights);
       }
-      console.log("DATA: ", data);
-      console.log("savedInsights: ", this.savedInsights);
     });
   }
 
