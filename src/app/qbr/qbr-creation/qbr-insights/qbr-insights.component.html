@@ -45,7 +45,7 @@
             Header must be at least 10 characters
           </mat-error>
           <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
-            Header must be less than 60 characters
+            Header must be less than 35 characters
           </mat-error>
         </td>
         <td class="textinput-td" (focusout)="saveInsight(rec)">

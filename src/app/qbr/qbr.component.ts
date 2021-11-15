@@ -10,6 +10,8 @@ import { DatePipe } from '@angular/common';
 import {confirmDialogConfig} from '../shared/services/config';
 import {QbrService} from './qbr.service';
 import {IReport} from './qbr-model';
+import * as config from '../shared/services/config';
+
 
 @Component({
   selector: 'bd-qbr',
@@ -18,6 +20,7 @@ import {IReport} from './qbr-model';
 })
 export class QbrComponent implements OnInit {
   pendingRequest: Subscription;
+  pendingRequestDelete: Subscription;
   selectedClient: IClient;
   clientQBRs: Array<any> = [];
   paginationPageSize: number = 10;
@@ -64,7 +67,8 @@ export class QbrComponent implements OnInit {
       {headerName: 'Author', field: 'author', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)},
-      {headerName: 'Edit', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)}
+      {headerName: 'Edit', cellRenderer: this.editCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.edit.bind(this)},
+      {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.openDeleteDialog.bind(this)},
     ];
   }
 
@@ -93,6 +97,37 @@ export class QbrComponent implements OnInit {
   editCellRenderer() {
     const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-pencil"></em></button>';
     return value;
+  }
+
+  deleteCellRenderer(params: any) {
+    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-trash"></em></button>';
+    return value;
+  }
+
+  openDeleteDialog(row: any): void {
+    const modalConfig = {...config.confirmDialogConfig, data: {title: 'Confirm Delete', item: 'QBR'}};
+    const dialogRef = this.dialog.open(ConfirmModalComponent, {...modalConfig});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+       this.deleteQBR(row.data);
+      }
+    });
+  }
+
+  deleteQBR(qbr: any): void {
+    const params = { id: qbr.id};
+    this.pendingRequestDelete = this.httpService.makePostRequest('deleteQBR', params).subscribe(
+      async (data: any) => {
+        const deleted = data.result;
+        if (deleted) {
+          const result = await this.qbrService.getClientQBRs();
+          this.clientQBRs = result.reports;
+          console.log("clientQBRs: ", this.clientQBRs)
+          this.loadGrid();
+        }
+      }
+    );
   }
 
   view(row: any): void {

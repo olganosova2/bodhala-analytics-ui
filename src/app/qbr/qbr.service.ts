@@ -714,6 +714,10 @@ export class QbrService {
     rec.potential_savings = estimatedSavings;
     rec.topFirmData = topFirmData;
     rec.secondFirmData = secondFirmData;
+    rec.previous_firm_ids = [];
+    rec.previous_firm_ids.push(topFirmData.firm_id);
+    rec.recommended_firm_ids = [];
+    rec.recommended_firm_ids.push(secondFirmData.firm_id);
     if (rec.potential_savings === null || rec.potential_savings === undefined) {
       rec.potential_savings = 0;
     }

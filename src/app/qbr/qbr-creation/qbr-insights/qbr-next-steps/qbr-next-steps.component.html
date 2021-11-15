@@ -17,32 +17,39 @@
       </tr>
 
       <tr *ngFor="let rec of savedInsights">
-        <td (focusout)="saveNextStep(rec)">
+        <td (focusout)="saveNextStep(rec)" *ngIf="nextStepsForm.controls[rec.sort_order + 'title']">
           <input formControlName="{{rec.sort_order + 'title'}}" pInputText class="form-control" type='text' value="{{rec.title}}" minlength="10" maxlength="60"/>
-          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')">
-            Header must be at least 10 characters
-          </mat-error>
-          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
-            Header must be less than 60 characters
-          </mat-error>
+          <div *ngIf="nextStepsForm.controls[rec.sort_order + 'title']">
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')">
+              Header must be at least 10 characters
+            </mat-error>
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
+              Header must be less than 35 characters
+            </mat-error>
+          </div>
         </td>
-        <td class="textinput-td" (focusout)="saveNextStep(rec)">
+        <td class="textinput-td" (focusout)="saveNextStep(rec)" *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity']">
           <textarea formControlName="{{rec.sort_order + 'opportunity'}}" matInput class="form-control" type='text' value="{{rec.opportunity}}" maxlength="200" rows="4" cols="40"></textarea>
-          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')">
-            Opportunity must be at least 40 characters
-          </mat-error>
-          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength')">
-            Opportunity must be less than 200 characters
-          </mat-error>
+
+          <div *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity']">
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')">
+              Opportunity must be at least 40 characters
+            </mat-error>
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength')">
+              Opportunity must be less than 200 characters
+            </mat-error>
+          </div>
         </td>
-        <td class="textinput-td" (focusout)="saveNextStep(rec)">
+        <td class="textinput-td" (focusout)="saveNextStep(rec)" *ngIf="nextStepsForm.controls[rec.sort_order + 'action']">
           <textarea formControlName="{{rec.sort_order + 'action'}}" matInput class="form-control" value="{{rec.action}}" maxlength="200" rows="4" cols="40"></textarea>
-          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')">
-            This section must be at least 40 characters
-          </mat-error>
-          <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength')">
-            This section must be less than 200 characters
-          </mat-error>
+          <div *ngIf="nextStepsForm.controls[rec.sort_order + 'action']">
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')">
+              This section must be at least 40 characters
+            </mat-error>
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength')">
+              This section must be less than 200 characters
+            </mat-error>
+          </div>
         </td>
         <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation' && rec.potential_savings !== null && rec.potential_savings !== undefined">
           {{rec.potential_savings_formatted}}
