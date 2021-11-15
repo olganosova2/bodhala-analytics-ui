@@ -25,7 +25,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   currentFirmOptions: SelectItem[];
   recommendationsProcessed: boolean = false;
   showNextSteps: boolean = false;
-  nextSteps: Array<any> = [];
+  nextSteps: any = [];
   nextStepsValid: boolean = false;
   @Input() recommendations: any;
   @Input() topPAs: SelectItem[];
@@ -127,10 +127,14 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       // make this an entity_config check at some point
 
       if (checked > 3) {
+        console.log("checked: ", checked, this.insightsForm)
+        // setTimeout(() => { return {tooManySelected: true}; });
         return {tooManySelected: true};
+
       }
       if (checked !== 3) {
         return {notEnoughSelected: true};
+        // setTimeout(() => { return {notEnoughSelected: true}; });
       }
       return null;
     };
@@ -146,9 +150,11 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     if (this.editMode && this.nextSteps.length > 0 && !updateFromRecs) {
       savedInsights = this.nextSteps;
       for (let insight of savedInsights) {
+        console.log("FIRST LOOP HOW MANY TIMES ")
         insight.previouslySaved = true;
 
       }
+      this.nextSteps = [];
       console.log("if eval")
     } else if (this.editMode && this.nextSteps.length > 0 && updateFromRecs) {
       savedInsights = this.recommendations.map(r => Object.assign({}, r, {temp_id: r.id, id: null}));
@@ -210,6 +216,8 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         } else {
             insight.previouslySaved = false;
             insight.corresponding_insight_id = insight.temp_id;
+            insight.sort_order = null;
+            insight.section = 'Next Steps';
             // other handling needed
             // need to add a control to the nextSteps form
         }
@@ -218,7 +226,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       this.nextSteps = [];
 
     } else {
-      savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null, corresponding_insight_id: r.id, previouslySaved: false}));
+      savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null, corresponding_insight_id: r.id, previouslySaved: false, section: 'Next Steps'}));
       console.log("else eval: ", savedInsights)
     }
     // const savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null}));
@@ -338,10 +346,8 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             savedInsight.desired_paralegal_pct_of_hours_worked = 0;
             savedInsight.spend_increase_pct = 0;
           }
-          console.log("COME ON BRO: ", savedInsight.firm_name)
-          console.log("COME ON BRO: ", savedInsight.action)
+
           if (savedInsight.firm_name !== null && savedInsight.firm_name !== undefined) {
-            console.log("COME ON BRO: ", savedInsight.action)
             savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', savedInsight.firm_name);
             savedInsight.action = savedInsight.action.replaceAll('your firms', savedInsight.firm_name);
           } else {
@@ -391,10 +397,8 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           if (!savedInsight.previouslySaved) {
             savedInsight.desired_block_billing_pct = 20;
           }
-          console.log("COME ON BRO: ", savedInsight.firm_name)
-          console.log("COME ON BRO: ", savedInsight.action)
+
           if (savedInsight.firm_name !== null && savedInsight.firm_name !== undefined) {
-            console.log("COME ON BRO: ", savedInsight.action)
             savedInsight.action = savedInsight.action.replaceAll('[ Firm ]', savedInsight.firm_name);
             savedInsight.action = savedInsight.action.replaceAll('your firms', savedInsight.firm_name);
           } else {
@@ -453,12 +457,21 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
         } else if (savedInsight.type === 'Custom Recommendation') {
           savedInsight.potential_savings = 0;
+          savedInsight.action = 'Custom';
 
         }
-        // rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
         if (this.nextSteps.length < 3) {
+          if (savedInsight.sort_order === null) {
+            const sorted = this.nextSteps.sort((a, b) => a.sort_order - b.sort_order);
+            let sortOrder;
+            if (sorted.at(-1)) {
+              sortOrder = sorted.at(-1).sort_order + 1;
+            } else {
+              sortOrder = this.recommendations.length + 1;
+            }
+            savedInsight.sort_order = sortOrder;
+          }
           this.nextSteps.push(savedInsight);
-          // this.changeDetectorRef.detectChanges();
         }
         if (savedInsight.id !== null) {
           savedInsight = await this.qbrService.saveNextStep(savedInsight);
@@ -673,9 +686,9 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
                                 moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         } else if (rec.type === 'Custom Recommendation') {
-          rec.notable_metrics = '';
-          rec.opportunity = '';
-          rec.why_it_matters = '';
+          rec.notable_metrics = 'Custom';
+          rec.opportunity = 'Custom';
+          rec.why_it_matters = 'Custom';
         }
       }
 

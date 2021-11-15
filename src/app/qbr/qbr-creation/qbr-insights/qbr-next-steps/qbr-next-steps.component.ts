@@ -111,7 +111,7 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     }
     console.log("navigating away")
     this.router.navigate(['/analytics-ui/qbrs/view'], {queryParams: {
-      qbrId: this.parent.parent.report.id
+      id: this.parent.parent.report.id
     }});
   }
 
@@ -119,11 +119,19 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     rec.opportunity = this.nextStepsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
     rec.title = this.nextStepsForm.controls[rec.sort_order.toString() + 'title'].value;
     rec.action = this.nextStepsForm.controls[rec.sort_order.toString() + 'action'].value;
+    console.log("saving next step title: ", this.nextStepsForm.controls[rec.sort_order + 'title'])
+    console.log("saving next step action: ", this.nextStepsForm.controls[rec.sort_order + 'action'])
+    console.log("saving next step opportunity: ", this.nextStepsForm.controls[rec.sort_order + 'opportunity'])
     if (this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')
         || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')
         || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')) {
-          return;
+        console.log("if eval NOT SAVING")
+        return;
     } else {
+      console.log("else eval WE ARE SAVING")
+      if (rec.type === 'Custom Recommendation') {
+        rec.potential_savings = this.nextStepsForm.controls[rec.sort_order + 'savings'].value;
+      }
       rec = await this.qbrService.saveNextStep(rec);
     }
 
