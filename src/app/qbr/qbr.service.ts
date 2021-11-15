@@ -17,6 +17,7 @@ export class QbrService {
   pendingRequest: Subscription;
   firstReport: boolean;
   yoyStartDate: any;
+  pageExcludes: number = 0;
 
   constructor(public commonService: CommonService,
               public utilService: UtilService,

@@ -1,11 +1,13 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
-import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, GenericConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {QbrService} from '../qbr.service';
 import {IPayloadDates, IQbrReport, QbrRecommendationsType, QbrType} from '../qbr-model';
 import {Subscription} from 'rxjs';
+import * as config from '../../shared/services/config';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'bd-qbr-deck',
@@ -40,6 +42,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService,
               public qbrService: QbrService,
               public router: Router,
+              public dialog: MatDialog,
               public utilService: UtilService) {
       this.commonServ.pageTitle = 'View QBR';
       this.commonServ.pageSubtitle = 'Executive Summary';
@@ -48,7 +51,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {  this.qbrId = params.qbrId; });
+    this.route.queryParams.subscribe(params => {  this.qbrId = params.id; });
     if (this.qbrId) {
       this.getQbr();
       this.getQbrRecommendations();
@@ -115,6 +118,12 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
             this.nextSteps = this.nextSteps.slice(0, 3);
           }
           this.nextSteps = this.nextSteps.sort(this.utilService.dynamicSort('recommendation_type_id'));
+          if (this.insights.length === 0) {
+            this.qbrService.pageExcludes ++;
+          }
+          if (this.nextSteps.length === 0) {
+            this.qbrService.pageExcludes ++;
+          }
         }
       }
     );
@@ -131,6 +140,28 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   }
   goBack(): void {
     this.router.navigate(['/analytics-ui/qbrs/dashboard']);
+  }
+  goToEdit(): void {
+    this.router.navigate(['/analytics-ui/qbrs/edit/' + this.qbr.id]);
+  }
+  finalize(): void {
+    const modalConfig = {...config.confirmDialogConfig, data: {title: 'Finalize QBR', text: 'Are you sure you want to finalize this QBR?'}};
+    const dialogRef = this.dialog.open(GenericConfirmModalComponent, {...modalConfig});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.finalizeQbr();
+      }
+    });
+  }
+  finalizeQbr(): void {
+    const params = { id: this.qbr.id };
+    this.pendingRequest = this.httpService.makePostRequest('finilazeQBR', params).subscribe(
+      (data: any) => {
+       this.qbr.status = 'COMPLETE';
+      }
+    );
+
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
