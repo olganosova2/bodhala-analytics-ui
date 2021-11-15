@@ -41,13 +41,13 @@ export class QbrRecommendationComponent implements OnInit {
   setUpSection(): void {
     switch (this.qbrRecommendationType) {
       case QbrRecommendationsType.Insights:
-        this.pageNumber = 7;
+        this.pageNumber = 6;
         this.section.sectionTitle = 'Insights & opportunities';
         this.section.sectionSubTitle = 'Where you should focus your energy';
         this.section.sectionAddInfo = 'Here are some areas of opportunity to focus on in the next quarter.';
         break;
       case QbrRecommendationsType.NextSteps:
-        this.pageNumber = 13;
+        this.pageNumber = 12;
         this.section.sectionTitle = 'Next steps: Actions & impact';
         this.section.sectionSubTitle = 'Specific recommendations that will drive impact.';
         break;

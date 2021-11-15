@@ -31,7 +31,7 @@ export class QbrTopPasMattersComponent implements OnInit {
   compareOverviewMetric: any;
   queryString: string;
   practiceArea: string;
-  @Input() pageNum: number = 10;
+  @Input() pageNum: number = 9;
   @Input() totalSpend: number = 0;
   @Input() indexPa: number = 0;
   @Input() qbrData: any;

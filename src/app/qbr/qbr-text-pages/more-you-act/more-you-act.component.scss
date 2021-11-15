@@ -1,0 +1,26 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+
+.label {
+  font-size: 36px;
+  color: $brand-orange;
+  font-weight: 900;
+}
+.texts {
+  font-size: 28px;
+}
+.bd-credits {
+  position: absolute;
+  bottom: 50px;
+  right: 100px;
+  color: $light-gray;
+  font-size: 24px;
+}
+.image-div {
+  min-height: 120px;
+}
+:host ::ng-deep {
+  .p-md-4 {
+    padding: 0 150px 0 0 !important;
+  }
+}

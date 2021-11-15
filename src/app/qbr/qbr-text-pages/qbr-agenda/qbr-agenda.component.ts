@@ -13,7 +13,7 @@ export class QbrAgendaComponent implements OnInit {
   reportDates: IPayloadDates;
   @Input() qbr: IQbrReport;
   @Input() qbrData: any;
-  @Input() page: number = 2;
+  @Input() pageNum: number = 2;
   @Input() zoom: boolean;
   constructor(public qbrService: QbrService) {
     this.agendaItems = [
@@ -28,7 +28,7 @@ export class QbrAgendaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.page === 4) {
+    if (this.pageNum === 3) {
       this.formatScopeItems();
     }
   }

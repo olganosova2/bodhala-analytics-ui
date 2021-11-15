@@ -1,7 +1,7 @@
 <div>
   <div class="qbr-wrapper">
     <div class="qbr-panel position-relative bg-1" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
-      <div *ngIf="page === 2">
+      <div *ngIf="pageNum === 2">
         <div class="card-title">Agenda<span class="dot-full dot-full-online"></span></div>
          <div class="p-grid agenda-grid mt30">
            <div class="p-md-6 gray-border-left position-relative agenda-item" *ngFor="let item of agendaItems">
@@ -11,7 +11,7 @@
            </div>
          </div>
       </div>
-      <div *ngIf="page === 4">
+      <div *ngIf="pageNum === 3">
         <div class="card-title">Scope & parameters<span class="dot-full dot-full-online"></span></div>
         <div class="p-grid mt60 full-width">
           <div class="p-md-4 gray-border-left position-relative agenda-item pl10">
@@ -59,7 +59,7 @@
         </div>
       </div>
       <div class="page-number-circle page-number-circle-wh">
-        <div class="page-number">{{page}}</div>
+        <div class="page-number">{{pageNum}}</div>
       </div>
     </div>
   </div>

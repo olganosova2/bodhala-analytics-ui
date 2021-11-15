@@ -13,7 +13,7 @@ export class QbrCoverComponent implements OnInit {
   reportDates: IPayloadDates;
   @Input() qbr: IQbrReport;
   @Input() qbrData: any;
-  @Input() page: number = 2;
+  @Input() pageNum: number;
   @Input() zoom: boolean;
   constructor(public qbrService: QbrService,
               public userService: UserService) {

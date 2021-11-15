@@ -9,6 +9,7 @@ import {Subscription} from 'rxjs';
 import {IQbrDashboard, IReport, QbrType} from '../qbr-model';
 import {AgGridService} from 'bodhala-ui-elements';
 import {GridOptions} from 'ag-grid-community';
+import {RouterLinkRendererComponent} from '../../shared/components/router-link-renderer/router-link-renderer.component';
 
 const moment = _moment;
 
@@ -56,7 +57,13 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn,  sort: 'desc', hide: true},
-      {headerName: 'Report Name', field: 'qbrType', ...this.defaultColumn, filter: 'agTextColumnFilter', cellRenderer: this.reportNameCellRenderer, flex: 1},
+      {headerName: 'View', field: 'qbrType', ...this.defaultColumn, cellRendererFramework: RouterLinkRendererComponent, flex: 1,
+        cellRendererParams: {
+          inRouterLink: '/analytics-ui/qbrs/view',
+          label: 'Edit',
+          control: 'dataLink'
+        }},
+      // {headerName: 'Report Name', field: 'qbrType', ...this.defaultColumn, filter: 'agTextColumnFilter', cellRenderer: this.reportNameCellRenderer, flex: 1},
       {headerName: 'Report Period', field: 'reportPeriod', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
       {headerName: 'Comparison Period', field: 'comparisonPeriod',  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
@@ -139,7 +146,7 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
   }
   reportNameCellRenderer(params: any) {
     const id = params.node.data.id;
-    const value = '<a class="href-link-primary" href="/analytics-ui/qbrs/view?qbrId=' + id + '">' + params.value + '</a>';
+    const value = '<a class="href-link-primary" href="/analytics-ui/qbrs/view?id=' + id + '">' + params.value + '</a>';
     return value;
   }
   arrayFirmCellRenderer(params: any) {

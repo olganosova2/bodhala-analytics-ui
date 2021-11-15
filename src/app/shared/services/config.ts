@@ -111,6 +111,7 @@ export const END_POINTS_URLS = {
   getClientQBR: {url: BASE_URL + 'analytics/getClientQBR', showLoading: true},
   deleteQBRRecommendation: {url: BASE_URL + 'analytics/deleteQBRRecommendation', showLoading: true},
   deleteQBR: {url: BASE_URL + 'analytics/deleteQBR', showLoading: true},
+  finilazeQBR: {url: BASE_URL + 'analytics/finalizeQBR', showLoading: true},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
