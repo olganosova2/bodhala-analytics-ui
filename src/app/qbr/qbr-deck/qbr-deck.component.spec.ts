@@ -53,7 +53,7 @@ describe('QbrDeckComponent', () => {
   });
   it('should changeTab', () => {
     const tab = { index: 1, tab: { textLabel: 'TabLabel'}};
-    component.changeTab(tab)
+    component.changeTab(tab);
     expect(component.selectedTabIndex).toBe(1);
   });
   it('should goBack', () => {
