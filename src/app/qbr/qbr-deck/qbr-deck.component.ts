@@ -85,7 +85,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
       paSetting: this.practiceAreaSetting,
     };
     const params = { ... this.qbr.querystring, ... payload };
-    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
+    this.pendingRequestQbr = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
       (data: any) => {
         if (data && data.result) {
           const response = data.result;
@@ -118,12 +118,12 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
             this.nextSteps = this.nextSteps.slice(0, 3);
           }
           this.nextSteps = this.nextSteps.sort(this.utilService.dynamicSort('recommendation_type_id'));
-          if (this.insights.length === 0) {
-            this.qbrService.pageExcludes ++;
-          }
-          if (this.nextSteps.length === 0) {
-            this.qbrService.pageExcludes ++;
-          }
+          // if (this.insights.length === 0) {
+          //   this.qbrService.pageExcludes ++;
+          // }
+          // if (this.nextSteps.length === 0) {
+          //   this.qbrService.pageExcludes ++;
+          // }
         }
       }
     );

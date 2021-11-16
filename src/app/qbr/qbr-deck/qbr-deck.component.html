@@ -67,7 +67,7 @@
     <!-- Page 6 -->
     <mat-tab label="Insights" >
       <ng-template matTabContent>
-        <div *ngIf="insights.length === 0">No records found</div>
+        <div *ngIf="insights.length === 0" class="mt20 text-center font-bold">No records found</div>
         <bd-qbr-recommendation *ngIf="qbr && insights && insights.length > 0"  [qbr]="qbr" [qbrData]="qbrData" [zoom]="true" [qbrRecommendationType]="'Insights'" [recommendations]="insights">
         </bd-qbr-recommendation>
       </ng-template>
@@ -116,7 +116,7 @@
     <!-- Page 12 -->
     <mat-tab label="Next Steps">
       <ng-template matTabContent>
-        <div *ngIf="nextSteps.length === 0">No records found</div>
+        <div *ngIf="nextSteps.length === 0" class="mt20 text-center font-bold">No records found</div>
         <bd-qbr-recommendation *ngIf="qbr && nextSteps && nextSteps.length > 0"  [qbr]="qbr" [qbrData]="qbrData" [zoom]="true" [qbrRecommendationType]="'Next Steps'" [recommendations]="nextSteps">
         </bd-qbr-recommendation>
       </ng-template>

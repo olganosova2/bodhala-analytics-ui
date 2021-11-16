@@ -28,4 +28,9 @@ export class RouterLinkRendererComponent implements AgRendererComponent {
       this.router.navigate([link, this.params.value]);
     });
   }
+  navigateWithId(link) {
+    this.ngZone.run(() => {
+      this.router.navigate([link], { queryParams: { id: this.params.node.data.id } });
+    });
+  }
 }
