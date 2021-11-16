@@ -700,9 +700,6 @@ export class QbrCreationComponent implements OnInit {
         this.recommendations = recResult.recommendations;
         this.recommendations = this.recommendations.sort((a, b) => a.id - b.id);
         this.dataProcessed = true;
-        console.log('reportData: ', this.reportData);
-        console.log('topPA: ', this.topPA);
-        console.log('report: ', this.report);
       },
       err => {
         return {error: err};
