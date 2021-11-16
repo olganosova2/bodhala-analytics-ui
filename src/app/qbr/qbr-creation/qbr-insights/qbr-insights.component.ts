@@ -155,8 +155,10 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           this.insightsForm.controls[rec.sort_order + 'metrics'].setValue(rec.notable_metrics);
         }
       }
+      if (this.insightsForm.controls['0include']) {
+        this.insightsForm.controls['0include'].setValue(false);
+      }
       this.recommendationsProcessed = true;
-
     }
   }
 
