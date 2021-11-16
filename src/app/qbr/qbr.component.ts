@@ -141,7 +141,9 @@ export class QbrComponent implements OnInit {
   }
 
   edit(row: any): void {
-    this.router.navigate(['/analytics-ui/qbrs/edit/', row.data.id]);
+    if (row.data.status !== 'COMPLETE') {
+      this.router.navigate(['/analytics-ui/qbrs/edit/', row.data.id]);
+    }
   }
 
   addNew(): void {
