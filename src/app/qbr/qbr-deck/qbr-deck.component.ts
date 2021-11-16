@@ -8,6 +8,7 @@ import {IPayloadDates, IQbrReport, QbrRecommendationsType, QbrType} from '../qbr
 import {Subscription} from 'rxjs';
 import * as config from '../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
+import {MOCK_QBR_1} from '../../shared/unit-tests/mock-data/qbr-executive-summary';
 
 @Component({
   selector: 'bd-qbr-deck',
@@ -88,6 +89,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     this.pendingRequestQbr = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
       (data: any) => {
         if (data && data.result) {
+          // const response = MOCK_QBR_1.result; // data.result;
           const response = data.result;
           if (response && response.report_timeframe_metrics) {
             if (response.report_timeframe_top_pas && response.report_timeframe_top_pas.length > 2) {
