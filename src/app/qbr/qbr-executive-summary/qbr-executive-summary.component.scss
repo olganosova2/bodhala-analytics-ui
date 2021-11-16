@@ -1,0 +1,16 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/_variables.scss";
+
+.hours-div {
+  padding: 0 10px;
+  text-align: center;
+}
+.hours-div-border {
+  border-left: 2px solid $qbr-border-gray;
+}
+:host ::ng-deep {
+  .p-md-5, .p-md-7 {
+    padding-top: 0 !important;
+    padding-right: 20px !important
+  }
+}

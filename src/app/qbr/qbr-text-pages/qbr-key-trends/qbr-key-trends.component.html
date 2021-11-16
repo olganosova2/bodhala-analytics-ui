@@ -1,0 +1,35 @@
+<div>
+  <div>
+    <div #exportPage [ngClass]="{'qbr-panel-zoomed': zoom }" class="qbr-panel position-relative bg-1" id="exportPage">
+      <div class="card-title">Key trends<span class="dot-full dot-full-online"></span></div>
+      <div *ngIf="currentOverviewMetric && compareOverviewMetric">
+        <div class="qbr-subtitle">Top metrics to watch</div>
+        <div class="p-grid mt40">
+          <div *ngFor="let metric of keyTrendsMetrics;let i = index;" class="p-md-4 pt10 pl10 pr10">
+            <div class="kt-oval-badge"
+                 [ngClass]="{'associate-bar': metric.color === 'red', 'green-bar': metric.color === 'green', 'paralegal-bar': metric.color === 'yellow', 'black-bar': metric.color === 'black'}"
+                 class="kt-oval-badge">
+              <span class="badge-percent">
+                  {{ metric.percent | number:'1.1-1'}}%
+                  <em *ngIf="metric.direction > 0" class="fa fa-arrow-up ml10"></em>
+                  <em *ngIf="metric.direction <= 0" class="fa fa-arrow-down ml10"></em>
+                </span><br/>
+              <span class="key-trends-badge-amount">
+                  This period
+                  <span *ngIf="metric.format === 'dollar'">$</span>{{metric.amount | number:'1.0-0'}}
+                <span *ngIf="metric.format === 'percent'">%</span>
+                  <span *ngIf="metric.label === 'Total Spend'"><span *ngIf="metric.direction > 0">more</span><span
+                    *ngIf="metric.direction <= 0">less</span></span>
+                </span><br/>
+              <span class="key-trends-badge-label"
+                    [ngClass]="{'font-white': metric.color === 'black'}">{{ metric.keyTrendsLabel}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-number-circle page-number-circle-wh">
+        <div class="page-number">5</div>
+      </div>
+    </div>
+  </div>
+</div>

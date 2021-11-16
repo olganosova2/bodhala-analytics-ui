@@ -1,0 +1,32 @@
+@import "../../../../assets/styles/colors.scss";
+
+.dateSelector {
+  width: 75%;
+  max-width: 300px;
+}
+td, th {
+  padding: 10px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table td, th {
+  border: 1px solid $gray-blue-bg;
+}
+td {
+  font-family: "Source Sans Pro", sans-serif !important;
+}
+
+.checkbox-td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.textinput-td {
+  word-break: break-all;
+}
+
+textarea {
+  word-break: normal;
+}

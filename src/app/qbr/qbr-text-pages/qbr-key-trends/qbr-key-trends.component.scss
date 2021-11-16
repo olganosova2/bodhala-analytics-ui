@@ -1,0 +1,33 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+
+.qbr-subtitle {
+  font-size: 42px;
+  font-weight: 400;
+}
+.kt-oval-badge {
+  height: 220px;
+  display: inline-block;
+  border-radius: 240px;
+  color: #fff;
+  padding: 10px 10px 10px 70px;
+  text-align: left;
+  width: 100%;
+  // background-color: #2e373c;
+  .badge-percent {
+    font-size: 72px;
+    display: inline-block;
+  }
+  .key-trends-badge-amount {
+    font-size: 26px;
+    display: inline-block;
+  }
+  .key-trends-badge-label {
+    color: $body-color;
+    font-size: 24px;
+    display: inline-block;
+  }
+}
+.font-white {
+  color: #fff !important;
+}

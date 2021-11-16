@@ -1,0 +1,18 @@
+<div>
+  <div class="qbr-wrapper">
+    <div class="qbr-panel position-relative bg-cover" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
+      <div class="qbr-cover-title">{{ accountName }} QBR</div>
+      <div class="qbr-report-dates">{{reportDates?.startDate | date:'mediumDate'}} - {{reportDates?.endDate | date:'mediumDate'}}</div>
+      <div class="qbr-prepared">
+        <div class="qbr-prepared-title">Prepared for {{accountName}} // {{qbr?.modified_on | date:'mediumDate'}}</div>
+        <div class="qbr-prepared-email mt20">support@bodhala.com</div>
+      </div>
+      <div class="bd-logo-cover">
+        <img alt="App Logo" src="assets/images/bd-logo-black.png">
+      </div>
+      <div class="page-number-circle">
+        <div class="page-number">1</div>
+      </div>
+    </div>
+  </div>
+</div>

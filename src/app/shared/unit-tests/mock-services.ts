@@ -31,6 +31,7 @@ import {MOCK_LAW_FIRM_DUPLICATES} from './mock-data/remove-firm-duplicates';
 import {MOCK_ADD_SUBSCRIPTION_RESPONSE, MOCK_SUBSCRIPTIONS} from './mock-data/subscriptions';
 import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND_FIRM_RESULT, MOCK_LEDES_IMPORT} from './mock-data/ledes-imports';
 import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
+import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
 
 export const ngWindow = {
   location: {
@@ -116,6 +117,10 @@ export class DataStub {
         return of(MOCK_FIND_FIRM_RESULT);
       case 'reuploadLedes':
         return of({result: true});
+      case 'getClientQBRs':
+        return of(MOCK_QBRS);
+      case 'getClientQBRData':
+        return of(MOCK_QBR_DATA);
       default:
         return of([]);
     }
@@ -281,6 +286,14 @@ export class DataStub {
         return of(MOCK_LEDES_IMPORT);
       case 'getRateIncreaseByFirm':
         return of(MOCK_YOY_RATE_INCREASE);
+      case 'getClientQBRs':
+        return of(MOCK_QBRS);
+      case 'getClientQBR':
+        return of(MOCK_QBR_DATA);
+      case 'getClientQBRData':
+        return of(MOCK_QBR_DATA);
+      case 'getQBRRecommendations':
+        return of(MOCK_QBR_RECOMMENDATIONS);
       default:
         return of([]);
     }
@@ -455,7 +468,8 @@ export class ActivatedRouteMock {
   queryParams = new Observable(observer => {
     const urlParams = {
       year: '2020',
-      param2: 'params'
+      param2: 'params',
+      id: '11'
     };
     observer.next(urlParams);
     observer.complete();
