@@ -24,7 +24,7 @@
   </div>
 
   <form [formGroup]="insightsForm">
-    <table *ngIf="recommendations && recommendationsProcessed == true">
+    <table *ngIf="recommendations && recommendationsProcessed === true">
       <tr>
         <th style="width: 60px;">Include</th>
         <th>Header</th>
@@ -41,39 +41,47 @@
         </td>
         <td (focusout)="saveInsight(rec)">
           <input formControlName="{{rec.sort_order + 'title'}}" pInputText class="form-control" type='text' value="{{rec.title}}" minlength="10" maxlength="60"/>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'title'].hasError('minlength')">
-            Header must be at least 10 characters
-          </mat-error>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
-            Header must be less than 35 characters
-          </mat-error>
+          <div *ngIf="insightsForm.controls[rec.sort_order + 'title']">
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'title'].hasError('minlength')">
+              Header must be at least 10 characters
+            </mat-error>
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
+              Header must be less than 35 characters
+            </mat-error>
+          </div>
         </td>
         <td class="textinput-td" (focusout)="saveInsight(rec)">
           <textarea formControlName="{{rec.sort_order + 'opportunity'}}" matInput class="form-control" type='text' value="{{rec.opportunity}}" maxlength="200" rows="4" cols="40"></textarea>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')">
-            Opportunity must be at least 40 characters
-          </mat-error>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength')">
-            Opportunity must be less than 200 characters
-          </mat-error>
+          <div *ngIf="insightsForm.controls[rec.sort_order + 'opportunity']">
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')">
+              Opportunity must be at least 40 characters
+            </mat-error>
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength')">
+              Opportunity must be less than 200 characters
+            </mat-error>
+          </div>
         </td>
         <td class="textinput-td" (focusout)="saveInsight(rec)">
           <textarea formControlName="{{rec.sort_order + 'matters'}}" matInput class="form-control" value="{{rec.why_it_matters}}" maxlength="200" rows="4" cols="40"></textarea>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'matters'].hasError('minlength')">
-            This section must be at least 40 characters
-          </mat-error>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'matters'].hasError('maxlength')">
-            This section must be less than 200 characters
-          </mat-error>
+          <div *ngIf="insightsForm.controls[rec.sort_order + 'matters']">
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'matters'].hasError('minlength')">
+              This section must be at least 40 characters
+            </mat-error>
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'matters'].hasError('maxlength')">
+              This section must be less than 200 characters
+            </mat-error>
+          </div>
         </td>
         <td class="textinput-td" (focusout)="saveInsight(rec)">
           <textarea formControlName="{{rec.sort_order + 'metrics'}}" matInput class="form-control" type='text' value="{{rec.notable_metrics}}" maxlength="200" rows="4" cols="40"></textarea>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'metrics'].hasError('minlength')">
-            This section must be at least 40 characters
-          </mat-error>
-          <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'metrics'].hasError('maxlength')">
-            This section must be less than 200 characters
-          </mat-error>
+          <div *ngIf="insightsForm.controls[rec.sort_order + 'metrics']">
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'metrics'].hasError('minlength')">
+              This section must be at least 40 characters
+            </mat-error>
+            <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'metrics'].hasError('maxlength')">
+              This section must be less than 200 characters
+            </mat-error>
+          </div> 
         </td>
         <td>
           <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'140px'}" [options]="topPAs"
