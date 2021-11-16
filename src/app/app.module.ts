@@ -271,12 +271,10 @@ export function initHttp(service: HttpService) {
     YoyRateIncreaseComponent,
     YoyDrillByTkComponent,
     CheckboxCellComponent,
-    YoyRateIncreaseComponent
-    YoyDrillByTkComponent,
+    YoyRateIncreaseComponent,
     QbrExecutiveSummaryComponent,
     YoyNumberWidgetComponent,
     QbrExecutiveSummaryRightComponent,
-    YoyDrillByTkComponent,
     QbrComponent,
     QbrCreationComponent,
     QbrDeckComponent,
