@@ -31,6 +31,7 @@ export class QbrTopPasMattersComponent implements OnInit {
   compareOverviewMetric: any;
   queryString: string;
   practiceArea: string;
+  noComparisonData: boolean = false;
   @Input() pageNum: number = 9;
   @Input() totalSpend: number = 0;
   @Input() indexPa: number = 0;
@@ -70,10 +71,18 @@ export class QbrTopPasMattersComponent implements OnInit {
     if (this.indexPa === 1) {
       compareOverviewMetric = this.qbrData.compare_timeframe_second_pa_matter[0];
     }
-    if (!currentOverviewMetric || !compareOverviewMetric) {
+    if (!currentOverviewMetric) {
       return;
     }
-    const comparePARecord = this.qbrData.comparison_timeframe_top_pas && this.qbrData.comparison_timeframe_top_pas.length > 0 ? this.qbrData.comparison_timeframe_top_pas[this.indexPa] : compareOverviewMetric;
+    const currentPa = currentOverviewMetric.practice_area;
+    if (!compareOverviewMetric) {
+      this.noComparisonData = true;
+      compareOverviewMetric = Object.assign({}, currentOverviewMetric);
+    }
+    let comparePARecord = this.qbrData.comparison_timeframe_top_pas.find(e => e.practice_area === currentPa);
+    if (!comparePARecord) {
+      comparePARecord = Object.assign({}, compareOverviewMetric);
+    }
     this.practiceArea = currentOverviewMetric.practice_area;
     this.currentOverviewMetric = this.qbrService.mapProperties(currentOverviewMetric, 'matter_', true);
     this.compareOverviewMetric = this.qbrService.mapProperties(compareOverviewMetric, 'matter_', true);

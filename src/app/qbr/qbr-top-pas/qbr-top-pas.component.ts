@@ -56,7 +56,16 @@ export class QbrTopPasComponent implements OnInit {
 
   processRecords(): void {
     this.currentOverviewMetric = this.qbrData.report_timeframe_top_pas || [];
-    const compareOverviewMetric = this.qbrData.comparison_timeframe_top_pas || [];
+    const toParse = this.qbrData.comparison_timeframe_top_pas || [];
+    const compareOverviewMetric = [];
+    for (const metric of this.currentOverviewMetric){
+      const found = toParse.find(e => e.practice_area === metric.practice_area);
+      if (found) {
+        compareOverviewMetric.push(found);
+      } else {
+        compareOverviewMetric.push(metric);
+      }
+    }
     if (compareOverviewMetric.length === 0 && this.currentOverviewMetric.length === 1) { // single PA
       const formatted = Object.assign({}, this.qbrData.comparison_timeframe_metrics);
       compareOverviewMetric.push(this.mapSingleComparePA(formatted));
@@ -119,7 +128,7 @@ export class QbrTopPasComponent implements OnInit {
     this.chartBB.series[0].setData([firstPa]);
     this.chartBB.series[0].options.name = this.currentOverviewMetric[0].practice_area;
     this.chartBB.series[0].update(this.chartBB.series[0].options);
-    if (this.currentOverviewMetric.length > 1) {
+    if (this.currentOverviewMetric.length > 1  && this.bbMetric.length > 1) {
       const secondPa = this.bbMetric[1].amount;
       this.chartBB.series[1].setData([secondPa]);
       this.chartBB.series[1].options.name = this.currentOverviewMetric[1].practice_area;

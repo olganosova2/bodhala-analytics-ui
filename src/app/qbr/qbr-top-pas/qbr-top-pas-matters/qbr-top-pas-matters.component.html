@@ -51,7 +51,7 @@
         </div>
         <!--right side-->
         <div class="p-md-5 no-padding gray-border-left position-relative" *ngIf="rightSideMetrics && rightSideMetrics.length > 0">
-          <bd-qbr-executive-summary-right [metrics]="rightSideMetrics"
+          <bd-qbr-executive-summary-right [metrics]="rightSideMetrics" [noComparisonData]="noComparisonData"
                                           [qbrType]="qbrType"></bd-qbr-executive-summary-right>
         </div>
       </div>
