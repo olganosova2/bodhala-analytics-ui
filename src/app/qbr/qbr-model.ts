@@ -457,8 +457,8 @@ export const recommendationPlaceholderMapping = {
   },
   'Custom Recommendation': {
     id: 6,
-    opportunity_placeholder: 'Custom',
-    why_it_matters_placeholder: 'Custom',
+    opportunity_placeholder: 'Custom                                           ',
+    why_it_matters_placeholder: 'Custom                                           ',
     action_placeholder: 'Custom'
   }
 };

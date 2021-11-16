@@ -40,7 +40,6 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
               public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    console.log("saved: ", this.savedInsights);
     for (const rec of this.savedInsights) {
       rec.section = 'Next Steps';
       this.nextStepsForm.addControl(rec.sort_order + 'title', new FormControl(rec.title, [Validators.minLength(10), Validators.maxLength(35)]));
@@ -59,21 +58,14 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     } else if (this.nextStepsForm.status === 'INVALID') {
       setTimeout(() => { this.parent.nextStepsValid = false; });
     }
-    console.log("nextStepsForm: ", this.nextStepsForm);
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("Changes in next steps: ", changes)
-    console.log("Changes check: ", changes.savedInsights.currentValue, changes.savedInsights.currentValue.length)
     if (changes.savedInsights && !changes.savedInsights.firstChange && changes.savedInsights.currentValue.length === 3) {
       for (const insight of changes.savedInsights.currentValue) {
-        console.log("INSIGHT IN NGONCHANGES: ", insight)
-        if (insight)
         if (this.nextStepsForm.controls[insight.sort_order + 'title']) {
-          console.log("if eval onChanges")
           continue;
         } else {
-          console.log("else eval onChanges")
           this.nextStepsForm.addControl(insight.sort_order + 'title', new FormControl(insight.title, [Validators.minLength(10), Validators.maxLength(35)]));
           this.nextStepsForm.addControl(insight.sort_order + 'opportunity', new FormControl(insight.opportunity, [Validators.minLength(40), Validators.maxLength(200)]));
           this.nextStepsForm.addControl(insight.sort_order + 'action', new FormControl(insight.action, [Validators.minLength(40), Validators.maxLength(200)]));
@@ -82,34 +74,16 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
           }
         }
       }
-
-      // for (const insight of changes.savedInsights.previousValue) {
-      //   console.log("previous insight: ", insight);
-      //   const stillIncluded = changes.savedInsights.currentValue.find(c => c.id === insight.id);
-      //   console.log("stillIncluded: ", stillIncluded)
-      //   if (stillIncluded) {
-      //     continue;
-      //   } else {
-      //     console.log("else eval: ", insight)
-      //     this.qbrService.deleteQBRRecommendation(insight);
-      //   }
-
-      // }
     }
-    console.log("form after changes: ", this.nextStepsForm);
-    console.log("nextSteps after changes: ", this.savedInsights);
   }
 
   async viewReport() {
-    console.log("nextStepsComp: ", this.savedInsights);
     for (let insight of this.savedInsights) {
       insight.opportunity = this.nextStepsForm.controls[insight.sort_order.toString() + 'opportunity'].value;
       insight.title = this.nextStepsForm.controls[insight.sort_order.toString() + 'title'].value;
       insight.action = this.nextStepsForm.controls[insight.sort_order.toString() + 'action'].value;
       insight = await this.qbrService.saveNextStep(insight);
-      console.log("insiught: ", insight)
     }
-    console.log("navigating away")
     this.router.navigate(['/analytics-ui/qbrs/view'], {queryParams: {
       id: this.parent.parent.report.id
     }});
@@ -119,16 +93,11 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     rec.opportunity = this.nextStepsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
     rec.title = this.nextStepsForm.controls[rec.sort_order.toString() + 'title'].value;
     rec.action = this.nextStepsForm.controls[rec.sort_order.toString() + 'action'].value;
-    console.log("saving next step title: ", this.nextStepsForm.controls[rec.sort_order + 'title'])
-    console.log("saving next step action: ", this.nextStepsForm.controls[rec.sort_order + 'action'])
-    console.log("saving next step opportunity: ", this.nextStepsForm.controls[rec.sort_order + 'opportunity'])
     if (this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')
         || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')
         || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')) {
-        console.log("if eval NOT SAVING")
         return;
     } else {
-      console.log("else eval WE ARE SAVING")
       if (rec.type === 'Custom Recommendation') {
         rec.potential_savings = this.nextStepsForm.controls[rec.sort_order + 'savings'].value;
       }
@@ -139,9 +108,6 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     if (elementIndex >= 0) {
       this.savedInsights[elementIndex].id = rec.id;
     }
-
-    console.log("saveNextStep rec: ", rec);
-    console.log("saveNextStep savedInsights: ", this.savedInsights);
   }
 
 
@@ -160,8 +126,6 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
         if (elementIndex >= 0) {
           this.savedInsights[elementIndex].id = data.id;
         }
-        console.log("DATA: ", data);
-        console.log("savedInsights: ", this.savedInsights);
       }
     });
   }

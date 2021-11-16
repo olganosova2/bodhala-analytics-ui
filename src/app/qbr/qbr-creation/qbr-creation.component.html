@@ -46,7 +46,7 @@
             If you select February 1, the quarters will be 2/1 - 4/30, 5/1 - 7/31, 8/1 - 10/31, and 11/1 - 1/31, etc.</p>
 
             <p>Apply any filtering you want on the dataset by using the filters above. You can view the returned metrics, modify the filters or start date, and click Generate Metrics to see the updated data.</p>
-            <p>You can modify the filters and start date as much as you wish. You will be able to see a preview of the report once the Insights & Opportunities and Next Steps sections are complete and valid. Instructions for those sections are below.</p>
+            <p>You can modify the filters and start date as much as you wish. If you have already saved any Insights & Opportunities or Next Steps, and you click Generate Metrics again, those Insights and Next Steps will be deleted and you will need to re-create them. You will be able to see a preview of the report once the Insights & Opportunities and Next Steps sections are complete and valid. Instructions for those sections are below.</p>
         </div>
 
         <div class="col-sm-4" *ngIf="formReady">
@@ -62,7 +62,7 @@
               The selected start date must be the first day of a month
             </div>
             <div class="font-red" *ngIf="dateForm.hasError('incorrectQuarter')">
-              Based on the data in the initial YoY QBR for {{userService.currentUser.client_info.org.name}}, you can only select one of the following dates for a QBR:
+              Based on the data in the initial QBR for {{userService.currentUser.client_info.org.name}}, you can only select one of the following dates for a QBR:
               <ul>
                 <li *ngFor="let date of formattedQuarterStartDates"> {{date}}</li>
               </ul>

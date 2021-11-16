@@ -25,7 +25,6 @@ export class NextStepInputsComponent implements OnInit {
               public qbrService: QbrService) { }
 
   ngOnInit(): void {
-    console.log("data: ", this.data);
   }
 
   async updateSavings() {
@@ -44,8 +43,5 @@ export class NextStepInputsComponent implements OnInit {
     }
     this.updateNextStepData.emit(this.data);
     this.dialogRef.close();
-
-    console.log("data after: ", this.data)
   }
-
 }

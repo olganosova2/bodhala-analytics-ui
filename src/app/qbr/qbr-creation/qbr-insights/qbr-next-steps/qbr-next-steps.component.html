@@ -80,6 +80,6 @@
 
   <div class="pull-right" style="padding-top: 1em;">
     <button mat-flat-button class="primary-button" (click)="viewReport()"
-            [disabled]="nextStepsForm.status !== 'VALID'">View Report</button>
+            [disabled]="nextStepsForm.status !== 'VALID' || savedInsights.length !== 3">View Report</button>
   </div>
 </div>

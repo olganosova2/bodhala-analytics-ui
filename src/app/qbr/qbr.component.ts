@@ -53,7 +53,6 @@ export class QbrComponent implements OnInit {
     this.initColumns();
     const result = await this.qbrService.getClientQBRs();
     this.clientQBRs = result.reports;
-    console.log("clientQBRs: ", this.clientQBRs)
     this.loadGrid();
   }
 
@@ -94,8 +93,13 @@ export class QbrComponent implements OnInit {
     return value;
   }
 
-  editCellRenderer() {
-    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-pencil"></em></button>';
+  editCellRenderer(params) {
+    let value;
+    if (params.data.status !== 'COMPLETE') {
+      value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-pencil"></em></button>';
+    } else {
+      value = 'N/A';
+    }
     return value;
   }
 
@@ -116,14 +120,13 @@ export class QbrComponent implements OnInit {
   }
 
   deleteQBR(qbr: any): void {
-    const params = { id: qbr.id};
+    const params = { id: qbr.id };
     this.pendingRequestDelete = this.httpService.makePostRequest('deleteQBR', params).subscribe(
       async (data: any) => {
         const deleted = data.result;
         if (deleted) {
           const result = await this.qbrService.getClientQBRs();
           this.clientQBRs = result.reports;
-          console.log("clientQBRs: ", this.clientQBRs)
           this.loadGrid();
         }
       }
@@ -131,7 +134,10 @@ export class QbrComponent implements OnInit {
   }
 
   view(row: any): void {
-    this.router.navigate(['/analytics-ui/qbrs/view/', row.data.id]);
+    // this.router.navigate(['/analytics-ui/qbrs/view/', row.data.id]);
+    this.router.navigate(['/analytics-ui/qbrs/view'], {queryParams: {
+      id: row.data.id
+    }});
   }
 
   edit(row: any): void {
