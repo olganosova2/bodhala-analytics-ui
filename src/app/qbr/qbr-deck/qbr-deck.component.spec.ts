@@ -65,4 +65,13 @@ describe('QbrDeckComponent', () => {
     component.goToEdit();
     expect (mockRouter.navigate).toHaveBeenCalledWith([ '/analytics-ui/qbrs/edit/4' ]);
   });
+  it('should finalize', () => {
+    spyOn(component.dialog, 'open').and.callThrough();
+    component.finalize();
+    expect(component.dialog.open).toHaveBeenCalled();
+  });
+  it('should finalizeQbr', () => {
+    component.finalizeQbr();
+    expect(component).toBeTruthy();
+  });
 });

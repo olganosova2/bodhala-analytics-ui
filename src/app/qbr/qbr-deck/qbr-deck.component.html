@@ -1,6 +1,11 @@
 <div class="qbr-top-buttons">
   <bd-error-messages></bd-error-messages>
   <div >
+    <ngb-alert type="success" *ngIf="isSuccess"  (close)="isSuccess=false">
+      <div class="font-green font-bold">
+        QBR has been finalized successfully.
+      </div>
+    </ngb-alert>
   <div class="pull-left" *ngIf="reportDates">
     <div>
       <b>Selected Time Period: </b>{{reportDates.startDate | date:'mediumDate'}}
