@@ -64,7 +64,13 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     if (changes.savedInsights && !changes.savedInsights.firstChange && changes.savedInsights.currentValue.length === 3) {
       for (const insight of changes.savedInsights.currentValue) {
         if (this.nextStepsForm.controls[insight.sort_order + 'title']) {
-          continue;
+          this.nextStepsForm.controls[insight.sort_order + 'title'].setValue(insight.title);
+          this.nextStepsForm.controls[insight.sort_order + 'opportunity'].setValue(insight.opportunity);
+          this.nextStepsForm.controls[insight.sort_order + 'action'].setValue(insight.action);
+          if (insight.type === 'Custom Recommendation') {
+            this.nextStepsForm.addControl(insight.sort_order + 'savings', new FormControl(insight.potential_savings, Validators.required));
+            this.nextStepsForm.controls[insight.sort_order + 'savings'].setValue(insight.potential_savings);
+          }
         } else {
           this.nextStepsForm.addControl(insight.sort_order + 'title', new FormControl(insight.title, [Validators.minLength(10), Validators.maxLength(35)]));
           this.nextStepsForm.addControl(insight.sort_order + 'opportunity', new FormControl(insight.opportunity, [Validators.minLength(40), Validators.maxLength(200)]));
