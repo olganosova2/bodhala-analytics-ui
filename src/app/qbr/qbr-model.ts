@@ -388,7 +388,7 @@ const metricsBBOptions = {
     }
   }],
   yAxis: [{
-    max: 50,
+    max: 70,
     labels: {
       style: {
         fontSize: '12px',
@@ -414,6 +414,15 @@ const metricsBBOptions = {
       data: []
     }]
 };
+
+export const bbChartSeries =  [{
+  color: '#FFC327',
+  data: []
+},
+  {
+    color: '#000000',
+    data: []
+  }];
 
 
 export const metricsRightChartOptions = {...baseColumnChartOptions, ...metricsColumnOptions};

@@ -128,7 +128,7 @@ export class QbrService {
     }
     result.amount  = Math.round(currentMetric.block_billed_pct || 0);
     if (compareMetric && compareMetric.block_billed_pct) {
-      const increase = currentMetric.block_billed_pct - compareMetric.block_billed_pct;
+      const increase =  currentMetric.block_billed_pct - compareMetric.block_billed_pct;
       this.formatYoYorQoQMetrics(result, increase);
     }
     result.color = this.getMetricColor(result);
@@ -174,6 +174,9 @@ export class QbrService {
       return result;
     }
     result.amount  = hoursCurrent;
+    // if (!hoursCompare) {
+    //   hoursCompare = hoursCurrent;
+    // }
     const increase = hoursCurrent - hoursCompare;
     this.formatYoYorQoQMetrics(result, increase);
     result.color = this.getMetricColor(result);
