@@ -52,7 +52,6 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.savedState = this.agGridService.getSavedState('ClientQBRsDashboard');
     this.initColumns();
-    this.getQbrs();
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
@@ -63,7 +62,6 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
           label: 'Edit',
           control: 'dataLink'
         }},
-      // {headerName: 'Report Name', field: 'qbrType', ...this.defaultColumn, filter: 'agTextColumnFilter', cellRenderer: this.reportNameCellRenderer, flex: 1},
       {headerName: 'Report Period', field: 'reportPeriod', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
       {headerName: 'Comparison Period', field: 'comparisonPeriod',  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
@@ -74,8 +72,8 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
   getQbrs(): void {
     this.pendingRequest = this.httpService.makeGetRequest<IReport>('getClientQBRs').subscribe(
       (data: any) => {
-        const records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
-        // records = records.filter(e => e.status === 'COMPLETE'); // TODO uncomment when flow is completed
+        let records = ( data.result || [] ).sort(this.utilService.dynamicSort('-id'));
+        records = records.filter(e => e.status === 'COMPLETE');
         this.qbrsNumber = records.length;
         this.noRecordsFound = this.qbrsNumber === 0;
         for (const rec of records) {
@@ -144,11 +142,6 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     this.gridOptions.api.setRowData(this.qbrs);
     this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
-  reportNameCellRenderer(params: any) {
-    const id = params.node.data.id;
-    const value = '<a class="href-link-primary" href="/analytics-ui/qbrs/view?id=' + id + '">' + params.value + '</a>';
-    return value;
-  }
   arrayFirmCellRenderer(params: any) {
     let value = '';
     for (const item of params.node.data.firms) {
@@ -184,9 +177,6 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
-    }
-    if (this.pendingRequestQbr) {
-      this.pendingRequestQbr.unsubscribe();
     }
   }
 

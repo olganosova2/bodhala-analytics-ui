@@ -13,6 +13,7 @@
       (columnResized)="saveGridConfig($event);"
       [suppressAggFuncInHeader]="true"
       [getRowHeight]="getRowHeight"
-      [gridOptions]="gridOptions">
+      [gridOptions]="gridOptions"
+      (gridReady)="getQbrs()">
   </ag-grid-angular>
 </div>

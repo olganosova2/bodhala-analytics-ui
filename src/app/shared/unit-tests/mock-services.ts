@@ -288,6 +288,8 @@ export class DataStub {
         return of(MOCK_YOY_RATE_INCREASE);
       case 'getClientQBRs':
         return of(MOCK_QBRS);
+      case 'getClientQBR':
+        return of(MOCK_QBR_DATA);
       case 'getClientQBRData':
         return of(MOCK_QBR_DATA);
       case 'getQBRRecommendations':
@@ -466,7 +468,8 @@ export class ActivatedRouteMock {
   queryParams = new Observable(observer => {
     const urlParams = {
       year: '2020',
-      param2: 'params'
+      param2: 'params',
+      id: '11'
     };
     observer.next(urlParams);
     observer.complete();

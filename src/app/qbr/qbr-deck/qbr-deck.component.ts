@@ -8,6 +8,7 @@ import {IPayloadDates, IQbrReport, QbrRecommendationsType, QbrType} from '../qbr
 import {Subscription} from 'rxjs';
 import * as config from '../../shared/services/config';
 import {MatDialog} from '@angular/material/dialog';
+import {MOCK_QBR_1} from '../../shared/unit-tests/mock-data/qbr-executive-summary';
 
 @Component({
   selector: 'bd-qbr-deck',
@@ -33,6 +34,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   nextSteps: Array<any> = [];
   zoom: boolean = true;
   pagesCount: number = 0;
+  isSuccess: boolean = false;
   @ViewChild('tabGroup') tabGroup;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -85,9 +87,10 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
       paSetting: this.practiceAreaSetting,
     };
     const params = { ... this.qbr.querystring, ... payload };
-    this.pendingRequest = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
+    this.pendingRequestQbr = this.httpService.makeGetRequest('getClientQBRData', params).subscribe(
       (data: any) => {
         if (data && data.result) {
+          // const response = MOCK_QBR_1.result; // data.result;
           const response = data.result;
           if (response && response.report_timeframe_metrics) {
             if (response.report_timeframe_top_pas && response.report_timeframe_top_pas.length > 2) {
@@ -118,12 +121,12 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
             this.nextSteps = this.nextSteps.slice(0, 3);
           }
           this.nextSteps = this.nextSteps.sort(this.utilService.dynamicSort('recommendation_type_id'));
-          if (this.insights.length === 0) {
-            this.qbrService.pageExcludes ++;
-          }
-          if (this.nextSteps.length === 0) {
-            this.qbrService.pageExcludes ++;
-          }
+          // if (this.insights.length === 0) {
+          //   this.qbrService.pageExcludes ++;
+          // }
+          // if (this.nextSteps.length === 0) {
+          //   this.qbrService.pageExcludes ++;
+          // }
         }
       }
     );
@@ -159,6 +162,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makePostRequest('finilazeQBR', params).subscribe(
       (data: any) => {
        this.qbr.status = 'COMPLETE';
+       this.isSuccess = true;
       }
     );
 

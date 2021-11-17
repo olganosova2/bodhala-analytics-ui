@@ -2,7 +2,7 @@
   <em class="icon-eye" ></em>
 </button>
 <a [routerLink]="[params.inRouterLink, params.value]"  (click)="navigate(params.inRouterLink)" *ngIf="params.control === 'link'">{{params.label}}</a>
-<a class="href-link-primary" [routerLink]="[params.inRouterLink]" [queryParams]="{id: params.node.data.id}"   *ngIf="params.control === 'dataLink'">{{params.value}}</a>
+<span class="href-link-primary"  (click)="navigateWithId(params.inRouterLink)"  *ngIf="params.control === 'dataLink'">{{params.value}}</span>
 
 
 

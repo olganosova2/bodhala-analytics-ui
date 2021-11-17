@@ -67,10 +67,19 @@ export class QbrTopPasFirmsComponent implements OnInit {
      compareOverviewMetric = this.qbrData.compare_timeframe_second_pa_firms[0];
    }
    this.currentOverviewMetric.push(this.qbrService.mapProperties(currentOverviewMetric, 'firm_'));
-   this.compareOverviewMetric.push(this.qbrService.mapProperties(compareOverviewMetric, 'firm_'));
+   if (!compareOverviewMetric) {
+      this.compareOverviewMetric.push(this.qbrService.mapProperties(currentOverviewMetric, 'firm_'));
+    } else {
+      this.compareOverviewMetric.push(this.qbrService.mapProperties(compareOverviewMetric, 'firm_'));
+    }
+
    if (currentOverviewMetric.second_firm_total && currentOverviewMetric.second_firm_total > 0) {
      this.currentOverviewMetric.push(this.qbrService.mapProperties(currentOverviewMetric, 'second_firm_'));
-     this.compareOverviewMetric.push(this.qbrService.mapProperties(compareOverviewMetric, 'second_firm_'));
+     if (!compareOverviewMetric) {
+       this.compareOverviewMetric.push(this.qbrService.mapProperties(currentOverviewMetric, 'second_firm_'));
+     } else {
+       this.compareOverviewMetric.push(this.qbrService.mapProperties(compareOverviewMetric, 'second_firm_'));
+     }
    }
    const paLength = this.currentOverviewMetric.length;
    for (let ix = 0; ix < paLength; ix++) {

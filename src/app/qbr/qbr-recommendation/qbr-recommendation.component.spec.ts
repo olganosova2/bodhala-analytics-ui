@@ -1,15 +1,14 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { QbrRecommendationComponent } from './qbr-recommendation.component';
+import {QbrRecommendationComponent} from './qbr-recommendation.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {QbrExecutiveSummaryComponent} from '../qbr-executive-summary/qbr-executive-summary.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActivatedRouteMock } from '../../shared/unit-tests/mock-services';
 import * as mockServices from '../../shared/unit-tests/mock-services';
+import {ActivatedRouteMock} from '../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../shared/services/filters.service';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from '../../shared/unit-tests/mock-data/qbr-executive-summary';
-import {IQbrReport} from '../qbr-model';
+import {IQbrReport, QbrRecommendationsType} from '../qbr-model';
 
 describe('QbrRecommendationComponent', () => {
   let component: QbrRecommendationComponent;
@@ -52,5 +51,15 @@ describe('QbrRecommendationComponent', () => {
 
   it('should create QbrRecommendationComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should ngOnInit for Insights', () => {
+    component.qbrRecommendationType = QbrRecommendationsType.Insights;
+    component.ngOnInit();
+    expect(component.pageNumber).toBe(6);
+  });
+  it('should ngOnInit for Next Steps', () => {
+    component.qbrRecommendationType = QbrRecommendationsType.NextSteps;
+    component.ngOnInit();
+    expect(component.pageNumber).toBe(12);
   });
 });

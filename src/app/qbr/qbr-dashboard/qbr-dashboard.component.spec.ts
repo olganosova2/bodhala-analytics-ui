@@ -48,4 +48,9 @@ describe('QbrDashboardComponent', () => {
   it('should create QbrDashboardComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should buildGrid', () => {
+    component.gridOptions = {};
+    // component.gridOptions.api = {} as unknown;
+    expect(component).toBeTruthy();
+  });
 });
