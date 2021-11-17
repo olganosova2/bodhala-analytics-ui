@@ -174,9 +174,9 @@ export class QbrService {
       return result;
     }
     result.amount  = hoursCurrent;
-    // if (!hoursCompare) {
-    //   hoursCompare = hoursCurrent;
-    // }
+    if (!hoursCompare) {
+      hoursCompare = hoursCurrent;
+    }
     const increase = hoursCurrent - hoursCompare;
     this.formatYoYorQoQMetrics(result, increase);
     result.color = this.getMetricColor(result);
