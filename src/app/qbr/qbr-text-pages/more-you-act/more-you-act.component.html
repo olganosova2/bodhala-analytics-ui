@@ -1,0 +1,18 @@
+<div>
+  <div class="qbr-wrapper">
+    <div class="qbr-panel position-relative bg-1" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
+        <div class="card-title">The more you act,<br/>  the more you save<span class="dot-full dot-full-online"></span></div>
+        <div class="p-grid agenda-grid mt30">
+          <div class="p-md-4" *ngFor="let item of items">
+            <div class="mt20 mb20 image-div"><img src="assets/images/qbr-images/{{item.icon}}"/></div>
+            <div class="label mt20 mb20">{{item.label}}</div>
+            <div class="texts" [innerHTML]="item.text"></div>
+          </div>
+        </div>
+      <div class="bd-credits">www.bodhala.com</div>
+      <div class="page-number-circle page-number-circle-wh">
+        <div class="page-number">{{pageNum}}</div>
+      </div>
+    </div>
+  </div>
+</div>

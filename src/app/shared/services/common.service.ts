@@ -80,16 +80,22 @@ export class CommonService {
       }
     );
   }
+
   generatePdfOuter(title: string, divId: string, firmId: string) {
     this.pdfLoading = true;
     this.generatePDF(title, divId, firmId);
   }
 
-  generatePDF(title: string, divId: string, firmId: string) {
+  generatePDF(title: string, divId: string, firmId: string, orientation: string = 'p') {
     if (title.includes('Rate Card')) {
       this.savePDFExport(firmId);
     }
     this.pdfLoading = true;
+    let adjusters = [1, 1];
+    if (orientation === 'l') {
+      // adjusters = [1.75, 1.52];
+      adjusters = [1.75, 1.52];
+    }
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
     const footerDiv = document.createElement('DIV');
@@ -143,7 +149,8 @@ export class CommonService {
       canvas.getContext('2d');
       this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
 
-      const pdf = new jspdf('p', 'pt', [pdfWidth, pdfHeight]);
+      // const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
+      const pdf = new jspdf(orientation, 'pt', [pdfWidth / adjusters[0], pdfHeight / adjusters[1]]);
       pdf.setFillColor('#FFFFFF');
       pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
       pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
@@ -166,6 +173,45 @@ export class CommonService {
         /* This is fired when the promise executes without the DOM */
       });
   }
+
+  generatePDFQbr(title: string, divId: string) {
+    this.pdfLoading = true;
+    const docName = title ? title : 'Export PDF';
+    const exportElement = document.getElementById(divId);
+    const htmlHeight = exportElement.offsetHeight;
+    const topLeftMargin =  0;
+    const htmlWidth = 1920;
+    const pdfHeight = 1080;
+    const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
+
+    html2canvas(document.getElementById(divId), {
+      useCORS: true,
+      width: htmlWidth,
+      height: htmlHeight,
+      scrollY: -window.scrollY,
+      scrollX: 0
+    }).then(canvas => {
+
+      canvas.getContext('2d');
+      this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
+      const pdf = new jspdf('l', 'pt', [htmlWidth, pdfHeight]);
+
+      pdf.setFillColor('#FFFFFF');
+      pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, htmlWidth, htmlHeight);
+      for (let i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(htmlWidth, pdfHeight);
+        pdf.addImage(this.exportImage, 'JPG', topLeftMargin, -(pdfHeight * i), htmlWidth, htmlHeight);
+        pdf.setFillColor('#FFFFFF');
+      }
+      pdf.save(docName);
+      this.pdfLoading = false;
+    })
+      .catch(() => {
+        this.pdfLoading = false;
+        /* This is fired when the promise executes without the DOM */
+      });
+  }
+
 
   capitalize(word: string): string {
     if (!word) {
@@ -209,5 +255,28 @@ export class CommonService {
         }
       }
     );
+  }
+  getClientPASetting(): string {
+    let result = 'Client Practice Areas'; // make default
+    if (this.userService.config !== undefined) {
+      if ('analytics.practice.bodhala.areas' in this.userService.config) {
+        const userConfigs = Object.values(this.userService.config);
+        for (const config of userConfigs) {
+          if (config.configs[0].description === 'config for analytics practice areas') {
+            result = config.configs[0].value;
+            break;
+          }
+        }
+      }
+    }
+    return result;
+  }
+  sortDates(valueA: string, valueB: string): number {
+    const dateA = new Date(valueA.substring(0, 10)).getTime();
+    const dateB = new Date(valueB.substring(0, 10)).getTime();
+    if (dateA === dateB) {
+    return 0;
+  }
+    return dateA > dateB ? 1 : -1;
   }
 }

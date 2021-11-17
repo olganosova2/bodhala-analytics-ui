@@ -1,0 +1,8 @@
+<div class="mb10" [ngClass]="{'yoy-font-lg': size === 'lg', 'yoy-font-md': size === 'md', 'yoy-font-sm': size === 'sm'}">
+  <span
+        [ngClass]="{'font-qbr-green': direction <= 0, 'font-red': direction > 0}">{{ increase | number:'1.0-0'}}%
+    <em *ngIf=" direction > 0" class="fa fa-arrow-up mr10 ml5"></em>
+    <em *ngIf=" direction <= 0" class="fa fa-arrow-down ml5" [ngClass]="{'mr5': size === 'sm', 'mr10': size !== 'sm'}"></em>
+  </span>
+  <span *ngIf="!light">{{ label }}</span>
+</div>

@@ -1,0 +1,22 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+.qbr-label {
+  font-size: 18px;
+}
+:host ::ng-deep {
+  .p-md-5, .p-md-7 {
+    padding: 0 !important;
+  }
+}
+.oval-label {
+  font-size: 13px;
+}
+.long-label {
+  position: absolute;
+  white-space: nowrap;
+  left: -5px;
+  top: -30px;
+}
+.p-grid-container {
+  min-height: 360px;
+ }

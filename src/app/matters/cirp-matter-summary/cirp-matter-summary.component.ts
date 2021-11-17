@@ -33,7 +33,7 @@ export class CirpMatterSummaryComponent implements OnInit {
               public dialog: MatDialog,
               public utilService: UtilService,
               public commonServ: CommonService) {
-    this.commonServ.pageTitle = 'Cirp Matter Summary';
+    this.commonServ.pageTitle = 'Matter Summary';
   }
 
   ngOnInit(): void {

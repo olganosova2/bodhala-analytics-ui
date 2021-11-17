@@ -1,0 +1,85 @@
+<div>
+  <div>
+    <h4>Next Steps</h4>
+  </div>
+  <p>You can modify the parameters for these recommendations at any time by editing the corresponding Insight in the Insights & Opportunities table, and then clicking Generate Next Steps.</p>
+  <p>Additionally, you can modify the inputs used to calculate the potential savings for a recommendation by clicking the edit icon in the potential savings column.</p>
+  <p>The View Report button will take you to a preview of what the report looks like. From there, you will be able to finalize the report
+    or return to this page to make more edits. The View Report button will only be clickable once the Insights & Opportunities and Next Steps sections are complete and valid. Instructions for those sections are below.</p>
+
+  <form [formGroup]="nextStepsForm">
+    <table>
+      <tr>
+        <th>Header</th>
+        <th>Opportunity</th>
+        <th>Action Recommended</th>
+        <th>Potential Savings</th>
+      </tr>
+
+      <tr *ngFor="let rec of savedInsights">
+        <td (focusout)="saveNextStep(rec)" *ngIf="nextStepsForm.controls[rec.sort_order + 'title']">
+          <input formControlName="{{rec.sort_order + 'title'}}" pInputText class="form-control" type='text' value="{{rec.title}}" minlength="10" maxlength="60"/>
+          <div *ngIf="nextStepsForm.controls[rec.sort_order + 'title']">
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')">
+              Header must be at least 10 characters
+            </mat-error>
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength')">
+              Header must be less than 35 characters
+            </mat-error>
+          </div>
+        </td>
+        <td class="textinput-td" (focusout)="saveNextStep(rec)" *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity']">
+          <textarea formControlName="{{rec.sort_order + 'opportunity'}}" matInput class="form-control" type='text' value="{{rec.opportunity}}" maxlength="200" rows="4" cols="40"></textarea>
+
+          <div *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity']">
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')">
+              Opportunity must be at least 40 characters
+            </mat-error>
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength')">
+              Opportunity must be less than 200 characters
+            </mat-error>
+          </div>
+        </td>
+        <td class="textinput-td" (focusout)="saveNextStep(rec)" *ngIf="nextStepsForm.controls[rec.sort_order + 'action']">
+          <textarea formControlName="{{rec.sort_order + 'action'}}" matInput class="form-control" value="{{rec.action}}" maxlength="200" rows="4" cols="40"></textarea>
+          <div *ngIf="nextStepsForm.controls[rec.sort_order + 'action']">
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')">
+              This section must be at least 40 characters
+            </mat-error>
+            <mat-error *ngIf="nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength')">
+              This section must be less than 200 characters
+            </mat-error>
+          </div>
+        </td>
+        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation' && rec.potential_savings !== null && rec.potential_savings !== undefined">
+          {{rec.potential_savings_formatted}}
+          <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
+        </td>
+        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation' && (rec.potential_savings === null || rec.potential_savings === undefined)">
+          $0
+          <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
+        </td>
+        <td (focusout)="saveNextStep(rec)" *ngIf="rec.type === 'Custom Recommendation'">
+          <!-- <label>$</label>
+          <input matInput formControlName="{{rec.sort_order + 'savings'}}" type="number" min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null"> -->
+          <mat-form-field class="mat-input-sm" appearance="outline">
+          <input type="number" matInput formControlName="{{rec.sort_order + 'savings'}}" placeholder="Savings" autocomplete="off" (focusout)="saveNextStep(rec)"
+                  min="0" oninput="this.value = !!this.value && Math.abs(this.value) >= 0 ? Math.abs(this.value) : null">
+          <span matPrefix>$&nbsp;</span>
+        </mat-form-field>
+        </td>
+      </tr>
+
+
+
+    </table>
+
+
+
+  </form>
+
+  <div class="pull-right" style="padding-top: 1em;">
+    <button mat-flat-button class="primary-button" (click)="viewReport()"
+            [disabled]="nextStepsForm.status !== 'VALID' || savedInsights.length !== 3">View Report</button>
+  </div>
+</div>

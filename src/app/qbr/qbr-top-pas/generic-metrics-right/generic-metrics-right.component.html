@@ -1,0 +1,28 @@
+<div >
+  <div class="dot-full-right"></div>
+  <div class="p-grid p-grid-container" >
+    <ng-container *ngFor="let row of rightSideMetrics; let y=index">
+      <div class="p-md-2 position-relative">
+        <div *ngIf="this.rightSideMetrics.length > 1" class="row-badge" [ngClass]="{'row-badge-first': y == 0, 'long-label': hasLongLabels}">
+          <span class="oval-label" [ngClass]=" {'oval-label-yellow': y % 2 == 0, 'oval-label-black': y % 2 > 0}">{{ row.label }}</span>
+        </div>
+      </div>
+      <div  class="p-md-10">
+        <div class="justify-center ml20" [ngClass]=" {'gray-border-top': y > 0}">
+          <div *ngFor="let item of row.metrics;let i=index;" class="qbr-metric-div">
+            <bd-qbr-generic-metric [index]="i" [item]="item" [qbrType]="qbrType" [multipleRows]="true" [secondRow]="y>0"></bd-qbr-generic-metric>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="p-grid">
+    <div class="p-md-2">&nbsp;
+    </div>
+    <div class="p-md-10 no-padding">
+      <div class="">
+        <chart (load)="saveInstance($event.context)" [options]="options"></chart>
+      </div>
+    </div>
+  </div>
+</div>
