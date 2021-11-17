@@ -4,7 +4,7 @@ import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {QbrService} from '../qbr.service';
-import {IQbrMetric, IQbrReport, QbrType, IQbrMetricRow, metricsBBPasChartOptions, tkHoursPasChartOptions, IQbrMetricType} from '../qbr-model';
+import {IQbrMetric, IQbrReport, QbrType, IQbrMetricRow, metricsBBPasChartOptions, tkHoursPasChartOptions, IQbrMetricType, bbChartSeries} from '../qbr-model';
 import {executiveSummaryChartOptions} from '../qbr-executive-summary/model';
 
 @Component({
@@ -113,6 +113,7 @@ export class QbrTopPasComponent implements OnInit {
   }
   setUpChartOptions(): void {
     const chartOptions = Object.assign({}, metricsBBPasChartOptions);
+    chartOptions.series = Object.assign([], bbChartSeries);
     if (this.currentOverviewMetric.length === 1) {
       chartOptions.series.pop();
     }
