@@ -126,6 +126,7 @@ export class QbrCreationComponent implements OnInit {
 
     if (this.yoyStartDate !== null && this.yoyStartDate !== undefined) {
       const dateResult = this.qbrService.constructSelectableQuarterDates(this.yoyStartDate);
+      console.log("dateResult: ", dateResult);
       this.quarterStartDates = dateResult.monthNumbers;
       this.formattedQuarterStartDates = dateResult.formattedQuarterDates;
     }

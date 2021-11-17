@@ -474,6 +474,7 @@ export class QbrService {
   }
 
   saveMetrics(report, metricsForm): Promise<any> {
+    console.log("form: ", metricsForm)
     const chosenMetrics = {
       partner_hourly_cost: false,
       associate_hourly_cost: false,

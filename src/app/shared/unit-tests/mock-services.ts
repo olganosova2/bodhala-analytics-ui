@@ -32,6 +32,7 @@ import {MOCK_ADD_SUBSCRIPTION_RESPONSE, MOCK_SUBSCRIPTIONS} from './mock-data/su
 import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND_FIRM_RESULT, MOCK_LEDES_IMPORT} from './mock-data/ledes-imports';
 import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
+import { MOCK_QBR, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
 
 export const ngWindow = {
   location: {
@@ -121,6 +122,12 @@ export class DataStub {
         return of(MOCK_QBRS);
       case 'getClientQBRData':
         return of(MOCK_QBR_DATA);
+      case 'saveQBRRecommendation':
+        return of({result: true});
+      case 'saveQBRNextStep':
+        return of({result: MOCK_SAVED_QBR_RECOMMENDATIONS[0]});
+      case 'deleteQBR':
+        return of({result: MOCK_SAVED_QBR_RECOMMENDATIONS[4]});
       default:
         return of([]);
     }
@@ -289,7 +296,7 @@ export class DataStub {
       case 'getClientQBRs':
         return of(MOCK_QBRS);
       case 'getClientQBR':
-        return of(MOCK_QBR_DATA);
+        return of(MOCK_QBR);
       case 'getClientQBRData':
         return of(MOCK_QBR_DATA);
       case 'getQBRRecommendations':
@@ -456,6 +463,12 @@ export class RecommendationsServicesStub {
     }
 
     return unroundedNumber;
+  }
+}
+
+export class QbrServiceStub {
+  public getClientQBRs() {
+    return({reports: MOCK_QBRS, firstReport: null, firstStartDate: null});
   }
 }
 
