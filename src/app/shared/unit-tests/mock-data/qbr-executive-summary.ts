@@ -7,7 +7,7 @@ export const MOCK_QBRS = {
     "created_by": 533,
     "created_on": "2021-10-19T16:12:10.938132",
     "title": null,
-    "status": "IN PROGRESS",
+    "status": "COMPLETE",
     "filters": {
       "name": "filters",
       "filters": [{
