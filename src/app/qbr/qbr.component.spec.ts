@@ -11,7 +11,6 @@ import {IRecommendation, IRecommendationReport} from '../admin/client-recommenda
 import {QbrService} from './qbr.service';
 import {IReport} from './qbr-model';
 import * as config from '../shared/services/config';
-import { ɵCodegenComponentFactoryResolver } from '@angular/core';
 
 describe('QbrComponent', () => {
   let component: QbrComponent;
@@ -52,7 +51,6 @@ describe('QbrComponent', () => {
   });
 
   it('should create QbrComponent', () => {
-    console.log("gridOptions: ", component.gridOptions)
     expect(component).toBeTruthy();
   });
 
