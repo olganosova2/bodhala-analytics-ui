@@ -104,6 +104,11 @@ export interface IReport {
   created_on?: string;
   querystring?: any;
 }
+export interface IQbrDashboardPAGroup {
+  pa: string;
+  firms?: Array<string>;
+  lineCount?: number;
+}
 export interface IQbrDashboard {
   id: number;
   reportPeriod: string;
@@ -112,6 +117,7 @@ export interface IQbrDashboard {
   created_on: string;
   practiceAreas: Array<string>;
   firms: Array<string>;
+  paGroup?: Array<IQbrDashboardPAGroup>;
 }
 export interface IChoosenMetrics {
   total_spend: boolean;

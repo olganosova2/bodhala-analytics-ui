@@ -21,7 +21,7 @@
     </button>
     <button class="primary-button ml20" (click)="goToEdit()" *ngIf="qbr?.status !== 'COMPLETE'">Edit
     </button>
-        <button class="primary-button ml20" (click)="goBack()">View All
+        <button class="primary-button ml20" (click)="goBack()">Back
         </button>
     <button class="primary-button ml20" (click)="export()"
             [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export

@@ -65,8 +65,8 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
       {headerName: 'Report Period', field: 'reportPeriod', ...this.defaultColumn,  filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
       {headerName: 'Comparison Period', field: 'comparisonPeriod',  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1, comparator: this.commonServ.sortDates},
-      {headerName: 'Focused Practice Areas', field: 'practiceAreas', cellRenderer: this.arrayPASCellRenderer,  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1 },
-      {headerName: 'Focused Firms', field: 'firms', cellRenderer: this.arrayFirmCellRenderer,  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 2 },
+      {headerName: 'Focused Practice Areas', field: 'practiceAreas', cellRenderer: this.arrayPASGroupCellRenderer,  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 1 },
+      {headerName: 'Focused Firms', field: 'firms', cellRenderer: this.arrayFirmGroupCellRenderer,  ...this.defaultColumn, filter: 'agTextColumnFilter', flex: 2 },
     ];
   }
   getQbrs(): void {
@@ -115,24 +115,19 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     );
   }
   processPAsAndFirms(qbrData: any, line: IQbrDashboard): void {
-    const firms = [];
-    const PAs = [];
+    line.paGroup = [];
     if (qbrData.report_timeframe_top_pas) {
       const topPAs  = qbrData.report_timeframe_top_pas.slice(0, 2);
       for (const pa of topPAs) {
-        if (PAs.indexOf(pa.practice_area < 0 && pa.practice_area)) {
-          PAs.push(pa.practice_area);
+        const paGroup = { pa: pa.practice_area, firms: [], lineCount: 1};
+        paGroup.firms.push(pa.firm_name);
+        if (pa.second_firm_name) {
+          paGroup.lineCount ++;
+          paGroup.firms.push(pa.second_firm_name);
         }
-        if (firms.indexOf(pa.firm_name) < 0 && pa.firm_name) {
-          firms.push(pa.firm_name);
-        }
-        if (firms.indexOf(pa.second_firm_name) < 0 && pa.second_firm_name) {
-          firms.push(pa.second_firm_name);
-        }
+        line.paGroup.push(paGroup);
       }
     }
-    line.practiceAreas = PAs.sort();
-    line.firms = firms.sort();
   }
   buildGrid(): void {
     if (!this.gridOptions.api) {
@@ -142,33 +137,32 @@ export class QbrDashboardComponent implements OnInit, OnDestroy {
     this.gridOptions.api.setRowData(this.qbrs);
     this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
-  arrayFirmCellRenderer(params: any) {
+  arrayFirmGroupCellRenderer(params: any) {
     let value = '';
-    for (const item of params.node.data.firms) {
-      value += item + '<br/>';
+    for (const item of params.node.data.paGroup) {
+      for (const firm of item.firms) {
+        value += firm + '<br/>';
+      }
     }
     return value;
   }
-  arrayPASCellRenderer(params: any) {
+  arrayPASGroupCellRenderer(params: any) {
     let value = '';
-    for (const item of params.node.data.practiceAreas) {
-      value += item + '<br/>';
+    for (const item of params.node.data.paGroup) {
+      value += item.pa + '<br/>';
+      if (item.lineCount === 2) {
+        value += '&nbsp;<br/>';
+      }
     }
     return value;
   }
   getRowHeight(params: any) {
-    let firmsCount = 0;
-    let paCount = 0;
+    let linesCount = 0;
     const defaultHeight = 40;
-    if (params.node.data.firms && params.node.data.firms.length > 0) {
-      firmsCount = params.node.data.firms.length;
+    for (const item of params.node.data.paGroup) {
+      linesCount += item.lineCount;
     }
-    if (params.node.data.practiceAreas && params.node.data.practiceAreas.length > 0) {
-      paCount = params.node.data.practiceAreas.length;
-    }
-    let result = firmsCount > paCount ? firmsCount : paCount;
-    result = (result || 1) * defaultHeight;
-    return result;
+    return  (linesCount || 1) * defaultHeight;
   }
   saveGridConfig(evt: any): void {
     this.agGridService.saveState('ClientQBRsDashboard', this.gridOptions);
