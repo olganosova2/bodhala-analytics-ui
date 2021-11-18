@@ -482,6 +482,9 @@ export class CommonServiceStub {
   public openHelpArticle(id: string): void {
     return;
   }
+  public capitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
 }
 
 export class MatDialogMock {

@@ -51,4 +51,9 @@ describe('QbrTopPasFirmsComponent', () => {
   it('should create QbrTopPasFirmsComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should processRecords for second PA', () => {
+    component.indexPa = 1;
+    component.ngOnInit();
+    expect(component.pageNum).toBe(10);
+  });
 });

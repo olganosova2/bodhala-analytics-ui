@@ -52,4 +52,9 @@ describe('QbrAgendaComponent', () => {
   it('should create QbrAgendaComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should formatScopeItems', () => {
+    component.pageNum = 3;
+    component.ngOnInit();
+    expect(component.scopeAnalysis).toBeTruthy();
+  });
 });
