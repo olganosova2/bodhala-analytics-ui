@@ -3,7 +3,7 @@ import {inject, TestBed} from '@angular/core/testing';
 import { CommonService } from './common.service';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS, SERVICE_PROVIDERS} from '../../shared/unit-tests/mock-app.imports';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import {MOCK_ANNOTATIONS} from '../unit-tests/mock-data/annotations';
 import {IUiAnnotation} from '../components/annotations/model';
@@ -25,7 +25,10 @@ describe('CommonService', () => {
     TestBed.configureTestingModule({
       imports: IMPORTS,
       declarations: DECLARATIONS,
-      providers: PROVIDERS,
+      providers: [...SERVICE_PROVIDERS,
+        { provide: UserService, useClass: mockServices.UserStub },
+        { provide: HttpService, useClass: mockServices.DataStub }
+      ],
       schemas: SCHEMAS
     });
   }));
@@ -91,6 +94,22 @@ describe('CommonService', () => {
     const note = MOCK_ANNOTATIONS.result[0] as IUiAnnotation;
     const result = service.formatInitials(note);
     expect(result).toBe('JH');
+  }));
+  it('CommonService should getClientPASetting', inject([CommonService], (service: CommonService) => {
+    const result = service.getClientPASetting();
+    expect(result).toBe('Client Practice Areas');
+  }));
+  it('CommonService should sortDates when equal', inject([CommonService], (service: CommonService) => {
+    const result = service.sortDates('2021-11-18', '2021-11-18');
+    expect(result).toBe(0);
+  }));
+  it('CommonService should sortDates when A > B', inject([CommonService], (service: CommonService) => {
+    const result = service.sortDates('2021-11-18', '2021-11-17');
+    expect(result).toBe(1);
+  }));
+  it('CommonService should openHelpArticle', inject([CommonService], (service: CommonService) => {
+    service.openHelpArticle('1');
+    expect(service.dialog).toBeTruthy();
   }));
 });
 
