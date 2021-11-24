@@ -362,7 +362,7 @@ h3.popover-header {
 }
 
 button:focus {
-  outline: none;
+  outline: none !important;
 }
 
 html, body {
