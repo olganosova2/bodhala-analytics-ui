@@ -13,7 +13,6 @@ import {SelectItem} from 'primeng/api';
 import { QbrCreationComponent } from '../qbr-creation.component';
 import { RecommendationService } from 'src/app/admin/client-recommendations/recommendation.service';
 import { Router } from '@angular/router';
-import { CDK_CONNECTED_OVERLAY_SCROLL_STRATEGY_PROVIDER } from '@angular/cdk/overlay/overlay-directives';
 
 @Component({
   selector: 'bd-qbr-insights',
