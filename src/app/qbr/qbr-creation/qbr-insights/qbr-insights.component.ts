@@ -45,7 +45,6 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
               public commonServ: CommonService,
               public utilService: UtilService,
               public datepipe: DatePipe,
-              public changeDetectorRef: ChangeDetectorRef,
               public router: Router,
               private qbrService: QbrService,
               public parent: QbrCreationComponent,
@@ -61,11 +60,6 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         this.generateNextSteps(false);
       }
     }
-    // if (this.insightsForm.status === 'VALID') {
-    //   setTimeout(() => { this.insightsForm.status = 'VALID' });
-    // } else if (this.insightsForm.status === 'INVALID') {
-    //   setTimeout(() => { this.insightsForm.status = 'INVALID' });
-    // }
     this.currentFirmOptions = this.topPAFirms;
     this.processRecommendations();
   }
@@ -195,7 +189,6 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   async generateNextSteps(updateFromRecs: boolean): Promise<void> {
     // this.nextSteps = [];
     let savedInsights;
-
     if (this.editMode && this.nextSteps.length > 0 && !updateFromRecs) {
       savedInsights = this.nextSteps;
       for (const insight of savedInsights) {
@@ -271,7 +264,6 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     }
     for (let savedInsight of savedInsights) {
       if (savedInsight.included) {
-
         if (savedInsight.type === 'Increase Discounts') {
           if (!savedInsight.previouslySaved) {
             savedInsight.current_discount_pct = 0;
@@ -280,6 +272,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             savedInsight.recommended_discount_pct_upper_range = 10;
           }
           if ((savedInsight.practice_area !== null && savedInsight.practice_area !== undefined) && (savedInsight.firm_id === null || savedInsight.firm_id === undefined)) {
+
             const elementIndex = this.topPAs.findIndex(pa => pa.label === savedInsight.practice_area);
             if (elementIndex === 1) {
               savedInsight = this.qbrService.calculateDiscountSavings(savedInsight, this.parent.topPA, this.parent.report.querystring.expenses, false);
@@ -548,7 +541,6 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       rec.firm_name = nameCheck[0].label;
     }
     if (rec.type === 'Increase Discounts') {
-
       this.updateDiscountRecommendation(rec);
     } else if (rec.type === 'Prevent Rate Increases') {
       this.updateRateIncreaseRecommendation(rec);
@@ -801,7 +793,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             rec.notable_metrics = moneyFormatter.format(this.parent.secondPA.total_billed_with_expenses) + '\nTotal Spend\n' + formatter.format(this.parent.secondPA.total_billed_trend) + '%\nTotal Spend Trend';
           }
         } else {
-          if (rec.metrics) {
+          if (rec.metrics_edited) {
             rec.notable_metrics += '\n' + moneyFormatter.format(this.parent.secondPA.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPA.total_billed_trend) + '%\nTotal Spend Trend';
           } else {
             rec.notable_metrics = moneyFormatter.format(this.parent.secondPA.total_billed) + '\nTotal Spend\n' + formatter.format(this.parent.secondPA.total_billed_trend) + '%\nTotal Spend Trend';

@@ -3,7 +3,7 @@
     <h4>Insights & Opportunities</h4>
   </div>
 
-  <div style="display: inline; float: right;">
+  <div style="display: inline; float: right;" *ngIf="recommendationsProcessed === true">
     <button mat-flat-button (click)="generateNextSteps(true)" class="primary-button" style="margin-bottom: 1em;" [disabled]="insightsForm.hasError('notEnoughSelected') || insightsForm.hasError('tooManySelected') || insightsForm.status !== 'VALID'">Generate Next Steps</button><br>
     <button mat-button class="primary-button" [matMenuTriggerFor]="menu">Add New +</button>
     <mat-menu #menu="matMenu">
@@ -81,7 +81,7 @@
             <mat-error *ngIf="insightsForm.controls[rec.sort_order + 'metrics'].hasError('maxlength')">
               This section must be less than 200 characters
             </mat-error>
-          </div> 
+          </div>
         </td>
         <td>
           <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'140px'}" [options]="topPAs"

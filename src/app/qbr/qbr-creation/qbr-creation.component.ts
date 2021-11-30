@@ -4,7 +4,6 @@ import {FiltersService} from '../../shared/services/filters.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
-import {MatDialog} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import {confirmDialogConfig} from '../../shared/services/config';
 import {FormGroup, Validators, FormControl, ValidatorFn, AbstractControl, ValidationErrors} from '@angular/forms';
@@ -146,7 +145,6 @@ export class QbrCreationComponent implements OnInit {
       let formattedStartDate = startDate.add(1, 'days').format();
       formattedStartDate = startDate.add(-1, 'days').format();
       const finalStartDate = new Date(formattedStartDate);
-
       this.dateForm.addControl('startDate', new FormControl(finalStartDate, Validators.required));
       this.metricsForm.addControl('partner_hourly_cost', new FormControl(this.report.chosen_metrics.partner_hourly_cost, Validators.required));
       this.metricsForm.addControl('associate_hourly_cost', new FormControl(this.report.chosen_metrics.associate_hourly_cost, Validators.required));

@@ -1,12 +1,9 @@
 import {Component, Input, OnInit, Inject, Output, EventEmitter} from '@angular/core';
 import {HttpService, UserService} from 'bodhala-ui-common';
-import { DatePipe } from '@angular/common';
 import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {QbrService} from '../../../../qbr.service';
-import {environment} from '../../../../../../environments/environment';
 import { RecommendationService } from 'src/app/admin/client-recommendations/recommendation.service';
 import {moneyFormatter} from '../../../../qbr-model';
-
 
 @Component({
   selector: 'bd-next-step-inputs',
@@ -17,7 +14,6 @@ export class NextStepInputsComponent implements OnInit {
   @Output() updateNextStepData = new EventEmitter<any>();
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public datePipe: DatePipe,
               public dialogRef: MatDialogRef<NextStepInputsComponent>,
               public httpService: HttpService,
               public userService: UserService,
