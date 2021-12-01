@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ɵɵNgOnChangesFeature } from '@angular/core';
 import {CommonService} from '../../../shared/services/common.service';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -27,6 +27,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   showNextSteps: boolean = false;
   nextSteps: any = [];
   nextStepsValid: boolean = false;
+  saveNextSteps: boolean = false;
   @Input() recommendations: any;
   @Input() topPAs: SelectItem[];
   @Input() topPAFirms: SelectItem[];
@@ -35,6 +36,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
   @Input() expenses: boolean;
   @Input() reportData: any;
   @Input() practiceAreaSetting: string;
+  @Input() exiting: boolean = false;
   // @ViewChild(QbrNextStepsComponent) nextStepsComp: QbrNextStepsComponent;
 
 
@@ -64,7 +66,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     this.processRecommendations();
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     if (changes.expenses && !changes.expenses.firstChange) {
       for (const rec of this.recommendations) {
         rec.currentFirmOptions = this.currentFirmOptions;
@@ -153,6 +155,27 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
         this.insightsForm.controls['0include'].setValue(false);
       }
       this.recommendationsProcessed = true;
+    }
+    if (changes.exiting && !changes.exiting.firstChange) {
+      this.saveNextSteps = true;
+      for (const rec of this.recommendations) {
+        if (this.insightsForm.controls[rec.sort_order.toString() + 'opportunity']) {
+          rec.opportunity = this.insightsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
+        }
+        if (this.insightsForm.controls[rec.sort_order.toString() + 'title']) {
+          rec.title = this.insightsForm.controls[rec.sort_order.toString() + 'title'].value;
+        }
+        if (this.insightsForm.controls[rec.sort_order.toString() + 'metrics']) {
+          rec.notable_metrics = this.insightsForm.controls[rec.sort_order.toString() + 'metrics'].value;
+        }
+        if (this.insightsForm.controls[rec.sort_order.toString() + 'matters']) {
+          rec.why_it_matters = this.insightsForm.controls[rec.sort_order.toString() + 'matters'].value;
+        }
+        await this.qbrService.saveRecommendation(rec);
+      }
+      if (this.nextSteps.length === 0) {
+        this.router.navigate(['analytics-ui/qbrs']);
+      }
     }
   }
 

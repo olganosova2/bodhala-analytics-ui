@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 export class QbrNextStepsComponent implements OnInit, OnChanges {
   nextStepsForm = new FormGroup({});
   @Input() savedInsights: any;
+  @Input() exiting: boolean = false;
   @Output() nextStepsFormStatusChange = new EventEmitter<string>();
 
 
@@ -60,7 +61,7 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  async ngOnChanges(changes: SimpleChanges) {
     if (changes.savedInsights && !changes.savedInsights.firstChange && changes.savedInsights.currentValue.length === 3) {
       for (const insight of changes.savedInsights.currentValue) {
         if (this.nextStepsForm.controls[insight.sort_order + 'title']) {
@@ -80,6 +81,15 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
           }
         }
       }
+    }
+    if (changes.exiting && !changes.exiting.firstChange) {
+      for (let insight of this.savedInsights) {
+        insight.opportunity = this.nextStepsForm.controls[insight.sort_order.toString() + 'opportunity'].value;
+        insight.title = this.nextStepsForm.controls[insight.sort_order.toString() + 'title'].value;
+        insight.action = this.nextStepsForm.controls[insight.sort_order.toString() + 'action'].value;
+        insight = await this.qbrService.saveNextStep(insight);
+      }
+      this.router.navigate(['analytics-ui/qbrs']);
     }
   }
 

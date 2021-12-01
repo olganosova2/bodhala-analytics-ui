@@ -15,6 +15,9 @@
   <div>
     <div class="panel-wrapper mt20">
       <h3>Create QBR</h3>
+      <div style="display: inline; float: right;">
+        <button class="primary-button" (click)="saveAndExit()" #tooltip="matTooltip" matTooltip="This will automatically save any Insights and Next Steps on the page and redirect you to the QBRs page.">Save & Exit</button>
+      </div>
 
       <!-- <div class="pull-right">
         <button mat-flat-button class="primary-button" (click)="viewReport()" *ngIf="reportEndDate !== null && !dateForm.hasError('notFirstOfMonth') && !dateForm.hasError('incorrectQuarter')"
@@ -195,7 +198,7 @@
       <div *ngIf="dataProcessed && recommendations" style="padding-top: 1.5em;">
         <bd-qbr-insights [recommendations]="recommendations" [topPAs]="topPAs" [topPAFirms]="topPAFirms"
                          [secondPAFirms]="secondPAFirms" [editMode]="editMode" [expenses]="report.querystring.expenses"
-                         [reportData]="reportData" [practiceAreaSetting]="practiceAreaSetting"></bd-qbr-insights>
+                         [reportData]="reportData" [practiceAreaSetting]="practiceAreaSetting" [exiting]="exiting"></bd-qbr-insights>
       </div>
 
 
