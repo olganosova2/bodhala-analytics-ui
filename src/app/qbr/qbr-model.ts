@@ -456,7 +456,7 @@ export const recommendationPlaceholderMapping = {
     id: 3,
     opportunity_placeholder: 'Client should aim to increase or maintain associate work allocation at 65% or more of all attorney hours, keeping partner percentage of hours below 35% ',
     why_it_matters_placeholder: 'Allocating work to associates reduces costs and associates are the appropriate attorney level for most attorney work, save for complex/strategic work warranting partner involvement',
-    action_placeholder: '1. Evaluate partner and associate percentage of hours worked \n2. Ensure partner percentage is kept below 35% and aim to keep partner work on matters at [ Firm ] to ensure the lowest cost timekeeper qualified is performing the work\n 3. Communicate expectations to [ Firm ]'
+    action_placeholder: '1. Evaluate partner and associate % of hours worked\n2. Ensure partner % is kept below 35% and aim to keep partner work [ Firm ] low to ensure the lowest cost TK qualified is performing the work'
   },
   'Decrease Block Billing': {
     id: 4,

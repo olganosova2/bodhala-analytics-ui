@@ -68,6 +68,7 @@ export class QbrCreationComponent implements OnInit {
   secondPAMatterComparison: any;
 
   paCompDataAvailable: boolean = false;
+  exiting: boolean = false;
 
 
 
@@ -796,6 +797,10 @@ export class QbrCreationComponent implements OnInit {
       }
     }
 
+  }
+
+  saveAndExit(): void {
+    this.exiting = true;
   }
 
   toggleExpenses(): void {

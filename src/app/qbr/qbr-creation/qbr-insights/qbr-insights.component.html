@@ -104,7 +104,7 @@
 
 
 <div *ngIf="showNextSteps" style="padding-top: 1em; padding-bottom: 1em;">
-  <bd-qbr-next-steps [savedInsights]="nextSteps" (nextStepsFormStatusChange)="updateFormStatus($event)"></bd-qbr-next-steps>
+  <bd-qbr-next-steps [savedInsights]="nextSteps" (nextStepsFormStatusChange)="updateFormStatus($event)" [exiting]="saveNextSteps"></bd-qbr-next-steps>
 
   <!-- <div class="pull-right" style="padding-top: 1em;">
     <button mat-flat-button class="primary-button" (click)="viewReport()"
