@@ -252,8 +252,8 @@ const metricsColumnESOptions = {
         enabled: false
       },
       showInLegend: true,
-      borderRadiusTopLeft: '50%',
-      borderRadiusTopRight: '50%'
+      // borderRadiusTopLeft: '50%',
+      // borderRadiusTopRight: '50%'
     }
   },
   xAxis: [{
@@ -309,8 +309,8 @@ const metricsColumnOptions = {
         enabled: false
       },
       showInLegend: true,
-      borderRadiusTopLeft: '50%',
-      borderRadiusTopRight: '50%'
+      // borderRadiusTopLeft: '50%',
+      // borderRadiusTopRight: '50%'
     },
     series: {
       pointWidth: 25,

@@ -17,13 +17,11 @@ export class QbrAgendaComponent implements OnInit {
   @Input() zoom: boolean;
   constructor(public qbrService: QbrService) {
     this.agendaItems = [
-      {num: 'I.', label: 'Progress Update'},
-      {num: 'V.', label: 'Deep Dives: Practice Area, Firms & Matters'},
-      {num: 'II.', label: 'Executive Summary'},
-      {num: 'VI.', label: 'Next steps: Action & Impact'},
-      {num: 'III.', label: 'Key Trends'},
-      {num: 'VII.', label: 'Free Benchmark Sample & High Impact Opportunities'},
-      {num: 'IV.', label: 'Insights & Opportunities'}
+      {num: 'I.', label: 'Executive Summary'},
+      {num: 'IV.', label: 'Deep Dives: Practice Area, Firms & Matters'},
+      {num: 'II.', label: 'Key Trends'},
+      {num: 'V.', label: 'Next steps: Action & Impact'},
+      {num: 'III.', label: 'Insights & Opportunities'},
     ];
   }
 

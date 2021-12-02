@@ -130,7 +130,7 @@ export class QbrTopPasMattersComponent implements OnInit {
     this.chartBB = chartInstance;
     const result = [this.bbMetric.amount, 100 - this.bbMetric.amount];
     this.chartBB.series[0].setData(result);
-    this.chartBB.series[0].options.colors = ['red', '#3EDB73'];
+    this.chartBB.series[0].options.colors = ['red', '#cccccc'];
     this.chartBB.series[0].update(this.chartBB.series[0].options);
   }
   saveInstanceVolume(chartInstance): void {
