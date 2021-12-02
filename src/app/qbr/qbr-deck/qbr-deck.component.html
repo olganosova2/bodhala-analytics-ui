@@ -67,7 +67,7 @@
 
           <!-- Page 6 -->
           <div>
-            <bd-qbr-recommendation *ngIf="qbr && insights && insights.length > 0"  [qbr]="qbr" [qbrData]="qbrData"  [qbrRecommendationType]="'Insights'" [recommendations]="insights">
+            <bd-qbr-recommendation *ngIf="qbrData && insights && insights.length > 0"  [qbr]="qbr" [qbrData]="qbrData"  [qbrRecommendationType]="'Insights'" [recommendations]="insights">
             </bd-qbr-recommendation>
           </div>
 
@@ -103,7 +103,7 @@
 
           <!-- Page 12 -->
           <div>
-            <bd-qbr-recommendation *ngIf="qbr && nextSteps && nextSteps.length > 0"  [qbr]="qbr" [qbrData]="qbrData"  [qbrRecommendationType]="'Next Steps'" [recommendations]="nextSteps">
+            <bd-qbr-recommendation *ngIf="qbrData && nextSteps && nextSteps.length > 0"  [qbr]="qbr" [qbrData]="qbrData"  [qbrRecommendationType]="'Next Steps'" [recommendations]="nextSteps">
             </bd-qbr-recommendation>
           </div>
 
