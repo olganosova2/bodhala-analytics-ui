@@ -114,8 +114,21 @@ export class QbrRecommendationComponent implements OnInit {
         metric.amount = line[0].substring(1);
       }
     }
-    metric.label = this.qbrService.shortenString(line[1], 28);
+    metric.label = this.qbrService.shortenString(line[1], 77);
     metrics.push(metric);
+  }
+  getLabelfontSize(text: string): string {
+    let result = '22';
+    if (!text) {
+      return result;
+    }
+    if (text.length > 28) {
+      result = '18';
+    }
+    if (text.length > 50) {
+      result = '16';
+    }
+    return result;
   }
   formatPotentialSavings(rec: IQbrRecommendation, recommendation: any, metrics: Array<INotableMetric>, recType: QbrRecommendationsType): void {
     const metric = {} as INotableMetric;

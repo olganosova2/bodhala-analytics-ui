@@ -380,8 +380,8 @@ const metricsBBOptions = {
         pointFormat: '{point.y:,.0f}%'
       },
       showInLegend: true,
-      borderRadiusTopLeft: '50%',
-      borderRadiusTopRight: '50%'
+      // borderRadiusTopLeft: '50%',
+      // borderRadiusTopRight: '50%'
     },
     series: {
       pointWidth: 40,

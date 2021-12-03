@@ -35,7 +35,7 @@
                   <em *ngIf="item.direction && item.direction < 0" class="fa fa-arrow-down"></em>
                 </div>
                 <div class="numbers font-white" *ngIf="qbrRecommendationType === 'Next Steps'">~${{item?.amount | number:'1.0-0'}}</div>
-                <div class="labels">{{item?.label}}</div>
+                <div class="labels" [ngStyle]="{'font-size': getLabelfontSize(item?.label) +'px'}">{{item?.label}}</div>
               </div>
             </div>
           </div>
