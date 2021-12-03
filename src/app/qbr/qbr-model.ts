@@ -450,7 +450,7 @@ export const recommendationPlaceholderMapping = {
     id: 2,
     opportunity_placeholder: 'Freeze billing rates YoY or hold down rate increases to below 2-3%',
     why_it_matters_placeholder: 'Holding down rate increases is an essential tool to reduce legal fees and ensure you\'re paying appropriate rates to your firms',
-    action_placeholder: '1. Review net effective rates YoY\n2. Identify any proposed or actual rate increases\n3. Negotiate with firms top prevent rate increases'
+    action_placeholder: '1. Review net effective rates YoY\n2. Identify any proposed or actual rate increases\n3. Negotiate with firms to prevent rate increases'
   },
   'Partner / Associate Work Allocation': {
     id: 3,
