@@ -18,7 +18,7 @@ export class MoreYouActComponent implements OnInit {
       },
       {label: 'Strategic Advisory',
         icon: 'notepad.png',
-        text: 'Detailed direction from Bodhala\'s Expert Client Success team helps you improve you target specific firms with specific recommendations for work allocation and other optimization strategies.'
+        text: 'Detailed direction from Bodhala\'s Expert Client Success team helps you target specific firms with specific recommendations for work allocation and other optimization strategies.'
       },
       {label: 'Rate Card RFP',
         icon: 'files.png',
