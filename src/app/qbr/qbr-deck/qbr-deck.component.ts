@@ -138,7 +138,7 @@ export class QbrDeckComponent implements OnInit, OnDestroy {
   export(): void {
     const tabsLength = this.tabGroup._allTabs.length;
     const activeTab = this.tabGroup.selectedIndex;
-    const divId = (tabsLength - activeTab === 1) ? 'exportAll' : 'exportPage';
+    const divId = (activeTab === 0) ? 'exportAll' : 'exportPage';
     this.commonServ.generatePDFQbr(this.cardTitle, divId);
   }
   goBack(): void {
