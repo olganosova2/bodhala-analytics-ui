@@ -1,0 +1,64 @@
+<div>
+  <div class="qbr-wrapper">
+    <div class="qbr-panel position-relative" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
+      <div class="card-title">{{ practiceArea }}: Top matter<span class="dot-full dot-full-online"></span></div>
+      <div class="p-grid mt40" *ngIf="currentOverviewMetric">
+        <div class="p-md-7 no-padding">
+          <bd-qbr-total-spend [qbrType]="qbrType" [totalSpendMetric]="[totalSpendMetric]"></bd-qbr-total-spend>
+          <div class="p-grid gray-border-left mt30 position-relative mt20" [ngClass]=" {'height-550': tkHours.length <= 1}">
+            <span class="dot-full-right"></span>
+              <div class="p-md-4">
+                <div>
+                  <img alt="icon" src="assets/images/total_bb.svg" class="qbr-icon-sm mb5 mr10 ml20">
+                  <span class="qbr-label">Block Billed</span>
+                </div>
+                <div class="justify-center mt20">
+                  <chart [options]="optionsBB" (load)="saveInstanceBB($event.context)"></chart>
+                </div>
+                <div class="text-center mt20">
+                  <bd-yoy-number-widget  [direction]="bbMetric.direction" [qbrType]="qbrType" [increase]="bbMetric.percent" [size]="'lg'"></bd-yoy-number-widget>
+                </div>
+
+              </div>
+            <div class="p-md-4">
+              <div class="justify-start">
+                <img alt="icon" src="assets/images/chart-pie.png" class="qbr-icon mb5 mr10 ml10">
+                <span class="qbr-label mr40 text-center">Hours Worked By TimeKeeper Level</span>
+              </div>
+              <div class="justify-center mt20">
+                <chart [options]="optionsHours" (load)="saveInstanceHours($event.context)"></chart>
+              </div>
+              <div class="justify-center">
+                <bd-qbr-timekeepers [qbrType]="qbrType" [metrics]="tkHours" [size]="'md'" [showColumns]="true"></bd-qbr-timekeepers>
+              </div>
+
+            </div>
+            <div class="p-md-4">
+              <div class="justify-start">
+                <img alt="icon" src="assets/images/avg_par_rate.svg" class="qbr-icon mb5 mr10 ml10">
+                <span class="qbr-label mr40 text-center">Volume of Practice Area Spend</span>
+              </div>
+              <div class="justify-center mt20">
+                <chart [options]="optionsVolume" (load)="saveInstanceVolume($event.context)"></chart>
+              </div>
+              <div class="text-center mt20">
+                <bd-yoy-number-widget  [direction]="volumeMetric.direction" [qbrType]="qbrType" [increase]="volumeMetric.percent" [size]="'lg'"></bd-yoy-number-widget>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <!--right side-->
+        <div class="p-md-5 no-padding gray-border-left position-relative" *ngIf="rightSideMetrics && rightSideMetrics.length > 0">
+          <bd-qbr-executive-summary-right [metrics]="rightSideMetrics" [noComparisonData]="noComparisonData"
+                                          [qbrType]="qbrType"></bd-qbr-executive-summary-right>
+        </div>
+      </div>
+      <div class="page-number-circle">
+        <div class="page-number">{{this.pageNum}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>

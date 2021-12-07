@@ -71,8 +71,8 @@ export const baseColumnChartOptions = {
         enabled: false
       },
       showInLegend: true,
-      borderRadiusTopLeft: 40,
-      borderRadiusTopRight: 40
+     // borderRadiusTopLeft: 40,
+     // borderRadiusTopRight: 40
     },
     series: {
       pointPadding: 0.2,

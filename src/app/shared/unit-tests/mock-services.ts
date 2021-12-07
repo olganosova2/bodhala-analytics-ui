@@ -31,6 +31,8 @@ import {MOCK_LAW_FIRM_DUPLICATES} from './mock-data/remove-firm-duplicates';
 import {MOCK_ADD_SUBSCRIPTION_RESPONSE, MOCK_SUBSCRIPTIONS} from './mock-data/subscriptions';
 import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND_FIRM_RESULT, MOCK_LEDES_IMPORT} from './mock-data/ledes-imports';
 import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
+import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
+import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
 
 export const ngWindow = {
   location: {
@@ -116,6 +118,19 @@ export class DataStub {
         return of(MOCK_FIND_FIRM_RESULT);
       case 'reuploadLedes':
         return of({result: true});
+      case 'getClientQBRs':
+        return of(MOCK_QBRS);
+      case 'getClientQBRData':
+        return of(MOCK_QBR_DATA);
+      case 'saveQBRRecommendation':
+        return of({result: true});
+      case 'saveQBRNextStep':
+        return of({result: MOCK_SAVED_QBR_RECOMMENDATIONS[0]});
+      case 'deleteQBR':
+        return of({result: MOCK_SAVED_QBR_RECOMMENDATIONS[4]});
+      case 'generateClientQBR':
+        return of({result: MOCK_QBR});
+
       default:
         return of([]);
     }
@@ -281,6 +296,14 @@ export class DataStub {
         return of(MOCK_LEDES_IMPORT);
       case 'getRateIncreaseByFirm':
         return of(MOCK_YOY_RATE_INCREASE);
+      case 'getClientQBRs':
+        return of(MOCK_QBRS);
+      case 'getClientQBR':
+        return of(MOCK_QBR);
+      case 'getClientQBRData':
+        return of(MOCK_QBR_DATA);
+      case 'getQBRRecommendations':
+        return of(MOCK_QBR_RECOMMENDATIONS);
       default:
         return of([]);
     }
@@ -431,6 +454,9 @@ export class RecommendationsServicesStub {
   public calcBlockBillingSavings() {
     return(MOCK_BLOCK_BILLING_TOTALS);
   }
+  public getRateIncreaseDataByClient() {
+    return (MOCK_RATE_INCREASE_SAVINGS);
+  }
   public roundNumber(unroundedNumber: number) {
     if (unroundedNumber !== null && unroundedNumber !== undefined) {
       if (unroundedNumber < 10000) {
@@ -446,6 +472,55 @@ export class RecommendationsServicesStub {
   }
 }
 
+export class QbrServiceStub {
+  public getClientQBRs() {
+    return({reports: MOCK_QBRS, firstReport: false, firstStartDate: '2019-03-01'});
+  }
+  public getClientQBR() {
+    return(MOCK_QBR);
+  }
+  public constructSelectableQuarterDates(startDate) {
+    return(MOCK_QUARTER_DATES);
+  }
+  public formatPayloadDates(date, reportType) {
+    return({endDate: '2020-02-29', comparisonStartDate: '2018-03-01', comparisonEndDate: '2019-02-28'});
+  }
+
+  public getQBRRecommendations(reportId) {
+    return({recommendations: MOCK_QBR_RECOMMENDATIONS.result});
+  }
+
+  public saveRecommendation(rec) {
+    if (rec.id === null) {
+      rec.id = 350;
+    }
+    return(rec);
+  }
+
+  public saveNextStep(rec) {
+    if (rec.id === null) {
+      rec.id = 350;
+    }
+    return(rec);
+  }
+
+  public calculateStaffingAllocationSavings(rec, data, overallNumbers, expenses) {
+    return(rec);
+  }
+
+  public calculateDiscountSavings(rec, data, overallNumbers, expenses) {
+    return(rec);
+  }
+
+  public calculateBlockBillingSavings(rec, data) {
+    return(rec);
+  }
+
+  public calculateShiftFirmsSavings(rec, topFirmData, secondFirmData) {
+    return(rec);
+  }
+}
+
 export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
     id: '4702',
@@ -455,7 +530,8 @@ export class ActivatedRouteMock {
   queryParams = new Observable(observer => {
     const urlParams = {
       year: '2020',
-      param2: 'params'
+      param2: 'params',
+      id: '11'
     };
     observer.next(urlParams);
     observer.complete();
@@ -467,6 +543,9 @@ export class CommonServiceStub {
   }
   public openHelpArticle(id: string): void {
     return;
+  }
+  public capitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
   }
 }
 

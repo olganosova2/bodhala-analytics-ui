@@ -1,6 +1,6 @@
 import {Component, OnDestroy, ViewChild} from '@angular/core';
 import { Subscription} from 'rxjs';
-import {NavigationStart, Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Idle, DEFAULT_INTERRUPTSOURCES} from '@ng-idle/core';
 
@@ -14,6 +14,8 @@ import {Keepalive} from '@ng-idle/keepalive';
 import {FiltersService} from './shared/services/filters.service';
 import {CommonService} from './shared/services/common.service';
 import {LeftSideBarComponent} from 'bodhala-ui-elements';
+
+declare const gtag: any;
 
 @Component({
   selector: 'bd-root',
@@ -47,16 +49,6 @@ export class AppComponent implements OnDestroy {
       this.router.navigateByUrl('/analytics-ui/analytics.html');
     }
     this.appStateService.loadRoutes(config.ROUTES);
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        const url = event.url;
-        for (const route of config.ROUTES) {
-          if (route.fragment && url.indexOf(route.fragment) >= 0 && route.refreshNav) {
-            this.leftSidenav.loadMenu();
-          }
-        }
-      }
-    });
     if (!this.userService.currentUser.isAdmin) {
       this.filtersService.setCurrentUserFilters();
     }
@@ -81,6 +73,18 @@ export class AppComponent implements OnDestroy {
     });
 
     this.resetIdle();
+
+    this.addGAScript();
+    // track page views
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        gtag('event', 'page_view',
+          {
+            page_path: event.urlAfterRedirects
+          }
+        );
+       }
+    });
   }
   resetIdle() {
     this.idle.watch();
@@ -130,6 +134,23 @@ export class AppComponent implements OnDestroy {
       style.backgroundColor = null;
     } else {
       style.backgroundColor = '#FED8B1';
+    }
+  }
+  addGAScript(): void {
+    // register googletagmanager
+    if (environment.gaAccount) {
+      const gaScript = document.createElement('script');
+      gaScript.innerHTML = `
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+      `;
+      document.head.prepend(gaScript);
+      const gTagManagerScript = document.createElement('script');
+      gTagManagerScript.async = true;
+      gTagManagerScript.src = `https://www.googletagmanager.com/gtag/js?id=${environment.gaAccount}`;
+      document.head.prepend(gTagManagerScript);
+      gtag('config', environment.gaAccount, { send_page_view: false });
     }
   }
   ngOnDestroy() {

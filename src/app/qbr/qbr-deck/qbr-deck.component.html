@@ -1,0 +1,225 @@
+<div class="qbr-top-buttons">
+  <bd-error-messages></bd-error-messages>
+  <div >
+    <ngb-alert type="success" *ngIf="isSuccess"  (close)="isSuccess=false">
+      <div class="font-green font-bold">
+        QBR has been finalized successfully.
+      </div>
+    </ngb-alert>
+  <div class="pull-left" *ngIf="reportDates">
+    <div>
+      <b>Selected Time Period: </b>{{reportDates.startDate | date:'mediumDate'}}
+      - {{reportDates.endDate | date:'mediumDate'}}
+      <span
+        class="ml40 mt10 inline-block"><b>Comparison Time Period: </b>{{reportDates.comparisonStartDate | date:'mediumDate'}}
+        - {{reportDates.comparisonEndDate | date:'mediumDate'}}</span>
+    </div>
+
+  </div>
+  <div class="pull-right">
+    <button class="primary-button ml20" (click)="finalize()" *ngIf="qbr?.status !== 'COMPLETE'">Finalize
+    </button>
+    <button class="primary-button ml20" (click)="goToEdit()" *ngIf="qbr?.status !== 'COMPLETE'">Edit
+    </button>
+        <button class="primary-button ml20" (click)="goBack()">Back
+        </button>
+    <button class="primary-button ml20" (click)="export()"
+            [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+      <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
+    </button>
+  </div>
+  </div>
+  <div class="clear-both"></div>
+  <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeTab($event)"  [(selectedIndex)]="selectedTabIndex" #tabGroup>
+    <mat-tab label="All Pages" *ngIf="true">
+      <ng-template matTabContent>
+        <div id="exportAll" #exportAll>
+
+          <!-- page 1 -->
+          <div>
+            <bd-qbr-cover *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-cover>
+          </div>
+
+          <!-- page 2 -->
+          <div>
+            <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [pageNum]="2">
+            </bd-qbr-agenda>
+          </div>
+
+          <!-- page 3 -->
+          <div>
+            <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [pageNum]="3">
+            </bd-qbr-agenda>
+          </div>
+
+          <!-- Page 4 -->
+          <div class="">
+            <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-executive-summary>
+          </div>
+
+          <!-- Page 5 -->
+          <div>
+            <bd-qbr-key-trends *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-key-trends>
+          </div>
+
+          <!-- Page 6 -->
+          <div>
+            <bd-qbr-recommendation *ngIf="qbrData && insights && insights.length > 0"  [qbr]="qbr" [qbrData]="qbrData"  [qbrRecommendationType]="'Insights'" [recommendations]="insights">
+            </bd-qbr-recommendation>
+          </div>
+
+          <!-- Page 7 -->
+          <div class="">
+            <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-qbr-top-pas>
+          </div>
+
+          <!-- Page 8 -->
+          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-firms>
+          </div>
+
+          <!-- Page 9 -->
+          <div class="" *ngIf="qbrData && currentPAs.length > 0">
+            <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-matters>
+          </div>
+
+          <!-- Page 10 -->
+          <div class="" *ngIf="qbrData && currentPAs.length > 1">
+            <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-firms>
+          </div>
+
+          <!-- Page 11 -->
+          <div class="" *ngIf="qbrData && currentPAs.length > 1">
+            <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend">
+            </bd-qbr-top-pas-matters>
+          </div>
+
+          <!-- Page 12 -->
+          <div>
+            <bd-qbr-recommendation *ngIf="qbrData && nextSteps && nextSteps.length > 0"  [qbr]="qbr" [qbrData]="qbrData"  [qbrRecommendationType]="'Next Steps'" [recommendations]="nextSteps">
+            </bd-qbr-recommendation>
+          </div>
+
+          <!-- Page 12 -->
+          <div>
+            <bd-more-you-act *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData">
+            </bd-more-you-act>
+          </div>
+
+
+        </div>
+      </ng-template>
+    </mat-tab>
+    <!-- Page 1 -->
+    <mat-tab label="Cover">
+      <ng-template matTabContent>
+        <bd-qbr-cover *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-qbr-cover>
+      </ng-template>
+    </mat-tab>
+    <!-- Page 2 -->
+    <mat-tab label="Agenda">
+      <ng-template matTabContent>
+        <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-qbr-agenda>
+      </ng-template>
+    </mat-tab>
+    <!-- Page 3 -->
+    <mat-tab label="Scope">
+      <ng-template matTabContent>
+        <bd-qbr-agenda *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true" [pageNum]="3">
+        </bd-qbr-agenda>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 4 -->
+    <mat-tab label="Executive Summary">
+      <ng-template matTabContent>
+          <bd-qbr-executive-summary *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+          </bd-qbr-executive-summary>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 5 -->
+    <mat-tab label="Key Trends">
+      <ng-template matTabContent>
+        <bd-qbr-key-trends *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-qbr-key-trends>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 6 -->
+    <mat-tab label="Insights" >
+      <ng-template matTabContent>
+        <div *ngIf="insights.length === 0" class="mt20 text-center font-bold">No records found</div>
+        <bd-qbr-recommendation *ngIf="qbr && insights && insights.length > 0"  [qbr]="qbr" [qbrData]="qbrData" [zoom]="true" [qbrRecommendationType]="'Insights'" [recommendations]="insights">
+        </bd-qbr-recommendation>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 7 -->
+    <mat-tab label="Top PAs">
+      <ng-template matTabContent>
+        <bd-qbr-top-pas *ngIf="qbrData && currentPAs.length > 0" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-qbr-top-pas>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 8 -->
+    <mat-tab label="{{currentPAs[0].practice_area}}: Top Firms" *ngIf="qbrData && currentPAs.length > 0">
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend" [zoom]="true">
+        </bd-qbr-top-pas-firms>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 9 -->
+    <mat-tab label="{{currentPAs[0].practice_area}}: Top Matter" *ngIf="qbrData && currentPAs.length > 0">
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="0" [totalSpend]="totalSpend" [zoom]="true">
+        </bd-qbr-top-pas-matters>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 10 -->
+    <mat-tab label="{{currentPAs[1].practice_area}}: Top Firms" *ngIf="qbrData && currentPAs.length > 1">
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-firms [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend" [zoom]="true">
+        </bd-qbr-top-pas-firms>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 11 -->
+    <mat-tab label="{{currentPAs[1].practice_area}}: Top Matter" *ngIf="qbrData && currentPAs.length > 1">
+      <ng-template matTabContent>
+        <bd-qbr-top-pas-matters [qbr]="qbr" [qbrData]="qbrData" [indexPa]="1" [totalSpend]="totalSpend" [zoom]="true">
+        </bd-qbr-top-pas-matters>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 12 -->
+    <mat-tab label="Next Steps">
+      <ng-template matTabContent>
+        <div *ngIf="nextSteps.length === 0" class="mt20 text-center font-bold">No records found</div>
+        <bd-qbr-recommendation *ngIf="qbr && nextSteps && nextSteps.length > 0"  [qbr]="qbr" [qbrData]="qbrData" [zoom]="true" [qbrRecommendationType]="'Next Steps'" [recommendations]="nextSteps">
+        </bd-qbr-recommendation>
+      </ng-template>
+    </mat-tab>
+
+    <!-- Page 13 -->
+    <mat-tab label="The more you act">
+      <ng-template matTabContent>
+        <bd-more-you-act *ngIf="qbrData" [qbr]="qbr" [qbrData]="qbrData" [zoom]="true">
+        </bd-more-you-act>
+      </ng-template>
+    </mat-tab>
+
+  </mat-tab-group>
+</div>

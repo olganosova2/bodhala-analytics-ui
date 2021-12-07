@@ -98,6 +98,21 @@ export const END_POINTS_URLS = {
   getFirmsByPracticeAreaClient: {url: BASE_URL + 'analytics/getFirmsByPracticeArea', showLoading: true},
   getRateIncreaseByFirm: {url: BASE_URL + 'analytics/getRateIncreaseByFirm', showLoading: false},
 
+  // QBRs
+  getClientQBRs: {url: BASE_URL + 'analytics/getClientQBRs', showLoading: true},
+  generateClientQBR: {url: BASE_URL + 'analytics/generateClientQBR', showLoading: true},
+  getQBRExecutiveSummary: {url: BASE_URL + 'analytics/getQBRExecutiveSummary', showLoading: true},
+  getClientQBRData: {url: BASE_URL + 'analytics/getClientQBRData', showLoading: true},
+  getQBRRecommendations: {url: BASE_URL + 'analytics/getQBRRecommendations', showLoading: true},
+  getClientRateIncreaseData: {url: BASE_URL + 'analytics/getClientRateIncreaseData', showLoading: true},
+  saveQBRRecommendation: {url: BASE_URL + 'analytics/saveQBRRecommendation', showLoading: true},
+  saveQBRNextStep: {url: BASE_URL + 'analytics/saveQBRNextStep', showLoading: true},
+  saveQBRMetrics: {url: BASE_URL + 'analytics/saveQBRMetrics', showLoading: true},
+  getClientQBR: {url: BASE_URL + 'analytics/getClientQBR', showLoading: true},
+  deleteQBRRecommendation: {url: BASE_URL + 'analytics/deleteQBRRecommendation', showLoading: true},
+  finilazeQBR: {url: BASE_URL + 'analytics/finalizeQBR', showLoading: true},
+  deleteQBR: {url: BASE_URL + 'analytics/deleteQBR', showLoading: true},
+
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
   getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},
@@ -161,11 +176,12 @@ export const ROUTES = [
   {name: 'app.lawfirm.duplicates', routePath: 'analytics-ui/admin/law-firm-duplicates', fragment: '/law-firm-duplicates'},
   {name: 'app.subscription.list', routePath: 'analytics-ui/admin/subscription-list', fragment: '/subscription-list'},
   {name: 'app.client.recommendations', routePath: 'analytics-ui/admin/client-recommendations', fragment: '/client-recommendations'},
-  {name: 'app.yoy.rate.increase', routePath: 'analytics-ui/yoy-rate-increase', fragment: '/yoy-rate-increase'},
   {name: 'app.ledes.imports', routePath: 'analytics-ui/admin/ledes-imports', fragment: '/ledes-imports'},
+  {name: 'analytics.qbrs.dashboard', routePath: 'analytics-ui/qbrs/dashboard', fragment: '/qbrs/'},
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
+  {name: 'app.yoy.rate.increase', routePath: 'analytics-ui/yoy-rate-increase', fragment: '/yoy-rate-increase'},
 ];
 
 
@@ -232,7 +248,7 @@ export const FRESH_DESK_ARTICLES = {
   BlockBilling: '24000060478',
   Overstaffing: '24000060537',
   RateIncrease: '24000060502',
-  EntityConfig: '24000066545'
+  EntityConfig: '24000072358'
 };
 export const UI_ANNOTATIONS_IDS = {
   executiveSummary: 'ExecutiveSummary'

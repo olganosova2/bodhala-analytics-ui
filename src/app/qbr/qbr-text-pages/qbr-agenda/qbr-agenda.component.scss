@@ -1,0 +1,26 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+.agenda-grid {
+  width: 70%;
+}
+.qbr-panel {
+  padding-bottom: 0;
+}
+.agenda-item {
+  font-size: 36px;
+  font-weight: 900;
+  padding-left: 40px;
+  padding-bottom: 30px;
+  min-height: 200px;
+}
+.scope-info {
+  font-size: 27px;
+  font-weight: 700;
+  color: $brand-orange;
+}
+:host ::ng-deep {
+  .p-md-6, .p-md-4, .p-md-8 {
+    padding-top: 0 !important;
+    padding-left: 40px !important;
+  }
+}

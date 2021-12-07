@@ -56,6 +56,9 @@ h1, h2, h3, h4, h5, h6, th {
 .font-bold {
   font-weight: 600;
 }
+.font-qbr-primary {
+  color: $qbr-primary;
+}
 
 .no-border {
   border: none;
@@ -153,8 +156,14 @@ h1, h2, h3, h4, h5, h6, th {
 .font-red {
   color: red !important;
 }
+.font-white {
+  color: #fff;
+}
 .font-green {
   color: darkgreen !important;
+}
+.font-qbr-green {
+  color: $qbr-green;
 }
 
 .error {
@@ -353,7 +362,7 @@ h3.popover-header {
 }
 
 button:focus {
-  outline: none;
+  outline: none !important;
 }
 
 html, body {
@@ -372,11 +381,17 @@ h1, h2, h3, h4, h5, h6 {
 .no-padding {
   padding: 0 !important;
 }
+.no-margin {
+  margin: 0 !important;
+}
 .no-right-padding {
   padding-right: 0 !important;
 }
 .no-left-padding {
   padding-left: 0 !important;
+}
+.no-padding-top {
+  padding-top: 0 !important;
 }
 // Highcharts legend formatting
 .hc-partner-badge {
@@ -537,6 +552,22 @@ h1, h2, h3, h4, h5, h6 {
 .notes-wrapper {
   margin:0 !important;
   width: 100% !important
+}
+.bg-cover {
+  background-image: url(assets/images/qbr-images/BG_Cover.png);
+  background-repeat: no-repeat;
+}
+.bg-1 {
+  background-image: url('assets/images/qbr-images/BG_blue_corner.svg');
+  background-repeat: no-repeat;
+}
+.bg-2 {
+  background-image: url('assets/images/qbr-images/BG_gray_corner.svg');
+  background-repeat: no-repeat;
+}
+.bg-monitor {
+  background-image: url('assets/images/qbr-images/BG_monitor.svg');
+  background-repeat: no-repeat;
 }
 
 

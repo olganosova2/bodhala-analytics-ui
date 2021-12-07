@@ -1,0 +1,28 @@
+<div class="p-grid gray-border-left position-relative pb20 pl10">
+  <div class="p-md-12 no-padding">
+    <div>
+      <span class="dot-full-right"></span>
+      <img alt="icon" src="assets/images/bills.svg" class="qbr-icon mb5 mr10 ml10">
+      <span class="qbr-label">Total Spend</span>
+    </div>
+
+    <div class="ml20">
+      <div *ngFor="let metric of totalSpendMetric;let i = index;">
+        <div class="p-grid ">
+          <div class="p-md-12">
+            <span *ngIf="metric.addInfo" class="oval-label mb5" [ngClass]=" {'oval-label-yellow': i % 2 == 0, 'oval-label-black': i % 2 > 0}">{{metric.addInfo}}</span>
+          </div>
+          <div class="p-md-6">
+            <div class="qbr-subtitle">{{ metric.amount | number:'1.0-0'}}</div>
+            <div *ngIf="metric.matterName" class="matter-name ml5">{{metric.matterName}}</div>
+          </div>
+          <div class="p-md-6">
+            <div class="text-center mt15">
+              <bd-yoy-number-widget [direction]="metric.direction" [qbrType]="qbrType"  [increase]="metric.percent" [size]="'lg'"></bd-yoy-number-widget>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

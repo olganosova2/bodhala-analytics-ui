@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   apiUrl: '/ui-api/',
   host: '/',
+  gaAccount: 'UA-4735512-6',
   IDLE_KEEPALIVE_CONFIG: {
     timeOutSeconds: 810,
     keepaliveSeconds: 60

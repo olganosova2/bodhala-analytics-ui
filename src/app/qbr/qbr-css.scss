@@ -1,0 +1,257 @@
+@import "../../assets/styles/colors.scss";
+@import "../../assets/styles/_variables.scss";
+$size: 13px;
+.qbr-wrapper{
+  //width: 90vw;
+  //overflow-x: auto;
+}
+.qbr-panel {
+  background-color: #fff;
+  padding: 113px 113px 102px 128px;
+  color: #000;
+  width: 1920px;
+  height: 1080px;
+}
+.qbr-panel-zoomed {
+  @media screen and (max-width: 1920px) {
+    zoom: 88.5%;
+    -moz-transform: scale(0.885, 0.885);
+    -moz-transform-origin: left top;
+  }
+  @media screen and (max-width: 1440px) {
+    zoom: 64%;
+    -moz-transform: scale(0.64, 0.64);
+    -moz-transform-origin: left top;
+  }
+  @media screen and (max-width: 1024px) {
+    zoom: 42%;
+    -moz-transform: scale(0.42, 0.42);
+    -moz-transform-origin: left top;
+  }
+}
+.qbr-top-buttons {
+  max-width: 89vw;
+}
+.card-title {
+  font-weight: 700;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 80px;
+  font-style: normal;
+  line-height: 105px;
+}
+.qbr-subtitle {
+  font-weight: 700;
+  font-size: 48px;
+}
+.qbr-dollar-label {
+  font-weight: bold;
+  font-size: 32px;
+  text-align: center;
+}
+.dot-full {
+  box-sizing: border-box;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: $qbr-primary;
+}
+.dot-full-right {
+  height: $size * 2;
+  width: $size;
+  border-bottom-right-radius: $size * 2;
+  border-top-right-radius: $size * 2;
+  display: inline-block;
+  background-color: $qbr-primary;
+  position: absolute;
+  left: 0;
+  top: 0;
+  // margin-left: -8px;
+}
+.dot-full-right-empty {
+  background-color: #fff;
+
+}
+.page-number-circle {
+  width: 52.5px;
+  height: 105px;
+  font-size: 20px;
+  border-bottom-left-radius: 52.5px;
+  border-top-left-radius: 52.5px;
+  display: inline-block;
+  background-color:#F3F3F3;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  .page-number {
+    padding-top: 32px;
+    padding-left:25px;
+    font-size: 24px;
+  }
+}
+.page-number-circle-wh {
+  background-color:#fff;
+}
+.page-number-circle-wh {
+  background-color: #fff;
+}
+.blue-bottom-line {
+  height: 128px;
+  width: 97%;
+  position: absolute;
+  left: 0;
+  bottom: 70px;
+  border-bottom-right-radius: 64px;
+  border-top-right-radius: 64px;
+  background-color: $brand-blue;
+}
+.black-money-badge {
+  height: 128px;
+  width: 25%;
+  position: absolute;
+  right: 0;
+  top: 120px;
+  border-bottom-left-radius: 64px;
+  border-top-left-radius: 64px;
+  background-color: #000;
+  color: #fff;
+  padding: 22px 25px 0 0;
+  .label {
+    font-size: 20px;
+  }
+  .amount {
+    font-size: 32px;
+  }
+}
+.dot-full-online {
+    margin-bottom: -5px;
+    margin-left: 3px;
+}
+.gray-border-left {
+  border-left: 2px solid $qbr-border-gray;
+  margin-top: 0;
+  padding-top: 0;
+}
+.gray-border-top {
+  padding-top: 30px;
+  border-top: 2px solid $qbr-border-gray;
+}
+.qbr-label {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0.03em;
+}
+.qbr-label-sm {
+  font-size: 18px;
+}
+.qbr-label-md {
+  font-size: 22px;
+}
+.qbr-label-xs {
+  font-size: 12px;
+}
+.qbr-icon {
+  width: 40px;
+}
+.qbr-icon-sm {
+  width: 25px;
+}
+.qbr-icon-lg {
+  width: 50px;
+}
+.justify-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+.justify-around {
+  display: flex;
+  justify-content: space-around;
+}
+.justify-center {
+  display: flex;
+  justify-content: center;
+}
+.cell-center {
+  margin-left: auto;
+  margin-right: auto;
+  position: absolute;
+  top: 62%;
+  left: 22%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  text-align: center;
+}
+.tk-bar-lg {
+  display: inline-block;
+  width: 30px;
+  height: 9px;
+  border-radius: 4px;
+  margin-bottom: 3px;
+  margin-right: 5px;
+}
+.tk-bar-sm {
+  display: inline-block;
+  width: 16px;
+  height: 8px;
+  border-radius: 2px;
+}
+.partner-bar {
+  background-color: $brand-blue;
+}
+.associate-bar {
+  background-color: $brand-orange;
+}
+.green-bar {
+ background-color: #3EDB73;
+}
+.black-bar {
+  background-color: $body-color;
+}
+.other-bar {
+  background-color: $light-gray;
+}
+.paralegal-bar {
+  background-color: $fair-color;
+}
+.metrics-div-border {
+  border-left: 2px solid $qbr-border-gray;
+}
+.qbr-metric-header {
+  height: 80px;
+}
+.qbr-metric-div {
+  width: 200px;
+  text-align: center;
+}
+.oval-label {
+  border-radius: 31px;
+  font-size: 18px;
+  color: #fff;
+  padding: 1px 20px 3px 20px;
+}
+.oval-label-yellow {
+  background-color: $fair-color;
+}
+.oval-label-black {
+  background-color: #000;
+}
+.row-badge {
+  margin-left: 30px !important;
+  margin-top: 40px;
+  white-space: nowrap;
+}
+.row-badge-first {
+  margin-top: 90px;
+}
+.height-550 {
+  min-height: 530px;
+}
+
+
+

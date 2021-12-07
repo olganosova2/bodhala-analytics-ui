@@ -1,0 +1,52 @@
+<div>
+  <div class="qbr-wrapper">
+    <div class="qbr-panel position-relative bg-2" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
+      <div class="black-money-badge justify-around" *ngIf="section.total_savings">
+        <img src="assets/images/qbr-images/money_bag.png" width="85px" height="80px" alt="$"/>
+        <div>
+          <div class="label">TOTAL ESTIMATED SAVINGS</div>
+          <div class="amount">~ ${{section.total_savings | number:'1.0-0'}}</div>
+        </div>
+      </div>
+
+      <div class="card-title">{{section?.sectionTitle}}<span class="dot-full dot-full-online"></span></div>
+      <div class="qbr-rec-subtitle">{{section?.sectionSubTitle}}</div>
+      <div class="qbr-rec-add-info">{{section?.sectionAddInfo}}&nbsp;</div>
+      <div class="p-grid">
+        <div class="p-md-4 gray-border-left position-relative" *ngFor="let rec of section.recommendations">
+          <span class="dot-full-right"></span>
+          <div class="qbr-icon-title justify-start">
+            <img alt="icon" src="assets/images/qbr-images/{{rec?.icon}}.png" width="60px"/>
+            <span class="ml10 inline-block" [ngClass]="{'mt15': rec?.title && rec?.title.length < 42 }">{{rec?.title}}</span>
+          </div>
+          <div class="qbr-rec-headline mt10" *ngIf="rec?.headline">{{rec?.headline}}</div>
+          <div class="qbr-rec-add-info mt10" *ngIf="rec?.subhead">{{rec?.subhead}}</div>
+          <div class="qbr-recommendation-text mt20"><span class="font-bold">Opportunity: </span>
+            <span [innerHTML]="rec?.opportunity"></span>
+          </div>
+          <div class="qbr-recommendation-text mt20"><span class="font-bold">Action Recommended: </span>
+            <span [innerHTML]="rec?.recommendation"></span>
+          </div>
+          <div class="blue-line-labels full-width">
+            <div class="" *ngIf="rec.notableMetrics.length > 0" [ngClass]="{'justify-around': qbrRecommendationType === 'Insights', 'ml10': qbrRecommendationType === 'Next Steps' }">
+              <div *ngFor="let item of rec.notableMetrics;let i=index" [ngClass]="{'font-white': i % 2 != 0 }">
+                <div class="numbers" *ngIf="qbrRecommendationType === 'Insights'">{{item?.amount}}
+                  <em *ngIf="item.direction && item.direction > 0" class="fa fa-arrow-up"></em>
+                  <em *ngIf="item.direction && item.direction < 0" class="fa fa-arrow-down"></em>
+                </div>
+                <div class="numbers font-white" *ngIf="qbrRecommendationType === 'Next Steps'">~${{item?.amount | number:'1.0-0'}}</div>
+                <div class="labels" [ngStyle]="{'font-size': getLabelfontSize(item?.label) +'px'}">{{item?.label}}</div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+      <div class="blue-bottom-line"></div>
+      <div class="page-number-circle page-number-circle-wh">
+        <div class="page-number">{{pageNumber}}</div>
+      </div>
+    </div>
+  </div>
+</div>

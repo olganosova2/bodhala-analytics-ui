@@ -211,7 +211,11 @@ export class RecommendationService {
 
   getRateIncreaseData(recommendation: any, selectedClientId: number, paSetting: string): Promise<any> {
     const firmParam = [];
-    firmParam.push(recommendation.bh_lawfirm_id.toString());
+    if (recommendation.bh_lawfirm_id) {
+      firmParam.push(recommendation.bh_lawfirm_id.toString());
+    } else if (recommendation.firm_id) {
+      firmParam.push(recommendation.firm_id.toString());
+    }
     const paParam = [];
     let apiCall = '';
     if (window.location.toString().includes('admin')) {
@@ -271,6 +275,95 @@ export class RecommendationService {
 
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest(apiCall, params).subscribe(
+        (data: any) => {
+          let firmRateIncreaseData;
+          let rateIncreasePreventionSavings;
+          let rateIncreasePreventionDetails;
+          if (data.result) {
+            firmRateIncreaseData = data.result;
+            if (firmRateIncreaseData.length > 0) {
+              const mostRecentYear = firmRateIncreaseData[0].year;
+              const rateIncreaseData = this.calculateRateIncreaseSavingsForFirm(firmRateIncreaseData, mostRecentYear, recommendation.desired_rate_increase_pct);
+              rateIncreasePreventionSavings = rateIncreaseData.savings;
+              rateIncreasePreventionDetails = rateIncreaseData.classificationData;
+            }
+          }
+          resolve({data: firmRateIncreaseData, savings: rateIncreasePreventionSavings, details: rateIncreasePreventionDetails});
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  getRateIncreaseDataByClient(recommendation: any, selectedClientId: number, paSetting: string): Promise<any> {
+    const firmParam = [];
+    if (recommendation.bh_lawfirm_id) {
+      firmParam.push(recommendation.bh_lawfirm_id.toString());
+    }
+    if (recommendation.firm_id) {
+      firmParam.push(recommendation.firm_id.toString());
+    }
+    const paParam = [];
+    // let apiCall = '';
+    // if (window.location.toString().includes('admin')) {
+    //   apiCall = 'getFirmRateIncreaseData';
+    // } else {
+    //   apiCall = 'getFirmRateIncreaseDataClient';
+    // }
+    let params;
+    if (recommendation.practice_area === null) {
+      params = {
+        clientId: selectedClientId,
+        firms: JSON.stringify(firmParam)
+      };
+    } else if (recommendation.practice_area !== null && paSetting === 'Client Practice Areas') {
+      paParam.push(recommendation.practice_area);
+      params = {
+        clientId: selectedClientId,
+        firms: JSON.stringify(firmParam),
+        practiceAreas: JSON.stringify(paParam)
+      };
+    } else if (recommendation.practice_area !== null && paSetting === 'Smart Practice Areas') {
+      paParam.push(recommendation.practice_area);
+      params = {
+        clientId: selectedClientId,
+        firms: JSON.stringify(firmParam),
+        bdPracticeAreas: JSON.stringify(paParam)
+      };
+    } else if (recommendation.practice_area !== null && paSetting === 'Both') {
+      if (recommendation.practice_area.includes('[Smart]')) {
+        const formattedPA = recommendation.practice_area.split(' - [Smart]')[0];
+        paParam.push(formattedPA);
+        params = {
+          clientId: selectedClientId,
+          firms: JSON.stringify(firmParam),
+          bdPracticeAreas: JSON.stringify(paParam)
+        };
+      } else {
+        paParam.push(recommendation.practice_area);
+        params = {
+          clientId: selectedClientId,
+          firms: JSON.stringify(firmParam),
+          practiceAreas: JSON.stringify(paParam)
+        };
+      }
+    } else {
+      paParam.push(recommendation.practice_area);
+      params = {
+        clientId: selectedClientId,
+        firms: JSON.stringify(firmParam),
+        practiceAreas: JSON.stringify(paParam)
+      };
+    }
+
+    if (recommendation.id && recommendation.year) {
+      params.year = recommendation.year;
+    }
+
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getClientRateIncreaseData', params).subscribe(
         (data: any) => {
           let firmRateIncreaseData;
           let rateIncreasePreventionSavings;
