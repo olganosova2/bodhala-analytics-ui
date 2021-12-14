@@ -140,6 +140,9 @@ import {QbrCoverComponent} from '../../qbr/qbr-text-pages/qbr-cover/qbr-cover.co
 import {QbrKeyTrendsComponent} from '../../qbr/qbr-text-pages/qbr-key-trends/qbr-key-trends.component';
 import {QbrRecommendationComponent} from '../../qbr/qbr-recommendation/qbr-recommendation.component';
 import {MoreYouActComponent} from '../../qbr/qbr-text-pages/more-you-act/more-you-act.component';
+import {MatterExecutiveSummaryComponent} from '../../matters/matter-executive-summary/matter-executive-summary.component';
+import {MatterTitleBarComponent} from '../../matters/matter-executive-summary/matter-title-bar/matter-title-bar.component';
+import {MatterTotalPanelComponent} from '../../matters/matter-executive-summary/matter-total-panel/matter-total-panel.component';
 
 
 
@@ -273,7 +276,10 @@ export const DECLARATIONS = [
   QbrCoverComponent,
   QbrKeyTrendsComponent,
   QbrRecommendationComponent,
-  MoreYouActComponent
+  MoreYouActComponent,
+  MatterExecutiveSummaryComponent,
+  MatterTitleBarComponent,
+  MatterTotalPanelComponent
 ];
 
 export const PROVIDERS = [

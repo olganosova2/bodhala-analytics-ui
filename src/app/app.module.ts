@@ -173,6 +173,9 @@ import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-
 import { NextStepInputsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/next-step-inputs/next-step-inputs.component';
 import { QbrRecommendationComponent } from './qbr/qbr-recommendation/qbr-recommendation.component';
 import { MoreYouActComponent } from './qbr/qbr-text-pages/more-you-act/more-you-act.component';
+import { MatterExecutiveSummaryComponent } from './matters/matter-executive-summary/matter-executive-summary.component';
+import { MatterTitleBarComponent } from './matters/matter-executive-summary/matter-title-bar/matter-title-bar.component';
+import { MatterTotalPanelComponent } from './matters/matter-executive-summary/matter-total-panel/matter-total-panel.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -293,7 +296,10 @@ export function initHttp(service: HttpService) {
     QbrKeyTrendsComponent,
     NextStepInputsComponent,
     QbrRecommendationComponent,
-    MoreYouActComponent
+    MoreYouActComponent,
+    MatterExecutiveSummaryComponent,
+    MatterTitleBarComponent,
+    MatterTotalPanelComponent
   ],
   entryComponents: [
     PillComponent,

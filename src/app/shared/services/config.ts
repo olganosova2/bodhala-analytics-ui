@@ -113,6 +113,10 @@ export const END_POINTS_URLS = {
   finilazeQBR: {url: BASE_URL + 'analytics/finalizeQBR', showLoading: true},
   deleteQBR: {url: BASE_URL + 'analytics/deleteQBR', showLoading: true},
 
+  // Matter Analysis
+  getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
+  getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: true},
+
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
   getAdminBenchmarks: {url: BASE_URL + 'admin/benchmarking/benchmarks'},

@@ -1,0 +1,40 @@
+<div class="exs-div">
+  <div><span class="font-bold">Matter Staffing Analysis</span> Matter: {{summaryData?.matter_name}}</div>
+  <bd-matter-title-bar [title]="'Executive Summary'" [index]="0"></bd-matter-title-bar>
+<div class="insights-bar justify-start mt30" *ngIf="insightText">
+  <img src="assets/images/logo-single.svg" width="37px" height="45px" class="mr20"/>
+  <div class="ml20 mr20">
+    <span class="insights-title">BODHALA</span><br/><span class="insights-blue">INSIGHT</span>
+  </div>
+  <div class="insights-content ml20" [innerHTML]="utilService.formatTextForHtml(insightText, !insightExpanded, 210)"></div>
+  <div *ngIf="insightText && insightText.length > 210">
+    <button  class="primary-button insights-button" *ngIf="!insightExpanded" (click)="toggleInsight(true)">Read more
+      <i class="fa fa-angle-down ml10"></i></button>
+    <button  class="primary-button insights-button" *ngIf="insightExpanded" (click)="toggleInsight(false)">Close
+      <i class="fa fa-angle-up ml10"></i></button>
+  </div>
+</div>
+  <div class="p-grid mt20">
+    <div class="p-col-6 pr20 pt20" *ngFor="let metric of totalPanels">
+      <bd-matter-total-panel [metric]="metric"></bd-matter-total-panel>
+    </div>
+  </div>
+  <div class="panel-wrapper">
+    <div class="exs-panel-title">Top Tasks / Documents</div>
+    <table class="full-width">
+      <thead>
+      <tr class="font-bold">
+        <th>Document Type</th>
+        <th>Total Cost</th>
+        <th># Hours Worked</th>
+        <th>% Total Hours</th>
+      </tr>
+      </thead>
+      <tr *ngFor="let doc of documents">
+        <td>{{doc.canonical}}</td>
+
+      </tr>
+
+    </table>
+  </div>
+</div>

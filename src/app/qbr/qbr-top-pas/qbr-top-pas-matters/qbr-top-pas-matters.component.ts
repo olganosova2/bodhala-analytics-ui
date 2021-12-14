@@ -123,7 +123,7 @@ export class QbrTopPasMattersComponent implements OnInit {
   saveInstanceHours(chartInstance): void {
     this.chartHours = chartInstance;
     const result = this.tkHours.map(e => e.amount);
-    this.chartHours.series[0].options.colors = ['#00D1FF', '#FF632C', '#cccccc'];
+    this.chartHours.series[0].options.colors = ['#00D1FF', '#FF0000', '#cccccc'];
     this.chartHours.series[0].setData(result);
   }
   saveInstanceBB(chartInstance): void {
