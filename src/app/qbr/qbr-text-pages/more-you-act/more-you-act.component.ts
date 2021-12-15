@@ -20,9 +20,9 @@ export class MoreYouActComponent implements OnInit {
         icon: 'notepad.png',
         text: 'Detailed direction from Bodhala\'s Expert Client Success team helps you target specific firms with specific recommendations for work allocation and other optimization strategies.'
       },
-      {label: 'Rate Card RFP',
+      {label: 'Rate Card Collection',
         icon: 'files.png',
-        text: 'Complement Bodhala\'s benchmarking reports with a competitive Rate Card RFP process.<br/><br/> Get the best counsel for the best possible price.'
+        text: 'Complement Bodhala\'s benchmarking reports with a competitive Rate Card Collection process.<br/><br/> Get the best counsel for the best possible price.'
       }
     ];
   }

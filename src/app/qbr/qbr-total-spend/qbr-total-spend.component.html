@@ -13,7 +13,7 @@
             <span *ngIf="metric.addInfo" class="oval-label mb5" [ngClass]=" {'oval-label-yellow': i % 2 == 0, 'oval-label-black': i % 2 > 0}">{{metric.addInfo}}</span>
           </div>
           <div class="p-md-6">
-            <div class="qbr-subtitle">{{ metric.amount | number:'1.0-0'}}</div>
+            <div class="qbr-subtitle">${{ metric.amount | number:'1.0-0'}}</div>
             <div *ngIf="metric.matterName" class="matter-name ml5">{{metric.matterName}}</div>
           </div>
           <div class="p-md-6">
