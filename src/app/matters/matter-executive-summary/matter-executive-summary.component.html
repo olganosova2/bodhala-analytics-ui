@@ -19,7 +19,7 @@
       <bd-matter-total-panel [metric]="metric"></bd-matter-total-panel>
     </div>
   </div>
-  <div class="panel-wrapper">
+  <div class="panel-wrapper mt20">
     <div class="exs-panel-title">Top Tasks / Documents</div>
     <table class="full-width">
       <thead>
@@ -32,6 +32,9 @@
       </thead>
       <tr *ngFor="let doc of documents">
         <td>{{doc.canonical}}</td>
+        <td>${{doc.total_cost | number:'1.0-0'}}</td>
+        <td>{{doc.tk_total_hours | number:'1.1-1'}}%</td>
+        <td>{{doc.tk_total_hours / doc.total_hours * 100 | number:'1.1-1'}}%</td>
 
       </tr>
 

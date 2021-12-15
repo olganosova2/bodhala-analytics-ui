@@ -36,4 +36,8 @@
   color: $body-color;
   width: 110px;
 }
+td, th {
+  padding : 15px 0;
+  border-bottom: 1px solid $light-gray;
+}
 

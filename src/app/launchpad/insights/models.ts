@@ -9,6 +9,7 @@ export interface IInsight {
   insight_type: string;
   title: string;
   description: string;
+  client_matter_id?: string;
   is_enabled: boolean;
   created_on: string;
   created_by: string;
