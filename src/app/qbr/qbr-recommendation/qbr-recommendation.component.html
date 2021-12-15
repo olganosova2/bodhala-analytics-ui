@@ -24,7 +24,9 @@
           <div class="qbr-recommendation-text mt20"><span class="font-bold">Opportunity: </span>
             <span [innerHTML]="rec?.opportunity"></span>
           </div>
-          <div class="qbr-recommendation-text mt20"><span class="font-bold">Action Recommended: </span>
+          <div class="qbr-recommendation-text mt20">
+            <span class="font-bold" *ngIf="qbrRecommendationType !== 'Insights'">Action Recommended: </span>
+            <span class="font-bold" *ngIf="qbrRecommendationType === 'Insights'">Why it matters: </span>
             <span [innerHTML]="rec?.recommendation"></span>
           </div>
           <div class="blue-line-labels full-width">
