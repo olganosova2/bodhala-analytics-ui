@@ -17,6 +17,7 @@ export interface IInsight {
   title: string;
   description: string;
   client_matter_id?: string;
+  bh_lawfirm_id?: number;
   is_enabled: boolean;
   created_on: string;
   created_by: string;

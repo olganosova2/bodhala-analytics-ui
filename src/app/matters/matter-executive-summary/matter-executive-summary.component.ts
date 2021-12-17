@@ -58,7 +58,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     );
   }
   getMatterInsight(): void {
-    const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId};
+    const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: this.firmId};
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getMatterInsight', params).subscribe(
       (data: any) => {
         if (data.result) {

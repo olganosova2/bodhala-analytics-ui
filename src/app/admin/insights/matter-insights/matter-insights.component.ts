@@ -6,6 +6,7 @@ import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {IEntityConfig} from '../../client-configs/client-configs-model';
 import {IMatterExecSummary, IMatterTotalsPanel} from '../../../matters/matter-executive-summary/model';
 import {MatterAnalysisService} from '../../../matters/matter-executive-summary/matter-analysis.service';
+import {MatSelectChange} from '@angular/material/select';
 
 @Component({
   selector: 'bd-matter-insights',
@@ -14,9 +15,11 @@ import {MatterAnalysisService} from '../../../matters/matter-executive-summary/m
 })
 export class MatterInsightsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
-  @Input() matters: Array<IClientMatter> = [];
   filteredNames: Array<IClientMatter> = [];
   matterId: string;
+  firm: IClientMatter;
+  firmId: number;
+  filteredFirms: Array<IClientMatter> = [];
   matterName: string;
   summaryData: IMatterExecSummary;
   totalPanels: Array<IMatterTotalsPanel> = [];
@@ -28,32 +31,48 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
               public userService: UserService) { }
 
   ngOnInit(): void {
-    // this.loadMatters();
   }
-  loadMatters(): void {
-    const params = { clientId: this.selectedClientId.toString()};
+  loadMatters(value: string): void {
+    if (!value || value.length < 3) {
+      this.filteredNames = [];
+      this.filteredFirms = [];
+      return;
+    }
+    value = value.replace('(', '');
+    value = value.replace(')', '');
+    const params = { clientId: this.selectedClientId.toString(), typeahead: value, limit: 50};
     this.pendingRequest = this.httpService.makeGetRequest<IClientMatter>('getMatterListByClient', params).subscribe(
       (data: any) => {
-        this.matters = data.result;
+        this.filteredNames = data.result;
       }
     );
   }
-  filterMatters(evt: string): void {
-    if (!evt) {
-      this.filteredNames = [];
-    }
-    this.filteredNames = this.matters.filter(e => e.name.toLowerCase().startsWith(evt.toLowerCase()) || e.id.toLowerCase().startsWith(evt.toLowerCase())) || [];
-  }
-  getMatterByName(evt: MatAutocompleteSelectedEvent): void {
+  loadFirms(evt: MatAutocompleteSelectedEvent): void {
     if (evt.option.value && evt.option.value.id) {
       this.matterId = evt.option.value.id;
       this.matterName = evt.option.value.name;
+      // this.getMatterSummary();
+      // this.getMatterInsight();
+      const mattersArr = [];
+      mattersArr.push(this.matterId);
+      const params = {client_id: this.selectedClientId.toString(), filter_name: 'firms', matters: JSON.stringify(mattersArr)};
+      this.pendingRequest = this.httpService.makeGetRequest<IClientMatter>('getFirmsForMatter', params).subscribe(
+        (data: any) => {
+          this.filteredFirms = data.result || [];
+        }
+      );
+    }
+  }
+  getDataByMatterAndFirm(evt: MatSelectChange): void {
+    if (evt.value && evt.value.id) {
+      // this.matterId = evt.option.value.id;
+      // this.matterName = evt.option.value.name;
       this.getMatterSummary();
       this.getMatterInsight();
     }
   }
   getMatterSummary(): void {
-    const params = { client_id: this.selectedClientId, matter_id: this.matterId};
+    const params = { client_id: this.selectedClientId, matter_id: this.matterId, firm_id: this.firm.id};
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
         if (data.result && data.result.ade_data) {
@@ -64,12 +83,10 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
     );
   }
   getMatterInsight(): void {
-    const params = {client_id: this.selectedClientId, matter_id: this.matterId};
+    const params = {client_id: this.selectedClientId, matter_id: this.matterId, firm_id: this.firm.id};
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getAdminMatterInsight', params).subscribe(
       (data: any) => {
-        if (data.result) {
           this.matterSelected.emit(data.result);
-        }
       }
     );
   }
@@ -81,9 +98,16 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
     this.totalPanels = [];
     this.matterName = null;
     this.matterId = null;
+    this.firmId = null;
+    this.firm = null;
+    this.filteredNames = [];
+    this.filteredFirms = [];
   }
   getMatterId(): string {
     return this.matterId;
+  }
+  getFirmId(): number {
+    return this.firm ? Number(this.firm.id) : null;
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

@@ -12,7 +12,7 @@
   <div class="mt10" *ngIf="insights.length > 0">
     <mat-tab-group (selectedTabChange)="changeTab($event)" [(selectedIndex)]="insightIx">
       <mat-tab label="Matter-Specific">
-        <bd-matter-insights [selectedClientId]="selectedClientId" [matters]="matters" (matterSelected)="selectMatter($event)"></bd-matter-insights>
+        <bd-matter-insights [selectedClientId]="selectedClientId"  (matterSelected)="selectMatter($event)"></bd-matter-insights>
       </mat-tab>
       <mat-tab label="Block Billing">
         <div class="mb10 mt20">

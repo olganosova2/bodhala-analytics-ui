@@ -8,6 +8,7 @@ import {IMatterTotalsPanel} from '../model';
 })
 export class MatterTotalPanelComponent implements OnInit {
   @Input() metric: IMatterTotalsPanel;
+  @Input() isAdmin: boolean = false;
   constructor() { }
 
   ngOnInit(): void {

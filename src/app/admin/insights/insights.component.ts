@@ -102,6 +102,7 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
       title: type === 'Matter' ? 'Bodhala Insight' : '',
       description: '',
       client_matter_id: null,
+      bh_lawfirm_id: null,
       is_enabled: true,
       client_id: this.selectedClientId,
       created_on: null,
@@ -113,12 +114,13 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
     };
     return result;
   }
-  selectMatter(matter: IInsight) {
-    if (matter) {
-      this.selectedInsight = Object.assign({}, matter);
+  selectMatter(insight: IInsight) {
+    if (insight) {
+      this.selectedInsight = Object.assign({}, insight);
     } else {
       this.selectedInsight = this.createNewInsight(IAdminInsightType.Matter);
       this.selectedInsight.client_matter_id = this.matterInsightsComp.getMatterId();
+      this.selectedInsight.bh_lawfirm_id = this.matterInsightsComp.getFirmId();
     }
   }
   processInsights(insights: Array<IInsight>): void {

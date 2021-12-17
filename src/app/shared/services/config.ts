@@ -167,6 +167,7 @@ export const END_POINTS_URLS = {
   getAdminMatterInsight: {url: BASE_URL + 'admin/getMatterInsight', showLoading: true},
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
   saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
+  getFirmsForMatter: {url: BASE_URL + 'admin/getFirmsForMatter', showLoading: true},
 
 
 };

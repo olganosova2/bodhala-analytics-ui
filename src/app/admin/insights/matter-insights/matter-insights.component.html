@@ -1,20 +1,27 @@
-<div class="panel-wrapper" *ngIf="matters && matters.length > 0">
+<div class="panel-wrapper">
   Matter: <span class="font-bold">{{matterName}}</span>
   <mat-form-field appearance="outline" class="full-width">
-    <input type="text" matInput [(ngModel)]="matterId" autocomplete="off"  required (input)="filterMatters($event.target.value)"
+    <input type="text" matInput [(ngModel)]="matterId" autocomplete="off"  required (input)="loadMatters($event.target.value)"
            maxlength="255" [matAutocomplete]="auto" name="matterId" placeholder="Type to search by Matter ID or Matter Name">
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getMatterByName($event)" [displayWith]="getOptionText">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="loadFirms($event)" [displayWith]="getOptionText">
       <mat-option *ngFor="let option of filteredNames; let i = index" [value]="option">
         {{ option.name }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-</div>
-<div class="p-grid mt20">
-  <div class="p-col-6 pr20 pt20" *ngFor="let metric of totalPanels">
-    <bd-matter-total-panel [metric]="metric"></bd-matter-total-panel>
+  <div class="mb20 mt20">
+    <mat-form-field appearance="outline">
+      <mat-label>Select a Firm</mat-label>
+      <mat-select [(ngModel)]="firm" (selectionChange)="getDataByMatterAndFirm($event)">
+        <mat-option *ngFor="let firm of filteredFirms" [value]="firm">{{firm.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 </div>
-<div class="panel-wrapper" *ngIf="!matters || matters.length === 0">
-  No matters for this client found.
+
+<div class="p-grid mt20">
+  <div class="p-col-6 pr20 pt20" *ngFor="let metric of totalPanels">
+    <bd-matter-total-panel [metric]="metric" [isAdmin]="true"></bd-matter-total-panel>
+  </div>
 </div>
+
