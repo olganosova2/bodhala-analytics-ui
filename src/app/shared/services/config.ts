@@ -116,6 +116,8 @@ export const END_POINTS_URLS = {
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
   getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: true},
+  getMatterListByClient: {url: BASE_URL + 'analytics/getMatterListByClient', showLoading: true},
+  getMatterInsight: {url: BASE_URL + 'client/getMatterInsight', showLoading: true},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -161,6 +163,10 @@ export const END_POINTS_URLS = {
   reuploadLedes: { url: BASE_URL + 'admin/reuploadLedes', showLoading: false},
   findFirm: { url: BASE_URL + 'admin/findFirm', showLoading: false},
   getLEDESUpload: { url: BASE_URL + 'admin/getLEDESUpload', showLoading: false},
+  getAdminInsights: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
+  getAdminMatterInsight: {url: BASE_URL + 'admin/getMatterInsight', showLoading: true},
+  getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
+  saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
 
 
 };

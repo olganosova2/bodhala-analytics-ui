@@ -1,0 +1,62 @@
+<div>
+  <div *ngIf="messageService.messages.length>0" class="content-body">
+    <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
+      <bd-message-item [alert]="message" [index]="i"></bd-message-item>
+    </div>
+  </div>
+  <div class="font-bold mb20">Please select a client</div>
+
+  <div class="mt10">
+    <bd-client-drop-down (clientSelected)="getClientInsights($event)"></bd-client-drop-down>
+  </div>
+  <div class="mt10" *ngIf="insights.length > 0">
+    <mat-tab-group (selectedTabChange)="changeTab($event)" [(selectedIndex)]="insightIx">
+      <mat-tab label="Matter-Specific">
+        <bd-matter-insights [selectedClientId]="selectedClientId" [matters]="matters" (matterSelected)="selectMatter($event)"></bd-matter-insights>
+      </mat-tab>
+      <mat-tab label="Block Billing">
+        <div class="mb10 mt20">
+          <span class="left-column">Last Month Block Billing:</span> <span
+          class="font-bold ml20">{{summary?.last_percent_block_billed | number:'1.0-0'}}%</span>
+        </div>
+        <div class="mb10">
+          <span class="left-column">Average Block Billing:</span> <span
+          class="font-bold ml20">{{summary?.avg_percent_block_billed | number:'1.0-0'}}%</span>
+        </div>
+      </mat-tab>
+      <mat-tab label="BPI">
+        <div class="mb10 mt20">
+          <span class="left-column">Average BPI {{summary?.dates?.currentMonthEnd}}:</span> <span
+          class="font-bold ml20">{{summary?.BPI_current?.bodhala_price_index | currency }}</span>
+        </div>
+        <div class="mb10">
+          <span class="left-column">Average BPI {{summary?.dates?.yearAgoMonthEnd}}:</span> <span
+          class="font-bold ml20">{{summary?.BPI_last_year?.bodhala_price_index | currency }}</span>
+        </div>
+        <div class="mb10">
+          <span class="left-column">YoY:</span> <span class="font-bold ml20">{{summary?.increaseYoY | number:'1.0-0'}}
+          %</span>
+        </div>
+      </mat-tab>
+      <mat-tab label="Invoice IQ">
+        <div class="mb10 mt20">
+          <span class="left-column-wide">Disallowed Billing Items {{summary?.dates?.currentMonthEnd}}:</span>
+          <span class="font-bold ml20"
+                *ngIf="summary?.invoiceIQ_current_disallowed"> {{summary.invoiceIQ_current_disallowed?.total_billed | currency }}</span>
+        </div>
+        <div class="mb10">
+          <span class="left-column-wide">Disallowed Billing Items {{summary?.dates?.yearAgoMonthEnd}}:</span>
+          <span class="font-bold ml20"
+                *ngIf="summary?.invoiceIQ_last_year_disallowed">{{summary.invoiceIQ_last_year_disallowed?.total_billed | currency }}</span>
+        </div>
+      </mat-tab>
+      <mat-tab label="Blended Rate">
+        <bd-blended-rate-card [summary]="summary"></bd-blended-rate-card>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div *ngIf="selectedInsight">
+    <bd-insights-card [insight]="selectedInsight" (saveRequested)="saveInsight($event)"></bd-insights-card>
+  </div>
+  <!--  <lib-saved-views-transfer *ngIf="userService.currentUser.email ==='olga.nosova@bodhala.com'"></lib-saved-views-transfer>-->
+</div>

@@ -1,0 +1,33 @@
+<div>
+  <mat-card class="mt10">
+    <mat-card-title>
+<!--      <h4>{{insight.insight_type}}</h4>-->
+    </mat-card-title>
+    <mat-card-content>
+      <div *ngIf="insight && insight?.insight_type !== 'Matter'">
+        <div>Title <i>({{50 - insight.title.length}} character remaining)</i></div>
+        <mat-form-field appearance="outline" class="full-width">
+          <input type="text" matInput [(ngModel)]="insight.title" autocomplete="off" placeholder="Insight Title"
+                 maxlength="50">
+        </mat-form-field>
+      </div>
+      <div>
+        <div *ngIf="insight && insight?.insight_type !== 'Matter'">Description <i>({{200 - insight.description.length}} character remaining)</i></div>
+        <mat-form-field appearance="outline" class="full-width">
+          <textarea matInput [(ngModel)]="insight.description" rows="5" cols="40" placeholder="Description"
+                    [maxlength]="maxlength"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div>
+        <div class="pull-left">
+          <mat-slide-toggle (change)="toggle()" [checked]="insight.is_enabled">Enabled
+          </mat-slide-toggle>
+        </div>
+        <div class="pull-right">
+          <button mat-flat-button color="primary" (click)="saveInsight()" [disabled]="validateForm()">Save</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

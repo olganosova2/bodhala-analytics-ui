@@ -34,6 +34,7 @@ import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component'
 import {QbrDeckComponent} from './qbr/qbr-deck/qbr-deck.component';
 import {QbrDashboardComponent} from './qbr/qbr-dashboard/qbr-dashboard.component';
 import {MatterExecutiveSummaryComponent} from './matters/matter-executive-summary/matter-executive-summary.component';
+import {AdminInsightsComponent} from './admin/insights/insights.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -87,5 +88,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/subscription-list', component: SubscriptionListComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/ledes-imports', component: LedesImportsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/ledes-imports/:clientId', component: RerunUploadComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/insights', component: AdminInsightsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  // AdminInsightsComponent
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

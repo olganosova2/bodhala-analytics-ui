@@ -9,6 +9,9 @@ export class MatterAnalysisService {
   constructor() { }
   buildTotalPanels(summaryData: IMatterExecSummary): Array<IMatterTotalsPanel> {
     const result = [];
+    if (!summaryData) {
+      return result;
+    }
     let tMetric = { label: 'Total Spend', amount: summaryData.total_billed, format: '$', icon: 'bills.svg' };
     let metric = { titleMetric: tMetric,  subMetrics: []};
     this.addSubMetrics(metric);

@@ -143,6 +143,10 @@ import {MoreYouActComponent} from '../../qbr/qbr-text-pages/more-you-act/more-yo
 import {MatterExecutiveSummaryComponent} from '../../matters/matter-executive-summary/matter-executive-summary.component';
 import {MatterTitleBarComponent} from '../../matters/matter-executive-summary/matter-title-bar/matter-title-bar.component';
 import {MatterTotalPanelComponent} from '../../matters/matter-executive-summary/matter-total-panel/matter-total-panel.component';
+import {AdminInsightsComponent} from '../../admin/insights/insights.component';
+import {InsightsCardComponent} from '../../admin/insights/insights-card/insights-card.component';
+import {BlendedRateCardComponent} from '../../admin/insights/blended-rate-card/blended-rate-card.component';
+import {MatterInsightsComponent} from '../../admin/insights/matter-insights/matter-insights.component';
 
 
 
@@ -279,7 +283,11 @@ export const DECLARATIONS = [
   MoreYouActComponent,
   MatterExecutiveSummaryComponent,
   MatterTitleBarComponent,
-  MatterTotalPanelComponent
+  MatterTotalPanelComponent,
+  AdminInsightsComponent,
+  InsightsCardComponent,
+  BlendedRateCardComponent,
+  MatterInsightsComponent
 ];
 
 export const PROVIDERS = [

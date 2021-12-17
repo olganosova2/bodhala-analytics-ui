@@ -7,6 +7,7 @@ import {MatDialog} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';
 import {IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, MOCK_INSIGHT_TEXT} from './model';
 import {MatterAnalysisService} from './matter-analysis.service';
+import {IInsight} from '../../admin/insights/models';
 
 @Component({
   selector: 'bd-matter-executive-summary',
@@ -19,7 +20,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   firmId: number;
   summaryData: IMatterExecSummary;
   totalPanels: Array<IMatterTotalsPanel> = [];
-  insightText: string = MOCK_INSIGHT_TEXT;
+  insightText: string;
   insightExpanded: boolean = false;
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
@@ -42,19 +43,29 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     if (this.matterId) {
       this.getMatterSummary();
       this.getDocuments();
+      this.getMatterInsight();
     }
   }
   getMatterSummary(): void {
-    const params = { matter_id: this.matterId, firm_id: this.firmId};
+    const params = { client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: this.firmId};
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
-        if (data.result) {
-          this.summaryData = data.result[0];
+        if (data.result && data.result.ade_data) {
+          this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
           this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData);
         }
       }
     );
-
+  }
+  getMatterInsight(): void {
+    const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId};
+    this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getMatterInsight', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          this.insightText = data.result.description;
+        }
+      }
+    );
   }
   getDocuments(): void {
     const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id};
