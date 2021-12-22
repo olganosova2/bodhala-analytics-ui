@@ -22,6 +22,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   totalPanels: Array<IMatterTotalsPanel> = [];
   insightText: string;
   insightExpanded: boolean = false;
+  marketMatters: Array<string> = ['087260/818', '087260/843', '087260/101*'];
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
 
@@ -38,8 +39,8 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; });
-    this.matterId = '116332.0004'; // 'OSOS751VD';
-    this.firmId = 59; // 8635;
+    this.matterId = '087260/785'; // 'OSOS000CZ'; // 'OSOS751VD';
+    this.firmId = 4; // 8668; // 8635;
     if (this.matterId) {
       this.getMatterSummary();
       this.getDocuments();
@@ -47,7 +48,15 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     }
   }
   getMatterSummary(): void {
-    const params = { client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: this.firmId};
+    const arrFirms = [];
+    arrFirms.push(this.firmId.toString());
+    const arrMatters = [];
+    arrMatters.push(this.matterId);
+    const params = { client_id: this.userService.currentUser.client_info_id,
+      firms: JSON.stringify(arrFirms),
+      matters: JSON.stringify(arrMatters),
+      marketMatters: JSON.stringify(this.marketMatters),
+    };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
         if (data.result && data.result.ade_data) {

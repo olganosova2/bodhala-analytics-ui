@@ -122,6 +122,7 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
       this.selectedInsight.client_matter_id = this.matterInsightsComp.getMatterId();
       this.selectedInsight.bh_lawfirm_id = this.matterInsightsComp.getFirmId();
     }
+    this.insights[0] = Object.assign({}, this.selectedInsight);
   }
   processInsights(insights: Array<IInsight>): void {
     this.insights = [];

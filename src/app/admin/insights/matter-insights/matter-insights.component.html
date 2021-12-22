@@ -10,7 +10,8 @@
     </mat-autocomplete>
   </mat-form-field>
   <div class="mb20 mt20">
-    <mat-form-field appearance="outline">
+    <div *ngIf="firm">Firm: <span class="font-bold">{{firm?.name}} ({{firm?.id}})</span></div>
+    <mat-form-field appearance="outline" *ngIf="filteredFirms.length > 1">
       <mat-label>Select a Firm</mat-label>
       <mat-select [(ngModel)]="firm" (selectionChange)="getDataByMatterAndFirm($event)">
         <mat-option *ngFor="let firm of filteredFirms" [value]="firm">{{firm.name}}</mat-option>

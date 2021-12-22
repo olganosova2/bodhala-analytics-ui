@@ -36,6 +36,7 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
     if (!value || value.length < 3) {
       this.filteredNames = [];
       this.filteredFirms = [];
+      this.firm = null;
       return;
     }
     value = value.replace('(', '');
@@ -51,14 +52,17 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
     if (evt.option.value && evt.option.value.id) {
       this.matterId = evt.option.value.id;
       this.matterName = evt.option.value.name;
-      // this.getMatterSummary();
-      // this.getMatterInsight();
       const mattersArr = [];
       mattersArr.push(this.matterId);
       const params = {client_id: this.selectedClientId.toString(), filter_name: 'firms', matters: JSON.stringify(mattersArr)};
       this.pendingRequest = this.httpService.makeGetRequest<IClientMatter>('getFirmsForMatter', params).subscribe(
         (data: any) => {
           this.filteredFirms = data.result || [];
+          if (this.filteredFirms.length === 1) {
+            this.firm = this.filteredFirms[0];
+            this.getMatterSummary();
+            this.getMatterInsight();
+          }
         }
       );
     }
@@ -72,7 +76,11 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
     }
   }
   getMatterSummary(): void {
-    const params = { client_id: this.selectedClientId, matter_id: this.matterId, firm_id: this.firm.id};
+    const arrFirms = [];
+    arrFirms.push(this.firm.id.toString());
+    const arrMatters = [];
+    arrMatters.push(this.matterId);
+    const params = { client_id: this.selectedClientId, firms: JSON.stringify(arrFirms), matters: JSON.stringify(arrMatters)};
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
         if (data.result && data.result.ade_data) {
