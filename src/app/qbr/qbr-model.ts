@@ -144,7 +144,7 @@ export const qbrPieChartOptions = {
   title: {text: null},
   plotOptions: {
     pie: {
-      colors: ['#00D1FF', '#FF632C',  '#FFC327', '#cccccc'],
+      colors: ['#00D1FF', '#FF0000',  '#FFC327', '#cccccc'],
       dataLabels: {
         enabled: true,
         color: 'black',
@@ -187,7 +187,7 @@ const tkHoursPasAdditionalOptions = {
       pie: {
         size: '100%'
       },
-      colors: ['#00D1FF', '#FF632C', '#cccccc'],
+      colors: ['#00D1FF', '#FF0000', '#cccccc'],
       dataLabels: {
         enabled: true,
         color: 'black',
