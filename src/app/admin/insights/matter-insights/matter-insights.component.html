@@ -19,10 +19,6 @@
     </mat-form-field>
   </div>
 </div>
+<bd-matter-totals-metrics *ngIf="firm" [isAdmin]="true" [clientId]="selectedClientId" [firmId]="firm.id" [matterId]="matterId"></bd-matter-totals-metrics>
 
-<div class="p-grid mt20">
-  <div class="p-col-6 pr20 pt20" *ngFor="let metric of totalPanels">
-    <bd-matter-total-panel [metric]="metric" [isAdmin]="true"></bd-matter-total-panel>
-  </div>
-</div>
 

@@ -22,6 +22,7 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
   filteredFirms: Array<IClientMatter> = [];
   matterName: string;
   summaryData: IMatterExecSummary;
+  marketData: IMatterExecSummary;
   totalPanels: Array<IMatterTotalsPanel> = [];
   @Input() selectedClientId: number;
   @Output() matterSelected: EventEmitter<IInsight> = new EventEmitter<IInsight>();
@@ -60,7 +61,6 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
           this.filteredFirms = data.result || [];
           if (this.filteredFirms.length === 1) {
             this.firm = this.filteredFirms[0];
-            this.getMatterSummary();
             this.getMatterInsight();
           }
         }
@@ -71,24 +71,8 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
     if (evt.value && evt.value.id) {
       // this.matterId = evt.option.value.id;
       // this.matterName = evt.option.value.name;
-      this.getMatterSummary();
       this.getMatterInsight();
     }
-  }
-  getMatterSummary(): void {
-    const arrFirms = [];
-    arrFirms.push(this.firm.id.toString());
-    const arrMatters = [];
-    arrMatters.push(this.matterId);
-    const params = { client_id: this.selectedClientId, firms: JSON.stringify(arrFirms), matters: JSON.stringify(arrMatters)};
-    this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
-      (data: any) => {
-        if (data.result && data.result.ade_data) {
-          this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
-          this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData);
-        }
-      }
-    );
   }
   getMatterInsight(): void {
     const params = {client_id: this.selectedClientId, matter_id: this.matterId, firm_id: this.firm.id};

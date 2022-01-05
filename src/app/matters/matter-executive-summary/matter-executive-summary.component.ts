@@ -19,10 +19,11 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   matterId: string;
   firmId: number;
   summaryData: IMatterExecSummary;
+  marketData: IMatterExecSummary;
   totalPanels: Array<IMatterTotalsPanel> = [];
   insightText: string;
   insightExpanded: boolean = false;
-  marketMatters: Array<string> = ['087260/818', '087260/843', '087260/101*'];
+  marketMatters: Array<string> =  ['087260/818', '087260/843', '087260/101*'];
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
 
@@ -42,29 +43,13 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.matterId = '087260/785'; // 'OSOS000CZ'; // 'OSOS751VD';
     this.firmId = 4; // 8668; // 8635;
     if (this.matterId) {
-      this.getMatterSummary();
       this.getDocuments();
       this.getMatterInsight();
     }
   }
-  getMatterSummary(): void {
-    const arrFirms = [];
-    arrFirms.push(this.firmId.toString());
-    const arrMatters = [];
-    arrMatters.push(this.matterId);
-    const params = { client_id: this.userService.currentUser.client_info_id,
-      firms: JSON.stringify(arrFirms),
-      matters: JSON.stringify(arrMatters),
-      marketMatters: JSON.stringify(this.marketMatters),
-    };
-    this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
-      (data: any) => {
-        if (data.result && data.result.ade_data) {
-          this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
-          this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData);
-        }
-      }
-    );
+  assignData(evt: Array<IMatterExecSummary>): void {
+    this.summaryData = evt[0];
+    this.marketData = evt[1];
   }
   getMatterInsight(): void {
     const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: this.firmId};
@@ -77,7 +62,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     );
   }
   getDocuments(): void {
-    const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id};
+    const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id, limit: 3};
     this.pendingRequest = this.httpService.makeGetRequest('getMatterDocuments', params).subscribe(
       (data: any) => {
         this.documents = (data.result || []);
@@ -88,6 +73,9 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   toggleInsight(toExpand: boolean): void {
     this.insightExpanded = toExpand;
+  }
+  goToViewDocs(): void {
+
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

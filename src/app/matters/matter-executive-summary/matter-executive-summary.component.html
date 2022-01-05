@@ -1,6 +1,6 @@
 <div class="exs-div">
   <div><span class="font-bold">Matter Staffing Analysis</span> Matter: {{summaryData?.matter_name}}</div>
-  <bd-matter-title-bar [title]="'Executive Summary'" [index]="0"></bd-matter-title-bar>
+  <bd-matter-title-bar [title]="'Overview'" [index]="0"></bd-matter-title-bar>
 <div class="insights-bar justify-start mt30" *ngIf="insightText">
   <img src="assets/images/logo-single.svg" width="37px" height="45px" class="mr20"/>
   <div class="ml20 mr20">
@@ -14,13 +14,13 @@
       <i class="fa fa-angle-up ml10"></i></button>
   </div>
 </div>
-  <div class="p-grid mt20">
-    <div class="p-col-6 pr20 pt20" *ngFor="let metric of totalPanels">
-      <bd-matter-total-panel [metric]="metric"></bd-matter-total-panel>
-    </div>
-  </div>
+  <bd-matter-totals-metrics *ngIf="firmId"  [firmId]="firmId" [matterId]="matterId" (dataLoaded)="assignData($event)"></bd-matter-totals-metrics>
   <div class="panel-wrapper mt20">
-    <div class="exs-panel-title">Top Tasks / Documents</div>
+    <div class="justify-between">
+      <div class="exs-panel-title">Top Tasks / Documents</div>
+      <div class="valign-middle pointer-hand mr30" (click)="goToViewDocs()">View All  <i class="fa fa-angle-right ml10"></i></div>
+    </div>
+
     <table class="full-width">
       <thead>
       <tr class="font-bold">
@@ -40,4 +40,5 @@
 
     </table>
   </div>
+  <bd-matter-total-spend *ngIf="summaryData" [summaryData]="summaryData" [marketData]="marketData"></bd-matter-total-spend>
 </div>

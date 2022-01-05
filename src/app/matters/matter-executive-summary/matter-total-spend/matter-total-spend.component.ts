@@ -1,0 +1,73 @@
+import {Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CommonService} from '../../../shared/services/common.service';
+import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {FiltersService} from '../../../shared/services/filters.service';
+import {MatDialog} from '@angular/material/dialog';
+import {MatterAnalysisService} from '../matter-analysis.service';
+import {IMatterExecSummary, ITkTotalSpend, tkTotalSpendChartOptions} from '../model';
+import {Subscription} from 'rxjs';
+import {metricsRightChartOptions} from '../../../qbr/qbr-model';
+
+@Component({
+  selector: 'bd-matter-total-spend',
+  templateUrl: './matter-total-spend.component.html',
+  styleUrls: ['../matter-executive-summary.component.scss', './matter-total-spend.component.scss']
+})
+export class MatterTotalSpendComponent implements OnInit, OnDestroy {
+  pendingRequest: Subscription;
+  options: any;
+  chart: any;
+  tkTotalSpend: Array<ITkTotalSpend> = [];
+  @Input() summaryData: IMatterExecSummary;
+  @Input() marketData: IMatterExecSummary;
+  @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
+
+  constructor(private route: ActivatedRoute,
+              public commonServ: CommonService,
+              public appStateService: AppStateService,
+              public userService: UserService,
+              private httpService: HttpService,
+              public filtersService: FiltersService,
+              public router: Router,
+              public dialog: MatDialog,
+              public utilService: UtilService,
+              public matterAnalysisService: MatterAnalysisService) { }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.resizeChart();
+  }
+
+  ngOnInit(): void {
+    this.tkTotalSpend = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.marketData);
+    this.setUpChartOptions();
+  }
+  setUpChartOptions(): void {
+    this.options = Object.assign({}, tkTotalSpendChartOptions);
+  }
+  saveInstance(chartInstance): void {
+    this.chart = chartInstance;
+    this.chart.xAxis[0].setCategories(this.tkTotalSpend.map(e => e.chartLabel));
+    this.chart.series[0].setData(this.tkTotalSpend.map(e => e.actual));
+    this.chart.series[1].setData(this.tkTotalSpend.map(e => e.market));
+    setTimeout(() => {
+      this.resizeChart();
+    });
+  }
+  resizeChart(): void {
+    const width = this.chartDiv.nativeElement.offsetWidth - 40;
+    const height = 400;
+
+    if (!this.chart || width <= 0) {
+      return;
+    }
+    this.chart.setSize(width, height, false);
+  }
+  ngOnDestroy() {
+    if (this.pendingRequest) {
+      this.pendingRequest.unsubscribe();
+    }
+  }
+
+}

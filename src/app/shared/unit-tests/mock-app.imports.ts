@@ -147,6 +147,8 @@ import {AdminInsightsComponent} from '../../admin/insights/insights.component';
 import {InsightsCardComponent} from '../../admin/insights/insights-card/insights-card.component';
 import {BlendedRateCardComponent} from '../../admin/insights/blended-rate-card/blended-rate-card.component';
 import {MatterInsightsComponent} from '../../admin/insights/matter-insights/matter-insights.component';
+import {MatterTotalSpendComponent} from '../../matters/matter-executive-summary/matter-total-spend/matter-total-spend.component';
+import {MatterTotalsMetricsComponent} from '../../matters/matter-executive-summary/matter-totals-metrics/matter-totals-metrics.component';
 
 
 
@@ -287,7 +289,9 @@ export const DECLARATIONS = [
   AdminInsightsComponent,
   InsightsCardComponent,
   BlendedRateCardComponent,
-  MatterInsightsComponent
+  MatterInsightsComponent,
+  MatterTotalSpendComponent,
+  MatterTotalsMetricsComponent
 ];
 
 export const PROVIDERS = [

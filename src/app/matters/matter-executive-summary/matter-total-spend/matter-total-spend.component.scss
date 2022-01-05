@@ -1,0 +1,20 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+.oval-label {
+  border-radius: 31px;
+  font-size: 16px;
+  color: $body-color;
+  padding: 15px 10px;
+  background-color: $light-gray;
+}
+.oval-label-red {
+  color: #fff;
+  background-color: red;
+}
+.oval-label-green {
+  color: #fff;
+  background-color: $qbr-green;
+}
+.increase-span {
+  font-size: 24px;
+}

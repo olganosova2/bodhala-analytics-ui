@@ -13,5 +13,8 @@ export class MatterTotalPanelComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  goToView(metric: string) {
+
+  }
 
 }
