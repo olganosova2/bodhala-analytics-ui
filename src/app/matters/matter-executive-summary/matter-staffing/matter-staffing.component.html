@@ -1,0 +1,17 @@
+<div class="exs-div" id="matterAnalysis">
+  <div><span class="font-bold">Matter Staffing Analysis</span> Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></div>
+  <bd-matter-title-bar [matterId]="matterId" [firmId]="firmId" [title]="'Staffing & Rate Analysis'" [index]="1"></bd-matter-title-bar>
+  <bd-matter-total-spend *ngIf="summaryData"
+                         [page]="'Staffing'"
+                         [summaryData]="summaryData"
+                         [marketData]="marketData"
+                         [marketRecords]="marketRecords"
+                         [metricType]="'TotalSpend'"></bd-matter-total-spend>
+
+  <bd-matter-total-spend *ngIf="summaryData"
+                         [page]="'Staffing'"
+                         [summaryData]="summaryData"
+                         [marketData]="marketData"
+                         [marketRecords]="marketRecords"
+                         [metricType]="'AverageRates'"></bd-matter-total-spend>
+</div>

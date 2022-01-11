@@ -1,10 +1,13 @@
 @import "../../../../assets/styles/colors.scss";
 @import "../../../../assets/styles/_variables.scss";
+.table-subtitle {
+  font-size: 24px;
+}
 .oval-label {
   border-radius: 31px;
   font-size: 16px;
   color: $body-color;
-  padding: 15px 10px;
+  padding: 5px;
   background-color: $light-gray;
 }
 .oval-label-red {
@@ -15,6 +18,10 @@
   color: #fff;
   background-color: $qbr-green;
 }
+.oval-label-orange {
+  color: #fff;
+  background-color: #FF8B4A;
+}
 .increase-span {
-  font-size: 24px;
+  // font-size: 24px;
 }

@@ -1,10 +1,10 @@
-<div class="exs-div">
-  <div><span class="font-bold">Matter Staffing Analysis</span> Matter: {{summaryData?.matter_name}}</div>
-  <bd-matter-title-bar [title]="'Overview'" [index]="0"></bd-matter-title-bar>
+<div class="exs-div" id="matterAnalysis">
+  <div><span class="font-bold">Matter Staffing Analysis</span> Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></div>
+  <bd-matter-title-bar [matterId]="matterId" [firmId]="firmId" [title]="'Matter Overview'" [index]="0"></bd-matter-title-bar>
 <div class="insights-bar justify-start mt30" *ngIf="insightText">
-  <img src="assets/images/logo-single.svg" width="37px" height="45px" class="mr20"/>
+  <img src="assets/images/logo-black-short.png" width="40px" height="44px" class="mr20"/>
   <div class="ml20 mr20">
-    <span class="insights-title">BODHALA</span><br/><span class="insights-blue">INSIGHT</span>
+    <span>INSIGHTS &</span><br/><span>RECOMMENDATIONS</span>
   </div>
   <div class="insights-content ml20" [innerHTML]="utilService.formatTextForHtml(insightText, !insightExpanded, 210)"></div>
   <div *ngIf="insightText && insightText.length > 210">
@@ -40,5 +40,10 @@
 
     </table>
   </div>
-  <bd-matter-total-spend *ngIf="summaryData" [summaryData]="summaryData" [marketData]="marketData"></bd-matter-total-spend>
+  <bd-matter-total-spend *ngIf="summaryData"
+                         [page]="'Overview'"
+                         [summaryData]="summaryData"
+                         [marketData]="marketData"
+                         [marketRecords]="marketRecords"
+                         [metricType]="'TotalSpend'"></bd-matter-total-spend>
 </div>

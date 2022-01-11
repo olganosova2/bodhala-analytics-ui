@@ -1,32 +1,44 @@
 <div class="panel-wrapper mt20">
   <div class="justify-between">
-    <div class="exs-panel-title">Total Spend</div>
+    <div class="exs-panel-title">{{ matterAnalysisService.formatCardTitle(metricType) }}</div>
   </div>
   <div class="mt20" #chartDiv>
     <chart (load)="saveInstance($event.context)" [options]="options"></chart>
   </div>
 </div>
 <div class="panel-wrapper mt20">
+  <div class="table-subtitle">Market Benchmarks</div>
   <table class="full-width">
     <tr>
       <td style="width: 13%"></td>
-      <td *ngFor="let tk of tkTotalSpend" class="font-bold">{{tk.tableLabel}}</td>
+      <td *ngFor="let tk of metricData" class="font-bold">{{tk.tableLabel}}
+        <span *ngIf="page !== 'Overview' && metricType !== 'AverageTkOnMatter'" class="ml5" matTooltip="Low: {{tk.low | number:'1.0-0'}}, High: {{tk.high | number:'1.0-0'}}">
+        <span class="oval-label oval-label-red" *ngIf="tk.grade === 'POOR'">POOR</span>
+        <span class="oval-label oval-label-green" *ngIf="tk.grade === 'GOOD'">GOOD</span>
+        <span class="oval-label oval-label-orange" *ngIf="tk.grade === 'FAIR'">FAIR</span>
+          </span></td>
     </tr>
     <tr>
       <td class="font-bold">Actual</td>
-      <td *ngFor="let tk of tkTotalSpend">${{tk.actual | number:'1.0-0'}}</td>
+      <td *ngFor="let tk of metricData">${{tk.actual | number:'1.0-0'}}
+
+      </td>
     </tr>
     <tr>
       <td class="font-bold">Market</td>
-      <td *ngFor="let tk of tkTotalSpend">${{tk.market | number:'1.0-0'}}</td>
+      <td *ngFor="let tk of metricData">${{tk.market | number:'1.0-0'}}</td>
     </tr>
     <tr>
       <td class="font-bold">Delta</td>
-      <td *ngFor="let tk of tkTotalSpend">
+      <td *ngFor="let tk of metricData">
+        <span class="mr5"  [ngClass]=" {'font-red': tk.direction > 0, 'font-qbr-green': tk.direction < 0}">
+          <span *ngIf = "tk.direction > 0">+</span>
+          <span *ngIf = "tk.direction < 0">-</span>
+           <span *ngIf="tk.direction">${{tk.delta | number:'1.0-0'}}</span>
+        </span>
+
         <span class="oval-label" [ngClass]=" {'oval-label-red': tk.direction > 0, 'oval-label-green': tk.direction < 0}">
-            <span *ngIf = "tk.direction > 0">+</span>
-            <span *ngIf = "tk.direction < 0">-</span>
-            ${{tk.delta | number:'1.0-0'}}
+
           <span class="increase-span ml5">  {{ tk.increase | number:'1.0-0'}}%
            <em *ngIf="tk.direction > 0" class="fa fa-arrow-up"></em>
             <em *ngIf="tk.direction < 0" class="fa fa-arrow-down"></em>

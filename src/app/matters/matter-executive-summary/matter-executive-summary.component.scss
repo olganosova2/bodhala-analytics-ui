@@ -11,10 +11,10 @@
   font-weight: 700;
 }
 .insights-bar {
-  background-color: $body-color;
-  color: #fff;
+  border: 1px solid $light-gray;
+  color: $body-color;
   padding: 32px;
-  border-radius: 48px;
+  border-radius: 12px;
   position: relative;
 }
 .insights-title {
@@ -25,13 +25,13 @@
 }
 .insights-content {
   width: 830px;
-  color: #fff;
+  color: $body-color;
 }
 .insights-button {
   position: absolute;
   top: 40px;
   right: 40px;
-  background-color: $brand-blue;
+  background-color: $light-gray;
   font-size: 12px;
   color: $body-color;
   width: 110px;

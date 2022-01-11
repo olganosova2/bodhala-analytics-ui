@@ -5,9 +5,8 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {IMatterExecSummary, ITkTotalSpend, tkTotalSpendChartOptions} from '../model';
+import {currencyAxisChartOptions, IMatterExecSummary, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../model';
 import {Subscription} from 'rxjs';
-import {metricsRightChartOptions} from '../../../qbr/qbr-model';
 
 @Component({
   selector: 'bd-matter-total-spend',
@@ -18,9 +17,12 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   options: any;
   chart: any;
-  tkTotalSpend: Array<ITkTotalSpend> = [];
+  metricData: Array<IMetricDisplayData> = [];
+  @Input() page: string;
   @Input() summaryData: IMatterExecSummary;
   @Input() marketData: IMatterExecSummary;
+  @Input() marketRecords: Array<IMatterExecSummary> = [];
+  @Input() metricType: MetricCardType = MetricCardType.TotalSpend;
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
 
   constructor(private route: ActivatedRoute,
@@ -40,17 +42,25 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.tkTotalSpend = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.marketData);
+    if (this.metricType === MetricCardType.TotalSpend) {
+      this.metricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.marketData, this.marketRecords);
+    } else if (this.metricType === MetricCardType.AverageRates) {
+      this.metricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);
+    }
     this.setUpChartOptions();
   }
   setUpChartOptions(): void {
-    this.options = Object.assign({}, tkTotalSpendChartOptions);
+    if (this.metricType === MetricCardType.TotalSpend || MetricCardType.AverageRates) {
+      this.options = Object.assign({}, currencyAxisChartOptions);
+    } else {
+      this.options = Object.assign({}, matterColumnChartOptions);
+    }
   }
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
-    this.chart.xAxis[0].setCategories(this.tkTotalSpend.map(e => e.chartLabel));
-    this.chart.series[0].setData(this.tkTotalSpend.map(e => e.actual));
-    this.chart.series[1].setData(this.tkTotalSpend.map(e => e.market));
+    this.chart.xAxis[0].setCategories(this.metricData.map(e => e.chartLabel));
+    this.chart.series[0].setData(this.metricData.map(e => e.actual));
+    this.chart.series[1].setData(this.metricData.map(e => e.market));
     setTimeout(() => {
       this.resizeChart();
     });

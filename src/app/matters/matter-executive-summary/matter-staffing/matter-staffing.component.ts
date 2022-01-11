@@ -1,31 +1,31 @@
-import {Component, OnDestroy, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {HARDCODED_MARKET_MATTERS, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from '../model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {Subscription} from 'rxjs';
-import {HARDCODED_MARKET_MATTERS, IMatterExecSummary, IMatterTotalsPanel} from '../model';
 
 @Component({
-  selector: 'bd-matter-totals-metrics',
-  templateUrl: './matter-totals-metrics.component.html',
-  styleUrls: ['./matter-totals-metrics.component.scss']
+  selector: 'bd-matter-staffing',
+  templateUrl: './matter-staffing.component.html',
+  styleUrls: ['./matter-staffing.component.scss']
 })
-export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
+export class MatterStaffingComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
+  matterId: string;
+  firmId: number;
   summaryData: IMatterExecSummary;
   marketData: IMatterExecSummary;
   marketRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
+  insightText: string;
+  insightExpanded: boolean = false;
+  documents: Array<IMatterDocument> = [];
+  totalRecordsDocs: number;
   marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
-  @Input() clientId: string;
-  @Input() matterId: string;
-  @Input() firmId: number;
-  @Input() isAdmin: boolean = false;
-  @Output() dataLoaded: EventEmitter<any> = new EventEmitter<any>();
-
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -38,14 +38,19 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
               public matterAnalysisService: MatterAnalysisService) { }
 
   ngOnInit(): void {
-    this.getMatterSummary();
+    this.route.queryParams.subscribe(params => {  this.matterId = params.matterId;
+                                                  this.firmId = params.firmId; } );
+    if (this.matterId) {
+      this.getMatterSummary();
+    }
   }
+
   getMatterSummary(): void {
     const arrFirms = [];
     arrFirms.push(this.firmId.toString());
     const arrMatters = [];
     arrMatters.push(this.matterId);
-    const params = { client_id: this.isAdmin ? this.clientId : this.userService.currentUser.client_info_id,
+    const params = { client_id: this.userService.currentUser.client_info_id,
       firms: JSON.stringify(arrFirms),
       matters: JSON.stringify(arrMatters),
       marketMatters: JSON.stringify(this.marketMatters)
@@ -63,11 +68,11 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
             marketData: this.marketData,
             marketRecords: this.marketRecords
           };
-          this.dataLoaded.emit(emitted);
         }
       }
     );
   }
+
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {

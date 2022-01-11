@@ -182,6 +182,7 @@ import {BlendedRateCardComponent} from './admin/insights/blended-rate-card/blend
 import { MatterInsightsComponent } from './admin/insights/matter-insights/matter-insights.component';
 import { MatterTotalSpendComponent } from './matters/matter-executive-summary/matter-total-spend/matter-total-spend.component';
 import { MatterTotalsMetricsComponent } from './matters/matter-executive-summary/matter-totals-metrics/matter-totals-metrics.component';
+import { MatterStaffingComponent } from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -311,7 +312,8 @@ export function initHttp(service: HttpService) {
     BlendedRateCardComponent,
     MatterInsightsComponent,
     MatterTotalSpendComponent,
-    MatterTotalsMetricsComponent
+    MatterTotalsMetricsComponent,
+    MatterStaffingComponent
   ],
   entryComponents: [
     PillComponent,

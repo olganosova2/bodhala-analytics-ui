@@ -1,31 +1,75 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
 
-export const MOCK_INSIGHT_TEXT = 'Enim aliquet odio ipsum risus dictum nisl id amet, interdum. Convallis neque accumsan sapien tellus lobortis mauris. Suscipit elit commodo nunc, aliquet eu, accumsan, egestas diam egestas. Magna vestibulum ultrices leo quisque tellus vel. Sed cursus ut vel viverra diam ornare posuere phasellus.<br/><br/>Ultrices ut blandit in suspendisse duis ullamcorper urna, arcu, ornare. Vel tortor laoreet tincidunt venenatis. Habit ant at vitae pretium in praesent volutpat. Orci velit nunc, vel id sit quis suscipit non. Sapien sed massa lectus a augue amet, sollicitudin viverra. Lobortis euismod tempus hendrerit consequat pellentesque semper id elementum, arcu. Et potenti in interdum tincidunt. ';
+export const HARDCODED_MARKET_MATTERS = [
+  '087260/785',
+  '087260/818',
+  '087260/843',
+  '087260/101*',
+  '087260/729',
+  '087260/809',
+  '087260/816',
+  '087260/834',
+  '087260/821',
+  '087260/844'
+];
+
+export enum MetricCardType {
+  TotalSpend = 'TotalSpend',
+  AverageRates = 'AverageRates',
+  TotalHoursWorked = 'TotalHoursWorked',
+  PercentOfHoursWorked = 'PercentOfHoursWorked',
+  AverageTkOnMatter = 'AverageTkOnMatter'
+}
+
+export enum MetricGrade {
+  GOOD = 'GOOD',
+  FAIR = 'FAIR',
+  POOR = 'POOR',
+}
 
 export interface IMatterExecSummary {
   matter_name?: string;
-  total_billed: number;
+  client_matter_id?: string;
+  total_billed?: number;
+  total_expenses?: number;
   total_hours_billed?: number;
-  partner_billed: number;
-  associate_billed: number;
-  other_billed: number;
+  partner_billed?: number;
+  partner_writeoff?: number;
+  associate_billed?: number;
+  associate_writeoff?: number;
+  other_billed?: number;
   partner_hours?: number;
+  partner_writeoff_hours?: number;
   associate_hours?: number;
+  associate_writeoff_hours?: number;
+  other_hours?: number;
   avg_partner_rate?: number;
   avg_associate_rate?: number;
+  avg_other_rate?: number;
+  timekeepers?: number;
+  partners?: number;
+  associates?: number;
+  others?: number;
+  blended_rate?: number;
+  percent_partner_hours?: number;
+  percent_associate_hours?: number;
+  percent_other_hours?: number;
 }
+
 export interface IMatterTotalsMetric {
- label: string;
- amount: number;
- increase?: number;
- direction?: number;
- format?: string;
- icon?: string;
+  label: string;
+  amount: number;
+  increase?: number;
+  direction?: number;
+  format?: string;
+  icon?: string;
 }
+
 export interface IMatterTotalsPanel {
   titleMetric: IMatterTotalsMetric;
   subMetrics: Array<IMatterTotalsMetric>;
 }
+
 export interface IMatterDocument {
   client_matter_id: string;
   canonical: string;
@@ -54,18 +98,24 @@ export interface IMatterDocument {
   total_doc_cost_all: number;
   total_doc_hours_all: number;
 }
-export interface ITkTotalSpend {
+
+export interface IMetricDisplayData {
+  metricType?: MetricCardType;
+  fieldName?: string;
   chartLabel: string;
   tableLabel: string;
   actual: number;
   market: number;
+  low?: number;
+  high?: number;
   internal?: number;
   delta?: number;
   increase?: number;
   direction?: number;
+  grade?: MetricGrade;
 }
 
-export const tkTotalSpendChartOptions = {
+export const matterColumnChartOptions = {
   chart: {
     type: 'column'
   },
@@ -90,7 +140,7 @@ export const tkTotalSpendChartOptions = {
   yAxis: {
     min: 0,
     title: {
-      text: 'dollars'
+      text: null
     }
   },
   legend: {
@@ -99,17 +149,9 @@ export const tkTotalSpendChartOptions = {
     x: 0,
     y: 0
   },
-  // tooltip: {
-  //   headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-  //   pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-  //     '<td style="padding:0"><b>{point.y:,.0f}</b></td></tr>',
-  //   footerFormat: '</table>',
-  //   shared: true,
-  //   useHTML: true
-  // },
   tooltip: {
-    headerFormat: null,
-    pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '${point.y:,.0f}'
   },
   plotOptions: {
     column: {
@@ -133,6 +175,33 @@ export const tkTotalSpendChartOptions = {
     data: []
   }]
 };
+export const currencyAxisChartOptions =
+  {
+    ...matterColumnChartOptions, ...{
+      yAxis: {
+        min: 0,
+        title: {
+          text: null
+        },
+        labels: {
+          formatter() {
+            const formatterInt = new Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0
+            });
+            if (this.value >= 1000000) {
+              return formatterInt.format(this.value / 1000) + 'k';
+            } else {
+              return formatterInt.format(this.value);
+            }
+
+          }
+        }
+      }
+    }
+  };
 
 
 

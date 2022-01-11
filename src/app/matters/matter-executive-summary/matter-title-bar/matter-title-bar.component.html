@@ -1,8 +1,11 @@
 <div class="justify-between">
   <div class="exs-title">{{title}}</div>
-  <div class="mt20">
-    <span class="totals-badge  mr10" [ngClass]="{'totals-numbers': index === 0, 'oval-label-white': index !== 0}">Overview</span>
-    <span class="totals-badge mr10" [ngClass]="{'totals-numbers': index === 1, 'oval-label-white': index !== 1}">Staffing & Rate Analysis</span>
-    <span class="totals-badge mr10" [ngClass]="{'totals-numbers': index === 2, 'oval-label-white': index !== 2}">Task & Document Analysis</span>
+  <div class="mt20 mr20">
+    <span class="totals-badge  mr10 pointer-hand" [ngClass]="{'totals-numbers': index === 0, 'oval-label-white': index !== 0}"
+          [routerLink]="['/analytics-ui/matter-executive-summary']" [queryParams]="{matterId: matterId, firmId: firmId}">Matter Overview</span>
+    <span class="totals-badge mr10 pointer-hand" [ngClass]="{'totals-numbers': index === 1, 'oval-label-white': index !== 1}"
+          [routerLink]="['/analytics-ui/matter-staffing']"  [queryParams]="{matterId: matterId, firmId: firmId}">Staffing & Rate Analysis</span>
+    <span class="totals-badge mr10 pointer-hand" [ngClass]="{'totals-numbers': index === 2, 'oval-label-white': index !== 2}">Task & Document Analysis</span>
+    <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
   </div>
 </div>

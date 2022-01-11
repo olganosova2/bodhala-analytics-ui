@@ -115,9 +115,9 @@ export const END_POINTS_URLS = {
 
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
-  getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: true},
+  getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},
   getMatterListByClient: {url: BASE_URL + 'analytics/getMatterListByClient', showLoading: true},
-  getMatterInsight: {url: BASE_URL + 'client/getMatterInsight', showLoading: true},
+  getMatterInsight: {url: BASE_URL + 'client/getMatterInsight', showLoading: false},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},

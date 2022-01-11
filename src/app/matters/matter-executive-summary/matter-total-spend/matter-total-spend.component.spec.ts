@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_MATTER_OVERVIEW} from '../../../shared/unit-tests/mock-data/matter-overview';
 
 describe('MatterTotalSpendComponent', () => {
   let component: MatterTotalSpendComponent;
@@ -42,6 +43,8 @@ describe('MatterTotalSpendComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatterTotalSpendComponent);
     component = fixture.componentInstance;
+    component.summaryData = MOCK_MATTER_OVERVIEW.result.ade_data[0];
+    component.marketData = MOCK_MATTER_OVERVIEW.result.market_data[0];
     fixture.detectChanges();
   });
 

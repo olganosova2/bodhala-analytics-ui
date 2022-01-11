@@ -2,7 +2,7 @@
   <div class="justify-between">
     <div class="justify-start">
       <div><img alt="icon" src="assets/images/{{metric?.titleMetric?.icon}}" width="40px"/></div>
-      <div class="pl10">
+      <div class="pl10" *ngIf="metric">
         <div class="exs-panel-title">
           <span class="font-bold">{{ metric?.titleMetric?.label }}</span>
           {{ metric?.titleMetric?.format }}{{ metric?.titleMetric?.amount | number:'1.0-0'}}</div>
