@@ -33,6 +33,7 @@ import {QbrComponent} from './qbr/qbr.component';
 import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 import {QbrDeckComponent} from './qbr/qbr-deck/qbr-deck.component';
 import {QbrDashboardComponent} from './qbr/qbr-dashboard/qbr-dashboard.component';
+import {RatesAnalysisComponent} from './rates-analysis/rates-analysis.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -68,6 +69,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/qbrs/view', component: QbrDeckComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/edit/:reportId', component: QbrCreationComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/dashboard', component: QbrDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rates-analysis', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},

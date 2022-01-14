@@ -281,9 +281,12 @@ export class RecommendationService {
           let rateIncreasePreventionDetails;
           if (data.result) {
             firmRateIncreaseData = data.result;
+            console.log("data.result: ", data.result)
+
             if (firmRateIncreaseData.length > 0) {
               const mostRecentYear = firmRateIncreaseData[0].year;
               const rateIncreaseData = this.calculateRateIncreaseSavingsForFirm(firmRateIncreaseData, mostRecentYear, recommendation.desired_rate_increase_pct);
+              console.log("rateIncreaseData: ", rateIncreaseData)
               rateIncreasePreventionSavings = rateIncreaseData.savings;
               rateIncreasePreventionDetails = rateIncreaseData.classificationData;
             }
@@ -482,6 +485,7 @@ export class RecommendationService {
     }
     for (const year of distinctYears) {
       const yearRecs = records.filter(e => e.year === year) || [];
+      console.log("yearRecsL :", yearRecs)
       const classifications = [];
       const partnerRecords = yearRecs.filter(e => e.bh_classification === 'partner') || [];
       if (partnerRecords.length > 0) {
@@ -505,7 +509,7 @@ export class RecommendationService {
     }
     const processed = tkClassificationsProcessed;
     result = this.calculateIncreaseRateValue(rateIncreaseLimit, processed);
-
+    console.log("processed: ", processed);
     return {savings: result, classificationData: processed};
   }
 
