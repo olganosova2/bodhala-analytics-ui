@@ -42,9 +42,10 @@ export class MatterAnalysisService {
     const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
     const lawyerHours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours);
     summaryData.blended_rate = lawyerBilled / ( lawyerHours || 1);
-    summaryData.percent_partner_hours = summaryData.partner_hours / (summaryData.total_hours_billed || 1) * 100;
-    summaryData.percent_associate_hours = summaryData.associate_hours / (summaryData.total_hours_billed || 1) * 100;
-    summaryData.percent_other_hours = summaryData.other_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_partner_hours = Math.round(summaryData.partner_hours / (summaryData.total_hours_billed || 1) * 100);
+    summaryData.percent_associate_hours = Math.round(summaryData.associate_hours / (summaryData.total_hours_billed || 1) * 100);
+    // summaryData.percent_other_hours = summaryData.other_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_other_hours =  100 - summaryData.percent_partner_hours - summaryData.percent_associate_hours;
   }
   calculateMarketData(marketRecords: Array<IMatterExecSummary>): IMatterExecSummary {
     const marketData = this.createEmptySingleMatterData();
@@ -58,7 +59,6 @@ export class MatterAnalysisService {
     marketData.matter_name = 'Market';
     const reducerTotalBilled = (previousValue, currentValue) => previousValue.total_billed + currentValue.total_billed;
     marketData.total_billed = marketRecords.reduce((a, b) => ({total_billed: a.total_billed + b.total_billed})).total_billed / matterCount;
-    marketData.total_hours_billed = marketRecords.reduce((a, b) => ({total_hours_billed: a.total_hours_billed + b.total_hours_billed})).total_hours_billed / matterCount;
     marketData.partner_billed = marketRecords.reduce((a, b) => ({partner_billed: a.partner_billed + b.partner_billed})).partner_billed / matterCount;
     marketData.associate_billed = marketRecords.reduce((a, b) => ({associate_billed: a.associate_billed + b.associate_billed})).associate_billed / matterCount;
     marketData.other_billed = marketRecords.reduce((a, b) => ({other_billed: a.other_billed + b.other_billed})).other_billed / matterCount;
@@ -66,6 +66,18 @@ export class MatterAnalysisService {
     marketData.avg_partner_rate = marketRecords.reduce((a, b) => ({avg_partner_rate: a.avg_partner_rate + b.avg_partner_rate})).avg_partner_rate / matterCount;
     marketData.avg_other_rate = marketRecords.reduce((a, b) => ({avg_other_rate: a.avg_other_rate + b.avg_other_rate})).avg_other_rate / matterCount;
     marketData.blended_rate = marketRecords.reduce((a, b) => ({blended_rate: a.blended_rate + b.blended_rate})).blended_rate / matterCount;
+    marketData.total_hours_billed = marketRecords.reduce((a, b) => ({total_hours_billed: a.total_hours_billed + b.total_hours_billed})).total_hours_billed / matterCount;
+    marketData.partner_hours = marketRecords.reduce((a, b) => ({partner_hours: a.partner_hours + b.partner_hours})).partner_hours / matterCount;
+    marketData.associate_hours = marketRecords.reduce((a, b) => ({associate_hours: a.associate_hours + b.associate_hours})).associate_hours / matterCount;
+    marketData.other_hours = marketRecords.reduce((a, b) => ({other_hours: a.other_hours + b.other_hours})).other_hours / matterCount;
+    marketData.timekeepers = marketRecords.reduce((a, b) => ({timekeepers: a.timekeepers + b.timekeepers})).timekeepers / matterCount;
+    marketData.partners = marketRecords.reduce((a, b) => ({partners: a.partners + b.partners})).partners / matterCount;
+    marketData.associates = marketRecords.reduce((a, b) => ({associates: a.associates + b.associates})).associates / matterCount;
+    marketData.others = marketRecords.reduce((a, b) => ({others: a.others + b.others})).others / matterCount;
+    marketData.percent_partner_hours = Math.round(marketRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / matterCount);
+    marketData.percent_associate_hours = Math.round(marketRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / matterCount);
+    // marketData.percent_other_hours = marketRecords.reduce((a, b) => ({percent_other_hours: a.percent_other_hours + b.percent_other_hours})).percent_other_hours / matterCount;
+    marketData.percent_other_hours =  100 - marketData.percent_partner_hours - marketData.percent_associate_hours;
     return marketData;
   }
   createEmptySingleMatterData(): IMatterExecSummary {
@@ -122,6 +134,34 @@ export class MatterAnalysisService {
     this.calculateDeltas(result);
     return result;
   }
+  formatTotalHours(summaryData: IMatterExecSummary, marketData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): Array<IMetricDisplayData> {
+    const result = [];
+    result.push({ chartLabel: 'Total', tableLabel: 'Total', actual: summaryData.total_hours_billed, market: marketData.total_hours_billed, internal: 0, fieldName: 'total_hours_billed'});
+    result.push({ chartLabel: 'Partner', tableLabel: 'Partner', actual: summaryData.partner_hours, market: marketData.partner_hours, internal: 0, fieldName: 'partner_hours'});
+    result.push({ chartLabel: 'Associate', tableLabel: 'Associate', actual: summaryData.associate_hours, market: marketData.associate_hours, internal: 0, fieldName: 'associate_hours'});
+    result.push({ chartLabel: 'Other', tableLabel: 'Other', actual: summaryData.other_hours, market: marketData.other_hours, internal: 0, fieldName: 'other_hours'});
+    this.calculateGrades(result, summaryData, marketRecords);
+    this.calculateDeltas(result);
+    return result;
+  }
+  formatAvgTkNumber(summaryData: IMatterExecSummary, marketData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): Array<IMetricDisplayData> {
+    const result = [];
+    result.push({ chartLabel: 'All Levels', tableLabel: 'All Levels', actual: summaryData.timekeepers, market: marketData.timekeepers, internal: 0, fieldName: 'timekeepers'});
+    result.push({ chartLabel: 'Partner', tableLabel: 'Partner', actual: summaryData.partners, market: marketData.partners, internal: 0, fieldName: 'partners'});
+    result.push({ chartLabel: 'Associate', tableLabel: 'Associate', actual: summaryData.associates, market: marketData.associates, internal: 0, fieldName: 'associates'});
+    result.push({ chartLabel: 'Other', tableLabel: 'Other', actual: summaryData.others, market: marketData.others, internal: 0, fieldName: 'others'});
+    this.calculateDeltas(result);
+    return result;
+  }
+  formatPercentOfTkWorked(summaryData: IMatterExecSummary, marketData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): Array<IMetricDisplayData> {
+    const result = [];
+    result.push({ chartLabel: 'Partner', tableLabel: 'Partner', actual: summaryData.percent_partner_hours, market: marketData.percent_partner_hours, internal: 0, fieldName: 'percent_partner_hours'});
+    result.push({ chartLabel: 'Associate', tableLabel: 'Associate', actual: summaryData.percent_associate_hours, market: marketData.percent_associate_hours, internal: 0, fieldName: 'percent_associate_hours'});
+    result.push({ chartLabel: 'Paralegal/Other', tableLabel: 'Paralegal/Other', actual: summaryData.percent_other_hours, market: marketData.percent_other_hours, internal: 0, fieldName: 'percent_other_hours'});
+    this.calculateGrades(result, summaryData, marketRecords);
+    this.calculateDeltas(result);
+    return result;
+  }
   calculateGrades(tks: Array<IMetricDisplayData>, summaryData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): void {
     for (const tk of tks) {
       this.getGrade(tk, summaryData, marketRecords);
@@ -141,19 +181,36 @@ export class MatterAnalysisService {
     tk.high = maxRec[prop];
     const actualDiff = actual - minRec[prop];
     const actualPercent = actualDiff / bmDiff;
-    if (actualPercent <= 0.3) {
-      tk.grade = MetricGrade.GOOD;
-    } else if (actualPercent > 0.3 && actualPercent < 0.7) {
-      tk.grade = MetricGrade.FAIR;
+    if (prop.indexOf('percent_') !== 0) {
+      if (actualPercent <= 0.3) {
+        tk.grade = MetricGrade.GOOD;
+      } else if (actualPercent > 0.3 && actualPercent < 0.7) {
+        tk.grade = MetricGrade.FAIR;
+      } else {
+        tk.grade = MetricGrade.POOR;
+      }
     } else {
-      tk.grade = MetricGrade.POOR;
+      if (actualPercent >= 0.3 && actualPercent <= 0.7) {
+        tk.grade = MetricGrade.GOOD;
+      } else if ((actualPercent < 0.3 && actualPercent >= 0.1) || (actualPercent > 0.7 && actualPercent >= 0.9)) {
+        tk.grade = MetricGrade.FAIR;
+      } else {
+        tk.grade = MetricGrade.POOR;
+      }
     }
+
   }
   calculateDeltas(tks: Array<IMetricDisplayData>): void {
     for (const tk of tks) {
-        tk.delta = Math.abs(tk.actual - tk.market);
+      if (tk.fieldName.indexOf('percent_') !== 0) {
+        tk.delta = Math.abs(Math.round(tk.actual) - Math.round(tk.market));
         tk.direction = tk.market > tk.actual ? -1 : tk.market < tk.actual ? 1 : 0;
         tk.increase = tk.market ? ((tk.actual / tk.market) - 1) * 100 : 0;
+      } else {
+        tk.delta = Math.round(tk.actual) - Math.round(tk.market);
+        tk.direction = tk.market > tk.actual ? -1 : tk.market < tk.actual ? 1 : 0;
+        tk.increase = tk.delta;
+      }
     }
   }
   formatCardTitle(type: MetricCardType): string {
@@ -175,8 +232,27 @@ export class MatterAnalysisService {
         result = 'Total Spend';
         break;
     }
-
     return result;
-
+  }
+  getCardIcon(type: MetricCardType): string {
+    let result = 'chart-pie.png';
+    switch (type) {
+      case MetricCardType.AverageRates:
+        result = 'bills.svg';
+        break;
+      case MetricCardType.AverageTkOnMatter:
+        result = 'avg_ass_matter.svg';
+        break;
+      case MetricCardType.TotalHoursWorked:
+        result = 'clock-sm.png';
+        break;
+      case MetricCardType.PercentOfHoursWorked:
+        result = 'clock-sm.png';
+        break;
+      default:
+        result = 'chart-pie.png';
+        break;
+    }
+    return result;
   }
 }

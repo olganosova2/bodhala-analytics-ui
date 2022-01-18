@@ -1,13 +1,15 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';
-import {IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from './model';
+import {HARDCODED_MATTER_ID, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from './model';
 import {MatterAnalysisService} from './matter-analysis.service';
 import {IInsight} from '../../admin/insights/models';
+import {LeftSideBarComponent} from 'bodhala-ui-elements';
+import {MatterTotalsMetricsComponent} from './matter-totals-metrics/matter-totals-metrics.component';
 
 @Component({
   selector: 'bd-matter-executive-summary',
@@ -27,6 +29,8 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
 
+  @ViewChild(MatterTotalsMetricsComponent) totalMetrics: MatterTotalsMetricsComponent;
+
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -40,11 +44,17 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; });
-    this.matterId = '087260/834'; // '087260/818'; //
-    this.firmId = 4; // 8668; // 8635;
-    if (this.matterId) {
-      this.getDocuments();
-      this.getMatterInsight();
+    this.matterId = HARDCODED_MATTER_ID;
+    this.getDocuments();
+  }
+  selectFirm(evt: number) {
+    this.firmId = evt; // 8668; // 8635;
+    if (this.firmId) {
+      this.summaryData = null;
+      this.getMatterInsight(evt);
+      setTimeout(() => {
+        this.totalMetrics.getMatterSummary();
+      });
     }
   }
   assignData(evt: any): void {
@@ -52,8 +62,8 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.marketData = evt.marketData;
     this.marketRecords = evt.marketRecords;
   }
-  getMatterInsight(): void {
-    const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: this.firmId};
+  getMatterInsight(firmId: number): void {
+    const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: firmId};
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getMatterInsight', params).subscribe(
       (data: any) => {
         if (data.result) {

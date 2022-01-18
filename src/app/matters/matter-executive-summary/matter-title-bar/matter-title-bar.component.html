@@ -1,10 +1,24 @@
+<div class="float-right mr20">
+  <div *ngIf="firms.length === 1 && firm"><span class="font-bold">Firm:</span> {{ firm.name}}</div>
+  <div *ngIf="firms.length > 1" class="justify-start">
+    <span class="font-bold mt20 mr10">Firm: </span>
+    <mat-form-field appearance="outline" >
+      <mat-label>All</mat-label>
+      <mat-select [(ngModel)]="firm" (selectionChange)="filterByFirm($event)">
+        <mat-option *ngFor="let firm of firms" [value]="firm">{{firm.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+</div>
+<div class="clear-both"></div>
 <div class="justify-between">
   <div class="exs-title">{{title}}</div>
   <div class="mt20 mr20">
     <span class="totals-badge  mr10 pointer-hand" [ngClass]="{'totals-numbers': index === 0, 'oval-label-white': index !== 0}"
-          [routerLink]="['/analytics-ui/matter-executive-summary']" [queryParams]="{matterId: matterId, firmId: firmId}">Matter Overview</span>
+          [routerLink]="['/analytics-ui/matter-executive-summary']" [queryParams]="{matterId: matterId}">Matter Overview</span>
     <span class="totals-badge mr10 pointer-hand" [ngClass]="{'totals-numbers': index === 1, 'oval-label-white': index !== 1}"
-          [routerLink]="['/analytics-ui/matter-staffing']"  [queryParams]="{matterId: matterId, firmId: firmId}">Staffing & Rate Analysis</span>
+          [routerLink]="['/analytics-ui/matter-staffing']"  [queryParams]="{matterId: matterId}">Staffing & Rate Analysis</span>
     <span class="totals-badge mr10 pointer-hand" [ngClass]="{'totals-numbers': index === 2, 'oval-label-white': index !== 2}">Task & Document Analysis</span>
     <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
   </div>

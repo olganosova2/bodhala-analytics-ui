@@ -118,6 +118,7 @@ export const END_POINTS_URLS = {
   getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},
   getMatterListByClient: {url: BASE_URL + 'analytics/getMatterListByClient', showLoading: true},
   getMatterInsight: {url: BASE_URL + 'client/getMatterInsight', showLoading: false},
+  getFirmsForMatter: {url: BASE_URL + 'analytics/getFirmsForMatter', showLoading: false},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -167,7 +168,6 @@ export const END_POINTS_URLS = {
   getAdminMatterInsight: {url: BASE_URL + 'admin/getMatterInsight', showLoading: true},
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
   saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
-  getFirmsForMatter: {url: BASE_URL + 'admin/getFirmsForMatter', showLoading: true},
 
 
 };

@@ -123,21 +123,21 @@ export class QbrTopPasMattersComponent implements OnInit {
   saveInstanceHours(chartInstance): void {
     this.chartHours = chartInstance;
     const result = this.tkHours.map(e => e.amount);
-    this.chartHours.series[0].options.colors = ['#00D1FF', '#FF0000', '#cccccc'];
+    this.chartHours.series[0].options.colors = ['#00D1FF', '#FF650F', '#cccccc'];
     this.chartHours.series[0].setData(result);
   }
   saveInstanceBB(chartInstance): void {
     this.chartBB = chartInstance;
     const result = [this.bbMetric.amount, 100 - this.bbMetric.amount];
     this.chartBB.series[0].setData(result);
-    this.chartBB.series[0].options.colors = ['red', '#cccccc'];
+    this.chartBB.series[0].options.colors = ['#FE3F56', '#cccccc'];
     this.chartBB.series[0].update(this.chartBB.series[0].options);
   }
   saveInstanceVolume(chartInstance): void {
     this.chartVolume = chartInstance;
     const result = [this.volumeMetric.amount, 100 - this.volumeMetric.amount];
     this.chartVolume.series[0].setData(result);
-    this.chartVolume.series[0].options.colors = ['red', '#3EDB73'];
+    this.chartVolume.series[0].options.colors = ['#FE3F56', '#3EDB73'];
     this.chartVolume.series[0].update(this.chartVolume.series[0].options);
   }
 

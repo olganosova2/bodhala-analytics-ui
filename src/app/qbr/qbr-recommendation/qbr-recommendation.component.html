@@ -16,8 +16,8 @@
         <div class="p-md-4 gray-border-left position-relative" *ngFor="let rec of section.recommendations">
           <span class="dot-full-right"></span>
           <div class="qbr-icon-title justify-start">
-            <img alt="icon" src="assets/images/qbr-images/{{rec?.icon}}.png" width="60px"/>
-            <span class="ml10 inline-block" [ngClass]="{'mt15': rec?.title && rec?.title.length < 42 }">{{rec?.title}}</span>
+            <img alt="icon" src="assets/images/qbr-images/{{rec?.icon}}.png" width="60px" height="60px"/>
+            <span class="ml10 inline-block font-roboto-mono" [ngClass]="{'mt15': rec?.title && rec?.title.length < 42 }">{{rec?.title}}</span>
           </div>
           <div class="qbr-rec-headline mt10" *ngIf="rec?.headline">{{rec?.headline}}</div>
           <div class="qbr-rec-add-info mt10" *ngIf="rec?.subhead">{{rec?.subhead}}</div>

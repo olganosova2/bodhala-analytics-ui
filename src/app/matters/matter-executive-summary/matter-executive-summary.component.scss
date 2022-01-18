@@ -14,7 +14,7 @@
   border: 1px solid $light-gray;
   color: $body-color;
   padding: 32px;
-  border-radius: 12px;
+  border-radius: 100px;
   position: relative;
 }
 .insights-title {
@@ -24,14 +24,18 @@
   color: $brand-blue;
 }
 .insights-content {
-  width: 830px;
+  width: 70%;
   color: $body-color;
+  @media screen and (max-width: 1440px) {
+    width: 60%;
+  }
+  //height: 40px;
 }
 .insights-button {
   position: absolute;
   top: 40px;
   right: 40px;
-  background-color: $light-gray;
+  background-color: $brand-blue;
   font-size: 12px;
   color: $body-color;
   width: 110px;

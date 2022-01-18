@@ -5,7 +5,7 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {currencyAxisChartOptions, IMatterExecSummary, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../model';
+import {barTkPercentOptions, currencyAxisChartOptions, IMatterExecSummary, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../model';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -46,11 +46,19 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
       this.metricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.marketData, this.marketRecords);
     } else if (this.metricType === MetricCardType.AverageRates) {
       this.metricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);
+    } else if (this.metricType === MetricCardType.TotalHoursWorked) {
+      this.metricData = this.matterAnalysisService.formatTotalHours(this.summaryData, this.marketData, this.marketRecords);
+    } else if (this.metricType === MetricCardType.AverageTkOnMatter) {
+      this.metricData = this.matterAnalysisService.formatAvgTkNumber(this.summaryData, this.marketData, this.marketRecords);
+    } else if (this.metricType === MetricCardType.PercentOfHoursWorked) {
+      this.metricData = this.matterAnalysisService.formatPercentOfTkWorked(this.summaryData, this.marketData, this.marketRecords);
     }
     this.setUpChartOptions();
   }
   setUpChartOptions(): void {
-    if (this.metricType === MetricCardType.TotalSpend || MetricCardType.AverageRates) {
+    if (this.metricType === MetricCardType.PercentOfHoursWorked) {
+      this.options = Object.assign({}, barTkPercentOptions);
+    } else  if (this.metricType === MetricCardType.TotalSpend || this.metricType === MetricCardType.AverageRates) {
       this.options = Object.assign({}, currencyAxisChartOptions);
     } else {
       this.options = Object.assign({}, matterColumnChartOptions);
@@ -58,21 +66,33 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
   }
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
-    this.chart.xAxis[0].setCategories(this.metricData.map(e => e.chartLabel));
-    this.chart.series[0].setData(this.metricData.map(e => e.actual));
-    this.chart.series[1].setData(this.metricData.map(e => e.market));
+    if (this.metricType !== MetricCardType.PercentOfHoursWorked) {
+      this.chart.xAxis[0].setCategories(this.metricData.map(e => e.chartLabel));
+      this.chart.series[0].setData(this.metricData.map(e => e.actual));
+      this.chart.series[1].setData(this.metricData.map(e => e.market));
+    } else {
+      this.chart.series[2].setData(this.getPercentOfHoursWorkedChartData(this.metricData, 0));
+      this.chart.series[1].setData(this.getPercentOfHoursWorkedChartData(this.metricData, 1));
+      this.chart.series[0].setData(this.getPercentOfHoursWorkedChartData(this.metricData, 2));
+    }
     setTimeout(() => {
       this.resizeChart();
     });
   }
   resizeChart(): void {
     const width = this.chartDiv.nativeElement.offsetWidth - 40;
-    const height = 400;
+    const height = this.metricType === MetricCardType.PercentOfHoursWorked ? 200 : 400;
 
     if (!this.chart || width <= 0) {
       return;
     }
     this.chart.setSize(width, height, false);
+  }
+  getPercentOfHoursWorkedChartData(metricData: Array<IMetricDisplayData>, index: number): Array<number> {
+    const result = [];
+    result.push(metricData[index].actual);
+    result.push(metricData[index].market);
+    return result;
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

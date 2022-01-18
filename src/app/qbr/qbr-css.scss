@@ -4,6 +4,7 @@ $size: 13px;
 .qbr-wrapper{
   //width: 90vw;
   //overflow-x: auto;
+  font-family: 'Roboto';
 }
 .qbr-panel {
   background-color: #fff;
@@ -11,7 +12,9 @@ $size: 13px;
   color: #000;
   width: 1920px;
   height: 1080px;
+  font-family: 'Roboto';
 }
+
 .qbr-panel-zoomed {
   @media screen and (max-width: 1920px) {
     zoom: 88.5%;
@@ -34,7 +37,7 @@ $size: 13px;
 }
 .card-title {
   font-weight: 700;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Roboto Bold', "Helvetica Neue", sans-serif;
   font-size: 80px;
   font-style: normal;
   line-height: 105px;
@@ -42,10 +45,12 @@ $size: 13px;
 .qbr-subtitle {
   font-weight: 700;
   font-size: 48px;
+  font-family: 'Roboto Bold', "Helvetica Neue", sans-serif;
 }
 .qbr-dollar-label {
   font-weight: bold;
   font-size: 32px;
+  font-family: "Roboto Bold";
   text-align: center;
 }
 .dot-full {
@@ -118,10 +123,15 @@ $size: 13px;
   padding: 22px 25px 0 0;
   .label {
     font-size: 20px;
+    font-family: "Roboto Mono";
   }
   .amount {
     font-size: 32px;
+    font-family: "Roboto Bold";
   }
+}
+.font-roboto-mono {
+  font-family: "Roboto Mono";
 }
 .dot-full-online {
     margin-bottom: -5px;
@@ -205,7 +215,10 @@ $size: 13px;
   background-color: $brand-blue;
 }
 .associate-bar {
-  background-color: #FF0000;
+  background-color: #FF650F;
+}
+.red-bar {
+  background-color: #FE3F56;
 }
 .green-bar {
  background-color: #3EDB73;

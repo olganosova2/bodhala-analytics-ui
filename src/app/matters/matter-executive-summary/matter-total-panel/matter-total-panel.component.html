@@ -16,6 +16,7 @@
         </div>
       </div>
     </div>
-    <div class="valign-middle pointer-hand" *ngIf="!isAdmin" (click)="goToView(metric?.titleMetric?.label)">View All  <i class="fa fa-angle-right ml10"></i></div>
+    <div class="valign-middle pointer-hand" *ngIf="!isAdmin"
+         [routerLink]="['/analytics-ui/matter-staffing']"  [queryParams]="{matterId: matterId}">View All  <i class="fa fa-angle-right ml10"></i></div>
   </div>
 </div>

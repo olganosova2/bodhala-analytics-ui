@@ -20,6 +20,7 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
   marketRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
+  isLoaded: boolean = false;
   @Input() clientId: string;
   @Input() matterId: string;
   @Input() firmId: number;
@@ -32,7 +33,7 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
               public userService: UserService,
               private httpService: HttpService,
               public filtersService: FiltersService,
-              public router: Router,
+
               public dialog: MatDialog,
               public utilService: UtilService,
               public matterAnalysisService: MatterAnalysisService) { }
@@ -41,14 +42,17 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     this.getMatterSummary();
   }
   getMatterSummary(): void {
-    const arrFirms = [];
-    arrFirms.push(this.firmId.toString());
+    this.isLoaded = false;
     const arrMatters = [];
+    const arrFirms = [];
+    if (this.firmId) {
+      arrFirms.push(this.firmId.toString());
+    }
     arrMatters.push(this.matterId);
     const params = { client_id: this.isAdmin ? this.clientId : this.userService.currentUser.client_info_id,
-      firms: JSON.stringify(arrFirms),
       matters: JSON.stringify(arrMatters),
-      marketMatters: JSON.stringify(this.marketMatters)
+      marketMatters: JSON.stringify(this.marketMatters),
+      firms: JSON.stringify(arrFirms)
     };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
@@ -63,6 +67,7 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
             marketData: this.marketData,
             marketRecords: this.marketRecords
           };
+          this.isLoaded = true;
           this.dataLoaded.emit(emitted);
         }
       }

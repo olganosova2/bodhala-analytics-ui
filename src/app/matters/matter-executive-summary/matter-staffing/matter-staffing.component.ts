@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {HARDCODED_MARKET_MATTERS, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from '../model';
+import {HARDCODED_MARKET_MATTERS, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, MetricCardType} from '../model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -26,6 +26,8 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
   marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
+  metrics: Array<string> = [];
+  isLoaded: boolean = false;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -38,16 +40,29 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
               public matterAnalysisService: MatterAnalysisService) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {  this.matterId = params.matterId;
-                                                  this.firmId = params.firmId; } );
+    // tslint:disable-next-line:forin
+    for (const item in MetricCardType) {
+      this.metrics.push(item);
+    }
+    this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; } );
     if (this.matterId) {
+      this.getMatterSummary();
+    }
+  }
+  selectFirm(evt: number) {
+    this.firmId = evt; // 8668; // 8635;
+    if (this.firmId) {
+      this.summaryData = null;
       this.getMatterSummary();
     }
   }
 
   getMatterSummary(): void {
+    this.isLoaded = false;
     const arrFirms = [];
-    arrFirms.push(this.firmId.toString());
+    if (this.firmId && this.firmId !== undefined) {
+      arrFirms.push(this.firmId.toString());
+    }
     const arrMatters = [];
     arrMatters.push(this.matterId);
     const params = { client_id: this.userService.currentUser.client_info_id,
@@ -68,6 +83,7 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
             marketData: this.marketData,
             marketRecords: this.marketRecords
           };
+          this.isLoaded = true;
         }
       }
     );

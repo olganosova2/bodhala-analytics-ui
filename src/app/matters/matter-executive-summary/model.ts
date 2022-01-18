@@ -1,5 +1,6 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
 
+export const HARDCODED_MATTER_ID = '087260/834'; // '087260/818'; // '373046-00021'; // '10001320';
 export const HARDCODED_MARKET_MATTERS = [
   '087260/785',
   '087260/818',
@@ -11,6 +12,10 @@ export const HARDCODED_MARKET_MATTERS = [
   '087260/834',
   '087260/821',
   '087260/844'
+
+  // '503782',
+  // '373046-00021',
+  // '314395'
 ];
 
 export enum MetricCardType {
@@ -151,7 +156,7 @@ export const matterColumnChartOptions = {
   },
   tooltip: {
     headerFormat: '<b>{series.name}</b><br>',
-    pointFormat: '${point.y:,.0f}'
+    pointFormat: '{point.y:,.0f}'
   },
   plotOptions: {
     column: {
@@ -199,9 +204,92 @@ export const currencyAxisChartOptions =
 
           }
         }
-      }
+      },
+      tooltip: {
+        headerFormat: '<b>{series.name}</b><br>',
+        pointFormat: '${point.y:,.0f}'
+      },
     }
   };
+export const barTkPercentOptions = {
+  chart: {
+    type: 'bar'
+  },
+  credits: {
+    enabled: false
+  },
+  title: {
+    text: null
+  },
+  xAxis: {
+    categories: ['Actual', 'Market'],
+    labels: {
+      style: {
+        fontSize: 16
+      }
+    }
+  },
+  yAxis: {
+    min: 0,
+    max: 100,
+    tickInterval: 25,
+    title: {
+      text: null
+    },
+    labels: {
+      format: '{value}%',
+      style: {
+        fontSize: 16
+      }
+    }
+  },
+  legend: {
+    reversed: true,
+    align: 'right',
+    verticalAlign: 'top',
+    x: 0,
+    y: 0
+  },
+  plotOptions: {
+    series: {
+      stacking: 'normal',
+      dataLabels: {
+        enabled: true,
+        // format: '{point.y:,.0f} %',
+        formatter() {
+          return (this.y !== 0) ? this.y + '%' : '';
+        },
+        style: {
+          textOutline: 'none'
+        }
+      },
+      pointWidth: 40,
+      groupPadding: 0.1
+    }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.y:,.0f}%'
+  },
+  series: [{
+    name: 'Paralegal/Other',
+    color: '#00D1FF',
+    dataLabels: {
+      color: 'black'
+    },
+    data: []
+  }, {
+    name: 'Associate',
+    color: '#FFC907',
+    data: []
+  }, {
+    name: 'Partner',
+    color: '#000000',
+    data: []
+  }]
+};
+
+
 
 
 

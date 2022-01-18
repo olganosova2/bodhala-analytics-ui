@@ -30,6 +30,24 @@
   font-weight: 700;
   src: local('Sharp Sans Display'), local('Sharp Sans Display'), url(./assets/fonts/sharpsansdisplay/SharpSansDispNo1-Bold.woff2) format('woff2');
 }
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Roboto Mono'), local('Roboto Mono'), url(./assets/fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf) format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Roboto'), local('Roboto'), url(./assets/fonts/Roboto/Roboto-Regular.ttf) format('woff2');
+}
+@font-face {
+  font-family: 'Roboto Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Roboto Bold'), local('Roboto Bold'), url(./assets/fonts/Roboto/Roboto-Bold.ttf) format('woff2');
+}
 //@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
 //@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
 //
@@ -161,6 +179,9 @@ h1, h2, h3, h4, h5, h6, th {
 }
 .font-green {
   color: darkgreen !important;
+}
+.font-black {
+  color: $body-color !important;
 }
 .font-qbr-green {
   color: $qbr-green;
@@ -592,6 +613,9 @@ h1, h2, h3, h4, h5, h6 {
 .valign-middle {
   display: flex;
   align-items: center;
+}
+.roboto-div {
+  font-family: 'Roboto' !important;
 }
 
 

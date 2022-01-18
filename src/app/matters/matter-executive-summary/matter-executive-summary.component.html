@@ -1,12 +1,13 @@
 <div class="exs-div" id="matterAnalysis">
   <div><span class="font-bold">Matter Staffing Analysis</span> Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></div>
-  <bd-matter-title-bar [matterId]="matterId" [firmId]="firmId" [title]="'Matter Overview'" [index]="0"></bd-matter-title-bar>
+  <bd-matter-title-bar [matterId]="matterId" [firmId]="firmId" [title]="'Matter Overview'" [index]="0" (firmSelected)="selectFirm($event)"
+  (singleFirmLoaded)="getMatterInsight($event)"></bd-matter-title-bar>
 <div class="insights-bar justify-start mt30" *ngIf="insightText">
   <img src="assets/images/logo-black-short.png" width="40px" height="44px" class="mr20"/>
   <div class="ml20 mr20">
     <span>INSIGHTS &</span><br/><span>RECOMMENDATIONS</span>
   </div>
-  <div class="insights-content ml20" [innerHTML]="utilService.formatTextForHtml(insightText, !insightExpanded, 210)"></div>
+  <div class="insights-content ml20 roboto-div" [innerHTML]="utilService.formatTextForHtml(insightText, !insightExpanded, 210)"></div>
   <div *ngIf="insightText && insightText.length > 210">
     <button  class="primary-button insights-button" *ngIf="!insightExpanded" (click)="toggleInsight(true)">Read more
       <i class="fa fa-angle-down ml10"></i></button>
@@ -14,14 +15,19 @@
       <i class="fa fa-angle-up ml10"></i></button>
   </div>
 </div>
-  <bd-matter-totals-metrics *ngIf="firmId"  [firmId]="firmId" [matterId]="matterId" (dataLoaded)="assignData($event)"></bd-matter-totals-metrics>
+  <bd-matter-summary-card *ngIf="summaryData"
+                          [page]="'Overview'"
+                          [summaryData]="summaryData"
+                          [marketData]="marketData"
+                          [marketRecords]="marketRecords"></bd-matter-summary-card>
+  <bd-matter-totals-metrics [firmId]="firmId" [matterId]="matterId" (dataLoaded)="assignData($event)" #totalMetrics></bd-matter-totals-metrics>
   <div class="panel-wrapper mt20">
     <div class="justify-between">
       <div class="exs-panel-title">Top Tasks / Documents</div>
       <div class="valign-middle pointer-hand mr30" (click)="goToViewDocs()">View All  <i class="fa fa-angle-right ml10"></i></div>
     </div>
-
-    <table class="full-width">
+    <div class="mt20" *ngIf="documents.length === 0">No documents found.</div>
+    <table class="full-width" *ngIf="documents.length > 0">
       <thead>
       <tr class="font-bold">
         <th>Document Type</th>
