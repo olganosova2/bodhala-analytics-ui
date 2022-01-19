@@ -226,7 +226,7 @@ export const barTkPercentOptions = {
     text: null
   },
   xAxis: {
-    categories: ['Actual', 'Market'],
+    categories: ['Actual', 'Internal', 'Market'],
     labels: {
       style: {
         fontSize: 16

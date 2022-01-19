@@ -30,6 +30,7 @@
            <span><span *ngIf="metricType === 'TotalSpend' || metricType === 'AverageRates'">$</span>{{tk.delta | number:'1.0-0'}}
            </span>
         </span>
+        <span class="mr5" *ngIf="metricType === 'PercentOfHoursWorked' && tk.delta === 0">0%</span>
 
         <span class="oval-label" *ngIf="tk.delta && tk.increase"
               [ngClass]=" {'oval-label-red': tk.grade === 'POOR',
