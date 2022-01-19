@@ -167,12 +167,16 @@ export const matterColumnChartOptions = {
     },
     series: {
       pointWidth: 25,
-      groupPadding: 0.4
+      groupPadding: 0.38
     }
   },
   series: [{
     name: 'Actual',
     color: '#00D1FF',
+    data: []
+  }, {
+    name: 'Internal',
+    color: '#FFC327',
     data: []
   }, {
     name: 'Market',

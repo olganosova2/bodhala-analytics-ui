@@ -18,10 +18,13 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
   options: any;
   chart: any;
   metricData: Array<IMetricDisplayData> = [];
+  internalMetricData: Array<IMetricDisplayData> = [];
   @Input() page: string;
   @Input() summaryData: IMatterExecSummary;
   @Input() marketData: IMatterExecSummary;
+  @Input() internalData: IMatterExecSummary;
   @Input() marketRecords: Array<IMatterExecSummary> = [];
+  @Input() internalRecords: Array<IMatterExecSummary> = [];
   @Input() metricType: MetricCardType = MetricCardType.TotalSpend;
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
 
@@ -44,14 +47,19 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.metricType === MetricCardType.TotalSpend) {
       this.metricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.marketData, this.marketRecords);
+      this.internalMetricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.internalData, this.internalRecords);
     } else if (this.metricType === MetricCardType.AverageRates) {
       this.metricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);
+      this.internalMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.internalData, this.internalRecords);
     } else if (this.metricType === MetricCardType.TotalHoursWorked) {
       this.metricData = this.matterAnalysisService.formatTotalHours(this.summaryData, this.marketData, this.marketRecords);
+      this.internalMetricData = this.matterAnalysisService.formatTotalHours(this.summaryData, this.internalData, this.internalRecords);
     } else if (this.metricType === MetricCardType.AverageTkOnMatter) {
       this.metricData = this.matterAnalysisService.formatAvgTkNumber(this.summaryData, this.marketData, this.marketRecords);
+      this.internalMetricData = this.matterAnalysisService.formatAvgTkNumber(this.summaryData, this.internalData, this.internalRecords);
     } else if (this.metricType === MetricCardType.PercentOfHoursWorked) {
       this.metricData = this.matterAnalysisService.formatPercentOfTkWorked(this.summaryData, this.marketData, this.marketRecords);
+      this.internalMetricData = this.matterAnalysisService.formatPercentOfTkWorked(this.summaryData, this.internalData, this.internalRecords);
     }
     this.setUpChartOptions();
   }
@@ -69,7 +77,8 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
     if (this.metricType !== MetricCardType.PercentOfHoursWorked) {
       this.chart.xAxis[0].setCategories(this.metricData.map(e => e.chartLabel));
       this.chart.series[0].setData(this.metricData.map(e => e.actual));
-      this.chart.series[1].setData(this.metricData.map(e => e.market));
+      this.chart.series[1].setData(this.internalMetricData.map(e => e.market));
+      this.chart.series[2].setData(this.metricData.map(e => e.market));
     } else {
       this.chart.series[2].setData(this.getPercentOfHoursWorkedChartData(this.metricData, 0));
       this.chart.series[1].setData(this.getPercentOfHoursWorkedChartData(this.metricData, 1));

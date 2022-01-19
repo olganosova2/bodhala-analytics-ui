@@ -12,26 +12,30 @@ export class MatterAnalysisService {
 
   constructor(public filtersService: FiltersService, public utilService: UtilService) {
   }
-  buildTotalPanels(summaryData: IMatterExecSummary, marketData: IMatterExecSummary): Array<IMatterTotalsPanel> {
+  buildTotalPanels(summaryData: IMatterExecSummary, marketData: IMatterExecSummary, internalData: IMatterExecSummary): Array<IMatterTotalsPanel> {
     const result = [];
     if (!summaryData) {
       return result;
     }
     let tMetric = { label: 'Total Spend', amount: summaryData.total_billed, format: '$', icon: 'bills.svg' };
     let metric = { titleMetric: tMetric,  subMetrics: []};
-    this.addSubMetric(metric, 'total_billed', summaryData, marketData);
+    this.addSubMetric(metric, 'total_billed', summaryData, internalData, 'Internal');
+    this.addSubMetric(metric, 'total_billed', summaryData, marketData, 'Market');
     result.push(metric);
     tMetric = { label: 'Total Hours Worked', amount: summaryData.total_hours_billed, format: '', icon: 'clock-sm.png' };
     metric = { titleMetric: tMetric,  subMetrics: []};
-    this.addSubMetric(metric, 'total_hours_billed', summaryData, marketData);
+    this.addSubMetric(metric, 'total_hours_billed', summaryData, internalData, 'Internal', '');
+    this.addSubMetric(metric, 'total_hours_billed', summaryData, marketData, 'Market', '');
     result.push(metric);
     tMetric = { label: 'Avg Partner Rate', amount: summaryData.avg_partner_rate, format: '$', icon: 'partners.svg' };
     metric = { titleMetric: tMetric,  subMetrics: []};
-    this.addSubMetric(metric, 'avg_partner_rate', summaryData, marketData);
+    this.addSubMetric(metric, 'avg_partner_rate', summaryData, internalData, 'Internal');
+    this.addSubMetric(metric, 'avg_partner_rate', summaryData, marketData, 'Market');
     result.push(metric);
     tMetric = { label: 'Avg Associate Rate', amount: summaryData.avg_associate_rate, format: '$', icon: 'avg_ass_matter.svg' };
     metric = { titleMetric: tMetric,  subMetrics: []};
-    this.addSubMetric(metric, 'avg_associate_rate', summaryData, marketData);
+    this.addSubMetric(metric, 'avg_associate_rate', summaryData, internalData, 'Internal');
+    this.addSubMetric(metric, 'avg_associate_rate', summaryData, marketData, 'Market');
     result.push(metric);
     return result;
   }
@@ -104,15 +108,15 @@ export class MatterAnalysisService {
       percent_other_hours: 0
     };
   }
-  addSubMetric(metric: IMatterTotalsPanel, prop: string, summaryData: IMatterExecSummary, marketData: IMatterExecSummary): void {
+  addSubMetric(metric: IMatterTotalsPanel, prop: string, summaryData: IMatterExecSummary, marketData: IMatterExecSummary, label: string, format: string = '$'): void {
     const actualAmount = summaryData[prop] || 0;
     const compareAmount = marketData[prop] || 0;
     const increase = compareAmount ? ((actualAmount / compareAmount) - 1) * 100 : 0;
     const dir = compareAmount > actualAmount ? -1 : 1;
-    metric.subMetrics.push(this.createSubMetric('Market', compareAmount, increase, dir));
+    metric.subMetrics.push(this.createSubMetric(label, compareAmount, increase, dir, format));
   }
-  createSubMetric(lbl: string, amt: number, incr: number, dir: number): IMatterTotalsMetric {
-    return { label: lbl, amount: amt, increase: incr, direction: dir};
+  createSubMetric(lbl: string, amt: number, incr: number, dir: number, frmt: string): IMatterTotalsMetric {
+    return { label: lbl, amount: amt, increase: incr, direction: dir, format: frmt};
   }
   formatTkTotalSpend(summaryData: IMatterExecSummary, marketData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): Array<IMetricDisplayData> {
     const result = [];

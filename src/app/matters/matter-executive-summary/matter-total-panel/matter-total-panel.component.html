@@ -3,12 +3,12 @@
     <div class="justify-start">
       <div><img alt="icon" src="assets/images/{{metric?.titleMetric?.icon}}" width="40px"/></div>
       <div class="pl10" *ngIf="metric">
-        <div class="exs-panel-title">
-          <span class="font-bold">{{ metric?.titleMetric?.label }}</span>
+        <div class="exs-panel-title mb10">
+          <span class="roboto-bold">{{ metric?.titleMetric?.label }}</span>
           {{ metric?.titleMetric?.format }}{{ metric?.titleMetric?.amount | number:'1.0-0'}}</div>
-        <div *ngFor="let subMetric of metric.subMetrics" class="mt20">
+        <div *ngFor="let subMetric of metric.subMetrics" class="mt10">
           <span
-            class="font-bold mr15">{{subMetric.label}}</span>${{subMetric?.amount | number:'1.0-0'}}
+            class="roboto-bold mr15">{{subMetric.label}}</span>{{ subMetric?.format }}{{subMetric?.amount | number:'1.0-0'}}
           <span class="ml15" [ngClass]="{'font-qbr-green': subMetric?.direction <= 0, 'font-red': subMetric?.direction > 0}">{{ subMetric?.increase | number:'1.0-0'}}%
              <em *ngIf=" subMetric?.direction > 0" class="fa fa-arrow-up mr10 ml5"></em>
             <em *ngIf=" subMetric?.direction <= 0" class="fa fa-arrow-down ml5"></em>

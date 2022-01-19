@@ -184,6 +184,7 @@ import { MatterTotalSpendComponent } from './matters/matter-executive-summary/ma
 import { MatterTotalsMetricsComponent } from './matters/matter-executive-summary/matter-totals-metrics/matter-totals-metrics.component';
 import { MatterStaffingComponent } from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 import { MatterSummaryCardComponent } from './matters/matter-executive-summary/matter-summary-card/matter-summary-card.component';
+import { MatterMetricTableComponent } from './matters/matter-executive-summary/matter-total-spend/matter-metric-table/matter-metric-table.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -315,7 +316,8 @@ export function initHttp(service: HttpService) {
     MatterTotalSpendComponent,
     MatterTotalsMetricsComponent,
     MatterStaffingComponent,
-    MatterSummaryCardComponent
+    MatterSummaryCardComponent,
+    MatterMetricTableComponent
   ],
   entryComponents: [
     PillComponent,

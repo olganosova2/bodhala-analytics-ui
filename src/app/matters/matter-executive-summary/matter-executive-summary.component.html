@@ -29,7 +29,7 @@
     <div class="mt20" *ngIf="documents.length === 0">No documents found.</div>
     <table class="full-width" *ngIf="documents.length > 0">
       <thead>
-      <tr class="font-bold">
+      <tr class="roboto-bold">
         <th>Document Type</th>
         <th>Total Cost</th>
         <th># Hours Worked</th>
@@ -50,6 +50,8 @@
                          [page]="'Overview'"
                          [summaryData]="summaryData"
                          [marketData]="marketData"
+                         [internalData]="internalData"
                          [marketRecords]="marketRecords"
+                         [internalRecords]="internalRecords"
                          [metricType]="'TotalSpend'"></bd-matter-total-spend>
 </div>
