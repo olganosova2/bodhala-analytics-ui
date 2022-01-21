@@ -41,7 +41,7 @@ export class RatesAnalysisService {
     return {savings: result, yearsData: processed};
   }
 
-  calculateRateIncreasePctClassification(firmRateIncreaseData: Array<any>, classificationRateIncreaseData: Array<any>,clientMaxYear: number): any {
+  calculateRateIncreasePctClassification(firmRateIncreaseData: Array<any>, classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
     let result = 0;
     const distinctYears = [];
     const yearRecords = [];
@@ -49,6 +49,7 @@ export class RatesAnalysisService {
     let assocPctBilled = 0;
     let partnerPctBilled = 0;
     let yoyRateIncrease = 0;
+    let totalSpend = 0;
     for (let ix = 0; ix < 2; ix++) {
       distinctYears.push(clientMaxYear - ix);
     }
@@ -58,20 +59,20 @@ export class RatesAnalysisService {
 
     if (assocRec.length > 0 && partnerRec.length > 0) {
 
-      const totalSpend = assocRec[0].total_spend + partnerRec[0].total_spend;
-      console.log("associateRecords: ", assocRec)
-      console.log("partnerRecords: ", partnerRec)
+      totalSpend = assocRec[0].total_spend + partnerRec[0].total_spend;
+      // console.log("associateRecords: ", assocRec)
+      // console.log("partnerRecords: ", partnerRec)
       if (totalSpend > 0) {
         assocPctBilled = assocRec[0].total_spend / totalSpend;
         partnerPctBilled = partnerRec[0].total_spend / totalSpend;
       }
     }
-    console.log("yearRecs: ", yearRecs)
+    // console.log("yearRecs: ", yearRecs)
 
     for (const year of distinctYears) {
 
       const classificationYearRecs = classificationRateIncreaseData.filter(e => e.year === year) || [];
-      console.log("classificationYearRecs: ", classificationYearRecs)
+      // console.log("classificationYearRecs: ", classificationYearRecs)
       const classifications = [];
       const partnerRecords = classificationYearRecs.filter(e => e.bh_classification === 'partner') || [];
       if (partnerRecords.length > 0) {
@@ -101,10 +102,10 @@ export class RatesAnalysisService {
         const partnerInfo = classProcessed.filter(c => c.title === 'partner');
         let assocRateIncrease = 0;
         let partnerRateIncrease = 0;
-        console.log("assocInfo: ", assocInfo)
-        console.log("partnerInfo: ", partnerInfo)
-        console.log("assocPctBilled: ", assocPctBilled)
-        console.log("partnerPctBilled: ", partnerPctBilled)
+        // console.log("assocInfo: ", assocInfo)
+        // console.log("partnerInfo: ", partnerInfo)
+        // console.log("assocPctBilled: ", assocPctBilled)
+        // console.log("partnerPctBilled: ", partnerPctBilled)
 
         if (assocInfo.length > 0) {
           assocRateIncrease = assocInfo[0].avgRateIncrease * assocPctBilled;
@@ -116,9 +117,9 @@ export class RatesAnalysisService {
 
       }
     }
-    console.log("classProcessed: ", classProcessed)
+    // console.log("classProcessed: ", classProcessed)
     // result = this.calculateIncreaseRateValue(rateIncreaseLimit, processed);
-    return {savings: result, classificationData: classProcessed, rateIncreasePct: yoyRateIncrease};
+    return {savings: result, classificationData: classProcessed, rateIncreasePct: yoyRateIncrease, total: totalSpend};
   }
 
   // using same function as in savings calculator service with some slight changes
@@ -178,20 +179,24 @@ export class RatesAnalysisService {
     if (tempAssociateCohortInfo.length > 0) {
       associateCohortInfo = tempAssociateCohortInfo[0];
     }
-    console.log("partnerFirmInfo: ", partnerFirmInfo)
-    console.log("associateFirmInfo: ", associateFirmInfo)
-    console.log("partnerCohortInfo: ", partnerCohortInfo)
-    console.log("associateCohortInfo: ", associateCohortInfo)
+    // console.log("partnerFirmInfo: ", partnerFirmInfo)
+    // console.log("associateFirmInfo: ", associateFirmInfo)
+    // console.log("partnerCohortInfo: ", partnerCohortInfo)
+    // console.log("associateCohortInfo: ", associateCohortInfo)
 
     const partnerFirmProjectedSpend = ((partnerFirmInfo.avgRateIncrease + 1) * partnerFirmInfo.lastYearRate) * (partnerFirmInfo.totalHours);
     const associateFirmProjectedSpend = ((associateFirmInfo.avgRateIncrease + 1) * associateFirmInfo.lastYearRate) * (associateFirmInfo.totalHours);
-    console.log("firm spend: ", partnerFirmProjectedSpend, associateFirmProjectedSpend)
+    // console.log("firm spend: ", partnerFirmProjectedSpend, associateFirmProjectedSpend)
     projectedImpact.firmProjectedImpact = partnerFirmProjectedSpend + associateFirmProjectedSpend;
 
     const partnerCohortProjectedSpend = ((partnerCohortInfo.avgRateIncrease + 1) * partnerFirmInfo.lastYearRate) * (partnerFirmInfo.totalHours);
     const associateCohortProjectedSpend = ((associateCohortInfo.avgRateIncrease + 1) * associateFirmInfo.lastYearRate) * (associateFirmInfo.totalHours);
-    console.log("cohort spend: ", partnerCohortProjectedSpend, associateCohortProjectedSpend)
+    // console.log("cohort spend: ", partnerCohortProjectedSpend, associateCohortProjectedSpend)
     projectedImpact.marketProjectedImpact = partnerCohortProjectedSpend + associateCohortProjectedSpend;
     return projectedImpact;
   }
+
+  // calculateDiffs(firmData: any, internalData: any, marketData: any): any {
+  //   if (firmData.blended_rate )
+  // }
 }

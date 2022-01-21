@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import {CommonService} from '../shared/services/common.service';
+import {Component, OnInit} from '@angular/core';
+import {CommonService, IClient} from '../shared/services/common.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
+import {GridOptions} from 'ag-grid-community';
 import {MatDialog} from '@angular/material/dialog';
+import {FRESH_DESK_ARTICLES, SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import { DatePipe } from '@angular/common';
-import { RatesAnalysisService } from './rates-analysis.service';
+import {confirmDialogConfig} from '../shared/services/config';
+import {IRateBenchmark} from '../rates-analysis/rates-analysis.model';
 
 @Component({
   selector: 'bd-rates-analysis',
@@ -15,103 +18,99 @@ import { RatesAnalysisService } from './rates-analysis.service';
 })
 export class RatesAnalysisComponent implements OnInit {
   pendingRequest: Subscription;
-  comparisonFirms: Array<any>;
-  practiceArea: string = 'Litigation';
-  firmName: string = 'Quinn Emanuel Urquhart & Sullivan';
-  firmId: number = 28;
-  year: number = 2019;
-  firmYearData: any;
-  marketAverageData: any;
-  firmRateIncreasePct: number;
-  cohortRateIncreasePct: number;
-  firmClassificationRateIncreaseData: Array<any>;
-  cohortClassificationRateIncreaseData: Array<any>;
-
-
-
+  pendingRequestDelete: Subscription;
+  clientRateBenchmarks: Array<any> = [];
+  paginationPageSize: number = 10;
+  gridOptions: GridOptions;
+  savedState: any;
+  sideBarConfig: any;
+  defaultColumn: any;
+  defaultState: any;
+  firstLoad: boolean = true;
+  gridApi: any;
 
   constructor(private route: ActivatedRoute,
-              public router: Router,
-              private httpService: HttpService,
-              public appStateService: AppStateService,
-              public userService: UserService,
-              public commonServ: CommonService,
-              public utilService: UtilService,
-              public dialog: MatDialog,
-              public agGridService: AgGridService,
-              public ratesService: RatesAnalysisService) {
-    this.commonServ.pageTitle = 'View Rate Analysis';
-    setTimeout(() => {
-      this.commonServ.pageSubtitle = this.firmName;
-    });
+    public router: Router,
+    private httpService: HttpService,
+    public appStateService: AppStateService,
+    public userService: UserService,
+    public commonServ: CommonService,
+    public utilService: UtilService,
+    public dialog: MatDialog,
+    public agGridService: AgGridService) {
+      this.commonServ.pageTitle = 'Client Rate Benchmarks';
   }
 
   ngOnInit(): void {
-    this.getData();
+    this.defaultColumn = this.agGridService.getDefaultColumn();
+    this.sideBarConfig = this.agGridService.getDefaultSideBar();
+    this.savedState = this.agGridService.getSavedState('RateBenchmarksGrid');
+    this.gridOptions = this.agGridService.getDefaultGridOptions();
+    this.initColumns();
+    this.getClientRateBenchmarks();
   }
 
+  initColumns(): void {
+    this.gridOptions.columnDefs = [
+      {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, width: 200, filter: 'text', flex: 1},
+      {headerName: 'Practice Area', field: 'smart_practice_area', ...this.defaultColumn, flex: 1},
+      {headerName: 'Year', field: 'year', ...this.defaultColumn},
+      {headerName: 'Cost Impact', field: 'year', ...this.defaultColumn, flex: 1},
+      {headerName: 'Average Assoc. Rate', field: 'year', ...this.defaultColumn, flex: 1},
+      {headerName: 'Assoc. +/- Per Hour', field: 'year', ...this.defaultColumn, flex: 1},
+      {headerName: 'Average Partner Rate', field: 'year', ...this.defaultColumn, flex: 1},
+      {headerName: 'Partner +/- Per Hour', field: 'year', ...this.defaultColumn, flex: 1},
+      {headerName: 'Historical Cost Impact', field: 'year', ...this.defaultColumn, flex: 1},
+      {headerName: 'View', cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)},
+    ];
+  }
 
-  getData(): void {
-    const firmParam = [];
-    const paParam = [];
-    paParam.push(this.practiceArea);
-    firmParam.push(this.firmId.toString());
-    const params = {
-      firmId: this.firmId,
-      smartPA: 'Litigation',
-      marketAverageYear: 2019,
-      firms: JSON.stringify(firmParam),
-      bdPracticeAreas: JSON.stringify(paParam)
-    };
-    console.log("params: ", params)
-    this.pendingRequest = this.httpService.makeGetRequest('getFirmRateAnalysisIncreaseData', params).subscribe(
+  getClientRateBenchmarks(): void {
+    this.pendingRequest = this.httpService.makeGetRequest('getRateBenchmarks').subscribe(
       (data: any) => {
         console.log("data: ", data);
-        if (data.result) {
-          if (data.result.market_average) {
-            if (data.result.market_average.length > 0) {
-              this.marketAverageData = data.result.market_average;
-            }
-          }
-          if (data.result.firm_data) {
-            if (data.result.firm_data.length > 0) {
-              this.firmYearData = data.result.firm_data[0];
-            }
-          }
-          if (data.result.firm_rate_result && data.result.cohort_rate_result && data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
-            console.log("if eval: ")
-            // const firmRateIncreasePct = this.ratesService.calculateRateIncreasePct(data.result.firm_rate_result, data.result.max_year);
-            // const cohortRateIncreasePct = this.ratesService.calculateRateIncreasePct(data.result.cohort_rate_result, data.result.max_year);
-            // this.firmRateIncreasePct = firmRateIncreasePct.yearsData[0].avgRateIncrease;
-            // this.cohortRateIncreasePct = cohortRateIncreasePct.yearsData[0].avgRateIncrease;
-            // this.firmRateIncreasePct *= 100;
-            // this.cohortRateIncreasePct *= 100;
-
-            const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result, data.result.firm_rate_result_classification, data.result.max_year);
-            const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result, data.result.cohort_rate_result_classification, data.result.max_year);
-            this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;
-            this.cohortClassificationRateIncreaseData = cohortClassificationRateIncreasePct.classificationData;
-            this.firmRateIncreasePct = firmClassificationRateIncreasePct.rateIncreasePct;
-            this.cohortRateIncreasePct = cohortClassificationRateIncreasePct.rateIncreasePct;
-            this.firmRateIncreasePct *= 100;
-            this.cohortRateIncreasePct *= 100;
-
-            const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData)
-
-            console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
-            console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
-            console.log("firmClassificationRateIncreasePct: ", firmClassificationRateIncreasePct)
-            console.log("cohortClassificationRateIncreasePct: ", cohortClassificationRateIncreasePct)
-            console.log("projectedCostImpact: ", projectedCostImpact)
-          }
+        this.clientRateBenchmarks = data.result || [];
+        this.clientRateBenchmarks = this.clientRateBenchmarks.sort(this.utilService.dynamicSort('-created_on'));
+        const pipe = new DatePipe('en-US');
+        for (const report of this.clientRateBenchmarks) {
+          report.created_on = pipe.transform(report.created_on, 'shortDate');
         }
-
-        // const rateIncreasePcts = this.ratesService.calculateRateIncrease()
-
-
-
+        this.loadGrid();
       }
     );
   }
+
+  loadGrid(): void {
+    if (!this.gridOptions.api) {
+      return;
+    }
+    if (this.firstLoad) {
+      this.defaultState = this.gridOptions.columnApi.getColumnState();
+      this.firstLoad = false;
+    }
+    this.gridOptions.api.setRowData(this.clientRateBenchmarks);
+    this.agGridService.restoreGrid(this.savedState, this.gridOptions);
+  }
+
+  saveGridConfig(evt: any): void {
+    const state = evt;
+    this.agGridService.saveState('RateBenchmarksGrid', this.gridOptions);
+  }
+
+  viewCellRenderer() {
+    const value = '<button mat-flat-button type="button" style="border: none; background-color: #E9F1F4; border-radius: 99px; height: 22px; width: 60px; margin-top: 19%; display: flex; flex-direction: row; justify-content: center; align-items: center; font-size: 12px;">View<i class="fa fa-chevron-right" style="padding-left: 6px; font-weight: 400;"></i></button>';
+    return value;
+  }
+
+  costImpactCellRenderer() {
+    const value = '<button mat-flat-button class="view-button" type="button" style="width: 60px;border: none;background-color: #E9F1F4; border-radius: 99px; height: 22px; width: 52px;"><em class="icon-trash"></em></button>';
+    return value;
+  }
+
+  view(row: any): void {
+    console.log("row: ", row);
+    this.router.navigate(['/analytics-ui/rates-benchmarking/view/', row.data.id]);
+  }
+
 
 }

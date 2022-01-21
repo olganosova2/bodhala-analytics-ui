@@ -34,6 +34,9 @@ import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component'
 import {QbrDeckComponent} from './qbr/qbr-deck/qbr-deck.component';
 import {QbrDashboardComponent} from './qbr/qbr-dashboard/qbr-dashboard.component';
 import {RatesAnalysisComponent} from './rates-analysis/rates-analysis.component';
+import {AdminRateBenchmarksComponent} from './admin/admin-rate-benchmarks/admin-rate-benchmarks.component';
+import {ViewRateAnalysisComponent} from './rates-analysis/view-rate-analysis/view-rate-analysis.component';
+
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -69,7 +72,9 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/qbrs/view', component: QbrDeckComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/edit/:reportId', component: QbrCreationComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/dashboard', component: QbrDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'analytics-ui/rates-analysis', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rates-benchmarking', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rates-benchmarking/view/:id', component: ViewRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
@@ -86,5 +91,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/subscription-list', component: SubscriptionListComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/ledes-imports', component: LedesImportsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/ledes-imports/:clientId', component: RerunUploadComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/rate-benchmarks', component: AdminRateBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  // {path: 'analytics-ui/admin/rate-benchmarks/:clientId', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

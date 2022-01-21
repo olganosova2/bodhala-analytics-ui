@@ -174,6 +174,10 @@ import { NextStepInputsComponent } from './qbr/qbr-creation/qbr-insights/qbr-nex
 import { QbrRecommendationComponent } from './qbr/qbr-recommendation/qbr-recommendation.component';
 import { MoreYouActComponent } from './qbr/qbr-text-pages/more-you-act/more-you-act.component';
 import { RatesAnalysisComponent } from './rates-analysis/rates-analysis.component';
+import { AdminRateBenchmarksComponent } from './admin/admin-rate-benchmarks/admin-rate-benchmarks.component';
+import { AddRateBenchmarkComponent } from './admin/admin-rate-benchmarks/add-rate-benchmark/add-rate-benchmark.component';
+import { ViewRateAnalysisComponent } from './rates-analysis/view-rate-analysis/view-rate-analysis.component';
+import { RateAnalysisChartComponent } from './rates-analysis/view-rate-analysis/rate-analysis-chart/rate-analysis-chart.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -295,7 +299,11 @@ export function initHttp(service: HttpService) {
     NextStepInputsComponent,
     QbrRecommendationComponent,
     MoreYouActComponent,
-    RatesAnalysisComponent
+    RatesAnalysisComponent,
+    AdminRateBenchmarksComponent,
+    AddRateBenchmarkComponent,
+    ViewRateAnalysisComponent,
+    RateAnalysisChartComponent
   ],
   entryComponents: [
     PillComponent,

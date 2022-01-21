@@ -1,106 +1,24 @@
 <div style="padding: 0px 16px 16px 24px;">
-  <div style="display: inline !important;">
-    <span class="header-span" style="font-size: 16px !important;">
-      Rate Benchmark Analysis
-    </span>
+  <h3>Rate Benchmarking Overview</h3>
 
-    <span class="header-span" style="margin-left: 3em; font-size: 16px !important;">Firm: </span>
-    <span>{{firmName}}</span>
-
-    <span class="header-span" style="margin-left: 3em; font-size: 16px !important;">Practice Area: </span>
-    <span>{{practiceArea}}</span>
-
-    <span class="header-span" style="margin-left: 3em; font-size: 16px !important;">Year: </span>
-    <span>{{year}}</span>
-
-    <div class="peer-firms">
-      <p><b>Comparison Peer Firms</b></p>
+  <div>
+    <div class="pull-right mb20">
     </div>
-
-  </div>
-
-  <h3>{{year}} Rate Overview</h3>
-
-
-  <div class="rates-analysis-card">
-    <img src="assets/images/bills.svg" alt="icon"/>
-    <span class="header-span" style="display: inline; font-size: 24px !important; padding-left:1em;">Historical Cost Impact</span>
-    <div style="display: inline !important;">
-      <span class="grade-pill" style="background: orange;">MODERATE</span>
-      <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span>
-
-      <!-- will need conditionals here. Logic will depend on business input and how we determine the grade of impact -->
-      <!-- <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span>
-      <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span>
-      <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span> -->
-    </div>
-
-  </div>
-
-  <!-- <div class="p-grid mt15">
-    <div class="p-md-12 p-lg-5 pl15 pr15" style="background: #FFFFFF; border-radius: 8px; width: 45% !important;">
-
-    </div>
-
-
-    <div class="p-md-12 p-lg-5 pl15" style="background: #FFFFFF; border-radius: 8px; width: 45% !important;">
-
-    </div>
-  </div> -->
-
-  <div class="p-grid mt40">
-    <div class="p-md-12 p-lg-6 pl8 pr15" style="background: #FFFFFF; border-radius: 8px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 32px;">
-      <em class="icon-bar-chart"></em>
-      <span class="header-span">Last Year's Rate Increase:</span>
-      <span class="data-span">{{firmRateIncreasePct | number:'1.1-1'}}%</span>
-      <div style="display: inline-flex; padding-top: 0.25em;">
-        <div class="projected-cost-impact"><b>Projected<br>Cost Impact</b></div>
-        <div style="width: 50%; padding-left: 3em;">$600,000 more than last year (based on last year's hours)</div>
-
-      </div>
-    </div>
-
-
-    <div class="p-md-12 p-lg-6 pr8" style="background: #FFFFFF; border-radius: 8px; width: 48% !important; margin-left: 20px; margin-right: 0.5em; padding: 32px;">
-      <em class="icon-bar-chart"></em>
-      <span class="header-span">Estimated Market Rate Increase:</span>
-      <span class="data-span">{{cohortRateIncreasePct | number:'1.1-1'}}%</span>
-      <div style="display: inline-flex; padding-top: 0.25em;">
-        <div class="projected-cost-impact"><b>Projected<br>Cost Impact</b></div>
-        <div style="width: 50%; padding-left: 3em;">$3,000,000 more than last year (based on last year's hours)</div>
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="panel-wrapper mt40" style="padding: 0px !important;">
-    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
-      <span class="header-span">Historical Blended Rate</span>
-    </div>
-
-    <!-- rates-benchmark-two-bars -->
-
-
-  </div>
-
-  <div class="panel-wrapper mt40" style="padding: 0px !important;">
-    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
-      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Historical BPI</span>
-    </div>
-
-    <!-- rates-benchmark-two-bars -->
-
-
+    <div class="clear-both"></div>
+    <ag-grid-angular
+        #agGrid
+        style="width: 100%;"
+        [ngStyle]="{'height': agGridService.setGridHeight(clientRateBenchmarks, paginationPageSize) +'px'}"
+        class="ag-theme-alpine"
+        [pagination]="true"
+        [paginationPageSize]="paginationPageSize"
+        [sideBar]="sideBarConfig"
+        (displayedColumnsChanged)="saveGridConfig($event)"
+        (sortChanged)="saveGridConfig($event);"
+        (columnResized)="saveGridConfig($event);"
+        [suppressAggFuncInHeader]="true"
+        [gridOptions]="gridOptions">
+    </ag-grid-angular>
   </div>
 
 </div>
-
-
-
-
-
-
-
-
-

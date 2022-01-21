@@ -1,0 +1,121 @@
+<div style="padding: 0px 16px 16px 24px;">
+  <div style="display: inline !important;">
+    <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important;">
+      Rate Benchmark Analysis
+    </span>
+
+    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
+    <span style="color: #8A8A8A;">{{firmName}}</span>
+
+    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
+    <span style="color: #8A8A8A;">{{practiceArea}}</span>
+
+    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
+    <span style="color: #8A8A8A;">{{year}}</span>
+
+    <div class="peer-firms">
+      <p><b>Comparison Peer Firms</b></p>
+    </div>
+
+  </div>
+
+  <h3 style="padding-bottom: 40px;">{{year}} Rate Overview</h3>
+
+
+  <div class="rates-analysis-card">
+    <img src="assets/images/bills.svg" alt="icon"/>
+    <span class="header-span" style="display: inline; font-size: 24px !important; padding-left:1em;">Historical Cost Impact</span>
+    <div style="display: inline !important;">
+      <span class="grade-pill" style="background: orange;">MODERATE</span>
+      <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span>
+
+      <!-- will need conditionals here. Logic will depend on business input and how we determine the grade of impact -->
+      <!-- <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span>
+      <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span>
+      <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span> -->
+    </div>
+
+  </div>
+
+  <!-- <div class="p-grid mt15">
+    <div class="p-md-12 p-lg-5 pl15 pr15" style="background: #FFFFFF; border-radius: 8px; width: 45% !important;">
+
+    </div>
+
+
+    <div class="p-md-12 p-lg-5 pl15" style="background: #FFFFFF; border-radius: 8px; width: 45% !important;">
+
+    </div>
+  </div> -->
+
+  <div class="p-grid mt40">
+    <div class="p-md-12 p-lg-6 pl8 pr15" style="background: #FFFFFF; border-radius: 8px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 32px;">
+      <em class="icon-bar-chart"></em>
+      <span class="header-span" style="padding-left: 0.75em !important;">Last Year's Average Rate Increase:</span>
+      <span class="data-span">{{firmRateIncreasePct | number:'1.1-1'}}%</span>
+      <div style="display: inline-flex; padding-top: 0.25em;">
+        <div class="projected-cost-impact">
+          <b>Projected<br>Cost Impact</b>
+          <span class="ml10 pointer-hand" placement="bottom"
+                [ngbPopover]="helpText"
+                popoverTitle="Projected Cost Increase"
+                [openDelay]="100"
+                [closeDelay]="2000"
+                triggers="mouseenter:mouseleave">
+            <img src="assets/images/question.svg" alt="Hint"/>
+          </span>
+        </div>
+        <div style="width: 50%; padding-left: 3em;">{{firmCostImpactFormatted}}<span *ngIf="firmCostImpact > 0"> more</span> <span *ngIf="firmCostImpact < 0"> less</span> than last year (based on last year's hours)</div>
+
+
+      </div>
+    </div>
+
+
+    <div class="p-md-12 p-lg-6 pr8" style="background: #FFFFFF; border-radius: 8px; width: 48% !important; margin-left: 20px; margin-right: 0.5em; padding: 32px;">
+      <em class="icon-bar-chart"></em>
+      <span class="header-span" style="padding-left: 0.75em !important;">Estimated Average Market Rate Increase:</span>
+      <span class="data-span">{{cohortRateIncreasePct | number:'1.1-1'}}%</span>
+      <div style="display: inline-flex; padding-top: 0.25em;">
+        <div class="projected-cost-impact">
+          <b>Projected<br>Cost Impact</b>
+          <span class="ml10 pointer-hand" placement="bottom"
+                [ngbPopover]="helpText"
+                popoverTitle="Projected Cost Increase"
+                [openDelay]="100"
+                [closeDelay]="2000"
+                triggers="mouseenter:mouseleave">
+            <img src="assets/images/question.svg" alt="Hint"/>
+          </span>
+        </div>
+        <div style="width: 50%; padding-left: 3em;">{{cohortCostImpactFormatted}}<span *ngIf="firmCostImpact > 0"> more</span><span *ngIf="firmCostImpact < 0"> less</span> than last year (based on last year's hours)</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="panel-wrapper mt40" style="padding: 0px !important;">
+    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
+      <span class="header-span">Historical Blended Rate</span>
+    </div>
+    <div>
+      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
+                              [blendedRate]="true"></bd-rate-analysis-chart>
+    </div>
+
+  </div>
+
+  <div class="panel-wrapper mt40" style="padding: 0px !important;">
+    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
+      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Historical BPI</span>
+    </div>
+
+    <div>
+      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
+                              [blendedRate]="false"></bd-rate-analysis-chart>
+    </div>
+
+  </div>
+
+</div>
