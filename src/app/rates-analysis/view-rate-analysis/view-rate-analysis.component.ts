@@ -136,18 +136,9 @@ export class ViewRateAnalysisComponent implements OnInit {
               this.internalYearData = data.result.internal_data[0];
             }
           }
-          // if (this.internalYearData && this.firmYearData && this.marketAverageData) {
-          //   this.ratesService.calculateDiffs(this.firmYearData, this.internalYearData, this.marketAverageData);
-          // }
           this.loaded = true;
           if (data.result.firm_rate_result && data.result.cohort_rate_result && data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
             console.log("if eval: ")
-            // const firmRateIncreasePct = this.ratesService.calculateRateIncreasePct(data.result.firm_rate_result, data.result.max_year);
-            // const cohortRateIncreasePct = this.ratesService.calculateRateIncreasePct(data.result.cohort_rate_result, data.result.max_year);
-            // this.firmRateIncreasePct = firmRateIncreasePct.yearsData[0].avgRateIncrease;
-            // this.cohortRateIncreasePct = cohortRateIncreasePct.yearsData[0].avgRateIncrease;
-            // this.firmRateIncreasePct *= 100;
-            // this.cohortRateIncreasePct *= 100;
 
             const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result, data.result.firm_rate_result_classification, data.result.max_year);
             const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result, data.result.cohort_rate_result_classification, data.result.max_year);
@@ -185,13 +176,7 @@ export class ViewRateAnalysisComponent implements OnInit {
             console.log("projectedCostImpact: ", projectedCostImpact)
           }
         }
-
-        // const rateIncreasePcts = this.ratesService.calculateRateIncrease()
-
-
-
       }
     );
   }
-
 }
