@@ -91,6 +91,7 @@ export interface ITopFirmES {
     partner_percent_hours_worked: number;
     total_firm_matters: number;
     firm_block_billed: number;
+    firm_attorney_billed: number;
     matter_cost_closed: number;
     total_afa_closed: number;
     closed_matters: number;
