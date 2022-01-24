@@ -7,18 +7,26 @@
 </div>
 
 <div>
-  <div class="pull-left mt20" style="font-family: 'Sharp Sans'; font-size: 12px; padding-left: 10px;">Executive Summary Data Range: {{this.lowerDateRange}} - {{this.upperDateRange}}</div>
+  <div class="pull-left mt20" style="font-family: 'Sharp Sans'; font-size: 12px; padding-left: 10px;">
+    Executive Summary Data Range: 
+    <span *ngIf="!fullYear">{{this.lowerDateRangeMaxYear}} - {{this.upperDateRangeMaxYear}}</span>
+    <span *ngIf="fullYear">{{this.lowerDateRangeLastFullYear}} - {{this.upperDateRangeLastFullYear}}</span>
+    <mat-label class="toggle-label">YTD</mat-label>
+    <mat-slide-toggle style="padding-left: 1em;" [(ngModel)]="fullYear" (ngModelChange)="refreshData()" class="toggle"></mat-slide-toggle>
+    <mat-label class="toggle-label">Last Full Year</mat-label>
+  </div>
+
   <div class="pull-right mt10" style="display: inline"  *ngIf="commonServ.pdfLoading">Loading... Please wait</div>
 </div>
 
 <br><br>
 <div class="executiveSummary" id="executiveSummary">
   <div *ngIf="maxDate">
-    <bd-spend-overview [maxDate]="maxDate"></bd-spend-overview>
+    <bd-spend-overview [maxDate]="maxDate" [fullYear]="fullYear" [lastFullYear]="lastFullYear"></bd-spend-overview>
   </div>
 <!-- <div class="executiveSummary" id="executiveSummary"> -->
   <div class="mt10" *ngIf="maxDate">
-    <bd-es-table [maxDate]="maxDate"></bd-es-table>
+    <bd-es-table [maxDate]="maxDate" [fullYear]="fullYear" [lastFullYear]="lastFullYear"></bd-es-table>
   </div>
   <div [hidden]="!commonServ.pdfLoading">
     <h4>Annotations</h4>

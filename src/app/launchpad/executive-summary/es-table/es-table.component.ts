@@ -25,6 +25,8 @@ export class EsTableComponent implements OnInit {
   isLoaded: boolean = false;
   pendingRequest: Subscription;
   @Input() maxDate: string;
+  @Input() fullYear: boolean;
+  @Input() lastFullYear: string;
   formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -44,10 +46,10 @@ export class EsTableComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.getExecutiveSummaryData();
+    this.getExecutiveSummaryData(this.fullYear);
   }
 
-  getExecutiveSummaryData(): void {
+  getExecutiveSummaryData(fullYear: boolean): void {
     this.isLoaded = false;
     const params = this.filtersService.getCurrentUserCombinedFilters(false);
     const lastYear = moment(this.maxDate).year();
@@ -58,6 +60,7 @@ export class EsTableComponent implements OnInit {
     const today = new Date().toISOString().slice(0, 10);
     params.startdate = janOne;
     params.enddate = this.maxDate;
+    params.fullYear = fullYear;
     this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryData', params).subscribe(
       (data: any) => {
         if (data.result) {
@@ -113,8 +116,8 @@ export class EsTableComponent implements OnInit {
       } else {
         firm.avg_matter_cost_formatted = '--';
       }
-      if (firm.total_billed > 0 && (firm.total_billed !== null || firm.total_billed !== undefined)) {
-        firm.block_billed_per = firm.firm_block_billed / firm.total_billed;
+      if (firm.total_billed > 0 && (firm.firm_attorney_billed !== null || firm.firm_attorney_billed !== undefined)) {
+        firm.block_billed_per = firm.firm_block_billed / firm.firm_attorney_billed;
       } else {
         firm.block_billed_per = 0;
       }
