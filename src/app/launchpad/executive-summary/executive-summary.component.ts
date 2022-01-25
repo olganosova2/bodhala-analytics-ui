@@ -21,8 +21,12 @@ const moment = _moment;
 export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   maxDate: string;
-  lowerDateRange: string;
-  upperDateRange: string;
+  lastFullYear: string;
+  lowerDateRangeMaxYear: string;
+  upperDateRangeMaxYear: string;
+  lowerDateRangeLastFullYear: string;
+  upperDateRangeLastFullYear: string;
+  fullYear: boolean = false;
   notes: Array<IUiAnnotation> = [];
   uiId: string = config.UI_ANNOTATIONS_IDS.executiveSummary;
   @ViewChild(EsTableComponent) executiveSummaryTablesComp: EsTableComponent;
@@ -48,10 +52,15 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
           this.maxDate = data.result.max;
           const lastYear = moment(this.maxDate).year();
           const d = new Date(lastYear, 0 , 1);
+          const lastFullYear = lastYear - 1;
+          this.lastFullYear = lastFullYear.toString();
           const janOne = new Date(d).toISOString().slice(0, 10);
-          this.lowerDateRange = this.datepipe.transform(janOne, 'mediumDate');
-          this.upperDateRange = this.datepipe.transform(this.maxDate, 'mediumDate');
-
+          this.lowerDateRangeMaxYear = this.datepipe.transform(janOne, 'mediumDate');
+          this.upperDateRangeMaxYear = this.datepipe.transform(this.maxDate, 'mediumDate');
+          const dLastYearStart = new Date(lastFullYear, 0 , 1);
+          const dLastYearEnd = new Date(lastFullYear, 11 , 31);
+          this.lowerDateRangeLastFullYear = this.datepipe.transform(dLastYearStart, 'mediumDate');
+          this.upperDateRangeLastFullYear = this.datepipe.transform(dLastYearEnd, 'mediumDate');
         }
       }
     );
@@ -72,8 +81,8 @@ export class ExecutiveSummaryComponent implements OnInit, OnDestroy {
     }, 200);
   }
   refreshData(): void {
-    this.executiveSummaryTablesComp.getExecutiveSummaryData();
-    this.executiveSummaryOverviewComp.getSpendOverview();
+    this.executiveSummaryTablesComp.getExecutiveSummaryData(this.fullYear);
+    this.executiveSummaryOverviewComp.getSpendOverview(this.fullYear);
   }
   ngOnDestroy() {
     if (this.pendingRequest) {
