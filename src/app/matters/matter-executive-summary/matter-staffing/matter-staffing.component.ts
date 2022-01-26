@@ -11,7 +11,7 @@ import {MatterAnalysisService} from '../matter-analysis.service';
 @Component({
   selector: 'bd-matter-staffing',
   templateUrl: './matter-staffing.component.html',
-  styleUrls: ['./matter-staffing.component.scss']
+  styleUrls: ['../matter-executive-summary.component.scss', './matter-staffing.component.scss']
 })
 export class MatterStaffingComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
