@@ -42,8 +42,6 @@ describe('MatterMetricTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatterMetricTableComponent);
     component = fixture.componentInstance;
-    component.summaryData = MOCK_MATTER_OVERVIEW.result.ade_data[0];
-    component.marketData = MOCK_MATTER_OVERVIEW.result.market_data[0];
     fixture.detectChanges();
   });
 

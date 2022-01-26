@@ -8,13 +8,13 @@
     <chart (load)="saveInstance($event.context)" [options]="options"></chart>
   </div>
 </div>
-<bd-matter-metric-table *ngIf="marketRecords && marketRecords.length > 0"
+<bd-matter-metric-table *ngIf="internalRecords && internalRecords.length > 0"
   [page]="page"
   [lable]="'Internal'"
   [metricData]="internalMetricData"
   [metricType]="metricType">
 </bd-matter-metric-table>
-<bd-matter-metric-table *ngIf="internalRecords && internalRecords.length > 0"
+<bd-matter-metric-table *ngIf="marketRecords && marketRecords.length > 0"
   [page]="page"
   [lable]="'Market'"
   [metricData]="marketMetricData"

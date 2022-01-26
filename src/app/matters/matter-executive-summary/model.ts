@@ -1,6 +1,6 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
 
-export const HARDCODED_MATTER_ID = '087260/834'; // '087260/818'; // '373046-00021'; // '10001320';
+export const HARDCODED_MATTER_ID = '087260/834'; //  '100340'; // '087260/818'; // '373046-00021'; // '10001320';
 export const HARDCODED_MARKET_MATTERS = [
   '087260/785',
   '087260/818',
@@ -172,7 +172,7 @@ export const matterColumnChartOptions = {
   },
   series: [{
     name: 'Actual',
-    color: '#00D1FF',
+    color: '#000000',
     data: []
   }, {
     name: 'Internal',
@@ -180,7 +180,7 @@ export const matterColumnChartOptions = {
     data: []
   }, {
     name: 'Market',
-    color: '#3EDB73',
+    color: '#00D1FF',
     data: []
   }]
 };

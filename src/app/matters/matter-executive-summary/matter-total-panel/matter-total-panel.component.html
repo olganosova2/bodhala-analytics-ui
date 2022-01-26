@@ -5,7 +5,7 @@
       <div class="pl10" *ngIf="metric">
         <div class="exs-panel-title mb10">
           <span class="roboto-bold">{{ metric?.titleMetric?.label }}</span>
-          {{ metric?.titleMetric?.format }}{{ metric?.titleMetric?.amount | number:'1.0-0'}}</div>
+         <span class="roboto-div"> {{ metric?.titleMetric?.format }}{{ metric?.titleMetric?.amount | number:'1.0-0'}}</span></div>
         <div *ngFor="let subMetric of metric.subMetrics" class="mt10">
           <span
             class="roboto-bold mr15">{{subMetric.label}}</span>{{ subMetric?.format }}{{subMetric?.amount | number:'1.0-0'}}

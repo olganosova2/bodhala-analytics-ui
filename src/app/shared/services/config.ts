@@ -189,6 +189,7 @@ export const ROUTES = [
   {name: 'app.client.recommendations', routePath: 'analytics-ui/admin/client-recommendations', fragment: '/client-recommendations'},
   {name: 'app.ledes.imports', routePath: 'analytics-ui/admin/ledes-imports', fragment: '/ledes-imports'},
   {name: 'analytics.qbrs.dashboard', routePath: 'analytics-ui/qbrs/dashboard', fragment: '/qbrs/'},
+  {name: 'app.uploads-manage-launchpad', routePath: 'analytics-ui/admin/insights', fragment: '/admin/insights'},
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},

@@ -1,5 +1,5 @@
 <div class="exs-div" id="matterAnalysis">
-  <div><span class="font-bold">Matter Staffing Analysis</span> Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></div>
+  <div><span class="roboto-bold">Matter Staffing Analysis</span> <span class="ml5 font-gray">Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></span></div>
   <bd-matter-title-bar [matterId]="matterId" [firmId]="firmId" [title]="'Matter Overview'" [index]="0" (firmSelected)="selectFirm($event)"
   (singleFirmLoaded)="getMatterInsight($event)"></bd-matter-title-bar>
 <div class="insights-bar justify-start mt30" *ngIf="insightText">

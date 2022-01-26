@@ -46,7 +46,9 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; });
-    this.matterId = HARDCODED_MATTER_ID;
+    if (!this.matterId) {
+      this.matterId = HARDCODED_MATTER_ID;
+    }
     this.getDocuments();
   }
   selectFirm(evt: number) {

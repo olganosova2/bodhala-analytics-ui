@@ -4,7 +4,8 @@
       <div class="summary-card">
         <div class="summary-card-title" [ngClass]=" {'oval-label-red': totalSpendMetric[0].grade === 'POOR',
               'oval-label-green': totalSpendMetric[0].grade === 'GOOD',
-              'oval-label-orange': totalSpendMetric[0].grade === 'FAIR'}">
+              'oval-label-orange': totalSpendMetric[0].grade === 'FAIR',
+              'oval-label-gray': !totalSpendMetric[0].grade}">
           Overal Cost: <span class="roboto-bold">{{ totalSpendMetric[0].grade }}</span>
         </div>
         <div class="summary-card-content total-spend-card">
@@ -20,7 +21,8 @@
       <div class="summary-card">
         <div class="summary-card-title" [ngClass]=" {'oval-label-red': avgRatesMetric[0].grade === 'POOR',
               'oval-label-green': avgRatesMetric[0].grade === 'GOOD',
-              'oval-label-orange': avgRatesMetric[0].grade === 'FAIR'}">
+              'oval-label-orange': avgRatesMetric[0].grade === 'FAIR',
+              'oval-label-gray': !avgRatesMetric[0].grade}">
           Hourly Rates: <span class="roboto-bold">{{ avgRatesMetric[0].grade }}</span>
         </div>
         <div class="summary-card-content pt20">
@@ -46,7 +48,8 @@
       <div class="summary-card">
         <div class="summary-card-title" [ngClass]=" {'oval-label-red': staffingAllocationMetric[0].grade === 'POOR',
               'oval-label-green': staffingAllocationMetric[0].grade === 'GOOD',
-              'oval-label-orange': staffingAllocationMetric[0].grade === 'FAIR'}">
+              'oval-label-orange': staffingAllocationMetric[0].grade === 'FAIR',
+              'oval-label-gray': !staffingAllocationMetric[0].grade}">
           Staffing Efficiency: <span class="roboto-bold">{{ staffingAllocationMetric[0].grade }}</span>
         </div>
         <div class="summary-card-content pt10">
