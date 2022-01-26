@@ -1,0 +1,42 @@
+<div class="p-grid font-bold">
+  <div class="p-col-3">
+    Year
+  </div>
+  <div class="p-col-3">
+    Blended Rate
+  </div>
+  <div class="p-col-3">
+    Avg. Partner Rate
+  </div>
+  <div class="p-col-3">
+    Avg. Associate Rate
+  </div>
+</div>
+<div class="p-grid">
+  <div class="p-col-3">
+    <span class="left-column">{{summary?.dates?.currentMonthEnd}}:</span>
+  </div>
+  <div class="p-col-3">
+    <span>{{summary?.billing_totals_current?.avg_blended_rate | currency }}</span>
+  </div>
+  <div class="p-col-3">
+    <span>{{summary?.billing_totals_current?.avg_partner_rate | currency }}</span>
+  </div>
+  <div class="p-col-3">
+    <span>{{summary?.billing_totals_current?.avg_associate_rate | currency }}</span>
+  </div>
+</div>
+<div class="p-grid">
+  <div class="p-col-3">
+    <span class="left-column">{{summary?.dates?.yearAgoMonthEnd}}:</span>
+  </div>
+  <div class="p-col-3">
+    <span>{{summary?.billing_totals_last_year?.avg_blended_rate | currency }}</span>
+  </div>
+  <div class="p-col-3">
+    <span>{{summary?.billing_totals_last_year?.avg_partner_rate | currency }}</span>
+  </div>
+  <div class="p-col-3">
+    <span>{{summary?.billing_totals_last_year?.avg_associate_rate | currency }}</span>
+  </div>
+</div>

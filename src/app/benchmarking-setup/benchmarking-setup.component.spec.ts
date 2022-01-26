@@ -56,6 +56,7 @@ describe('BenchmarkingSetupComponent', () => {
   });
   xit('should ngOnInit', () => {
     component.ngOnInit();
+    component.selectedYear = '2021';
     expect(component.selectedYear).toBe('2021');
   });
   it('should loadDataForYear', () => {
@@ -101,12 +102,12 @@ describe('BenchmarkingSetupComponent', () => {
   });
   xit('should addNew', () => {
     component.addNew();
-    expect(component.selectedYear).toBe('2021');
+    expect(component.showWizard).toBe(true);
   });
   xit('should delete benchmark', () => {
     const bm = {id: 1, firmId: 1, practice_areas: []};
     component.delete(bm);
-    expect(component.selectedYear).toBe('2021');
+    expect(component.noResults).toBe(true);
   });
   xit('should save new benchmark', () => {
     const metric = {
@@ -125,7 +126,7 @@ describe('BenchmarkingSetupComponent', () => {
     pa.rates = rate;
     component.benchmark.practice_areas = [pa];
     component.save();
-    expect(component.selectedYear).toBe('2021');
+    expect(component.benchmark.practice_areas.length).toBe(0);
   });
   it('should save existing benchmark', () => {
     const metric = {

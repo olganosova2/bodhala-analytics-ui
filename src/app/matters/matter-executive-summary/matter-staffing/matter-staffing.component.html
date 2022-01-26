@@ -1,0 +1,21 @@
+<div class="exs-div ml20" id="matterAnalysis">
+  <div><span class="roboto-bold">Matter Staffing Analysis</span> <span class="ml5 font-gray">Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></span></div>
+
+  <bd-matter-title-bar [matterId]="matterId" [title]="'Staffing & Rate Analysis'" [index]="1" (firmSelected)="selectFirm($event)"></bd-matter-title-bar>
+  <div class="position-relative">
+    <div *ngFor="let metric of metrics" class="mt40">
+      <bd-matter-total-spend *ngIf="summaryData"
+                             [page]="'Staffing'"
+                             [summaryData]="summaryData"
+                             [marketData]="marketData"
+                             [internalData]="internalData"
+                             [marketRecords]="marketRecords"
+                             [internalRecords]="internalRecords"
+                             [metricType]="metric"></bd-matter-total-spend>
+    </div>
+<!--    <div class="spinner-card" [hidden]="isLoaded">-->
+<!--      <mat-spinner diameter="50" color="primary"></mat-spinner>-->
+<!--    </div>-->
+  </div>
+
+</div>

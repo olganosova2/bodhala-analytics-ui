@@ -1,0 +1,24 @@
+<div class="panel-wrapper">
+  Matter: <span class="font-bold">{{matterName}}</span>
+  <mat-form-field appearance="outline" class="full-width">
+    <input type="text" matInput [(ngModel)]="matterId" autocomplete="off"  required (input)="loadMatters($event.target.value)"
+           maxlength="255" [matAutocomplete]="auto" name="matterId" placeholder="Type to search by Matter ID or Matter Name">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="loadFirms($event)" [displayWith]="getOptionText">
+      <mat-option *ngFor="let option of filteredNames; let i = index" [value]="option">
+        {{ option.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <div class="mb20 mt20">
+    <div *ngIf="firm">Firm: <span class="font-bold">{{firm?.name}} ({{firm?.id}})</span></div>
+    <mat-form-field appearance="outline" *ngIf="filteredFirms.length > 1">
+      <mat-label>Select a Firm</mat-label>
+      <mat-select [(ngModel)]="firm" (selectionChange)="getDataByMatterAndFirm($event)">
+        <mat-option *ngFor="let firm of filteredFirms" [value]="firm">{{firm.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<bd-matter-totals-metrics *ngIf="firm" [isAdmin]="true" [clientId]="selectedClientId" [firmId]="firm.id" [matterId]="matterId"></bd-matter-totals-metrics>
+
+

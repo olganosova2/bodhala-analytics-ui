@@ -140,6 +140,18 @@ import {QbrCoverComponent} from '../../qbr/qbr-text-pages/qbr-cover/qbr-cover.co
 import {QbrKeyTrendsComponent} from '../../qbr/qbr-text-pages/qbr-key-trends/qbr-key-trends.component';
 import {QbrRecommendationComponent} from '../../qbr/qbr-recommendation/qbr-recommendation.component';
 import {MoreYouActComponent} from '../../qbr/qbr-text-pages/more-you-act/more-you-act.component';
+import {MatterExecutiveSummaryComponent} from '../../matters/matter-executive-summary/matter-executive-summary.component';
+import {MatterTitleBarComponent} from '../../matters/matter-executive-summary/matter-title-bar/matter-title-bar.component';
+import {MatterTotalPanelComponent} from '../../matters/matter-executive-summary/matter-total-panel/matter-total-panel.component';
+import {AdminInsightsComponent} from '../../admin/insights/insights.component';
+import {InsightsCardComponent} from '../../admin/insights/insights-card/insights-card.component';
+import {BlendedRateCardComponent} from '../../admin/insights/blended-rate-card/blended-rate-card.component';
+import {MatterInsightsComponent} from '../../admin/insights/matter-insights/matter-insights.component';
+import {MatterTotalSpendComponent} from '../../matters/matter-executive-summary/matter-total-spend/matter-total-spend.component';
+import {MatterTotalsMetricsComponent} from '../../matters/matter-executive-summary/matter-totals-metrics/matter-totals-metrics.component';
+import {MatterStaffingComponent} from '../../matters/matter-executive-summary/matter-staffing/matter-staffing.component';
+import {MatterSummaryCardComponent} from '../../matters/matter-executive-summary/matter-summary-card/matter-summary-card.component';
+import {MatterMetricTableComponent} from '../../matters/matter-executive-summary/matter-total-spend/matter-metric-table/matter-metric-table.component';
 
 
 
@@ -273,7 +285,19 @@ export const DECLARATIONS = [
   QbrCoverComponent,
   QbrKeyTrendsComponent,
   QbrRecommendationComponent,
-  MoreYouActComponent
+  MoreYouActComponent,
+  MatterExecutiveSummaryComponent,
+  MatterTitleBarComponent,
+  MatterTotalPanelComponent,
+  AdminInsightsComponent,
+  InsightsCardComponent,
+  BlendedRateCardComponent,
+  MatterInsightsComponent,
+  MatterTotalSpendComponent,
+  MatterTotalsMetricsComponent,
+  MatterStaffingComponent,
+  MatterSummaryCardComponent,
+  MatterMetricTableComponent
 ];
 
 export const PROVIDERS = [

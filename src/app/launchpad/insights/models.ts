@@ -1,7 +1,8 @@
 export enum IInsightType {
   BB = 'BB',
   BPI = 'BPI',
-  IQ = 'IQ'
+  IQ = 'IQ',
+  Matter = 'Matter'
 }
 export interface IInsight {
   id: number;
@@ -9,6 +10,7 @@ export interface IInsight {
   insight_type: string;
   title: string;
   description: string;
+  client_matter_id?: string;
   is_enabled: boolean;
   created_on: string;
   created_by: string;

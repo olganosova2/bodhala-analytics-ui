@@ -1,0 +1,8 @@
+<div class="p-grid">
+  <div class="p-col-6 pr20 pt20" *ngFor="let metric of totalPanels">
+    <bd-matter-total-panel [matterId]="matterId" [metric]="metric" [isAdmin]="isAdmin"></bd-matter-total-panel>
+  </div>
+<!--  <div class="spinner-card" [hidden]="isLoaded">-->
+<!--    <mat-spinner diameter="50" color="primary"></mat-spinner>-->
+<!--  </div>-->
+</div>
