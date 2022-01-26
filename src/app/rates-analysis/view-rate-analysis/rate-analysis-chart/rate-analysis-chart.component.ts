@@ -14,8 +14,10 @@ export class RateAnalysisChartComponent implements OnInit {
   @Input() marketAverageData: any;
   @Input() blendedRate: boolean;
 
-  marketAverageLowerRange: string;
-  marketAverageUpperRange: string;
+  marketAverageLowerRange: number;
+  marketAverageUpperRange: number;
+  marketAverageLowerRangeFormatted: string;
+  marketAverageUpperRangeFormatted: string;
   marketAverageLeft: string;
   marketAverageWidth: string;
 
@@ -33,6 +35,8 @@ export class RateAnalysisChartComponent implements OnInit {
   bottomBarDollars: number = 0;
   topBarColor: string;
   bottomBarColor: string;
+  marketRateColor: string = '#E5EAEC';
+  internalRateColor: string = '#E5EAEC';
   floatDivX: string;
   floatDivWidth: string;
   highestRate: number = 0;
@@ -60,7 +64,7 @@ export class RateAnalysisChartComponent implements OnInit {
   }
 
   calculateChartMetrics(): void {
-    // this.selectedFirmData.blended_rate = 400;
+    this.selectedFirmData.blended_rate = 1080;
     if (this.blendedRate) {
       if (this.marketAverageData.blended_rate_hi > this.selectedFirmData.blended_rate && this.marketAverageData.blended_rate_hi > this.internalData.avg_blended_rate) {
         this.highestRate = this.marketAverageData.blended_rate_hi;
@@ -80,8 +84,10 @@ export class RateAnalysisChartComponent implements OnInit {
       const lowerRange = this.calculateBarWidth(this.marketAverageData.blended_rate_lo);
       const upperRange = this.calculateBarWidth(this.marketAverageData.blended_rate_hi);
       const width = upperRange - lowerRange;
-      this.marketAverageLowerRange = moneyFormatter.format(this.marketAverageData.blended_rate_lo);
-      this.marketAverageUpperRange =  moneyFormatter.format(this.marketAverageData.blended_rate_hi);
+      this.marketAverageLowerRange = this.marketAverageData.blended_rate_lo;
+      this.marketAverageUpperRange =  this.marketAverageData.blended_rate_hi;
+      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketAverageData.blended_rate_lo);
+      this.marketAverageUpperRangeFormatted =  moneyFormatter.format(this.marketAverageData.blended_rate_hi);
 
       this.marketAverageLeft = lowerRange + 'px';
       this.marketAverageWidth = width + 'px';
@@ -122,8 +128,10 @@ export class RateAnalysisChartComponent implements OnInit {
       this.bottomBarDollars = this.internalData.avg_bpi;
       this.bottomBarWidth = this.calculateBarWidth(this.internalData.avg_bpi) + 'px';
 
-      this.marketAverageLowerRange = moneyFormatter.format(this.marketAverageData.bpi_lo);
-      this.marketAverageUpperRange = moneyFormatter.format(this.marketAverageData.bpi_hi);
+      this.marketAverageLowerRange = this.marketAverageData.bpi_lo;
+      this.marketAverageUpperRange = this.marketAverageData.bpi_hi;
+      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketAverageData.bpi_lo);
+      this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.marketAverageData.bpi_hi);
       const lowerRange = this.calculateBarWidth(this.marketAverageData.bpi_lo);
       const upperRange = this.calculateBarWidth(this.marketAverageData.bpi_hi);
       const width = upperRange - lowerRange;
@@ -151,14 +159,15 @@ export class RateAnalysisChartComponent implements OnInit {
       this.internalRateDeltaPct = this.internalRateDelta / this.selectedFirmData.bodhala_price_index;
       this.internalRateDeltaPct *= 100;
     }
-    // console.log("this.withinRange: ", this.withinRange)
+    console.log("topBarDollars >= marketAverageUpperRange: ", this.topBarDollars >= Number(this.marketAverageUpperRange))
+    console.log("this.topBarDollars: ", this.topBarDollars)
     console.log("this.internalRateDeltaPct: ", this.internalRateDeltaPct)
-    // console.log("this.marketRateUpperDelta: ", this.marketRateUpperDelta)
-    // console.log("this.marketRateLowerDeltaPct: ", this.marketRateLowerDeltaPct)
-    // console.log("this.marketRateUpperDeltaPct: ", this.marketRateUpperDeltaPct)
-    // // console.log("this.highestRate: ", this.highestRate)
-    this.topBarColor = this.getBarColor('top');
-    this.bottomBarColor = this.getBarColor('bottom');
+    console.log("this.marketRateLowerDeltaPct: ", this.marketRateLowerDeltaPct)
+    console.log("this.marketRateUpperDeltaPct: ", this.marketRateUpperDeltaPct)
+    console.log("this.marketAverageUpperRange: ", this.marketAverageUpperRange)
+    this.topBarColor = this.getBarColor();
+    this.internalRateColor = this.getRateColor(this.internalRateDeltaPct);
+    this.marketRateColor = this.getRateColor(this.marketRateUpperDeltaPct);
   }
 
   calculateBarWidth(rate: number): number {
@@ -169,21 +178,33 @@ export class RateAnalysisChartComponent implements OnInit {
     return result;
   }
 
-  getBarColor(pos: string): string {
-    const result = '';
-    // if (!this.dataRow.isChild) {
-    //   if (pos === 'top') {
-    //     return this.bmService.getAvgBarColor('partner', this.dataRow);
-    //   } else {
-    //     return this.bmService.getAvgBarColor('associate', this.dataRow);
-    //   }
-    // } else {
-    //   if (pos === 'top') {
-    //     return this.bmService.getStatusColor(this.dataRow);
-    //   } else {
-    //     return BM_COLORS.Default;
-    //   }
-    // }
+  getBarColor(): string {
+    let result = '';
+    if (this.topBarDollars / this.marketAverageUpperRange >= 1.2) {
+      result = '#FE3F56';
+    } else if ((this.topBarDollars / this.marketAverageUpperRange) < 1.2 && this.topBarDollars > this.marketAverageUpperRange) {
+      result = '#FF8B4A';
+    } else if (this.topBarDollars <= this.marketAverageUpperRange && this.topBarDollars >= this.marketAverageLowerRange) {
+      result = '#FFC327';
+    } else if ((this.topBarDollars / this.marketAverageLowerRange) < 1) {
+      result = '#3EDB73';
+    } else {
+      result = '#E5EAEC';
+    }
+    return result;
+  }
+
+  getRateColor(deltaPct: number): string {
+    let result = '';
+    if (deltaPct >= 20) {
+      result = '#FE3F56';
+    } else if (deltaPct >= 0 && deltaPct < 20) {
+      result = '#FF8B4A';
+    } else if (deltaPct < 0) {
+      result = '#3EDB73';
+    } else {
+      result = '#FFC327';
+    }
     return result;
   }
 

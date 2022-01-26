@@ -34,6 +34,7 @@ export class AddRateBenchmarkComponent implements OnInit {
   allFirmsCluster: Array<any>;
   yearOptions: SelectItem[] = [];
   peerFirms: Array<string>;
+  selectedFirmCluster: number = 1;
 
   benchmarkForm = new FormGroup({
     firm: new FormControl(null, [
@@ -83,11 +84,10 @@ export class AddRateBenchmarkComponent implements OnInit {
             firmOptions.push({label: firm.law_firm_name, value: firm.id});
           }
           const firmClusterOptions = [];
-          const peerFirmClusterOptions = [];
           if (data.result && data.cluster_res) {
             this.allFirmsCluster = data.cluster_res;
+            console.log("allFirmsCluster: ", this.allFirmsCluster)
             const firmOptions = data.result;
-            const clusterFirmOptions = data.cluster_res;
             // think of a way to make the limit dynamic
             for (let i = 1; i < 8; i++) {
               const cluster = firmOptions.filter(f => f.cluster === i);
@@ -111,6 +111,10 @@ export class AddRateBenchmarkComponent implements OnInit {
 
   firmSelected($evt): void {
     console.log("firmSelected: ", $evt)
+    const temp = this.allFirmsCluster.filter(f => f.firm_id === $evt.value);
+    if (temp.length > 0) {
+      this.selectedFirmCluster = temp[0].cluster;
+    }
   }
 
   validateForm(): boolean {
@@ -138,7 +142,11 @@ export class AddRateBenchmarkComponent implements OnInit {
     this.rateBenchmark.bh_lawfirm_id = this.benchmarkForm.value.firm;
     this.rateBenchmark.smart_practice_area = this.benchmarkForm.value.smartPracticeArea;
     this.rateBenchmark.year = this.benchmarkForm.value.year;
-    this.rateBenchmark.peers = ['Jones Day', 'Kirkland & Ellis'];
+    const temp = this.allFirmsCluster.filter(f => f.firm_id === this.benchmarkForm.value.firm);
+    if (temp.length > 0) {
+      this.selectedFirmCluster = temp[0].cluster;
+    }
+    this.rateBenchmark.peers = peerFirmMapping[this.selectedFirmCluster - 1];
     this.errorMessage = null;
     this.inProgress = true;
     const params = Object.assign({}, this.rateBenchmark);

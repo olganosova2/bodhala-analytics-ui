@@ -69,16 +69,14 @@ export class ViewRateAnalysisComponent implements OnInit {
       .subscribe(async params => {
         // this.report = this.qbrService.savedQBR;
         this.benchmarkId = Number(params.get('id'));
-        console.log("pre benchmark call")
         this.benchmark = await this.getBenchmark();
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
         this.peerFirms = this.benchmark.peers;
-        console.log("post benchmark call: ", this.benchmark)
+        console.log("this.benchmark: ", this.benchmark)
         this.getData();
       });
-
   }
 
   getBenchmark(): Promise<IRateBenchmark> {
@@ -91,7 +89,6 @@ export class ViewRateAnalysisComponent implements OnInit {
             return;
           }
           const bm = data.result
-          console.log("getBenchmark data: ", data);
           this.firmName = data.firm_name;
           resolve(bm);
         },
@@ -138,8 +135,6 @@ export class ViewRateAnalysisComponent implements OnInit {
           }
           this.loaded = true;
           if (data.result.firm_rate_result && data.result.cohort_rate_result && data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
-            console.log("if eval: ")
-
             const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result, data.result.firm_rate_result_classification, data.result.max_year);
             const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result, data.result.cohort_rate_result_classification, data.result.max_year);
             this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;

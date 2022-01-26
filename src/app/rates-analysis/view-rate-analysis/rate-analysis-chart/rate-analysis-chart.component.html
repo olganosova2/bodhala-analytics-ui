@@ -13,11 +13,11 @@
 
         <span class="average">Market Average</span>
 
-        <p class="range">{{marketAverageLowerRange}} - {{marketAverageUpperRange}}</p>
+        <p class="range">{{marketAverageLowerRangeFormatted}} - {{marketAverageUpperRangeFormatted}}</p>
       </div>
 
     </div>
-    <div class="bar-div" [ngStyle]="{'background-color': topBarColor, 'width': topBarWidth, 'margin-bottom': '10px', 'font-size': '16px'}" >
+    <div class="bar-div" [ngStyle]="{'background-color': topBarColor, 'width': topBarWidth, 'margin-bottom': '10px', 'font-size': '16px'}">
       ${{topBarDollars | number:'1.0-0'}}</div>
       <!-- [ngClass]="{'bar-div-gray': dataRow.isChild}" -->
     <div class="bar-div" [ngStyle]="{'background-color': bottomBarColor, 'width': bottomBarWidth, 'font-size': '16px'}">
@@ -46,10 +46,11 @@
     </div>
 
     <div class="p-lg-9" style="padding: 0.5em 0.5em 1em !important;">
-      <span *ngIf="!withinRange && marketRateLowerDelta && marketRateUpperDelta">${{marketRateLowerDelta | number:'1.0-0'}} - ${{marketRateUpperDelta | number:'1.0-0'}}</span>
+      <span *ngIf="!withinRange && marketRateLowerDelta > 0 && marketRateUpperDelta > 0" [ngStyle]="{'color': marketRateColor, 'font-weight': '700', 'font-size': '16px'}">+${{marketRateLowerDelta | number:'1.0-0'}} - ${{marketRateUpperDelta | number:'1.0-0'}}</span>
+      <span *ngIf="!withinRange && marketRateLowerDelta < 0 && marketRateUpperDelta < 0" [ngStyle]="{'color': marketRateColor, 'font-weight': '700', 'font-size': '16px'}">-${{(marketRateLowerDelta * -1) | number:'1.0-0'}} - ${{(marketRateUpperDelta * -1) | number:'1.0-0'}}</span>
       <span *ngIf="withinRange">N/A - Rate is within range of average rates</span>
-      <span class="internal-rate-pct" *ngIf="!withinRange && marketRateLowerDeltaPct > 0 && marketRateUpperDeltaPct > 0">{{marketRateLowerDeltaPct | number:'1.0-0'}}% - {{marketRateUpperDeltaPct | number:'1.0-0'}}% <em class="fa fa-arrow-up"></em></span>
-      <span class="internal-rate-pct" *ngIf="!withinRange && marketRateLowerDeltaPct < 0 && marketRateUpperDeltaPct < 0">{{marketRateLowerDeltaPct | number:'1.0-0'}}% - {{marketRateUpperDeltaPct | number:'1.0-0'}}% <em class="fa fa-arrow-down"></em></span>
+      <span class="internal-rate-pct" [ngStyle]="{'background': marketRateColor}" *ngIf="!withinRange && marketRateLowerDeltaPct > 0 && marketRateUpperDeltaPct > 0">{{marketRateLowerDeltaPct | number:'1.0-0'}}% - {{marketRateUpperDeltaPct | number:'1.0-0'}}% <em class="fa fa-arrow-up"></em></span>
+      <span class="internal-rate-pct" [ngStyle]="{'background': marketRateColor}" *ngIf="!withinRange && marketRateLowerDeltaPct < 0 && marketRateUpperDeltaPct < 0">{{(marketRateLowerDeltaPct * -1) | number:'1.0-0'}}% - {{(marketRateUpperDeltaPct * -1) | number:'1.0-0'}}% <em class="fa fa-arrow-down"></em></span>
       <!-- <span *ngIf="!withinRange" style="padding-left: 2em">{{marketRateDeltaPct}}</span> -->
     </div>
 
@@ -62,28 +63,12 @@
     </div>
 
     <div class="p-lg-9" style="padding: 0em 0.5em 1em !important;">
-      <span *ngIf="internalRateDelta">${{internalRateDelta | number:'1.0-0'}}</span>
-      <span class="internal-rate-pct" *ngIf="internalRateDeltaPct && internalRateDeltaPct > 0">{{internalRateDeltaPct | number:'1.0-0'}}% <em class="fa fa-arrow-up"></em></span>
-      <span class="internal-rate-pct" *ngIf="internalRateDeltaPct && internalRateDeltaPct < 0">{{internalRateDeltaPct | number:'1.0-0'}}% <em class="fa fa-arrow-down"></em></span>
+      <span *ngIf="internalRateDelta > 0" [ngStyle]="{'color': internalRateColor, 'font-weight': '700', 'font-size': '16px'}">+${{internalRateDelta | number:'1.0-0'}}</span>
+      <span *ngIf="internalRateDelta <= 0" [ngStyle]="{'color': internalRateColor, 'font-weight': '700', 'font-size': '16px'}">-${{(internalRateDelta * -1) | number:'1.0-0'}}</span>
+      <span class="internal-rate-pct" *ngIf="internalRateDeltaPct && internalRateDeltaPct > 0" [ngStyle]="{'background': internalRateColor, 'font-size': '16px'}">{{internalRateDeltaPct | number:'1.0-0'}}% <em class="fa fa-arrow-up"></em></span>
+      <span class="internal-rate-pct" *ngIf="internalRateDeltaPct && internalRateDeltaPct < 0" [ngStyle]="{'background': internalRateColor, 'font-size': '16px'}">{{(internalRateDeltaPct * -1) | number:'1.0-0'}}% <em class="fa fa-arrow-down"></em></span>
     </div>
 
   </div>
 
-
 </div>
-
-
-<!-- <p-overlayPanel [dismissable]="false" [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'"  #op3>
-  <ng-template pTemplate>
-    <div class="info-pop">
-      <div><span class="child-badge">{{dataRow.name}}</span></div>
-      <div class="info-pop-label">Benchmark</div>
-      <div>${{ dataRow?.low | number:'1.0-0' }} - ${{ dataRow?.high | number:'1.0-0' }}</div>
-      <div class="info-pop-label">You Pay</div>
-      <div *ngIf="dataRow.name.toLowerCase().indexOf('associate') >= 0">${{ dataRow?.avg_associate_rate | number:'1.0-0' }}</div>
-      <div *ngIf="dataRow.name.toLowerCase().indexOf('partner') >= 0">${{ dataRow?.avg_partner_rate | number:'1.0-0' }}</div>
-      <div class="info-pop-label">Street Rate</div>
-      <div>${{ dataRow?.street | number:'1.0-0' }}</div>
-    </div>
-  </ng-template>
-</p-overlayPanel> -->

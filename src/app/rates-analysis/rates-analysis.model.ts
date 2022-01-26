@@ -41,5 +41,61 @@ export const smartPracticeAreas = [
   {label: 'Real Estate', value: 'Real Estate'},
 ];
 
-export const peerFirmMapping = {};
+export const peerFirmMapping = [
+  [
+    'Skadden, Arps, Slate, Meagher & Flom',
+    'Gibson, Dunn & Crutcher',
+    'Sullivan & Cromwell',
+    'Ropes & Gray',
+    'Paul, Weiss, Rifkind, Wharton & Garrison',
+    'Proskauer Rose'],
+  [
+    'DLA Piper',
+    'Baker & McKenzie',
+    'Latham & Watkins',
+    'Kirkland & Ellis',
+    'Jones Day',
+    'Sidley Austin'
+  ],
+  [
+    'McDermott Will & Emery',
+    'King & Spalding',
+    "O'Melveny & Myers",
+    'Winston & Strawn',
+    'Arnold & Porter',
+    'Baker Botts',
+  ],
+  [
+    'Nixon Peabody',
+    'Faegre, Drinker, Biddle & Reath',
+    'Pepper Hamilton',
+    'Kelley, Drye & Warren',
+    'Allen, Matkins, Leck, Gamble, Mallory & Natsis',
+    'Shipman & Goodwin',
+  ],
+  [
+    'Kilpatrick Townsend & Stockton',
+    'Fenwick & West',
+    'Day Pitney',
+    'Dickinson Wright',
+    'Warner, Norcross & Judd',
+    'Brooks Kushman P.C.',
+  ],
+  [
+    'Reed Smith',
+    'Alston & Bird',
+    'Perkins Coie',
+    'Holland & Knight',
+    'BakerHostetler',
+    'Akerman LLP',
+  ],
+  [
+    'Shook, Hardy & Bacon',
+    'Irell & Manella',
+    'McCarter & English',
+    'Phelps Dunbar',
+    'Robinson & Cole',
+    'Wilson, Elser, Moskowitz, Edelman & Dicker'
+  ]
+];
 
