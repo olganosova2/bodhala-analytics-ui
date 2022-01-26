@@ -151,6 +151,7 @@ import {MatterTotalSpendComponent} from '../../matters/matter-executive-summary/
 import {MatterTotalsMetricsComponent} from '../../matters/matter-executive-summary/matter-totals-metrics/matter-totals-metrics.component';
 import {MatterStaffingComponent} from '../../matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 import {MatterSummaryCardComponent} from '../../matters/matter-executive-summary/matter-summary-card/matter-summary-card.component';
+import {MatterMetricTableComponent} from '../../matters/matter-executive-summary/matter-total-spend/matter-metric-table/matter-metric-table.component';
 
 
 
@@ -295,7 +296,8 @@ export const DECLARATIONS = [
   MatterTotalSpendComponent,
   MatterTotalsMetricsComponent,
   MatterStaffingComponent,
-  MatterSummaryCardComponent
+  MatterSummaryCardComponent,
+  MatterMetricTableComponent
 ];
 
 export const PROVIDERS = [

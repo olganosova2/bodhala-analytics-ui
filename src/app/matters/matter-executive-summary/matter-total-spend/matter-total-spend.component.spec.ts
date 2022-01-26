@@ -45,6 +45,7 @@ describe('MatterTotalSpendComponent', () => {
     component = fixture.componentInstance;
     component.summaryData = MOCK_MATTER_OVERVIEW.result.ade_data[0];
     component.marketData = MOCK_MATTER_OVERVIEW.result.market_data[0];
+    component.internalData = MOCK_MATTER_OVERVIEW.result.internal_data[0];
     fixture.detectChanges();
   });
 

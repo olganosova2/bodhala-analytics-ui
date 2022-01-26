@@ -11,7 +11,7 @@ import {MatterAnalysisService} from '../matter-analysis.service';
 @Component({
   selector: 'bd-matter-staffing',
   templateUrl: './matter-staffing.component.html',
-  styleUrls: ['./matter-staffing.component.scss']
+  styleUrls: ['../matter-executive-summary.component.scss', './matter-staffing.component.scss']
 })
 export class MatterStaffingComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
@@ -19,7 +19,9 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
   firmId: number;
   summaryData: IMatterExecSummary;
   marketData: IMatterExecSummary;
+  internalData: IMatterExecSummary;
   marketRecords: Array<IMatterExecSummary> = [];
+  internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   insightText: string;
   insightExpanded: boolean = false;
@@ -66,6 +68,7 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
     const arrMatters = [];
     arrMatters.push(this.matterId);
     const params = { client_id: this.userService.currentUser.client_info_id,
+      matterId: this.matterId,
       firms: JSON.stringify(arrFirms),
       matters: JSON.stringify(arrMatters),
       marketMatters: JSON.stringify(this.marketMatters)
@@ -77,11 +80,15 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
           this.matterAnalysisService.calculateSingleMatterData(this.summaryData);
           this.marketRecords =  data.result.market_data || [];
           this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
-          this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData);
+          this.internalRecords =  data.result.internal_data || [];
+          this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
+          this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData, this.internalData);
           const emitted = {
             summaryData: this.summaryData,
             marketData: this.marketData,
-            marketRecords: this.marketRecords
+            marketRecords: this.marketRecords,
+            internalData: this.internalData,
+            internalRecords: this.internalRecords
           };
           this.isLoaded = true;
         }

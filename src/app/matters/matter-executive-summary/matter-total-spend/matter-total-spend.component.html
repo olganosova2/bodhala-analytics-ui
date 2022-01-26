@@ -8,51 +8,16 @@
     <chart (load)="saveInstance($event.context)" [options]="options"></chart>
   </div>
 </div>
-<div class="panel-wrapper mt20">
-  <div class="table-subtitle">Market Benchmarks</div>
-  <table class="full-width">
-    <tr>
-      <td style="width: 13%"></td>
-      <td *ngFor="let tk of metricData" class="font-bold">{{tk.tableLabel}}
-        <span *ngIf="page !== 'Overview' && metricType !== 'AverageTkOnMatter'" class="ml5" matTooltip="Low: {{tk.low | number:'1.0-0'}}, High: {{tk.high | number:'1.0-0'}}">
-        <span class="oval-label oval-label-red" *ngIf="tk.grade === 'POOR'">POOR</span>
-        <span class="oval-label oval-label-green" *ngIf="tk.grade === 'GOOD'">GOOD</span>
-        <span class="oval-label oval-label-orange" *ngIf="tk.grade === 'FAIR'">FAIR</span>
-          </span></td>
-    </tr>
-    <tr>
-      <td class="font-bold">Actual</td>
-      <td *ngFor="let tk of metricData"><span *ngIf="metricType === 'TotalSpend' || metricType === 'AverageRates'">$</span>{{tk.actual | number:'1.0-0'}}
-        <span *ngIf="metricType === 'PercentOfHoursWorked'">%</span>
-      </td>
-    </tr>
-    <tr>
-      <td class="font-bold">Market</td>
-      <td *ngFor="let tk of metricData"><span *ngIf="metricType === 'TotalSpend' || metricType === 'AverageRates'">$</span>{{tk.market | number:'1.0-0'}}
-        <span *ngIf="metricType === 'PercentOfHoursWorked'">%</span></td>
-    </tr>
-    <tr>
-      <td class="font-bold">Delta</td>
-      <td *ngFor="let tk of metricData">
-        <span class="mr5" *ngIf="metricType !== 'PercentOfHoursWorked'" [ngClass]=" {'font-red': tk.direction > 0, 'font-qbr-green': tk.direction < 0, 'font-black': metricType === 'AverageTkOnMatter'}">
-          <span *ngIf = "tk.direction > 0 && tk.delta">+</span>
-          <span *ngIf = "tk.direction < 0 && tk.delta">-</span>
-           <span><span *ngIf="metricType === 'TotalSpend' || metricType === 'AverageRates'">$</span>{{tk.delta | number:'1.0-0'}}
-           </span>
-        </span>
+<bd-matter-metric-table *ngIf="internalRecords && internalRecords.length > 0"
+  [page]="page"
+  [lable]="'Internal'"
+  [metricData]="internalMetricData"
+  [metricType]="metricType">
+</bd-matter-metric-table>
+<bd-matter-metric-table *ngIf="marketRecords && marketRecords.length > 0"
+  [page]="page"
+  [lable]="'Market'"
+  [metricData]="marketMetricData"
+  [metricType]="metricType">
+</bd-matter-metric-table>
 
-        <span class="oval-label" *ngIf="tk.delta && tk.increase"
-              [ngClass]=" {'oval-label-red': tk.grade === 'POOR',
-              'oval-label-green': tk.grade === 'GOOD',
-              'oval-label-orange': tk.grade === 'FAIR',
-              'oval-label-black': metricType === 'AverageTkOnMatter'}">
-
-          <span class="increase-span ml5">  {{ tk.increase | number:'1.0-0'}}%
-           <em *ngIf="tk.direction > 0" class="fa fa-arrow-up"></em>
-            <em *ngIf="tk.direction < 0" class="fa fa-arrow-down"></em>
-            </span>
-        </span>
-      </td>
-    </tr>
-  </table>
-</div>

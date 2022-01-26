@@ -53,13 +53,15 @@ export class MatterTitleBarComponent implements OnInit, OnDestroy {
           this.firm = this.firms[0];
           this.firmId = Number(this.firm.id);
           this.singleFirmLoaded.emit(this.firmId);
+        } else if (this.firms.length > 1) {
+          this.firms.unshift({id: null, name: '-All-'});
         }
       }
     );
 
   }
 
-  filterByFirm(evt: MatSelectChange): void {
+  filterByFirm(evt: any): void {
     if (evt.value && evt.value.id) {
       this.firmId = Number(this.firm.id);
       this.firmSelected.emit(this.firmId);

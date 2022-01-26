@@ -17,7 +17,9 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   summaryData: IMatterExecSummary;
   marketData: IMatterExecSummary;
+  internalData: IMatterExecSummary;
   marketRecords: Array<IMatterExecSummary> = [];
+  internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
   isLoaded: boolean = false;
@@ -50,6 +52,7 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     }
     arrMatters.push(this.matterId);
     const params = { client_id: this.isAdmin ? this.clientId : this.userService.currentUser.client_info_id,
+      matterId: this.matterId,
       matters: JSON.stringify(arrMatters),
       marketMatters: JSON.stringify(this.marketMatters),
       firms: JSON.stringify(arrFirms)
@@ -61,11 +64,15 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
           this.matterAnalysisService.calculateSingleMatterData(this.summaryData);
           this.marketRecords =  data.result.market_data || [];
           this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
-          this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData);
+          this.internalRecords =  data.result.internal_data || [];
+          this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
+          this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData, this.internalData);
           const emitted = {
             summaryData: this.summaryData,
             marketData: this.marketData,
-            marketRecords: this.marketRecords
+            marketRecords: this.marketRecords,
+            internalData: this.internalData,
+            internalRecords: this.internalRecords
           };
           this.isLoaded = true;
           this.dataLoaded.emit(emitted);

@@ -2,6 +2,7 @@
 @import "../../../../assets/styles/variables";
 .exs-panel-title {
   font-size: 24px;
+  font-family: "Roboto Bold";
 }
 .panel-wrapper {
   padding: 32px;
@@ -9,4 +10,7 @@
 .valign-middle {
   display: flex;
   align-items: center;
+}
+.font-red {
+  color: #FE3F56 !important;
 }

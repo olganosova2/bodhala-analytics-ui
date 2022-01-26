@@ -22,7 +22,9 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   firmId: number;
   summaryData: IMatterExecSummary;
   marketData: IMatterExecSummary;
+  internalData: IMatterExecSummary;
   marketRecords: Array<IMatterExecSummary> = [];
+  internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   insightText: string;
   insightExpanded: boolean = false;
@@ -44,7 +46,9 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; });
-    this.matterId = HARDCODED_MATTER_ID;
+    if (!this.matterId) {
+      this.matterId = HARDCODED_MATTER_ID;
+    }
     this.getDocuments();
   }
   selectFirm(evt: number) {
@@ -60,7 +64,9 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   assignData(evt: any): void {
     this.summaryData = evt.summaryData;
     this.marketData = evt.marketData;
+    this.internalData = evt.internalData;
     this.marketRecords = evt.marketRecords;
+    this.internalRecords = evt.internalRecords;
   }
   getMatterInsight(firmId: number): void {
     const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: firmId};
