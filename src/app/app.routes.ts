@@ -37,6 +37,9 @@ import {RatesAnalysisComponent} from './rates-analysis/rates-analysis.component'
 import {AdminRateBenchmarksComponent} from './admin/admin-rate-benchmarks/admin-rate-benchmarks.component';
 import {ViewRateAnalysisComponent} from './rates-analysis/view-rate-analysis/view-rate-analysis.component';
 
+import {MatterExecutiveSummaryComponent} from './matters/matter-executive-summary/matter-executive-summary.component';
+import {AdminInsightsComponent} from './admin/insights/insights.component';
+import {MatterStaffingComponent} from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -75,6 +78,9 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/rates-benchmarking', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/rates-benchmarking/view/:id', component: ViewRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
+  {path: 'analytics-ui/matter-executive-summary', component: MatterExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  // MatterStaffingComponent
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
@@ -93,5 +99,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/ledes-imports/:clientId', component: RerunUploadComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/rate-benchmarks', component: AdminRateBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   // {path: 'analytics-ui/admin/rate-benchmarks/:clientId', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/insights', component: AdminInsightsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  // AdminInsightsComponent
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

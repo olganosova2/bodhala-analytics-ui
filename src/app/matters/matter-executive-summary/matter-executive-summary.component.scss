@@ -1,0 +1,49 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables";
+.exs-div {
+  padding-left: 10px;
+  margin-right: 10px;
+  font-size: 16px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #E9F1F4;
+}
+.exs-panel-title {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Roboto Bold";
+}
+.insights-bar {
+  border: 1px solid $light-gray;
+  color: $body-color;
+  padding: 32px;
+  border-radius: 100px;
+  position: relative;
+}
+.insights-title {
+  color: $orange-color;
+}
+.insights-blue {
+  color: $brand-blue;
+}
+.insights-content {
+  width: 70%;
+  color: $body-color;
+  @media screen and (max-width: 1440px) {
+    width: 60%;
+  }
+  //height: 40px;
+}
+.insights-button {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background-color: $brand-blue;
+  font-size: 12px;
+  color: $body-color;
+  width: 110px;
+}
+td, th {
+  padding : 15px 0;
+  border-bottom: 1px solid $light-gray;
+}
+

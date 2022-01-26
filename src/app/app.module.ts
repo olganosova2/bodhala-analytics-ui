@@ -178,6 +178,18 @@ import { AdminRateBenchmarksComponent } from './admin/admin-rate-benchmarks/admi
 import { AddRateBenchmarkComponent } from './admin/admin-rate-benchmarks/add-rate-benchmark/add-rate-benchmark.component';
 import { ViewRateAnalysisComponent } from './rates-analysis/view-rate-analysis/view-rate-analysis.component';
 import { RateAnalysisChartComponent } from './rates-analysis/view-rate-analysis/rate-analysis-chart/rate-analysis-chart.component';
+import { MatterExecutiveSummaryComponent } from './matters/matter-executive-summary/matter-executive-summary.component';
+import { MatterTitleBarComponent } from './matters/matter-executive-summary/matter-title-bar/matter-title-bar.component';
+import { MatterTotalPanelComponent } from './matters/matter-executive-summary/matter-total-panel/matter-total-panel.component';
+import {InsightsCardComponent} from './admin/insights/insights-card/insights-card.component';
+import {AdminInsightsComponent} from './admin/insights/insights.component';
+import {BlendedRateCardComponent} from './admin/insights/blended-rate-card/blended-rate-card.component';
+import { MatterInsightsComponent } from './admin/insights/matter-insights/matter-insights.component';
+import { MatterTotalSpendComponent } from './matters/matter-executive-summary/matter-total-spend/matter-total-spend.component';
+import { MatterTotalsMetricsComponent } from './matters/matter-executive-summary/matter-totals-metrics/matter-totals-metrics.component';
+import { MatterStaffingComponent } from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
+import { MatterSummaryCardComponent } from './matters/matter-executive-summary/matter-summary-card/matter-summary-card.component';
+import { MatterMetricTableComponent } from './matters/matter-executive-summary/matter-total-spend/matter-metric-table/matter-metric-table.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -303,7 +315,19 @@ export function initHttp(service: HttpService) {
     AdminRateBenchmarksComponent,
     AddRateBenchmarkComponent,
     ViewRateAnalysisComponent,
-    RateAnalysisChartComponent
+    RateAnalysisChartComponent,
+    MatterExecutiveSummaryComponent,
+    MatterTitleBarComponent,
+    MatterTotalPanelComponent,
+    AdminInsightsComponent,
+    InsightsCardComponent,
+    BlendedRateCardComponent,
+    MatterInsightsComponent,
+    MatterTotalSpendComponent,
+    MatterTotalsMetricsComponent,
+    MatterStaffingComponent,
+    MatterSummaryCardComponent,
+    MatterMetricTableComponent
   ],
   entryComponents: [
     PillComponent,

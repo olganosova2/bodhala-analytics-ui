@@ -22,6 +22,8 @@ export class SpendOverviewComponent implements OnInit {
   isLoaded: boolean = false;
   itemRowCount: number = 9;
   @Input() maxDate: string;
+  @Input() fullYear: boolean;
+  @Input() lastFullYear: string;
 
 
   constructor(
@@ -30,13 +32,14 @@ export class SpendOverviewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getSpendOverview();
+    this.getSpendOverview(this.fullYear);
   }
 
-  getSpendOverview(): void {
+  getSpendOverview(fullYear: boolean): void {
     this.totals = Object.assign([], []);
     const params = this.filtersService.getCurrentUserCombinedFilters(false);
     const lastYear = moment(this.maxDate).year();
+
     const d = new Date(lastYear, 0 , 1);
     const janOne = new Date(d).toISOString().slice(0, 10);
     // JD: was testing w/ 2019 vs 2018 data as I did not have 2020 data locally
@@ -44,6 +47,7 @@ export class SpendOverviewComponent implements OnInit {
     const today = new Date().toISOString().slice(0, 10);
     params.startdate = janOne;
     params.enddate = this.maxDate;
+    params.fullYear = fullYear;
     this.isLoaded = false;
     this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryBillingTotals', params).subscribe(
       (data: any) => {

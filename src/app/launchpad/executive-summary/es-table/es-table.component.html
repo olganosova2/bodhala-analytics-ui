@@ -16,7 +16,7 @@
                 </tr>
                 <tr *ngFor="let firm of topFirms">
                   <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
-                  <td>{{firm.avg_matter_cost_formatted}} <em *ngIf="firm.avg_matter_cost_trend > 0" class="arrow-up"><br/><em  class="fa fa-arrow-up"></em> {{firm.avg_matter_cost_trend | number:'1.0-0'}}%</em>
+                  <td>{{firm.avg_matter_cost_formatted}} <span *ngIf="firm.avg_matter_cost_trend > 0" class="arrow-up"><br/><em class="fa fa-arrow-up"></em> {{firm.avg_matter_cost_trend | number:'1.0-0'}}%</span>
                     <span *ngIf="firm.avg_matter_cost_trend < 0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.avg_matter_cost_trend * -1) | number:'1.0-0'}}%</span></td>
                     <td>{{firm.block_billed_per | number:'1.0-0'}}% <span *ngIf="firm.block_billed_per_trend > 0" class="arrow-up"><br/><em  class="fa fa-arrow-up"></em> {{firm.block_billed_per_trend | number:'1.0-0'}}%</span>
                       <span *ngIf="firm.block_billed_per_trend<0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.block_billed_per_trend * -1) | number:'1.0-0'}}%</span></td>
@@ -34,13 +34,15 @@
     </div>
     <div class="panel-wrapper">
         <div class="panel-title">
-            <h5>Top Firms YTD</h5>
+            <h5 *ngIf="!fullYear">Top Firms YTD</h5>
+            <h5 *ngIf="fullYear">Top Firms {{lastFullYear}}</h5>
         </div>
         <div class="panel-body" #panelBody>
             <table class="full-width" *ngIf="isLoaded">
                 <tr>
                     <th>Firm Name</th>
-                    <th>YTD Total Spend</th>
+                    <th *ngIf="!fullYear">YTD Total Spend</th>
+                    <th *ngIf="fullYear">{{lastFullYear}} Total Spend</th>
                     <th>Matters</th>
                     <th>Average Matter Cost</th>
                     <th>Blended Attorney Rate</th>
@@ -65,13 +67,15 @@
 <div class="content-body">
     <div class="panel-wrapper">
         <div class="panel-title">
-            <h5>Top Matters YTD</h5>
+            <h5 *ngIf="!fullYear">Top Matters YTD</h5>
+            <h5 *ngIf="fullYear">Top Matters {{lastFullYear}}</h5>
         </div>
         <div class="panel-body" #panelBody>
             <table class="full-width" *ngIf="isLoaded">
                 <tr>
                     <th class="matter-cell">Matter Name</th>
-                    <th class="matter-cell">YTD Cost</th>
+                    <th class="matter-cell" *ngIf="!fullYear">YTD Cost</th>
+                    <th class="matter-cell" *ngIf="fullYear">{{lastFullYear}} Cost</th>
                     <th class="matter-cell">Block Billed %</th>
                     <th class="matter-cell">Blended Attorney Rate</th>
                     <th class="matter-cell">Bodhala Price Index</th>
@@ -92,14 +96,16 @@
     </div>
     <div class="panel-wrapper">
         <div class="panel-title">
-            <h5>Top Timekeepers YTD</h5>
+            <h5 *ngIf="!fullYear">Top Timekeepers YTD</h5>
+            <h5 *ngIf="fullYear">Top Timekeepers {{lastFullYear}}</h5>
         </div>
         <div class="panel-body" #panelBody>
             <table class="full-width" *ngIf="isLoaded">
                 <tr>
                     <th class="tk-name-cell">Timekeeper</th>
                     <th class="tk-cell">Title</th>
-                    <th class="tk-cell">YTD Total Spend</th>
+                    <th class="tk-cell" *ngIf="!fullYear">YTD Total Spend</th>
+                    <th class="tk-cell" *ngIf="fullYear">{{lastFullYear}} Total Spend</th>
                     <th class="tk-cell">Matters</th>
                     <th class="tk-cell">Average Matter Cost</th>
                     <th class="tk-cell">Blended Attorney Rate</th>
@@ -122,13 +128,15 @@
 <div class="content-body">
     <div class="panel-wrapper">
         <div class="panel-title">
-            <h5>Top Firms YTD ({{topPracticeArea}})</h5>
+            <h5 *ngIf="!fullYear">Top Firms YTD ({{topPracticeArea}})</h5>
+            <h5 *ngIf="fullYear">Top Firms {{lastFullYear}} - ({{topPracticeArea}})</h5>
         </div>
         <div class="panel-body" #panelBody>
             <table class="full-width" *ngIf="isLoaded">
                 <tr>
                     <th>Firm Name</th>
-                    <th>YTD Total Spend</th>
+                    <th *ngIf="!fullYear">YTD Total Spend</th>
+                    <th *ngIf="fullYear">{{lastFullYear}} Total Spend</th>
                     <th>Matters</th>
                     <th>Average Matter Cost</th>
                     <th>Blended Attorney Rate</th>
@@ -149,13 +157,15 @@
     </div>
     <div class="panel-wrapper">
         <div class="panel-title">
-            <h5>Top Matters YTD ({{topPracticeArea}})</h5>
+            <h5 *ngIf="!fullYear">Top Matters YTD ({{topPracticeArea}})</h5>
+            <h5 *ngIf="fullYear">Top Matters {{lastFullYear}} - ({{topPracticeArea}})</h5>
         </div>
         <div class="panel-body" #panelBody>
             <table class="full-width" *ngIf="isLoaded">
                 <tr>
                     <th class="matter-cell">Matter Name</th>
-                    <th class="matter-cell">YTD Cost</th>
+                    <th class="matter-cell" *ngIf="!fullYear">YTD Cost</th>
+                    <th class="matter-cell" *ngIf="fullYear">{{lastFullYear}} Cost</th>
                     <th class="matter-cell">Block Billed %</th>
                     <th class="matter-cell">Blended Attorney Rate</th>
                     <th class="matter-cell">Bodhala Price Index</th>
@@ -178,14 +188,16 @@
 <div class="content-body">
     <div class="panel-wrapper">
         <div class="panel-title">
-            <h5>Top Timekeepers YTD ({{topPracticeArea}})</h5>
+            <h5 *ngIf="!fullYear">Top Timekeepers YTD ({{topPracticeArea}})</h5>
+            <h5 *ngIf="fullYear">Top Timekeepers {{lastFullYear}} - ({{topPracticeArea}})</h5>
         </div>
         <div class="panel-body" #panelBody>
             <table class="full-width" *ngIf="isLoaded">
                 <tr>
                     <th class="tk-name-cell">Timekeeper</th>
                     <th class="tk-cell">Title</th>
-                    <th class="tk-cell">YTD Total Spend</th>
+                    <th class="tk-cell" *ngIf="!fullYear">YTD Total Spend</th>
+                    <th class="tk-cell" *ngIf="fullYear">{{lastFullYear}} Total Spend</th>
                     <th class="tk-cell">Matters</th>
                     <th class="tk-cell">Average Matter Cost</th>
                     <th class="tk-cell">Blended Attorney Rate</th>

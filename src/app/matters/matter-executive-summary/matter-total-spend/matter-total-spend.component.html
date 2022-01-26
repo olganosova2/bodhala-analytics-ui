@@ -1,0 +1,23 @@
+<div class="panel-wrapper mt20">
+  <div class="justify-between">
+    <div class="exs-panel-title">
+      <img alt="icon" src="assets/images/{{matterAnalysisService.getCardIcon(metricType)}}" width="40px"/>
+      {{ matterAnalysisService.formatCardTitle(metricType) }}</div>
+  </div>
+  <div class="mt20" #chartDiv>
+    <chart (load)="saveInstance($event.context)" [options]="options"></chart>
+  </div>
+</div>
+<bd-matter-metric-table *ngIf="internalRecords && internalRecords.length > 0"
+  [page]="page"
+  [lable]="'Internal'"
+  [metricData]="internalMetricData"
+  [metricType]="metricType">
+</bd-matter-metric-table>
+<bd-matter-metric-table *ngIf="marketRecords && marketRecords.length > 0"
+  [page]="page"
+  [lable]="'Market'"
+  [metricData]="marketMetricData"
+  [metricType]="metricType">
+</bd-matter-metric-table>
+

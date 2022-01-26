@@ -1,7 +1,7 @@
 @import "../../../../assets/styles/colors.scss";
 @import "../../../../assets/styles/_variables.scss";
 
-.qbr-subtitle {
+.key-trends-subtitle {
   font-size: 42px;
   font-weight: 400;
 }
@@ -17,10 +17,12 @@
   .badge-percent {
     font-size: 72px;
     display: inline-block;
+    font-family: "Roboto Bold";
   }
   .key-trends-badge-amount {
     font-size: 26px;
     display: inline-block;
+    font-family: "Roboto Bold";
   }
   .key-trends-badge-label {
     color: $body-color;

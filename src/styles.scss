@@ -30,6 +30,24 @@
   font-weight: 700;
   src: local('Sharp Sans Display'), local('Sharp Sans Display'), url(./assets/fonts/sharpsansdisplay/SharpSansDispNo1-Bold.woff2) format('woff2');
 }
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Roboto Mono'), local('Roboto Mono'), url(./assets/fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf) format('woff2');
+}
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Roboto'), local('Roboto'), url(./assets/fonts/Roboto/Roboto-Regular.ttf) format('woff2');
+}
+@font-face {
+  font-family: 'Roboto Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Roboto Bold'), local('Roboto Bold'), url(./assets/fonts/Roboto/Roboto-Bold.ttf) format('woff2');
+}
 //@import "../node_modules/ag-grid-community/src/styles/ag-grid.scss";
 //@import "../node_modules/ag-grid-community/src/styles/ag-theme-alpine/sass/ag-theme-alpine-mixin.scss";
 //
@@ -162,8 +180,14 @@ h1, h2, h3, h4, h5, h6, th {
 .font-green {
   color: darkgreen !important;
 }
+.font-black {
+  color: $body-color !important;
+}
 .font-qbr-green {
   color: $qbr-green;
+}
+.font-gray {
+  color: #8A8A8A;
 }
 
 .error {
@@ -224,6 +248,22 @@ h1, h2, h3, h4, h5, h6, th {
 
 .full-width {
   width: 100%;
+}
+.justify-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+.justify-around {
+  display: flex;
+  justify-content: space-around;
+}
+.justify-center {
+  display: flex;
+  justify-content: center;
 }
 .button-disabled {
   background-color: $medium-gray !important;
@@ -306,7 +346,11 @@ body .ui-dropdown, .ui-inputtext {
 }
 
 .totals-numbers {
-  background-color: $body-color; //$excelent-color !important;
+  background-color: $body-color;
+}
+.oval-label-white {
+  background-color: #fff;
+  color: $body-color;
 }
 
 .totals-percent {
@@ -568,6 +612,16 @@ h1, h2, h3, h4, h5, h6 {
 .bg-monitor {
   background-image: url('assets/images/qbr-images/BG_monitor.svg');
   background-repeat: no-repeat;
+}
+.valign-middle {
+  display: flex;
+  align-items: center;
+}
+.roboto-div {
+  font-family: 'Roboto' !important;
+}
+.roboto-bold {
+  font-family: 'Roboto Bold' !important;
 }
 
 

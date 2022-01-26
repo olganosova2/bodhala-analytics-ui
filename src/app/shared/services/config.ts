@@ -119,6 +119,12 @@ export const END_POINTS_URLS = {
   getFirmRateAnalysisIncreaseData: {url: BASE_URL + 'analytics/getFirmRateAnalysisIncreaseData', showLoading: true},
   getRateBenchmarks: {url: BASE_URL + 'analytics/getRateBenchmarks', showLoading: true},
   getRateBenchmark: {url: BASE_URL + 'analytics/getRateBenchmark', showLoading: true},
+  // Matter Analysis
+  getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
+  getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},
+  getMatterListByClient: {url: BASE_URL + 'analytics/getMatterListByClient', showLoading: true},
+  getMatterInsight: {url: BASE_URL + 'client/getMatterInsight', showLoading: false},
+  getFirmsForMatter: {url: BASE_URL + 'analytics/getFirmsForMatter', showLoading: false},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -168,6 +174,11 @@ export const END_POINTS_URLS = {
   getFirmsByClientCluster: { url: BASE_URL + 'admin/getFirmsByClientIdAndCluster', showLoading: false},
   deleteRateBenchmark: { url: BASE_URL + 'admin/deleteRateBenchmark', showLoading: false},
   saveRateBenchmark: { url: BASE_URL + 'admin/saveRateBenchmark', showLoading: false},
+  getAdminInsights: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
+  getAdminMatterInsight: {url: BASE_URL + 'admin/getMatterInsight', showLoading: true},
+  getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
+  saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
+
 
 };
 
@@ -188,6 +199,7 @@ export const ROUTES = [
   {name: 'app.client.recommendations', routePath: 'analytics-ui/admin/client-recommendations', fragment: '/client-recommendations'},
   {name: 'app.ledes.imports', routePath: 'analytics-ui/admin/ledes-imports', fragment: '/ledes-imports'},
   {name: 'analytics.qbrs.dashboard', routePath: 'analytics-ui/qbrs/dashboard', fragment: '/qbrs/'},
+  {name: 'app.uploads-manage-launchpad', routePath: 'analytics-ui/admin/insights', fragment: '/admin/insights'},
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},

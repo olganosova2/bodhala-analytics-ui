@@ -1,6 +1,6 @@
 <div class="full-width">
     <div class="header">
-        Spend Overview (YTD)
+        Spend Overview <span *ngIf="!fullYear">(YTD)</span><span *ngIf="fullYear">({{lastFullYear}})</span>
     </div>
     <div class="panel-wrapper flex-container">
         <div *ngFor="let item of totals.slice(0, itemRowCount);let i=$index;" class="flex-item">

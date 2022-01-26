@@ -1,0 +1,22 @@
+.exs-title {
+  font-size: 40px;
+  font-weight: 700;
+  font-family: "Roboto Bold";
+}
+:host ::ng-deep {
+  .mat-form-field-infix {
+    width: 300px !important;
+    // background-color: #000;
+  }
+  .mat-select-content{
+    width:2000px !important;
+    background-color: #000 !important;
+    font-size: 10px !important;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-infix {
+
+  }
+  .mat-form-field-appearance-outline .mat-form-field-flex {
+
+  }
+}

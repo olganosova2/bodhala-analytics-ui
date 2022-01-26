@@ -1,0 +1,31 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+
+.summary-card-title {
+  font-size: 24px;
+  padding: 10px 0;
+  border: 0.5px solid transparent;
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+.summary-card {
+  text-align: center;
+ // background-color: #fff;
+   //border: 0.5px solid transparent;
+  //border-radius: 24px;
+  height: 175px;
+}
+.summary-card-content {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+  background-color: #fff;
+  height: 113px;
+  .text-gray {
+    color: $medium-gray;
+  }
+}
+.total-spend-card {
+  font-size: 24px;
+  padding-top: 30px;
+}
+
