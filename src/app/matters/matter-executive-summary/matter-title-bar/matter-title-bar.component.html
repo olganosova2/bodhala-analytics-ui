@@ -1,6 +1,6 @@
 <div class="float-right mr20">
   <div *ngIf="firms.length === 1 && firm"><span class="font-bold">Firm:</span> {{ firm.name}}</div>
-  <div *ngIf="firms.length > 1" class="justify-start">
+  <div *ngIf="firms.length > 2" class="justify-start">
     <span class="font-bold mt5 mr10">Firm: </span>
     <p-dropdown [options]="firms" [(ngModel)]="firm" autoWidth="false" [style]="{'width':'300px'}"
                 (onChange)="filterByFirm($event)" optionLabel="name"></p-dropdown>

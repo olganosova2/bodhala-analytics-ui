@@ -49,11 +49,12 @@ export class MatterTitleBarComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest<IClientMatter>('getFirmsForMatter', params).subscribe(
       (data: any) => {
         this.firms = data.result || [];
-        this.firms.unshift({id: null, name: '-All-'});
         if (this.firms.length === 1) {
           this.firm = this.firms[0];
           this.firmId = Number(this.firm.id);
           this.singleFirmLoaded.emit(this.firmId);
+        } else if (this.firms.length > 1) {
+          this.firms.unshift({id: null, name: '-All-'});
         }
       }
     );
