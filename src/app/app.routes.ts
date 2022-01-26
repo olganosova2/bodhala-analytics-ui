@@ -36,6 +36,7 @@ import {QbrDashboardComponent} from './qbr/qbr-dashboard/qbr-dashboard.component
 import {MatterExecutiveSummaryComponent} from './matters/matter-executive-summary/matter-executive-summary.component';
 import {AdminInsightsComponent} from './admin/insights/insights.component';
 import {MatterStaffingComponent} from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
+import {MatterDocumentsOverviewComponent} from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -73,6 +74,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/qbrs/dashboard', component: QbrDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-executive-summary', component: MatterExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/matter-tasks', component: MatterDocumentsOverviewComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   // MatterStaffingComponent
 
   // ADMIN

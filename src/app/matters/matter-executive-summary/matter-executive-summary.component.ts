@@ -29,7 +29,6 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   insightText: string;
   insightExpanded: boolean = false;
   documents: Array<IMatterDocument> = [];
-  totalRecordsDocs: number;
 
   @ViewChild(MatterTotalsMetricsComponent) totalMetrics: MatterTotalsMetricsComponent;
 
@@ -49,7 +48,6 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     if (!this.matterId) {
       this.matterId = HARDCODED_MATTER_ID;
     }
-    this.getDocuments();
   }
   selectFirm(evt: number) {
     this.firmId = evt; // 8668; // 8635;
@@ -78,21 +76,8 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
       }
     );
   }
-  getDocuments(): void {
-    const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id, limit: 3};
-    this.pendingRequest = this.httpService.makeGetRequest('getMatterDocuments', params).subscribe(
-      (data: any) => {
-        this.documents = (data.result || []);
-        // this.documents = MOCK_NERS_DATA.result.slice(0, 5) as Array<IMatterDocument>;
-        this.totalRecordsDocs = this.documents.length;
-      }
-    );
-  }
   toggleInsight(toExpand: boolean): void {
     this.insightExpanded = toExpand;
-  }
-  goToViewDocs(): void {
-
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

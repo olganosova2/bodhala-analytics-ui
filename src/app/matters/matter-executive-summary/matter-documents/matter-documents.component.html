@@ -1,0 +1,25 @@
+<div class="panel-wrapper mt20">
+  <div class="justify-between" *ngIf="page === 'Overview'">
+    <div class="exs-panel-title">Top Tasks / Documents</div>
+    <div class="valign-middle pointer-hand mr30" [routerLink]="['/analytics-ui/matter-tasks']"  [queryParams]="{matterId: matterId}">View All  <i class="fa fa-angle-right ml10"></i></div>
+  </div>
+  <div class="mt20" *ngIf="totalRecordsDocs === 0">No documents found.</div>
+  <table class="full-width">
+    <thead>
+    <tr class="roboto-bold">
+      <th>Document / Task</th>
+      <th>Total Cost</th>
+      <th># Hours Worked</th>
+      <th>% Total Hours</th>
+    </tr>
+    </thead>
+    <tr *ngFor="let doc of documents">
+      <td>{{doc.canonical}}</td>
+      <td>${{doc.total_cost | number:'1.0-0'}}</td>
+      <td>{{doc.total_hours | number:'1.1-1'}}</td>
+      <td>{{doc.total_hours / (doc.total_doc_hours_all || 1) * 100 | number:'1.1-1'}}%</td>
+
+    </tr>
+
+  </table>
+</div>
