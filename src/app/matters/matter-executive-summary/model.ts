@@ -1,4 +1,6 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
+import * as Highcharts from 'highcharts';
+const groupDistance = window.screen.width > 1440 ? 0.4 : window.screen.width > 1200 ? 0.35 : 0.25;
 
 export const HARDCODED_MATTER_ID = '087260/834'; //  '100340'; // '087260/818'; // '373046-00021'; // '10001320';
 export const HARDCODED_MARKET_MATTERS = [
@@ -12,10 +14,6 @@ export const HARDCODED_MARKET_MATTERS = [
   '087260/834',
   '087260/821',
   '087260/844'
-
-  // '503782',
-  // '373046-00021',
-  // '314395'
 ];
 
 export enum MetricCardType {
@@ -199,8 +197,8 @@ export const matterColumnChartOptions = {
       borderRadiusTopRight: '50%'
     },
     series: {
-      pointWidth: 25,
-      groupPadding: 0.38
+      pointWidth: 20,
+      groupPadding: groupDistance
     }
   },
   series: [{

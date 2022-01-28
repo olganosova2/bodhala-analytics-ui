@@ -198,6 +198,11 @@ export function initUser(config: UserService) {
 export function initHttp(service: HttpService) {
   return () => service.loadConfig(CONFIG);
 }
+highcharts.setOptions({
+  lang: {
+    thousandsSep: ','
+  }
+});
 @NgModule({
   declarations: [
     AppComponent,

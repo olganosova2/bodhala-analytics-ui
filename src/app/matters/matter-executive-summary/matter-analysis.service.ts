@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, MetricCardType, MetricGrade} from './model';
 import {FiltersService} from '../../shared/services/filters.service';
-import {BM_COLORS} from '../../benchmarks/benchmark.service';
 import {UtilService} from 'bodhala-ui-common';
 
 @Injectable({
