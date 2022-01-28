@@ -30,6 +30,7 @@ export enum MetricGrade {
   GOOD = 'GOOD',
   FAIR = 'FAIR',
   POOR = 'POOR',
+  NODATA = 'NODATA',
 }
 
 export interface IMatterExecSummary {
@@ -102,8 +103,40 @@ export interface IMatterDocument {
   partner_avg_rate: number;
   total_doc_cost_all: number;
   total_doc_hours_all: number;
+  index?: number;
+  blended_rate?: number;
+  percent_partner_hours?: number;
+  percent_associate_hours?: number;
+  percent_other_hours?: number;
+  cost_rating?: MetricGrade;
+  rates_rating?: MetricGrade;
+  staffing_rating?: MetricGrade;
 }
-
+export interface IMatterMarketDocument {
+  bh_client_id: number;
+  client_matter_id: string;
+  entity: string;
+  category: string;
+  entity_type: string;
+  total_billed: number;
+  partner_billed: number;
+  associate_billed: number;
+  other_billed: number;
+  total_hours_billed: number;
+  partner_hours: number;
+  associate_hours: number;
+  other_hours: number;
+  avg_partner_rate: number;
+  avg_associate_rate: number;
+  avg_other_rate: number;
+  avg_rate: number;
+  ade_avg_rate: number;
+  blended_rate?: number;
+}
+export interface IMarketDocumentData {
+  index: number;
+  market_data: Array<IMatterMarketDocument>;
+}
 export interface IMetricDisplayData {
   metricType?: MetricCardType;
   fieldName?: string;

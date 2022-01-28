@@ -54,7 +54,6 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     const params = { client_id: this.isAdmin ? this.clientId : this.userService.currentUser.client_info_id,
       matterId: this.matterId,
       matters: JSON.stringify(arrMatters),
-      marketMatters: JSON.stringify(this.marketMatters),
       firms: JSON.stringify(arrFirms)
     };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(

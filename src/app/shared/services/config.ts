@@ -120,6 +120,7 @@ export const END_POINTS_URLS = {
   getMatterInsight: {url: BASE_URL + 'client/getMatterInsight', showLoading: false},
   getFirmsForMatter: {url: BASE_URL + 'analytics/getFirmsForMatter', showLoading: false},
   getMatterBreakdownByName: {url: BASE_URL + 'analytics/getMatterBreakdownByName', showLoading: false},
+  getMatterDocsMarketData: {url: BASE_URL + 'analytics/getMatterDocsMarketData', showLoading: true},
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},

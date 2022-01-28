@@ -14,7 +14,10 @@
     </tr>
     </thead>
     <tr *ngFor="let doc of documents">
-      <td>{{doc.canonical}}</td>
+      <td>
+        <span *ngIf="page === 'Overview'">{{doc.canonical}}</span>
+        <span *ngIf="page === 'Documents'" class="pointer-hand href-link-primary" (click)="openDetails(doc)">{{doc.canonical}}</span>
+      </td>
       <td>${{doc.total_cost | number:'1.0-0'}}</td>
       <td>{{doc.total_hours | number:'1.1-1'}}</td>
       <td>{{doc.total_hours / (doc.total_doc_hours_all || 1) * 100 | number:'1.1-1'}}%</td>

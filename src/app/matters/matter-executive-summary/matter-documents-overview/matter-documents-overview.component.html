@@ -2,6 +2,35 @@
   <div><span class="roboto-bold">Task & Document Analysis</span> <span class="ml5 font-gray">Matter: <span>{{matterName}}</span></span></div>
 
   <bd-matter-title-bar [matterId]="matterId" [title]="'Task & Document Analysis'" [index]="2"></bd-matter-title-bar>
-  <bd-matter-documents [numRecords]="10" [matterId]="matterId" [page]="'Documents'"></bd-matter-documents>
+<!--  <bd-matter-documents [numRecords]="10" [matterId]="matterId" [page]="'Documents'"></bd-matter-documents>-->
+
+  <div class="panel-wrapper mt20">
+
+    <div class="mt20" *ngIf="totalRecordsDocs === 0">No documents found.</div>
+    <table class="full-width">
+      <thead>
+      <tr class="roboto-bold">
+        <th>Document / Task</th>
+        <th>Total Cost</th>
+        <th># Hours Worked</th>
+        <th>Cost Rating</th>
+        <th>Rates Rating</th>
+        <th>Staffing Efficiency</th>
+<!--        <th>% Total Hours</th>-->
+      </tr>
+      </thead>
+      <tr *ngFor="let doc of documents">
+        <td>
+
+          <span  class="pointer-hand href-link-primary" (click)="openDetails(doc)">{{doc.canonical}}</span>
+        </td>
+        <td>${{doc.total_cost | number:'1.0-0'}}</td>
+        <td>{{doc.total_hours | number:'1.1-1'}}</td>
+<!--        <td>{{doc.total_hours / (doc.total_doc_hours_all || 1) * 100 | number:'1.1-1'}}%</td>-->
+
+      </tr>
+
+    </table>
+  </div>
 </div>
 

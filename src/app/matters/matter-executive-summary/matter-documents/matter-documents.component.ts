@@ -7,6 +7,8 @@ import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
 import {IMatterDocument} from '../model';
+import {SAVINGS_CALCULATOR_CONFIG} from '../../../shared/services/config';
+import {MatterDocumentModalComponent} from '../matter-documents-overview/matter-document-modal/matter-document-modal.component';
 
 @Component({
   selector: 'bd-matter-documents',
@@ -44,6 +46,13 @@ export class MatterDocumentsComponent implements OnInit, OnDestroy {
         this.totalRecordsDocs = this.documents.length;
       }
     );
+  }
+  openDetails(document: IMatterDocument): void {
+    const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], document)};
+    const dialogRef = this.dialog.open(MatterDocumentModalComponent, {...modalConfig, disableClose: false });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

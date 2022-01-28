@@ -5,8 +5,11 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {IMatterExecSummary, IMatterTotalsPanel} from '../model';
+import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from '../model';
 import {Subscription} from 'rxjs';
+import {SAVINGS_CALCULATOR_CONFIG} from '../../../shared/services/config';
+import {MatterDocumentModalComponent} from './matter-document-modal/matter-document-modal.component';
+import {MOCK_MARKET_DOCS} from '../../../shared/unit-tests/mock-data/matter-overview';
 
 @Component({
   selector: 'bd-matter-documents-overview',
@@ -15,8 +18,12 @@ import {Subscription} from 'rxjs';
 })
 export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
+  documents: Array<IMatterDocument> = [];
+  marketData: Array<IMarketDocumentData> = [];
   matterId: string;
   matterName: string;
+  totalRecordsDocs: number;
+  numRecords: number = 1; // 10;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -32,11 +39,11 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; } );
     if (this.matterId) {
       this.load();
+      this.getDocuments();
     }
   }
 
   load(): void {
-    let matters = [];
     const params = this.filtersService.getCurrentUserCombinedFilters(true);
     const arr = [];
     if (!this.matterId) {
@@ -51,6 +58,42 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+  getDocuments(): void {
+    const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id, limit: this.numRecords, add_activity: true};
+    this.pendingRequest = this.httpService.makeGetRequest('getMatterDocuments', params).subscribe(
+      (data: any) => {
+        this.documents = (data.result || []);
+        if (this.documents.length > 0) {
+          this.getMarketData(this.documents);
+        }
+        this.totalRecordsDocs = this.documents.length;
+      }
+    );
+  }
+  getMarketData(documents: Array<IMatterDocument>): void {
+    const params = { matterId: this.matterId, client_id: this.userService.currentUser.client_info_id, documents: []};
+    let idx = 0;
+    for (const doc of documents) {
+      doc.index = idx;
+      params.documents.push({ entity: doc.canonical, entity_type: doc.entity_type, category: doc.category, index: doc.index});
+      idx ++;
+    }
+    // this.marketData = MOCK_MARKET_DOCS;
+    this.pendingRequest = this.httpService.makePostRequest('getMatterDocsMarketData', params).subscribe(
+      (data: any) => {
+        this.marketData = (data.result || []);
+        this.matterAnalysisService.getDocumentLandingRatings(documents, this.marketData);
+      }
+    );
+
+  }
+  openDetails(document: IMatterDocument): void {
+    const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], document)};
+    const dialogRef = this.dialog.open(MatterDocumentModalComponent, {...modalConfig, disableClose: false });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

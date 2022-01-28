@@ -8,7 +8,6 @@ import {Subscription} from 'rxjs';
 import {HARDCODED_MATTER_ID, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from './model';
 import {MatterAnalysisService} from './matter-analysis.service';
 import {IInsight} from '../../admin/insights/models';
-import {LeftSideBarComponent} from 'bodhala-ui-elements';
 import {MatterTotalsMetricsComponent} from './matter-totals-metrics/matter-totals-metrics.component';
 
 @Component({

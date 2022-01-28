@@ -70,8 +70,7 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
     const params = { client_id: this.userService.currentUser.client_info_id,
       matterId: this.matterId,
       firms: JSON.stringify(arrFirms),
-      matters: JSON.stringify(arrMatters),
-      marketMatters: JSON.stringify(this.marketMatters)
+      matters: JSON.stringify(arrMatters)
     };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
@@ -83,13 +82,6 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
           this.internalRecords =  data.result.internal_data || [];
           this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
           this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData, this.internalData);
-          const emitted = {
-            summaryData: this.summaryData,
-            marketData: this.marketData,
-            marketRecords: this.marketRecords,
-            internalData: this.internalData,
-            internalRecords: this.internalRecords
-          };
           this.isLoaded = true;
         }
       }
