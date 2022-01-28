@@ -79,14 +79,6 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
       this.chart.series[0].setData(this.marketMetricData.map(e => e.actual));
       this.chart.series[1].setData(this.internalMetricData.map(e => e.market));
       this.chart.series[2].setData(this.marketMetricData.map(e => e.market));
-      if (this.page === 'Overview' && this.metricType === MetricCardType.TotalSpend) {
-        this.chart.series[0].options.color = '#00D1FF';
-        this.chart.series[0].update(this.chart.series[0].options);
-        this.chart.series[1].options.color = '#8A8A8A';
-        this.chart.series[1].update(this.chart.series[1].options);
-        this.chart.series[2].options.color = '#3EDB73';
-        this.chart.series[2].update(this.chart.series[2].options);
-      }
     } else {
       this.chart.series[2].setData(this.getPercentOfHoursWorkedChartData(this.marketMetricData, this.internalMetricData, 0));
       this.chart.series[1].setData(this.getPercentOfHoursWorkedChartData(this.marketMetricData, this.internalMetricData,  1));

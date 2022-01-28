@@ -6,7 +6,7 @@
               'oval-label-green': totalSpendMetric[0].grade === 'GOOD',
               'oval-label-orange': totalSpendMetric[0].grade === 'FAIR',
               'oval-label-gray': !totalSpendMetric[0].grade}">
-          Overal Cost: <span class="roboto-bold">{{ totalSpendMetric[0].grade }}</span>
+          Overall Cost: <span class="roboto-bold">{{ totalSpendMetric[0].grade }}</span>
         </div>
         <div class="summary-card-content total-spend-card">
           ${{totalSpendMetric[0].delta | number:'1.0-0'}}
