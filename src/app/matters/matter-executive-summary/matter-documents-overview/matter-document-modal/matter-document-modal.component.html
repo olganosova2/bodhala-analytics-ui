@@ -1,4 +1,20 @@
 <div>
-  <div class="pull-right"><button mat-flat-button class="btn-grey mb10" [mat-dialog-close]="true">X</button></div>
+  <div class="justify-between mb20">
+    <div><span class="doc-name-title">{{ document.canonical}}</span>
+      <span class="doc-name-subtitle ml10">{{document.total_hours / document.total_doc_hours_all * 100 | number:'1.1-1'}}%
+      of work on this matter</span></div>
+    <mat-icon [mat-dialog-close]="true">close</mat-icon>
+  </div>
   <div class="clear-both"></div>
+  <div class="modal-conent">
+
+    <bd-matter-summary-card *ngIf="summaryData && document.hasEnoughData"
+                            [page]="'Documents'"
+                            [summaryData]="summaryData"
+                            [marketData]="marketData"
+                            [marketRecords]="marketRecords"></bd-matter-summary-card>
+    <div *ngIf="!document.hasEnoughData" class="no-data-div">Benchmarking for this task or document is not available due to insufficient market comparison data
+    </div>
+
+  </div>
 </div>

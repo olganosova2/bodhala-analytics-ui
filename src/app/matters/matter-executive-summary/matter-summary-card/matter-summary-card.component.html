@@ -8,7 +8,7 @@
               'oval-label-gray': !totalSpendMetric[0].grade}">
           Overall Cost: <span class="roboto-bold">{{ totalSpendMetric[0].grade }}</span>
         </div>
-        <div class="summary-card-content total-spend-card">
+        <div class="summary-card-content total-spend-card" [ngClass]="{'summary-card-content-docs': page === 'Documents'}">
           ${{totalSpendMetric[0].delta | number:'1.0-0'}}
           <span *ngIf="totalSpendMetric[0].direction >= 0" class="roboto-bold">higher</span>
           <span *ngIf="totalSpendMetric[0].direction < 0" class="roboto-bold">lower</span>
@@ -25,7 +25,7 @@
               'oval-label-gray': !avgRatesMetric[0].grade}">
           Hourly Rates: <span class="roboto-bold">{{ avgRatesMetric[0].grade }}</span>
         </div>
-        <div class="summary-card-content pt20">
+        <div class="summary-card-content pt20" [ngClass]="{'summary-card-content-docs': page === 'Documents'}">
           <div>
           <span class="roboto-bold">Average Associate Rate ${{avgRatesMetric[2].delta | number:'1.0-0'}}
           <span *ngIf="avgRatesMetric[2].direction >= 0">higher</span>
@@ -52,7 +52,7 @@
               'oval-label-gray': !staffingAllocationMetric[0].grade}">
           Staffing Efficiency: <span class="roboto-bold">{{ staffingAllocationMetric[0].grade }}</span>
         </div>
-        <div class="summary-card-content pt10">
+        <div class="summary-card-content pt10" [ngClass]="{'summary-card-content-docs': page === 'Documents'}">
           <div>
             <span ><span class="roboto-bold">Associate {{staffingAllocationMetric[2].increase | number:'1.0-0'}}% </span>
             <span *ngIf="staffingAllocationMetric[2].direction >= 0">higher</span>

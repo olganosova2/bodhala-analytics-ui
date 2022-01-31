@@ -1,3 +1,8 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
 th {
   font-family: 'Roboto Bold' !important;
+}
+.no-bm {
+  color: $medium-gray;
 }

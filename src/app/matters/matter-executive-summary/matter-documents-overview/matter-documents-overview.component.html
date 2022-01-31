@@ -2,7 +2,6 @@
   <div><span class="roboto-bold">Task & Document Analysis</span> <span class="ml5 font-gray">Matter: <span>{{matterName}}</span></span></div>
 
   <bd-matter-title-bar [matterId]="matterId" [title]="'Task & Document Analysis'" [index]="2"></bd-matter-title-bar>
-<!--  <bd-matter-documents [numRecords]="10" [matterId]="matterId" [page]="'Documents'"></bd-matter-documents>-->
 
   <div class="panel-wrapper mt20">
 
@@ -26,15 +25,22 @@
         </td>
         <td>${{doc.total_cost | number:'1.0-0'}}</td>
         <td>{{doc.total_hours | number:'1.1-1'}}</td>
-        <td><span [ngClass]=" {'font-qbr-red': doc.cost_rating?.grade === 'POOR',
+        <td><span  *ngIf="doc.cost_rating?.grade" [ngClass]=" {'font-qbr-red': doc.cost_rating?.grade === 'POOR',
               'font-qbr-green': doc.cost_rating?.grade === 'GOOD',
-              'font-qbr-orange': doc.cost_rating?.grade === 'FAIR'}">{{doc.cost_rating?.grade}}</span></td>
-        <td><span [ngClass]=" {'font-qbr-red': doc.rates_rating?.grade === 'POOR',
+              'font-qbr-orange': doc.cost_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.cost_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.cost_rating?.grade">No Available Benchmark</span>
+        </td>
+        <td><span  *ngIf="doc.rates_rating?.grade" [ngClass]=" {'font-qbr-red': doc.rates_rating?.grade === 'POOR',
               'font-qbr-green': doc.rates_rating?.grade === 'GOOD',
-              'font-qbr-orange': doc.rates_rating?.grade === 'FAIR'}">{{doc.rates_rating?.grade}}</span></td>
-        <td><span [ngClass]=" {'font-qbr-red': doc.staffing_rating?.grade === 'POOR',
+              'font-qbr-orange': doc.rates_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.rates_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.rates_rating?.grade">No Available Benchmark</span>
+        </td>
+        <td><span *ngIf="doc.staffing_rating?.grade" [ngClass]=" {'font-qbr-red': doc.staffing_rating?.grade === 'POOR',
               'font-qbr-green': doc.staffing_rating?.grade === 'GOOD',
-              'font-qbr-orange': doc.staffing_rating?.grade === 'FAIR'}">{{doc.staffing_rating?.grade}}</span></td>
+              'font-qbr-orange': doc.staffing_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.staffing_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.staffing_rating?.grade">No Available Benchmark</span>
+        </td>
+
 
       </tr>
 

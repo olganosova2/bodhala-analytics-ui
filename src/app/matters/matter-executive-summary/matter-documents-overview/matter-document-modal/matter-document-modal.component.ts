@@ -59,13 +59,19 @@ export class MatterDocumentModalComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
         if (data.result && data.result.ade_data) {
-          this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
-          // this.matterAnalysisService.calculateSingleMatterData(this.summaryData);
-          // this.marketRecords =  data.result.market_data || [];
-          // this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
-          // this.internalRecords =  data.result.internal_data || [];
-          // this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
-          // this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData, this.internalData);
+          const adeData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
+          this.summaryData = this.matterAnalysisService.convertMarketDocToMatter(adeData);
+          this.matterAnalysisService.calculateSingleMatterData(this.summaryData);
+          const marketRecords  =  data.result.market_data || [];
+          for (const rec of marketRecords) {
+            this.marketRecords.push(this.matterAnalysisService.convertMarketDocToMatter(rec));
+          }
+          this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
+          const internalRecords =  data.result.internal_data || [];
+          for (const rec of internalRecords) {
+            this.internalRecords.push(this.matterAnalysisService.convertMarketDocToMatter(rec));
+          }
+          this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
         }
       }
     );
