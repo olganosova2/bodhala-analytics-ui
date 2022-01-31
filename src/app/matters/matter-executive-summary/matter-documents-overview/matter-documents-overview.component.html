@@ -26,7 +26,15 @@
         </td>
         <td>${{doc.total_cost | number:'1.0-0'}}</td>
         <td>{{doc.total_hours | number:'1.1-1'}}</td>
-<!--        <td>{{doc.total_hours / (doc.total_doc_hours_all || 1) * 100 | number:'1.1-1'}}%</td>-->
+        <td><span [ngClass]=" {'font-qbr-red': doc.cost_rating?.grade === 'POOR',
+              'font-qbr-green': doc.cost_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.cost_rating?.grade === 'FAIR'}">{{doc.cost_rating?.grade}}</span></td>
+        <td><span [ngClass]=" {'font-qbr-red': doc.rates_rating?.grade === 'POOR',
+              'font-qbr-green': doc.rates_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.rates_rating?.grade === 'FAIR'}">{{doc.rates_rating?.grade}}</span></td>
+        <td><span [ngClass]=" {'font-qbr-red': doc.staffing_rating?.grade === 'POOR',
+              'font-qbr-green': doc.staffing_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.staffing_rating?.grade === 'FAIR'}">{{doc.staffing_rating?.grade}}</span></td>
 
       </tr>
 

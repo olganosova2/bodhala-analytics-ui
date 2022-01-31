@@ -1,5 +1,4 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
-import * as Highcharts from 'highcharts';
 const groupDistance = window.screen.width > 1440 ? 0.4 : window.screen.width > 1200 ? 0.35 : 0.25;
 
 export const HARDCODED_MATTER_ID = '087260/834'; //  '100340'; // '087260/818'; // '373046-00021'; // '10001320';
@@ -81,10 +80,13 @@ export interface IMatterDocument {
   entity_type: string;
   total_cost: number;
   total_hours: number;
+  partner_billed: number;
+  associate_billed: number;
   avg_rate: number;
   partners: number;
   associates: number;
   partner_hours: number;
+  associate_hours: number;
   tk_id: string;
   first_name: string;
   last_name: string;
@@ -102,13 +104,14 @@ export interface IMatterDocument {
   total_doc_cost_all: number;
   total_doc_hours_all: number;
   index?: number;
-  blended_rate?: number;
-  percent_partner_hours?: number;
-  percent_associate_hours?: number;
-  percent_other_hours?: number;
-  cost_rating?: MetricGrade;
-  rates_rating?: MetricGrade;
-  staffing_rating?: MetricGrade;
+  // blended_rate?: number;
+  // percent_partner_hours?: number;
+  // percent_associate_hours?: number;
+  // percent_other_hours?: number;
+  cost_rating?: IMetricDisplayData;
+  rates_rating?: IMetricDisplayData;
+  staffing_rating?: IMetricDisplayData;
+  hasEnoughData: boolean;
 }
 export interface IMatterMarketDocument {
   bh_client_id: number;

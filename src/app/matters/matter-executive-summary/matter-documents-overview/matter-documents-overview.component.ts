@@ -23,7 +23,7 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   matterId: string;
   matterName: string;
   totalRecordsDocs: number;
-  numRecords: number = 1; // 10;
+  numRecords: number = 10;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,

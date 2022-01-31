@@ -288,22 +288,27 @@ export class MatterAnalysisService {
 
   processLandingDocument(doc: IMatterDocument, marketRawRecords: Array<IMatterMarketDocument>): void {
    const summaryData = this.convertClassicDocToMatter(doc);
+   this.calculateSingleMatterData(summaryData);
    const marketRecords = [];
+   doc.hasEnoughData = marketRawRecords && marketRawRecords.length >= 3;
+   if (!doc.hasEnoughData) {
+     return;
+   }
    for (const rec of marketRawRecords) {
       marketRecords.push(this.convertMarketDocToMatter(rec));
     }
    const marketData = this.calculateMarketData(marketRecords);
    const totalSpendMetric = this.formatTkTotalSpend(summaryData, marketData, marketRecords);
    if (totalSpendMetric && totalSpendMetric.length > 0) {
-     doc.cost_rating = totalSpendMetric[0].grade;
+     doc.cost_rating = totalSpendMetric[0];
    }
    const avgRatesMetric = this.formatAverageRate(summaryData, marketData, marketRecords);
    if (avgRatesMetric && avgRatesMetric.length > 0) {
-      doc.rates_rating = avgRatesMetric[0].grade;
+      doc.rates_rating = avgRatesMetric[0];
    }
    const staffingAllocationMetric = this.formatTotalHours(summaryData, marketData, marketRecords);
    if (staffingAllocationMetric && staffingAllocationMetric.length > 0) {
-      doc.staffing_rating = staffingAllocationMetric[0].grade;
+      doc.staffing_rating = staffingAllocationMetric[0];
     }
   }
 
@@ -313,7 +318,14 @@ export class MatterAnalysisService {
     summaryData.client_matter_id = doc.client_matter_id;
     summaryData.total_billed = doc.total_cost;
     summaryData.total_hours_billed = doc.total_hours;
-    summaryData.blended_rate = doc.avg_rate;
+    summaryData.partner_billed = doc.partner_billed;
+    summaryData.associate_billed = doc.associate_billed;
+    summaryData.partner_hours =  doc.partner_hours;
+    summaryData.associate_hours =  doc.associate_hours;
+    summaryData.partner_writeoff_hours =  0;
+    summaryData.associate_writeoff_hours =  0;
+    summaryData.partner_writeoff =  0;
+    summaryData.associate_writeoff =  0;
     return summaryData;
   }
   convertMarketDocToMatter(doc: IMatterMarketDocument): IMatterExecSummary {
