@@ -198,11 +198,12 @@ export const currencyAxisChartOptions =
               minimumFractionDigits: 0,
               maximumFractionDigits: 0
             });
-            if (this.value >= 1000000) {
-              return formatterInt.format(this.value / 1000) + 'k';
-            } else {
-              return formatterInt.format(this.value);
-            }
+            return formatterInt.format(this.value);
+            // if (this.value >= 1000000) {
+            //   return formatterInt.format(this.value / 1000) + 'k';
+            // } else {
+            //   return formatterInt.format(this.value);
+            // }
 
           }
         }
