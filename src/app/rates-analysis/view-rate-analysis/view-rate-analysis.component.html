@@ -5,17 +5,18 @@
     </span>
 
     <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
-    <span style="color: #8A8A8A;">{{firmName}}</span>
+    <span style="color: #8A8A8A; font-family: 'Roboto' !important;">{{firmName}}</span>
 
     <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
-    <span style="color: #8A8A8A;">{{practiceArea}}</span>
+    <span style="color: #8A8A8A; font-family: 'Roboto' !important;">{{practiceArea}}</span>
 
     <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
-    <span style="color: #8A8A8A;">{{year}}</span>
+    <span style="color: #8A8A8A; font-family: 'Roboto' !important;">{{year}}</span>
 
     <div class="peer-firms">
-      <p style="text-align: center; margin-top: 1em;"><b>Comparison Peer Firms</b></p>
-      <p style="text-align: center; margin-left: 1.5em; margin-right: 1.5em; margin-top: -0.75em;" *ngIf="loaded" #tooltip="matTooltip" matTooltip="{{benchmark.peers[2]}}, {{benchmark.peers[3]}}, {{benchmark.peers[4]}}, and {{benchmark.peers[5]}}">{{benchmark.peers[0]}}, {{benchmark.peers[1]}} & others</p>
+      <p style="text-align: center; margin-top: 1em; font-family: 'Roboto Bold' !important;">Comparison Firm Set</p>
+      <p style="text-align: center; margin-left: 1.5em; margin-right: 1.5em; margin-top: -0.75em; font-family: 'Roboto' !important;" *ngIf="loaded && peerFirms.length === 6" #tooltip="matTooltip" matTooltip="{{peerFirms[2]}}, {{peerFirms[3]}}, {{peerFirms[4]}}, {{peerFirms[5]}} and others.">{{peerFirms[0]}}, {{peerFirms[1]}} & others</p>
+      <p style="text-align: center; margin-left: 1.5em; margin-right: 1.5em; margin-top: -0.75em; font-family: 'Roboto' !important;" *ngIf="loaded && peerFirms.length === 5" #tooltip="matTooltip" matTooltip="{{peerFirms[2]}}, {{peerFirms[3]}}, {{peerFirms[4]}} and others.">{{peerFirms[0]}}, {{peerFirms[1]}} & others</p>
     </div>
   </div>
 
@@ -25,18 +26,19 @@
     <img src="assets/images/bills.svg" alt="icon"/>
     <span class="header-span" style="display: inline; font-size: 24px !important; padding-left:1em;">Historical Cost Impact</span>
     <div style="display: inline !important;">
-      <span class="grade-pill" style="background: orange;">MODERATE</span>
-      <span class="header-span" style="color: orange; font-size: 16px !important;">$3,500,00 - $4,200,000</span><span> more than if your rates were market-appropriate.</span>
+      <span class="grade-pill" [ngStyle]="{'background-color': costImpactColor}">{{costImpactGrade}}</span>
+      <span *ngIf="blendedWithinRange" class="cost-impact" [ngStyle]="{'color': costImpactColor}">~{{costImpactLowerFormatted}} </span><span *ngIf="blendedWithinRange" class="generic">more than if you paid the lowest market rates</span>
+      <span *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0" class="cost-impact" [ngStyle]="{'color': costImpactColor}">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span><span class="generic" *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0">more than if your rates were market appropriate</span>
+      <span *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0" class="cost-impact" [ngStyle]="{'color': costImpactColor}">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span><span class="generic" *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0">less than if your rates were market appropriate</span>
 
-      <!-- will need conditionals here. Logic will depend on business input and how we determine the grade of impact -->
     </div>
 
   </div>
 
   <div class="p-grid mt40">
     <div class="p-md-12 p-lg-6 pl8 pr15" style="background: #FFFFFF; border-radius: 8px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 32px;">
-      <em class="icon-bar-chart"></em>
-      <span class="header-span" style="padding-left: 0.75em !important;">Last Year's Average Rate Increase:</span>
+      <em class="icon-bar-chart" style="padding-left: 8px;"></em>
+      <span class="header-span" style="padding-left: 1.25em !important;">Last Year's Average Rate Increase:</span>
       <span class="data-span">{{firmRateIncreasePct | number:'1.1-1'}}%</span>
       <div style="display: inline-flex; padding-top: 0.25em;">
         <div class="projected-cost-impact">
@@ -46,31 +48,23 @@
                 popoverTitle="Projected Cost Increase"
                 [openDelay]="100"
                 [closeDelay]="2000"
-                triggers="mouseenter:mouseleave">
-            <img src="assets/images/question.svg" alt="Hint"/>
+                triggers="mouseenter:mouseleave"
+                style="height: 16px; width: 16px; background: #D6DEE1; border-radius: 16px; font-size: 13px; font-weight: 400; justify-content: center; align-items: center; display: flex; font-family: 'Roboto';">?
           </span>
         </div>
-        <div style="width: 50%; padding-left: 3em;">{{firmCostImpactFormatted}}<span *ngIf="firmCostImpact > 0"> more</span> <span *ngIf="firmCostImpact < 0"> less</span> than last year (based on last year's hours)</div>
+        <div style="width: 50%; padding-left: 3em; font-size: 16px;">{{firmCostImpactFormatted}}<span *ngIf="firmCostImpact > 0"> more</span> <span *ngIf="firmCostImpact < 0"> less</span> than last year (based on last year's hours)</div>
       </div>
     </div>
 
     <div class="p-md-12 p-lg-6 pr8" style="background: #FFFFFF; border-radius: 8px; width: 48% !important; margin-left: 20px; margin-right: 0.5em; padding: 32px;">
-      <em class="icon-bar-chart"></em>
-      <span class="header-span" style="padding-left: 0.75em !important;">Estimated Average Market Rate Increase:</span>
+      <em class="icon-bar-chart"  style="padding-left: 8px;"></em>
+      <span class="header-span" style="padding-left: 1.25em !important;">Estimated Average Market Rate Increase:</span>
       <span class="data-span">{{cohortRateIncreasePct | number:'1.1-1'}}%</span>
       <div style="display: inline-flex; padding-top: 0.25em;">
         <div class="projected-cost-impact">
           <b>Projected<br>Cost Impact</b>
-          <span class="ml10 pointer-hand" placement="bottom"
-                [ngbPopover]="helpText"
-                popoverTitle="Projected Cost Increase"
-                [openDelay]="100"
-                [closeDelay]="2000"
-                triggers="mouseenter:mouseleave">
-            <img src="assets/images/question.svg" alt="Hint"/>
-          </span>
         </div>
-        <div style="width: 50%; padding-left: 3em;">{{cohortCostImpactFormatted}}<span *ngIf="firmCostImpact > 0"> more</span><span *ngIf="firmCostImpact < 0"> less</span> than last year (based on last year's hours)</div>
+        <div style="width: 50%; padding-left: 3em; font-size: 16px;">{{cohortCostImpactFormatted}}<span *ngIf="firmCostImpact > 0"> more</span><span *ngIf="firmCostImpact < 0"> less</span> than last year (based on last year's hours)</div>
       </div>
 
     </div>
@@ -82,7 +76,7 @@
     </div>
     <div>
       <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
-                              [blendedRate]="true"></bd-rate-analysis-chart>
+                              [rateType]="'Blended'"></bd-rate-analysis-chart>
     </div>
   </div>
 
@@ -93,8 +87,35 @@
 
     <div>
       <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
-                              [blendedRate]="false"></bd-rate-analysis-chart>
+                              [rateType]="'BPI'"></bd-rate-analysis-chart>
     </div>
+  </div>
+
+  <div class="panel-wrapper mt40" style="padding: 0px !important;">
+    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
+      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Historical Partner Rate</span>
+    </div>
+
+    <div>
+      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
+                              [rateType]="'Partner'"></bd-rate-analysis-chart>
+    </div>
+  </div>
+
+  <div class="panel-wrapper mt40" style="padding: 0px !important;">
+    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
+      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Historical Associate Rate</span>
+    </div>
+
+    <div>
+      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
+                              [rateType]="'Associate'"></bd-rate-analysis-chart>
+    </div>
+  </div>
+
+  <div class="mt40" style="flex-direction: row; justify-content: center; align-items: center; display: flex;">
+
+    <button class="primary-button" style="background: black; color: white; font-family: 'Roboto'; font-size: 16px; height: 64px; width: 475px;" (click)="goToDetail()">See Timekeeper Level Benchmarks & Cost Analysis<i class="fa fa-chevron-right" style="padding-left: 6px; font-weight: 400;"></i></button>
   </div>
 
 </div>

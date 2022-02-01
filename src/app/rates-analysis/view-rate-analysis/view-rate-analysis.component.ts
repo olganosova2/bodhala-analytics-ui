@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { RatesAnalysisService } from '../rates-analysis.service';
-import { IRateBenchmark, moneyFormatter } from '../rates-analysis.model';
+import { IRateBenchmark, moneyFormatter, COST_IMPACT_GRADES } from '../rates-analysis.model';
 import { IBenchmarkRate } from 'src/app/benchmarks/model';
 
 @Component({
@@ -46,6 +46,13 @@ export class ViewRateAnalysisComponent implements OnInit {
   marketBPILowerRangeDiff: string;
   marketBPIUpperRangeDiff: string;
   internalBPIDiff: string;
+  costImpactGrade: string;
+  costImpactLower: number;
+  costImpactUpper: number;
+  costImpactLowerFormatted: string;
+  costImpactUpperFormatted: string;
+  blendedWithinRange: boolean;
+  costImpactColor: string;
 
 
   constructor(private route: ActivatedRoute,
@@ -74,6 +81,10 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
         this.peerFirms = this.benchmark.peers;
+        const ix = this.peerFirms.findIndex(p => p === this.firmName);
+        if (ix >= 0) {
+          this.peerFirms.splice(ix, 1);
+        }
         console.log("this.benchmark: ", this.benchmark)
         this.getData();
       });
@@ -134,9 +145,9 @@ export class ViewRateAnalysisComponent implements OnInit {
             }
           }
           this.loaded = true;
-          if (data.result.firm_rate_result && data.result.cohort_rate_result && data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
-            const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result, data.result.firm_rate_result_classification, data.result.max_year);
-            const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result, data.result.cohort_rate_result_classification, data.result.max_year);
+          if (data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
+            const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, data.result.max_year);
+            const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result_classification, data.result.max_year);
             this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;
             this.cohortClassificationRateIncreaseData = cohortClassificationRateIncreasePct.classificationData;
             this.firmRateIncreasePct = firmClassificationRateIncreasePct.rateIncreasePct;
@@ -158,6 +169,26 @@ export class ViewRateAnalysisComponent implements OnInit {
                 this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
               }
             }
+            const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.firmYearData, this.marketAverageData);
+            this.costImpactGrade = historicalCostImpact.cost_impact;
+            this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
+            this.costImpactLower = historicalCostImpact.blended_rate_lower_diff;
+            this.costImpactUpper = historicalCostImpact.blended_rate_upper_diff;
+            if (this.costImpactLower >= 10000) {
+              this.costImpactLower = Math.ceil(this.costImpactLower / 10000) * 10000;
+            } else {
+              this.costImpactLower = Math.ceil(this.costImpactLower / 1000) * 1000;
+            }
+            if (this.costImpactUpper >= 10000) {
+              this.costImpactUpper = Math.ceil(this.costImpactUpper / 10000) * 10000;
+            } else {
+              this.costImpactUpper = Math.ceil(this.costImpactUpper / 1000) * 1000;
+            }
+            this.costImpactLowerFormatted = moneyFormatter.format(this.costImpactLower);
+            this.costImpactUpperFormatted = moneyFormatter.format(this.costImpactUpper);
+            this.blendedWithinRange = historicalCostImpact.blended_within_range;
+
+            console.log("historicalCostImpact: ", historicalCostImpact)
             console.log("internalYearData: ", this.internalYearData)
             console.log("firmYearData: ", this.firmYearData)
             console.log("marketAverageData: ", this.marketAverageData)
@@ -173,5 +204,9 @@ export class ViewRateAnalysisComponent implements OnInit {
         }
       }
     );
+  }
+
+  goToDetail(): void {
+    console.log("go to the detail")
   }
 }

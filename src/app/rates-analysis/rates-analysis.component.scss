@@ -65,3 +65,25 @@ h3 {
 }
 
 
+.rate-span {
+  font-family: "Roboto Bold";
+  font-size: 12px;
+}
+
+.pct-span {
+  font-family: "Roboto";
+  font-size: 12px;
+  border-radius: 17px;
+  width: 82px;
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 8px;
+  color: white;
+}
+
+.ag-theme-alpine {
+  font-family: "Roboto";
+}

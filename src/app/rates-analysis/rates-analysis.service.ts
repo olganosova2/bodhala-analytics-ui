@@ -41,7 +41,7 @@ export class RatesAnalysisService {
     return {savings: result, yearsData: processed};
   }
 
-  calculateRateIncreasePctClassification(firmRateIncreaseData: Array<any>, classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
+  calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
     let result = 0;
     const distinctYears = [];
     const yearRecords = [];
@@ -102,10 +102,6 @@ export class RatesAnalysisService {
         const partnerInfo = classProcessed.filter(c => c.title === 'partner');
         let assocRateIncrease = 0;
         let partnerRateIncrease = 0;
-        // console.log("assocInfo: ", assocInfo)
-        // console.log("partnerInfo: ", partnerInfo)
-        // console.log("assocPctBilled: ", assocPctBilled)
-        // console.log("partnerPctBilled: ", partnerPctBilled)
 
         if (assocInfo.length > 0) {
           assocRateIncrease = assocInfo[0].avgRateIncrease * assocPctBilled;
@@ -117,8 +113,6 @@ export class RatesAnalysisService {
 
       }
     }
-    // console.log("classProcessed: ", classProcessed)
-    // result = this.calculateIncreaseRateValue(rateIncreaseLimit, processed);
     return {savings: result, classificationData: classProcessed, rateIncreasePct: yoyRateIncrease, total: totalSpend};
   }
 
@@ -179,24 +173,72 @@ export class RatesAnalysisService {
     if (tempAssociateCohortInfo.length > 0) {
       associateCohortInfo = tempAssociateCohortInfo[0];
     }
-    // console.log("partnerFirmInfo: ", partnerFirmInfo)
-    // console.log("associateFirmInfo: ", associateFirmInfo)
-    // console.log("partnerCohortInfo: ", partnerCohortInfo)
-    // console.log("associateCohortInfo: ", associateCohortInfo)
 
     const partnerFirmProjectedSpend = ((partnerFirmInfo.avgRateIncrease + 1) * partnerFirmInfo.lastYearRate) * (partnerFirmInfo.totalHours);
     const associateFirmProjectedSpend = ((associateFirmInfo.avgRateIncrease + 1) * associateFirmInfo.lastYearRate) * (associateFirmInfo.totalHours);
-    // console.log("firm spend: ", partnerFirmProjectedSpend, associateFirmProjectedSpend)
     projectedImpact.firmProjectedImpact = partnerFirmProjectedSpend + associateFirmProjectedSpend;
 
     const partnerCohortProjectedSpend = ((partnerCohortInfo.avgRateIncrease + 1) * partnerFirmInfo.lastYearRate) * (partnerFirmInfo.totalHours);
     const associateCohortProjectedSpend = ((associateCohortInfo.avgRateIncrease + 1) * associateFirmInfo.lastYearRate) * (associateFirmInfo.totalHours);
-    // console.log("cohort spend: ", partnerCohortProjectedSpend, associateCohortProjectedSpend)
     projectedImpact.marketProjectedImpact = partnerCohortProjectedSpend + associateCohortProjectedSpend;
     return projectedImpact;
   }
 
-  // calculateDiffs(firmData: any, internalData: any, marketData: any): any {
-  //   if (firmData.blended_rate )
-  // }
+  calculateHistoricalCostImpact(firmData, marketAverageData) {
+    let result = {
+      blended_rate_lower_diff: 0,
+      blended_rate_upper_diff: 0,
+      blended_rate_lower_diff_pct: 0,
+      blended_rate_upper_diff_pct: 0,
+      cost_impact: '',
+      blended_within_range: false
+    };
+    if (firmData.blended_rate >= marketAverageData.blended_rate_hi && firmData.blended_rate >= marketAverageData.blended_rate_lo) {
+      result.blended_rate_lower_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_hi);
+      result.blended_rate_upper_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_lo);
+      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / firmData.total_atty_billed;
+      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / firmData.total_atty_billed;
+      result.blended_within_range = false;
+      if (result.blended_rate_upper_diff_pct >= 0.2) {
+        result.cost_impact = 'HIGH';
+      } else if (result.blended_rate_upper_diff_pct < 0.2 && result.blended_rate_upper_diff_pct >= 0.05) {
+        result.cost_impact = 'MODERATE';
+      } else if (result.blended_rate_upper_diff_pct < 0.05 && result.blended_rate_upper_diff_pct > 0) {
+        result.cost_impact = 'LOW';
+      } else {
+        result.cost_impact = 'NONE';
+      }
+    } else if (firmData.blended_rate >= marketAverageData.blended_rate_lo && firmData.blended_rate <= marketAverageData.blended_rate_hi) {
+      result.blended_rate_lower_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_lo);
+      result.blended_rate_upper_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_hi);
+      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / firmData.total_atty_billed;
+      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / firmData.total_atty_billed;
+      result.blended_within_range = true;
+      if (result.blended_rate_lower_diff_pct >= 0.2) {
+        result.cost_impact = 'HIGH';
+      } else if (result.blended_rate_lower_diff_pct < 0.2 && result.blended_rate_lower_diff_pct >= 0.05) {
+        result.cost_impact = 'MODERATE';
+      } else if (result.blended_rate_lower_diff_pct < 0.05 && result.blended_rate_lower_diff_pct > 0) {
+        result.cost_impact = 'LOW';
+      } else {
+        result.cost_impact = 'NONE';
+      }
+    } else if (firmData.blended_rate <= marketAverageData.blended_rate_lo && firmData.blended_rate <= marketAverageData.blended_rate_hi) {
+      result.blended_rate_lower_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_lo);
+      result.blended_rate_upper_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_hi);
+      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / firmData.total_atty_billed;
+      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / firmData.total_atty_billed;
+      result.blended_within_range = false;
+      if (result.blended_rate_upper_diff_pct <= -0.2) {
+        result.cost_impact = 'HIGH';
+      } else if (result.blended_rate_upper_diff_pct >= -0.2 && result.blended_rate_upper_diff_pct <= -0.05) {
+        result.cost_impact = 'MODERATE';
+      } else if (result.blended_rate_upper_diff_pct > -0.05 && result.blended_rate_upper_diff_pct < 0) {
+        result.cost_impact = 'LOW';
+      } else {
+        result.cost_impact = 'NONE';
+      }
+    }
+    return result;
+  }
 }
