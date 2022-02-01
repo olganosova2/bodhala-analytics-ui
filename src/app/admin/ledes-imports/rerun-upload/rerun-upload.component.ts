@@ -26,6 +26,7 @@ export class RerunUploadComponent implements OnInit {
   fileReUploaded: boolean = null;
   searching: boolean = false;
   firmMatches: any = null;
+  firmURL: string = null;
   matchType = '';
 
   constructor(private route: ActivatedRoute,
@@ -69,6 +70,41 @@ export class RerunUploadComponent implements OnInit {
               }
             } else {
               this.data.firm_name = 'N/A';
+              if (this.firmMappingError) {
+                if (this.data.message_replyto !== '[]') {
+                  let url = this.data.message_replyto;
+                  url = url.split('@');
+                  if (url.length > 1) {
+                    url = url[1];
+                    url = url.replace('"', '');
+                    url = url.replace(']', '');
+                    url = url.replace('\'', '');
+                    this.firmURL = url;
+                  } else {
+                    url = this.data.message_sender;
+                    url = url.split('@');
+                    if (url.length > 1) {
+                      url = url[1];
+                      url = url.replace('"', '');
+                      url = url.replace(']', '');
+                      url = url.replace('\'', '');
+                      url = url.replace('>', '');
+                      this.firmURL = url;
+                    }
+                  }
+                } else {
+                  let url = this.data.message_sender;
+                  url = url.split('@');
+                  if (url.length > 1) {
+                    url = url[1];
+                    url = url.replace('"', '');
+                    url = url.replace(']', '');
+                    url = url.replace('\'', '');
+                    url = url.replace('>', '');
+                    this.firmURL = url;
+                  }
+                }
+              }
             }
             this.ledesImportsService.data = undefined;
             this.mapMessageURLs();
@@ -180,8 +216,15 @@ export class RerunUploadComponent implements OnInit {
       (data: any) => {
         this.searching = false;
         if (data.result) {
-          this.firmMatches = data.result.hits;
-          if (data.result.match_type) {
+          if (data.result.match_type !== 'EXACT') {
+            this.firmMatches = data.result.hits;
+            if (data.result.match_type) {
+              this.matchType = data.result.match_type;
+            }
+          } else {
+            this.firmMatches = [];
+            data.result.score = 1;
+            this.firmMatches.push(data.result);
             this.matchType = data.result.match_type;
           }
         }
@@ -194,7 +237,8 @@ export class RerunUploadComponent implements OnInit {
       firmId: firm,
       firmName: name,
       client: this.data.client,
-      etag: this.data.etag
+      etag: this.data.etag,
+      firmUrl: this.firmURL
     };
     this.pendingRequest = this.httpService.makePostRequest('reuploadLedes', params).subscribe(
       (data: any) => {
