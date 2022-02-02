@@ -19,23 +19,42 @@ export class MatterAnalysisService {
     }
     let tMetric = {label: 'Total Spend', amount: summaryData.total_billed, format: '$', icon: 'bills.svg'};
     let metric = {titleMetric: tMetric, subMetrics: []};
-    this.addSubMetric(metric, 'total_billed', summaryData, internalData, 'Internal');
-    this.addSubMetric(metric, 'total_billed', summaryData, marketData, 'Market');
+    if (internalData) {
+      this.addSubMetric(metric, 'total_billed', summaryData, internalData, 'Internal');
+    }
+    if (marketData) {
+      this.addSubMetric(metric, 'total_billed', summaryData, marketData, 'Market');
+    }
     result.push(metric);
+
     tMetric = {label: 'Total Hours Worked', amount: summaryData.total_hours_billed, format: '', icon: 'clock-sm.png'};
     metric = {titleMetric: tMetric, subMetrics: []};
-    this.addSubMetric(metric, 'total_hours_billed', summaryData, internalData, 'Internal', '');
-    this.addSubMetric(metric, 'total_hours_billed', summaryData, marketData, 'Market', '');
+    if (internalData) {
+      this.addSubMetric(metric, 'total_hours_billed', summaryData, internalData, 'Internal', '');
+    }
+    if (marketData) {
+      this.addSubMetric(metric, 'total_hours_billed', summaryData, marketData, 'Market', '');
+    }
     result.push(metric);
+
     tMetric = {label: 'Avg Partner Rate', amount: summaryData.avg_partner_rate, format: '$', icon: 'partners.svg'};
     metric = {titleMetric: tMetric, subMetrics: []};
-    this.addSubMetric(metric, 'avg_partner_rate', summaryData, internalData, 'Internal');
-    this.addSubMetric(metric, 'avg_partner_rate', summaryData, marketData, 'Market');
+    if (internalData) {
+      this.addSubMetric(metric, 'avg_partner_rate', summaryData, internalData, 'Internal');
+    }
+    if (marketData) {
+      this.addSubMetric(metric, 'avg_partner_rate', summaryData, marketData, 'Market');
+    }
     result.push(metric);
+
     tMetric = {label: 'Avg Associate Rate', amount: summaryData.avg_associate_rate, format: '$', icon: 'avg_ass_matter.svg'};
     metric = {titleMetric: tMetric, subMetrics: []};
-    this.addSubMetric(metric, 'avg_associate_rate', summaryData, internalData, 'Internal');
-    this.addSubMetric(metric, 'avg_associate_rate', summaryData, marketData, 'Market');
+    if (internalData) {
+      this.addSubMetric(metric, 'avg_associate_rate', summaryData, internalData, 'Internal');
+    }
+    if (marketData) {
+      this.addSubMetric(metric, 'avg_associate_rate', summaryData, marketData, 'Market');
+    }
     result.push(metric);
     return result;
   }
@@ -231,11 +250,11 @@ export class MatterAnalysisService {
     }
   }
 
-  formatCardTitle(type: MetricCardType): string {
+  formatCardTitle(type: MetricCardType, isDocuments: boolean = false): string {
     let result = 'Total Spend';
     switch (type) {
       case MetricCardType.AverageRates:
-        result = 'Average Rates';
+        result = isDocuments ? 'Rate Benchmarks' : 'Average Rates';
         break;
       case MetricCardType.AverageTkOnMatter:
         result = 'Average # of TK\'s on Matter';

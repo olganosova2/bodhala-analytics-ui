@@ -6,3 +6,9 @@ th {
 .no-bm {
   color: $medium-gray;
 }
+
+.custom-dialog-container .mat-dialog-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+}

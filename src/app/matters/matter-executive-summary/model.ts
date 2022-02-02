@@ -235,12 +235,6 @@ export const currencyAxisChartOptions =
               maximumFractionDigits: 0
             });
             return formatterInt.format(this.value);
-            // if (this.value >= 1000000) {
-            //   return formatterInt.format(this.value / 1000) + 'k';
-            // } else {
-            //   return formatterInt.format(this.value);
-            // }
-
           }
         }
       },
@@ -250,6 +244,24 @@ export const currencyAxisChartOptions =
       },
     }
   };
+
+export const documentsRatesOptions =
+  {
+    ...currencyAxisChartOptions, ...{
+      plotOptions: {
+        column: {
+          borderWidth: 0,
+          borderRadiusTopLeft: '50%',
+          borderRadiusTopRight: '50%'
+        },
+        series: {
+          pointWidth: 20,
+          groupPadding: groupDistance / 1.2
+        }
+      }
+
+    }
+  }
 export const barTkPercentOptions = {
   chart: {
     type: 'bar'

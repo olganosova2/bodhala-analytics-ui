@@ -1,20 +1,76 @@
-<div>
-  <div class="justify-between mb20">
-    <div><span class="doc-name-title">{{ document.canonical}}</span>
-      <span class="doc-name-subtitle ml10">{{document.total_hours / document.total_doc_hours_all * 100 | number:'1.1-1'}}%
+<div mat-dialog-title class="justify-between mb20 ml20">
+    <div class="pull-left"><span class="doc-name-title">{{ document.canonical}}</span>
+      <span
+        class="doc-name-subtitle ml10">{{document.total_hours / document.total_doc_hours_all * 100 | number:'1.1-1'}}%
       of work on this matter</span></div>
-    <mat-icon [mat-dialog-close]="true">close</mat-icon>
+    <div class="pull-right">
+     <mat-icon [mat-dialog-close]="true" class="mr20">close</mat-icon>
+    </div>
+    <div class="clear-both"></div>
   </div>
-  <div class="clear-both"></div>
+  <mat-dialog-content>
   <div class="modal-conent">
+    <div class="ml20">
+      <bd-matter-summary-card *ngIf="summaryData && document.hasEnoughData"
+                              [page]="'Documents'"
+                              [summaryData]="summaryData"
+                              [marketData]="marketData"
+                              [marketRecords]="marketRecords"></bd-matter-summary-card>
+    </div>
+    <div *ngIf="!document.hasEnoughData" class="no-data-div">Benchmarking for this task or document is not available due
+      to insufficient market comparison data
+    </div>
+    <div class="bg-light-gray p-grid mt40">
+      <div class="p-md-3">
+        <div class="mb40 mt20" *ngFor="let metric of totalPanels">
+          <div class="totals-labels roboto-bold" >{{metric?.titleMetric?.label}}
+            <span class="roboto-div">
+            {{ metric?.titleMetric?.format }}{{ metric?.titleMetric?.amount | number:'1.0-0'}}
+          </span>
+          </div>
+          <div *ngIf="document.hasEnoughData">
+            <div *ngFor="let subMetric of metric.subMetrics" class="mt10">
+          <span
+            class="roboto-bold mr15">{{subMetric.label}}</span>{{ subMetric?.format }}{{subMetric?.amount | number:'1.0-0'}}
+            <span class="ml15" [ngClass]="{'font-qbr-green': subMetric?.direction <= 0, 'font-red': subMetric?.direction > 0}">{{ subMetric?.increase | number:'1.0-0'}}%
+             <em *ngIf=" subMetric?.direction > 0" class="fa fa-arrow-up mr10 ml5"></em>
+            <em *ngIf=" subMetric?.direction <= 0" class="fa fa-arrow-down ml5"></em>
+          </span>
+          </div>
+          </div>
+        </div>
 
-    <bd-matter-summary-card *ngIf="summaryData && document.hasEnoughData"
-                            [page]="'Documents'"
-                            [summaryData]="summaryData"
-                            [marketData]="marketData"
-                            [marketRecords]="marketRecords"></bd-matter-summary-card>
-    <div *ngIf="!document.hasEnoughData" class="no-data-div">Benchmarking for this task or document is not available due to insufficient market comparison data
+      </div>
+
+      <div class="p-md-9">
+        <div class="rates-chart pt10 mt20">
+        <div class="exs-panel-title roboto-div mt15 ml15">Rate Benchmarks </div>
+        <div class="mt20" #chartDiv *ngIf="options">
+          <chart (load)="saveInstance($event.context)" [options]="options" ></chart>
+        </div>
+        </div>
+
+      </div>
+      <div class="p-md-3">
+        <div class="mt40 mb40">
+          <div class="roboto-bold p-md-4-title">Top Timekeeper</div>
+          <div>{{document.first_name}} {{document.last_name}} ({{commonServ.capitalize(document.bh_classification)}})</div>
+
+          <div class="roboto-bold p-md-4-title mt20">Top Partner</div>
+          <div>{{document.partner_first_name}} {{document.partner_last_name}} </div>
+          <div class="roboto-bold p-md-4-title mt20"># Partners <span class="roboto-div">{{document.partners}}</span></div>
+          <div class="roboto-bold p-md-4-title mt20"># Associates <span class="roboto-div">{{document.associates}}</span></div>
+
+
+        </div>
+
+      </div>
+      <div class="p-md-9">
+
+      </div>
+
     </div>
 
   </div>
-</div>
+  </mat-dialog-content>
+

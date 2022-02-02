@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -14,7 +14,8 @@ import {MOCK_MARKET_DOCS} from '../../../shared/unit-tests/mock-data/matter-over
 @Component({
   selector: 'bd-matter-documents-overview',
   templateUrl: './matter-documents-overview.component.html',
-  styleUrls: ['../matter-executive-summary.component.scss', './matter-documents-overview.component.scss']
+  styleUrls: ['../matter-executive-summary.component.scss', './matter-documents-overview.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
@@ -90,7 +91,7 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   }
   openDetails(document: IMatterDocument): void {
     const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], document)};
-    const dialogRef = this.dialog.open(MatterDocumentModalComponent, {...modalConfig, disableClose: false });
+    const dialogRef = this.dialog.open(MatterDocumentModalComponent, {...modalConfig, disableClose: false, panelClass: 'custom-dialog-container' });
 
     dialogRef.afterClosed().subscribe(result => {
     });

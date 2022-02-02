@@ -5,7 +5,7 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {barTkPercentOptions, currencyAxisChartOptions, IMatterExecSummary, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../model';
+import {barTkPercentOptions, currencyAxisChartOptions, documentsRatesOptions, IMatterExecSummary, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../model';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -49,8 +49,16 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
       this.marketMetricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.marketData, this.marketRecords);
       this.internalMetricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.internalData, this.internalRecords);
     } else if (this.metricType === MetricCardType.AverageRates) {
-      this.marketMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);
-      this.internalMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.internalData, this.internalRecords);
+      if (this.marketRecords.length > 0) {
+        this.marketMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);
+      } else {
+        this.marketMetricData = [];
+      }
+      if (this.internalRecords.length > 0) {
+        this.internalMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.internalData, this.internalRecords);
+      } else {
+        this.internalMetricData = [];
+      }
     } else if (this.metricType === MetricCardType.TotalHoursWorked) {
       this.marketMetricData = this.matterAnalysisService.formatTotalHours(this.summaryData, this.marketData, this.marketRecords);
       this.internalMetricData = this.matterAnalysisService.formatTotalHours(this.summaryData, this.internalData, this.internalRecords);
