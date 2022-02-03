@@ -68,6 +68,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.setUpChartOptions();
     this.load().subscribe(data => {
+      console.log('data: ', data)
       if (data[0].result) {
         const reportCard = data[0].result;
         if (reportCard && reportCard.group_id) {
@@ -98,6 +99,7 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         this.renderChart();
       }
       this.isLoaded = true;
+      console.log('rightColsCount: ', this.rightColsCount)
     });
   }
 
@@ -113,9 +115,11 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   }
 
   load(): Observable<any> {
-    let params = {};
     if (this.firmId) {
-      params = {clientId: this.userService.currentUser.client_info.id, id: this.firmId};
+      let params = this.filtersService.getCurrentUserCombinedFilters();
+      // params = {clientId: this.userService.currentUser.client_info.id, id: this.firmId};
+      params.id = this.firmId;
+      console.log("params: ", params);
       const response1 = this.httpService.makeGetRequest('getFirmScore', params);
       const response2 = this.httpService.makeGetRequest('getFirmTrends', params);
       return forkJoin([response1, response2]);
@@ -127,11 +131,19 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         this.clientMatterType = this.clientMatterType.replace(regEx, '???!');
         this.clientMatterType = encodeURIComponent(this.clientMatterType);
       }
-      if (this.bodhalaPA === true) {
-        params = {clientId: this.userService.currentUser.client_info.id, bdPracticeAreas: this.clientMatterType};
+      // if (this.bodhalaPA === true) {
+      //   params = {clientId: this.userService.currentUser.client_info.id, bdPracticeAreas: this.clientMatterType};
+      // } else {
+      //   params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
+      // }
+      let params = this.filtersService.getCurrentUserCombinedFilters();
+      console.log("bodhalaPA: ", this.bodhalaPA)
+      if (this.bodhalaPA) {
+        params.bdPA = this.clientMatterType;
       } else {
-        params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
+        params.client_matter_type = this.clientMatterType;
       }
+      console.log("params: ", params);
       const response1 = this.httpService.makeGetRequest('getPracticeAreaScore', params);
       const response2 = this.httpService.makeGetRequest('getPracticeAreaTrends', params);
       this.clientMatterType = decodeURIComponent(this.clientMatterType);
