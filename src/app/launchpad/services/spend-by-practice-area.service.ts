@@ -22,15 +22,20 @@ export class SpendByPracticeAreaService {
     const params = this.filters.getCurrentUserCombinedFilters();
     params.smartPAs = smartPAs;
     return this.http.makeGetRequest('spendByPracticeAreas', params).pipe(
-      map(response => this.processPracticeAreas(response.result))
+      map(response => this.processPracticeAreas(response.result, smartPAs))
     ).toPromise();
   }
 
-  processPracticeAreas(records: Array<IPractice>): Array<IPractice> {
+  processPracticeAreas(records: Array<IPractice>, smartPAs: boolean): Array<IPractice> {
     this.practiceList =  Object.assign([], records);
     for (const rec of records) {
       rec.y = Math.round(rec.total_billed);
       rec.name = rec.practice_area;
+      if (smartPAs) {
+        rec.link_name = rec.practice_area + ' - [Smart]';
+      } else {
+        rec.link_name = null;
+      }
     }
     return this.practiceList.sort(this.util.dynamicSort('-total_billed')).slice(0, config.TOP_RECORDS_NUMBER);
   }

@@ -14,6 +14,7 @@ export interface ITopMatter {
   multiple_partners?: string;
   y: number;
   sum?: number;
+  link_name: string;
 }
 const matterAdditionalOptions = {
   tooltip : {

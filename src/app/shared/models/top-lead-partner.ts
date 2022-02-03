@@ -21,6 +21,7 @@ export interface ITopLeadPartner {
     total_billed: number;
   };
   y: number;
+  link_name: string;
 }
 
 const leadPartnerAdditionalOptions = {

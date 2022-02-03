@@ -17,6 +17,16 @@ export class LinkComponent extends BaseCell implements OnInit, ICell {
   }
 
   onClick(data) {
+    // add ' - [Smart]' to smart PA link in cards to ensure smart PA detail page loads correctly
+    if (data.link_name) {
+      data.practice_area = data.link_name;
+      if (data.seniority) {
+        data.top_practice = data.link_name;
+      }
+      if (data.client_matter_type) {
+        data.client_matter_type = data.link_name;
+      }
+    }
     if (this.column.route) {
       this.router.navigate([this.column.route, data[this.column.route_params]]);
     } else if (this.column.href) {

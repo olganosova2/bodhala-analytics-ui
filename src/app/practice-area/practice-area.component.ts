@@ -66,7 +66,6 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(params => {
       this.clientMatterType = params.get('client_matter_type');
       this.loadPracticeArea();
-      console.log("this.clientMatterType: ", this.clientMatterType)
     });
 
   }
@@ -81,11 +80,8 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
       this.endPoint = 'getPracticeArea';
       params = {client_matter_type: this.clientMatterType};
     }
-    console.log("params: ", params);
-    console.log("this.practiceAreaSetting: ", this.practiceAreaSetting);
     this.pendingRequestPracticeArea = this.httpService.makeGetRequest(this.endPoint, params).subscribe(
       (data: any) => {
-        console.log("data: ", data);
         const practiceAreas = data.result;
         let compString = this.clientMatterType;
         if (this.bodhalaPA === true) {
@@ -96,7 +92,6 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
             if (pa.client_matter_type === compString) {
               this.practiceArea = pa;
               this.commonServ.pageSubtitle = this.clientMatterType;
-              console.log("this.practiceArea: ", this.practiceArea)
             }
           }
         }
