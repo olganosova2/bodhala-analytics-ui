@@ -67,6 +67,7 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
       this.clientMatterType = params.get('client_matter_type');
       this.loadPracticeArea();
     });
+
   }
 
   loadPracticeArea(): void {
@@ -79,7 +80,6 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
       this.endPoint = 'getPracticeArea';
       params = {client_matter_type: this.clientMatterType};
     }
-
     this.pendingRequestPracticeArea = this.httpService.makeGetRequest(this.endPoint, params).subscribe(
       (data: any) => {
         const practiceAreas = data.result;
@@ -105,6 +105,7 @@ export class PracticeAreaComponent implements OnInit, OnDestroy {
     this.topMatters.getMatters();
     this.spendByMonth.getSpendByMonth();
     this.topFirms.getTopFirms();
+    this.scoreTrend.ngOnInit();
     if (this.diversity && this.userService.hasEntitlement('data.analytics.diversity')) {
       this.diversity.getDiversity();
     }

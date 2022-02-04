@@ -33,7 +33,7 @@ export class TopMattersFirmsService {
     const params = this.filters.getCurrentUserCombinedFilters();
     params.smartPAs = smartPAs;
     return this.http.makeGetRequest('getTopMattersAndLeadPartners', params).pipe(
-      map(response => this.processTopMatters(response.result))
+      map(response => this.processTopMatters(response.result, smartPAs))
     ).toPromise();
   }
   fetchFirms() {
@@ -57,7 +57,7 @@ export class TopMattersFirmsService {
     ).toPromise();
   }
 
-  processTopMatters(records: Array<ITopMatter>): Array<ITopMatter> {
+  processTopMatters(records: Array<ITopMatter>, smartPAs: boolean): Array<ITopMatter> {
     this.masterList =  Object.assign([], records);
     const processedRecods = [];
     let savedMatters = localStorage.getItem('updated_matters_' + this.userService.currentUser.id.toString());
@@ -78,6 +78,13 @@ export class TopMattersFirmsService {
         const savedName = savedMatters[rec.id];
         if (savedName !== undefined) {
           rec.name = savedName;
+        }
+      }
+      if (rec.client_matter_type.length > 0) {
+        if (smartPAs) {
+          rec.link_name = rec.client_matter_type + ' - [Smart]';
+        } else {
+          rec.link_name = null;
         }
       }
       const sum = this.filters.includeExpenses ? rec.total_spend + rec.total_expenses + rec.total_afa : rec.total_spend + rec.total_afa;

@@ -2,7 +2,15 @@
     <bd-ie-banner></bd-ie-banner>
     <bd-error-messages></bd-error-messages>
     <div>
-      <lib-bd-filters
+      <lib-bd-filters *ngIf="bodhalaPA"
+        (sendFilters)="refreshData($event)"
+        [pageName]="pageName"
+        [pageType]="pageType"
+        [smartPracticeArea]="practiceArea?.client_matter_type"
+        [excludeFilters]="excludeFilters"
+        [collapsed]="appStateService.layout.isCollapsed"
+      ></lib-bd-filters>
+      <lib-bd-filters *ngIf="!bodhalaPA"
         (sendFilters)="refreshData($event)"
         [pageName]="pageName"
         [pageType]="pageType"

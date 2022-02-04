@@ -44,7 +44,7 @@ describe('TopMattersFirmsService', () => {
   }));
   it('TopMattersFirmsService should process matters', inject([TopMattersFirmsService], (service: TopMattersFirmsService) => {
     const matters = TOP_MATTERS.result as Array<ITopMatter>;
-    service.processTopMatters(matters);
+    service.processTopMatters(matters, false);
     expect(matters.length).toBe(20);
   }));
   it('TopMattersFirmsService should process firms', inject([TopMattersFirmsService], (service: TopMattersFirmsService) => {
@@ -60,7 +60,7 @@ describe('TopMattersFirmsService', () => {
   it('TopMattersFirmsService should process matters with IncludeExpenses = true', inject([TopMattersFirmsService], (service: TopMattersFirmsService) => {
     const matters = TOP_MATTERS.result as Array<ITopMatter>;
     service.filters.includeExpenses = true;
-    service.processTopMatters(matters);
+    service.processTopMatters(matters, false);
     expect(matters.length).toBe(20);
   }));
   it('TopMattersFirmsService should process Active Spend with IncludeExpenses = true', inject([TopMattersFirmsService], (service: TopMattersFirmsService) => {
