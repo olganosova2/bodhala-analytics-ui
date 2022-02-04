@@ -75,8 +75,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/qbrs/view', component: QbrDeckComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/edit/:reportId', component: QbrCreationComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/dashboard', component: QbrDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'analytics-ui/rates-benchmarking', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'analytics-ui/rates-benchmarking/view/:id', component: ViewRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking/view/:id', component: ViewRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   {path: 'analytics-ui/matter-executive-summary', component: MatterExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},

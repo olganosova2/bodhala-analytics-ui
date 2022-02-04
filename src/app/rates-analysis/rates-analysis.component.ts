@@ -243,7 +243,7 @@ export class RatesAnalysisComponent implements OnInit {
 
   view(row: any): void {
     console.log("row: ", row);
-    this.router.navigate(['/analytics-ui/rates-benchmarking/view/', row.data.id]);
+    this.router.navigate(['/analytics-ui/rate-benchmarking/view/', row.data.id]);
   }
 
 

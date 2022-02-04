@@ -285,7 +285,8 @@ export class RateAnalysisChartComponent implements OnInit {
 
   getBarColor(): string {
     let result = '';
-    if (this.topBarDollars / this.marketAverageUpperRange >= 1.2) {
+    // should it be if either is > 20%
+    if ((this.topBarDollars / this.marketAverageUpperRange >= 1.2)) {
       result = '#FE3F56';
     } else if ((this.topBarDollars / this.marketAverageUpperRange) < 1.2 && this.topBarDollars > this.marketAverageUpperRange) {
       result = '#FF8B4A';
