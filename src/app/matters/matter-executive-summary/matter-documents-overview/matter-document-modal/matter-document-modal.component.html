@@ -9,7 +9,7 @@
     <div class="clear-both"></div>
   </div>
   <mat-dialog-content>
-  <div class="modal-conent">
+  <div >
     <div class="ml20">
       <bd-matter-summary-card *ngIf="summaryData && document.hasEnoughData"
                               [page]="'Documents'"
@@ -20,29 +20,53 @@
     <div *ngIf="!document.hasEnoughData" class="no-data-div">Benchmarking for this task or document is not available due
       to insufficient market comparison data
     </div>
-    <div class="bg-light-gray p-grid mt40">
-      <div class="p-md-3">
+    <div class="bg-light-gray p-grid mt40" *ngIf="this.summaryData">
+      <div class="p-md-4">
         <div class="mb40 mt20" *ngFor="let metric of totalPanels">
           <div class="totals-labels roboto-bold" >{{metric?.titleMetric?.label}}
             <span class="roboto-div">
             {{ metric?.titleMetric?.format }}{{ metric?.titleMetric?.amount | number:'1.0-0'}}
           </span>
           </div>
-          <div *ngIf="document.hasEnoughData">
-            <div *ngFor="let subMetric of metric.subMetrics" class="mt10">
-          <span
-            class="roboto-bold mr15">{{subMetric.label}}</span>{{ subMetric?.format }}{{subMetric?.amount | number:'1.0-0'}}
-            <span class="ml15" [ngClass]="{'font-qbr-green': subMetric?.direction <= 0, 'font-red': subMetric?.direction > 0}">{{ subMetric?.increase | number:'1.0-0'}}%
-             <em *ngIf=" subMetric?.direction > 0" class="fa fa-arrow-up mr10 ml5"></em>
-            <em *ngIf=" subMetric?.direction <= 0" class="fa fa-arrow-down ml5"></em>
-          </span>
+          <div *ngIf="document.hasEnoughData" class="mt10 p-grid full-width">
+            <ng-container *ngFor="let subMetric of metric.subMetrics;let i = index" class="mt10">
+              <ng-container *ngIf = "(i ===0 && internalRecords.length > 0) || (i === 1 && marketRecords.length > 0)">
+                <div class="p-col-3 roboto-bold ">{{subMetric.label}}</div>
+                <div class="p-col-3 left-border-gray no-left-padding">
+                  <span class="metric-bar" [ngClass]="{'metric-bar-yellow': subMetric.label === 'Internal'}" [ngStyle]="{'width': subMetric.size + '%'}"></span></div>
+                <div class="p-col-6 no-right-padding">
+                {{ subMetric?.format }}{{subMetric?.amount | number:'1.0-0'}}
+                  <span class="ml5" [ngClass]="{'font-qbr-green': subMetric?.direction <= 0, 'font-red': subMetric?.direction > 0}">{{ subMetric?.increase | number:'1.0-0'}}%
+                   <em *ngIf=" subMetric?.direction > 0" class="fa fa-arrow-up mr10 ml5"></em>
+                    <em *ngIf=" subMetric?.direction <= 0" class="fa fa-arrow-down ml5"></em>
+                </span>
+                </div>
+              </ng-container>
+          </ng-container>
           </div>
+        </div>
+
+        <div class="mt40 mb40">
+          <div class="roboto-bold p-md-4-title">Top Timekeeper</div>
+          <div>{{document.first_name}} {{document.last_name}} ({{commonServ.capitalize(document.bh_classification)}})</div>
+
+          <div class="roboto-bold p-md-4-title mt20">Top Partner</div>
+          <div>{{document.partner_first_name}} {{document.partner_last_name}} </div>
+          <div class="roboto-bold p-md-4-title mt20"># Partners
+            <span class="roboto-div" *ngIf="document.partners">{{document.partners}}</span>
+            <span class="roboto-div" *ngIf="!document.partners">0</span>
           </div>
+          <div class="roboto-bold p-md-4-title mt20"># Associates
+            <span class="roboto-div" *ngIf="document.associates">{{document.associates}}</span>
+            <span class="roboto-div" *ngIf="!document.associates">0</span>
+          </div>
+
+
         </div>
 
       </div>
 
-      <div class="p-md-9">
+      <div class="p-md-8">
         <div class="rates-chart pt10 mt20">
         <div class="exs-panel-title roboto-div mt15 ml15">Rate Benchmarks </div>
         <div class="mt20" #chartDiv *ngIf="options">
@@ -50,25 +74,14 @@
         </div>
         </div>
 
-      </div>
-      <div class="p-md-3">
-        <div class="mt40 mb40">
-          <div class="roboto-bold p-md-4-title">Top Timekeeper</div>
-          <div>{{document.first_name}} {{document.last_name}} ({{commonServ.capitalize(document.bh_classification)}})</div>
-
-          <div class="roboto-bold p-md-4-title mt20">Top Partner</div>
-          <div>{{document.partner_first_name}} {{document.partner_last_name}} </div>
-          <div class="roboto-bold p-md-4-title mt20"># Partners <span class="roboto-div">{{document.partners}}</span></div>
-          <div class="roboto-bold p-md-4-title mt20"># Associates <span class="roboto-div">{{document.associates}}</span></div>
-
-
+        <div class="rates-chart pt10 mt20">
+          <div class="exs-panel-title roboto-div mt15 ml15">Staffing Benchmarks</div>
+          <div class="mt20" #chartDivHr *ngIf="optionsHr">
+            <chart (load)="saveInstanceHours($event.context)" [options]="optionsHr" ></chart>
+          </div>
         </div>
 
       </div>
-      <div class="p-md-9">
-
-      </div>
-
     </div>
 
   </div>

@@ -1,7 +1,7 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
 const groupDistance = window.screen.width > 1440 ? 0.4 : window.screen.width > 1200 ? 0.35 : 0.25;
 
-export const HARDCODED_MATTER_ID = '087260/834'; //  '100340'; // '087260/818'; // '373046-00021'; // '10001320';
+export const HARDCODED_MATTER_ID = '116332.0018'; // '087260/834'; //  '100340'; // '087260/818'; // '373046-00021'; // '10001320';
 export const HARDCODED_MARKET_MATTERS = [
   '087260/785',
   '087260/818',
@@ -66,6 +66,7 @@ export interface IMatterTotalsMetric {
   direction?: number;
   format?: string;
   icon?: string;
+  size?: number;
 }
 
 export interface IMatterTotalsPanel {
@@ -152,6 +153,10 @@ export interface IMetricDisplayData {
   increase?: number;
   direction?: number;
   grade?: MetricGrade;
+}
+export interface IInternalMatter {
+  sim_client_id;
+  sim_matter_id;
 }
 
 export const matterColumnChartOptions = {
@@ -261,7 +266,7 @@ export const documentsRatesOptions =
       }
 
     }
-  }
+  };
 export const barTkPercentOptions = {
   chart: {
     type: 'bar'

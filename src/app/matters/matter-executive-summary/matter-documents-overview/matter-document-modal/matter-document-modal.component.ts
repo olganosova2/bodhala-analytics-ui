@@ -30,11 +30,15 @@ export class MatterDocumentModalComponent implements OnInit {
   chartHr: any;
   marketMetricData: Array<IMetricDisplayData> = [];
   internalMetricData: Array<IMetricDisplayData> = [];
+  marketMetricDataHr: Array<IMetricDisplayData> = [];
+  internalMetricDataHr: Array<IMetricDisplayData> = [];
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
+  @ViewChild('chartDivHr') chartDivHr: ElementRef<HTMLElement>;
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    this.resizeChart();
+    this.resizeChart(this.chart, this.chartDiv, 0);
+    this.resizeChart(this.chartHr, this.chartDivHr, 1);
   }
 
   constructor(
@@ -81,18 +85,16 @@ export class MatterDocumentModalComponent implements OnInit {
             this.marketRecords.push(this.matterAnalysisService.convertMarketDocToMatter(rec));
           }
           this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
-          const internalRecords = []; // data.result.internal_data || [];
+          const internalRecords = data.result.internal_data || [];
           for (const rec of internalRecords) {
             this.internalRecords.push(this.matterAnalysisService.convertMarketDocToMatter(rec));
           }
-          // this.internalRecords = []; // TEST ONLY
-          if (this.internalRecords && this.internalRecords.length > 0) {
-            this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
-          }
+          this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
           const panels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData, this.internalData);
           if (panels.length >= 2) {
             this.totalPanels = panels.slice(0, 2);
           }
+          this.matterAnalysisService.calculateBarSize(this.totalPanels);
           this.loadChartsConfig();
         }
       }
@@ -106,55 +108,71 @@ export class MatterDocumentModalComponent implements OnInit {
     } else {
       this.internalMetricData = [];
     }
+    this.marketMetricDataHr = this.matterAnalysisService.formatPercentOfTkWorked(this.summaryData, this.marketData, this.marketRecords);
+    this.internalMetricDataHr = this.matterAnalysisService.formatPercentOfTkWorked(this.summaryData, this.internalData, this.internalRecords);
     this.setUpChartOptions();
   }
   setUpChartOptions(): void {
     const defaultRateOptions = Object.assign({}, documentsRatesOptions);
     defaultRateOptions.series = [];
+    const defaultTkChartOptions = Object.assign({}, barTkPercentOptions);
+    defaultTkChartOptions.xAxis.categories = ['This Matter'];
+
     defaultRateOptions.series.push({name: 'Actual', color: '#000000', data: this.marketMetricData.map(e => e.actual)});
     if (this.internalRecords.length > 0 && this.document.hasEnoughData) {
       defaultRateOptions.series.push({name: 'Internal', color: '#FFC327', data: this.internalMetricData.map(e => e.market)});
+      defaultTkChartOptions.xAxis.categories.push('Internal');
     }
     if (this.marketRecords.length > 0 && this.document.hasEnoughData) {
       defaultRateOptions.series.push({ name: 'Market', color: '#00D1FF', data: this.marketMetricData.map(e => e.market)});
+      defaultTkChartOptions.xAxis.categories.push('Market');
     }
     defaultRateOptions.xAxis.categories = this.marketMetricData.map(e => e.chartLabel);
     if (this.internalRecords.length === 0) {
       // defaultRateOptions.plotOptions.series.groupPadding = defaultRateOptions.plotOptions.series.groupPadding * 2;
     }
     this.options = defaultRateOptions;
+
+    defaultTkChartOptions.series[2].data = this.getPercentOfHoursWorkedChartData(this.marketMetricDataHr, this.internalMetricDataHr, 0);
+    defaultTkChartOptions.series[1].data = this.getPercentOfHoursWorkedChartData(this.marketMetricDataHr, this.internalMetricDataHr, 1);
+    defaultTkChartOptions.series[0].data = this.getPercentOfHoursWorkedChartData(this.marketMetricDataHr, this.internalMetricDataHr, 2);
+    this.optionsHr = defaultTkChartOptions;
   }
 
   saveInstance(chartInstance): void {
     this.chart = chartInstance;
     setTimeout(() => {
-      this.resizeChart();
+      this.resizeChart(this.chart, this.chartDiv, 0);
     });
   }
 
   saveInstanceHours(chartInstance): void {
     this.chartHr = chartInstance;
-    this.chartHr.series[2].setData(this.getPercentOfHoursWorkedChartData(this.marketMetricData, this.internalMetricData, 0));
-    this.chartHr.series[1].setData(this.getPercentOfHoursWorkedChartData(this.marketMetricData, this.internalMetricData, 1));
-    this.chartHr.series[0].setData(this.getPercentOfHoursWorkedChartData(this.marketMetricData, this.internalMetricData, 2));
+    setTimeout(() => {
+      this.resizeChart(this.chartHr, this.chartDivHr, 1);
+    });
   }
 
   getPercentOfHoursWorkedChartData(marketData: Array<IMetricDisplayData>, internalData: Array<IMetricDisplayData>, index: number): Array<number> {
     const result = [];
     result.push(marketData[index].actual);
-    result.push(internalData[index].market);
-    result.push(marketData[index].market);
+    if (this.internalRecords.length > 0 && this.document.hasEnoughData) {
+      result.push(internalData[index].market);
+    }
+    if (this.marketRecords.length > 0 && this.document.hasEnoughData) {
+      result.push(marketData[index].market);
+    }
     return result;
   }
 
-  resizeChart(): void {
-    const width = this.chartDiv.nativeElement.offsetWidth - 10;
-    const height = 400;
+  resizeChart(chart: any, div: any, index: number): void {
+    const width = div.nativeElement.offsetWidth - 10;
+    const height = index ? 250 : 400;
 
-    if (!this.chart || width <= 0) {
+    if (!chart || width <= 0) {
       return;
     }
-    this.chart.setSize(width, height, false);
+    chart.setSize(width, height, false);
   }
 
 }

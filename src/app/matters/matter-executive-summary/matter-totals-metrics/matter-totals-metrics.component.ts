@@ -60,6 +60,9 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data.result && data.result.ade_data) {
           this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
+          if (!this.summaryData) {
+            return;
+          }
           this.matterAnalysisService.calculateSingleMatterData(this.summaryData);
           this.marketRecords =  data.result.market_data || [];
           this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);

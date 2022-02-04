@@ -2,13 +2,14 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {FiltersService} from '../../shared/services/filters.service';
+
 import {MatDialog} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';
-import {HARDCODED_MATTER_ID, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from './model';
+import {HARDCODED_MATTER_ID, IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from './model';
 import {MatterAnalysisService} from './matter-analysis.service';
 import {IInsight} from '../../admin/insights/models';
 import {MatterTotalsMetricsComponent} from './matter-totals-metrics/matter-totals-metrics.component';
+import {FiltersService} from 'bodhala-ui-elements';
 
 @Component({
   selector: 'bd-matter-executive-summary',
@@ -26,6 +27,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   insightText: string;
+  internalMatters: Array<IInternalMatter> = [];
   insightExpanded: boolean = false;
   documents: Array<IMatterDocument> = [];
 
@@ -36,7 +38,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
               public appStateService: AppStateService,
               public userService: UserService,
               private httpService: HttpService,
-              public filtersService: FiltersService,
+              public elemFiltersService: FiltersService,
               public router: Router,
               public dialog: MatDialog,
               public utilService: UtilService,
@@ -77,6 +79,18 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   toggleInsight(toExpand: boolean): void {
     this.insightExpanded = toExpand;
+  }
+  viewMatters(): void {
+    this.elemFiltersService.clearFilters();
+    const params = {clientId: this.userService.currentUser.client_info.id};
+    this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
+      (data: any) => {
+        if (data) {
+          const maxDate = data.result.max;
+          const minDate = data.result.min;
+        }
+      }
+    );
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
