@@ -27,7 +27,7 @@ export class LedesImportsComponent implements OnInit {
                                {label: 'Last 2 Weeks', value: 14},
                                {label: 'Last Month', value: 30},
                                {label: 'Last 3 Months', value: 90}];
-  selectedDateRange: number = 7;
+  selectedDateRange: number = 1;
   dropdownWidth: any = {width: '325px'};
   imports: Array<ILedesImport> = [];
   paginationPageSize: number = 10;
@@ -146,6 +146,9 @@ export class LedesImportsComponent implements OnInit {
   processData(): void {
     this.imports = this.groupBy(this.imports);
     for (const rec of this.imports) {
+      if (rec.client_name === null || rec.client_name === undefined) {
+        rec.client_name = rec.client;
+      }
       rec.num_imported_uploads = 0;
       rec.num_failed_uploads = 0;
       rec.num_imported_ingests = 0;
@@ -153,7 +156,7 @@ export class LedesImportsComponent implements OnInit {
       rec.data = rec.data.sort(this.utilService.dynamicSort('-created_at'));
       for (const d of rec.data) {
         d.file_tooltip = 'Click to view import details';
-        d.rerun_tooltip = 'If an upload had any issues, click here to resolve them and re-run';
+        d.rerun_tooltip = 'If the upload failed due to the firm not being found, click here to resolve the issue and re-run';
         d.created_at = this.datePipe.transform(d.created_at, 'short');
         if (d.adu !== null) {
           d.firm_name = d.adu.searched_firm.name;
@@ -173,6 +176,10 @@ export class LedesImportsComponent implements OnInit {
         if (d.rejected_reason === '') {
           d.rejected_reason = 'N/A';
         }
+        if (d.client_name === null || d.client_name === undefined) {
+          d.rerun_tooltip = 'Unable to re-run upload currently due to the client not being found';
+          d.client_name = d.client;
+        }
       }
 
     }
@@ -189,7 +196,12 @@ export class LedesImportsComponent implements OnInit {
     return value;
   }
   reRunCellRenderer(params: any) {
-    const value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-equalizer"></em></button>';
+    let value = '';
+    if (params.data.client_id) {
+      value = '<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-equalizer"></em></button>';
+    } else {
+      value = '<button mat-flat-button type="button" disabled="true" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-equalizer"></em></button>';
+    }
     return value;
   }
 

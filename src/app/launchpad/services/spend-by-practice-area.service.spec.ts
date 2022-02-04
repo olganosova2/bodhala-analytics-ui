@@ -32,7 +32,7 @@ describe('SpendByPracticeAreaService', () => {
 
   it('SpendByPracticeAreaService should process partners', inject([SpendByPracticeAreaService], (service: SpendByPracticeAreaService) => {
     const pas = TOP_PRACTICE_AREAS.result as unknown as Array<IPractice>;
-    const processed = service.processPracticeAreas(pas);
+    const processed = service.processPracticeAreas(pas, false);
     expect(processed.length).toBe(3);
     expect(processed[0].name).toBe('Corporate Counsel > Transactions');
     expect(processed[0].y).toBe(107076);

@@ -91,6 +91,7 @@ export class FirmComponent implements OnInit, OnDestroy {
     this.topTKs.getTimekeepers();
     this.topMatters.getMatters();
     this.spendByMonth.getSpendByMonth();
+    this.scoreAndTrend.ngOnInit();
     if (this.diversity && this.userService.hasEntitlement('data.analytics.diversity')) {
       this.diversity.getDiversity();
     }

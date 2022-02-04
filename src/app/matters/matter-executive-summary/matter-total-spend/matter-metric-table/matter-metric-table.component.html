@@ -24,7 +24,11 @@
     <tr>
       <td class="roboto-bold">Delta</td>
       <td *ngFor="let tk of metricData">
-        <span class="mr5" *ngIf="metricType !== 'PercentOfHoursWorked'" [ngClass]=" {'font-red': tk.direction > 0, 'font-qbr-green': tk.direction < 0, 'font-black': metricType === 'AverageTkOnMatter'}">
+        <span class="mr5" *ngIf="metricType !== 'PercentOfHoursWorked'"
+              [ngClass]=" {'font-qbr-red': tk.grade === 'POOR',
+              'font-qbr-green': tk.grade === 'GOOD',
+              'font-qbr-orange': tk.grade === 'FAIR',
+              'font-black': metricType === 'AverageTkOnMatter'}">
           <span *ngIf = "tk.direction > 0 && tk.delta">+</span>
           <span *ngIf = "tk.direction < 0 && tk.delta">-</span>
            <span><span *ngIf="metricType === 'TotalSpend' || metricType === 'AverageRates'">$</span>{{tk.delta | number:'1.0-0'}}
