@@ -57,6 +57,8 @@ export class RateAnalysisChartComponent implements OnInit {
     // console.log("RATETYPE: ", this.rateType)
     // console.log("internalData: ", this.internalData)
     // console.log("marketData: ", this.marketAverageData)
+
+    // need to uncomment this before pushing
     // if (this.internalData.num_firms < 3) {
     //   this.validInternalBM = false;
     //   this.marketAverageHeight = '84px';
@@ -285,7 +287,7 @@ export class RateAnalysisChartComponent implements OnInit {
 
   getBarColor(): string {
     let result = '';
-    // should it be if either is > 20%
+    // should it be if either is > 20%?
     if ((this.topBarDollars / this.marketAverageUpperRange >= 1.2)) {
       result = '#FE3F56';
     } else if ((this.topBarDollars / this.marketAverageUpperRange) < 1.2 && this.topBarDollars > this.marketAverageUpperRange) {
