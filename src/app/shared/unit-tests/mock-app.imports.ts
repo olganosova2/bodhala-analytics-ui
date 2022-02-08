@@ -152,6 +152,7 @@ import {MatterTotalsMetricsComponent} from '../../matters/matter-executive-summa
 import {MatterStaffingComponent} from '../../matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 import {MatterSummaryCardComponent} from '../../matters/matter-executive-summary/matter-summary-card/matter-summary-card.component';
 import {MatterMetricTableComponent} from '../../matters/matter-executive-summary/matter-total-spend/matter-metric-table/matter-metric-table.component';
+import {InternalMattersOverlayComponent} from '../../matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
 
 
 
@@ -297,7 +298,8 @@ export const DECLARATIONS = [
   MatterTotalsMetricsComponent,
   MatterStaffingComponent,
   MatterSummaryCardComponent,
-  MatterMetricTableComponent
+  MatterMetricTableComponent,
+  InternalMattersOverlayComponent
 ];
 
 export const PROVIDERS = [

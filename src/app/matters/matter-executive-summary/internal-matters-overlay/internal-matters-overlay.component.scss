@@ -1,0 +1,14 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+.matters-div {
+  width: 400px;
+  padding: 10px;
+}
+.totals-badge-gray {
+  background-color: $gray-lighter;
+  color: $body-color;
+}
+.totals-badge-black {
+  background-color: $body-color;
+  width: 100%;
+}

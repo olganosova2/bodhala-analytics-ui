@@ -1,5 +1,13 @@
 <div class="exs-div" id="matterAnalysis">
-  <div><span class="roboto-bold">Matter Staffing Analysis</span> <span class="ml5 font-gray">Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></span></div>
+  <div class="justify-between mb20">
+  <div><span class="roboto-bold">Matter Staffing Analysis</span>
+    <span class="ml5 font-gray">Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}
+    </span></span>
+  </div>
+  <div *ngIf="internalMatters.length > 0">
+      <bd-internal-matters-overlay [matterId]="matterId" [internalMatters]="internalMatters"></bd-internal-matters-overlay>
+    </div>
+  </div>
   <bd-matter-title-bar [matterId]="matterId" [firmId]="firmId" [title]="'Matter Overview'" [index]="0" (firmSelected)="selectFirm($event)"
   (singleFirmLoaded)="getMatterInsight($event)"></bd-matter-title-bar>
 <div class="insights-bar justify-start mt30" *ngIf="insightText">
@@ -21,31 +29,7 @@
                           [marketData]="marketData"
                           [marketRecords]="marketRecords"></bd-matter-summary-card>
   <bd-matter-totals-metrics [firmId]="firmId" [matterId]="matterId" (dataLoaded)="assignData($event)" #totalMetrics></bd-matter-totals-metrics>
-  <div class="panel-wrapper mt20">
-    <div class="justify-between">
-      <div class="exs-panel-title">Top Tasks / Documents</div>
-      <div class="valign-middle pointer-hand mr30" (click)="goToViewDocs()">View All  <i class="fa fa-angle-right ml10"></i></div>
-    </div>
-    <div class="mt20" *ngIf="documents.length === 0">No documents found.</div>
-    <table class="full-width" *ngIf="documents.length > 0">
-      <thead>
-      <tr class="roboto-bold">
-        <th>Document Type</th>
-        <th>Total Cost</th>
-        <th># Hours Worked</th>
-        <th>% Total Hours</th>
-      </tr>
-      </thead>
-      <tr *ngFor="let doc of documents">
-        <td>{{doc.canonical}}</td>
-        <td>${{doc.total_cost | number:'1.0-0'}}</td>
-        <td>{{doc.total_hours | number:'1.1-1'}}</td>
-        <td>{{doc.total_hours / (doc.total_doc_hours_all || 1) * 100 | number:'1.1-1'}}%</td>
-
-      </tr>
-
-    </table>
-  </div>
+  <bd-matter-documents [numRecords]="3" [matterId]="matterId" [page]="'Overview'"></bd-matter-documents>
   <bd-matter-total-spend *ngIf="summaryData"
                          [page]="'Overview'"
                          [summaryData]="summaryData"

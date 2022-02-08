@@ -1,6 +1,11 @@
 <div class="exs-div ml20" id="matterAnalysis">
+  <div class="justify-between mb20">
   <div><span class="roboto-bold">Matter Staffing Analysis</span> <span class="ml5 font-gray">Matter: <span *ngIf="summaryData?.matter_name">{{summaryData?.matter_name}}</span></span></div>
 
+    <div>
+      <bd-internal-matters-overlay [matterId]="matterId" [internalMatters]="internalMatters"></bd-internal-matters-overlay>
+    </div>
+  </div>
   <bd-matter-title-bar [matterId]="matterId" [title]="'Staffing & Rate Analysis'" [index]="1" (firmSelected)="selectFirm($event)"></bd-matter-title-bar>
   <div class="position-relative">
     <div *ngFor="let metric of metrics" class="mt40">
