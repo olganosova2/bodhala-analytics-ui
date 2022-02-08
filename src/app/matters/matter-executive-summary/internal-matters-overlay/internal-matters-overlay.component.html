@@ -1,0 +1,11 @@
+<span class="totals-badge  mr10 pointer-hand text-underline totals-badge-gray" #btnOverlayOpener
+      (click)="op3.toggle($event);getMatterNames()">View Internal Comparison Matters</span>
+<p-overlayPanel  [dismissable]="true" [showTransitionOptions]="'0ms'" [hideTransitionOptions]="'0ms'" #op3>
+  <ng-template pTemplate>
+    <div *ngIf="internalMatters.length === 0">No Internal Matters</div>
+    <div class="matters-div" *ngIf="internalMatters.length > 0">
+      <div class="href-link-primary" *ngFor="let matter of matters" (click)="goToMatter(matter.id)">{{matter.name}} ({{matter.id}})</div>
+      <span class="totals-badge  mt20 pointer-hand totals-badge-black" (click)="viewMatters(true, null)">View All</span>
+    </div>
+  </ng-template>
+</p-overlayPanel>

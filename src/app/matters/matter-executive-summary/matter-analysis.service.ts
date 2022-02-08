@@ -258,4 +258,11 @@ export class MatterAnalysisService {
     }
     return result;
   }
+  buildMattersForFilter(matters: Array<string>): any {
+    const result = [];
+    for (const matter of matters) {
+      result.push({ id: matter, name: matter, sortField: matter});
+    }
+    return result;
+  }
 }

@@ -119,6 +119,10 @@ export interface IMetricDisplayData {
   direction?: number;
   grade?: MetricGrade;
 }
+export interface IInternalMatter {
+  sim_client_id;
+  sim_matter_id;
+}
 
 export const matterColumnChartOptions = {
   chart: {

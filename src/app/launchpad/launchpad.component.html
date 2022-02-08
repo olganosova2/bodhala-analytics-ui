@@ -16,6 +16,7 @@
       [excludeFilters]="excludeFilters"
     ></lib-bd-filters>
   </div>
+
   <div #insights style="display: block">
     <bd-insights (insightsLoaded)="onCardLoaded()" #insights></bd-insights>
   </div>
@@ -34,6 +35,7 @@
                  [ngStyle]="{'grid-column': 'span ' + card.span}">
         </bd-card>
       </div>
+      <a [routerLink]="['/analytics-ui/matter-executive-summary']">0</a>
     </mat-tab>
 
     <mat-tab label="Executive Summary">
