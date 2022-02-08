@@ -329,7 +329,7 @@ highcharts.setOptions({
     MatterMetricTableComponent,
     MatterDocumentsComponent,
     MatterDocumentsOverviewComponent,
-    MatterDocumentModalComponent
+    MatterDocumentModalComponent,
     MatterMetricTableComponent,
     InternalMattersOverlayComponent
   ],
