@@ -74,7 +74,8 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
             marketData: this.marketData,
             marketRecords: this.marketRecords,
             internalData: this.internalData,
-            internalRecords: this.internalRecords
+            internalRecords: this.internalRecords,
+            internalMatters: data.result.internal_matters
           };
           this.isLoaded = true;
           this.dataLoaded.emit(emitted);

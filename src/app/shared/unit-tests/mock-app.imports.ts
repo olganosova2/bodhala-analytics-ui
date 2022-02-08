@@ -155,6 +155,7 @@ import {MatterMetricTableComponent} from '../../matters/matter-executive-summary
 import {MatterDocumentsComponent} from '../../matters/matter-executive-summary/matter-documents/matter-documents.component';
 import {MatterDocumentsOverviewComponent} from '../../matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
 import {MatterDocumentModalComponent} from '../../matters/matter-executive-summary/matter-documents-overview/matter-document-modal/matter-document-modal.component';
+import {InternalMattersOverlayComponent} from '../../matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
 
 
 
@@ -304,6 +305,8 @@ export const DECLARATIONS = [
   MatterDocumentsOverviewComponent,
   MatterDocumentsComponent,
   MatterDocumentModalComponent
+  MatterMetricTableComponent,
+  InternalMattersOverlayComponent
 ];
 
 export const PROVIDERS = [
