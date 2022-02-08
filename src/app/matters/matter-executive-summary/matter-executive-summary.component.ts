@@ -8,7 +8,6 @@ import {Subscription} from 'rxjs';
 import {HARDCODED_MATTER_ID, IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from './model';
 import {MatterAnalysisService} from './matter-analysis.service';
 import {IInsight} from '../../admin/insights/models';
-import {FiltersService, LeftSideBarComponent} from 'bodhala-ui-elements';
 import {MatterTotalsMetricsComponent} from './matter-totals-metrics/matter-totals-metrics.component';
 import {FiltersService} from 'bodhala-ui-elements';
 import * as config from '../../shared/services/config';
@@ -31,7 +30,6 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   marketRecords: Array<IMatterExecSummary> = [];
   internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
-  internalMatters: Array<IInternalMatter> = [];
   insightText: string;
   internalMatters: Array<IInternalMatter> = [];
   insightExpanded: boolean = false;

@@ -5,7 +5,7 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from '../model';
+import {IInternalMatter, IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from '../model';
 import {Subscription} from 'rxjs';
 import {SAVINGS_CALCULATOR_CONFIG} from '../../../shared/services/config';
 import {MatterDocumentModalComponent} from './matter-document-modal/matter-document-modal.component';
@@ -21,6 +21,7 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   documents: Array<IMatterDocument> = [];
   marketData: Array<IMarketDocumentData> = [];
+  internalMatters: Array<IInternalMatter> = [];
   matterId: string;
   matterName: string;
   totalRecordsDocs: number;
