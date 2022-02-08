@@ -71,7 +71,6 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
     this.viewMatters(false, href);
   }
   viewMatters(viewAll: boolean, url: string): void {
-    this.elemFiltersService.clearFilters();
     const params = {clientId: this.userService.currentUser.client_info.id};
     this.pendingRequest = this.httpService.makeGetRequest('getDateRange', params).subscribe(
       (data: any) => {
