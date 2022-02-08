@@ -125,11 +125,11 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
             });
           } else {
             setTimeout(() => {
-           // window.location.href = '/#/app/client-dashboard/matter';
-           window.open(
-                '/#/app/client-dashboard/matter',
-                '_blank'
-              );
+           window.location.href = '/#/app/client-dashboard/matter';
+           // window.open(
+           //      '/#/app/client-dashboard/matter',
+           //      '_blank'
+           //    );
             });
           }
         }
