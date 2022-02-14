@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {HARDCODED_MARKET_MATTERS, IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, MetricCardType} from '../model';
+import {IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, MetricCardType} from '../model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -28,7 +28,7 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
   insightExpanded: boolean = false;
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
-  marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
+  marketMatters: Array<string> =  [];
   metrics: Array<string> = [];
   isLoaded: boolean = false;
   constructor(private route: ActivatedRoute,
