@@ -2,19 +2,6 @@ import {baseColumnChartOptions} from '../../shared/models/base-chart';
 const groupDistance = window.screen.width > 1440 ? 0.4 : window.screen.width > 1200 ? 0.35 : 0.25;
 
 export const HARDCODED_MATTER_ID = '087260/818'; // '149945'; //   '087260/834'; //   '373046-00021'; // '10001320';
-export const HARDCODED_MARKET_MATTERS = [
-  '087260/785',
-  '087260/818',
-  '087260/843',
-  '087260/101*',
-  '087260/729',
-  '087260/809',
-  '087260/816',
-  '087260/834',
-  '087260/821',
-  '087260/844'
-];
-
 export const RECORDS_NUMBER_THRESHOLD = 2;
 
 export enum MetricCardType {

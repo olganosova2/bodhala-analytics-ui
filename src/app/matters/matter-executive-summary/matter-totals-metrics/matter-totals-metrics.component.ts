@@ -6,7 +6,7 @@ import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
 import {Subscription} from 'rxjs';
-import {HARDCODED_MARKET_MATTERS, IMatterExecSummary, IMatterTotalsPanel} from '../model';
+import {IMatterExecSummary, IMatterTotalsPanel} from '../model';
 
 @Component({
   selector: 'bd-matter-totals-metrics',
@@ -21,7 +21,7 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
   marketRecords: Array<IMatterExecSummary> = [];
   internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
-  marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
+  marketMatters: Array<string> =  [];
   @Input() clientId: string;
   @Input() matterId: string;
   @Input() firmId: number;
