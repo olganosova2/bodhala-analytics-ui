@@ -26,6 +26,7 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   matterName: string;
   totalRecordsDocs: number;
   numRecords: number = 10;
+  isLoaded: boolean = false;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -62,9 +63,12 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
     );
   }
   getDocuments(): void {
-    const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id, limit: this.numRecords, add_activity: true};
+    this.isLoaded = false;
+    const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id, limit: this.numRecords, add_activity: false};
+    // const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id, limit: this.numRecords};
     this.pendingRequest = this.httpService.makeGetRequest('getMatterDocuments', params).subscribe(
       (data: any) => {
+        this.isLoaded = true;
         this.documents = (data.result || []);
         if (this.documents.length > 0) {
           this.getMarketData(this.documents);
@@ -84,7 +88,8 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
     // this.marketData = MOCK_MARKET_DOCS;
     this.pendingRequest = this.httpService.makePostRequest('getMatterDocsMarketData', params).subscribe(
       (data: any) => {
-        this.marketData = (data.result || []);
+        this.marketData = (data.result.documents || []);
+        this.internalMatters = data.result.internal_matters || [];
         this.matterAnalysisService.getDocumentLandingRatings(documents, this.marketData);
       }
     );

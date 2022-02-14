@@ -1,6 +1,10 @@
 <div class="exs-div ml20" id="matterAnalysis">
+  <div class="justify-between mb20">
   <div><span class="roboto-bold">Task & Document Analysis</span> <span class="ml5 font-gray">Matter: <span>{{matterName}}</span></span></div>
-
+    <div>
+      <bd-internal-matters-overlay [matterId]="matterId" [internalMatters]="internalMatters"></bd-internal-matters-overlay>
+    </div>
+  </div>
   <bd-matter-title-bar [matterId]="matterId" [title]="'Task & Document Analysis'" [index]="2"></bd-matter-title-bar>
 
   <div class="panel-wrapper mt20">
@@ -45,6 +49,9 @@
       </tr>
 
     </table>
+    <div class="spinner-card" [hidden]="isLoaded">
+      <mat-spinner diameter="50" color="primary"></mat-spinner>
+    </div>
   </div>
 </div>
 

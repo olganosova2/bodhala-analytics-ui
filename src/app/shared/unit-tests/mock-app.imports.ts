@@ -304,7 +304,7 @@ export const DECLARATIONS = [
   MatterMetricTableComponent,
   MatterDocumentsOverviewComponent,
   MatterDocumentsComponent,
-  MatterDocumentModalComponent
+  MatterDocumentModalComponent,
   MatterMetricTableComponent,
   InternalMattersOverlayComponent
 ];

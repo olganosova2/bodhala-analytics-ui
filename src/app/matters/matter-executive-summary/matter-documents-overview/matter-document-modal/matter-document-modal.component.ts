@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {barTkPercentOptions, currencyAxisChartOptions, documentsRatesOptions, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../../model';
+import {barTkPercentOptions, currencyAxisChartOptions, documentsRatesOptions, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, IMetricDisplayData, matterColumnChartOptions, MetricCardType, RECORDS_NUMBER_THRESHOLD} from '../../model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -28,6 +28,7 @@ export class MatterDocumentModalComponent implements OnInit {
   optionsHr: any;
   chart: any;
   chartHr: any;
+  threshold: number = RECORDS_NUMBER_THRESHOLD;
   marketMetricData: Array<IMetricDisplayData> = [];
   internalMetricData: Array<IMetricDisplayData> = [];
   marketMetricDataHr: Array<IMetricDisplayData> = [];

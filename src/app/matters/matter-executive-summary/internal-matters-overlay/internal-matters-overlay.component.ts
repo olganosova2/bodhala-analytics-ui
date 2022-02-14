@@ -25,6 +25,7 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
   @Input() internalMatters: Array<IInternalMatter> = [];
   @Input() matterId: string;
   matters: Array<any> = [];
+  loading: boolean = false;
 
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -56,9 +57,11 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
       arr.push(matter.sim_matter_id);
     }
     params.matters = JSON.stringify(arr);
+    this.loading = true;
     this.pendingRequest = this.httpService.makeGetRequest('getMatterBreakdownByName', params).subscribe(
       (data: any) => {
         if (data) {
+          this.loading = false;
           let matters = data.result || [];
           matters = matters.sort(this.utilService.dynamicSort('matter_name'));
           for (const matter of matters) {

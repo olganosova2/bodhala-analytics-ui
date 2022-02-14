@@ -22,7 +22,6 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
   internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
-  isLoaded: boolean = false;
   @Input() clientId: string;
   @Input() matterId: string;
   @Input() firmId: number;
@@ -44,7 +43,6 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     this.getMatterSummary();
   }
   getMatterSummary(): void {
-    this.isLoaded = false;
     const arrMatters = [];
     const arrFirms = [];
     if (this.firmId) {
@@ -77,7 +75,6 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
             internalRecords: this.internalRecords,
             internalMatters: data.result.internal_matters
           };
-          this.isLoaded = true;
           this.dataLoaded.emit(emitted);
         }
       }

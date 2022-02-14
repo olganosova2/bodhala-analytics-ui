@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, MetricCardType, MetricGrade} from './model';
+import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, MetricCardType, MetricGrade, RECORDS_NUMBER_THRESHOLD} from './model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {UtilService} from 'bodhala-ui-common';
 
@@ -309,7 +309,7 @@ export class MatterAnalysisService {
     const summaryData = this.convertClassicDocToMatter(doc);
     this.calculateSingleMatterData(summaryData);
     const marketRecords = [];
-    doc.hasEnoughData = marketRawRecords && marketRawRecords.length >= 3;
+    doc.hasEnoughData = marketRawRecords && marketRawRecords.length >= RECORDS_NUMBER_THRESHOLD;
     if (!doc.hasEnoughData) {
       return;
     }
