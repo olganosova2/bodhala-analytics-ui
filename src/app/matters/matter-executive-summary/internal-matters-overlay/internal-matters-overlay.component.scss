@@ -12,3 +12,9 @@
   background-color: $body-color;
   width: 100%;
 }
+
+:host ::ng-deep {
+  .p-overlaypanel {
+    border-radius: 10px !important;
+  }
+}

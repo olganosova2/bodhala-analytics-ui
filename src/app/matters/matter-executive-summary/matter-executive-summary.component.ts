@@ -2,13 +2,14 @@ import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+
 import {MatDialog} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';
 import {HARDCODED_MATTER_ID, IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from './model';
 import {MatterAnalysisService} from './matter-analysis.service';
 import {IInsight} from '../../admin/insights/models';
-import {FiltersService, LeftSideBarComponent} from 'bodhala-ui-elements';
 import {MatterTotalsMetricsComponent} from './matter-totals-metrics/matter-totals-metrics.component';
+import {FiltersService} from 'bodhala-ui-elements';
 import * as config from '../../shared/services/config';
 import * as _moment from 'moment';
 
@@ -29,11 +30,10 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   marketRecords: Array<IMatterExecSummary> = [];
   internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
-  internalMatters: Array<IInternalMatter> = [];
   insightText: string;
+  internalMatters: Array<IInternalMatter> = [];
   insightExpanded: boolean = false;
   documents: Array<IMatterDocument> = [];
-  totalRecordsDocs: number;
 
   @ViewChild(MatterTotalsMetricsComponent) totalMetrics: MatterTotalsMetricsComponent;
 
@@ -53,7 +53,6 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     if (!this.matterId) {
       this.matterId = HARDCODED_MATTER_ID;
     }
-    this.getDocuments();
   }
   selectFirm(evt: number) {
     this.firmId = evt; // 8668; // 8635;
@@ -80,16 +79,6 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
         if (data.result) {
           this.insightText = data.result.description;
         }
-      }
-    );
-  }
-  getDocuments(): void {
-    const params = { matterId: this.matterId, clientId: this.userService.currentUser.client_info_id, limit: 3};
-    this.pendingRequest = this.httpService.makeGetRequest('getMatterDocuments', params).subscribe(
-      (data: any) => {
-        this.documents = (data.result || []);
-        // this.documents = MOCK_NERS_DATA.result.slice(0, 5) as Array<IMatterDocument>;
-        this.totalRecordsDocs = this.documents.length;
       }
     );
   }

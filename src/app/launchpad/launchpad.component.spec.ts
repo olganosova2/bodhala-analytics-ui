@@ -9,7 +9,7 @@ import * as mockServices from '../shared/unit-tests/mock-services';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../shared/unit-tests/mock-app.imports';
 import {Router} from '@angular/router';
 import {FiltersService} from '../shared/services/filters.service';
-import {TopMattersFirmsService} from './services/top-matters-firms.service';
+
 
 describe('LaunchpadComponent', () => {
   let component: LaunchpadComponent;

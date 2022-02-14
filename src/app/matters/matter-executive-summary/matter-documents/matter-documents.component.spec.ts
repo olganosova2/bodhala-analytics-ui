@@ -1,17 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatterTotalsMetricsComponent } from './matter-totals-metrics.component';
+import { MatterDocumentsComponent } from './matter-documents.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
-import {MatterTotalSpendComponent} from '../matter-total-spend/matter-total-spend.component';
+import {MatterStaffingComponent} from '../matter-staffing/matter-staffing.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRouteMock } from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
-import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 
-describe('MatterTotalsMetricsComponent', () => {
-  let component: MatterTotalsMetricsComponent;
-  let fixture: ComponentFixture<MatterTotalsMetricsComponent>;
+describe('MatterDocumentsComponent', () => {
+  let component: MatterDocumentsComponent;
+  let fixture: ComponentFixture<MatterDocumentsComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -23,7 +23,7 @@ describe('MatterTotalsMetricsComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(MatterTotalsMetricsComponent, {
+    }).overrideComponent(MatterDocumentsComponent, {
       set: {
         providers: [
           AppStateService,
@@ -39,16 +39,12 @@ describe('MatterTotalsMetricsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MatterTotalsMetricsComponent);
+    fixture = TestBed.createComponent(MatterDocumentsComponent);
     component = fixture.componentInstance;
-    component.firmId = 4;
-    component.isAdmin = true;
-    component.matterId = 'OOO';
-    component.clientId = '110';
     fixture.detectChanges();
   });
 
-  it('should create MatterTotalsMetricsComponent', () => {
+  it('should create MatterDocumentsComponent', () => {
     expect(component).toBeTruthy();
   });
 });

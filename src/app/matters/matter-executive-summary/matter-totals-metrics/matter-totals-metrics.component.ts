@@ -6,7 +6,7 @@ import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
 import {Subscription} from 'rxjs';
-import {HARDCODED_MARKET_MATTERS, IMatterExecSummary, IMatterTotalsPanel} from '../model';
+import {IMatterExecSummary, IMatterTotalsPanel} from '../model';
 
 @Component({
   selector: 'bd-matter-totals-metrics',
@@ -21,8 +21,7 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
   marketRecords: Array<IMatterExecSummary> = [];
   internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
-  marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
-  isLoaded: boolean = false;
+  marketMatters: Array<string> =  [];
   @Input() clientId: string;
   @Input() matterId: string;
   @Input() firmId: number;
@@ -44,7 +43,6 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     this.getMatterSummary();
   }
   getMatterSummary(): void {
-    this.isLoaded = false;
     const arrMatters = [];
     const arrFirms = [];
     if (this.firmId) {
@@ -54,13 +52,15 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     const params = { client_id: this.isAdmin ? this.clientId : this.userService.currentUser.client_info_id,
       matterId: this.matterId,
       matters: JSON.stringify(arrMatters),
-      marketMatters: JSON.stringify(this.marketMatters),
       firms: JSON.stringify(arrFirms)
     };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
         if (data.result && data.result.ade_data) {
           this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
+          if (!this.summaryData) {
+            return;
+          }
           this.matterAnalysisService.calculateSingleMatterData(this.summaryData);
           this.marketRecords =  data.result.market_data || [];
           this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
@@ -75,7 +75,6 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
             internalRecords: this.internalRecords,
             internalMatters: data.result.internal_matters
           };
-          this.isLoaded = true;
           this.dataLoaded.emit(emitted);
         }
       }
