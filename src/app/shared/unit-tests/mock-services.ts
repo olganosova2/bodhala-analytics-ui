@@ -81,6 +81,9 @@ export class FiltersStub {
   public parseLSQueryString() {
     return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
   }
+  public getSelectedFilters() {
+    return [];
+  }
 }
 
 export class DataStub {
