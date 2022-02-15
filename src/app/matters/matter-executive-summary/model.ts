@@ -333,9 +333,3 @@ export const barTkPercentOptions = {
     data: []
   }]
 };
-
-
-
-
-
-
