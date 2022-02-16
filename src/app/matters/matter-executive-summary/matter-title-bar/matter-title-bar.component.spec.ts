@@ -47,4 +47,13 @@ describe('MatterTitleBarComponent', () => {
   it('should create MatterTitleBarComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should filterByFirm', () => {
+    const val = { value: { id: 47}};
+    component.filterByFirm(val);
+    expect(component.firmId).toBe(4);
+  });
+  it('should export', () => {
+    component.export();
+    expect(component.firmId).toBe(4);
+  });
 });

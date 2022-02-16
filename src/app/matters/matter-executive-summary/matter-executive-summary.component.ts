@@ -76,7 +76,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: firmId};
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getMatterInsight', params).subscribe(
       (data: any) => {
-        if (data.result) {
+        if (data.result && data.result.is_enabled) {
           this.insightText = data.result.description;
         }
       }
@@ -130,9 +130,6 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
         }
       }
     );
-  }
-  goToViewDocs(): void {
-
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

@@ -70,13 +70,13 @@ export interface IMatterDocument {
   entity_type: string;
   total_cost: number;
   total_hours: number;
-  partner_billed: number;
-  associate_billed: number;
+  partner_billed?: number;
+  associate_billed?: number;
   avg_rate: number;
   partners: number;
   associates: number;
   partner_hours: number;
-  associate_hours: number;
+  associate_hours?: number;
   tk_id: string;
   first_name: string;
   last_name: string;
@@ -85,14 +85,14 @@ export interface IMatterDocument {
   tk_total_hours: number;
   tk_avg_rate: number;
   tk_level: Array<string>;
-  partner_id: string;
-  partner_first_name: string;
-  partner_last_name: string;
-  partner_total_cost: number;
-  partner_total_hours: number;
-  partner_avg_rate: number;
-  total_doc_cost_all: number;
-  total_doc_hours_all: number;
+  partner_id?: string;
+  partner_first_name?: string;
+  partner_last_name?: string;
+  partner_total_cost?: number;
+  partner_total_hours?: number;
+  partner_avg_rate?: number;
+  total_doc_cost_all?: number;
+  total_doc_hours_all?: number;
   index?: number;
   // blended_rate?: number;
   // percent_partner_hours?: number;
@@ -101,7 +101,7 @@ export interface IMatterDocument {
   cost_rating?: IMetricDisplayData;
   rates_rating?: IMetricDisplayData;
   staffing_rating?: IMetricDisplayData;
-  hasEnoughData: boolean;
+  hasEnoughData?: boolean;
 }
 export interface IMatterMarketDocument {
   bh_client_id: number;

@@ -33,7 +33,7 @@ import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND
 import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
-import {MOCK_MARKET_DOCS, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
+import {MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
 
 export const ngWindow = {
   location: {
@@ -134,6 +134,8 @@ export class DataStub {
         return of({result: MOCK_SAVED_QBR_RECOMMENDATIONS[4]});
       case 'generateClientQBR':
         return of({result: MOCK_QBR});
+      case 'getMatterDocsMarketData':
+        return of (MOCK_MARKET_DOCS);
 
       default:
         return of([]);
@@ -314,6 +316,12 @@ export class DataStub {
         return of (MOCK_MATTER_DOCUMENTS);
       case 'getMatterDocsMarketData':
         return of (MOCK_MARKET_DOCS);
+      case 'getMatterBreakdownByName':
+        return of (MOCK_MATTER_BREAKDOWN_BYNAME);
+      case 'getMatterDocuments':
+        return of (MOCK_MATTER_DOCUMENTS);
+      case 'getFirmsForMatter':
+        return of (MOCK_FIRMS_FOR_MATTER);
       default:
         return of([]);
     }
@@ -541,7 +549,8 @@ export class ActivatedRouteMock {
     const urlParams = {
       year: '2020',
       param2: 'params',
-      id: '11'
+      id: '11',
+      matterId: '087260/818'
     };
     observer.next(urlParams);
     observer.complete();

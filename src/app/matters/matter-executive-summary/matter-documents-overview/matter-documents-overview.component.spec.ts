@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock } from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_MATTER_DOCUMENTS} from '../../../shared/unit-tests/mock-data/matter-overview';
 
 describe('MatterDocumentsOverviewComponent', () => {
   let component: MatterDocumentsOverviewComponent;
@@ -46,5 +47,10 @@ describe('MatterDocumentsOverviewComponent', () => {
 
   it('should create MatterDocumentsOverviewComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should openDetails', () => {
+    const doc = MOCK_MATTER_DOCUMENTS.result[0];
+    component.openDetails(doc);
+    expect(doc.client_matter_id).toBe('087260/834');
   });
 });

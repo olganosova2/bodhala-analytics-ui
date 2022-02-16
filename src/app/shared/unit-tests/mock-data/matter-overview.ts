@@ -1727,4 +1727,27 @@ export const MOCK_MARKET_DOCS = {
     }]
   }],
   "error": null
-}
+};
+export const MOCK_MATTER_BREAKDOWN_BYNAME = {
+  "result": [{
+    "client_matter_id": "087260/818",
+    "matter_name": "Moscow Russian Sanctions",
+    "total": 1395292.68,
+    "expenses": 3820.19,
+    "total_with_expenses": 1399112.87
+  }, {
+    "client_matter_id": "087260/818",
+    "matter_name": "Project Crawford - Skadden",
+    "total": 2256368.47,
+    "expenses": 16607.02,
+    "total_with_expenses": 2272975.49
+  }],
+  "error": null
+};
+export const MOCK_FIRMS_FOR_MATTER = {
+  "result": [{
+    "id": 4,
+    "name": "Skadden, Arps, Slate, Meagher & Flom"
+  }],
+  "error": null
+};

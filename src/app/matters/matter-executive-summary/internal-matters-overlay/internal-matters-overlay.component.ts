@@ -130,6 +130,9 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
     }
 
     localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), JSON.stringify(serializedQs));
+    if (!url) {
+      return;
+    }
     if (!viewAll) {
       setTimeout(() => {
         window.open(
