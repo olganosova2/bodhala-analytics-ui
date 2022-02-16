@@ -587,7 +587,7 @@ export class FiltersService {
           }
           break;
         case  FILTERTYPE.NUMERIC:
-          if (filter.value) {
+          if (filter.value && filter.fieldName !== 'threshold') {
             const val = filter.value;
             filterObj.filters.push(val);
             result.push(filterObj);
