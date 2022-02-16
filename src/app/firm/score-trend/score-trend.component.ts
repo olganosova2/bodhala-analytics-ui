@@ -113,9 +113,10 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
   }
 
   load(): Observable<any> {
-    let params = {};
     if (this.firmId) {
-      params = {clientId: this.userService.currentUser.client_info.id, id: this.firmId};
+      const params = this.filtersService.getCurrentUserCombinedFilters();
+      // params = {clientId: this.userService.currentUser.client_info.id, id: this.firmId};
+      params.id = this.firmId;
       const response1 = this.httpService.makeGetRequest('getFirmScore', params);
       const response2 = this.httpService.makeGetRequest('getFirmTrends', params);
       return forkJoin([response1, response2]);
@@ -127,10 +128,11 @@ export class ScoreTrendComponent implements OnInit, OnDestroy {
         this.clientMatterType = this.clientMatterType.replace(regEx, '???!');
         this.clientMatterType = encodeURIComponent(this.clientMatterType);
       }
-      if (this.bodhalaPA === true) {
-        params = {clientId: this.userService.currentUser.client_info.id, bdPracticeAreas: this.clientMatterType};
+      const params = this.filtersService.getCurrentUserCombinedFilters();
+      if (this.bodhalaPA) {
+        params.bdPA = this.clientMatterType;
       } else {
-        params = {clientId: this.userService.currentUser.client_info.id, client_matter_type: this.clientMatterType};
+        params.client_matter_type = this.clientMatterType;
       }
       const response1 = this.httpService.makeGetRequest('getPracticeAreaScore', params);
       const response2 = this.httpService.makeGetRequest('getPracticeAreaTrends', params);

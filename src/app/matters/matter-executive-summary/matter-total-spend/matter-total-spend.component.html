@@ -8,6 +8,7 @@
     <chart (load)="saveInstance($event.context)" [options]="options"></chart>
   </div>
 </div>
+<div>
 <bd-matter-metric-table *ngIf="internalRecords && internalRecords.length > 0"
   [page]="page"
   [lable]="'Internal'"
@@ -20,4 +21,5 @@
   [metricData]="marketMetricData"
   [metricType]="metricType">
 </bd-matter-metric-table>
+</div>
 

@@ -1,0 +1,57 @@
+<div class="exs-div ml20" id="matterAnalysis">
+  <div class="justify-between mb20">
+  <div><span class="roboto-bold">Task & Document Analysis</span> <span class="ml5 font-gray">Matter: <span>{{matterName}}</span></span></div>
+    <div>
+      <bd-internal-matters-overlay [matterId]="matterId" [internalMatters]="internalMatters"></bd-internal-matters-overlay>
+    </div>
+  </div>
+  <bd-matter-title-bar [matterId]="matterId" [title]="'Task & Document Analysis'" [index]="2"></bd-matter-title-bar>
+
+  <div class="panel-wrapper mt20">
+
+    <div class="mt20" *ngIf="totalRecordsDocs === 0">No documents found.</div>
+    <table class="full-width">
+      <thead>
+      <tr class="roboto-bold">
+        <th>Document / Task</th>
+        <th>Total Cost</th>
+        <th># Hours Worked</th>
+        <th>Cost Rating</th>
+        <th>Rates Rating</th>
+        <th>Staffing Efficiency</th>
+<!--        <th>% Total Hours</th>-->
+      </tr>
+      </thead>
+      <tr *ngFor="let doc of documents">
+        <td>
+
+          <span  class="pointer-hand href-link-primary" (click)="openDetails(doc)">{{doc.canonical}}</span>
+        </td>
+        <td>${{doc.total_cost | number:'1.0-0'}}</td>
+        <td>{{doc.total_hours | number:'1.1-1'}}</td>
+        <td><span  *ngIf="doc.cost_rating?.grade" [ngClass]=" {'font-qbr-red': doc.cost_rating?.grade === 'POOR',
+              'font-qbr-green': doc.cost_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.cost_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.cost_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.cost_rating?.grade">No Available Benchmark</span>
+        </td>
+        <td><span  *ngIf="doc.rates_rating?.grade" [ngClass]=" {'font-qbr-red': doc.rates_rating?.grade === 'POOR',
+              'font-qbr-green': doc.rates_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.rates_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.rates_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.rates_rating?.grade">No Available Benchmark</span>
+        </td>
+        <td><span *ngIf="doc.staffing_rating?.grade" [ngClass]=" {'font-qbr-red': doc.staffing_rating?.grade === 'POOR',
+              'font-qbr-green': doc.staffing_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.staffing_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.staffing_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.staffing_rating?.grade">No Available Benchmark</span>
+        </td>
+
+
+      </tr>
+
+    </table>
+    <div class="spinner-card" [hidden]="isLoaded">
+      <mat-spinner diameter="50" color="primary"></mat-spinner>
+    </div>
+  </div>
+</div>
+

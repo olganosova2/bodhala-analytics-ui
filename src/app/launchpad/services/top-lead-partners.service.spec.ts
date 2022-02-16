@@ -32,7 +32,7 @@ describe('TopLeadPartnersService', () => {
 
   it('TopLeadPartnersService should process partners', inject([TopLeadPartnersService], (service: TopLeadPartnersService) => {
     const partners = TOP_LEAD_PARTNERS.result as unknown as Array<ITopLeadPartner>;
-    const processed = service.processLeadPartners(partners);
+    const processed = service.processLeadPartners(partners, false);
     expect(processed.length).toBe(10);
     expect(processed[0].top_matter_id).toBe('201400025');
     expect(processed[0].top_matter_name).toBe('201400025');

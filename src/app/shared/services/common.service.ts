@@ -217,6 +217,7 @@ export class CommonService {
     if (!word) {
       return '';
     }
+    word = word.toLowerCase();
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
   formatPath(path: string): string {

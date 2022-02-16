@@ -21,12 +21,20 @@
             </div>
             <div class="ui-9">
               <h2>{{commonServ.pageSubtitle}}</h2>
-              <div class="font-bold">Timeframe: {{startdate}} - {{enddate}}</div>
-              <div class="font-bold">Rank: <span *ngIf="rank>0">{{ rank }}</span><span *ngIf="rank<0"> > 20</span> ({{percentOfTotal * 100 | number:'1.2-2'}}% of total spend)</div>
-              <div class="font-bold" *ngIf="selectedSavedFilterName!==null">Saved Filter: {{selectedSavedFilterName}}</div>
-              <div class="font-bold" *ngIf="otherFirms"><i>Note: Rank and averages are based off firms available as defined by selected Timeframe and Filters.</i></div>
-              <div class="font-bold" *ngIf="userService.hasEntitlement('analytics.practice.areas') && smartPAs === false">Note: Only the top Practice Area for {{commonServ.pageSubtitle}} is shown below Overall Spend</div>
-              <div class="font-bold" *ngIf="userService.hasEntitlement('analytics.practice.areas') && smartPAs === true">Note: Only the top Smart Practice Area for {{commonServ.pageSubtitle}} is shown below Overall Spend</div>
+              <div class="roboto-bold">Timeframe: <span class="roboto-div">{{startdate}} - {{enddate}}</span></div>
+              <div class="roboto-bold">Rank: <span *ngIf="rank>0" class="roboto-div">{{ rank }}</span><span *ngIf="rank<0" class="roboto-div"> > 20</span> <span class="roboto-div"> ({{percentOfTotal * 100 | number:'1.2-2'}}% of total spend)</span></div>
+              <div class="roboto-bold" *ngIf="selectedSavedFilterName">Saved Filter: <span class="roboto-div">{{selectedSavedFilterName}}</span></div>
+              <div class="roboto-bold  mb10 mt10" *ngIf="!selectedSavedFilterName && selectedFilters.length > 0">
+                <div class="roboto-bold">Applied Filters:</div>
+                <div *ngFor="let fltr of selectedFilters; let i = index">
+                  <div *ngIf="fltr.filters.length>0">
+                    <div><span class="mr10">{{ fltr.filterName}}:</span> <span *ngFor="let f of fltr.filters; let i = index" class="roboto-div">{{f}}</span> </div>
+                  </div>
+                </div>
+              </div>
+              <div class="roboto-bold" *ngIf="otherFirms"><i>Note: <span class="roboto-div">Rank and averages are based off firms available as defined by selected Timeframe and Filters.</span></i></div>
+              <div class="roboto-bold" *ngIf="userService.hasEntitlement('analytics.practice.areas') && smartPAs === false">Note: <span class="roboto-div">Only the top Practice Area for {{commonServ.pageSubtitle}} is shown below Overall Spend</span></div>
+              <div class="roboto-bold" *ngIf="userService.hasEntitlement('analytics.practice.areas') && smartPAs === true">Note: <span class="roboto-div">Only the top Smart Practice Area for {{commonServ.pageSubtitle}} is shown below Overall Spend</span></div>
             </div>
           </div>
 

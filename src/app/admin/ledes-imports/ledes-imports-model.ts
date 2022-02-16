@@ -1,6 +1,7 @@
 export interface ILedesImport {
   id: number;
   client_id?: number;
+  client: string;
   client_name?: string;
   firms?: number[];
   firm_names?: string[];

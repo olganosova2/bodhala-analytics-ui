@@ -2,6 +2,7 @@ import {basePieChartOptions} from './base-chart';
 
 export interface IPractice {
   name: string;
+  link_name: string;
   firm_id: number;
   firm_name: string;
   firm_total: number;

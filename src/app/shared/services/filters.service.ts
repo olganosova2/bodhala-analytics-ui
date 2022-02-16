@@ -2,8 +2,22 @@ import {Injectable} from '@angular/core';
 import {UserService} from 'bodhala-ui-common';
 import * as _moment from 'moment';
 import {ICommonFilters, IDataFilters, UserFiltersModel} from '../models/user-filters';
+import * as config from './config';
 
 const moment = _moment;
+
+export enum FILTERTYPE {
+  MULTISELECT = 'MULTISELECT',
+  SELECT = 'SELECT',
+  RANGESLIDER = 'RANGESLIDER',
+  SLIDER = 'SLIDER',
+  DATE = 'DATE',
+  DATERANGE = 'DATERANGE',
+  NUMERIC = 'NUMERIC',
+  TEXT = 'TEXT',
+  DAYOFMATTER = 'DAYOFMATTER'
+
+}
 
 @Injectable({
   providedIn: 'root'
@@ -510,4 +524,80 @@ export class FiltersService {
     }
     return qs;
   }
+  getSelectedFilters(): Array<any> {
+    const result = [];
+    const savedFilters = localStorage.getItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id);
+    if (!savedFilters) {
+      return result;
+    }
+    const serializedQs = JSON.parse(savedFilters);
+    const filters = serializedQs.dataFilters || [];
+    for (const filter of filters) {
+      const excludeStr = filter.exclude ? ' (Excluded)' : '';
+      const filterObj = {filterName: filter.displayName + excludeStr, filters: []};
+      switch (filter.type) {
+        case FILTERTYPE.MULTISELECT:
+          if (filter.value && filter.value.length > 0) {
+            for (const item of filter.value) {
+              if (item.name) {
+                filterObj.filters.push(item.name);
+              } else {
+                filterObj.filters.push(item);
+              }
+            }
+            result.push(filterObj);
+          }
+          break;
+        case FILTERTYPE.RANGESLIDER:
+          if (filter.value && filter.value.length > 1) {
+            if (filter.value[0] !== filter.minRange || filter.value[1] !== filter.maxRange) {
+              const val = filter.value[0] + ' thru ' + filter.value[1];
+              filterObj.filters.push(val);
+              result.push(filterObj);
+            }
+          }
+          break;
+        case  FILTERTYPE.SELECT:
+          if (filter.value) {
+            filterObj.filters.push(filter.value);
+            result.push(filterObj);
+          }
+          break;
+        case FILTERTYPE.DATE:
+          if (filter.value) {
+            filterObj.filters.push(moment(filter.value).format('YYYY-MM-DD'));
+            result.push(filterObj);
+          }
+          break;
+        case FILTERTYPE.DAYOFMATTER:
+          if (filter.value && filter.value.dayOfMatterRange && filter.value.dayOfMatter1) {
+            let val = filter.value.dayOfMatterRange + ' ' + filter.value.dayOfMatter1;
+            if (filter.value.dayOfMatter2 && filter.value.dayOfMatterRange === 'Between') {
+              val += ' and ' + filter.value.dayOfMatter2;
+            }
+            filterObj.filters.push(val);
+            result.push(filterObj);
+          }
+          break;
+        case  FILTERTYPE.DATERANGE:
+          if (filter.value && filter.displayName !== 'Invoice Date Range' && filter.displayName !== 'Date Paid Range') {
+            const val = moment(filter.value.startDate).format('YYYY-MM-DD') + ' to ' + moment(filter.value.endDate).format('YYYY-MM-DD');
+            filterObj.filters.push(val);
+            result.push(filterObj);
+          }
+          break;
+        case  FILTERTYPE.NUMERIC:
+          if (filter.value && filter.fieldName !== 'threshold') {
+            const val = filter.value;
+            filterObj.filters.push(val);
+            result.push(filterObj);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    return result;
+  }
 }
+

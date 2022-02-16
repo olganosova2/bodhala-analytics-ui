@@ -5,7 +5,7 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {barTkPercentOptions, currencyAxisChartOptions, IMatterExecSummary, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../model';
+import {barTkPercentOptions, currencyAxisChartOptions, documentsRatesOptions, IMatterExecSummary, IMetricDisplayData, matterColumnChartOptions, MetricCardType} from '../model';
 import {Subscription} from 'rxjs';
 
 @Component({
@@ -49,8 +49,16 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
       this.marketMetricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.marketData, this.marketRecords);
       this.internalMetricData = this.matterAnalysisService.formatTkTotalSpend(this.summaryData, this.internalData, this.internalRecords);
     } else if (this.metricType === MetricCardType.AverageRates) {
-      this.marketMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);
-      this.internalMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.internalData, this.internalRecords);
+      if (this.marketRecords.length > 0) {
+        this.marketMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);
+      } else {
+        this.marketMetricData = [];
+      }
+      if (this.internalRecords.length > 0) {
+        this.internalMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.internalData, this.internalRecords);
+      } else {
+        this.internalMetricData = [];
+      }
     } else if (this.metricType === MetricCardType.TotalHoursWorked) {
       this.marketMetricData = this.matterAnalysisService.formatTotalHours(this.summaryData, this.marketData, this.marketRecords);
       this.internalMetricData = this.matterAnalysisService.formatTotalHours(this.summaryData, this.internalData, this.internalRecords);
@@ -79,14 +87,6 @@ export class MatterTotalSpendComponent implements OnInit, OnDestroy {
       this.chart.series[0].setData(this.marketMetricData.map(e => e.actual));
       this.chart.series[1].setData(this.internalMetricData.map(e => e.market));
       this.chart.series[2].setData(this.marketMetricData.map(e => e.market));
-      if (this.page === 'Overview' && this.metricType === MetricCardType.TotalSpend) {
-        this.chart.series[0].options.color = '#00D1FF';
-        this.chart.series[0].update(this.chart.series[0].options);
-        this.chart.series[1].options.color = '#8A8A8A';
-        this.chart.series[1].update(this.chart.series[1].options);
-        this.chart.series[2].options.color = '#3EDB73';
-        this.chart.series[2].update(this.chart.series[2].options);
-      }
     } else {
       this.chart.series[2].setData(this.getPercentOfHoursWorkedChartData(this.marketMetricData, this.internalMetricData, 0));
       this.chart.series[1].setData(this.getPercentOfHoursWorkedChartData(this.marketMetricData, this.internalMetricData,  1));

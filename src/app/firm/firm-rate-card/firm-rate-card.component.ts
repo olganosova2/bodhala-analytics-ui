@@ -55,6 +55,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   excludeFilters = ['firms', 'threshold', 'matters', 'practice areas', 'internal'];
   originalQueryString: string;
   customReport: boolean = false;
+  selectedFilters: Array<any> = [];
   @ViewChild(SpendTrendChartComponent) spendTrendChart: SpendTrendChartComponent;
   @ViewChild(ReportCardBillingTotalsComponent) reportCardBillingTotalsComponent: ReportCardBillingTotalsComponent;
 
@@ -79,6 +80,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               public appStateService: AppStateService) {
     this.commonServ.pageTitle = 'Firms > Report Card';
     this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
+    this.selectedFilters =  Object.assign([], this.filtersService.getSelectedFilters());
   }
 
   async ngOnInit() {

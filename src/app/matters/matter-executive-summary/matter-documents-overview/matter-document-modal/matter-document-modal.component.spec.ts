@@ -1,18 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatterTitleBarComponent } from './matter-title-bar.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
-import {MatterExecutiveSummaryComponent} from '../matter-executive-summary.component';
+import { MatterDocumentModalComponent } from './matter-document-modal.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../../shared/unit-tests/mock-app.imports';
+import {MatterDocumentsOverviewComponent} from '../matter-documents-overview.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
-import * as mockServices from '../../../shared/unit-tests/mock-services';
-import {FiltersService} from '../../../shared/services/filters.service';
+import {ActivatedRouteMock} from '../../../../shared/unit-tests/mock-services';
+import * as mockServices from '../../../../shared/unit-tests/mock-services';
+import {FiltersService} from '../../../../shared/services/filters.service';
 
-describe('MatterTitleBarComponent', () => {
-  let component: MatterTitleBarComponent;
-  let fixture: ComponentFixture<MatterTitleBarComponent>;
-
+describe('MatterDocumentModalComponent', () => {
+  let component: MatterDocumentModalComponent;
+  let fixture: ComponentFixture<MatterDocumentModalComponent>;
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
   };
@@ -23,7 +22,7 @@ describe('MatterTitleBarComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(MatterTitleBarComponent, {
+    }).overrideComponent(MatterDocumentModalComponent, {
       set: {
         providers: [
           AppStateService,
@@ -38,22 +37,14 @@ describe('MatterTitleBarComponent', () => {
       .compileComponents();
   }));
 
+
   beforeEach(() => {
-    fixture = TestBed.createComponent(MatterTitleBarComponent);
+    fixture = TestBed.createComponent(MatterDocumentModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create MatterTitleBarComponent', () => {
+  it('should create MatterDocumentModalComponent', () => {
     expect(component).toBeTruthy();
-  });
-  it('should filterByFirm', () => {
-    const val = { value: { id: 47}};
-    component.filterByFirm(val);
-    expect(component.firmId).toBe(4);
-  });
-  it('should export', () => {
-    component.export();
-    expect(component.firmId).toBe(4);
   });
 });
