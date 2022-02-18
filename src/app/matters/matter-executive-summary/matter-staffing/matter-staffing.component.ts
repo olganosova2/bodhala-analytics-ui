@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {HARDCODED_MARKET_MATTERS, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, MetricCardType} from '../model';
+import {IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, MetricCardType} from '../model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -22,12 +22,13 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
   internalData: IMatterExecSummary;
   marketRecords: Array<IMatterExecSummary> = [];
   internalRecords: Array<IMatterExecSummary> = [];
+  internalMatters: Array<IInternalMatter> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   insightText: string;
   insightExpanded: boolean = false;
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
-  marketMatters: Array<string> =  HARDCODED_MARKET_MATTERS;
+  marketMatters: Array<string> =  [];
   metrics: Array<string> = [];
   isLoaded: boolean = false;
   constructor(private route: ActivatedRoute,
@@ -70,8 +71,7 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
     const params = { client_id: this.userService.currentUser.client_info_id,
       matterId: this.matterId,
       firms: JSON.stringify(arrFirms),
-      matters: JSON.stringify(arrMatters),
-      marketMatters: JSON.stringify(this.marketMatters)
+      matters: JSON.stringify(arrMatters)
     };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
@@ -81,15 +81,9 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
           this.marketRecords =  data.result.market_data || [];
           this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
           this.internalRecords =  data.result.internal_data || [];
+          this.internalMatters = data.result.internal_matters;
           this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
           this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData, this.internalData);
-          const emitted = {
-            summaryData: this.summaryData,
-            marketData: this.marketData,
-            marketRecords: this.marketRecords,
-            internalData: this.internalData,
-            internalRecords: this.internalRecords
-          };
           this.isLoaded = true;
         }
       }

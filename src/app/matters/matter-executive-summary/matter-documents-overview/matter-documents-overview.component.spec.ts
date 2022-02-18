@@ -1,17 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatterTitleBarComponent } from './matter-title-bar.component';
+import { MatterDocumentsOverviewComponent } from './matter-documents-overview.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
-import {MatterExecutiveSummaryComponent} from '../matter-executive-summary.component';
+import {MatterDocumentsComponent} from '../matter-documents/matter-documents.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
+import {ActivatedRouteMock } from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_MATTER_DOCUMENTS} from '../../../shared/unit-tests/mock-data/matter-overview';
 
-describe('MatterTitleBarComponent', () => {
-  let component: MatterTitleBarComponent;
-  let fixture: ComponentFixture<MatterTitleBarComponent>;
+describe('MatterDocumentsOverviewComponent', () => {
+  let component: MatterDocumentsOverviewComponent;
+  let fixture: ComponentFixture<MatterDocumentsOverviewComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -23,7 +24,7 @@ describe('MatterTitleBarComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(MatterTitleBarComponent, {
+    }).overrideComponent(MatterDocumentsOverviewComponent, {
       set: {
         providers: [
           AppStateService,
@@ -39,21 +40,17 @@ describe('MatterTitleBarComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MatterTitleBarComponent);
+    fixture = TestBed.createComponent(MatterDocumentsOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create MatterTitleBarComponent', () => {
+  it('should create MatterDocumentsOverviewComponent', () => {
     expect(component).toBeTruthy();
   });
-  it('should filterByFirm', () => {
-    const val = { value: { id: 47}};
-    component.filterByFirm(val);
-    expect(component.firmId).toBe(4);
-  });
-  it('should export', () => {
-    component.export();
-    expect(component.firmId).toBe(4);
+  it('should openDetails', () => {
+    const doc = MOCK_MATTER_DOCUMENTS.result[0];
+    component.openDetails(doc);
+    expect(doc.client_matter_id).toBe('087260/834');
   });
 });

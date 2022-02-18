@@ -190,6 +190,10 @@ import { MatterTotalsMetricsComponent } from './matters/matter-executive-summary
 import { MatterStaffingComponent } from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 import { MatterSummaryCardComponent } from './matters/matter-executive-summary/matter-summary-card/matter-summary-card.component';
 import { MatterMetricTableComponent } from './matters/matter-executive-summary/matter-total-spend/matter-metric-table/matter-metric-table.component';
+import { MatterDocumentsComponent } from './matters/matter-executive-summary/matter-documents/matter-documents.component';
+import { MatterDocumentsOverviewComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
+import { MatterDocumentModalComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-document-modal/matter-document-modal.component';
+import { InternalMattersOverlayComponent } from './matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -332,7 +336,12 @@ highcharts.setOptions({
     MatterTotalsMetricsComponent,
     MatterStaffingComponent,
     MatterSummaryCardComponent,
-    MatterMetricTableComponent
+    MatterMetricTableComponent,
+    MatterDocumentsComponent,
+    MatterDocumentsOverviewComponent,
+    MatterDocumentModalComponent,
+    MatterMetricTableComponent,
+    InternalMattersOverlayComponent
   ],
   entryComponents: [
     PillComponent,

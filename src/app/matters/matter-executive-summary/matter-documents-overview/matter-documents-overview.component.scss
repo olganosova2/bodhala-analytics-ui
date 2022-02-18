@@ -1,0 +1,17 @@
+@import "../../../../assets/styles/colors.scss";
+@import "../../../../assets/styles/_variables.scss";
+th {
+  font-family: 'Roboto Bold' !important;
+}
+.no-bm {
+  color: $medium-gray;
+}
+.panel-wrapper {
+  position: relative;
+}
+
+.custom-dialog-container .mat-dialog-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-bottom: 0 !important;
+}

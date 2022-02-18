@@ -1,20 +1,8 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
-import * as Highcharts from 'highcharts';
 const groupDistance = window.screen.width > 1440 ? 0.4 : window.screen.width > 1200 ? 0.35 : 0.25;
 
-export const HARDCODED_MATTER_ID = '087260/834'; //  '100340'; // '087260/818'; // '373046-00021'; // '10001320';
-export const HARDCODED_MARKET_MATTERS = [
-  '087260/785',
-  '087260/818',
-  '087260/843',
-  '087260/101*',
-  '087260/729',
-  '087260/809',
-  '087260/816',
-  '087260/834',
-  '087260/821',
-  '087260/844'
-];
+export const HARDCODED_MATTER_ID = '087260/818'; // '149945'; //   '087260/834'; //   '373046-00021'; // '10001320';
+export const RECORDS_NUMBER_THRESHOLD = 2;
 
 export enum MetricCardType {
   TotalSpend = 'TotalSpend',
@@ -28,6 +16,7 @@ export enum MetricGrade {
   GOOD = 'GOOD',
   FAIR = 'FAIR',
   POOR = 'POOR',
+  NODATA = 'NODATA',
 }
 
 export interface IMatterExecSummary {
@@ -66,6 +55,7 @@ export interface IMatterTotalsMetric {
   direction?: number;
   format?: string;
   icon?: string;
+  size?: number;
 }
 
 export interface IMatterTotalsPanel {
@@ -80,10 +70,13 @@ export interface IMatterDocument {
   entity_type: string;
   total_cost: number;
   total_hours: number;
+  partner_billed?: number;
+  associate_billed?: number;
   avg_rate: number;
   partners: number;
   associates: number;
   partner_hours: number;
+  associate_hours?: number;
   tk_id: string;
   first_name: string;
   last_name: string;
@@ -92,16 +85,49 @@ export interface IMatterDocument {
   tk_total_hours: number;
   tk_avg_rate: number;
   tk_level: Array<string>;
-  partner_id: string;
-  partner_first_name: string;
-  partner_last_name: string;
-  partner_total_cost: number;
-  partner_total_hours: number;
-  partner_avg_rate: number;
-  total_doc_cost_all: number;
-  total_doc_hours_all: number;
+  partner_id?: string;
+  partner_first_name?: string;
+  partner_last_name?: string;
+  partner_total_cost?: number;
+  partner_total_hours?: number;
+  partner_avg_rate?: number;
+  total_doc_cost_all?: number;
+  total_doc_hours_all?: number;
+  index?: number;
+  // blended_rate?: number;
+  // percent_partner_hours?: number;
+  // percent_associate_hours?: number;
+  // percent_other_hours?: number;
+  cost_rating?: IMetricDisplayData;
+  rates_rating?: IMetricDisplayData;
+  staffing_rating?: IMetricDisplayData;
+  hasEnoughData?: boolean;
 }
-
+export interface IMatterMarketDocument {
+  bh_client_id: number;
+  client_matter_id: string;
+  entity: string;
+  category: string;
+  entity_type: string;
+  total_billed: number;
+  partner_billed: number;
+  associate_billed: number;
+  other_billed: number;
+  total_hours_billed: number;
+  partner_hours: number;
+  associate_hours: number;
+  other_hours: number;
+  avg_partner_rate: number;
+  avg_associate_rate: number;
+  avg_other_rate: number;
+  avg_rate: number;
+  ade_avg_rate: number;
+  blended_rate?: number;
+}
+export interface IMarketDocumentData {
+  index: number;
+  market_data: Array<IMatterMarketDocument>;
+}
 export interface IMetricDisplayData {
   metricType?: MetricCardType;
   fieldName?: string;
@@ -116,6 +142,10 @@ export interface IMetricDisplayData {
   increase?: number;
   direction?: number;
   grade?: MetricGrade;
+}
+export interface IInternalMatter {
+  sim_client_id;
+  sim_matter_id;
 }
 
 export const matterColumnChartOptions = {
@@ -199,12 +229,6 @@ export const currencyAxisChartOptions =
               maximumFractionDigits: 0
             });
             return formatterInt.format(this.value);
-            // if (this.value >= 1000000) {
-            //   return formatterInt.format(this.value / 1000) + 'k';
-            // } else {
-            //   return formatterInt.format(this.value);
-            // }
-
           }
         }
       },
@@ -212,6 +236,24 @@ export const currencyAxisChartOptions =
         headerFormat: '<b>{series.name}</b><br>',
         pointFormat: '${point.y:,.0f}'
       },
+    }
+  };
+
+export const documentsRatesOptions =
+  {
+    ...currencyAxisChartOptions, ...{
+      plotOptions: {
+        column: {
+          borderWidth: 0,
+          borderRadiusTopLeft: '50%',
+          borderRadiusTopRight: '50%'
+        },
+        series: {
+          pointWidth: 20,
+          groupPadding: groupDistance / 1.2
+        }
+      }
+
     }
   };
 export const barTkPercentOptions = {
@@ -291,9 +333,3 @@ export const barTkPercentOptions = {
     data: []
   }]
 };
-
-
-
-
-
-

@@ -42,6 +42,7 @@ describe('MatterTotalsMetricsComponent', () => {
     fixture = TestBed.createComponent(MatterTotalsMetricsComponent);
     component = fixture.componentInstance;
     component.firmId = 4;
+    component.isAdmin = true;
     component.matterId = 'OOO';
     component.clientId = '110';
     fixture.detectChanges();

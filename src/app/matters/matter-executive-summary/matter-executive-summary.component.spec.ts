@@ -42,9 +42,14 @@ describe('MatterExecutiveSummaryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatterExecutiveSummaryComponent);
     component = fixture.componentInstance;
+    component.firmId = 47;
+    component.matterId = 'OOO';
     component.summaryData = MOCK_MATTER_OVERVIEW.result.ade_data[0];
     component.marketData = MOCK_MATTER_OVERVIEW.result.market_data[0];
     component.internalData = MOCK_MATTER_OVERVIEW.result.internal_data[0];
+    component.internalRecords = MOCK_MATTER_OVERVIEW.result.internal_data;
+    component.marketRecords = MOCK_MATTER_OVERVIEW.result.market_data;
+    component.internalMatters = MOCK_MATTER_OVERVIEW.result.internal_matters;
     fixture.detectChanges();
   });
 

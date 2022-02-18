@@ -75,7 +75,7 @@ describe('YoyRateIncreaseService', () => {
   }));
   it('YoyRateIncreaseService should getHeaderName', inject([YoyRateIncreaseService], (service: YoyRateIncreaseService) => {
     const result = service.getHeaderName('RATES_', 2020);
-    expect(result).toBe('RATES_ 2020');
+    expect(result).toBe('Rates_ 2020');
   }));
   it('YoyRateIncreaseService should getHeaderGroupName', inject([YoyRateIncreaseService], (service: YoyRateIncreaseService) => {
     const result = service.getHeaderGroupName('');
