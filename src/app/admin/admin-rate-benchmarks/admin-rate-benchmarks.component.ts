@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService, IClient} from '../../shared/services/common.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
@@ -31,7 +31,7 @@ export class AdminRateBenchmarksComponent implements OnInit {
   firstLoad: boolean = true;
   gridApi: any;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
     public router: Router,
     private httpService: HttpService,
     public appStateService: AppStateService,
@@ -63,6 +63,7 @@ export class AdminRateBenchmarksComponent implements OnInit {
   }
 
   loadClientRateBenchmarks(client: IClient): void {
+    console.log("client: ", client)
     this.selectedClient = client;
     if (this.selectedClient) {
       this.getClientRateBenchmarks();
@@ -74,6 +75,7 @@ export class AdminRateBenchmarksComponent implements OnInit {
     const params = { clientId: this.selectedClient.bh_client_id };
     this.pendingRequest = this.httpService.makeGetRequest('getRateBenchmarksAdmin', params).subscribe(
       (data: any) => {
+        console.log("data: " ,data);
         this.clientRateBenchmarks = data.result || [];
         this.clientRateBenchmarks = this.clientRateBenchmarks.sort(this.utilService.dynamicSort('-created_on'));
         const pipe = new DatePipe('en-US');

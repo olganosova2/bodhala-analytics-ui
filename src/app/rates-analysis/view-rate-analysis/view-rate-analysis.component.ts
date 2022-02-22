@@ -7,8 +7,8 @@ import {Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { RatesAnalysisService } from '../rates-analysis.service';
-import { IRateBenchmark, moneyFormatter, COST_IMPACT_GRADES } from '../rates-analysis.model';
-import { IBenchmarkRate } from 'src/app/benchmarks/model';
+import { IRateBenchmark, moneyFormatter, percentFormatter, COST_IMPACT_GRADES, rateBenchmarkingChartOptions } from '../rates-analysis.model';
+
 
 @Component({
   selector: 'bd-view-rate-analysis',
@@ -34,6 +34,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   firmClassificationRateIncreaseData: Array<any>;
   cohortClassificationRateIncreaseData: Array<any>;
   firmTotalSpend: number;
+  firmTotalSpendFormatted: string;
   firmCostImpact: number;
   cohortCostImpact: number;
   firmCostImpactFormatted: string;
@@ -52,7 +53,18 @@ export class ViewRateAnalysisComponent implements OnInit {
   costImpactLowerFormatted: string;
   costImpactUpperFormatted: string;
   blendedWithinRange: boolean;
+  // needed? Or conditionals in template?
   costImpactColor: string;
+  firmRateIncreaseColor: string = '#3EDB73';
+  marketRateIncreaseColor: string = '#FF650F';
+  optionsTotal: any;
+  optionsTotalPA: any;
+  chartTotal: any;
+  chartTotalPA: any;
+  overallSpendData: any;
+  overallSpendPAData: any;
+  pctOfTotalSpend: string;
+  pctOfPASpend: string;
 
 
   constructor(private route: ActivatedRoute,
@@ -72,6 +84,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setUpChartOptions();
     this.route.paramMap
       .subscribe(async params => {
         // this.report = this.qbrService.savedQBR;
@@ -85,14 +98,12 @@ export class ViewRateAnalysisComponent implements OnInit {
         if (ix >= 0) {
           this.peerFirms.splice(ix, 1);
         }
-        console.log("this.benchmark: ", this.benchmark)
         this.getData();
       });
   }
 
   getBenchmark(): Promise<IRateBenchmark> {
     const params = {benchmarkId: this.benchmarkId};
-    console.log("getBenchmark params: ", params);
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getRateBenchmark', params).subscribe(
         (data: any) => {
@@ -110,6 +121,12 @@ export class ViewRateAnalysisComponent implements OnInit {
     });
   }
 
+  setUpChartOptions(): void {
+    this.optionsTotal = Object.assign({}, rateBenchmarkingChartOptions);
+    this.optionsTotal.series[0].data = [];
+    this.optionsTotalPA = Object.assign({}, rateBenchmarkingChartOptions);
+    this.optionsTotalPA.series[0].data = [];
+  }
 
   getData(): void {
     const firmParam = [];
@@ -144,6 +161,12 @@ export class ViewRateAnalysisComponent implements OnInit {
               this.internalYearData = data.result.internal_data[0];
             }
           }
+          if (data.result.overall_spend) {
+            this.overallSpendData = data.result.overall_spend;
+          }
+          if (data.result.overall_pa_spend) {
+            this.overallSpendPAData = data.result.overall_pa_spend;
+          }
           this.loaded = true;
           if (data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
             const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, data.result.max_year);
@@ -155,6 +178,7 @@ export class ViewRateAnalysisComponent implements OnInit {
             this.firmRateIncreasePct *= 100;
             this.cohortRateIncreasePct *= 100;
             this.firmTotalSpend = firmClassificationRateIncreasePct.total;
+            this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
 
             const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
             if (this.firmTotalSpend && projectedCostImpact) {
@@ -188,18 +212,18 @@ export class ViewRateAnalysisComponent implements OnInit {
             this.costImpactUpperFormatted = moneyFormatter.format(this.costImpactUpper);
             this.blendedWithinRange = historicalCostImpact.blended_within_range;
 
-            console.log("historicalCostImpact: ", historicalCostImpact)
-            console.log("internalYearData: ", this.internalYearData)
-            console.log("firmYearData: ", this.firmYearData)
-            console.log("marketAverageData: ", this.marketAverageData)
-            console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
-            console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
-            console.log("firmTotalSpend: ", this.firmTotalSpend)
-            console.log("firmCostImpact: ", this.firmCostImpact)
-            console.log("cohortCostImpact: ", this.cohortCostImpact)
-            console.log("firmClassificationRateIncreasePct: ", firmClassificationRateIncreasePct)
-            console.log("cohortClassificationRateIncreasePct: ", cohortClassificationRateIncreasePct)
-            console.log("projectedCostImpact: ", projectedCostImpact)
+            // console.log("historicalCostImpact: ", historicalCostImpact)
+            // console.log("internalYearData: ", this.internalYearData)
+            // console.log("firmYearData: ", this.firmYearData)
+            // console.log("marketAverageData: ", this.marketAverageData)
+            // console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
+            // console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
+            // console.log("firmTotalSpend: ", this.firmTotalSpend)
+            // console.log("firmCostImpact: ", this.firmCostImpact)
+            // console.log("cohortCostImpact: ", this.cohortCostImpact)
+            // console.log("firmClassificationRateIncreasePct: ", firmClassificationRateIncreasePct)
+            // console.log("cohortClassificationRateIncreasePct: ", cohortClassificationRateIncreasePct)
+            // console.log("projectedCostImpact: ", projectedCostImpact)
           }
         }
       }
@@ -208,5 +232,68 @@ export class ViewRateAnalysisComponent implements OnInit {
 
   goToDetail(): void {
     console.log("go to the detail")
+  }
+
+  setStyle(): any {
+    const styles = {
+      'background-image': '-webkit-linear-gradient(bottom, #FFFFFF 67%,' +  this.costImpactColor + ' 33%)',
+    };
+    return styles;
+  }
+
+  setIncreaseStyle(): any {
+    const styles = {
+      'background': 'linear-gradient(to right, #FFFFFF 72%,' + this.firmRateIncreaseColor  + ' 28%)'
+    };
+    return styles;
+  }
+
+  setMarketIncreaseStyle(): any {
+    const styles = {
+      'background': 'linear-gradient(to right, #FFFFFF 72%,' + this.marketRateIncreaseColor  + ' 28%)'
+    };
+    return styles;
+  }
+
+  saveInstanceTotal(chartInstance): void {
+    this.chartTotal = chartInstance;
+    let result = [0, 0];
+    if (this.overallSpendData) {
+      if (this.overallSpendData.total_spend) {
+        if (this.overallSpendData.total_spend.total > 0) {
+          let pctOfSpend = this.firmTotalSpend / this.overallSpendData.total_spend.total;
+          setTimeout(() => {
+            this.pctOfTotalSpend = percentFormatter.format(pctOfSpend);
+            pctOfSpend *= 100;
+            result = [pctOfSpend, 100 - pctOfSpend];
+            this.chartTotal.series[0].setData(result);
+            this.chartTotal.series[0].options.colors = ['#00D1FF', '#cccccc'];
+            this.chartTotal.series[0].update(this.chartTotal.series[0].options);
+          });
+        }
+      }
+    }
+  }
+
+  saveInstancePATotal(chartInstance): void {
+    console.log("saveInstancePATotal: ", chartInstance)
+    this.chartTotalPA = chartInstance;
+    let result = [0, 0];
+    if (this.overallSpendPAData) {
+      if (this.overallSpendPAData.total_spend) {
+        if (this.overallSpendPAData.total_spend.total > 0) {
+          let pctOfSpend = this.firmTotalSpend / this.overallSpendPAData.total_spend.total;
+          setTimeout(() => {
+            this.pctOfPASpend = percentFormatter.format(pctOfSpend);
+            pctOfSpend *= 100;
+            result = [pctOfSpend, 100 - pctOfSpend];
+            console.log("PA REZ: ", result)
+            this.chartTotalPA.series[0].setData(result);
+            this.chartTotalPA.series[0].options.colors = ['#00D1FF', '#cccccc'];
+            this.chartTotalPA.series[0].update(this.chartTotalPA.series[0].options);
+          });
+        }
+      }
+    }
   }
 }

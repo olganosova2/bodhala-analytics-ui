@@ -106,3 +106,61 @@ export const COST_IMPACT_GRADES = {
   'HIGH': {color: '#FE3F56', width: '48px'}
 };
 
+export const rateBenchmarkingPieChartOptions = {
+  chart: {
+    height: 290,
+    width: null,
+    type: 'pie',
+    marginLeft: null,
+    spacingTop: 10
+  },
+  credits: {
+    enabled: false
+  },
+  title: {text: null},
+  plotOptions: {
+    pie: {
+      colors: ['#00D1FF', '#cccccc'],
+      dataLabels: {
+        enabled: false,
+        // color: 'black',
+        // // format: '<b>{point.percentage:.0f} %</b>',
+        // formatter() {
+        //   let per = this.percentage;
+        //   if (per > 5) {
+        //     per = Math.round(per );
+        //     return  per + '%';
+        //   }
+        //   return null;
+        // },
+        // distance: -50,
+        // style: {
+        //   fontSize: 18,
+        //   textOutline: false
+        // }
+      }
+    },
+    series: {}
+  },
+  legend: {
+    enabled: false
+  }
+};
+const chartSize = 115;
+
+const additionalOptions = {
+  chart: {
+    height: chartSize,
+    width: chartSize,
+    type: 'pie',
+    marginLeft: null,
+    spacingTop: 10
+  },
+  tooltip : { enabled: false },
+  series: [{
+    name: 'Executive Summary',
+    colorByPoint: true,
+    data: []
+  }]
+};
+export const rateBenchmarkingChartOptions = { ... rateBenchmarkingPieChartOptions, ... additionalOptions };

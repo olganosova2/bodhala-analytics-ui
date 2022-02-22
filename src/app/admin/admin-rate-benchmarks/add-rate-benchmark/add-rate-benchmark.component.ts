@@ -50,7 +50,7 @@ export class AddRateBenchmarkComponent implements OnInit {
 
   constructor(public dialogRef: MatDialogRef<AddRateBenchmarkComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private httpService: HttpService) {
+              public httpService: HttpService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -111,27 +111,11 @@ export class AddRateBenchmarkComponent implements OnInit {
 
   firmSelected($evt): void {
     console.log("firmSelected: ", $evt)
+    console.log("allFirmsClusterRRRR: ", this.allFirmsCluster)
     const temp = this.allFirmsCluster.filter(f => f.firm_id === $evt.value);
     if (temp.length > 0) {
       this.selectedFirmCluster = temp[0].cluster;
     }
-  }
-
-  validateForm(): boolean {
-    const isValid = true;
-    // if (!this.config.name) {
-    //   return false;
-    // }
-    // if (!this.config.json_config_parsed) {
-    //   this.config.json_config = null;
-    //   return true;
-    // }
-    // try {
-    //   this.config.json_config = JSON.parse(this.config.json_config_parsed);
-    // } catch (e) {
-    //   return false;
-    // }
-    return isValid;
   }
 
   saveBenchmark(): void {

@@ -13,34 +13,6 @@ export class RatesAnalysisService {
 
   constructor(private httpService: HttpService) { }
 
-
-
-  // calculateRateIncrease(firmRateIncreaseData, cohortRateIncreaseData) {
-
-
-
-  // }
-
-  calculateRateIncreasePct(rateIncreaseData: Array<any>, clientMaxYear: number): any {
-    let result = 0;
-    const distinctYears = [];
-    const yearRecords = [];
-    const classificationRecords = [];
-    for (let ix = 0; ix < 2; ix++) {
-      distinctYears.push(clientMaxYear - ix);
-    }
-    for (const year of distinctYears) {
-      const yearRecs = rateIncreaseData.filter(e => e.year === year) || [];
-      yearRecords.push({ rate_increase: yearRecs});
-    }
-    const yearsProcessed = [];
-    yearsProcessed.push(this.createRateIncreaseClassification(yearRecords, null, clientMaxYear));
-    const processed = yearsProcessed;
-    // result = this.calculateIncreaseRateValue(rateIncreaseLimit, processed);
-
-    return {savings: result, yearsData: processed};
-  }
-
   calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
     let result = 0;
     const distinctYears = [];

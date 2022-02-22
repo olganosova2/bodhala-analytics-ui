@@ -23,7 +23,7 @@ export class QbrExecutiveSummaryRightComponent implements OnInit {
     this.options = Object.assign({}, metricsRightChartESOptions);
   }
   saveInstance(chartInstance): void {
-    console.log("chartInstance: ", chartInstance)
+    // console.log("chartInstance: ", chartInstance)
     this.chart = chartInstance;
     const result = this.metrics.map(e => e.amount);
     const resultToCompare = this.metrics.map(e => e.amountToCompare);
@@ -33,8 +33,8 @@ export class QbrExecutiveSummaryRightComponent implements OnInit {
     if (!this.noComparisonData) {
       this.chart.series[0].setData(resultToCompare);
     }
-    console.log("result: ", result)
-    console.log("this.chart: ", this.chart);
+    // console.log("result: ", result)
+    // console.log("this.chart: ", this.chart);
   }
 
 }

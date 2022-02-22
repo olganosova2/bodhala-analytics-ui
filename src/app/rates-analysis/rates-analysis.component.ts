@@ -68,7 +68,6 @@ export class RatesAnalysisComponent implements OnInit {
   getClientRateBenchmarks(): void {
     this.pendingRequest = this.httpService.makeGetRequest('getRateBenchmarks').subscribe(
       (data: any) => {
-        console.log("data: ", data);
         this.clientRateBenchmarks = data.result || [];
         this.clientRateBenchmarks = this.clientRateBenchmarks.sort(this.utilService.dynamicSort('-created_on'));
         const pipe = new DatePipe('en-US');
@@ -111,8 +110,6 @@ export class RatesAnalysisComponent implements OnInit {
           bm.total_atty_billed = tempFirmData.total_atty_billed;
         }
       }
-      // bm.associate_rate = 400;
-      // bm.partner_rate = 1200;
 
       if (bm.market_data) {
         if (bm.market_data.length > 0) {
@@ -155,11 +152,10 @@ export class RatesAnalysisComponent implements OnInit {
           bm.blended_rate_upper_diff_pct = costImpactResult.blended_rate_upper_diff_pct;
           bm.cost_impact = costImpactResult.cost_impact;
           bm.blended_within_range = costImpactResult.blended_within_range;
-          console.log("costImpactResult: ", costImpactResult)
+          // console.log("costImpactResult: ", costImpactResult)
         }
       }
     }
-    console.log("clientRateBenchmarks: ", this.clientRateBenchmarks)
   }
 
   saveGridConfig(evt: any): void {
@@ -213,7 +209,6 @@ export class RatesAnalysisComponent implements OnInit {
   historicalCostRenderer(params: any): string {
     let result = '';
     // round to nearest 10,000
-    console.log("params: ", params);
     if (params.data.blended_rate_lower_diff >= 10000) {
       params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 10000) * 10000;
     } else {
@@ -242,7 +237,6 @@ export class RatesAnalysisComponent implements OnInit {
   }
 
   view(row: any): void {
-    console.log("row: ", row);
     this.router.navigate(['/analytics-ui/rate-benchmarking/view/', row.data.id]);
   }
 

@@ -33,7 +33,9 @@ export class RateAnalysisChartComponent implements OnInit {
   bottomBarWidth: string = '400px';
   marketAverageHeight: string = '133px';
   topBarDollars: number = 0;
+  topBarDollarFormatted: string;
   bottomBarDollars: number = 0;
+  bottomBarDollarFormatted: string;
   topBarColor: string;
   bottomBarColor: string;
   marketRateColor: string = '#E5EAEC';
@@ -54,10 +56,6 @@ export class RateAnalysisChartComponent implements OnInit {
   }
 
   ngOnInit() {
-    // console.log("RATETYPE: ", this.rateType)
-    // console.log("internalData: ", this.internalData)
-    // console.log("marketData: ", this.marketAverageData)
-
     // need to uncomment this before pushing
     // if (this.internalData.num_firms < 3) {
     //   this.validInternalBM = false;
@@ -95,6 +93,7 @@ export class RateAnalysisChartComponent implements OnInit {
       this.topBarDollars = this.selectedFirmData.blended_rate;
       this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.blended_rate) + 'px';
       this.bottomBarDollars = this.internalData.avg_blended_rate;
+      this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);
       this.bottomBarWidth = this.calculateBarWidth(this.internalData.avg_blended_rate) + 'px';
 
       const lowerRange = this.calculateBarWidth(this.marketAverageData.blended_rate_lo);
@@ -119,6 +118,8 @@ export class RateAnalysisChartComponent implements OnInit {
         this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.blended_rate;
         this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.blended_rate;
       } else {
+        this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_lo;
+        this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_hi;
         this.withinRange = true;
       }
 
@@ -127,51 +128,6 @@ export class RateAnalysisChartComponent implements OnInit {
 
       this.internalRateDelta = this.selectedFirmData.blended_rate - this.internalData.avg_blended_rate;
       this.internalRateDeltaPct = this.internalRateDelta / this.selectedFirmData.blended_rate;
-      this.internalRateDeltaPct *= 100;
-      console.log("internalRateDelta blended: ", this.selectedFirmData.blended_rate, this.internalData.avg_blended_rate, this.internalRateDelta)
-    } else if (this.rateType === 'BPI') {
-      if (this.marketAverageData.bpi_hi > this.selectedFirmData.bodhala_price_index && this.marketAverageData.bpi_hi > this.internalData.avg_bpi) {
-        this.highestRate = this.marketAverageData.bpi_hi;
-      } else if (this.selectedFirmData.bodhala_price_index > this.marketAverageData.bpi_hi && this.selectedFirmData.bodhala_price_index > this.internalData.avg_bpi) {
-        this.highestRate = this.selectedFirmData.bodhala_price_index;
-      } else if (this.internalData.avg_bpi > this.selectedFirmData.bodhala_price_index && this.internalData.avg_bpi > this.marketAverageData.bpi_hi) {
-        this.highestRate = this.internalData.avg_bpi;
-      } else {
-        this.highestRate = 5000;
-      }
-      this.topBarDollars = this.selectedFirmData.bodhala_price_index;
-      this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.bodhala_price_index) + 'px';
-      this.bottomBarDollars = this.internalData.avg_bpi;
-      this.bottomBarWidth = this.calculateBarWidth(this.internalData.avg_bpi) + 'px';
-
-      this.marketAverageLowerRange = this.marketAverageData.bpi_lo;
-      this.marketAverageUpperRange = this.marketAverageData.bpi_hi;
-      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketAverageData.bpi_lo);
-      this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.marketAverageData.bpi_hi);
-      const lowerRange = this.calculateBarWidth(this.marketAverageData.bpi_lo);
-      const upperRange = this.calculateBarWidth(this.marketAverageData.bpi_hi);
-      const width = upperRange - lowerRange;
-      this.marketAverageLeft = lowerRange + 'px';
-      this.marketAverageWidth = width + 'px';
-
-      if (this.selectedFirmData.bodhala_price_index > this.marketAverageData.bpi_hi) {
-        this.marketRateLowerDelta = this.selectedFirmData.bodhala_price_index - this.marketAverageData.bpi_hi;
-        this.marketRateUpperDelta = this.selectedFirmData.bodhala_price_index - this.marketAverageData.bpi_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.bodhala_price_index;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.bodhala_price_index;
-      } else if (this.selectedFirmData.bodhala_price_index < this.marketAverageData.bpi_lo) {
-        this.marketRateLowerDelta = this.selectedFirmData.bodhala_price_index - this.marketAverageData.bpi_lo;
-        this.marketRateUpperDelta = this.selectedFirmData.bodhala_price_index - this.marketAverageData.bpi_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.bodhala_price_index;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.bodhala_price_index;
-      } else {
-        this.withinRange = true;
-      }
-      this.marketRateLowerDeltaPct *= 100;
-      this.marketRateUpperDeltaPct *= 100;
-
-      this.internalRateDelta = this.selectedFirmData.bodhala_price_index - this.internalData.avg_bpi;
-      this.internalRateDeltaPct = this.internalRateDelta / this.selectedFirmData.bodhala_price_index;
       this.internalRateDeltaPct *= 100;
     } else if (this.rateType === 'Partner') {
 
@@ -210,6 +166,8 @@ export class RateAnalysisChartComponent implements OnInit {
         this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.avg_partner_rate;
         this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.avg_partner_rate;
       } else {
+        this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_lo;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_hi;
         this.withinRange = true;
       }
       this.marketRateLowerDeltaPct *= 100;
@@ -256,6 +214,8 @@ export class RateAnalysisChartComponent implements OnInit {
         this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.avg_associate_rate;
         this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.avg_associate_rate;
       } else {
+        this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_lo;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_hi;
         this.withinRange = true;
       }
       this.marketRateLowerDeltaPct *= 100;
@@ -266,6 +226,8 @@ export class RateAnalysisChartComponent implements OnInit {
       this.internalRateDeltaPct *= 100;
 
     }
+    this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);
+    this.topBarDollarFormatted = moneyFormatter.format(this.topBarDollars);
     // console.log("topBarDollars >= marketAverageUpperRange: ", this.topBarDollars >= Number(this.marketAverageUpperRange))
     // console.log("this.topBarDollars: ", this.topBarDollars)
     // console.log("this.internalRateDeltaPct: ", this.internalRateDeltaPct)
