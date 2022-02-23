@@ -18,7 +18,7 @@ import { IRateBenchmark, moneyFormatter, percentFormatter, COST_IMPACT_GRADES, r
 export class ViewRateAnalysisComponent implements OnInit {
   pendingRequest: Subscription;
   benchmarkId: number;
-  benchmark: IRateBenchmark
+  benchmark: IRateBenchmark;
   peerFirms: Array<string>;
   loaded: boolean = false;
   diffsCalculated: boolean = false;
@@ -55,8 +55,8 @@ export class ViewRateAnalysisComponent implements OnInit {
   blendedWithinRange: boolean;
   // needed? Or conditionals in template?
   costImpactColor: string;
-  firmRateIncreaseColor: string = '#3EDB73';
-  marketRateIncreaseColor: string = '#FF650F';
+  firmRateIncreaseColor: string = '';
+  cohortRateIncreaseColor: string = '';
   optionsTotal: any;
   optionsTotalPA: any;
   chartTotal: any;
@@ -89,7 +89,10 @@ export class ViewRateAnalysisComponent implements OnInit {
       .subscribe(async params => {
         // this.report = this.qbrService.savedQBR;
         this.benchmarkId = Number(params.get('id'));
-        this.benchmark = await this.getBenchmark();
+        const result = await this.ratesService.getBenchmark(this.benchmarkId);
+        console.log("REZZY: ", result)
+        this.firmName = result.firm_name;
+        this.benchmark = result.benchmark;
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
@@ -100,25 +103,6 @@ export class ViewRateAnalysisComponent implements OnInit {
         }
         this.getData();
       });
-  }
-
-  getBenchmark(): Promise<IRateBenchmark> {
-    const params = {benchmarkId: this.benchmarkId};
-    return new Promise((resolve, reject) => {
-      return this.httpService.makeGetRequest('getRateBenchmark', params).subscribe(
-        (data: any) => {
-          if (!data.result) {
-            return;
-          }
-          const bm = data.result
-          this.firmName = data.firm_name;
-          resolve(bm);
-        },
-        err => {
-          return {error: err};
-        }
-      );
-    });
   }
 
   setUpChartOptions(): void {
@@ -180,6 +164,9 @@ export class ViewRateAnalysisComponent implements OnInit {
             this.firmTotalSpend = firmClassificationRateIncreasePct.total;
             this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
 
+            this.firmRateIncreaseColor = this.getColor(this.firmRateIncreasePct);
+            this.cohortRateIncreaseColor = this.getColor(this.cohortRateIncreasePct);
+
             const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
             if (this.firmTotalSpend && projectedCostImpact) {
               if (projectedCostImpact.firmProjectedImpact) {
@@ -216,8 +203,8 @@ export class ViewRateAnalysisComponent implements OnInit {
             // console.log("internalYearData: ", this.internalYearData)
             // console.log("firmYearData: ", this.firmYearData)
             // console.log("marketAverageData: ", this.marketAverageData)
-            // console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
-            // console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
+            console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
+            console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
             // console.log("firmTotalSpend: ", this.firmTotalSpend)
             // console.log("firmCostImpact: ", this.firmCostImpact)
             // console.log("cohortCostImpact: ", this.cohortCostImpact)
@@ -231,7 +218,19 @@ export class ViewRateAnalysisComponent implements OnInit {
   }
 
   goToDetail(): void {
-    console.log("go to the detail")
+    const detailData = {
+      firmYear: this.firmYearData,
+      bm: this.benchmark,
+      totalSpend: this.overallSpendData,
+      market: this.marketAverageData,
+      internal: this.internalYearData
+    }
+    this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
+    {state:
+      {
+        data: detailData
+      }
+    });
   }
 
   setStyle(): any {
@@ -250,7 +249,7 @@ export class ViewRateAnalysisComponent implements OnInit {
 
   setMarketIncreaseStyle(): any {
     const styles = {
-      'background': 'linear-gradient(to right, #FFFFFF 72%,' + this.marketRateIncreaseColor  + ' 28%)'
+      'background': 'linear-gradient(to right, #FFFFFF 72%,' + this.cohortRateIncreaseColor  + ' 28%)'
     };
     return styles;
   }
@@ -295,5 +294,20 @@ export class ViewRateAnalysisComponent implements OnInit {
         }
       }
     }
+  }
+
+  getColor(increasePct: number): string {
+    increasePct = Math.round(increasePct);
+    let result = '';
+    if (increasePct >= 10) {
+      result = '#FE3F56';
+    } else if (increasePct < 10 && increasePct >= 7) {
+      result = '#FF8B4A';
+    } else if (increasePct < 7 && increasePct > 3) {
+      result = '#FFC327';
+    } else {
+      result = '#3EDB73';
+    }
+    return result;
   }
 }

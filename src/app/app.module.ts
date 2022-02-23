@@ -194,6 +194,8 @@ import { MatterDocumentsComponent } from './matters/matter-executive-summary/mat
 import { MatterDocumentsOverviewComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
 import { MatterDocumentModalComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-document-modal/matter-document-modal.component';
 import { InternalMattersOverlayComponent } from './matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
+import { GranularRateAnalysisComponent } from './rates-analysis/view-rate-analysis/granular-rate-analysis/granular-rate-analysis.component';
+import { GranularRateChartComponent } from './rates-analysis/view-rate-analysis/granular-rate-analysis/granular-rate-chart/granular-rate-chart.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -341,7 +343,9 @@ highcharts.setOptions({
     MatterDocumentsOverviewComponent,
     MatterDocumentModalComponent,
     MatterMetricTableComponent,
-    InternalMattersOverlayComponent
+    InternalMattersOverlayComponent,
+    GranularRateAnalysisComponent,
+    GranularRateChartComponent
   ],
   entryComponents: [
     PillComponent,

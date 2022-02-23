@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {tkClassifications, IClassification} from '../savings-calculator/savings-calculator.service';
+import { IRateBenchmark } from './rates-analysis.model';
 
 
 @Injectable({
@@ -12,6 +13,24 @@ export class RatesAnalysisService {
   errorMessage: any;
 
   constructor(private httpService: HttpService) { }
+
+  getBenchmark(bmId: number): Promise<any> {
+    const params = {benchmarkId: bmId};
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getRateBenchmark', params).subscribe(
+        (data: any) => {
+          if (!data.result) {
+            return;
+          }
+          const bm = data.result
+          resolve({benchmark: bm, firm_name: data.firm_name});
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
 
   calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
     let result = 0;

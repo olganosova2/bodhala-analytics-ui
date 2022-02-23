@@ -1,0 +1,88 @@
+<!-- <div class="p-grid full-width" style="padding-top: 56px; padding-bottom: 40px;">
+  <div style="width: 12% !important; padding: 32px 0px 32px 48px !important;">
+
+    <div class="labels mb10">You Pay</div>
+    <div *ngIf="validInternalBM" class="labels mb5">Internal</div>
+  </div>
+  <div #chartPanel  style="width: 88% !important; display: inline-block; position: relative; z-index: 1; padding: 32px !important;">
+    <div *ngIf="validMarketAverage" #bmPanel class="market-average" [ngStyle]="{'left': marketAverageLeft, 'width': marketAverageWidth, 'height': marketAverageHeight}">
+      <div class="range-average-wrapper">
+
+        <span class="average">Market Average</span>
+
+        <p class="range">{{marketAverageLowerRangeFormatted}} - {{marketAverageUpperRangeFormatted}}</p>
+      </div>
+
+    </div>
+    <div class="bar-div" [ngStyle]="{'background-color': topBarColor, 'width': topBarWidth, 'margin-bottom': '10px', 'font-size': '16px'}">
+      ${{topBarDollars | number:'1.0-0'}}</div>
+    <div *ngIf="validInternalBM" class="bar-div" [ngStyle]="{'background-color': '#8A8A8A', 'width': bottomBarWidth, 'font-size': '16px'}">
+      ${{bottomBarDollars | number:'1.0-0'}}</div>
+  </div>
+</div>
+
+<div style="padding: 32px; border-top: 2px solid #E9F1F4;">
+  <div class="p-grid" style="line-height: 0.5em !important; padding-bottom: 0.25em;">
+    <div style="width: 20%;">
+      <span class="header-span" style="font-size: 16px !important; font-weight: 700 !important;">Benchmark Reference</span>
+    </div>
+
+    <div style="width: 15%;">
+      <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important; font-weight: 700 !important;">Rates</span>
+    </div>
+
+    <div style="width: 15%;">
+      <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important; font-weight: 700 !important;">You Pay</span>
+    </div>
+
+    <div style="width: 50%;">
+      <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important; font-weight: 700 !important;">Hourly Cost Impact</span>
+    </div>
+
+  </div>
+
+  <div class="p-grid" style="padding-top: 1.25em;">
+    <div style="width: 20%;">
+      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important;">Market Rate</span>
+    </div>
+
+    <div style="width: 15%;">
+      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important; padding-left: 0em !important;">{{marketAverageLowerRangeFormatted}} to {{marketAverageUpperRangeFormatted}}</span>
+    </div>
+
+    <div style="width: 15%;">
+      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important; padding-left: 0em !important;">{{topBarDollarFormatted}}</span>
+    </div>
+
+    <div  style="width: 50%;">
+      <span *ngIf="!withinRange && marketRateLowerDelta > 0 && marketRateUpperDelta > 0" [ngStyle]="{'color': marketRateColor, 'font-size': '16px', 'font-family': 'Roboto'}">+${{marketRateLowerDelta | number:'1.0-0'}} - ${{marketRateUpperDelta | number:'1.0-0'}}</span>
+      <span *ngIf="!withinRange && marketRateLowerDelta < 0 && marketRateUpperDelta < 0" [ngStyle]="{'color': marketRateColor, 'font-size': '16px', 'font-family': 'Roboto'}">-${{(marketRateLowerDelta * -1) | number:'1.0-0'}} - ${{(marketRateUpperDelta * -1) | number:'1.0-0'}}</span>
+      <span *ngIf="withinRange" [ngStyle]="{'color': marketRateColor, 'font-size': '16px', 'font-family': 'Roboto'}">-${{marketRateLowerDelta | number:'1.0-0'}} to +${{(marketRateUpperDelta * -1) | number:'1.0-0'}}</span> <span *ngIf="withinRange" class="internal-rate-pct" [ngStyle]="{'background': marketRateColor}">Rate is within range</span>
+      <span class="internal-rate-pct" [ngStyle]="{'background': marketRateColor}" *ngIf="!withinRange && marketRateLowerDeltaPct > 0 && marketRateUpperDeltaPct > 0">{{marketRateLowerDeltaPct | number:'1.0-0'}}% to {{marketRateUpperDeltaPct | number:'1.0-0'}}% ↑</span>
+      <span class="internal-rate-pct" [ngStyle]="{'background': marketRateColor}" *ngIf="!withinRange && marketRateLowerDeltaPct < 0 && marketRateUpperDeltaPct < 0">{{(marketRateLowerDeltaPct * -1) | number:'1.0-0'}}% to {{(marketRateUpperDeltaPct * -1) | number:'1.0-0'}}% ↓</span>
+    </div>
+
+  </div>
+
+  <div class="p-grid" style="padding-top: 1em;">
+    <div style="width: 20%;">
+      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important;">Internal Rate</span>
+    </div>
+
+    <div style="width: 15%;">
+      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important; padding-left: 0em !important;">{{bottomBarDollarFormatted}}</span>
+    </div>
+
+    <div style="width: 15%;">
+      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important; padding-left: 0em !important;">{{topBarDollarFormatted}}</span>
+    </div>
+
+    <div style="width: 50%;">
+      <span *ngIf="internalRateDelta > 0" [ngStyle]="{'color': internalRateColor, 'font-size': '16px', 'font-family': 'Roboto'}">+${{internalRateDelta | number:'1.0-0'}}</span>
+      <span *ngIf="internalRateDelta <= 0" [ngStyle]="{'color': internalRateColor, 'font-size': '16px', 'font-family': 'Roboto'}">-${{(internalRateDelta * -1) | number:'1.0-0'}}</span>
+      <span class="internal-rate-pct" *ngIf="internalRateDeltaPct && internalRateDeltaPct > 0" [ngStyle]="{'background': internalRateColor, 'font-size': '16px'}">{{internalRateDeltaPct | number:'1.0-0'}}% ↑</span>
+      <span class="internal-rate-pct" *ngIf="internalRateDeltaPct && internalRateDeltaPct < 0" [ngStyle]="{'background': internalRateColor, 'font-size': '16px'}">{{(internalRateDeltaPct * -1) | number:'1.0-0'}}% ↓</span>
+    </div>
+  </div>
+</div> -->
+HELLO THERE

@@ -116,7 +116,7 @@
             If your rates change by the estimated market rate<br>
             increase, your projected cost impact
           </div>
-          <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important;" [ngStyle]="{'color': marketRateIncreaseColor}">
+          <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important;" [ngStyle]="{'color': cohortRateIncreaseColor}">
             <span *ngIf="cohortCostImpact > 0">+</span><span *ngIf="cohortCostImpact < 0">-</span> {{cohortCostImpactFormatted}}
             <span class="ml10 pointer-hand" placement="bottom"
                 [ngbPopover]="helpText"

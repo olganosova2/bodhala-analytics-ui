@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { RatesAnalysisService } from '../../rates-analysis.service';
-import { moneyFormatter, percentFormatter } from '../../rates-analysis.model';
+import { moneyFormatter } from '../../rates-analysis.model';
 
 @Component({
   selector: 'bd-rate-analysis-chart',
