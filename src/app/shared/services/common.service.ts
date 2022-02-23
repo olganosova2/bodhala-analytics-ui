@@ -87,7 +87,7 @@ export class CommonService {
   }
 
   generatePDF(title: string, divId: string, firmId: string, orientation: string = 'p') {
-    if (title.includes('Rate Card')) {
+    if (title.includes('Report Card')) {
       this.savePDFExport(firmId);
     }
     this.pdfLoading = true;
@@ -100,7 +100,7 @@ export class CommonService {
     const exportElement = document.getElementById(divId);
     const footerDiv = document.createElement('DIV');
     const logo = new Image();
-    if (title === 'Executive Summary' || title.includes('Rate Card')) {
+    if (title === 'Executive Summary' || title.includes('Report Card')) {
       footerDiv.innerHTML = 'Powered by';
       footerDiv.style.fontSize = '22px';
       footerDiv.style.fontFamily = 'Sharp Sans';
@@ -164,7 +164,7 @@ export class CommonService {
       }
       pdf.save(docName);
       this.pdfLoading = false;
-      if (title === 'Executive Summary' || title.includes('Rate Card')) {
+      if (title === 'Executive Summary' || title.includes('Report Card')) {
         exportElement.removeChild(footerDiv);
       }
     })
