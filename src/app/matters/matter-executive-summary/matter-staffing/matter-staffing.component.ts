@@ -31,6 +31,7 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
   marketMatters: Array<string> =  [];
   metrics: Array<string> = [];
   isLoaded: boolean = false;
+  errorMessage: string;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -75,6 +76,10 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
     };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
+        if (data.error) {
+          this.errorMessage = data.error;
+          return;
+        }
         if (data.result && data.result.ade_data) {
           this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
           this.matterAnalysisService.calculateSingleMatterData(this.summaryData);

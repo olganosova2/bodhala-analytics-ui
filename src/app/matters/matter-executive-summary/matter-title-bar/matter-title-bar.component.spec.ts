@@ -41,6 +41,8 @@ describe('MatterTitleBarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MatterTitleBarComponent);
     component = fixture.componentInstance;
+    component.matterId = '087260/818';
+    component.title = 'Matter Overview';
     fixture.detectChanges();
   });
 

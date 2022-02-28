@@ -56,4 +56,12 @@ describe('MatterExecutiveSummaryComponent', () => {
   it('should create MatterExecutiveSummaryComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should selectFirm', () => {
+    component.selectFirm(4);
+    expect(component.firmId).toBe(4);
+  });
+  it('should toggleInsight', () => {
+    component.toggleInsight(true);
+    expect(component.insightExpanded).toBe(true);
+  });
 });

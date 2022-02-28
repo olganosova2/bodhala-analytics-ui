@@ -34,6 +34,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import {CheckboxModule} from 'primeng/checkbox';
+import {RadioButtonModule} from 'primeng/radiobutton';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {NgIdleKeepaliveModule} from '@ng-idle/keepalive';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -189,6 +190,7 @@ import { MatterDocumentsComponent } from './matters/matter-executive-summary/mat
 import { MatterDocumentsOverviewComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
 import { MatterDocumentModalComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-document-modal/matter-document-modal.component';
 import { InternalMattersOverlayComponent } from './matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
+import { BenchmarkMattersComponent } from './admin/benchmark-matters/benchmark-matters.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -331,7 +333,8 @@ highcharts.setOptions({
     MatterDocumentsOverviewComponent,
     MatterDocumentModalComponent,
     MatterMetricTableComponent,
-    InternalMattersOverlayComponent
+    InternalMattersOverlayComponent,
+    BenchmarkMattersComponent
   ],
   entryComponents: [
     PillComponent,
@@ -368,6 +371,7 @@ highcharts.setOptions({
     MatMenuModule,
     MatCheckboxModule,
     CheckboxModule,
+    RadioButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatExpansionModule,

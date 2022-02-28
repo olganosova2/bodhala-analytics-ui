@@ -121,6 +121,10 @@ export const END_POINTS_URLS = {
   getFirmsForMatter: {url: BASE_URL + 'analytics/getFirmsForMatter', showLoading: false},
   getMatterBreakdownByName: {url: BASE_URL + 'analytics/getMatterBreakdownByName', showLoading: false},
   getMatterDocsMarketData: {url: BASE_URL + 'analytics/getMatterDocsMarketData', showLoading: true},
+  getBenchmarkMatters: {url: BASE_URL + 'analytics/getBenchmarkMatters', showLoading: true},
+  getBenchmarkMattersConfig: {url: BASE_URL + 'analytics/getBenchmarkMattersConfig', showLoading: true},
+  checkBenchmarkMatterEligibility: {url: BASE_URL + 'analytics/checkBenchmarkMatterEligibility', showLoading: true},
+
 
   // ADMIN
   getAnalyticsClients: {url: BASE_URL + 'adminx/getAnalyticsClients', showLoading: false},
@@ -170,7 +174,7 @@ export const END_POINTS_URLS = {
   getAdminMatterInsight: {url: BASE_URL + 'admin/getMatterInsight', showLoading: true},
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
   saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
-
+  saveBenchmarkMattersConfig: {url: BASE_URL + 'admin/saveBenchmarkMattersConfig', showLoading: true},
 
 };
 
@@ -194,7 +198,7 @@ export const ROUTES = [
   {name: 'app.uploads-manage-launchpad', routePath: 'analytics-ui/admin/insights', fragment: '/admin/insights'},
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
-  // {name: 'app.client-dashboard.lead-partners', routePath: 'analytics-ui/lead-attorney', fragment: '/lead-attorney'},
+  {name: 'matter.benchmarking', routePath: 'analytics-ui/admin/matter-benchmarks', fragment: '/admin/matter-benchmarks'},
   {name: 'app.yoy.rate.increase', routePath: 'analytics-ui/yoy-rate-increase', fragment: '/yoy-rate-increase'},
 ];
 
@@ -204,6 +208,8 @@ export const EST_TIME_ZONE = 'America/New York';
 export const KEEP_ALIVE_SEC = 600000;
 export const TOP_RECORDS_NUMBER = 10;
 export const TOP_RECORDS_NUMBER_ES = 5;
+export const BM_MATTER_CONFIG_NAME = 'benchmarks.matter.config';
+export const BM_MATTER_GENERIC_CONFIG_NAME = 'benchmarks.matter.thresholds';
 
 export const MAXIMUM_TEXT_CHARACTERS = 500;
 

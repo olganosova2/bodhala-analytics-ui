@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import * as _moment from 'moment';
 import {TopMattersComponent} from '../../firm/top-matters/top-matters.component';
 import {MatterInsightsComponent} from './matter-insights/matter-insights.component';
+import {CommonService} from '../../shared/services/common.service';
 
 const moment = _moment;
 
@@ -31,10 +32,13 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpService,
               public messageService: MessagingService,
+              public commonServ: CommonService,
               public userService: UserService) {
+    this.commonServ.pageTitle = 'Launchpad Insights';
   }
 
   ngOnInit() {
+
     this.loadClients();
   }
 
@@ -163,6 +167,7 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }

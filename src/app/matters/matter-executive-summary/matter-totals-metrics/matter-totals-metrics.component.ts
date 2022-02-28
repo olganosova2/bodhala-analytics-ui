@@ -22,6 +22,7 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
   internalRecords: Array<IMatterExecSummary> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
   marketMatters: Array<string> =  [];
+  errorMessage: string;
   @Input() clientId: string;
   @Input() matterId: string;
   @Input() firmId: number;
@@ -56,6 +57,10 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     };
     this.pendingRequest = this.httpService.makeGetRequest<IMatterExecSummary>('getMatterExecSummary', params).subscribe(
       (data: any) => {
+        if (data.error) {
+          this.errorMessage = data.error;
+          return;
+        }
         if (data.result && data.result.ade_data) {
           this.summaryData = data.result.ade_data.length > 0 ? data.result.ade_data[0] : null;
           if (!this.summaryData) {
