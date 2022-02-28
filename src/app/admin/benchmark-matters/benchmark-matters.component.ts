@@ -205,6 +205,5 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       this.pendingRequestMatters.unsubscribe();
     }
   }
-
-
 }
+
