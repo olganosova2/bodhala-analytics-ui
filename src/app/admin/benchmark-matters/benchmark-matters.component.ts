@@ -77,6 +77,9 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     }
   }
   getMattersData(): void {
+    if (this.clientBmConfig.json_config.matters.length === 0) {
+      return;
+    }
     const params = {clientId: this.selectedClient.bh_client_id, matters: JSON.stringify(this.clientBmConfig.json_config.matters), score: 0};
     this.pendingRequestMatters = this.httpService.makeGetRequest<IBmMatters>('getBenchmarkMatters', params).subscribe(
       (data: any) => {
@@ -190,6 +193,9 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
         if (ix >= 0) {
           this.clientBmConfig.json_config.matters.splice(ix, 1);
           this.saveClientConfig(2);
+          if (this.clientBmConfig.json_config.matters.length === 0) {
+            this.displayMatters = [];
+          }
         }
       }
     });
