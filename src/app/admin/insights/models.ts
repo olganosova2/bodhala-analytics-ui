@@ -9,6 +9,7 @@ export interface IClient {
   bh_client_id: number;
   org_name: string;
   org_id: number;
+  missingSmartPA?: boolean;
 }
 export interface IInsight {
   id: number;
