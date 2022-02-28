@@ -1,3 +1,8 @@
+<div [hidden]="true">
+  <lib-bd-filters
+    [collapsed]="appStateService.layout.isCollapsed"
+  ></lib-bd-filters>
+</div>
 <div class="float-right mr20">
   <div *ngIf="firms.length === 1 && firm"><span class="font-bold">Firm:</span> {{ firm.name}}</div>
   <div *ngIf="firms.length > 2" class="justify-start">

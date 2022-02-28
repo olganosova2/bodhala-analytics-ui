@@ -97,6 +97,7 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
     for (const filter of this.elemFiltersService.filters) {
       filter.clear();
     }
+    this.elemFiltersService.saveFiltersConfig();
     const savedFilters = localStorage.getItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id);
     const serializedQs = JSON.parse(savedFilters);
     const includeExpenses = localStorage.getItem('include_expenses_' + this.userService.currentUser.id);
