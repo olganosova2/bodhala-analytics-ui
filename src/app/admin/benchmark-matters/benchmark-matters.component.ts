@@ -67,8 +67,12 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       this.clientBmConfig = Object.assign({}, this.createNewBmConfig());
     } else {
       this.clientBmConfig = Object.assign({}, cfg);
-      if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.matters && this.clientBmConfig.json_config.matters.length > 0) {
-        this.getMattersData();
+      if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.matters) {
+        if (this.clientBmConfig.json_config.matters.length > 0) {
+          this.getMattersData();
+        } else {
+          this.bmSetupType = IBmSetupType.AllMatters;
+        }
       }
     }
   }
