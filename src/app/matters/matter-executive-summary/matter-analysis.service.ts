@@ -224,13 +224,22 @@ export class MatterAnalysisService {
     const bmDiff = maxRec[prop] - minRec[prop];
     tk.low = minRec[prop];
     tk.high = maxRec[prop];
-    // If zRec <= -1 then GOOD, zRec -1 - 1 fair, zRec >1 POOR
-    if (zRec <= -1) {
-      tk.grade = MetricGrade.GOOD;
-    } else if (zRec > -1 && zRec < 1) {
-      tk.grade = MetricGrade.FAIR;
-    } else if (zRec >= 1) {
-      tk.grade = MetricGrade.POOR;
+    if (prop.indexOf('percent_') !== 0) {
+      if (zRec <= -1) {
+        tk.grade = MetricGrade.GOOD;
+      } else if (zRec > -1 && zRec < 1) {
+        tk.grade = MetricGrade.FAIR;
+      } else if (zRec >= 1) {
+        tk.grade = MetricGrade.POOR;
+      }
+    } else {
+      if (zRec >= -0.5 && zRec <= 0.5) {
+        tk.grade = MetricGrade.GOOD;
+      } else if ((zRec >= -1 && zRec < -0.5) || (zRec > 0.5 && zRec <= 1)) {
+        tk.grade = MetricGrade.FAIR;
+      } else if (zRec >= 1) {
+        tk.grade = MetricGrade.POOR;
+      }
     }
   }
   getGradeBkp(tk: IMetricDisplayData, summaryData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): void {
