@@ -1,6 +1,10 @@
 import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { RatesAnalysisService } from '../../../rates-analysis.service';
 import { moneyFormatter, percentFormatter } from '../../../rates-analysis.model';
+import { InvokeFunctionExpr } from '@angular/compiler';
+import { IBenchmarkRate } from 'src/app/benchmarks/model';
+import { Subscription } from 'rxjs';
+import { HttpService } from 'bodhala-ui-common';
 
 @Component({
   selector: 'bd-granular-rate-chart',
@@ -8,10 +12,13 @@ import { moneyFormatter, percentFormatter } from '../../../rates-analysis.model'
   styleUrls: ['./granular-rate-chart.component.scss']
 })
 export class GranularRateChartComponent implements OnInit {
+  pendingRequest: Subscription;
   @Input() selectedFirm: string;
-  @Input() clasification: string;
+  @Input() classification: string;
   @Input() seniority: string;
-  @Input() overallSpend: any;
+  @Input() overallSpendData: any;
+  @Input() firmSpendData: any;
+  @Input() benchmark: any;
 
   marketAverageLowerRange: number;
   marketAverageUpperRange: number;
@@ -46,7 +53,8 @@ export class GranularRateChartComponent implements OnInit {
   validMarketAverage: boolean = true;
   @ViewChild('chartPanel') chartPanel: ElementRef<HTMLElement>;
 
-  constructor(public ratesService: RatesAnalysisService) {
+  constructor(public ratesService: RatesAnalysisService,
+              public httpService: HttpService) {
   }
 
   // @HostListener('window:resize', ['$event'])
@@ -55,6 +63,32 @@ export class GranularRateChartComponent implements OnInit {
   // }
 
   ngOnInit(): void {
+    console.log("GRANULAR CHART: ", this.seniority, this.benchmark)
+    this.getData();
+  }
+
+  getData(): void {
+    const params = {
+      pa: this.benchmark.smart_practice_area,
+      firmId: this.benchmark.bh_lawfirm_id,
+      yyyy: this.benchmark.year,
+      seniority: this.seniority,
+      classification: this.classification
+    };
+    this.pendingRequest = this.httpService.makeGetRequest('getTKGranularityRateData', params).subscribe(
+      (data: any) => {
+        if (!data.result) {
+          return;
+        }
+        const bm = data.result
+      },
+      err => {
+        return {error: err};
+      }
+    )
+
+
+
   }
 
 

@@ -57,7 +57,7 @@
     </div>
 
     <div>
-      <bd-granular-rate-chart [classification]="'associate'" [seniority]="'senior'" [overallSpend]="overallSpendData"></bd-granular-rate-chart>
+      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'senior'" [overallSpendData]="overallSpendData" [firmSpendData]="firmYearData" [benchmark]="benchmark"></bd-granular-rate-chart>
     </div>
   </div>
 
@@ -67,7 +67,7 @@
     </div>
 
     <div>
-      <bd-granular-rate-chart [classification]="'associate'" [seniority]="'mid'" [overallSpend]="overallSpendData"></bd-granular-rate-chart>
+      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'mid'" [overallSpendData]="overallSpendData" [benchmark]="benchmark" [firmSpendData]="firmYearData"></bd-granular-rate-chart>
     </div>
   </div>
 
@@ -76,7 +76,7 @@
       <span class="header-span">Junior Associate</span>
     </div>
     <div>
-      <bd-granular-rate-chart [classification]="'associate'" [seniority]="'junior'" [overallSpend]="overallSpendData"></bd-granular-rate-chart>
+      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'junior'" [overallSpendData]="overallSpendData" [benchmark]="benchmark" [firmSpendData]="firmYearData"></bd-granular-rate-chart>
     </div>
   </div>
 

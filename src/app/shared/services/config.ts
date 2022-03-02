@@ -119,6 +119,7 @@ export const END_POINTS_URLS = {
   getFirmRateAnalysisIncreaseData: {url: BASE_URL + 'analytics/getFirmRateAnalysisIncreaseData', showLoading: true},
   getRateBenchmarks: {url: BASE_URL + 'analytics/getRateBenchmarks', showLoading: true},
   getRateBenchmark: {url: BASE_URL + 'analytics/getRateBenchmark', showLoading: true},
+  getTKGranularityRateData: {url: BASE_URL + 'analytics/getTKGranularityRateData', showLoading: true},
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
   getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},

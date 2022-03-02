@@ -32,6 +32,36 @@ export class RatesAnalysisService {
     });
   }
 
+
+  getRateAnalysisData(bm: any): Promise<any> {
+    const firmParam = [];
+    const paParam = [];
+    paParam.push(bm.smart_practice_area);
+    firmParam.push(bm.bh_lawfirm_id.toString());
+    const params = {
+      firmId: bm.bh_lawfirm_id,
+      smartPA: bm.smart_practice_area,
+      marketAverageYear: bm.year,
+      firms: JSON.stringify(firmParam),
+      bdPracticeAreas: JSON.stringify(paParam)
+    };
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getFirmRateAnalysisIncreaseData', params).subscribe(
+        (data: any) => {
+          if (!data.result) {
+            return;
+          }
+          resolve(data);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+
+
   calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
     let result = 0;
     const distinctYears = [];

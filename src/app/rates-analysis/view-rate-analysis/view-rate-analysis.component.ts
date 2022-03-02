@@ -101,7 +101,9 @@ export class ViewRateAnalysisComponent implements OnInit {
         if (ix >= 0) {
           this.peerFirms.splice(ix, 1);
         }
-        this.getData();
+        // this.getData();
+        const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
+        this.processData(rateAnalysisData);
       });
   }
 
@@ -198,23 +200,98 @@ export class ViewRateAnalysisComponent implements OnInit {
             this.costImpactLowerFormatted = moneyFormatter.format(this.costImpactLower);
             this.costImpactUpperFormatted = moneyFormatter.format(this.costImpactUpper);
             this.blendedWithinRange = historicalCostImpact.blended_within_range;
-
-            // console.log("historicalCostImpact: ", historicalCostImpact)
-            // console.log("internalYearData: ", this.internalYearData)
-            // console.log("firmYearData: ", this.firmYearData)
-            // console.log("marketAverageData: ", this.marketAverageData)
-            console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
-            console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
-            // console.log("firmTotalSpend: ", this.firmTotalSpend)
-            // console.log("firmCostImpact: ", this.firmCostImpact)
-            // console.log("cohortCostImpact: ", this.cohortCostImpact)
-            // console.log("firmClassificationRateIncreasePct: ", firmClassificationRateIncreasePct)
-            // console.log("cohortClassificationRateIncreasePct: ", cohortClassificationRateIncreasePct)
-            // console.log("projectedCostImpact: ", projectedCostImpact)
           }
         }
       }
     );
+  }
+
+  processData(data): void {
+    if (data.result) {
+      if (data.result.market_average) {
+        if (data.result.market_average.length > 0) {
+          this.marketAverageData = data.result.market_average[0];
+        }
+      }
+      if (data.result.firm_data) {
+        if (data.result.firm_data.length > 0) {
+          this.firmYearData = data.result.firm_data[0];
+          this.firmYearData = this.firmYearData[0];
+        }
+      }
+      if (data.result.internal_data) {
+        if (data.result.internal_data.length > 0) {
+          this.internalYearData = data.result.internal_data[0];
+        }
+      }
+      if (data.result.overall_spend) {
+        this.overallSpendData = data.result.overall_spend;
+      }
+      if (data.result.overall_pa_spend) {
+        this.overallSpendPAData = data.result.overall_pa_spend;
+      }
+      this.loaded = true;
+      if (data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
+        const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, data.result.max_year);
+        const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result_classification, data.result.max_year);
+        this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;
+        this.cohortClassificationRateIncreaseData = cohortClassificationRateIncreasePct.classificationData;
+        this.firmRateIncreasePct = firmClassificationRateIncreasePct.rateIncreasePct;
+        this.cohortRateIncreasePct = cohortClassificationRateIncreasePct.rateIncreasePct;
+        this.firmRateIncreasePct *= 100;
+        this.cohortRateIncreasePct *= 100;
+        this.firmTotalSpend = firmClassificationRateIncreasePct.total;
+        this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
+
+        this.firmRateIncreaseColor = this.getColor(this.firmRateIncreasePct);
+        this.cohortRateIncreaseColor = this.getColor(this.cohortRateIncreasePct);
+
+        const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
+        if (this.firmTotalSpend && projectedCostImpact) {
+          if (projectedCostImpact.firmProjectedImpact) {
+            this.firmCostImpact = projectedCostImpact.firmProjectedImpact - this.firmTotalSpend;
+            this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
+          }
+          if (projectedCostImpact.marketProjectedImpact) {
+            // this.cohortCostImpact = projectedCostImpact.marketProjectedImpact - this.firmTotalSpend;
+            const projectedCohortSpend = this.firmTotalSpend * (1 + (this.cohortRateIncreasePct / 100));
+            this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
+            this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
+          }
+        }
+        const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.firmYearData, this.marketAverageData);
+        this.costImpactGrade = historicalCostImpact.cost_impact;
+        this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
+        this.costImpactLower = historicalCostImpact.blended_rate_lower_diff;
+        this.costImpactUpper = historicalCostImpact.blended_rate_upper_diff;
+        if (this.costImpactLower >= 10000) {
+          this.costImpactLower = Math.ceil(this.costImpactLower / 10000) * 10000;
+        } else {
+          this.costImpactLower = Math.ceil(this.costImpactLower / 1000) * 1000;
+        }
+        if (this.costImpactUpper >= 10000) {
+          this.costImpactUpper = Math.ceil(this.costImpactUpper / 10000) * 10000;
+        } else {
+          this.costImpactUpper = Math.ceil(this.costImpactUpper / 1000) * 1000;
+        }
+        this.costImpactLowerFormatted = moneyFormatter.format(this.costImpactLower);
+        this.costImpactUpperFormatted = moneyFormatter.format(this.costImpactUpper);
+        this.blendedWithinRange = historicalCostImpact.blended_within_range;
+
+        // console.log("historicalCostImpact: ", historicalCostImpact)
+        // console.log("internalYearData: ", this.internalYearData)
+        // console.log("firmYearData: ", this.firmYearData)
+        // console.log("marketAverageData: ", this.marketAverageData)
+        console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
+        console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
+        // console.log("firmTotalSpend: ", this.firmTotalSpend)
+        // console.log("firmCostImpact: ", this.firmCostImpact)
+        // console.log("cohortCostImpact: ", this.cohortCostImpact)
+        // console.log("firmClassificationRateIncreasePct: ", firmClassificationRateIncreasePct)
+        // console.log("cohortClassificationRateIncreasePct: ", cohortClassificationRateIncreasePct)
+        // console.log("projectedCostImpact: ", projectedCostImpact)
+      }
+    }
   }
 
   goToDetail(): void {

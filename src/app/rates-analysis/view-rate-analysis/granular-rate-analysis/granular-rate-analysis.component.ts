@@ -89,6 +89,17 @@ export class GranularRateAnalysisComponent implements OnInit {
           this.peerFirms.splice(ix, 1);
         }
         console.log("RESULT: ", result)
+        const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
+        if (rateAnalysisData.result.firm_data) {
+          if (rateAnalysisData.result.firm_data.length > 0) {
+            this.firmYearData = rateAnalysisData.result.firm_data[0];
+            this.firmYearData = this.firmYearData[0];
+            this.firmName = this.firmYearData.name;
+          }
+        }
+        if (rateAnalysisData.result.overall_spend) {
+          this.overallSpendData = rateAnalysisData.result.overall_spend;
+        }
         this.loaded = true;
       });
     }
