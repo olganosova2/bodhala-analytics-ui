@@ -1,6 +1,11 @@
 <div class="exs-div ml20" id="matterAnalysis">
   <div class="justify-between mb20">
   <div><span class="roboto-bold">Task & Document Analysis</span> <span class="ml5 font-gray">Matter: <span>{{matterName}}</span></span></div>
+    <ngb-alert type="danger" *ngIf="errorMessage" (close)="errorMessage=null">
+      <div class="font-red font-bold">
+        {{ errorMessage}}
+      </div>
+    </ngb-alert>
     <div>
       <bd-internal-matters-overlay [matterId]="matterId" [internalMatters]="internalMatters"></bd-internal-matters-overlay>
     </div>

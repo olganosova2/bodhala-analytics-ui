@@ -5,7 +5,7 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {IInternalMatter, IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel} from '../model';
+import {IInternalMatter, IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsPanel} from '../model';
 import {Subscription} from 'rxjs';
 import {SAVINGS_CALCULATOR_CONFIG} from '../../../shared/services/config';
 import {MatterDocumentModalComponent} from './matter-document-modal/matter-document-modal.component';
@@ -27,6 +27,7 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   totalRecordsDocs: number;
   numRecords: number = 10;
   isLoaded: boolean = false;
+  errorMessage: string;
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -69,6 +70,10 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getMatterDocuments', params).subscribe(
       (data: any) => {
         this.isLoaded = true;
+        if (data.error) {
+          this.errorMessage = data.error;
+          return;
+        }
         this.documents = (data.result || []);
         if (this.documents.length > 0) {
           this.getMarketData(this.documents);
@@ -78,22 +83,33 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
     );
   }
   getMarketData(documents: Array<IMatterDocument>): void {
-    const params = { matterId: this.matterId, client_id: this.userService.currentUser.client_info_id, documents: []};
+    // const params = { matterId: this.matterId, client_id: this.userService.currentUser.client_info_id, documents: []};
     let idx = 0;
     for (const doc of documents) {
       doc.index = idx;
-      params.documents.push({ entity: doc.canonical, entity_type: doc.entity_type, category: doc.category, index: doc.index});
       idx ++;
     }
     // this.marketData = MOCK_MARKET_DOCS;
-    this.pendingRequest = this.httpService.makePostRequest('getMatterDocsMarketData', params).subscribe(
+    const params = { matterId: this.matterId, client_id: this.userService.currentUser.client_info_id};
+    this.pendingRequest = this.httpService.makeGetRequest('getMatterDocsMarketData', params).subscribe(
       (data: any) => {
-        this.marketData = (data.result.documents || []);
+        const records =  (data.result.documents || []);
+        // this.marketData = (data.result.documents || []);
+        this.processMarketDocsData(this.documents, records);
         this.internalMatters = data.result.internal_matters || [];
         this.matterAnalysisService.getDocumentLandingRatings(documents, this.marketData);
       }
     );
 
+  }
+  processMarketDocsData(documents: Array<IMatterDocument>, marketData: Array<IMatterMarketDocument>): void {
+    const result = [];
+    for (const doc of this.documents) {
+      const filtered = marketData.filter(e => e.entity === doc.canonical && e.entity_type === doc.entity_type && e.category === doc.category);
+      const docMarketRecords = { index: doc.index, market_data: filtered};
+      result.push(docMarketRecords);
+    }
+    this.marketData = result;
   }
   openDetails(document: IMatterDocument): void {
     const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], document)};

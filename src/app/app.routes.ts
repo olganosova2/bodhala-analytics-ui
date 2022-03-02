@@ -42,6 +42,7 @@ import {MatterExecutiveSummaryComponent} from './matters/matter-executive-summar
 import {AdminInsightsComponent} from './admin/insights/insights.component';
 import {MatterStaffingComponent} from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 import {MatterDocumentsOverviewComponent} from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
+import {BenchmarkMattersComponent} from './admin/benchmark-matters/benchmark-matters.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -104,6 +105,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/rate-benchmarks', component: AdminRateBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   // {path: 'analytics-ui/admin/rate-benchmarks/:clientId', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/insights', component: AdminInsightsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
-  // AdminInsightsComponent
+  {path: 'analytics-ui/admin/matter-benchmarks', component: BenchmarkMattersComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

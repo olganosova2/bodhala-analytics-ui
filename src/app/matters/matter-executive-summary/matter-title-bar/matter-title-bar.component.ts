@@ -70,7 +70,7 @@ export class MatterTitleBarComponent implements OnInit, OnDestroy {
 
   export(): void {
     this.commonServ.pdfLoading = true;
-    const exportName = 'Matter Overview';
+    const exportName = this.title + '-' + this.matterId.substring(0, 10);
 
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'matterAnalysis', null);
