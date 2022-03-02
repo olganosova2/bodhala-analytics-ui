@@ -1,15 +1,16 @@
 <div>
-  <div *ngIf="messageService.messages.length>0" class="content-body">
+  <div *ngIf="messageService.messages.length>0 && page === 'Insights'" class="content-body">
     <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
       <bd-message-item [alert]="message" [index]="i"></bd-message-item>
     </div>
   </div>
-  <div class="font-bold mb20">Please select a client</div>
 
-  <div class="mt10">
+
+  <div class="mt10" *ngIf="page === 'Insights'">
+    <div class="font-bold mb20">Please select a client</div>
     <bd-client-drop-down (clientSelected)="getClientInsights($event)"></bd-client-drop-down>
   </div>
-  <div class="mt10" *ngIf="insights.length > 0">
+  <div class="mt10" *ngIf="insights.length > 0 && page === 'Insights'">
     <mat-tab-group (selectedTabChange)="changeTab($event)" [(selectedIndex)]="insightIx">
       <mat-tab label="Matter-Specific">
         <bd-matter-insights [selectedClientId]="selectedClientId"  (matterSelected)="selectMatter($event)"></bd-matter-insights>
@@ -54,6 +55,9 @@
         <bd-blended-rate-card [summary]="summary"></bd-blended-rate-card>
       </mat-tab>
     </mat-tab-group>
+  </div>
+  <div *ngIf="page === 'BM'">
+    <bd-matter-insights [selectedClientId]="selectedClientId"  (matterSelected)="selectMatter($event)"></bd-matter-insights>
   </div>
   <div *ngIf="selectedInsight">
     <bd-insights-card [insight]="selectedInsight" (saveRequested)="saveInsight($event)"></bd-insights-card>
