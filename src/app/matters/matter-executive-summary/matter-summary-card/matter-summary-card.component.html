@@ -61,7 +61,7 @@
         <div class="summary-card-content pt10" [ngClass]="{'summary-card-content-docs': page === 'Documents'}">
           <div>
             <div class="staffing-hours-total"><span class="roboto-bold">{{staffingAllocationMetric[0].delta}} hours
-              <span *ngIf="staffingAllocationMetric[0].direction >= 0">more</span>
+              <span *ngIf="staffingAllocationMetric[0].direction >= 0">above</span>
               <span *ngIf="staffingAllocationMetric[0].direction < 0">below</span>
             </span>
               market
