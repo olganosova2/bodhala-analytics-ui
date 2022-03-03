@@ -154,13 +154,23 @@ export class RatesAnalysisComponent implements OnInit {
           } else {
             bm.partner_within_range = true;
           }
-          const costImpactResult = this.ratesService.calculateHistoricalCostImpact(bm.firm_data, bm.market_data);
-          bm.blended_rate_lower_diff = costImpactResult.blended_rate_lower_diff;
-          bm.blended_rate_upper_diff = costImpactResult.blended_rate_upper_diff;
-          bm.blended_rate_lower_diff_pct = costImpactResult.blended_rate_lower_diff_pct;
-          bm.blended_rate_upper_diff_pct = costImpactResult.blended_rate_upper_diff_pct;
-          bm.cost_impact = costImpactResult.cost_impact;
-          bm.blended_within_range = costImpactResult.blended_within_range;
+          if (bm.firm_data !== undefined && bm.firm_data !== null) {
+            const costImpactResult = this.ratesService.calculateHistoricalCostImpact(bm.firm_data, bm.market_data);
+            bm.blended_rate_lower_diff = costImpactResult.blended_rate_lower_diff;
+            bm.blended_rate_upper_diff = costImpactResult.blended_rate_upper_diff;
+            bm.blended_rate_lower_diff_pct = costImpactResult.blended_rate_lower_diff_pct;
+            bm.blended_rate_upper_diff_pct = costImpactResult.blended_rate_upper_diff_pct;
+            bm.cost_impact = costImpactResult.cost_impact;
+            bm.blended_within_range = costImpactResult.blended_within_range;
+          } else {
+            bm.blended_rate_lower_diff = null;
+            bm.blended_rate_upper_diff = null;
+            bm.blended_rate_lower_diff_pct = null;
+            bm.blended_rate_upper_diff_pct = null;
+            bm.cost_impact = null;
+            bm.blended_within_range = null;
+          }
+
         }
       }
     }
@@ -173,67 +183,73 @@ export class RatesAnalysisComponent implements OnInit {
 
   associateRateDiffRenderer(params: any): string {
     let result = '';
-    if (params.data.assoc_within_range) {
-      result = 'Within range (' + moneyFormatter.format(params.data.market_data.associate_lo) + ' - ' + moneyFormatter.format(params.data.market_data.associate_hi) + ')';
-    } else if (params.data.assoc_lower_diff_pct < 0 && params.data.assoc_upper_diff_pct < 0) {
-      result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.assoc_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.assoc_upper_diff * -1)) + '</span>' +
-                '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.assoc_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.assoc_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
-    } else if (params.data.assoc_upper_diff_pct >= 0 && params.data.assoc_upper_diff_pct < 0.2) {
-      result = '<span class="rate-span" style="color: #FF8B4A; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.assoc_lower_diff) + ' - ' + moneyFormatter.format(params.data.assoc_upper_diff) + '</span>' +
-                '<span class="pct-span" style="background: #FF8B4A; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.assoc_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.assoc_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
-    } else if (params.data.assoc_upper_diff_pct >= 0.2) {
-      result = '<span class="rate-span" style="color: #FE3F56; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.assoc_lower_diff) + ' - ' + moneyFormatter.format(params.data.assoc_upper_diff) + '</span>' +
-                '<span class="pct-span" style="background: #FE3F56; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.assoc_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.assoc_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
+    if (params.value !== null) {
+      if (params.data.assoc_within_range) {
+        result = 'Within range (' + moneyFormatter.format(params.data.market_data.associate_lo) + ' - ' + moneyFormatter.format(params.data.market_data.associate_hi) + ')';
+      } else if (params.data.assoc_lower_diff_pct < 0 && params.data.assoc_upper_diff_pct < 0) {
+        result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.assoc_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.assoc_upper_diff * -1)) + '</span>' +
+                  '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.assoc_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.assoc_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
+      } else if (params.data.assoc_upper_diff_pct >= 0 && params.data.assoc_upper_diff_pct < 0.2) {
+        result = '<span class="rate-span" style="color: #FF8B4A; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.assoc_lower_diff) + ' - ' + moneyFormatter.format(params.data.assoc_upper_diff) + '</span>' +
+                  '<span class="pct-span" style="background: #FF8B4A; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.assoc_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.assoc_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
+      } else if (params.data.assoc_upper_diff_pct >= 0.2) {
+        result = '<span class="rate-span" style="color: #FE3F56; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.assoc_lower_diff) + ' - ' + moneyFormatter.format(params.data.assoc_upper_diff) + '</span>' +
+                  '<span class="pct-span" style="background: #FE3F56; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.assoc_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.assoc_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
+      }
     }
-
     return result;
   }
 
   partnerRateDiffRenderer(params: any): string {
     let result = '';
-    if (params.data.partner_within_range) {
-      result = 'Within range (' + moneyFormatter.format(params.data.market_data.partner_lo) + ' - ' + moneyFormatter.format(params.data.market_data.partner_hi) + ')';
-    } else if (params.data.partner_lower_diff_pct < 0 && params.data.partner_upper_diff_pct < 0) {
-      result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.partner_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.partner_upper_diff * -1)) + '</span>' +
-                '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.partner_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.partner_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
-    } else if (params.data.partner_upper_diff_pct >= 0 && params.data.partner_upper_diff_pct < 0.2) {
-      result = '<span class="rate-span" style="color: #FF8B4A; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.partner_lower_diff) + ' - ' + moneyFormatter.format(params.data.partner_upper_diff) + '</span>' +
-                '<span class="pct-span" style="background: #FF8B4A; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.partner_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.partner_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
-    } else if (params.data.partner_upper_diff_pct >= 0.2) {
-      result = '<span class="rate-span" style="color: #FE3F56; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.partner_lower_diff) + ' - ' + moneyFormatter.format(params.data.partner_upper_diff) + '</span>' +
-                '<span class="pct-span" style="background: #FE3F56; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.partner_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.partner_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
+    if (params.value !== null) {
+      if (params.data.partner_within_range) {
+        result = 'Within range (' + moneyFormatter.format(params.data.market_data.partner_lo) + ' - ' + moneyFormatter.format(params.data.market_data.partner_hi) + ')';
+      } else if (params.data.partner_lower_diff_pct < 0 && params.data.partner_upper_diff_pct < 0) {
+        result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.partner_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.partner_upper_diff * -1)) + '</span>' +
+                  '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.partner_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.partner_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
+      } else if (params.data.partner_upper_diff_pct >= 0 && params.data.partner_upper_diff_pct < 0.2) {
+        result = '<span class="rate-span" style="color: #FF8B4A; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.partner_lower_diff) + ' - ' + moneyFormatter.format(params.data.partner_upper_diff) + '</span>' +
+                  '<span class="pct-span" style="background: #FF8B4A; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.partner_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.partner_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
+      } else if (params.data.partner_upper_diff_pct >= 0.2) {
+        result = '<span class="rate-span" style="color: #FE3F56; font-family: Roboto Bold; font-size: 12px;">+' + moneyFormatter.format(params.data.partner_lower_diff) + ' - ' + moneyFormatter.format(params.data.partner_upper_diff) + '</span>' +
+                  '<span class="pct-span" style="background: #FE3F56; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format(params.data.partner_lower_diff_pct) + ' - ' + percentFormatter.format(params.data.partner_upper_diff_pct) + '  <em class="fa fa-arrow-up" style="color: white;"></em</span>';
+      }
     }
-
     return result;
   }
 
   costImpactCellRenderer(params: any): string {
     let result = '';
-    const color = COST_IMPACT_GRADES[params.data.cost_impact];
-    result = '<div style="height: 24px; border-radius: 16px; padding: 0.5em; font-family: Roboto; font-size: 12px; color: white; display: flex; justify-content: center; align-items: center; margin-top: 12px; width: ' + color.width + '; background: ' + color.color + ';">' + params.data.cost_impact + '</div>';
+    if (params.value !== null) {
+      const color = COST_IMPACT_GRADES[params.data.cost_impact];
+      result = '<div style="height: 24px; border-radius: 16px; padding: 0.5em; font-family: Roboto; font-size: 12px; color: white; display: flex; justify-content: center; align-items: center; margin-top: 12px; width: ' + color.width + '; background: ' + color.color + ';">' + params.data.cost_impact + '</div>';
+    }
     return result;
   }
 
   historicalCostRenderer(params: any): string {
     let result = '';
     // round to nearest 10,000
-    if (params.data.blended_rate_lower_diff >= 10000) {
-      params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 10000) * 10000;
-    } else {
-      params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 1000) * 1000;
-    }
-    if (params.data.blended_rate_upper_diff >= 10000) {
-      params.data.blended_rate_upper_diff = Math.ceil(params.data.blended_rate_upper_diff / 10000) * 10000;
-    } else {
-      params.data.blended_rate_upper_diff = Math.ceil(params.data.blended_rate_upper_diff / 1000) * 1000;
-    }
-    const color = COST_IMPACT_GRADES[params.data.cost_impact];
-    if (params.data.blended_within_range) {
-      result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + '</span>';
-    } else if (params.data.blended_rate_upper_diff < 0 && params.data.blended_rate_lower_diff < 0) {
-      result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + ' - ' + moneyFormatter.format(params.data.blended_rate_upper_diff) + '</span>';
-    } else if (params.data.blended_rate_upper_diff > 0 && params.data.blended_rate_lower_diff > 0) {
-      result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + ' - ' + moneyFormatter.format(params.data.blended_rate_upper_diff) + '</span>';
+    if (params.value !== null) {
+      if (params.data.blended_rate_lower_diff >= 10000) {
+        params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 10000) * 10000;
+      } else {
+        params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 1000) * 1000;
+      }
+      if (params.data.blended_rate_upper_diff >= 10000) {
+        params.data.blended_rate_upper_diff = Math.ceil(params.data.blended_rate_upper_diff / 10000) * 10000;
+      } else {
+        params.data.blended_rate_upper_diff = Math.ceil(params.data.blended_rate_upper_diff / 1000) * 1000;
+      }
+      const color = COST_IMPACT_GRADES[params.data.cost_impact];
+      if (params.data.blended_within_range) {
+        result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + '</span>';
+      } else if (params.data.blended_rate_upper_diff < 0 && params.data.blended_rate_lower_diff < 0) {
+        result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + ' - ' + moneyFormatter.format(params.data.blended_rate_upper_diff) + '</span>';
+      } else if (params.data.blended_rate_upper_diff > 0 && params.data.blended_rate_lower_diff > 0) {
+        result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + ' - ' + moneyFormatter.format(params.data.blended_rate_upper_diff) + '</span>';
+      }
     }
 
     return result;
