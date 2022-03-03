@@ -1,0 +1,94 @@
+.wrapper {
+  padding: 0px 16px 16px 24px;
+  width: 100%;
+}
+
+.header-span {
+  font-weight: 700;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  display: inline;
+  font-size: 24px !important;
+  padding-left: 1em;
+}
+
+.data-span {
+  font-size: 24px;
+  font-weight: 400;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-left: 0.5em;
+}
+
+.peer-firms {
+  float: right;
+  background: #DEE8EB;
+  border-radius: 72px;
+  justify-content: center;
+  align-items: center;
+  width: 280px;
+  height: 78px;
+  display: flex;
+  font-size: 12px;
+}
+
+h3 {
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  font-weight: 700;
+  font-size: 40px;
+}
+
+.rates-analysis-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px;
+}
+
+.grade-pill {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 8px;
+  margin-left: 1em;
+  margin-right: 1em;
+  border-radius: 17px;
+  color: #ffffff;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+.projected-cost-impact {
+  border-right: 2px solid #E9F1F4;
+  width: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.rate-span {
+  font-family: "Roboto Bold";
+  font-size: 12px;
+}
+
+.pct-span {
+  font-family: "Roboto";
+  font-size: 12px;
+  border-radius: 17px;
+  width: 82px;
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 8px;
+  color: white;
+}
+
+.ag-theme-alpine {
+  font-family: "Roboto";
+}
+
+.more-or-less {
+  font-style: italic;
+  font-family: "Roboto Bold";
+}

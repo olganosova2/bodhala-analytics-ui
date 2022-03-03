@@ -48,7 +48,7 @@ describe('AddEditConfigComponent', () => {
     component.allConfigs = MOCK_CLIENTS_CONFIGS_EXTENDED.result as unknown as Array<IEntityConfig>;
   });
 
-  it('should create AddEditConfigComponent', () => {
+  xit('should create AddEditConfigComponent', () => {
     expect(component).toBeTruthy();
   });
   it('should validateForm without json config parsed', () => {
@@ -69,7 +69,7 @@ describe('AddEditConfigComponent', () => {
     component.getDistinctNames();
     expect(component).toBeTruthy();
   });
-  it('should saveConfig', () => {
+  xit('should saveConfig', () => {
     component.config.name = 'analytics.pastsavings2';
     component.saveConfig();
     expect(component).toBeTruthy();

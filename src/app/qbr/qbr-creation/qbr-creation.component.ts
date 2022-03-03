@@ -11,6 +11,7 @@ import {QbrService} from '../qbr.service';
 import {IReport, QbrType, DEFAULT_CHOSEN_METRICS} from '../qbr-model';
 import {SelectItem} from 'primeng/api';
 import * as moment from 'moment';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
@@ -91,7 +92,6 @@ export class QbrCreationComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.route.paramMap
       .subscribe(params => {
-        // this.report = this.qbrService.savedQBR;
         this.reportId = Number(params.get('reportId'));
       });
     const result = await this.qbrService.getClientQBRs();

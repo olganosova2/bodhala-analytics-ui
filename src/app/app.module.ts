@@ -174,6 +174,11 @@ import { QbrNextStepsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-
 import { NextStepInputsComponent } from './qbr/qbr-creation/qbr-insights/qbr-next-steps/next-step-inputs/next-step-inputs.component';
 import { QbrRecommendationComponent } from './qbr/qbr-recommendation/qbr-recommendation.component';
 import { MoreYouActComponent } from './qbr/qbr-text-pages/more-you-act/more-you-act.component';
+import { RatesAnalysisComponent } from './rates-analysis/rates-analysis.component';
+import { AdminRateBenchmarksComponent } from './admin/admin-rate-benchmarks/admin-rate-benchmarks.component';
+import { AddRateBenchmarkComponent } from './admin/admin-rate-benchmarks/add-rate-benchmark/add-rate-benchmark.component';
+import { ViewRateAnalysisComponent } from './rates-analysis/view-rate-analysis/view-rate-analysis.component';
+import { RateAnalysisChartComponent } from './rates-analysis/view-rate-analysis/rate-analysis-chart/rate-analysis-chart.component';
 import { MatterExecutiveSummaryComponent } from './matters/matter-executive-summary/matter-executive-summary.component';
 import { MatterTitleBarComponent } from './matters/matter-executive-summary/matter-title-bar/matter-title-bar.component';
 import { MatterTotalPanelComponent } from './matters/matter-executive-summary/matter-total-panel/matter-total-panel.component';
@@ -190,6 +195,8 @@ import { MatterDocumentsComponent } from './matters/matter-executive-summary/mat
 import { MatterDocumentsOverviewComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
 import { MatterDocumentModalComponent } from './matters/matter-executive-summary/matter-documents-overview/matter-document-modal/matter-document-modal.component';
 import { InternalMattersOverlayComponent } from './matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
+import { GranularRateAnalysisComponent } from './rates-analysis/view-rate-analysis/granular-rate-analysis/granular-rate-analysis.component';
+import { GranularRateChartComponent } from './rates-analysis/view-rate-analysis/granular-rate-analysis/granular-rate-chart/granular-rate-chart.component';
 import { BenchmarkMattersComponent } from './admin/benchmark-matters/benchmark-matters.component';
 
 export const WindowToken = new InjectionToken('Window');
@@ -317,6 +324,11 @@ highcharts.setOptions({
     NextStepInputsComponent,
     QbrRecommendationComponent,
     MoreYouActComponent,
+    RatesAnalysisComponent,
+    AdminRateBenchmarksComponent,
+    AddRateBenchmarkComponent,
+    ViewRateAnalysisComponent,
+    RateAnalysisChartComponent,
     MatterExecutiveSummaryComponent,
     MatterTitleBarComponent,
     MatterTotalPanelComponent,
@@ -334,6 +346,8 @@ highcharts.setOptions({
     MatterDocumentModalComponent,
     MatterMetricTableComponent,
     InternalMattersOverlayComponent,
+    GranularRateAnalysisComponent,
+    GranularRateChartComponent,
     BenchmarkMattersComponent
   ],
   entryComponents: [

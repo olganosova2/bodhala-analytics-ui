@@ -1,0 +1,58 @@
+<div>
+  <div mat-dialog-title>
+    <div class="pull-left">
+      <h4>Add Rate Benchmark</h4>
+      <p style="font-size: 14px; font-weight: 400; margin-bottom: 0px !important;">Select a firm, practice area, and year to create a rate benchmark. You can not select a firm, practice area, and year combination that already exists for this client.</p>
+      <p *ngIf="checkDuplicates()" style="font-size: 14px; font-weight: 400; color: red;">This firm, smart PA, and year combination has already been saved for this client. Please choose a different combination.</p>
+    </div>
+    <div class="pull-right">
+      <button mat-flat-button color="primary" (click)="saveBenchmark()" [disabled]="checkDuplicates() || benchmarkForm.status !== 'VALID'">Save</button>
+      <button mat-flat-button class="btn-grey ml10" [mat-dialog-close]="false">Cancel</button>
+    </div>
+    <div class="clear-both">
+    </div>
+  </div>
+  <mat-dialog-content>
+    <mat-vertical-stepper #stepper>
+      <form [formGroup]="benchmarkForm">
+        <mat-step #firmStep [stepControl]="benchmarkForm" errorMessage="Firm is required." [hasError]="firmStep.interacted && firmStep.isErrorState && benchmarkForm.value.firm === null">
+
+          <ng-template matStepLabel>Select a firm</ng-template>
+          <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}"  formControlName="firm" [options]="firmOptions"
+                      placeholder="Select a firm" (onChange)="firmSelected($event)" [group]="true" [filter]="true">
+          </p-dropdown>
+          <div>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+
+        </mat-step>
+
+        <mat-step [stepControl]="benchmarkForm" errorMessage="Practice Area is required." *ngIf="benchmarkForm.value.firm !== null"
+                  #paStep [hasError]="paStep.interacted && paStep.isErrorState && benchmarkForm.value.smartPracticeArea === null">
+          <ng-template matStepLabel>Select a practice area<span *ngIf="benchmarkForm.value.smartPracticeArea"> - {{benchmarkForm.value.smartPracticeArea}}</span></ng-template>
+
+          <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="smartPracticeArea" [options]="smartPAOptions"
+                        [filter]="true" placeholder="Select practice area">
+          </p-dropdown>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+
+        <mat-step [stepControl]="benchmarkForm" errorMessage="Year is required." *ngIf="benchmarkForm.value.firm !== null"
+                  #yearStep [hasError]="yearStep.interacted && yearStep.isErrorState && benchmarkForm.value.year === null">
+          <ng-template matStepLabel>Select a year<span *ngIf="benchmarkForm.value.year"> - {{benchmarkForm.value.year}}</span></ng-template>
+
+          <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="year" [options]="yearOptions"
+                        placeholder="Select a year">
+          </p-dropdown>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </mat-step>
+      </form>
+    </mat-vertical-stepper>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,179 @@
+<div style="padding: 0px 16px 16px 24px;">
+  <div style="display: inline !important; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
+    <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important;">
+      Rate Benchmark Analysis
+    </span>
+
+    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
+    <span style="color: #000000; font-family: 'Roboto' !important;">{{firmName}}</span>
+
+    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
+    <span style="color: #000000; font-family: 'Roboto' !important;">{{practiceArea}}</span>
+
+    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
+    <span style="color: #000000; font-family: 'Roboto' !important;">{{year}}</span>
+
+    <div class="peer-firms">
+      <p style="text-align: center; margin-top: 1em; font-family: 'Roboto Bold' !important;">Comparison Firm Set</p>
+      <p style="text-align: center; margin-left: 1.5em; margin-right: 1.5em; margin-top: -0.75em; font-family: 'Roboto' !important;" *ngIf="loaded && peerFirms.length === 6" #tooltip="matTooltip" matTooltip="{{peerFirms[2]}}, {{peerFirms[3]}}, {{peerFirms[4]}}, {{peerFirms[5]}} and others.">{{peerFirms[0]}}, {{peerFirms[1]}} & others</p>
+      <p style="text-align: center; margin-left: 1.5em; margin-right: 1.5em; margin-top: -0.75em; font-family: 'Roboto' !important;" *ngIf="loaded && peerFirms.length === 5" #tooltip="matTooltip" matTooltip="{{peerFirms[2]}}, {{peerFirms[3]}}, {{peerFirms[4]}} and others.">{{peerFirms[0]}}, {{peerFirms[1]}} & others</p>
+    </div>
+  </div>
+
+  <h3 style="padding-bottom: 40px;">Rate Benchmarking Overview</h3>
+
+  <div class="p-grid">
+    <!-- [ngStyle]="{'background-color': costImpactColor} -->
+    <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setStyle()" style="width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px; border-radius: 24px 24px 24px 24px; height: 175px;"> <!-- [ngStyle]="{'background-color': costImpactColor}"-->
+      <img src="assets/images/bills.svg" alt="icon" class="icon-filter" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px;"/>
+      <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">Historical Cost Impact: <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">{{costImpactGrade}}</span></span>
+      <div style="display: flex; justify-content: center; align-items: center; font-size: 40px; font-family: 'Roboto Bold'" [ngStyle]="{'color': costImpactColor}">
+        <span style="padding-top: 8px;" *ngIf="blendedWithinRange">~{{costImpactLowerFormatted}} </span>
+        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
+        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
+      </div>
+
+      <div style="display: flex; justify-content: center; align-items: center; font-size: 22px; font-family: 'Roboto'">
+        <span *ngIf="blendedWithinRange"><span style="font-style: italic; font-family: 'Roboto Bold' !important;">more</span> than if you paid the lowest market rates</span>
+        <span *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important;">more</span> than if your rates were market appropriate</span>
+        <span *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important;">less</span> than if your rates were market appropriate</span>
+      </div>
+
+    </div>
+
+    <div class="p-md-12 p-lg-6 pl8 pr15" style="width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px; border-radius: 24px 24px 24px 24px; height: 175px; background-image: linear-gradient(bottom, #FFFFFF 67%, #000000 33%); background-image: -o-linear-gradient(bottom, #FFFFFF 67%, #000000 33%); background-image: -moz-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);  background-image: -webkit-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);  background-image: -ms-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);">
+      <em class="icon-note" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px; filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);"></em>
+      <span style="font-size: 24px; font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">{{year}} Spend: {{firmTotalSpendFormatted}}</span>
+
+      <div style="display: flex; padding-top: 0.5em;" *ngIf="loaded">
+        <div style="width: 50%; display: inline-flex; border-right: 2px solid #E9F1F4; padding-left: .5em;">
+          <chart [options]="optionsTotal" (load)="saveInstanceTotal($event.context)"></chart>
+          <div style="display: inline; padding-top: 1em">
+            <span style="font-size: 32px; font-family: 'Roboto Bold';">{{pctOfTotalSpend}}</span><br>
+            <span style="font-size: 16px; font-family: 'Roboto';">of {{year}} Total Spend</span>
+          </div>
+
+        </div>
+        <div style="width: 50%; display: inline-flex; padding-left: 1em;">
+          <chart style="display: inline;" [options]="optionsTotalPA" (load)="saveInstancePATotal($event.context)"></chart>
+          <div style="display: inline;">
+          </div>
+          <div style="display: inline; padding-top: 1em;">
+            <span style="font-size: 32px; font-family: 'Roboto Bold';">{{pctOfPASpend}}</span><br>
+            <span style="font-size: 16px; font-family: 'Roboto';">of {{year}} {{practiceArea}} Spend</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="p-grid mt40">
+    <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setIncreaseStyle()" style="height: 175px; background: #FFFFFF; border-radius: 24px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px 16px 0px 16px;">
+      <div class="p-grid">
+        <div class="p-md-12" style="width: 72%; padding: 0px !important; margin-top: 8px;">
+          <em class="icon-bar-chart" style="font-size: 18px; position: absolute; margin-left: 20px; margin-top: 20px;"></em>
+          <div class="header-span" style="line-height: 26px; font-size: 22px !important; padding-left: 2.5em !important;">
+            Last Year's Average<br>
+            <span style="padding-left: 2.5em;">Rate Increase:</span>
+          </div>
+          <div class="generic" style="line-height: 20px; margin-left: 1.25em; margin-top: .5em; margin-bottom: 0.5em;">
+            If your rates change by the same percentage as<br>
+            last year, your projected cost impact is
+          </div>
+          <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important; margin-top: .75em;" [ngStyle]="{'color': firmRateIncreaseColor}">
+            <span *ngIf="firmCostImpact > 0">+</span><span *ngIf="firmCostImpact < 0">-</span> {{firmCostImpactFormatted}}
+            <span class="ml10 pointer-hand" placement="bottom"
+                [ngbPopover]="helpText"
+                popoverTitle="Projected Cost Increase"
+                [openDelay]="100"
+                [closeDelay]="2000"
+                triggers="mouseenter:mouseleave"
+                style="height: 16px; width: 16px; margin-top: 2em; margin-right: 0.5em; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px; font-weight: 400; justify-content: center; align-items: center; display: inline-flex; font-family: 'Roboto'; float: right;">?
+          </span>
+          </div>
+        </div>
+
+        <div class="p-md-12" style="padding: 0px !important; width: 28%; font-size: 48px; font-family: 'Roboto Bold'; display: flex; justify-content: center; align-items: center; color: white;" >
+          {{firmRateIncreasePct | number:'1.0-0'}}%
+        </div>
+      </div>
+    </div>
+
+    <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setMarketIncreaseStyle()" style="height: 175px; background: #FFFFFF; border-radius: 24px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px 16px 0px 16px;">
+      <div class="p-grid">
+        <div class="p-md-12" style="width: 72%; padding: 0px !important; margin-top: 8px;">
+          <em class="icon-bar-chart" style="font-size: 18px; position: absolute; margin-left: 20px; margin-top: 20px;"></em>
+          <div class="header-span" style="line-height: 26px; font-size: 22px !important; padding-left: 2.5em !important;">
+            Last Year's Estimated Market<br>
+            <span style="padding-left: 2.5em;">Rate Increase:</span>
+          </div>
+          <!-- <em class="icon-bar-chart"></em>
+          <span class="header-span" style="display: inline;">Last Year's Average<br>Rate Increase:</span> -->
+          <div class="generic" style="line-height: 20px; margin-left: 1.25em; margin-top: .5em; margin-bottom: 0.5em;">
+            If your rates change by the estimated market rate<br>
+            increase, your projected cost impact
+          </div>
+          <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important;" [ngStyle]="{'color': cohortRateIncreaseColor}">
+            <span *ngIf="cohortCostImpact > 0">+</span><span *ngIf="cohortCostImpact < 0">-</span> {{cohortCostImpactFormatted}}
+            <span class="ml10 pointer-hand" placement="bottom"
+                [ngbPopover]="helpText"
+                popoverTitle="Projected Cost Increase"
+                [openDelay]="100"
+                [closeDelay]="2000"
+                triggers="mouseenter:mouseleave"
+                style="height: 16px; width: 16px; margin-top: 2em; margin-right: 0.5em; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px; font-weight: 400; justify-content: center; align-items: center; display: inline-flex; float: right; font-family: 'Roboto';">?
+          </span>
+          </div>
+        </div>
+
+        <div class="p-md-12" style="padding: 0px !important; width: 28%; font-size: 48px; font-family: 'Roboto Bold'; display: flex; justify-content: center; align-items: center; color: white;" >
+          {{cohortRateIncreasePct | number:'1.0-0'}}%
+        </div>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="panel-wrapper mt40" style="padding: 0px !important;">
+    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
+      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Historical Partner Rate</span>
+    </div>
+
+    <div>
+      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
+                              [rateType]="'Partner'"></bd-rate-analysis-chart>
+    </div>
+  </div>
+
+  <div class="panel-wrapper mt40" style="padding: 0px !important;">
+    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
+      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Historical Associate Rate</span>
+    </div>
+
+    <div>
+      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
+                              [rateType]="'Associate'"></bd-rate-analysis-chart>
+    </div>
+  </div>
+
+  <div class="panel-wrapper mt40" style="padding: 0px !important;">
+    <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
+      <span class="header-span">Historical Blended Rate</span>
+    </div>
+    <div>
+      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="internalYearData" [marketAverageData]="marketAverageData"
+                              [rateType]="'Blended'"></bd-rate-analysis-chart>
+    </div>
+  </div>
+
+  <!-- <div class="mt40" style="flex-direction: row; justify-content: center; align-items: center; display: flex;">
+
+    <button class="primary-button" style="background: black; color: white; font-family: 'Roboto'; font-size: 16px; height: 64px; width: 475px;" (click)="goToDetail()">See Timekeeper Level Benchmarks & Cost Analysis<i class="fa fa-chevron-right" style="padding-left: 6px; font-weight: 400;"></i></button>
+  </div> -->
+
+</div>

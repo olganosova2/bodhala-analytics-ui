@@ -113,6 +113,13 @@ export const END_POINTS_URLS = {
   finilazeQBR: {url: BASE_URL + 'analytics/finalizeQBR', showLoading: true},
   deleteQBR: {url: BASE_URL + 'analytics/deleteQBR', showLoading: true},
 
+
+  // RATES ANALYSIS
+
+  getFirmRateAnalysisIncreaseData: {url: BASE_URL + 'analytics/getFirmRateAnalysisIncreaseData', showLoading: true},
+  getRateBenchmarks: {url: BASE_URL + 'analytics/getRateBenchmarks', showLoading: true},
+  getRateBenchmark: {url: BASE_URL + 'analytics/getRateBenchmark', showLoading: true},
+  getTKGranularityRateData: {url: BASE_URL + 'analytics/getTKGranularityRateData', showLoading: true},
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
   getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},
@@ -170,6 +177,10 @@ export const END_POINTS_URLS = {
   reuploadLedes: { url: BASE_URL + 'admin/reuploadLedes', showLoading: false},
   findFirm: { url: BASE_URL + 'admin/findFirm', showLoading: false},
   getLEDESUpload: { url: BASE_URL + 'admin/getLEDESUpload', showLoading: false},
+  getRateBenchmarksAdmin: { url: BASE_URL + 'admin/getRateBenchmarks', showLoading: false},
+  getFirmsByClientCluster: { url: BASE_URL + 'admin/getFirmsByClientIdAndCluster', showLoading: false},
+  deleteRateBenchmark: { url: BASE_URL + 'admin/deleteRateBenchmark', showLoading: false},
+  saveRateBenchmark: { url: BASE_URL + 'admin/saveRateBenchmark', showLoading: false},
   getAdminInsights: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
   getAdminMatterInsight: {url: BASE_URL + 'admin/getMatterInsight', showLoading: true},
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
