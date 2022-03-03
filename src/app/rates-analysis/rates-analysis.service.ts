@@ -22,7 +22,7 @@ export class RatesAnalysisService {
           if (!data.result) {
             return;
           }
-          const bm = data.result
+          const bm = data.result;
           resolve({benchmark: bm, firm_name: data.firm_name});
         },
         err => {
@@ -63,7 +63,7 @@ export class RatesAnalysisService {
 
 
   calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
-    let result = 0;
+    const result = 0;
     const distinctYears = [];
     const yearRecords = [];
     const classificationRecords = [];
@@ -81,19 +81,15 @@ export class RatesAnalysisService {
     if (assocRec.length > 0 && partnerRec.length > 0) {
 
       totalSpend = assocRec[0].total_spend + partnerRec[0].total_spend;
-      // console.log("associateRecords: ", assocRec)
-      // console.log("partnerRecords: ", partnerRec)
       if (totalSpend > 0) {
         assocPctBilled = assocRec[0].total_spend / totalSpend;
         partnerPctBilled = partnerRec[0].total_spend / totalSpend;
       }
     }
-    // console.log("yearRecs: ", yearRecs)
 
     for (const year of distinctYears) {
 
       const classificationYearRecs = classificationRateIncreaseData.filter(e => e.year === year) || [];
-      // console.log("classificationYearRecs: ", classificationYearRecs)
       const classifications = [];
       const partnerRecords = classificationYearRecs.filter(e => e.bh_classification === 'partner') || [];
       if (partnerRecords.length > 0) {
@@ -206,7 +202,7 @@ export class RatesAnalysisService {
   }
 
   calculateHistoricalCostImpact(firmData, marketAverageData) {
-    let result = {
+    const result = {
       blended_rate_lower_diff: 0,
       blended_rate_upper_diff: 0,
       blended_rate_lower_diff_pct: 0,

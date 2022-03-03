@@ -63,7 +63,6 @@ export class AdminRateBenchmarksComponent implements OnInit {
   }
 
   loadClientRateBenchmarks(client: IClient): void {
-    console.log("client: ", client)
     this.selectedClient = client;
     if (this.selectedClient) {
       this.getClientRateBenchmarks();
@@ -75,7 +74,6 @@ export class AdminRateBenchmarksComponent implements OnInit {
     const params = { clientId: this.selectedClient.bh_client_id };
     this.pendingRequest = this.httpService.makeGetRequest('getRateBenchmarksAdmin', params).subscribe(
       (data: any) => {
-        console.log("data: " ,data);
         this.clientRateBenchmarks = data.result || [];
         this.clientRateBenchmarks = this.clientRateBenchmarks.sort(this.utilService.dynamicSort('-created_on'));
         const pipe = new DatePipe('en-US');

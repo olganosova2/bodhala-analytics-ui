@@ -90,7 +90,6 @@ export class ViewRateAnalysisComponent implements OnInit {
         // this.report = this.qbrService.savedQBR;
         this.benchmarkId = Number(params.get('id'));
         const result = await this.ratesService.getBenchmark(this.benchmarkId);
-        console.log("REZZY: ", result)
         this.firmName = result.firm_name;
         this.benchmark = result.benchmark;
         this.firmId = this.benchmark.bh_lawfirm_id;
@@ -126,10 +125,8 @@ export class ViewRateAnalysisComponent implements OnInit {
       firms: JSON.stringify(firmParam),
       bdPracticeAreas: JSON.stringify(paParam)
     };
-    console.log("getData params: ", params)
     this.pendingRequest = this.httpService.makeGetRequest('getFirmRateAnalysisIncreaseData', params).subscribe(
       (data: any) => {
-        console.log("getData data: ", data);
         if (data.result) {
           if (data.result.market_average) {
             if (data.result.market_average.length > 0) {
@@ -277,19 +274,6 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.costImpactLowerFormatted = moneyFormatter.format(this.costImpactLower);
         this.costImpactUpperFormatted = moneyFormatter.format(this.costImpactUpper);
         this.blendedWithinRange = historicalCostImpact.blended_within_range;
-
-        // console.log("historicalCostImpact: ", historicalCostImpact)
-        // console.log("internalYearData: ", this.internalYearData)
-        // console.log("firmYearData: ", this.firmYearData)
-        // console.log("marketAverageData: ", this.marketAverageData)
-        console.log("firmRateIncreasePct: ", this.firmRateIncreasePct)
-        console.log("cohortRateIncreasePct: ", this.cohortRateIncreasePct)
-        // console.log("firmTotalSpend: ", this.firmTotalSpend)
-        // console.log("firmCostImpact: ", this.firmCostImpact)
-        // console.log("cohortCostImpact: ", this.cohortCostImpact)
-        // console.log("firmClassificationRateIncreasePct: ", firmClassificationRateIncreasePct)
-        // console.log("cohortClassificationRateIncreasePct: ", cohortClassificationRateIncreasePct)
-        // console.log("projectedCostImpact: ", projectedCostImpact)
       }
     }
   }
@@ -301,7 +285,7 @@ export class ViewRateAnalysisComponent implements OnInit {
       totalSpend: this.overallSpendData,
       market: this.marketAverageData,
       internal: this.internalYearData
-    }
+    };
     this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
     {state:
       {
@@ -319,14 +303,14 @@ export class ViewRateAnalysisComponent implements OnInit {
 
   setIncreaseStyle(): any {
     const styles = {
-      'background': 'linear-gradient(to right, #FFFFFF 72%,' + this.firmRateIncreaseColor  + ' 28%)'
+      background: 'linear-gradient(to right, #FFFFFF 72%,' + this.firmRateIncreaseColor  + ' 28%)'
     };
     return styles;
   }
 
   setMarketIncreaseStyle(): any {
     const styles = {
-      'background': 'linear-gradient(to right, #FFFFFF 72%,' + this.cohortRateIncreaseColor  + ' 28%)'
+      background: 'linear-gradient(to right, #FFFFFF 72%,' + this.cohortRateIncreaseColor  + ' 28%)'
     };
     return styles;
   }
@@ -352,7 +336,6 @@ export class ViewRateAnalysisComponent implements OnInit {
   }
 
   saveInstancePATotal(chartInstance): void {
-    console.log("saveInstancePATotal: ", chartInstance)
     this.chartTotalPA = chartInstance;
     let result = [0, 0];
     if (this.overallSpendPAData) {
@@ -363,7 +346,6 @@ export class ViewRateAnalysisComponent implements OnInit {
             this.pctOfPASpend = percentFormatter.format(pctOfSpend);
             pctOfSpend *= 100;
             result = [pctOfSpend, 100 - pctOfSpend];
-            console.log("PA REZ: ", result)
             this.chartTotalPA.series[0].setData(result);
             this.chartTotalPA.series[0].options.colors = ['#00D1FF', '#cccccc'];
             this.chartTotalPA.series[0].update(this.chartTotalPA.series[0].options);

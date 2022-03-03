@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { RatesAnalysisService } from '../../rates-analysis.service';
 import { moneyFormatter } from '../../rates-analysis.model';
 
@@ -7,7 +7,7 @@ import { moneyFormatter } from '../../rates-analysis.model';
   templateUrl: './rate-analysis-chart.component.html',
   styleUrls: ['./rate-analysis-chart.component.scss']
 })
-export class RateAnalysisChartComponent implements OnInit {
+export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
   @Input() selectedFirm: string;
   @Input() selectedFirmData: any;
   @Input() internalData: any;
@@ -228,12 +228,6 @@ export class RateAnalysisChartComponent implements OnInit {
     }
     this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);
     this.topBarDollarFormatted = moneyFormatter.format(this.topBarDollars);
-    // console.log("topBarDollars >= marketAverageUpperRange: ", this.topBarDollars >= Number(this.marketAverageUpperRange))
-    // console.log("this.topBarDollars: ", this.topBarDollars)
-    // console.log("this.internalRateDeltaPct: ", this.internalRateDeltaPct)
-    // console.log("this.marketRateLowerDeltaPct: ", this.marketRateLowerDeltaPct)
-    // console.log("this.marketRateUpperDeltaPct: ", this.marketRateUpperDeltaPct)
-    // console.log("this.marketAverageUpperRange: ", this.marketAverageUpperRange)
     this.topBarColor = this.getBarColor();
     this.internalRateColor = this.getRateColor(this.internalRateDeltaPct);
     this.marketRateColor = this.getRateColor(this.marketRateUpperDeltaPct);

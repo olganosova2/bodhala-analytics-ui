@@ -29,16 +29,16 @@ export class RatesAnalysisComponent implements OnInit {
   gridApi: any;
 
   constructor(private route: ActivatedRoute,
-    public router: Router,
-    private httpService: HttpService,
-    public appStateService: AppStateService,
-    public userService: UserService,
-    public commonServ: CommonService,
-    public utilService: UtilService,
-    public dialog: MatDialog,
-    public agGridService: AgGridService,
-    public ratesService: RatesAnalysisService) {
-      this.commonServ.pageTitle = 'Client Rate Benchmarks';
+              public router: Router,
+              private httpService: HttpService,
+              public appStateService: AppStateService,
+              public userService: UserService,
+              public commonServ: CommonService,
+              public utilService: UtilService,
+              public dialog: MatDialog,
+              public agGridService: AgGridService,
+              public ratesService: RatesAnalysisService) {
+    this.commonServ.pageTitle = 'Client Rate Benchmarks';
   }
 
   ngOnInit(): void {
@@ -152,7 +152,6 @@ export class RatesAnalysisComponent implements OnInit {
           bm.blended_rate_upper_diff_pct = costImpactResult.blended_rate_upper_diff_pct;
           bm.cost_impact = costImpactResult.cost_impact;
           bm.blended_within_range = costImpactResult.blended_within_range;
-          // console.log("costImpactResult: ", costImpactResult)
         }
       }
     }

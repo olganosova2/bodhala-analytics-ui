@@ -46,8 +46,6 @@ export class GranularRateAnalysisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("HISTORY.STATE: ", history.state)
-
     if (history.state.data) {
       if (history.state.data.bm) {
         this.benchmark = history.state.data.bm;
@@ -70,9 +68,9 @@ export class GranularRateAnalysisComponent implements OnInit {
       this.year = this.benchmark.year;
       this.peerFirms = this.benchmark.peers;
       const ix = this.peerFirms.findIndex(p => p === this.firmName);
-        if (ix >= 0) {
-          this.peerFirms.splice(ix, 1);
-        }
+      if (ix >= 0) {
+        this.peerFirms.splice(ix, 1);
+      }
       this.loaded = true;
     } else {
       this.route.paramMap.subscribe(async params => {
@@ -88,7 +86,6 @@ export class GranularRateAnalysisComponent implements OnInit {
         if (ix >= 0) {
           this.peerFirms.splice(ix, 1);
         }
-        console.log("RESULT: ", result)
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
         if (rateAnalysisData.result.firm_data) {
           if (rateAnalysisData.result.firm_data.length > 0) {

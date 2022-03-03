@@ -24,7 +24,7 @@ export interface IRateBenchmark {
   deleted_on?: string;
   modified_by?: string;
   modified_on?: string;
-};
+}
 
 export const smartPracticeAreas = [
   {label: 'Banking & Credit', value: 'Banking & Credit'},
@@ -60,7 +60,7 @@ export const peerFirmMapping = [
   [
     'McDermott Will & Emery',
     'King & Spalding',
-    "O'Melveny & Myers",
+    'O\'Melveny & Myers',
     'Winston & Strawn',
     'Arnold & Porter',
     'Baker Botts',
@@ -100,10 +100,10 @@ export const peerFirmMapping = [
 ];
 
 export const COST_IMPACT_GRADES = {
-  'NONE': {color: '#3EDB73', width: '48px'},
-  'LOW': {color: '#FFC327', width: '42px'},
-  'MODERATE': {color: '#FF8B4A', width: '78px'},
-  'HIGH': {color: '#FE3F56', width: '48px'}
+  NONE: {color: '#3EDB73', width: '48px'},
+  LOW: {color: '#FFC327', width: '42px'},
+  MODERATE: {color: '#FF8B4A', width: '78px'},
+  HIGH: {color: '#FE3F56', width: '48px'}
 };
 
 export const rateBenchmarkingPieChartOptions = {

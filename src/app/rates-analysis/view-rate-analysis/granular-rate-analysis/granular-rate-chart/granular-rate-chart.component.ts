@@ -63,7 +63,6 @@ export class GranularRateChartComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    console.log("GRANULAR CHART: ", this.seniority, this.benchmark)
     this.getData();
   }
 
@@ -80,18 +79,11 @@ export class GranularRateChartComponent implements OnInit {
         if (!data.result) {
           return;
         }
-        const bm = data.result
+        const bm = data.result;
       },
       err => {
         return {error: err};
       }
-    )
-
-
-
+    );
   }
-
-
-
-
 }

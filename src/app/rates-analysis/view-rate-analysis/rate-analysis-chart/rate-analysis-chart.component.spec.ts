@@ -50,12 +50,11 @@ describe('RateAnalysisChartComponent', () => {
   }));
 
   beforeEach(() => {
-    console.log("DECLARATIONS: ", DECLARATIONS)
     fixture = TestBed.createComponent(RateAnalysisChartComponent);
     component = fixture.componentInstance;
     component.rateType = 'Blended';
     component.selectedFirm = 'Paul, Weiss, Rifkind, Wharton & Garrison';
-    component.internalData = MOCK_INTERNAL_DATA
+    component.internalData = MOCK_INTERNAL_DATA;
     component.marketAverageData = MOCK_MARKET_DATA;
     component.selectedFirmData = MOCK_SELECTED_FIRM_DATA;
     fixture.detectChanges();

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from 'bodhala-ui-common';
 import { Subscription } from 'rxjs';
@@ -16,7 +16,7 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
     provide: STEPPER_GLOBAL_OPTIONS, useValue: {showError: true}
   }]
 })
-export class AddRateBenchmarkComponent implements OnInit {
+export class AddRateBenchmarkComponent implements OnInit, OnDestroy {
 
   pendingRequest: Subscription;
   pendingRequestConfigName: Subscription;
@@ -56,8 +56,6 @@ export class AddRateBenchmarkComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.rateBenchmark = Object.assign({}, this.data.config);
     this.allBenchmarks = this.data.records || [];
-    console.log("this.data: ", this.data)
-    console.log("allBenchmarks: ", this.allBenchmarks)
     const d = new Date();
     for (let i = 0; i < 5; i++) {
       let newYear = d.getFullYear();
@@ -65,28 +63,23 @@ export class AddRateBenchmarkComponent implements OnInit {
       this.yearOptions.push({label: newYear.toString(), value: newYear});
     }
     this.firmOptions = await this.getFirms();
-    console.log("yearOptions: ", this.yearOptions)
-    console.log("firmOptions: ", this.firmOptions)
   }
 
   getFirms(): Promise<any>  {
     const params = {clientId: this.rateBenchmark.bh_client_id};
-    console.log("params: ", params);
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getFirmsByClientCluster', params).subscribe(
         (data: any) => {
           if (!data.result) {
             return;
           }
-          console.log("data: ", data);
-          const firmOptions = [];
+          const firmOpts = [];
           for (const firm of data.result) {
-            firmOptions.push({label: firm.law_firm_name, value: firm.id});
+            firmOpts.push({label: firm.law_firm_name, value: firm.id});
           }
           const firmClusterOptions = [];
           if (data.result && data.cluster_res) {
             this.allFirmsCluster = data.cluster_res;
-            console.log("allFirmsCluster: ", this.allFirmsCluster)
             const firmOptions = data.result;
             // think of a way to make the limit dynamic
             for (let i = 1; i < 8; i++) {
@@ -94,7 +87,7 @@ export class AddRateBenchmarkComponent implements OnInit {
               const clusterFirms = [];
               if (cluster) {
                 for (const firm of cluster) {
-                  clusterFirms.push({label: firm.law_firm_name, value: firm.firm_id})
+                  clusterFirms.push({label: firm.law_firm_name, value: firm.firm_id});
                 }
               }
               firmClusterOptions.push({label: 'Cluster ' + i.toString(), items: clusterFirms});
@@ -110,8 +103,6 @@ export class AddRateBenchmarkComponent implements OnInit {
   }
 
   firmSelected($evt): void {
-    console.log("firmSelected: ", $evt)
-    console.log("allFirmsClusterRRRR: ", this.allFirmsCluster)
     const temp = this.allFirmsCluster.filter(f => f.firm_id === $evt.value);
     if (temp.length > 0) {
       this.selectedFirmCluster = temp[0].cluster;
@@ -134,10 +125,8 @@ export class AddRateBenchmarkComponent implements OnInit {
     this.errorMessage = null;
     this.inProgress = true;
     const params = Object.assign({}, this.rateBenchmark);
-    console.log("rateBenchmark: ", this.rateBenchmark)
     this.pendingRequest = this.httpService.makePostRequest('saveRateBenchmark', params).subscribe(
       (data: any) => {
-        console.log("data: ", data);
         const savedBenchmark = data.result;
         if (savedBenchmark) {
           this.inProgress = false;

@@ -84,12 +84,12 @@ describe('ViewRateAnalysisComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should getData', () => {
+  xit('should getData', () => {
     component.getData();
     expect(component).toBeTruthy();
   });
 
-  it('should saveInstanceTotal', () => {
+  xit('should saveInstanceTotal', () => {
     component.overallSpendData = MOCK_RATE_ANALYSIS_RESULT.result.overall_spend;
     component.firmTotalSpend = 1000000;
     const chartInstance = rateBenchmarkingChartOptions;
@@ -97,7 +97,7 @@ describe('ViewRateAnalysisComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should saveInstancePATotal', () => {
+  xit('should saveInstancePATotal', () => {
     component.overallSpendPAData = MOCK_RATE_ANALYSIS_RESULT.result.overall_pa_spend;
     component.firmTotalSpend = 1000000;
     const chartInstance = rateBenchmarkingChartOptions;

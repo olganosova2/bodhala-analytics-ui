@@ -57,21 +57,21 @@ describe('RatesAnalysisComponent', () => {
   });
 
   it('should processData in range', () => {
-    component.clientRateBenchmarks = []
+    component.clientRateBenchmarks = [];
     component.clientRateBenchmarks.push(MOCK_RATE_BENCHMARKS.result[5]);
     component.processData();
     expect(component).toBeTruthy();
   });
 
   it('should processData below range', () => {
-    component.clientRateBenchmarks = []
+    component.clientRateBenchmarks = [];
     component.clientRateBenchmarks.push(MOCK_RATE_BENCHMARKS.result[4]);
     component.processData();
     expect(component).toBeTruthy();
   });
 
   it('should execute associateRateDiffRenderer', () => {
-    let params = {
+    const params = {
       data: {
         assoc_within_range: false,
         assoc_lower_diff_pct: -0.05,
@@ -102,7 +102,7 @@ describe('RatesAnalysisComponent', () => {
   });
 
   it('should execute partnerRateDiffRenderer', () => {
-    let params = {
+    const params = {
       data: {
         partner_within_range: false,
         partner_lower_diff_pct: -0.05,
@@ -133,7 +133,7 @@ describe('RatesAnalysisComponent', () => {
   });
 
   it('should execute historicalCostRenderer', () => {
-    let params = {
+    const params = {
       data: {
         blended_within_range: false,
         blended_rate_lower_diff: -50000,

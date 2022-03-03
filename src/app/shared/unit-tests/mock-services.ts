@@ -572,16 +572,16 @@ export class RatesAnalysisServiceStub {
       savings: 10000,
       classificationData: [
         {
-            "title": "associate",
-            "avgRateIncrease": 0.028588881355932183,
-            "totalHours": 14114.8165,
-            "lastYearRate": 758.5843
+            title: 'associate',
+            avgRateIncrease: 0.028588881355932183,
+            totalHours: 14114.8165,
+            lastYearRate: 758.5843
         },
         {
-            "title": "partner",
-            "avgRateIncrease": 0.03296267008756117,
-            "totalHours": 4479.6,
-            "lastYearRate": 1228.0386
+            title: 'partner',
+            avgRateIncrease: 0.03296267008756117,
+            totalHours: 4479.6,
+            lastYearRate: 1228.0386
         }
       ],
       rateIncreasePct: 5,
@@ -594,7 +594,11 @@ export class RatesAnalysisServiceStub {
       marketProjectedImpact: 1381942.1148034632
     };
   }
-};
+
+  public getBenchmark() {
+    return(MOCK_BENCHMARKS);
+  }
+}
 
 export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
