@@ -40,8 +40,10 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (this.page === 'Insights') {
-      this.commonServ.pageTitle = 'Launchpad Insights';
       this.loadClients();
+      setTimeout(() => {
+        this.commonServ.pageTitle = 'Launchpad Insights';
+      });
     }
     if (this.page === 'BM') {
       this.selectedClientId = this.selectedClient.bh_client_id;
@@ -174,7 +176,7 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.page === 'Insights') {
-      this.commonServ.clearTitles();
+     this.commonServ.clearTitles();
     }
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
