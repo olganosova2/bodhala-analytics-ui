@@ -103,11 +103,20 @@ export class RatesAnalysisComponent implements OnInit {
           let tempFirmData = bm.firm_data[0];
           tempFirmData = tempFirmData[0];
           bm.firm_data = tempFirmData;
-          bm.associate_rate = tempFirmData.avg_associate_rate;
-          bm.partner_rate = tempFirmData.avg_partner_rate;
-          bm.blended_rate = tempFirmData.blended_rate;
-          bm.total_atty_hours = tempFirmData.total_atty_hours;
-          bm.total_atty_billed = tempFirmData.total_atty_billed;
+          if (tempFirmData !== undefined  && tempFirmData !== null) {
+            bm.associate_rate = tempFirmData.avg_associate_rate;
+            bm.partner_rate = tempFirmData.avg_partner_rate;
+            bm.blended_rate = tempFirmData.blended_rate;
+            bm.total_atty_hours = tempFirmData.total_atty_hours;
+            bm.total_atty_billed = tempFirmData.total_atty_billed;
+          } else {
+            bm.associate_rate = null;
+            bm.partner_rate = null;
+            bm.blended_rate = null;
+            bm.total_atty_hours = null;
+            bm.total_atty_billed = null;
+          }
+
         }
       }
 
