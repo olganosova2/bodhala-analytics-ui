@@ -84,7 +84,7 @@
             last year, your projected cost impact is
           </div>
           <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important; margin-top: .75em;" [ngStyle]="{'color': firmRateIncreaseColor}">
-            <span *ngIf="firmCostImpact > 0">+</span><span *ngIf="firmCostImpact < 0">-</span> {{firmCostImpactFormatted}}
+            <span *ngIf="firmCostImpact > 0">+</span> {{firmCostImpactFormatted}}
             <span class="ml10 pointer-hand" placement="bottom"
                 [ngbPopover]="helpText"
                 popoverTitle="Projected Cost Increase"

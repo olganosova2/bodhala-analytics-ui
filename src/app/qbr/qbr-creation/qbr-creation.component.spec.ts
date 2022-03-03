@@ -87,7 +87,7 @@ describe('QbrCreationComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should generateQBR QbrCreationComponent', () => {
+  xit('should generateQBR QbrCreationComponent', () => {
     component.editMode = false;
     component.reportId = null;
     component.reportType = 'YoY';
