@@ -141,10 +141,20 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
     this.matterInsights = insights.filter(e => e.insight_type === IAdminInsightType.Matter) || [];
     for (const type of Object.keys(IAdminInsightType)) {
       const found = insights.find(e => e.insight_type === type);
-      if (found && type !== IAdminInsightType.Matter) { // for matter insight always create empty insight on load
-        this.insights.push(found);
-      } else {
-        this.insights.push(this.createNewInsight(type));
+      if (this.page === 'Insights'){
+        if (type === IAdminInsightType.Matter) {
+          continue;
+        }
+        if (found) {
+          this.insights.push(found);
+        } else {
+          this.insights.push(this.createNewInsight(type));
+        }
+      }
+      if (this.page === 'BM') {
+        if (type === IAdminInsightType.Matter) { // for matter insight always create empty insight on load
+          this.insights.push(this.createNewInsight(type));
+        }
       }
     }
     this.selectedInsight = this.insights[0];
