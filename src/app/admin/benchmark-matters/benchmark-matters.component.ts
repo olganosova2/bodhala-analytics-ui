@@ -28,6 +28,8 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   displayMatters: Array<any> = [];
   filteredNames: Array<IClientMatter> = [];
   selectedMatter: IClientMatter;
+  selIndex: number = 0;
+  clientWasSelected: boolean = false;
   constructor(private httpService: HttpService,
               public matterAnalysisService: MatterAnalysisService,
               public messageService: MessagingService,
@@ -54,6 +56,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
         if (data && data.result && data.result.enabled) {
           if (data.result.enabled.value && (data.result.enabled.value.startsWith('Smart') || data.result.enabled.value.startsWith('Both'))) {
             hasSmartPA = true;
+            this.clientWasSelected = true;
           }
         }
         if (!hasSmartPA) {
@@ -108,6 +111,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     );
   }
   clearClient(): void {
+    this.clientWasSelected = false;
     this.selectedClient = null;
     this.clientBmConfig = null;
     this.displayMatters = [];
@@ -117,6 +121,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.bmSetupType = IBmSetupType.SelectedMatters;
     this.filteredNames = [];
     this.selectedMatter = null;
+    this.selIndex = 0;
   }
   createNewBmConfig(): IEntityConfig {
     const json = Object.assign({}, defaultBmMatterJson);

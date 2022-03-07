@@ -21,7 +21,7 @@
       </div>
     </ngb-alert>
 
-    <mat-tab-group (selectedTabChange)="changeTab($event)" *ngIf="!selectedClient.missingSmartPA">
+    <mat-tab-group [(selectedIndex)]="selIndex" (selectedTabChange)="changeTab($event)" *ngIf="!selectedClient.missingSmartPA">
       <mat-tab label="Benchmarking Setup">
         <div class="panel-wrapper" >
           <div class="mb20 full-width">
@@ -75,8 +75,8 @@
         </table>
         </div>
       </mat-tab>
-      <mat-tab label="Matter-Specific Insights">
-
+      <mat-tab label="Matter-Specific Insights" >
+        <bd-admin-insights *ngIf="clientWasSelected" [page]="'BM'" [selectedClient]="selectedClient"></bd-admin-insights>
       </mat-tab>
     </mat-tab-group>
   </div>
