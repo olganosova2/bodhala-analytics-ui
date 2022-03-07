@@ -156,6 +156,7 @@ import {MatterDocumentsComponent} from '../../matters/matter-executive-summary/m
 import {MatterDocumentsOverviewComponent} from '../../matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
 import {MatterDocumentModalComponent} from '../../matters/matter-executive-summary/matter-documents-overview/matter-document-modal/matter-document-modal.component';
 import {InternalMattersOverlayComponent} from '../../matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
+import {BenchmarkMattersComponent} from '../../admin/benchmark-matters/benchmark-matters.component';
 
 
 
@@ -306,7 +307,8 @@ export const DECLARATIONS = [
   MatterDocumentsComponent,
   MatterDocumentModalComponent,
   MatterMetricTableComponent,
-  InternalMattersOverlayComponent
+  InternalMattersOverlayComponent,
+  BenchmarkMattersComponent
 ];
 
 export const PROVIDERS = [

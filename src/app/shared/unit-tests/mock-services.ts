@@ -6,7 +6,7 @@ import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIR
 import {convertToParamMap} from '@angular/router';
 import {MOCK_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC, MOCK_EXECUTIVE_SUMMARY_BILLING_TOTALS, MOCK_BILLING_TOTALS_RC_COMP} from './mock-data/billing-totals';
 import {MOCK_SCORE, MOCK_TRENDS} from './mock-data/score-trend';
-import {MOCK_INSIGHTS} from './mock-data/insights';
+import {MOCK_INSIGHT, MOCK_INSIGHTS} from './mock-data/insights';
 import {BM_CHECK_RATES, MOCK_ADMIN_BENCHMARK, MOCK_ADMIN_BMS, MOCK_BENCHMARKS, MOCK_FIRMS_WITH_GROUP_ID, MOCK_PA_AND_ID} from './mock-data/benchmarking';
 import {MOCK_OPTIONS_FOR_FILTER} from './mock-data/user-filters';
 import {MOCK_MIN_MAX_DATES, MOCK_PRACTICE_AREAS, MOCK_TOP_LPS} from './mock-data/practice-area';
@@ -34,6 +34,7 @@ import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
 import {MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
+import {MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT} from './mock-data/rate-benchmarking';
 
 export const ngWindow = {
   location: {
@@ -136,7 +137,8 @@ export class DataStub {
         return of({result: MOCK_QBR});
       case 'getMatterDocsMarketData':
         return of (MOCK_MARKET_DOCS);
-
+      case 'saveRateBenchmark':
+        return of (MOCK_SAVED_BENCHMARK);
       default:
         return of([]);
     }
@@ -322,6 +324,18 @@ export class DataStub {
         return of (MOCK_MATTER_DOCUMENTS);
       case 'getFirmsForMatter':
         return of (MOCK_FIRMS_FOR_MATTER);
+      case 'getRateBenchmarks':
+        return of (MOCK_RATE_BENCHMARKS);
+      case 'getRateBenchmarksAdmin':
+        return of (MOCK_ADMIN_RATE_BENCHMARKS);
+      case 'getFirmsByClientCluster':
+        return of (MOCK_FIRM_CLUSTER_RES);
+      case 'getFirmRateAnalysisIncreaseData':
+        return of (MOCK_RATE_ANALYSIS_RESULT);
+      case 'getRateBenchmark':
+        return of (MOCK_RATE_BENCHMARK_RESULT);
+      case 'getMatterInsight':
+        return of (MOCK_INSIGHT);
       default:
         return of([]);
     }
@@ -336,6 +350,8 @@ export class DataStub {
         return of({ result: {}});
       case 'deleteSubscription':
         return of({ result: {}});
+      case 'deleteRateBenchmark':
+        return of({ result: true});
       default:
         return of([]);
     }
@@ -536,6 +552,51 @@ export class QbrServiceStub {
 
   public calculateShiftFirmsSavings(rec, topFirmData, secondFirmData) {
     return(rec);
+  }
+}
+
+export class RatesAnalysisServiceStub {
+  public calculateHistoricalCostImpact(firmData, marketData) {
+    return({
+      blended_rate_lower_diff: 384294.37835892406,
+      blended_rate_upper_diff: 508086.76304107625,
+      blended_rate_lower_diff_pct: 0.2865519433695809,
+      blended_rate_upper_diff_pct: 0.378858649901453,
+      cost_impact: 'HIGH',
+      blended_within_range: false
+    });
+  }
+
+  public calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number) {
+    return {
+      savings: 10000,
+      classificationData: [
+        {
+            title: 'associate',
+            avgRateIncrease: 0.028588881355932183,
+            totalHours: 14114.8165,
+            lastYearRate: 758.5843
+        },
+        {
+            title: 'partner',
+            avgRateIncrease: 0.03296267008756117,
+            totalHours: 4479.6,
+            lastYearRate: 1228.0386
+        }
+      ],
+      rateIncreasePct: 5,
+      total: 100000};
+  }
+
+  public calculateProjectedCostImpact() {
+    return {
+      firmProjectedImpact: 1417273.2331419585,
+      marketProjectedImpact: 1381942.1148034632
+    };
+  }
+
+  public getBenchmark() {
+    return(MOCK_BENCHMARKS);
   }
 }
 

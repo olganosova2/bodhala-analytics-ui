@@ -1,0 +1,16 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables.scss";
+td {
+  padding: 10px 0;
+}
+:host ::ng-deep {
+  .p-slider .p-slider-range {
+    background-color: $orange-color !important;
+  }
+}
+.slider-div {
+  // width: 50%;
+}
+.radio-buttons {
+  width: 300px;
+}

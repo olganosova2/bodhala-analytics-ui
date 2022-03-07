@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, MetricCardType, MetricGrade, RECORDS_NUMBER_THRESHOLD} from './model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {UtilService} from 'bodhala-ui-common';
+import {CommonService} from '../../shared/services/common.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ import {UtilService} from 'bodhala-ui-common';
 export class MatterAnalysisService {
 
 
-  constructor(public filtersService: FiltersService, public utilService: UtilService) {
+  constructor(public filtersService: FiltersService,
+              public utilService: UtilService,
+              public commonServ: CommonService) {
   }
 
   buildTotalPanels(summaryData: IMatterExecSummary, marketData: IMatterExecSummary, internalData: IMatterExecSummary): Array<IMatterTotalsPanel> {
@@ -204,7 +207,45 @@ export class MatterAnalysisService {
 
   getGrade(tk: IMetricDisplayData, summaryData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): void {
     const prop = tk.fieldName;
+    tk.grade = MetricGrade.NODATA;
     if (marketRecords.length === 0) {
+      return;
+    }
+    const actual = summaryData[prop];
+    const compareRecords = Object.assign([], marketRecords.sort(this.utilService.dynamicSort(prop)));
+
+    const values = compareRecords.map(e => e[prop]);
+    values.push(actual);
+    const stdRec = this.commonServ.getStandardDeviation(values);
+    const avgRec = values.reduce((a, b) => a + b) / (values.length || 1);
+    const zRec = (actual - avgRec) / (stdRec || 1);
+    const minRec = compareRecords[0];
+    const maxRec = compareRecords[compareRecords.length - 1];
+    const bmDiff = maxRec[prop] - minRec[prop];
+    tk.low = minRec[prop];
+    tk.high = maxRec[prop];
+    if (prop.indexOf('percent_') !== 0) {
+      if (zRec <= -1) {
+        tk.grade = MetricGrade.GOOD;
+      } else if (zRec > -1 && zRec <= 1) {
+        tk.grade = MetricGrade.FAIR;
+      } else {
+        tk.grade = MetricGrade.POOR;
+      }
+    } else {
+      if (zRec >= -0.5 && zRec <= 0.5) {
+        tk.grade = MetricGrade.GOOD;
+      } else if ((zRec >= -1 && zRec < -0.5) || (zRec > 0.5 && zRec <= 1)) {
+        tk.grade = MetricGrade.FAIR;
+      } else {
+        tk.grade = MetricGrade.POOR;
+      }
+    }
+  }
+  getGradeBkp(tk: IMetricDisplayData, summaryData: IMatterExecSummary, marketRecords: Array<IMatterExecSummary>): void {
+    const prop = tk.fieldName;
+    if (marketRecords.length === 0) {
+      tk.grade = MetricGrade.NODATA;
       return;
     }
     const actual = summaryData[prop];

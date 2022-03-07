@@ -51,6 +51,7 @@ export class MatterInsightsComponent implements OnInit, OnDestroy {
   }
   loadFirms(evt: MatAutocompleteSelectedEvent): void {
     if (evt.option.value && evt.option.value.id) {
+      this.firm = null;
       this.matterId = evt.option.value.id;
       this.matterName = evt.option.value.name;
       const mattersArr = [];

@@ -1,0 +1,30 @@
+<div>
+  <h4>Create Client Rate Benchmarks</h4>
+  <div>
+    <div class="mb10 mt10">
+      Please select a client:
+    </div>
+    <bd-client-drop-down (clientSelected)="loadClientRateBenchmarks($event)"></bd-client-drop-down>
+  </div>
+
+  <div *ngIf="selectedClient">
+    <div class="pull-right mb20">
+        <button class="primary-button" (click)="addNew()">Add New +</button>
+    </div>
+    <div class="clear-both"></div>
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%;"
+      [ngStyle]="{'height': agGridService.setGridHeight(clientRateBenchmarks, paginationPageSize) +'px'}"
+      class="ag-theme-alpine"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      [sideBar]="sideBarConfig"
+      (displayedColumnsChanged)="saveGridConfig($event)"
+      (sortChanged)="saveGridConfig($event);"
+      (columnResized)="saveGridConfig($event);"
+      [suppressAggFuncInHeader]="true"
+      [gridOptions]="gridOptions">
+  </ag-grid-angular>
+  </div>
+</div>

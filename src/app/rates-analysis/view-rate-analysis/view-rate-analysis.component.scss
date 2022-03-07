@@ -1,0 +1,87 @@
+.wrapper {
+  padding: 0px 16px 16px 24px;
+  width: 100%;
+}
+
+.header-span {
+  font-weight: 700;
+  font-family: 'Roboto Bold';
+  display: inline;
+  font-size: 24px !important;
+  padding-left: 1em;
+}
+
+.data-span {
+  font-size: 24px;
+  font-weight: 400;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-left: 0.5em;
+}
+
+.peer-firms {
+  float: right;
+  background: #DEE8EB;
+  border-radius: 72px;
+  justify-content: center;
+  align-items: center;
+  width: 280px;
+  height: 95px;
+  font-size: 12px;
+}
+
+h3 {
+  // font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  font-family: 'Roboto Bold' !important;
+  // font-weight: 700;
+  font-size: 40px;
+  padding-top: 1em;
+}
+
+.rates-analysis-card {
+  background: #FFFFFF;
+  border-radius: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 32px;
+}
+
+.grade-pill {
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  padding: 2px 8px;
+  margin-left: 1em;
+  margin-right: 1em;
+  border-radius: 17px;
+  color: #ffffff;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+.projected-cost-impact {
+  border-right: 2px solid #E9F1F4;
+  width: 30%;
+  display: flex;
+  align-items: center;
+  font-family: 'Roboto Bold' !important;
+  font-size: 16px;
+  padding-left: 3.5em;
+}
+
+.cost-impact {
+  padding-left: 1.5em;
+  font-family: Roboto Bold;
+  font-size: 16px !important;
+}
+
+.generic {
+  font-size: 16px;
+  font-family: Roboto;
+}
+
+.icon-filter {
+  filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);
+}
+
+
+

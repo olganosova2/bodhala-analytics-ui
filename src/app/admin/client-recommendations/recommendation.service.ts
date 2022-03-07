@@ -505,7 +505,6 @@ export class RecommendationService {
     }
     const processed = tkClassificationsProcessed;
     result = this.calculateIncreaseRateValue(rateIncreaseLimit, processed);
-
     return {savings: result, classificationData: processed};
   }
 

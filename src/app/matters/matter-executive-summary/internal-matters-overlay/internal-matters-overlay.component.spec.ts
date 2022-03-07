@@ -57,7 +57,7 @@ describe('InternalMattersOverlayComponent', () => {
   });
   it('should viewMatters', () => {
     localStorage.setItem('ELEMENTS_dataFilters_' + component.userService.currentUser.id.toString(), JSON.stringify(FILTERS_LS));
-    component.viewMatters(true, null);
+    component.viewMatters(true, 'xxx');
     expect(component.matters.length).toBe(0);
   });
 });

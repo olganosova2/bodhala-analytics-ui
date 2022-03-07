@@ -11,6 +11,8 @@ import {confirmDialogConfig} from '../shared/services/config';
 import {QbrService} from './qbr.service';
 import {IReport} from './qbr-model';
 import * as config from '../shared/services/config';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 
 @Component({

@@ -1,0 +1,83 @@
+<div>
+  <div *ngIf="messageService.messages.length>0" class="content-body">
+    <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
+      <bd-message-item [alert]="message" [index]="i"></bd-message-item>
+    </div>
+  </div>
+  <div class="font-bold mb20">Please select a client</div>
+
+  <div class="mt10">
+    <bd-client-drop-down (clientSelected)="getClientBmData($event)"></bd-client-drop-down>
+  </div>
+  <div class="mt10" *ngIf="selectedClient">
+    <ngb-alert type="success" *ngIf="successText" (close)="successText=null">
+      <div class="font-green font-bold">
+        {{ successText}}
+      </div>
+    </ngb-alert>
+    <ngb-alert type="danger" *ngIf="selectedClient.missingSmartPA">
+      <div class="font-red font-bold">
+        This client doesn't have Smart PA setting
+      </div>
+    </ngb-alert>
+
+    <mat-tab-group [(selectedIndex)]="selIndex" (selectedTabChange)="changeTab($event)" *ngIf="!selectedClient.missingSmartPA">
+      <mat-tab label="Benchmarking Setup">
+        <div class="panel-wrapper" >
+          <div class="mb20 full-width">
+            <p-radioButton name="bmSetupType" value="AllMatters" (click)="selectAll()" [(ngModel)]="bmSetupType"></p-radioButton>
+              Benchmark all matters
+          </div>
+          <div class="mb20">
+            <p-radioButton name="bmSetupType" value="SelectedMatters" [(ngModel)]="bmSetupType"></p-radioButton>
+            Benchmark specific matters
+          </div>
+          <ngb-alert type="danger" *ngIf="errorMessage" (close)="errorMessage=null">
+            <div class="font-red font-bold">
+              {{ errorMessage}}
+            </div>
+          </ngb-alert>
+          Matter: <span class="font-bold"></span>
+          <div class="p-grid full-width">
+            <div class="p-col-11">
+              <mat-form-field appearance="outline" class="full-width">
+                <input type="text"  #matterInput matInput  autocomplete="off"  required (input)="loadMatters($event.target.value)" [readonly]="bmSetupType === 'AllMatters'"
+                       maxlength="255" [matAutocomplete]="auto" name="matterId" placeholder="Type to search by Matter ID or Matter Name">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="selectMatter($event)">
+                  <mat-option *ngFor="let option of filteredNames; let i = index" [value]="option">
+                    {{ option.name }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          <div class="p-col-1">
+            <button mat-flat-button color="primary" class="mt5 pt10 pb10" [disabled]="!selectedMatter" (click)="addMatter();matterInput.value=''">ADD</button>
+          </div>
+          </div>
+
+
+        <table class="full-width mt20" *ngIf="displayMatters.length > 0">
+          <tr>
+            <th>Matter Name</th>
+            <th>Matter ID</th>
+            <th>Practice Area</th>
+            <th>Firm</th>
+            <th>Delete</th>
+          </tr>
+          <tr *ngFor="let matter of displayMatters">
+            <td>{{matter.matter_name}}</td>
+            <td>{{matter.client_matter_id}}</td>
+            <td>{{matter.smart_pa}}</td>
+            <td>{{matter.firm_name}}</td>
+            <td><i class="material-icons pointer-hand" (click)=delete(matter)>delete</i></td>
+          </tr>
+
+        </table>
+        </div>
+      </mat-tab>
+      <mat-tab label="Matter-Specific Insights" >
+        <bd-admin-insights *ngIf="clientWasSelected" [page]="'BM'" [selectedClient]="selectedClient"></bd-admin-insights>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

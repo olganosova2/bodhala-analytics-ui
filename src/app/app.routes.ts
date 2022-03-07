@@ -33,10 +33,16 @@ import {QbrComponent} from './qbr/qbr.component';
 import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 import {QbrDeckComponent} from './qbr/qbr-deck/qbr-deck.component';
 import {QbrDashboardComponent} from './qbr/qbr-dashboard/qbr-dashboard.component';
+import {RatesAnalysisComponent} from './rates-analysis/rates-analysis.component';
+import {AdminRateBenchmarksComponent} from './admin/admin-rate-benchmarks/admin-rate-benchmarks.component';
+import {ViewRateAnalysisComponent} from './rates-analysis/view-rate-analysis/view-rate-analysis.component';
+import { GranularRateAnalysisComponent } from './rates-analysis/view-rate-analysis/granular-rate-analysis/granular-rate-analysis.component';
+
 import {MatterExecutiveSummaryComponent} from './matters/matter-executive-summary/matter-executive-summary.component';
 import {AdminInsightsComponent} from './admin/insights/insights.component';
 import {MatterStaffingComponent} from './matters/matter-executive-summary/matter-staffing/matter-staffing.component';
 import {MatterDocumentsOverviewComponent} from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
+import {BenchmarkMattersComponent} from './admin/benchmark-matters/benchmark-matters.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -72,6 +78,10 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/qbrs/view', component: QbrDeckComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/edit/:reportId', component: QbrCreationComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/qbrs/dashboard', component: QbrDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking/view/:id', component: ViewRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking/view/detail/:id', component: GranularRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+
   {path: 'analytics-ui/matter-executive-summary', component: MatterExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-tasks', component: MatterDocumentsOverviewComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
@@ -92,7 +102,10 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/admin/subscription-list', component: SubscriptionListComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/ledes-imports', component: LedesImportsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/ledes-imports/:clientId', component: RerunUploadComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/rate-benchmarks', component: AdminRateBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  // {path: 'analytics-ui/admin/rate-benchmarks/:clientId', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/insights', component: AdminInsightsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
-  // AdminInsightsComponent
+  {path: 'analytics-ui/admin/matter-benchmarks', component: BenchmarkMattersComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

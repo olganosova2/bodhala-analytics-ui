@@ -12,9 +12,9 @@
         </div>
         <div class="summary-card-content total-spend-card" [ngClass]="{'summary-card-content-docs': page === 'Documents'}">
           ${{totalSpendMetric[0].delta | number:'1.0-0'}}
-          <span *ngIf="totalSpendMetric[0].direction >= 0" class="roboto-bold">higher</span>
-          <span *ngIf="totalSpendMetric[0].direction < 0" class="roboto-bold">lower</span>
-          than market
+          <span *ngIf="totalSpendMetric[0].direction >= 0" class="roboto-bold">above</span>
+          <span *ngIf="totalSpendMetric[0].direction < 0" class="roboto-bold">below</span>
+          market
         </div>
       </div>
     </div>
@@ -31,14 +31,14 @@
         </div>
         <div class="summary-card-content pt20" [ngClass]="{'summary-card-content-docs': page === 'Documents'}">
           <div>
-          <span class="roboto-bold">Average Associate Rate ${{avgRatesMetric[2].delta | number:'1.0-0'}}
+          <span class="roboto-bold">Average Associate Rate: ${{avgRatesMetric[2].delta | number:'1.0-0'}}
           <span *ngIf="avgRatesMetric[2].direction >= 0">higher</span>
           <span *ngIf="avgRatesMetric[2].direction < 0">lower</span>
           </span>
           than market
           </div>
           <div class="mt10">
-             <span class="roboto-bold">Average Partner Rate ${{avgRatesMetric[1].delta | number:'1.0-0'}}
+             <span class="roboto-bold">Average Partner Rate: ${{avgRatesMetric[1].delta | number:'1.0-0'}}
                <span *ngIf="avgRatesMetric[1].direction >= 0">higher</span>
           <span *ngIf="avgRatesMetric[1].direction < 0">lower</span>
           </span>
@@ -60,25 +60,29 @@
         </div>
         <div class="summary-card-content pt10" [ngClass]="{'summary-card-content-docs': page === 'Documents'}">
           <div>
-            <span ><span class="roboto-bold">Associate {{staffingAllocationMetric[2].increase | number:'1.0-0'}}% </span>
-            <span *ngIf="staffingAllocationMetric[2].direction >= 0">higher</span>
-          <span *ngIf="staffingAllocationMetric[2].direction < 0">lower</span>
-          </span>
-            <div class="text-gray">({{staffingAllocationMetric[2].delta}}
+            <div class="staffing-hours-total"><span class="roboto-bold">{{staffingAllocationMetric[0].delta}} hours
+              <span *ngIf="staffingAllocationMetric[0].direction >= 0">above</span>
+              <span *ngIf="staffingAllocationMetric[0].direction < 0">below</span>
+            </span>
+              market
+            </div>
+          </div>
+
+            <div><span class="roboto-bold">{{staffingAllocationMetric[2].delta}}
               <span *ngIf="staffingAllocationMetric[2].direction >= 0">more</span>
               <span *ngIf="staffingAllocationMetric[2].direction < 0">fewer</span>
-              hours than market average)</div>
-          </div>
-          <div>
-            <span><span class="roboto-bold">Partner {{staffingAllocationMetric[1].increase | number:'1.0-0'}}% </span>
-               <span *ngIf="staffingAllocationMetric[1].direction >= 0">higher</span>
-          <span *ngIf="staffingAllocationMetric[1].direction < 0">lower</span>
-          </span>
-            <div class="text-gray">({{staffingAllocationMetric[1].delta}}
-              <span *ngIf="staffingAllocationMetric[1].direction >= 0">more</span>
+            </span>
+              Associate hours
+            </div>
+
+          <div><span class="roboto-bold">{{staffingAllocationMetric[1].delta}}
+            <span *ngIf="staffingAllocationMetric[1].direction >= 0">more</span>
               <span *ngIf="staffingAllocationMetric[1].direction < 0">fewer</span>
-              hours than market average)</div>
+            </span>
+            Partner hours
           </div>
+
+
         </div>
       </div>
     </div>
