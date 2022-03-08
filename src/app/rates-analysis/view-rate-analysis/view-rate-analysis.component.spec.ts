@@ -84,11 +84,6 @@ describe('ViewRateAnalysisComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should getData', () => {
-    component.getData();
-    expect(component).toBeTruthy();
-  });
-
   xit('should saveInstanceTotal', () => {
     component.overallSpendData = MOCK_RATE_ANALYSIS_RESULT.result.overall_spend;
     component.firmTotalSpend = 1000000;
