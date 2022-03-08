@@ -29,8 +29,7 @@
       <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">Historical Cost Impact: <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">{{costImpactGrade}}</span></span>
       <div style="display: flex; justify-content: center; align-items: center; font-size: 40px; font-family: 'Roboto Bold'" [ngStyle]="{'color': costImpactColor}">
         <span style="padding-top: 8px;" *ngIf="blendedWithinRange">~{{costImpactLowerFormatted}} </span>
-        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
-        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
+        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
       </div>
 
       <div style="display: flex; justify-content: center; align-items: center; font-size: 22px; font-family: 'Roboto'">
