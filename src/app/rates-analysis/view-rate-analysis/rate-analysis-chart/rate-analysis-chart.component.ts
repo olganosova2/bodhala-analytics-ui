@@ -28,6 +28,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
   internalRateDelta: number;
   internalRateDeltaPct: number;
   withinRange: boolean = false;
+  modifyMarketDisplay: boolean = false;
 
   topBarWidth: string = '500px';
   bottomBarWidth: string = '400px';
@@ -56,14 +57,13 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // need to uncomment this before pushing
-    // if (this.internalData.num_firms < 3) {
-    //   this.validInternalBM = false;
-    //   this.marketAverageHeight = '84px';
-    // }
-    // if (this.marketAverageData.num_firms < 3) {
-    //   this.validMarketAverage = false;
-    // }
+    if (this.internalData.num_firms < 3) {
+      this.validInternalBM = false;
+      this.marketAverageHeight = '84px';
+    }
+    if (this.marketAverageData.num_firms < 3) {
+      this.validMarketAverage = false;
+    }
   }
 
   ngAfterViewInit() {
@@ -77,8 +77,6 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
   }
 
   calculateChartMetrics(): void {
-    // this.selectedFirmData.blended_rate = 1080;
-    // this.selectedFirmData. = 4000;
     if (this.rateType === 'Blended') {
       if (this.marketAverageData.blended_rate_hi > this.selectedFirmData.blended_rate && this.marketAverageData.blended_rate_hi > this.internalData.avg_blended_rate) {
         this.highestRate = this.marketAverageData.blended_rate_hi;
@@ -99,6 +97,9 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       const lowerRange = this.calculateBarWidth(this.marketAverageData.blended_rate_lo);
       const upperRange = this.calculateBarWidth(this.marketAverageData.blended_rate_hi);
       const width = upperRange - lowerRange;
+      if (width < 65) {
+        this.modifyMarketDisplay = true;
+      }
       this.marketAverageLowerRange = this.marketAverageData.blended_rate_lo;
       this.marketAverageUpperRange =  this.marketAverageData.blended_rate_hi;
       this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketAverageData.blended_rate_lo);
@@ -152,6 +153,9 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       const lowerRange = this.calculateBarWidth(this.marketAverageData.partner_lo);
       const upperRange = this.calculateBarWidth(this.marketAverageData.partner_hi);
       const width = upperRange - lowerRange;
+      if (width < 65) {
+        this.modifyMarketDisplay = true;
+      }
       this.marketAverageLeft = lowerRange + 'px';
       this.marketAverageWidth = width + 'px';
 
@@ -200,6 +204,9 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       const lowerRange = this.calculateBarWidth(this.marketAverageData.associate_lo);
       const upperRange = this.calculateBarWidth(this.marketAverageData.associate_hi);
       const width = upperRange - lowerRange;
+      if (width < 65) {
+        this.modifyMarketDisplay = true;
+      }
       this.marketAverageLeft = lowerRange + 'px';
       this.marketAverageWidth = width + 'px';
 

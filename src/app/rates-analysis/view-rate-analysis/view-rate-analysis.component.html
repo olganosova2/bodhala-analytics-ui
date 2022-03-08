@@ -4,14 +4,14 @@
       Rate Benchmark Analysis
     </span>
 
-    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
-    <span style="color: #000000; font-family: 'Roboto' !important;">{{firmName}}</span>
+    <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
+    <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{firmName}}</span>
 
-    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
-    <span style="color: #000000; font-family: 'Roboto' !important;">{{practiceArea}}</span>
+    <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
+    <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{practiceArea}}</span>
 
-    <span class="header-span" style="margin-left: 3em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
-    <span style="color: #000000; font-family: 'Roboto' !important;">{{year}}</span>
+    <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
+    <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{year}}</span>
 
     <div class="peer-firms">
       <p style="text-align: center; margin-top: 1em; font-family: 'Roboto Bold' !important;">Comparison Firm Set</p>
@@ -22,15 +22,14 @@
 
   <h3 style="padding-bottom: 40px;">Rate Benchmarking Overview</h3>
 
-  <div class="p-grid">
+  <div class="p-grid"  style="flex-wrap: nowrap !important;">
     <!-- [ngStyle]="{'background-color': costImpactColor} -->
     <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setStyle()" style="width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px; border-radius: 24px 24px 24px 24px; height: 175px;"> <!-- [ngStyle]="{'background-color': costImpactColor}"-->
       <img src="assets/images/bills.svg" alt="icon" class="icon-filter" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px;"/>
       <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">Historical Cost Impact: <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">{{costImpactGrade}}</span></span>
       <div style="display: flex; justify-content: center; align-items: center; font-size: 40px; font-family: 'Roboto Bold'" [ngStyle]="{'color': costImpactColor}">
         <span style="padding-top: 8px;" *ngIf="blendedWithinRange">~{{costImpactLowerFormatted}} </span>
-        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
-        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
+        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
       </div>
 
       <div style="display: flex; justify-content: center; align-items: center; font-size: 22px; font-family: 'Roboto'">
@@ -70,7 +69,7 @@
 
   </div>
 
-  <div class="p-grid mt40">
+  <div class="p-grid mt40" style="flex-wrap: nowrap !important;">
     <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setIncreaseStyle()" style="height: 175px; background: #FFFFFF; border-radius: 24px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px 16px 0px 16px;">
       <div class="p-grid">
         <div class="p-md-12" style="width: 72%; padding: 0px !important; margin-top: 8px;">
@@ -117,7 +116,7 @@
             increase, your projected cost impact
           </div>
           <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important;" [ngStyle]="{'color': cohortRateIncreaseColor}">
-            <span *ngIf="cohortCostImpact > 0">+</span><span *ngIf="cohortCostImpact < 0">-</span> {{cohortCostImpactFormatted}}
+            <span *ngIf="cohortCostImpact > 0">+</span> {{cohortCostImpactFormatted}}
             <span class="ml10 pointer-hand" placement="bottom"
                 [ngbPopover]="helpText"
                 popoverTitle="Projected Cost Increase"
