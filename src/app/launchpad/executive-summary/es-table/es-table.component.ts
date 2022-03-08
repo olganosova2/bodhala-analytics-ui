@@ -24,6 +24,7 @@ export class EsTableComponent implements OnInit {
   topPracticeArea: string;
   isLoaded: boolean = false;
   pendingRequest: Subscription;
+  smartPAs: boolean = false;
   @Input() maxDate: string;
   @Input() fullYear: boolean;
   @Input() lastFullYear: string;
@@ -46,6 +47,23 @@ export class EsTableComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    if (this.userService.config !== undefined) {
+      if ('analytics.practice.bodhala.areas' in this.userService.config) {
+        const userConfigs = Object.values(this.userService.config);
+        for (const configuration of userConfigs) {
+          if (configuration.configs[0].description === 'config for analytics practice areas') {
+            if (configuration.configs[0].value === 'Smart Practice Areas' || configuration.configs[0].value === 'Both') {
+              this.smartPAs = true;
+            } else {
+              this.smartPAs = false;
+            }
+            break;
+          }
+        }
+      } else {
+        this.smartPAs = false;
+      }
+    }
     this.getExecutiveSummaryData(this.fullYear);
   }
 
@@ -61,6 +79,7 @@ export class EsTableComponent implements OnInit {
     params.startdate = janOne;
     params.enddate = this.maxDate;
     params.fullYear = fullYear;
+    params.smart = this.smartPAs;
     this.pendingRequest = this.httpService.makeGetRequest('getExecutiveSummaryData', params).subscribe(
       (data: any) => {
         if (data.result) {
