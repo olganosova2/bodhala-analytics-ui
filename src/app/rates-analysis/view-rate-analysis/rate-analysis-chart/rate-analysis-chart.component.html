@@ -8,12 +8,21 @@
   <div #chartPanel  style="width: 88% !important; display: inline-block; position: relative; z-index: 1; padding: 32px !important;">
     <!-- (mouseenter)="showInfo($event, op3)" (mouseleave)="showInfo($event, op3)" -->
     <!-- *ngIf="dataRow.isChild" -->
-    <div *ngIf="validMarketAverage" #bmPanel class="market-average" [ngStyle]="{'left': marketAverageLeft, 'width': marketAverageWidth, 'height': marketAverageHeight}">
+    <div *ngIf="validMarketAverage && !modifyMarketDisplay" #bmPanel class="market-average" [ngStyle]="{'left': marketAverageLeft, 'width': marketAverageWidth, 'height': marketAverageHeight}">
       <div class="range-average-wrapper">
 
         <span class="average">Market Average</span>
 
         <p class="range">{{marketAverageLowerRangeFormatted}} - {{marketAverageUpperRangeFormatted}}</p>
+      </div>
+
+    </div>
+    <div *ngIf="validMarketAverage && modifyMarketDisplay" #bmPanel class="market-average" [ngStyle]="{'white-space': 'nowrap', 'left': marketAverageLeft, 'width': marketAverageWidth, 'height': marketAverageHeight}">
+      <div class="range-average-wrapper" style="top: -50px !important;">
+
+        <span class="average">Market Average</span>
+
+        <p class="range" style="padding-top: 0px !important;">{{marketAverageLowerRangeFormatted}} - {{marketAverageUpperRangeFormatted}}</p>
       </div>
 
     </div>

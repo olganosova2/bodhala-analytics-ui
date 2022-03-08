@@ -27,6 +27,8 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   summary: ISummary = {} as ISummary;
   dates: IDates = {} as IDates;
   matters: Array<IClientMatter> = [];
+  @Input() page: string = 'Insights';
+  @Input() selectedClient: IClient;
 
   @ViewChild(MatterInsightsComponent) matterInsightsComp: MatterInsightsComponent;
 
@@ -34,12 +36,19 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
               public messageService: MessagingService,
               public commonServ: CommonService,
               public userService: UserService) {
-    this.commonServ.pageTitle = 'Launchpad Insights';
   }
 
   ngOnInit() {
-
-    this.loadClients();
+    if (this.page === 'Insights') {
+      this.loadClients();
+      setTimeout(() => {
+        this.commonServ.pageTitle = 'Launchpad Insights';
+      });
+    }
+    if (this.page === 'BM') {
+      this.selectedClientId = this.selectedClient.bh_client_id;
+      this.getClientInsights(this.selectedClient);
+    }
   }
 
   loadClients(): void {
@@ -66,8 +75,7 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
         this.processInsights(data.result);
       }
     );
-    const orgid =  this.clients.find(e => e.bh_client_id === clientid).org_id;
-    const paramsSum = {clientId: clientid, orgId: orgid};
+    const paramsSum = {clientId: clientid, orgId: client.org_id};
     this.pendingRequestInsightsSummary = this.httpService.makeGetRequest<IInsight>('getInsightsSummary', paramsSum).subscribe(
       (data: any) => {
         if (!data.result || !data.result.max_date) { // No data, new client
@@ -133,10 +141,20 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
     this.matterInsights = insights.filter(e => e.insight_type === IAdminInsightType.Matter) || [];
     for (const type of Object.keys(IAdminInsightType)) {
       const found = insights.find(e => e.insight_type === type);
-      if (found && type !== IAdminInsightType.Matter) { // for matter insight always create empty insight on load
-        this.insights.push(found);
-      } else {
-        this.insights.push(this.createNewInsight(type));
+      if (this.page === 'Insights'){
+        if (type === IAdminInsightType.Matter) {
+          continue;
+        }
+        if (found) {
+          this.insights.push(found);
+        } else {
+          this.insights.push(this.createNewInsight(type));
+        }
+      }
+      if (this.page === 'BM') {
+        if (type === IAdminInsightType.Matter) { // for matter insight always create empty insight on load
+          this.insights.push(this.createNewInsight(type));
+        }
       }
     }
     this.selectedInsight = this.insights[0];
@@ -167,7 +185,9 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.commonServ.clearTitles();
+    if (this.page === 'Insights') {
+     this.commonServ.clearTitles();
+    }
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }
