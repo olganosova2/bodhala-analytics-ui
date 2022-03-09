@@ -246,15 +246,7 @@ export class RatesAnalysisService {
       result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / firmData.total_atty_billed;
       result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / firmData.total_atty_billed;
       result.blended_within_range = false;
-      if (result.blended_rate_upper_diff_pct <= -0.2) {
-        result.cost_impact = 'HIGH';
-      } else if (result.blended_rate_upper_diff_pct >= -0.2 && result.blended_rate_upper_diff_pct <= -0.05) {
-        result.cost_impact = 'MODERATE';
-      } else if (result.blended_rate_upper_diff_pct > -0.05 && result.blended_rate_upper_diff_pct < 0) {
-        result.cost_impact = 'LOW';
-      } else {
-        result.cost_impact = 'NONE';
-      }
+      result.cost_impact = 'POSITIVE';
     }
     return result;
   }
