@@ -224,7 +224,7 @@ export class RatesAnalysisComponent implements OnInit {
     if (params.value !== null) {
       const color = COST_IMPACT_GRADES[params.data.cost_impact];
       if (params.data.blended_rate_lower_diff < 0 && params.data.blended_rate_upper_diff < 0) {
-        result = '<div style="height: 24px; border-radius: 16px; padding: 0.5em; font-family: Roboto; font-size: 12px; color: white; display: flex; justify-content: center; align-items: center; margin-top: 12px; width: 48px; background: #3EDB73;">' + params.data.cost_impact + '</div>';
+        result = '<div style="height: 24px; border-radius: 16px; padding: 0.5em; font-family: Roboto; font-size: 12px; color: white; display: flex; justify-content: center; align-items: center; margin-top: 12px; width: 72px; background: #3EDB73;">' + params.data.cost_impact + '</div>';
       } else {
         result = '<div style="height: 24px; border-radius: 16px; padding: 0.5em; font-family: Roboto; font-size: 12px; color: white; display: flex; justify-content: center; align-items: center; margin-top: 12px; width: ' + color.width + '; background: ' + color.color + ';">' + params.data.cost_impact + '</div>';
       }
@@ -250,7 +250,7 @@ export class RatesAnalysisComponent implements OnInit {
       if (params.data.blended_within_range) {
         result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + '</span>';
       } else if (params.data.blended_rate_upper_diff < 0 && params.data.blended_rate_lower_diff < 0) {
-        result = '<span style="font-family: Roboto Bold; font-size: 12px; color: #3EDB73;">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + ' - ' + moneyFormatter.format(params.data.blended_rate_upper_diff) + '</span>';
+        result = '<span style="font-family: Roboto Bold; font-size: 12px; color: #3EDB73;">~' + moneyFormatter.format((params.data.blended_rate_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.blended_rate_upper_diff * -1)) + '</span>';
       } else if (params.data.blended_rate_upper_diff > 0 && params.data.blended_rate_lower_diff > 0) {
         result = '<span style="font-family: Roboto Bold; font-size: 12px; color: ' + color.color + ';">~' + moneyFormatter.format(params.data.blended_rate_lower_diff) + ' - ' + moneyFormatter.format(params.data.blended_rate_upper_diff) + '</span>';
       }

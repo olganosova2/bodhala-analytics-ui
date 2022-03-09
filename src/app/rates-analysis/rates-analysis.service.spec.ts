@@ -57,6 +57,6 @@ describe('RatesAnalysisService', () => {
     const firmData = MOCK_RATE_ANALYSIS_RESULT.result.firm_data[0][0];
     firmData.blended_rate = 500;
     const result = service.calculateHistoricalCostImpact(firmData, MOCK_RATE_ANALYSIS_RESULT.result.market_average[0]);
-    expect(result.cost_impact).toEqual('NONE');
+    expect(result.cost_impact).toEqual('POSITIVE');
   });
 });
