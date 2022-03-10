@@ -12,7 +12,7 @@ import { rateBenchmarkingChartOptions } from '../rates-analysis.model';
 
 
 
-describe('ViewRateAnalysisComponent', () => {
+xdescribe('ViewRateAnalysisComponent', () => {
   let component: ViewRateAnalysisComponent;
   let fixture: ComponentFixture<ViewRateAnalysisComponent>;
 

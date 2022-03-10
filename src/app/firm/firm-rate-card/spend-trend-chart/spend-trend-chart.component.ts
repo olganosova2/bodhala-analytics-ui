@@ -20,7 +20,7 @@ export enum TrendChart {
   BLOCK_BILLING = 'BLOCK_BILLING',
   PARTNER_RATE = 'PARTNER_RATE',
   ASSOCIATE_RATE = 'ASSOCIATE_RATE',
-  PARALEGAL_RATE = 'PARALEGAL_RATE'
+  PARALEGAL_RATE = 'PARALEGAL_RATE',
 }
 
 @Component({
@@ -351,6 +351,9 @@ export class SpendTrendChartComponent implements OnInit {
       case TrendChart.PARALEGAL_RATE:
         result = [year, rec.paralegal_rate];
         break;
+      case TrendChart.BLOCK_BILLING:
+        result = [year, rec.block_billed_percent];
+        break;
       default:
         break;
     }
@@ -389,6 +392,9 @@ export class SpendTrendChartComponent implements OnInit {
         break;
       case TrendChart.PARALEGAL_RATE:
         result = 'Dollars';
+        break;
+      case TrendChart.BLOCK_BILLING:
+        result = 'Percent';
         break;
       default:
         break;
