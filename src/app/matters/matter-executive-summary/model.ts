@@ -5,10 +5,10 @@ export const HARDCODED_MATTER_ID = '061439-00107'; // '056130-0000274'; // '1499
 export const RECORDS_NUMBER_THRESHOLD = 2;
 
 export enum MetricCardType {
-  TotalSpend = 'TotalSpend',
   AverageRates = 'AverageRates',
-  TotalHoursWorked = 'TotalHoursWorked',
   PercentOfHoursWorked = 'PercentOfHoursWorked',
+  TotalHoursWorked = 'TotalHoursWorked',
+  TotalSpend = 'TotalSpend',
   AverageTkOnMatter = 'AverageTkOnMatter'
 }
 
