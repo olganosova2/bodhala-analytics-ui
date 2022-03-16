@@ -62,7 +62,7 @@ export class RatesAnalysisService {
 
 
 
-  calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number): any {
+  calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number, firmData: boolean, validRange: boolean, bmYear: number): any {
     const result = 0;
     const distinctYears = [];
     const yearRecords = [];
@@ -74,19 +74,35 @@ export class RatesAnalysisService {
     for (let ix = 0; ix < 2; ix++) {
       distinctYears.push(clientMaxYear - ix);
     }
-    const yearRecs = classificationRateIncreaseData.filter(e => e.year === clientMaxYear) || [];
-    const partnerRec = yearRecs.filter(e => e.bh_classification === 'partner') || [];
-    const assocRec = yearRecs.filter(e => e.bh_classification === 'associate') || [];
+    // const yearRecs = classificationRateIncreaseData.filter(e => e.year === clientMaxYear) || [];
+    // const partnerRec = yearRecs.filter(e => e.bh_classification === 'partner') || [];
+    // const assocRec = yearRecs.filter(e => e.bh_classification === 'associate') || [];
 
+    const totalSpendYearRecs = classificationRateIncreaseData.filter(e => e.year === bmYear) || [];
+    const partnerRec = totalSpendYearRecs.filter(e => e.bh_classification === 'partner') || [];
+    const assocRec = totalSpendYearRecs.filter(e => e.bh_classification === 'associate') || [];
     if (assocRec.length > 0 && partnerRec.length > 0) {
-
       totalSpend = assocRec[0].total_spend + partnerRec[0].total_spend;
-      if (totalSpend > 0) {
-        assocPctBilled = assocRec[0].total_spend / totalSpend;
-        partnerPctBilled = partnerRec[0].total_spend / totalSpend;
+      if (firmData && validRange) {
+        if (totalSpend > 0) {
+          assocPctBilled = assocRec[0].total_spend / totalSpend;
+          partnerPctBilled = partnerRec[0].total_spend / totalSpend;
+        }
+      } else {
+        const yearRecs = classificationRateIncreaseData.filter(e => e.year === clientMaxYear) || [];
+        const partnerMaxYearRec = yearRecs.filter(e => e.bh_classification === 'partner') || [];
+        const assocMaxYearRec = yearRecs.filter(e => e.bh_classification === 'associate') || [];
+        if (assocMaxYearRec.length > 0 && partnerMaxYearRec.length > 0) {
+          const mostRecentYearSpend = assocMaxYearRec[0].total_spend + partnerMaxYearRec[0].total_spend;
+          if (mostRecentYearSpend > 0) {
+            assocPctBilled = assocMaxYearRec[0].total_spend / mostRecentYearSpend;
+            partnerPctBilled = partnerMaxYearRec[0].total_spend / mostRecentYearSpend;
+          }
+        }
+
+
       }
     }
-
     for (const year of distinctYears) {
 
       const classificationYearRecs = classificationRateIncreaseData.filter(e => e.year === year) || [];
