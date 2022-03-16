@@ -25,14 +25,14 @@ describe('RatesAnalysisService', () => {
 
   it('should calculateRateIncreasePctClassification', () => {
     const service: RatesAnalysisService = TestBed.inject(RatesAnalysisService);
-    const result = service.calculateRateIncreasePctClassification(MOCK_RATE_ANALYSIS_RESULT.result.firm_rate_result_classification, MOCK_RATE_ANALYSIS_RESULT.result.max_year);
+    const result = service.calculateRateIncreasePctClassification(MOCK_RATE_ANALYSIS_RESULT.result.firm_rate_result_classification, MOCK_RATE_ANALYSIS_RESULT.result.max_year, true, true, MOCK_RATE_ANALYSIS_RESULT.result.max_year);
     expect(result.total).toEqual(1341098.4893);
   });
 
   it('should calculateProjectedCostImpact', () => {
     const service: RatesAnalysisService = TestBed.inject(RatesAnalysisService);
-    const firmResult = service.calculateRateIncreasePctClassification(MOCK_RATE_ANALYSIS_RESULT.result.firm_rate_result_classification, MOCK_RATE_ANALYSIS_RESULT.result.max_year);
-    const cohortResult = service.calculateRateIncreasePctClassification(MOCK_RATE_ANALYSIS_RESULT.result.cohort_rate_result_classification, MOCK_RATE_ANALYSIS_RESULT.result.max_year);
+    const firmResult = service.calculateRateIncreasePctClassification(MOCK_RATE_ANALYSIS_RESULT.result.firm_rate_result_classification, MOCK_RATE_ANALYSIS_RESULT.result.max_year, true, true, MOCK_RATE_ANALYSIS_RESULT.result.max_year);
+    const cohortResult = service.calculateRateIncreasePctClassification(MOCK_RATE_ANALYSIS_RESULT.result.cohort_rate_result_classification, MOCK_RATE_ANALYSIS_RESULT.result.max_year, false, true, MOCK_RATE_ANALYSIS_RESULT.result.max_year);
     const result = service.calculateProjectedCostImpact(firmResult.classificationData, cohortResult.classificationData);
     expect(result.firmProjectedImpact).toEqual(1417273.2331419585);
   });

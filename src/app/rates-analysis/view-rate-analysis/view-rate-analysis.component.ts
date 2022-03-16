@@ -139,8 +139,18 @@ export class ViewRateAnalysisComponent implements OnInit {
       }
       this.loaded = true;
       if (data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
-        const firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, data.result.max_year);
-        const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result_classification, data.result.max_year);
+        const validRange = data.result.valid_range;
+        let firmClassificationRateIncreasePct = {
+          classificationData: null,
+          rateIncreasePct: null,
+          total: null,
+        };
+        if (validRange) {
+          firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, data.result.max_year, true, validRange, this.year);
+        } else {
+          firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, (data.result.max_year + 1), true, validRange, this.year);
+        }
+        const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result_classification, data.result.max_year, false, true, this.year);
         this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;
         this.cohortClassificationRateIncreaseData = cohortClassificationRateIncreasePct.classificationData;
         this.firmRateIncreasePct = firmClassificationRateIncreasePct.rateIncreasePct;
@@ -156,7 +166,12 @@ export class ViewRateAnalysisComponent implements OnInit {
         const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
         if (this.firmTotalSpend && projectedCostImpact) {
           if (projectedCostImpact.firmProjectedImpact) {
-            this.firmCostImpact = projectedCostImpact.firmProjectedImpact - this.firmTotalSpend;
+            if (validRange) {
+              this.firmCostImpact = projectedCostImpact.firmProjectedImpact - this.firmTotalSpend;
+            } else {
+              const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
+              this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
+            }
             this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
           }
           if (projectedCostImpact.marketProjectedImpact) {
