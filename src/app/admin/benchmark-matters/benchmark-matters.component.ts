@@ -10,6 +10,7 @@ import * as config from '../../shared/services/config';
 import {IEntityConfig} from '../client-configs/client-configs-model';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatDialog} from '@angular/material/dialog';
+import {SelectItem} from 'primeng/api';
 
 @Component({
   selector: 'bd-benchmark-matters',
@@ -26,10 +27,12 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   similarityScore: number = 0;
   bmSetupType: IBmSetupType;
   displayMatters: Array<any> = [];
+  displayPAs: Array<string> = [];
   filteredNames: Array<IClientMatter> = [];
   selectedMatter: IClientMatter;
   selIndex: number = 0;
   clientWasSelected: boolean = false;
+  smartPAs: SelectItem[];
   constructor(private httpService: HttpService,
               public matterAnalysisService: MatterAnalysisService,
               public messageService: MessagingService,
@@ -46,6 +49,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   getClientBmData(client: IClient): void {
     this.clearClient();
     this.selectedClient = client;
+    this.getSmartPAs();
     const params = {clientId: this.selectedClient.bh_client_id, orgId: this.selectedClient.org_id, configName: BM_MATTER_CONFIG_NAME};
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getBenchmarkMattersConfig', params).subscribe(
       (data: any) => {
@@ -65,11 +69,32 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       }
     );
   }
+  getSmartPAs(): void {
+    const params = {clientId: this.selectedClient.bh_client_id};
+    this.pendingRequest = this.httpService.makeGetRequest('getPracticeAreaListByClientAdmin', params).subscribe(
+      (data: any) => {
+        if (!data.result) {
+          return;
+        }
+        for (const result of data.result.bodhala) {
+          this.smartPAs.push({label: result, value: result});
+        }
+      }
+    );
+  }
   processBmConfig(cfg: IEntityConfig): void {
     if (!cfg) {
       this.clientBmConfig = Object.assign({}, this.createNewBmConfig());
     } else {
       this.clientBmConfig = Object.assign({}, cfg);
+      if (this.clientBmConfig.json_config && !this.clientBmConfig.json_config.smartPAs) {
+        this.clientBmConfig.json_config.smartPAs = []; // for already existing configs
+      }
+      if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.smartPAs && this.clientBmConfig.json_config.smartPAs.length > 0) {
+        this.bmSetupType = IBmSetupType.SelectedPAs;
+        this.displayPAs = Object.assign([], this.clientBmConfig.json_config.smartPAs);
+        return;
+      }
       if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.matters) {
         if (this.clientBmConfig.json_config.matters.length > 0) {
           this.getMattersData();
@@ -115,6 +140,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.selectedClient = null;
     this.clientBmConfig = null;
     this.displayMatters = [];
+    this.displayPAs = [];
     this.similarityScore = 0;
     this.errorMessage = null;
     this.successText = null;
@@ -122,6 +148,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.filteredNames = [];
     this.selectedMatter = null;
     this.selIndex = 0;
+    this.smartPAs = [];
   }
   createNewBmConfig(): IEntityConfig {
     const json = Object.assign({}, defaultBmMatterJson);
@@ -162,8 +189,13 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.clientBmConfig.json_config = Object.assign({}, defaultBmMatterJson);
     this.saveClientConfig(1);
   }
+  addSmartPA(): void {
+    this.clientBmConfig.json_config.matters = [];
+    this.saveClientConfig(3);
+  }
   addMatter(): void {
     this.clientBmConfig.json_config.matters.push(this.selectedMatter.id);
+    this.clientBmConfig.json_config.smartPAs = [];
     this.saveClientConfig(2);
   }
   saveClientConfig(option: number): void {
@@ -178,8 +210,12 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
          this.selectedMatter = null;
          if (option === 1) {
            this.displayMatters = [];
-         } else {
+           this.displayPAs = [];
+         } else if (option === 2) {
            this.getMattersData();
+           this.displayPAs = [];
+         } else if (option === 3) {
+           this.displayMatters = [];
          }
         }
         if (data.error) {

@@ -73,6 +73,25 @@
           </tr>
 
         </table>
+          <div class="mt20" *ngIf="smartPAs.length>0">
+            <p-radioButton name="bmSetupType" value="SelectedPAs" [(ngModel)]="bmSetupType"></p-radioButton>
+            Benchmark Specific Practice Areas
+            <div class="p-grid full-width mt15">
+              <div class="p-col-11">
+                <p-multiSelect [style]="{width:'400px'}" [options]="smartPAs" *ngIf="clientBmConfig.json_config && clientBmConfig.json_config.smartPAs"
+                               [filter]="false"
+                               [(ngModel)]="clientBmConfig.json_config.smartPAs" [ngModelOptions]="{standalone: true}"
+                               placeholder="Select practice areas..."
+                               [showToggleAll]="false" [showHeader]="false"
+                               name="SelectedPAs" ngDefaultControl>
+                </p-multiSelect>
+              </div>
+              <div class="p-col-1">
+                <button mat-flat-button color="primary" class="mt5 pt10 pb10"
+                        [disabled]="!clientBmConfig.json_config || !clientBmConfig.json_config.smartPAs || clientBmConfig.json_config.smartPAs.length === 0" (click)="addSmartPA();">SAVE</button>
+              </div>
+            </div>
+          </div>
         </div>
       </mat-tab>
       <mat-tab label="Matter-Specific Insights" >
