@@ -15,10 +15,11 @@ export interface IBmMatters {
 }
 export enum IBmSetupType {
   AllMatters = 'AllMatters',
-  SelectedMatters = 'SelectedMatters'
+  SelectedMatters = 'SelectedMatters',
+  SelectedPAs = 'SelectedPAs'
 }
 
-export const defaultBmMatterJson =  { matters: []};
+export const defaultBmMatterJson =  { matters: [], smartPAs: []};
 
 // const generalConfigMapping = [
 //   056130-0000060 056130-0000067  056130-0000069 056130-0000087 056130-0000207
