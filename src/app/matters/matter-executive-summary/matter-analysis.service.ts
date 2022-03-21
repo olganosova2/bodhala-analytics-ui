@@ -225,9 +225,9 @@ export class MatterAnalysisService {
     tk.low = minRec[prop];
     tk.high = maxRec[prop];
     if (prop.indexOf('percent_') !== 0) {
-      if (zRec <= -1) {
+      if (zRec <= -0.1) {
         tk.grade = MetricGrade.GOOD;
-      } else if (zRec > -1 && zRec <= 1) {
+      } else if (zRec > -0.1 && zRec < 0.1)  {
         tk.grade = MetricGrade.FAIR;
       } else {
         tk.grade = MetricGrade.POOR;
