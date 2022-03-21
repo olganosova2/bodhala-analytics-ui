@@ -99,8 +99,17 @@ export class RatesAnalysisService {
             partnerPctBilled = partnerMaxYearRec[0].total_spend / mostRecentYearSpend;
           }
         }
-
-
+      }
+    } else {
+      const yearRecs = classificationRateIncreaseData.filter(e => e.year === clientMaxYear) || [];
+      const partnerMaxYearRec = yearRecs.filter(e => e.bh_classification === 'partner') || [];
+      const assocMaxYearRec = yearRecs.filter(e => e.bh_classification === 'associate') || [];
+      if (assocMaxYearRec.length > 0 && partnerMaxYearRec.length > 0) {
+        const mostRecentYearSpend = assocMaxYearRec[0].total_spend + partnerMaxYearRec[0].total_spend;
+        if (mostRecentYearSpend > 0) {
+          assocPctBilled = assocMaxYearRec[0].total_spend / mostRecentYearSpend;
+          partnerPctBilled = partnerMaxYearRec[0].total_spend / mostRecentYearSpend;
+        }
       }
     }
     for (const year of distinctYears) {
@@ -135,7 +144,6 @@ export class RatesAnalysisService {
         const partnerInfo = classProcessed.filter(c => c.title === 'partner');
         let assocRateIncrease = 0;
         let partnerRateIncrease = 0;
-
         if (assocInfo.length > 0) {
           assocRateIncrease = assocInfo[0].avgRateIncrease * assocPctBilled;
         }
