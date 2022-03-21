@@ -19,6 +19,7 @@ import {SelectItem} from 'primeng/api';
 })
 export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
+  pendingRequestDelete: Subscription;
   errorMessage: any;
   successText: string;
   pendingRequestMatters: Subscription;
@@ -205,6 +206,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makePostRequest('saveClientConfig', params).subscribe(
       (data: any) => {
         const updConfig = data.result;
+        this.clientBmConfig = Object.assign({}, data.result);
         if (updConfig) {
          this.successText = 'Settings have been saved successfully';
          this.selectedMatter = null;
@@ -215,6 +217,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
            this.getMattersData();
            this.displayPAs = [];
          } else if (option === 3) {
+           this.displayPAs = this.clientBmConfig.json_config.smartPAs;
            this.displayMatters = [];
          }
         }
@@ -241,12 +244,36 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       }
     });
   }
+  deletePA(pa: string): void {
+    const ix = this.clientBmConfig.json_config.smartPAs.indexOf(pa);
+    if (ix >= 0) {
+      this.clientBmConfig.json_config.smartPAs.splice(ix, 1);
+      this.saveClientConfig(3);
+    }
+  }
   changeTab(evt: any): void {
+  }
+  deleteConfig(configId: number): void {
+    const params = { id: configId};
+    this.pendingRequestDelete = this.httpService.makeDeleteRequest('deleteClientConfig', params).subscribe(
+      (data: any) => {
+        const deleted = data.result;
+        if (deleted) {
+          this.clientBmConfig = Object.assign({}, this.createNewBmConfig());
+          this.displayPAs = [];
+          this.displayMatters = [];
+          this.bmSetupType = IBmSetupType.SelectedMatters;
+        }
+      }
+    );
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
+    }
+    if (this.pendingRequestDelete) {
+      this.pendingRequestDelete.unsubscribe();
     }
     if (this.pendingRequestMatters) {
       this.pendingRequestMatters.unsubscribe();
