@@ -2,7 +2,8 @@ export enum IInsightType {
   BB = 'BB',
   BPI = 'BPI',
   IQ = 'IQ',
-  Matter = 'Matter'
+  Matter = 'Matter',
+  RateBM = 'RateBM'
 }
 export interface IInsight {
   id: number;

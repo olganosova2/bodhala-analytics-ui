@@ -60,6 +60,27 @@ export class RatesAnalysisService {
     });
   }
 
+  getBenchmarkInsight(benchmark: any): Promise<any> {
+    const params = {
+      firm: benchmark.bh_lawfirm_id,
+      pa: benchmark.smart_practice_area,
+      yyyy: benchmark.year
+    };
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getBenchmarkInsight', params).subscribe(
+        (data: any) => {
+          if (!data.result) {
+            return;
+          }
+          resolve(data);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
 
 
   calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number, firmData: boolean, validRange: boolean, bmYear: number): any {
