@@ -138,6 +138,20 @@
 
   </div>
 
+  <div class="insights-bar justify-start mt30" *ngIf="insightText">
+    <img src="assets/images/logo-black-short.png" width="40px" height="44px" class="mr20"/>
+    <div class="ml20 mr20">
+      <span>INSIGHTS &</span><br/><span>RECOMMENDATIONS</span>
+    </div>
+    <div class="insights-content ml20 roboto-div" [innerHTML]="utilService.formatTextForHtml(insightText, !insightExpanded, 210)"></div>
+    <div *ngIf="insightText && insightText.length > 210">
+      <button  class="primary-button insights-button" *ngIf="!insightExpanded" (click)="toggleInsight(true)">Read more
+        <i class="fa fa-angle-down ml10"></i></button>
+      <button  class="primary-button insights-button" *ngIf="insightExpanded" (click)="toggleInsight(false)">Close
+        <i class="fa fa-angle-up ml10"></i></button>
+    </div>
+  </div>
+
   <div class="panel-wrapper mt40" style="padding: 0px !important;">
     <div style="border-bottom: 2px solid #E9F1F4; padding: 32px;">
       <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Historical Partner Rate</span>

@@ -120,6 +120,7 @@ export const END_POINTS_URLS = {
   getRateBenchmarks: {url: BASE_URL + 'analytics/getRateBenchmarks', showLoading: true},
   getRateBenchmark: {url: BASE_URL + 'analytics/getRateBenchmark', showLoading: true},
   getTKGranularityRateData: {url: BASE_URL + 'analytics/getTKGranularityRateData', showLoading: true},
+  getBenchmarkInsight: {url: BASE_URL + 'analytics/getBenchmarkInsight', showLoading: true},
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
   getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},
@@ -186,6 +187,7 @@ export const END_POINTS_URLS = {
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
   saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
   saveBenchmarkMattersConfig: {url: BASE_URL + 'admin/saveBenchmarkMattersConfig', showLoading: true},
+  getAdminRateInsight: {url: BASE_URL + 'admin/getAdminRateInsight', showLoading: true}
 
 };
 

@@ -1,0 +1,4 @@
+<h1 mat-dialog-title>Add Recommendation for Benchmark</h1>
+<div mat-dialog-content>
+  <bd-admin-insights *ngIf="loaded" [page]="'rateBM'" [selectedClient]="selectedClient" [rateBM]="benchmark" (insightSaved)="manageSave()"></bd-admin-insights>
+</div>

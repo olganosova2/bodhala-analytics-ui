@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import {confirmDialogConfig} from '../../shared/services/config';
 import {IRateBenchmark} from '../../rates-analysis/rates-analysis.model';
 import {AddRateBenchmarkComponent} from './add-rate-benchmark/add-rate-benchmark.component';
+import { RateInsightModalComponent } from './rate-insight-modal/rate-insight-modal.component';
 
 @Component({
   selector: 'bd-admin-rate-benchmarks',
@@ -50,6 +51,7 @@ export class AdminRateBenchmarksComponent implements OnInit {
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.initColumns();
   }
+
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn},
@@ -57,9 +59,19 @@ export class AdminRateBenchmarksComponent implements OnInit {
       {headerName: 'Smart Practice Area', field: 'smart_practice_area', ...this.defaultColumn, flex: 1},
       {headerName: 'Year', field: 'year', ...this.defaultColumn, flex: 1},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
-      // {headerName: 'Published', field: 'published',  ...this.defaultColumn, width: 100, suppressMenu: true,  cellRendererFramework: PublishCheckboxComponent},
+      {headerName: 'Add Recommendations', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1, cellRenderer: this.recommendationsCellRenderer, onCellClicked: this.openRecommendationModal.bind(this)},
       {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.openDeleteDialog.bind(this)},
     ];
+  }
+
+  openRecommendationModal(bm): void {
+    console.log("openRecommendationModal: ", bm)
+    const dialogRef = this.dialog.open(RateInsightModalComponent, {
+      data: {
+        benchmark: bm.data,
+        client: this.selectedClient
+      }
+    });
   }
 
   loadClientRateBenchmarks(client: IClient): void {
@@ -131,6 +143,11 @@ export class AdminRateBenchmarksComponent implements OnInit {
 
   deleteCellRenderer() {
     const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-trash"></em></button>';
+    return value;
+  }
+
+  recommendationsCellRenderer() {
+    const value = '<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-note"></em></button>';
     return value;
   }
 

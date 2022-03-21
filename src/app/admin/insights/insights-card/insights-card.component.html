@@ -12,7 +12,7 @@
         </mat-form-field>
       </div>
       <div>
-        <div *ngIf="insight && insight?.insight_type !== 'Matter'">Description <i>({{200 - insight.description.length}} character remaining)</i></div>
+        <div *ngIf="insight && insight?.insight_type !== 'Matter'">Description <i>({{maxlength - insight.description.length}} character remaining)</i></div>
         <mat-form-field appearance="outline" class="full-width">
           <textarea matInput [(ngModel)]="insight.description" rows="5" cols="40" placeholder="Description"
                     [maxlength]="maxlength"

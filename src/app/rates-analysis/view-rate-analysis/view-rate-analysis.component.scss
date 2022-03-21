@@ -1,3 +1,5 @@
+@import "../../../assets/styles/colors.scss";
+
 .wrapper {
   padding: 0px 16px 16px 24px;
   width: 100%;
@@ -83,5 +85,34 @@ h3 {
   filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);
 }
 
-
+.insights-bar {
+  border: 1px solid $light-gray;
+  color: $body-color;
+  padding: 32px;
+  border-radius: 100px;
+  position: relative;
+}
+.insights-title {
+  color: $orange-color;
+}
+.insights-blue {
+  color: $brand-blue;
+}
+.insights-content {
+  width: 70%;
+  color: $body-color;
+  @media screen and (max-width: 1440px) {
+    width: 60%;
+  }
+  //height: 40px;
+}
+.insights-button {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background-color: $brand-blue;
+  font-size: 12px;
+  color: $body-color;
+  width: 110px;
+}
 

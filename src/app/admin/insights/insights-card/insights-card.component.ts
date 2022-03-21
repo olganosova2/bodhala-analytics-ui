@@ -15,7 +15,8 @@ export class InsightsCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    if (this.insight && this.insight.insight_type === IInsightType.Matter) {
+    console.log("CARD INIT: ", this.insight)
+    if (this.insight && (this.insight.insight_type === IInsightType.Matter || this.insight.insight_type === IInsightType.RateBM )) {
       this.maxlength = 2000;
     }
   }
