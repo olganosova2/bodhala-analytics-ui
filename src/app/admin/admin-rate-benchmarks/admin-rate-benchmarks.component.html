@@ -7,6 +7,12 @@
     <bd-client-drop-down (clientSelected)="loadClientRateBenchmarks($event)"></bd-client-drop-down>
   </div>
 
+  <div *ngIf="messageService.messages.length > 0" class="content-body">
+    <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
+      <bd-message-item [alert]="message" [index]="i"></bd-message-item>
+    </div>
+  </div>
+
   <div *ngIf="selectedClient">
     <div class="pull-right mb20">
         <button class="primary-button" (click)="addNew()">Add New +</button>

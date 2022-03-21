@@ -69,7 +69,6 @@ export class RatesAnalysisService {
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getBenchmarkInsight', params).subscribe(
         (data: any) => {
-          console.log("data: ", data);
           if (!data.result) {
             return;
           }

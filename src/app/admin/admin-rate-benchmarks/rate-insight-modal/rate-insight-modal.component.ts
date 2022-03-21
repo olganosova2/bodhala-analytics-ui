@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, Inject, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
 import { DatePipe } from '@angular/common';
-import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { IClient } from '../../insights/models';
 import { AdminRateBenchmarksComponent } from '../admin-rate-benchmarks.component';
 
@@ -21,15 +21,13 @@ export class RateInsightModalComponent implements OnInit {
   selectedClient: IClient;
   page: string;
   benchmark: any;
-  @Output() saveComplete: EventEmitter<any> = new EventEmitter<string>();
-  parentDialogRef : MatDialogRef<AdminRateBenchmarksComponent>;
+  parentDialogRef: MatDialogRef<AdminRateBenchmarksComponent>;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-                public userService: UserService,
-                private httpService: HttpService) {}
+              public userService: UserService,
+              public dialogRef: MatDialogRef<RateInsightModalComponent>) {}
 
   ngOnInit(): void {
-    console.log("NG ON INIT: ", this.data)
     this.selectedClient = this.data.client;
     this.loaded = true;
     this.benchmark = this.data.benchmark;
@@ -37,7 +35,7 @@ export class RateInsightModalComponent implements OnInit {
   }
 
   manageSave() {
-    this.saveComplete.emit('CLOSE_PARENT_MODAL');
+    this.dialogRef.close(true);
   }
 
 }

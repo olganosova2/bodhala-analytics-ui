@@ -42,8 +42,6 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("INSIGHT: ", this.page, this.selectedClient)
-    console.log("INSIGHT 2: ", this.rateBM)
     if (this.page === 'Insights') {
       this.loadClients();
       setTimeout(() => {
@@ -96,24 +94,20 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   }
 
   getClientRateBMInsights(clientId: number, benchmark: any): void {
-    console.log("BM: ", benchmark)
     const params = {
       firm: benchmark.bh_lawfirm_id,
       pa: benchmark.smart_practice_area,
       yyyy: benchmark.year,
       client: clientId
     };
-    console.log("params: ", params);
     this.pendingRequestInsights = this.httpService.makeGetRequest<IInsight>('getAdminRateInsight', params).subscribe(
       (data: any) => {
-        console.log("DATA: ", data);
         if (data.result) {
           this.selectedInsight = data.result;
         } else {
           this.insights.push(this.createNewInsight('RateBM'));
           this.selectedInsight = this.insights[0];
         }
-        // this.processInsights(data.result);
       }
     );
   }
@@ -146,7 +140,6 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   }
 
   createNewInsight(type: string): IInsight {
-    console.log("TYPE: ", type)
     const result = {
       id: null,
       insight_type: type,
@@ -197,7 +190,6 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
           this.insights.push(this.createNewInsight(type));
         }
       }
-      //create empty insight for rate BM
       if (this.page === 'rateBM') {
         if (type === IAdminInsightType.RateBM) {
           this.insights.push(this.createNewInsight(type));
@@ -205,8 +197,6 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
       }
     }
     this.selectedInsight = this.insights[0];
-    console.log("insights: ", this.insights)
-    console.log("selectedInsight: ", this.selectedInsight)
   }
   changeTab(evt: any): void {
     this.selectedInsight = this.insights[evt.index];

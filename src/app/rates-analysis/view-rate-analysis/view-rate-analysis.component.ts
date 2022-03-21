@@ -99,11 +99,9 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.year = this.benchmark.year;
         this.peerFirms = this.benchmark.peers;
         const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
-        console.log("insightResult: ", insightResult)
         if (insightResult.result) {
           if (insightResult.result.is_enabled) {
             this.insightText = insightResult.result.description;
-            console.log("insightText: ", this.insightText)
 
           }
         }

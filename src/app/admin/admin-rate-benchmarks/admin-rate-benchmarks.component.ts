@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonService, IClient} from '../../shared/services/common.service';
 import {Router} from '@angular/router';
-import {AppStateService, ConfirmModalComponent, HttpService, UserService, UtilService} from 'bodhala-ui-common';
+import {AppStateService, ConfirmModalComponent, HttpService, MessageType, MessagingService, UserService, UtilService} from 'bodhala-ui-common';
 import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
@@ -40,7 +40,8 @@ export class AdminRateBenchmarksComponent implements OnInit {
     public commonServ: CommonService,
     public utilService: UtilService,
     public dialog: MatDialog,
-    public agGridService: AgGridService) {
+    public agGridService: AgGridService,
+    public messageService: MessagingService) {
       this.commonServ.pageTitle = 'Manage Client Rate Benchmarks';
   }
 
@@ -65,11 +66,16 @@ export class AdminRateBenchmarksComponent implements OnInit {
   }
 
   openRecommendationModal(bm): void {
-    console.log("openRecommendationModal: ", bm)
     const dialogRef = this.dialog.open(RateInsightModalComponent, {
       data: {
         benchmark: bm.data,
         client: this.selectedClient
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
       }
     });
   }
