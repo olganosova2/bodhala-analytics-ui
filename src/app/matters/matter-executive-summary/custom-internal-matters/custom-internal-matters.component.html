@@ -1,0 +1,17 @@
+<div>
+  <div class="pull-right"><button mat-flat-button class="btn-grey mb10" [mat-dialog-close]="true">CLOSE</button></div>
+  <div class="card-wrapper clear-both mt20">
+    <table class="full-width mt20">
+      <tr *ngFor="let matter of matters">
+        <td>{{matter.name}} ({{matter.id}})</td>
+        <td><i class="material-icons pointer-hand" (click)=delete(matter)>delete</i></td>
+      </tr>
+
+    </table>
+    <div class="pull-right mt10">
+    <button mat-flat-button color="primary" class="mt5 pt10 pb10"
+            [disabled]="matters.length<2" (click)="save();">SAVE</button>
+    </div>
+
+  </div>
+</div>

@@ -147,6 +147,19 @@ export interface IInternalMatter {
   sim_client_id;
   sim_matter_id;
 }
+export interface ICustomInternalMatters {
+  id: string;
+  bh_client_id: number;
+  client_matter_id: string;
+  matters: Array<string>;
+}
+export interface IMatterWithNames {
+  client_matter_id: string;
+  matter_name: string;
+  total?: number;
+  expenses?: number;
+  total_with_expenses?: number;
+}
 
 export const matterColumnChartOptions = {
   chart: {

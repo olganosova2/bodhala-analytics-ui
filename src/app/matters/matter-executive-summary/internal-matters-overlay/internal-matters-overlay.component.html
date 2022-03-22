@@ -6,6 +6,7 @@
     <div class="matters-div" *ngIf="internalMatters.length > 0">
       <div class="href-link-primary" *ngFor="let matter of matters" (click)="goToMatter(matter.id)">{{matter.name}} ({{matter.id}})</div>
       <span class="totals-badge  mt20 pointer-hand totals-badge-black" (click)="viewMatters(true, null)">View All</span>
+      <span class="totals-badge  mt10 pointer-hand totals-badge-black" (click)="openModal()">Modify Internal Comparison Matter Set</span>
     </div>
   </ng-template>
 </p-overlayPanel>
