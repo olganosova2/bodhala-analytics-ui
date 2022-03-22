@@ -100,7 +100,7 @@ export class WorkDistributionByPaComponent implements OnInit, OnDestroy {
         rec.total_hours_per = rec.total_hours / subHours * 100;
       }
     }
-    records = records.filter(e => e.bh_classification !== null && e.bh_classification !== undefined);
+    // records = records.filter(e => e.bh_classification !== null && e.bh_classification !== undefined);
     this.workRecordsByPA = Object.assign([], records);
   }
   saveValue(evt: any): void {
