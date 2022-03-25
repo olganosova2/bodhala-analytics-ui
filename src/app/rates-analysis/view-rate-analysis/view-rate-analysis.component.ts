@@ -99,14 +99,14 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
         this.peerFirms = this.benchmark.peers;
-        // const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
-        // console.log("insightResult: ", insightResult)
-        // if (insightResult.result) {
-        //   if (insightResult.result.is_enabled) {
-        //     this.insightText = insightResult.result.description;
+        const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
+        console.log("insightResult: ", insightResult)
+        if (insightResult.result) {
+          if (insightResult.result.is_enabled) {
+            this.insightText = insightResult.result.description;
 
-        //   }
-        // }
+          }
+        }
 
         const ix = this.peerFirms.findIndex(p => p === this.firmName);
         if (ix >= 0) {
