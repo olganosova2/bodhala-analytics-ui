@@ -34,7 +34,7 @@ import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
 import {MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
-import {MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT} from './mock-data/rate-benchmarking';
+import {MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT, MOCK_BENCHMARK} from './mock-data/rate-benchmarking';
 
 export const ngWindow = {
   location: {
@@ -596,7 +596,11 @@ export class RatesAnalysisServiceStub {
   }
 
   public getBenchmark() {
-    return(MOCK_BENCHMARKS);
+    return(MOCK_BENCHMARK);
+  }
+
+  public getRateAnalysisData(benchmark) {
+    return(MOCK_RATE_ANALYSIS_RESULT);
   }
 }
 

@@ -1,4 +1,4 @@
-<div style="padding: 0px 16px 16px 24px;">
+<div style="padding: 0px 16px 16px 24px;" id="exportDiv">
   <div style="display: inline !important; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
     <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important;">
       Rate Benchmark Analysis
@@ -12,6 +12,12 @@
 
     <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
     <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{year}}</span>
+
+    <div style="float: right">
+      <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+        <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
+      </button>
+    </div>
 
     <div class="peer-firms">
       <p style="text-align: center; margin-top: 1em; font-family: 'Roboto Bold' !important;">Comparison Firm Set</p>
@@ -43,7 +49,14 @@
     <div class="p-md-12 p-lg-6 pl8 pr15" style="width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px; border-radius: 24px 24px 24px 24px; height: 175px; background-image: linear-gradient(bottom, #FFFFFF 67%, #000000 33%); background-image: -o-linear-gradient(bottom, #FFFFFF 67%, #000000 33%); background-image: -moz-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);  background-image: -webkit-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);  background-image: -ms-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);">
       <em class="icon-note" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px; filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);"></em>
       <span style="font-size: 24px; font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">{{year}} Spend: {{firmTotalSpendFormatted}}</span>
-
+      <span class="ml10 pointer-hand" placement="bottom"
+                [ngbPopover]="totalSpendText"
+                popoverTitle="Total Spend"
+                [openDelay]="100"
+                [closeDelay]="2000"
+                triggers="mouseenter:mouseleave"
+                style="position: absolute; margin-top: 0.75em; height: 16px; width: 16px; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px;justify-content: center; align-items: center; display: inline-flex; font-family: 'Roboto';">?
+      </span>
       <div style="display: flex; padding-top: 0.5em;" *ngIf="loaded">
         <div style="width: 50%; display: inline-flex; border-right: 2px solid #E9F1F4; padding-left: .5em;">
           <chart [options]="optionsTotal" (load)="saveInstanceTotal($event.context)"></chart>
@@ -124,7 +137,7 @@
                 [closeDelay]="2000"
                 triggers="mouseenter:mouseleave"
                 style="height: 16px; width: 16px; margin-top: 2em; margin-right: 0.5em; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px; font-weight: 400; justify-content: center; align-items: center; display: inline-flex; float: right; font-family: 'Roboto';">?
-          </span>
+            </span>
           </div>
         </div>
 

@@ -12,7 +12,7 @@ import { rateBenchmarkingChartOptions } from '../rates-analysis.model';
 
 
 
-xdescribe('ViewRateAnalysisComponent', () => {
+describe('ViewRateAnalysisComponent', () => {
   let component: ViewRateAnalysisComponent;
   let fixture: ComponentFixture<ViewRateAnalysisComponent>;
 
@@ -80,7 +80,8 @@ xdescribe('ViewRateAnalysisComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create ViewRateAnalysisComponent', () => {
+    component.ngOnInit();
     expect(component).toBeTruthy();
   });
 
