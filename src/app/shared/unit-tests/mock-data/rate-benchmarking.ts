@@ -1471,4 +1471,28 @@ export const MOCK_COHORT_RATE_INCREASE_CLASS_DATA = [
   }
 ];
 
+export const MOCK_BENCHMARK = {
+  "benchmark": {
+      "id": 17,
+      "bh_client_id": 1541,
+      "bh_lawfirm_id": 5,
+      "smart_practice_area": "Litigation",
+      "year": 2020,
+      "peers": [
+          "DLA Piper",
+          "Baker & McKenzie",
+          "Latham & Watkins",
+          "Jones Day",
+          "Sidley Austin",
+          "Kirkland & Ellis"
+      ],
+      "created_by": "2809",
+      "created_on": "2022-03-15T14:52:05.418765",
+      "deleted_by": null,
+      "deleted_on": null,
+      "modified_by": null,
+      "modified_on": null
+  },
+  "firm_name": "Kirkland & Ellis"
+};
 

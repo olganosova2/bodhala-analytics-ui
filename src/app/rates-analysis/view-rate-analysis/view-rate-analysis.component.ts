@@ -40,6 +40,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   firmCostImpactFormatted: string;
   cohortCostImpactFormatted: string;
   helpText: string = 'An estimated increase in spend should your rates increase at this rate.';
+  totalSpendText: string = 'This Total Spend figure only includes Partner and Associate line items.';
   marketBlendedRateLowerRangeDiff: string;
   marketBlendedRateUpperRangeDiff: string;
   internalBlendedRateDiff: string;
@@ -160,6 +161,7 @@ export class ViewRateAnalysisComponent implements OnInit {
         } else {
           firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, (data.result.max_year + 1), true, validRange, this.year);
         }
+        const maxYear = data.result.max_year;
         const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result_classification, data.result.max_year, false, true, this.year);
         this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;
         this.cohortClassificationRateIncreaseData = cohortClassificationRateIncreasePct.classificationData;
@@ -167,29 +169,26 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.cohortRateIncreasePct = cohortClassificationRateIncreasePct.rateIncreasePct;
         this.firmRateIncreasePct *= 100;
         this.cohortRateIncreasePct *= 100;
-        this.firmTotalSpend = firmClassificationRateIncreasePct.total;
+        if (this.firmYearData) {
+          // if difference is more than equal to 2 we can't calculate total firm spend using the effective rate query
+          this.firmTotalSpend = this.firmYearData.total_atty_billed;
+        } else {
+          this.firmTotalSpend = firmClassificationRateIncreasePct.total;
+        }
         this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
 
         this.firmRateIncreaseColor = this.getColor(this.firmRateIncreasePct);
         this.cohortRateIncreaseColor = this.getColor(this.cohortRateIncreasePct);
 
         const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
-        if (this.firmTotalSpend && projectedCostImpact) {
-          if (projectedCostImpact.firmProjectedImpact) {
-            if (validRange) {
-              this.firmCostImpact = projectedCostImpact.firmProjectedImpact - this.firmTotalSpend;
-            } else {
-              const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
-              this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
-            }
-            this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
-          }
-          if (projectedCostImpact.marketProjectedImpact) {
-            // this.cohortCostImpact = projectedCostImpact.marketProjectedImpact - this.firmTotalSpend;
-            const projectedCohortSpend = this.firmTotalSpend * (1 + (this.cohortRateIncreasePct / 100));
-            this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
-            this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
-          }
+        if (this.firmTotalSpend) {
+          const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
+          this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
+          this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
+
+          const projectedCohortSpend = this.firmTotalSpend * (1 + (this.cohortRateIncreasePct / 100));
+          this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
+          this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
         }
         const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.firmYearData, this.marketAverageData);
         this.costImpactGrade = historicalCostImpact.cost_impact;
@@ -320,5 +319,18 @@ export class ViewRateAnalysisComponent implements OnInit {
       result = '#3EDB73';
     }
     return result;
+  }
+
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    let exportName = '';
+    if (this.userService.currentUser.client_info.org.name !== null) {
+      exportName = this.userService.currentUser.client_info.org.name + ' Rate Benchmark - ' + this.firmName + ' - ' + this.benchmark.smart_practice_area;
+    } else {
+      exportName = 'Rate Benchmark';
+    }
+    setTimeout(() => {
+      this.commonServ.generatePdfOuter(exportName, 'exportDiv', null);
+    }, 200);
   }
 }
