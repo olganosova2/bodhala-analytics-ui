@@ -199,6 +199,7 @@ import { GranularRateAnalysisComponent } from './rates-analysis/view-rate-analys
 import { GranularRateChartComponent } from './rates-analysis/view-rate-analysis/granular-rate-analysis/granular-rate-chart/granular-rate-chart.component';
 import { BenchmarkMattersComponent } from './admin/benchmark-matters/benchmark-matters.component';
 import { RateInsightModalComponent } from './admin/admin-rate-benchmarks/rate-insight-modal/rate-insight-modal.component';
+import { CustomInternalMattersComponent } from './matters/matter-executive-summary/custom-internal-matters/custom-internal-matters.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -351,6 +352,8 @@ highcharts.setOptions({
     GranularRateChartComponent,
     BenchmarkMattersComponent,
     RateInsightModalComponent
+    BenchmarkMattersComponent,
+    CustomInternalMattersComponent
   ],
   entryComponents: [
     PillComponent,

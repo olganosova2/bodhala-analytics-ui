@@ -132,6 +132,9 @@ export const END_POINTS_URLS = {
   getBenchmarkMatters: {url: BASE_URL + 'analytics/getBenchmarkMatters', showLoading: true},
   getBenchmarkMattersConfig: {url: BASE_URL + 'analytics/getBenchmarkMattersConfig', showLoading: true},
   checkBenchmarkMatterEligibility: {url: BASE_URL + 'analytics/checkBenchmarkMatterEligibility', showLoading: true},
+  getCustomInternalMatters: {url: BASE_URL + 'analytics/getCustomInternalMatters', showLoading: true},
+  saveBMCustomInternalMatters: {url: BASE_URL + 'analytics/saveBMCustomInternalMatters', showLoading: true},
+  deleteBMCustomInternalMatters: {url: BASE_URL + 'analytics/deleteBMCustomInternalMatters', showLoading: true},
 
 
   // ADMIN

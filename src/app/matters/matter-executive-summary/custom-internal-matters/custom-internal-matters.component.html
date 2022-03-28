@@ -1,0 +1,36 @@
+<div>
+  <div class="pull-right"><button mat-flat-button class="btn-grey mb10" [mat-dialog-close]="true">CLOSE</button></div>
+  <div class="card-wrapper clear-both mt20">
+    <table class="full-width mt20">
+      <tr *ngFor="let matter of matters">
+        <td>{{matter.name}} ({{matter.id}})</td>
+        <td><i class="material-icons pointer-hand" (click)=delete(matter)>delete</i></td>
+      </tr>
+
+    </table>
+    <div class="p-grid full-width mt20">
+      <div class="p-col-11">
+        <mat-form-field appearance="outline" class="full-width">
+          <input type="text"  #matterInput matInput  autocomplete="off"  required (input)="loadMatters($event.target.value)"
+                 maxlength="255" [matAutocomplete]="auto" name="matterId" placeholder="Type to search by Matter ID or Matter Name">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="selectMatter($event)">
+            <mat-option *ngFor="let option of filteredNames; let i = index" [value]="option">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="p-col-1" *ngIf="customMattersConfig">
+        <button mat-flat-button color="primary" class="mt5 pt10 pb10" [disabled]="customMattersConfig.matters.length > 10 || !selectedMatter"
+                (click)="addMatter();matterInput.value=''">ADD</button>
+      </div>
+    </div>
+    <div class="pull-right mt10 pb40">
+      <button mat-flat-button color="primary" class="mt5 pt10 pb10 mr10" *ngIf="this.customMattersConfig && this.customMattersConfig.id"
+               (click)="reset();">Reset to Bodhala Predictions</button>
+    <button mat-flat-button color="primary" class="mt5 pt10 pb10" *ngIf="customMattersConfig && customMattersConfig.matters"
+            [disabled]="customMattersConfig.matters.length < 2 || customMattersConfig.matters.length > 10" (click)="save();">SAVE</button>
+    </div>
+
+  </div>
+</div>

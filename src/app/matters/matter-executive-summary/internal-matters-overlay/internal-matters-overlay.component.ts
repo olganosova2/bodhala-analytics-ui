@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Component, OnInit, OnDestroy, Input, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService, IClient} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -6,10 +6,13 @@ import {FiltersService} from 'bodhala-ui-elements';
 import {FiltersService as LocalFiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {IInternalMatter} from '../model';
+import {IInternalMatter, IMatterWithNames} from '../model';
 import * as config from '../../../shared/services/config';
 import * as _moment from 'moment';
 import {Subscription} from 'rxjs';
+import {SAVINGS_CALCULATOR_CONFIG} from '../../../shared/services/config';
+import {OverstaffingGridComponent} from '../../../savings-calculator/overstaffing-grid/overstaffing-grid.component';
+import {CustomInternalMattersComponent} from '../custom-internal-matters/custom-internal-matters.component';
 
 const moment = _moment;
 
@@ -26,6 +29,7 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
   @Input() matterId: string;
   matters: Array<any> = [];
   loading: boolean = false;
+  @ViewChild('op3', {static: false}) op3;
 
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -149,6 +153,15 @@ export class InternalMattersOverlayComponent implements OnInit, OnDestroy {
         );
       });
     }
+  }
+  openModal(): void {
+    this.op3.hide();
+    const data = { internalMatters: this.internalMatters, matterId: this.matterId, matters: this.matters};
+    const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign({}, data)};
+    const dialogRef = this.dialog.open(CustomInternalMattersComponent, {...modalConfig, disableClose: true });
+
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
   ngOnDestroy() {
