@@ -49,7 +49,7 @@ export class RatesAnalysisService {
       return this.httpService.makeGetRequest('getFirmRateAnalysisIncreaseData', params).subscribe(
         (data: any) => {
           if (!data.result) {
-            return;
+            resolve(data);
           }
           resolve(data);
         },
@@ -70,7 +70,7 @@ export class RatesAnalysisService {
       return this.httpService.makeGetRequest('getBenchmarkInsight', params).subscribe(
         (data: any) => {
           if (!data.result) {
-            return;
+            resolve(data);
           }
           resolve(data);
         },
