@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_MATTER_OVERVIEW} from '../../../shared/unit-tests/mock-data/matter-overview';
 
 describe('CustomInternalMattersComponent', () => {
   let component: CustomInternalMattersComponent;
@@ -41,6 +42,8 @@ describe('CustomInternalMattersComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CustomInternalMattersComponent);
     component = fixture.componentInstance;
+    component.matters = [];
+    component.internalMatters = MOCK_MATTER_OVERVIEW.result.internal_matters;
     fixture.detectChanges();
   });
 

@@ -2,8 +2,10 @@ import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Subscription} from 'rxjs';
 import {ICustomInternalMatters, IInternalMatter} from '../model';
-import {HttpService, UserService} from 'bodhala-ui-common';
+import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {Router} from '@angular/router';
+import {IClientMatter} from '../../../admin/insights/models';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 
 
 @Component({
@@ -18,18 +20,21 @@ export class CustomInternalMattersComponent implements OnInit, OnDestroy {
   matterId: string;
   matters: Array<any> = [];
   url: string;
+  selectedMatter: IClientMatter;
+  filteredNames: Array<IClientMatter> = [];
   customMattersConfig: ICustomInternalMatters;
 
   constructor(public userService: UserService,
               private httpService: HttpService,
               public router: Router,
+              public utilService: UtilService,
               public dialogRef: MatDialogRef<CustomInternalMattersComponent>,
               @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
     this.matterId = this.data.matterId;
     this.internalMatters = this.data.internalMatters;
-    this.matters = this.data.matters;
+    this.matters = Object.assign([], this.data.matters);
     this.url = this.router.url;
     this.getCustomInternalMatters();
   }
@@ -46,13 +51,56 @@ export class CustomInternalMattersComponent implements OnInit, OnDestroy {
     );
   }
   createEmptyConfig(): ICustomInternalMatters {
-    const matterIds = this.matters.map(e => e.id);
+    let matterIds = this.matters.map(e => e.id);
+    matterIds = [...new Set(matterIds)];
     return {
       id: null,
       bh_client_id: this.userService.currentUser.client_info.id,
       client_matter_id: this.matterId,
       matters: matterIds
     };
+  }
+  loadMatters(value: string): void {
+    if (!value || value.length < 3) {
+      this.filteredNames = [];
+      return;
+    }
+    value = value.replace('(', '');
+    value = value.replace(')', '');
+    const params = { clientId: this.userService.currentUser.client_info.id, typeahead: value, limit: 50};
+    this.pendingRequest = this.httpService.makeGetRequest<IClientMatter>('getMatterListByClient', params).subscribe(
+      (data: any) => {
+        let records = data.result || [];
+        const alreadyExistingMatters = new Set(this.customMattersConfig.matters);
+        records = records.filter((name) => {
+          return !alreadyExistingMatters.has(name.id);
+        });
+        this.filteredNames = records;
+      }
+    );
+  }
+  addMatter(): void {
+    this.matters.push(this.selectedMatter);
+    this.customMattersConfig.matters.push(this.selectedMatter.id);
+    this.selectedMatter = null;
+  }
+  reset(): void {
+    const params = { id: this.customMattersConfig.id};
+    this.pendingRequest = this.httpService.makeDeleteRequest('deleteBMCustomInternalMatters', params).subscribe(
+      (data: any) => {
+        if (data && data.result) {
+          this.dialogRef.close();
+          this.router.navigateByUrl('/', {skipLocationChange: true})
+            .then(() => this.router.navigateByUrl(this.url));
+
+        }
+      }
+    );
+  }
+  selectMatter(evt: MatAutocompleteSelectedEvent): void {
+    if (evt.option.value && evt.option.value.id) {
+      this.selectedMatter = Object.assign({}, evt.option.value);
+    }
   }
   save(): void {
     const params = this.customMattersConfig;
@@ -61,7 +109,7 @@ export class CustomInternalMattersComponent implements OnInit, OnDestroy {
         if (data && data.result) {
           this.dialogRef.close();
           this.router.navigateByUrl('/', {skipLocationChange: true})
-            .then(() => this.router.navigate([this.url]));
+            .then(() => this.router.navigateByUrl(this.url));
 
         }
       }
@@ -69,7 +117,12 @@ export class CustomInternalMattersComponent implements OnInit, OnDestroy {
   }
   delete(matter: any): void {
     this.matters = this.matters.filter(e => e.id !== matter.id);
-    this.customMattersConfig.matters = this.matters.map(e => e.id);
+    let matterIds = this.matters.map(e => e.id);
+    matterIds = [...new Set(matterIds)];
+    this.customMattersConfig.matters = Object.assign([], matterIds);
+  }
+  getOptionText(option) {
+    return option ? option.name : null;
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

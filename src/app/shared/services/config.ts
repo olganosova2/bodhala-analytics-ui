@@ -133,6 +133,7 @@ export const END_POINTS_URLS = {
   checkBenchmarkMatterEligibility: {url: BASE_URL + 'analytics/checkBenchmarkMatterEligibility', showLoading: true},
   getCustomInternalMatters: {url: BASE_URL + 'analytics/getCustomInternalMatters', showLoading: true},
   saveBMCustomInternalMatters: {url: BASE_URL + 'analytics/saveBMCustomInternalMatters', showLoading: true},
+  deleteBMCustomInternalMatters: {url: BASE_URL + 'analytics/deleteBMCustomInternalMatters', showLoading: true},
 
 
   // ADMIN

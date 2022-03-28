@@ -90,9 +90,11 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
       idx ++;
     }
     // this.marketData = MOCK_MARKET_DOCS;
+    this.isLoaded = false;
     const params = { matterId: this.matterId, client_id: this.userService.currentUser.client_info_id};
     this.pendingRequest = this.httpService.makeGetRequest('getMatterDocsMarketData', params).subscribe(
       (data: any) => {
+        this.isLoaded = true;
         const records =  (data.result.documents || []);
         // this.marketData = (data.result.documents || []);
         this.processMarketDocsData(this.documents, records);
