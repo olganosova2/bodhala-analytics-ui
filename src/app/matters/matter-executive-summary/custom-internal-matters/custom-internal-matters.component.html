@@ -21,7 +21,7 @@
         </mat-form-field>
       </div>
       <div class="p-col-1" *ngIf="customMattersConfig">
-        <button mat-flat-button color="primary" class="mt5 pt10 pb10" [disabled]="customMattersConfig.matters.length > 10 || !selectedMatter"
+        <button mat-flat-button color="primary" class="mt5 pt10 pb10" [disabled]="customMattersConfig.matters.length >= 10 || !selectedMatter"
                 (click)="addMatter();matterInput.value=''">ADD</button>
       </div>
     </div>
