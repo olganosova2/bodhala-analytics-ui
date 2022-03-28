@@ -351,8 +351,7 @@ highcharts.setOptions({
     GranularRateAnalysisComponent,
     GranularRateChartComponent,
     BenchmarkMattersComponent,
-    RateInsightModalComponent
-    BenchmarkMattersComponent,
+    RateInsightModalComponent,
     CustomInternalMattersComponent
   ],
   entryComponents: [
