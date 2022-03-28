@@ -100,7 +100,6 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.year = this.benchmark.year;
         this.peerFirms = this.benchmark.peers;
         const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
-        console.log("insightResult: ", insightResult)
         if (insightResult.result) {
           if (insightResult.result.is_enabled) {
             this.insightText = insightResult.result.description;
@@ -170,7 +169,7 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.cohortRateIncreasePct = cohortClassificationRateIncreasePct.rateIncreasePct;
         this.firmRateIncreasePct *= 100;
         this.cohortRateIncreasePct *= 100;
-        if ((maxYear - this.benchmark.year >= 2)) {
+        if (this.firmYearData) {
           // if difference is more than equal to 2 we can't calculate total firm spend using the effective rate query
           this.firmTotalSpend = this.firmYearData.total_atty_billed;
         } else {
