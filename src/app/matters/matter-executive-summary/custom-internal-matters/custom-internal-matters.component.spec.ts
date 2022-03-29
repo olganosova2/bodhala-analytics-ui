@@ -9,6 +9,7 @@ import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MOCK_MATTER_OVERVIEW} from '../../../shared/unit-tests/mock-data/matter-overview';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 
 describe('CustomInternalMattersComponent', () => {
   let component: CustomInternalMattersComponent;
@@ -49,5 +50,45 @@ describe('CustomInternalMattersComponent', () => {
 
   it('should create CustomInternalMattersComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should loadMatters', () => {
+    component.loadMatters('Lux');
+    expect(component.filteredNames.length).toBe(2);
+  });
+  it('should loadMatters when null', () => {
+    component.loadMatters(null);
+    expect(component.filteredNames.length).toBe(0);
+  });
+
+  it('should addMatter', () => {
+    component.matters = [];
+    component.selectedMatter = { id: '1', name: 'Lux'};
+    component.addMatter();
+    expect(component.selectedMatter).toBe(null);
+  });
+  it('should reset', () => {
+    component.selectedMatter = null;
+    component.reset();
+    expect(component.selectedMatter).toBe(null);
+  });
+  it('should getOptionText', () => {
+    const result = component.getOptionText({ name: 'Lux'});
+    expect(result).toBe('Lux');
+  });
+  it('should delete', () => {
+    component.matters = [{ id: '1', name: 'Lux'}];
+    const matter = { id: '1', name: 'Lux'};
+    component.delete(matter);
+    expect(component.matters.length).toBe(0);
+  });
+  it('should save', () => {
+    component.customMattersConfig = component.createEmptyConfig();
+    component.save();
+    expect(component.customMattersConfig).toBeTruthy();
+  });
+  it('should selectMatter', () => {
+    const matter = { option: { value: {id: '1', name: 'Lux'}}} as MatAutocompleteSelectedEvent;
+    component.selectMatter(matter);
+    expect(component.selectedMatter.id).toBe('1');
   });
 });

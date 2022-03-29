@@ -33,7 +33,7 @@ import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND
 import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
-import {MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
+import {MOCK_BM_CONFIG, MOCK_BM_MATTERS, MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_ELIGIBILITY, MOCK_MATTER_LIST_BY_CLIENT, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
 import {MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT} from './mock-data/rate-benchmarking';
 
 export const ngWindow = {
@@ -336,6 +336,14 @@ export class DataStub {
         return of (MOCK_RATE_BENCHMARK_RESULT);
       case 'getMatterInsight':
         return of (MOCK_INSIGHT);
+      case 'getMatterListByClient':
+        return of (MOCK_MATTER_LIST_BY_CLIENT);
+      case 'getBenchmarkMattersConfig':
+        return of (MOCK_BM_CONFIG);
+      case 'getBenchmarkMatters':
+        return of (MOCK_BM_MATTERS);
+      case 'checkBenchmarkMatterEligibility':
+        return of (MOCK_MATTER_ELIGIBILITY);
       default:
         return of([]);
     }
@@ -352,8 +360,10 @@ export class DataStub {
         return of({ result: {}});
       case 'deleteRateBenchmark':
         return of({ result: true});
+      case 'deleteBMCustomInternalMatters':
+        return of({ result: true});
       default:
-        return of([]);
+        return of({ result: true});
     }
     return of({});
   }
