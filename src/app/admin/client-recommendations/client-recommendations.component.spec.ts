@@ -74,7 +74,7 @@ describe('ClientRecommendationsComponent', () => {
 
   it('should deleteReport recommendations', () => {
     component.deleteReport({id: 60});
-    expect(component.clientRecommendationReports.length).toBe(0);
+    expect(component.clientRecommendationReports.length).toBe(5);
   });
 
   it('should addNew recommendations', () => {

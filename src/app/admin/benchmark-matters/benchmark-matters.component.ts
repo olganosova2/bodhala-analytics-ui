@@ -33,7 +33,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   selectedMatter: IClientMatter;
   selIndex: number = 0;
   clientWasSelected: boolean = false;
-  smartPAs: SelectItem[];
+  smartPAs: SelectItem[] = [];
   constructor(private httpService: HttpService,
               public matterAnalysisService: MatterAnalysisService,
               public messageService: MessagingService,

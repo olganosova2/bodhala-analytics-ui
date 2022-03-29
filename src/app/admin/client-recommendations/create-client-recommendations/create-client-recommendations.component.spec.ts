@@ -78,7 +78,7 @@ describe('CreateClientRecommendationsComponent', () => {
 
   it('should addRec CreateClientRecommendationsComponent', () => {
     component.addRec();
-    expect(component.newReport.recommendations.length).toBe(5);
+    expect(component.newReport.recommendations.length).toBe(4);
   });
 
   it('should updateSave CreateClientRecommendationsComponent', () => {
