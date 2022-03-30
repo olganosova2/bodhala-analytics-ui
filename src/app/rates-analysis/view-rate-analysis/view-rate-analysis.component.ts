@@ -68,6 +68,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   pctOfPASpend: string;
   insightText: string;
   insightExpanded: boolean = false;
+  cluster: number;
 
 
   constructor(private route: ActivatedRoute,
@@ -141,6 +142,9 @@ export class ViewRateAnalysisComponent implements OnInit {
         if (data.result.internal_data.length > 0) {
           this.internalYearData = data.result.internal_data[0];
         }
+      }
+      if (data.result.cluster) {
+        this.cluster = data.result.cluster;
       }
       if (data.result.overall_spend) {
         this.overallSpendData = data.result.overall_spend;
@@ -231,7 +235,8 @@ export class ViewRateAnalysisComponent implements OnInit {
       bm: this.benchmark,
       totalSpend: this.overallSpendData,
       market: this.marketAverageData,
-      internal: this.internalYearData
+      internal: this.internalYearData,
+      cluster: this.cluster
     };
     this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
     {state:

@@ -27,6 +27,7 @@ export class GranularRateAnalysisComponent implements OnInit {
   internalData: any;
   overallSpendData: any;
   loaded: boolean = false;
+  cluster: number;
 
 
   constructor(private route: ActivatedRoute,
@@ -49,6 +50,9 @@ export class GranularRateAnalysisComponent implements OnInit {
     if (history.state.data) {
       if (history.state.data.bm) {
         this.benchmark = history.state.data.bm;
+      }
+      if (history.state.data.cluster) {
+        this.cluster = history.state.data.cluster;
       }
       if (history.state.data.firmYear) {
         this.firmYearData = history.state.data.firmYear;
@@ -87,6 +91,8 @@ export class GranularRateAnalysisComponent implements OnInit {
           this.peerFirms.splice(ix, 1);
         }
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
+        console.log("rateAnalysisData:", rateAnalysisData)
+
         if (rateAnalysisData.result.firm_data) {
           if (rateAnalysisData.result.firm_data.length > 0) {
             this.firmYearData = rateAnalysisData.result.firm_data[0];
@@ -96,6 +102,9 @@ export class GranularRateAnalysisComponent implements OnInit {
         }
         if (rateAnalysisData.result.overall_spend) {
           this.overallSpendData = rateAnalysisData.result.overall_spend;
+        }
+        if (rateAnalysisData.result.cluster) {
+          this.cluster = rateAnalysisData.result.cluster;
         }
         this.loaded = true;
       });
