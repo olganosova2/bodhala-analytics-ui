@@ -21,6 +21,7 @@ export class GranularRateChartComponent implements OnInit {
   @Input() benchmark: any;
   @Input() cluster: number;
   @Input() firmName: string;
+  @Input() tier: number;
 
   marketAverageLowerRange: number;
   marketAverageUpperRange: number;
@@ -70,10 +71,14 @@ export class GranularRateChartComponent implements OnInit {
   // }
 
   ngOnInit(): void {
-    this.getData();
+    if (this.classification === 'associate') {
+      this.getAssociateData();
+    } else if (this.classification === 'partner') {
+      this.getPartnerData();
+    }
   }
 
-  getData(): void {
+  getAssociateData(): void {
     const params = {
       pa: this.benchmark.smart_practice_area,
       firmId: this.benchmark.bh_lawfirm_id,
@@ -82,10 +87,46 @@ export class GranularRateChartComponent implements OnInit {
       classification: this.classification,
       cluster: this.cluster
     };
-    console.log("params: ", params)
-    this.pendingRequest = this.httpService.makeGetRequest('getTKGranularityRateData', params).subscribe(
+    this.pendingRequest = this.httpService.makeGetRequest('getAssociateGranularityRateData', params).subscribe(
       (data: any) => {
         console.log("DATA: ", data)
+        if (!data.result) {
+          return;
+        }
+        if (data.result.market_average) {
+          if (data.result.market_average.length > 0) {
+            this.marketAverageData = data.result.market_average[0];
+          }
+        }
+        if (data.result.firm_data) {
+          if (data.result.firm_data.length > 0) {
+            this.firmYearData = data.result.firm_data[0];
+          }
+        }
+        if (data.result.internal_data) {
+          if (data.result.internal_data.length > 0) {
+            this.internalData = data.result.internal_data[0];
+          }
+        }
+        this.calculateChartMetrics();
+      },
+      err => {
+        return {error: err};
+      }
+    );
+  }
+
+  getPartnerData(): void {
+    const params = {
+      pa: this.benchmark.smart_practice_area,
+      firmId: this.benchmark.bh_lawfirm_id,
+      yyyy: this.benchmark.year,
+      tier: this.tier,
+      cluster: this.cluster
+    };
+    this.pendingRequest = this.httpService.makeGetRequest('getPartnerGranularityRateData', params).subscribe(
+      (data: any) => {
+        console.log("PARTNER DATA: ", data)
         if (!data.result) {
           return;
         }
@@ -127,7 +168,6 @@ export class GranularRateChartComponent implements OnInit {
         // random number - return to
         this.highestRate = 1000;
       }
-      console.log("HIGHEST RATE: ", this.highestRate)
       this.topBarDollars = this.firmYearData.rate;
       this.topBarWidth = this.calculateBarWidth(this.firmYearData.rate) + 'px';
       this.bottomBarDollars = this.internalData.avg_associate_rate;
@@ -171,17 +211,17 @@ export class GranularRateChartComponent implements OnInit {
       this.internalRateDeltaPct *= 100;
     } else if (this.classification === 'partner') {
 
-      if (this.marketAverageData.partner_hi > this.firmYearData.avg_partner_rate && this.marketAverageData.partner_hi > this.internalData.avg_partner_rate) {
+      if (this.marketAverageData.partner_hi > this.firmYearData.rate && this.marketAverageData.partner_hi > this.internalData.avg_partner_rate) {
         this.highestRate = this.marketAverageData.partner_hi;
-      } else if (this.firmYearData.avg_partner_rate > this.marketAverageData.partner_hi && this.firmYearData.avg_partner_rate > this.internalData.avg_partner_rate) {
-        this.highestRate = this.firmYearData.avg_partner_rate;
-      } else if (this.internalData.avg_partner_rate > this.firmYearData.avg_partner_rate && this.internalData.avg_partner_rate > this.marketAverageData.partner_hi) {
+      } else if (this.firmYearData.rate > this.marketAverageData.partner_hi && this.firmYearData.rate > this.internalData.avg_partner_rate) {
+        this.highestRate = this.firmYearData.rate;
+      } else if (this.internalData.avg_partner_rate > this.firmYearData.rate && this.internalData.rate > this.marketAverageData.partner_hi) {
         this.highestRate = this.internalData.avg_partner_rate;
       } else {
-        this.highestRate = 5000;
+        this.highestRate = 1000;
       }
-      this.topBarDollars = this.firmYearData.avg_partner_rate;
-      this.topBarWidth = this.calculateBarWidth(this.firmYearData.avg_partner_rate) + 'px';
+      this.topBarDollars = this.firmYearData.rate;
+      this.topBarWidth = this.calculateBarWidth(this.firmYearData.rate) + 'px';
       this.bottomBarDollars = this.internalData.avg_partner_rate;
       this.bottomBarWidth = this.calculateBarWidth(this.internalData.avg_partner_rate) + 'px';
 
@@ -198,26 +238,26 @@ export class GranularRateChartComponent implements OnInit {
       this.marketAverageLeft = lowerRange + 'px';
       this.marketAverageWidth = width + 'px';
 
-      if (this.firmYearData.avg_partner_rate > this.marketAverageData.partner_hi) {
-        this.marketRateLowerDelta = this.firmYearData.avg_partner_rate - this.marketAverageData.partner_hi;
-        this.marketRateUpperDelta = this.firmYearData.avg_partner_rate - this.marketAverageData.partner_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.firmYearData.avg_partner_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.firmYearData.avg_partner_rate;
-      } else if (this.firmYearData.avg_partner_rate < this.marketAverageData.partner_lo) {
-        this.marketRateLowerDelta = this.firmYearData.avg_partner_rate - this.marketAverageData.partner_lo;
-        this.marketRateUpperDelta = this.firmYearData.avg_partner_rate - this.marketAverageData.partner_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.firmYearData.avg_partner_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.firmYearData.avg_partner_rate;
+      if (this.firmYearData.rate > this.marketAverageData.partner_hi) {
+        this.marketRateLowerDelta = this.firmYearData.rate - this.marketAverageData.partner_hi;
+        this.marketRateUpperDelta = this.firmYearData.rate - this.marketAverageData.partner_lo;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.firmYearData.rate;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.firmYearData.rate;
+      } else if (this.firmYearData.rate < this.marketAverageData.partner_lo) {
+        this.marketRateLowerDelta = this.firmYearData.rate - this.marketAverageData.partner_lo;
+        this.marketRateUpperDelta = this.firmYearData.rate - this.marketAverageData.partner_hi;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.firmYearData.rate;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.firmYearData.rate;
       } else {
-        this.marketRateLowerDelta = this.firmYearData.avg_partner_rate - this.marketAverageData.partner_lo;
-        this.marketRateUpperDelta = this.firmYearData.avg_partner_rate - this.marketAverageData.partner_hi;
+        this.marketRateLowerDelta = this.firmYearData.rate - this.marketAverageData.partner_lo;
+        this.marketRateUpperDelta = this.firmYearData.rate - this.marketAverageData.partner_hi;
         this.withinRange = true;
       }
       this.marketRateLowerDeltaPct *= 100;
       this.marketRateUpperDeltaPct *= 100;
 
-      this.internalRateDelta = this.firmYearData.avg_partner_rate - this.internalData.avg_partner_rate;
-      this.internalRateDeltaPct = this.internalRateDelta / this.firmYearData.avg_partner_rate;
+      this.internalRateDelta = this.firmYearData.rate - this.internalData.avg_partner_rate;
+      this.internalRateDeltaPct = this.internalRateDelta / this.firmYearData.rate;
       this.internalRateDeltaPct *= 100;
     }
     this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);

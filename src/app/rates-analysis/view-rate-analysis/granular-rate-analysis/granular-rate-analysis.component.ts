@@ -28,6 +28,7 @@ export class GranularRateAnalysisComponent implements OnInit {
   overallSpendData: any;
   loaded: boolean = false;
   cluster: number;
+  numPartnerTiers: number;
 
 
   constructor(private route: ActivatedRoute,
@@ -66,6 +67,9 @@ export class GranularRateAnalysisComponent implements OnInit {
       }
       if (history.state.data.totalSpend) {
         this.overallSpendData = history.state.data.totalSpend;
+      }
+      if (history.state.data.numTiers) {
+        this.numPartnerTiers = history.state.data.numTiers;
       }
       this.firmId = this.benchmark.bh_lawfirm_id;
       this.practiceArea = this.benchmark.smart_practice_area;
@@ -106,11 +110,18 @@ export class GranularRateAnalysisComponent implements OnInit {
         if (rateAnalysisData.result.cluster) {
           this.cluster = rateAnalysisData.result.cluster;
         }
+        if (rateAnalysisData.result.num_tiers) {
+          this.numPartnerTiers = rateAnalysisData.result.num_tiers;
+        }
         this.loaded = true;
       });
     }
 
 
+  }
+
+  counter(i: number) {
+    return new Array(i);
   }
 
 }
