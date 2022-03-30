@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import {HttpService, UserService} from 'bodhala-ui-common';
 import {MessagingService} from 'bodhala-ui-common';
 import * as highcharts from 'highcharts';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 
 import { appRouterConfig } from '../../app.routes';
@@ -201,7 +202,8 @@ export const IMPORTS = [
   MultiSelectModule,
   AgGridModule.withComponents([ RouterLinkRendererComponent ]),
   QuillModule.forRoot(),
-  AceEditorModule
+  AceEditorModule,
+  RadioButtonModule
 ];
 
 export const DECLARATIONS = [
