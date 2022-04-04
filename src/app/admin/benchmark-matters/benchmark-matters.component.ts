@@ -91,9 +91,16 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       if (this.clientBmConfig.json_config && !this.clientBmConfig.json_config.smartPAs) {
         this.clientBmConfig.json_config.smartPAs = []; // for already existing configs
       }
+      if (this.clientBmConfig.json_config && !this.clientBmConfig.json_config.hideButton) {
+        this.clientBmConfig.json_config.hideButton = 0; // for already existing configs
+      }
       if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.smartPAs && this.clientBmConfig.json_config.smartPAs.length > 0) {
         this.bmSetupType = IBmSetupType.SelectedPAs;
         this.displayPAs = Object.assign([], this.clientBmConfig.json_config.smartPAs);
+        return;
+      }
+      if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.hideButton) {
+        this.bmSetupType = IBmSetupType.HideButton;
         return;
       }
       if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.matters) {
@@ -186,17 +193,25 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   getOptionText(option) {
     return option ? option.name : null;
   }
+  hideButton(): void {
+    const defaultLocal = Object.assign({}, defaultBmMatterJson);
+    defaultLocal.hideButton = 1;
+    this.clientBmConfig.json_config = Object.assign({}, defaultLocal);
+    this.saveClientConfig(0);
+  }
   selectAll(): void {
     this.clientBmConfig.json_config = Object.assign({}, defaultBmMatterJson);
     this.saveClientConfig(1);
   }
   addSmartPA(): void {
+    this.clientBmConfig.json_config.hideButton = 0;
     this.clientBmConfig.json_config.matters = [];
     this.saveClientConfig(3);
   }
   addMatter(): void {
     this.clientBmConfig.json_config.matters.push(this.selectedMatter.id);
     this.clientBmConfig.json_config.smartPAs = [];
+    this.clientBmConfig.json_config.hideButton = 0;
     this.saveClientConfig(2);
   }
   saveClientConfig(option: number): void {
@@ -210,7 +225,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
         if (updConfig) {
          this.successText = 'Settings have been saved successfully';
          this.selectedMatter = null;
-         if (option === 1) {
+         if (option === 1 || option === 0) {
            this.displayMatters = [];
            this.displayPAs = [];
          } else if (option === 2) {
@@ -250,8 +265,6 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       this.clientBmConfig.json_config.smartPAs.splice(ix, 1);
       this.saveClientConfig(3);
     }
-  }
-  changeTab(evt: any): void {
   }
   deleteConfig(configId: number): void {
     const params = { id: configId};

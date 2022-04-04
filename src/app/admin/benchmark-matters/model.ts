@@ -14,12 +14,13 @@ export interface IBmMatters {
   smart_pa: string;
 }
 export enum IBmSetupType {
+  HideButton = 'HideButton',
   AllMatters = 'AllMatters',
   SelectedMatters = 'SelectedMatters',
   SelectedPAs = 'SelectedPAs'
 }
 
-export const defaultBmMatterJson =  { matters: [], smartPAs: []};
+export const defaultBmMatterJson =  { matters: [], smartPAs: [], hideButton: 0 };
 
 // const generalConfigMapping = [
 //   056130-0000060 056130-0000067  056130-0000069 056130-0000087 056130-0000207
