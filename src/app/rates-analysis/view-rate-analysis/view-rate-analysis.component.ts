@@ -100,19 +100,29 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
-        this.peerFirms = this.benchmark.peers;
-        const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
-        if (insightResult.result) {
-          if (insightResult.result.is_enabled) {
-            this.insightText = insightResult.result.description;
-
+        this.peerFirms = result.peer_firms;
+        const ix = result.peer_firms.findIndex(p => p === this.firmName);
+        this.peerFirms =[];
+        if (ix >= 0) {
+          result.peer_firms.splice(ix, 1);
+        }
+        if (result.peer_firms) {
+          let counter = 0;
+          for (const firm of result.peer_firms) {
+            if ((firm.length + counter) < 115) {
+              this.peerFirms.push(firm);
+            }
+            counter += firm.length;
           }
         }
+        // UNCOMMENT BEFORE PUSHING
+        // const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
+        // if (insightResult.result) {
+        //   if (insightResult.result.is_enabled) {
+        //     this.insightText = insightResult.result.description;
 
-        const ix = this.peerFirms.findIndex(p => p === this.firmName);
-        if (ix >= 0) {
-          this.peerFirms.splice(ix, 1);
-        }
+        //   }
+        // }
         // this.getData();
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
         this.processData(rateAnalysisData);
@@ -241,7 +251,8 @@ export class ViewRateAnalysisComponent implements OnInit {
       market: this.marketAverageData,
       internal: this.internalYearData,
       cluster: this.cluster,
-      numTiers: this.numPartnerTiers
+      numTiers: this.numPartnerTiers,
+      peerFirms: this.peerFirms
     };
     this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
     {state:
@@ -342,5 +353,9 @@ export class ViewRateAnalysisComponent implements OnInit {
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'exportDiv', null);
     }, 200);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/analytics-ui/rate-benchmarking']);
   }
 }

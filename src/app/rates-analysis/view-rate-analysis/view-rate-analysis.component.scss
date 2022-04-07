@@ -26,9 +26,9 @@
   border-radius: 72px;
   justify-content: center;
   align-items: center;
-  width: 280px;
-  height: 95px;
-  font-size: 12px;
+  width: 500px;
+  height: 105px;
+  padding: 8px 0px;
 }
 
 h3 {
@@ -116,3 +116,24 @@ h3 {
   width: 110px;
 }
 
+.back-button {
+  background: #E9F1F4;
+  border-radius: 99px;
+  border: 1px solid #000000;
+  color: black;
+  font-family: 'Roboto';
+  padding: 8px 16px 8px 16px;
+  margin-right: 1em;
+  font-size: 16px;
+}
+
+.firm-name-pill {
+  background: #FFFFFF;
+  font-family: 'Roboto Bold';
+  border-radius: 100px;
+  font-size: 14px;
+  padding: 0px 6px;
+  display: inline-block;
+  margin-right: 1em;
+  margin-bottom: 0.4em;
+}

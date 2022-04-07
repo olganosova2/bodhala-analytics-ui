@@ -1,17 +1,21 @@
 <div style="padding: 0px 16px 16px 24px;" id="exportDiv">
-  <div style="display: inline !important; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
-    <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important;">
-      Rate Benchmark Analysis
-    </span>
+  <div style="display: inline !important;">
+    <button class="back-button" (click)="goBack()"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
 
-    <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
-    <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{firmName}}</span>
+    <div style="display: inline !important; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
+      <!-- <span class="header-span" style="font-size: 16px !important; padding-left: 0em !important;">
+        Rate Benchmark Analysis
+      </span> -->
 
-    <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
-    <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{practiceArea}}</span>
+      <span class="header-span" style="padding-left: 0em !important; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
+      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{firmName}}</span>
 
-    <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
-    <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{year}}</span>
+      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
+      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{practiceArea}}</span>
+
+      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
+      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{year}}</span>
+    </div>
 
     <div style="float: right">
       <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
@@ -19,10 +23,14 @@
       </button>
     </div>
 
-    <div class="peer-firms">
-      <p style="text-align: center; margin-top: 1em; font-family: 'Roboto Bold' !important;">Comparison Firm Set</p>
-      <p style="text-align: center; margin-left: 1.5em; margin-right: 1.5em; margin-top: -0.75em; font-family: 'Roboto' !important;" *ngIf="loaded && peerFirms.length === 6" #tooltip="matTooltip" matTooltip="{{peerFirms[2]}}, {{peerFirms[3]}}, {{peerFirms[4]}}, {{peerFirms[5]}} and others.">{{peerFirms[0]}}, {{peerFirms[1]}} & others</p>
-      <p style="text-align: center; margin-left: 1.5em; margin-right: 1.5em; margin-top: -0.75em; font-family: 'Roboto' !important;" *ngIf="loaded && peerFirms.length === 5" #tooltip="matTooltip" matTooltip="{{peerFirms[2]}}, {{peerFirms[3]}}, {{peerFirms[4]}} and others.">{{peerFirms[0]}}, {{peerFirms[1]}} & others</p>
+    <div class="peer-firms" *ngIf="loaded">
+      <p style="text-align: center; font-family: 'Roboto Bold' !important; font-size: 14px;">Comparison Peer Firms</p>
+      <div id="peerFirmsDisplay" style="line-height: 2em; height: 4.8em; overflow: clip; text-align: center; margin-top: -0.75em; font-family: 'Roboto Bold' !important; font-size: 14px;">
+        <div *ngFor="let firm of peerFirms; let i = index; let last = last; let first = first;" style="display: inline;">
+          <div class="firm-name-pill">{{firm}}</div>
+          <span style="background: #DEE8EB important; " *ngIf="last"> & others...</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -104,7 +112,7 @@
                 [closeDelay]="2000"
                 triggers="mouseenter:mouseleave"
                 style="height: 16px; width: 16px; margin-top: 2em; margin-right: 0.5em; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px; font-weight: 400; justify-content: center; align-items: center; display: inline-flex; font-family: 'Roboto'; float: right;">?
-          </span>
+            </span>
           </div>
         </div>
 
