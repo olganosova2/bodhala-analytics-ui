@@ -94,7 +94,7 @@ export class GranularRateAnalysisComponent implements OnInit {
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
         const ix = result.peer_firms.findIndex(p => p === this.firmName);
-        this.peerFirms =[];
+        this.peerFirms = [];
         if (ix >= 0) {
           result.peer_firms.splice(ix, 1);
         }

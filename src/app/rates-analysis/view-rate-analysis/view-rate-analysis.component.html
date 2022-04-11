@@ -40,7 +40,7 @@
     <!-- [ngStyle]="{'background-color': costImpactColor} -->
     <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setStyle()" style="width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px; border-radius: 24px 24px 24px 24px; height: 175px;"> <!-- [ngStyle]="{'background-color': costImpactColor}"-->
       <img src="assets/images/bills.svg" alt="icon" class="icon-filter" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px;"/>
-      <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">Historical Cost Impact: <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">{{costImpactGrade}}</span></span>
+      <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">{{year}} Cost Impact: <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">{{costImpactGrade}}</span></span>
       <div style="display: flex; justify-content: center; align-items: center; font-size: 40px; font-family: 'Roboto Bold'" [ngStyle]="{'color': costImpactColor}">
         <span style="padding-top: 8px;" *ngIf="blendedWithinRange">~{{costImpactLowerFormatted}} </span>
         <span style="padding-top: 8px;" *ngIf="!blendedWithinRange">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
@@ -207,7 +207,7 @@
 
   <div class="mt40" style="flex-direction: row; justify-content: center; align-items: center; display: flex;">
 
-    <button class="primary-button" style="background: black; color: white; font-family: 'Roboto'; font-size: 16px; height: 64px; width: 475px;" (click)="goToDetail()">See Timekeeper Level Benchmarks & Cost Analysis<i class="fa fa-chevron-right" style="padding-left: 6px; font-weight: 400;"></i></button>
+    <button [hidden]="true" class="primary-button" style="background: black; color: white; font-family: 'Roboto'; font-size: 16px; height: 64px; width: 475px;" (click)="goToDetail()">See Timekeeper Level Benchmarks & Cost Analysis<i class="fa fa-chevron-right" style="padding-left: 6px; font-weight: 400;"></i></button>
   </div>
 
 </div>

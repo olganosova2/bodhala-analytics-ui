@@ -189,7 +189,6 @@ export class GranularRateChartComponent implements OnInit {
   }
 
   calculateChartMetrics(): void {
-    console.log("firmYearData: ", this.firmYearData)
     if (this.classification === 'associate') {
       if (this.marketAverageData.associate_hi > this.firmYearData.rate && this.marketAverageData.associate_hi > this.internalData.avg_associate_rate) {
         this.highestRate = this.marketAverageData.associate_hi;
@@ -334,10 +333,7 @@ export class GranularRateChartComponent implements OnInit {
       return {impact: 'LOW', color: '#FFC327'};
     }
 
-    console.log("VARS: ", this.percentOfTotalHours, this.marketRateMedianDeltaPct, this.internalRateDeltaPct, this.marketAverageMedian)
     const impact = (this.percentOfTotalHours * .5) + (this.marketRateMedianDeltaPct * .25) + (this.internalRateDeltaPct * .25);
-    console.log("IMPACT: ", impact)
-
     if (impact >= 20) {
       return {impact: 'HIGH', color: '#FE3F56'};
     } else if (impact < 20 && impact > 10) {

@@ -102,7 +102,7 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.year = this.benchmark.year;
         this.peerFirms = result.peer_firms;
         const ix = result.peer_firms.findIndex(p => p === this.firmName);
-        this.peerFirms =[];
+        this.peerFirms = [];
         if (ix >= 0) {
           result.peer_firms.splice(ix, 1);
         }
