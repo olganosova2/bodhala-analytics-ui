@@ -21,12 +21,16 @@
       </div>
     </ngb-alert>
 
-    <mat-tab-group [(selectedIndex)]="selIndex" (selectedTabChange)="changeTab($event)" *ngIf="!selectedClient.missingSmartPA">
+    <mat-tab-group [(selectedIndex)]="selIndex"  *ngIf="!selectedClient.missingSmartPA">
       <mat-tab label="Benchmarking Setup">
         <div class="panel-wrapper" >
           <div class="pull-right mb10" *ngIf="this.clientBmConfig && this.clientBmConfig.id">
             <button mat-flat-button color="primary"  (click)="deleteConfig(this.clientBmConfig.id);">REMOVE ALL SETTINGS</button>
 
+          </div>
+          <div class="mb20 full-width">
+            <p-radioButton name="bmSetupType" value="HideButton" (click)="hideButton()" [(ngModel)]="bmSetupType"></p-radioButton>
+            Disable Matter Benchmarking
           </div>
           <div class="mb20 full-width">
             <p-radioButton name="bmSetupType" value="AllMatters" (click)="selectAll()" [(ngModel)]="bmSetupType"></p-radioButton>

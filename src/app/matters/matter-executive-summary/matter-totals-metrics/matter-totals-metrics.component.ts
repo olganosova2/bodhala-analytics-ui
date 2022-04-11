@@ -23,6 +23,8 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
   totalPanels: Array<IMatterTotalsPanel> = [];
   marketMatters: Array<string> =  [];
   errorMessage: string;
+  noInternalMatters: boolean = false;
+  noMarketMatters: boolean = false;
   @Input() clientId: string;
   @Input() matterId: string;
   @Input() firmId: number;
@@ -70,6 +72,8 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
           this.marketRecords =  data.result.market_data || [];
           this.marketData = this.matterAnalysisService.calculateMarketData(this.marketRecords);
           this.internalRecords =  data.result.internal_data || [];
+          this.noInternalMatters = this.internalRecords.length === 0;
+          this.noMarketMatters = this.marketRecords.length === 0;
           this.internalData = this.matterAnalysisService.calculateMarketData(this.internalRecords);
           this.totalPanels = this.matterAnalysisService.buildTotalPanels(this.summaryData, this.marketData, this.internalData);
           const emitted = {

@@ -56,6 +56,7 @@ export interface IMatterTotalsMetric {
   format?: string;
   icon?: string;
   size?: number;
+  noData?: boolean;
 }
 
 export interface IMatterTotalsPanel {

@@ -11,6 +11,8 @@ export class MatterTotalPanelComponent implements OnInit {
   @Input() metric: IMatterTotalsPanel;
   @Input() isAdmin: boolean = false;
   @Input() matterId: string;
+  @Input() noInternalMatters: boolean = false;
+  @Input() noMarketMatters: boolean = false;
   constructor(public router: Router) { }
 
   ngOnInit(): void {
