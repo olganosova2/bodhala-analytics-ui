@@ -115,14 +115,13 @@ export class ViewRateAnalysisComponent implements OnInit {
             counter += firm.length;
           }
         }
-        // UNCOMMENT BEFORE PUSHING
-        // const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
-        // if (insightResult.result) {
-        //   if (insightResult.result.is_enabled) {
-        //     this.insightText = insightResult.result.description;
+        const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
+        if (insightResult.result) {
+          if (insightResult.result.is_enabled) {
+            this.insightText = insightResult.result.description;
 
-        //   }
-        // }
+          }
+        }
         // this.getData();
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
         this.processData(rateAnalysisData);
