@@ -68,6 +68,8 @@ export class ViewRateAnalysisComponent implements OnInit {
   pctOfPASpend: string;
   insightText: string;
   insightExpanded: boolean = false;
+  cluster: number;
+  numPartnerTiers: number;
 
 
   constructor(private route: ActivatedRoute,
@@ -98,18 +100,27 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
-        this.peerFirms = this.benchmark.peers;
+        this.peerFirms = result.peer_firms;
+        const ix = result.peer_firms.findIndex(p => p === this.firmName);
+        this.peerFirms = [];
+        if (ix >= 0) {
+          result.peer_firms.splice(ix, 1);
+        }
+        if (result.peer_firms) {
+          let counter = 0;
+          for (const firm of result.peer_firms) {
+            if ((firm.length + counter) < 115) {
+              this.peerFirms.push(firm);
+            }
+            counter += firm.length;
+          }
+        }
         const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
         if (insightResult.result) {
           if (insightResult.result.is_enabled) {
             this.insightText = insightResult.result.description;
 
           }
-        }
-
-        const ix = this.peerFirms.findIndex(p => p === this.firmName);
-        if (ix >= 0) {
-          this.peerFirms.splice(ix, 1);
         }
         // this.getData();
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
@@ -141,6 +152,12 @@ export class ViewRateAnalysisComponent implements OnInit {
         if (data.result.internal_data.length > 0) {
           this.internalYearData = data.result.internal_data[0];
         }
+      }
+      if (data.result.num_tiers) {
+        this.numPartnerTiers = data.result.num_tiers;
+      }
+      if (data.result.cluster) {
+        this.cluster = data.result.cluster;
       }
       if (data.result.overall_spend) {
         this.overallSpendData = data.result.overall_spend;
@@ -231,7 +248,10 @@ export class ViewRateAnalysisComponent implements OnInit {
       bm: this.benchmark,
       totalSpend: this.overallSpendData,
       market: this.marketAverageData,
-      internal: this.internalYearData
+      internal: this.internalYearData,
+      cluster: this.cluster,
+      numTiers: this.numPartnerTiers,
+      peerFirms: this.peerFirms
     };
     this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
     {state:
@@ -332,5 +352,9 @@ export class ViewRateAnalysisComponent implements OnInit {
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'exportDiv', null);
     }, 200);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/analytics-ui/rate-benchmarking']);
   }
 }

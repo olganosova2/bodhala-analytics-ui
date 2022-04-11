@@ -237,7 +237,6 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
     this.topBarDollarFormatted = moneyFormatter.format(this.topBarDollars);
     this.topBarColor = this.getBarColor();
     this.internalRateColor = this.getRateColor(this.internalRateDeltaPct);
-    this.marketRateColor = this.getRateColor(this.marketRateUpperDeltaPct);
   }
 
   calculateBarWidth(rate: number): number {

@@ -23,7 +23,7 @@ export class RatesAnalysisService {
             return;
           }
           const bm = data.result;
-          resolve({benchmark: bm, firm_name: data.firm_name});
+          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms});
         },
         err => {
           return {error: err};

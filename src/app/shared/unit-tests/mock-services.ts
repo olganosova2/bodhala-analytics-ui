@@ -33,7 +33,7 @@ import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND
 import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
-import {MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT, MOCK_BENCHMARK} from './mock-data/rate-benchmarking';
+import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT, MOCK_BENCHMARK, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA} from './mock-data/rate-benchmarking';
 import {MOCK_BM_CONFIG, MOCK_BM_MATTERS, MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_ELIGIBILITY, MOCK_MATTER_LIST_BY_CLIENT, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
 
 export const ngWindow = {
@@ -344,6 +344,10 @@ export class DataStub {
         return of (MOCK_BM_MATTERS);
       case 'checkBenchmarkMatterEligibility':
         return of (MOCK_MATTER_ELIGIBILITY);
+      case 'getAssociateGranularityRateData':
+        return of (MOCK_ASSOC_DATA);
+      case 'getPartnerGranularityRateData':
+        return of (MOCK_PARTNER_DATA);
       default:
         return of([]);
     }
@@ -606,7 +610,12 @@ export class RatesAnalysisServiceStub {
   }
 
   public getBenchmark() {
-    return(MOCK_BENCHMARKS);
+    const bm = MOCK_GET_BENCHMARK.result;
+    return({benchmark: bm, firm_name: MOCK_GET_BENCHMARK.firm_name, peer_firms: MOCK_GET_BENCHMARK.peer_firms});
+  }
+
+  public getRateAnalysisData(bm: any) {
+    return (MOCK_RATE_ANALYSIS_DATA);
   }
 }
 

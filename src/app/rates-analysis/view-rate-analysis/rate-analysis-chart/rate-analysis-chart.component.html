@@ -2,7 +2,7 @@
   <!-- <span #bmPanel class="market-average" [ngStyle]="{'left': '450px', 'width': '430px', 'height': '100px', 'display': 'inline'}"></span> -->
   <div style="width: 12% !important; padding: 32px 0px 32px 48px !important;">
 
-    <div class="labels mb10">You Pay</div>
+    <div class="labels mb10">{{selectedFirm}}</div>
     <div *ngIf="validInternalBM" class="labels mb5">Internal</div>
   </div>
   <div #chartPanel  style="width: 88% !important; display: inline-block; position: relative; z-index: 1; padding: 32px !important;">
@@ -78,7 +78,7 @@
 
   </div>
 
-  <div class="p-grid" style="padding-top: 1em;">
+  <div class="p-grid" style="padding-top: 1em;" *ngIf="validInternalBM">
     <div style="width: 20%;">
       <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important;">Internal Rate</span>
     </div>
