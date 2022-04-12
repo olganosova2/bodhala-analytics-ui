@@ -110,6 +110,9 @@ export class GranularRateChartComponent implements OnInit {
         if (data.result.market_average) {
           if (data.result.market_average.length > 0) {
             this.marketAverageData = data.result.market_average[0];
+            if (this.marketAverageData.num_firms < 2 || this.marketAverageData.num_tks < 10) {
+              this.validMarketAverage = false;
+            }
           }
         }
         if (data.result.firm_data) {
@@ -178,6 +181,9 @@ export class GranularRateChartComponent implements OnInit {
         if (data.result.internal_data) {
           if (data.result.internal_data.length > 0) {
             this.internalData = data.result.internal_data[0];
+            if (this.internalData.num_firms < 3) {
+              this.validInternalBM = false;
+            }
           }
         }
         this.calculateChartMetrics();
