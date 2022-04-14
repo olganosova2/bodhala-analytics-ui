@@ -204,7 +204,7 @@ export class GranularRateChartComponent implements OnInit {
         this.highestRate = this.internalData.avg_associate_rate;
       } else {
         // random number - return to
-        this.highestRate = 1000;
+        this.highestRate = this.firmYearData.rate;
       }
       this.topBarDollars = this.firmYearData.rate;
       this.topBarWidth = this.calculateBarWidth(this.firmYearData.rate) + 'px';
@@ -259,7 +259,7 @@ export class GranularRateChartComponent implements OnInit {
       } else if (this.internalData.avg_partner_rate > this.firmYearData.rate && this.internalData.rate > this.marketAverageData.partner_hi) {
         this.highestRate = this.internalData.avg_partner_rate;
       } else {
-        this.highestRate = 1000;
+        this.highestRate = this.firmYearData.rate;
       }
       this.topBarDollars = this.firmYearData.rate;
       this.topBarWidth = this.calculateBarWidth(this.firmYearData.rate) + 'px';
