@@ -47,4 +47,18 @@ describe('MatterInsightsComponent', () => {
   it('should create MatterInsightsComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should reset', () => {
+    component.reset();
+    expect(component.summaryData).toBe(null);
+  });
+  it('should getFirmId', () => {
+    component.firm = { id: '47', name: 'Kirkland'};
+    const result = component.getFirmId();
+    expect(result).toBe(47);
+  });
+  it('should getMatterInsight', () => {
+    component.firm = { id: '47', name: 'Kirkland'};
+    component.getMatterInsight();
+    expect(result).toBe(47);
+  });
 });

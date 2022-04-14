@@ -10,6 +10,7 @@ import {MOCK_CLIENT_CONFIGS} from '../../../shared/unit-tests/mock-data/client-c
 import {IRecommendation, IRecommendationReport} from '../client-recommendations-model';
 import {RecommendationService} from '../recommendation.service';
 import {MOCK_RECOMMENDATION_REPORT} from '../../../shared/unit-tests/mock-data/recommendations';
+import {CommonService} from '../../../shared/services/common.service';
 
 
 describe('CreateClientRecommendationsComponent', () => {
@@ -36,7 +37,8 @@ describe('CreateClientRecommendationsComponent', () => {
           {provide: RecommendationService, useClass: mockServices.RecommendationsServicesStub},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},
-          {provide: UserService, useClass: mockServices.UserStub}
+          {provide: UserService, useClass: mockServices.UserStub},
+          { provide: CommonService, useClass: mockServices.CommonServiceStub }
         ]
       }
     })

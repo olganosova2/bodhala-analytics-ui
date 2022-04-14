@@ -20,7 +20,7 @@ import {NgZone} from '@angular/core';
 import {MOCK_OVERSTAFFING} from './mock-data/saving-calc-mock';
 import {MOCK_SAVINGS_BY_FIRM} from './mock-data/savings-by-firm';
 import {MOCK_PAST_SAVINGS} from './mock-data/past-savings';
-import {MOCK_CLIENT_CONFIGS, MOCK_CLIENTS_CONFIGS_EXTENDED, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
+import {MOCK_ADMIN_INSIGHTS, MOCK_ANALYTICS_CLIENTS, MOCK_CLIENT_CONFIGS, MOCK_CLIENTS_CONFIGS_EXTENDED, MOCK_DISTINCT_NAMES, MOCK_SAMPLE_CONFIGS} from './mock-data/client-configs';
 import {MOCK_SMART_PAS} from './mock-data/discounts';
 import {MOCK_CIRP_SUMMARY} from './mock-data/cirp-matter-summary';
 import {MOCK_RECOMMENDATION_REPORTS, MOCK_RECOMMENDATION_TYPES, MOCK_PA_SETTING, MOCK_RECOMMENDATION_REPORT, MOCK_RECOMMENDATION_DISCOUNT_DATA, MOCK_RECOMMENDATION_STAFFING_DATA,
@@ -35,6 +35,7 @@ import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qb
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
 import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT, MOCK_BENCHMARK, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA} from './mock-data/rate-benchmarking';
 import {MOCK_BM_CONFIG, MOCK_BM_MATTERS, MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_ELIGIBILITY, MOCK_MATTER_LIST_BY_CLIENT, MOCK_MATTER_OVERVIEW} from './mock-data/matter-overview';
+import {MOCK_FIRM_CLUSTER} from './mock-data/firm-cluster';
 
 export const ngWindow = {
   location: {
@@ -139,6 +140,8 @@ export class DataStub {
         return of (MOCK_MARKET_DOCS);
       case 'saveRateBenchmark':
         return of (MOCK_SAVED_BENCHMARK);
+      case 'saveClientInsight':
+        return of ( {result: { id: 1}});
       default:
         return of([]);
     }
@@ -348,6 +351,15 @@ export class DataStub {
         return of (MOCK_ASSOC_DATA);
       case 'getPartnerGranularityRateData':
         return of (MOCK_PARTNER_DATA);
+      case 'getAnalyticsClients':
+        return of (MOCK_ANALYTICS_CLIENTS);
+      case 'getAdminInsights':
+        return of (MOCK_ADMIN_INSIGHTS);
+      case 'getFirmsByClientIdAndCluster':
+        return of (MOCK_FIRM_CLUSTER);
+      case 'getAdminMatterInsight':
+        return of (MOCK_FIRM_CLUSTER);
+
       default:
         return of([]);
     }
@@ -579,6 +591,10 @@ export class RatesAnalysisServiceStub {
       cost_impact: 'HIGH',
       blended_within_range: false
     });
+  }
+
+  public getBenchmarkInsight(bm) {
+    return '#000000';
   }
 
   public calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number) {

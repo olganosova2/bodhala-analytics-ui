@@ -98,6 +98,9 @@ export class CommonService {
     }
     const docName = title ? title : 'Export PDF';
     const exportElement = document.getElementById(divId);
+    if (!exportElement) {
+      return;
+    }
     const footerDiv = document.createElement('DIV');
     const logo = new Image();
     if (title === 'Executive Summary' || title.includes('Report Card')) {
