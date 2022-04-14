@@ -18,17 +18,17 @@
         </span>
       </div>
       <div style="display: inline; padding-left: 2.5em; padding-right: 3.5em;">
-        <span style="font-family: 'Roboto Bold' !important; font-size: 24px; padding-right: 0.5em;">
+        <span style="font-family: 'Roboto Bold' !important; font-size: 24px; padding-right: 18px;">
           Rate Impact
         </span>
 
-        <div [ngStyle]="{'margin-right': '1.25em', 'background': rateImpactColor, 'border-radius': '16px', 'height': '24px', 'color': 'white', 'font-family': 'Roboto', 'font-size': '16px', 'display': 'inline-flex', 'justify-content': 'center', 'align-items': 'center', 'margin-top': '12px', 'width': 'auto', 'padding': '2px 7px'}">
+        <div [ngStyle]="{'margin-right': '18px', 'background': rateImpactColor, 'border-radius': '16px', 'height': '24px', 'color': 'white', 'font-family': 'Roboto', 'font-size': '16px', 'display': 'inline-flex', 'justify-content': 'center', 'align-items': 'center', 'margin-top': '12px', 'width': 'auto', 'padding': '2px 7px'}">
           {{rateImpact}}
         </div>
 
         <div style="font-family: 'Roboto'; margin-top: 12px; display: inline;">
           Hours Worked: <span style="font-family: 'Roboto Bold';">{{totalSeniorityHoursFormatted}}</span>
-          <span style="padding-left: 2em;">% of Hours:</span><span style="font-family: 'Roboto Bold';"> {{percentOfTotalHours | number:'1.0-0'}}%</span>
+          <span style="padding-left: 23px;">% of Hours:</span><span style="font-family: 'Roboto Bold';"> {{percentOfTotalHours | number:'1.0-0'}}%</span>
         </div>
       </div>
     </div>
