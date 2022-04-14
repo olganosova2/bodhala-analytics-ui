@@ -86,7 +86,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
         this.highestRate = this.internalData.avg_blended_rate;
       } else {
         // random number - return to
-        this.highestRate = 5000;
+        this.highestRate = this.selectedFirmData.blended_rate;
       }
       this.topBarDollars = this.selectedFirmData.blended_rate;
       this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.blended_rate) + 'px';
@@ -139,7 +139,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       } else if (this.internalData.avg_partner_rate > this.selectedFirmData.avg_partner_rate && this.internalData.avg_partner_rate > this.marketAverageData.partner_hi) {
         this.highestRate = this.internalData.avg_partner_rate;
       } else {
-        this.highestRate = 5000;
+        this.highestRate = this.selectedFirmData.avg_partner_rate;
       }
       this.topBarDollars = this.selectedFirmData.avg_partner_rate;
       this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.avg_partner_rate) + 'px';
@@ -190,7 +190,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       } else if (this.internalData.avg_associate_rate > this.selectedFirmData.avg_associate_rate && this.internalData.avg_associate_rate > this.marketAverageData.associate_hi) {
         this.highestRate = this.internalData.avg_associate_rate;
       } else {
-        this.highestRate = 5000;
+        this.highestRate = this.selectedFirmData.avg_associate_rate;
       }
       this.topBarDollars = this.selectedFirmData.avg_associate_rate;
       this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.avg_associate_rate) + 'px';
