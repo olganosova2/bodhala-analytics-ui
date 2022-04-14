@@ -20,7 +20,6 @@
           <div class="firm-name-pill">{{firm}}</div>
           <span style="background: #DEE8EB important; " *ngIf="last"> & others...</span>
         </div>
-        <!-- [hidden]="checkOverflow()" -->
       </div>
     </div>
   </div>
@@ -28,13 +27,7 @@
   <h3 style="padding-bottom: 40px;">Timekeeper Level Benchmarks<br>& Cost Analysis</h3>
 
   <div *ngFor="let in of counter(numPartnerTiers); let i = index;">
-    <!-- {{i + 1}} -->
     <div class="panel-wrapper mt40" style="padding: 0px !important;">
-      <div style="padding: 32px 32px 16px 32px;">
-        <em class="icon-user" style="font-size: 20px;"></em>
-        <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Partner Tier {{i + 1}}</span>
-      </div>
-
       <div>
         <bd-granular-rate-chart *ngIf="loaded" [classification]="'partner'" [tier]="i + 1" [overallSpendData]="overallSpendData"
                                 [firmName]="firmName" [firmSpendData]="firmYearData" [benchmark]="benchmark" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
@@ -43,10 +36,6 @@
   </div>
 
   <div class="panel-wrapper mt40" style="padding: 0px !important;">
-    <div style="padding: 32px 32px 16px 32px;">
-      <em class="icon-user" style="font-size: 20px;"></em>
-      <span class="header-span">Junior Associate</span>
-    </div>
     <div>
       <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Junior'" [overallSpendData]="overallSpendData"
                               [firmName]="firmName" [benchmark]="benchmark" [firmSpendData]="firmYearData" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
@@ -54,11 +43,6 @@
   </div>
 
   <div class="panel-wrapper mt40" style="padding: 0px !important;">
-    <div style="padding: 32px 32px 16px 32px;">
-      <em class="icon-user" style="font-size: 20px;"></em>
-      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Mid-level Associate</span>
-    </div>
-
     <div>
       <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Mid-level'" [overallSpendData]="overallSpendData"
                               [firmName]="firmName" [benchmark]="benchmark" [firmSpendData]="firmYearData" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
@@ -66,10 +50,6 @@
   </div>
 
   <div class="panel-wrapper mt40" style="padding: 0px !important;">
-    <div style="padding: 32px 32px 16px 32px;">
-      <em class="icon-user" style="font-size: 20px;"></em>
-      <span class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Senior Associate</span>
-    </div>
     <div>
       <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Senior'" [overallSpendData]="overallSpendData"
                               [firmName]="firmName" [firmSpendData]="firmYearData" [benchmark]="benchmark" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
