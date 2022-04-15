@@ -9,6 +9,7 @@ import {FiltersService} from '../../../shared/services/filters.service';
 import {MOCK_RECOMMENDATION_REPORT, MOCK_RECOMMENDATION_TYPES, RECOMMENDATIONS} from '../../../shared/unit-tests/mock-data/recommendations';
 import {IRecommendation, IRecommendationReport} from '../client-recommendations-model';
 import { RecommendationService } from '../recommendation.service';
+import {CommonService} from '../../../shared/services/common.service';
 
 
 describe('ViewClientRecommendationComponent', () => {
@@ -35,7 +36,8 @@ describe('ViewClientRecommendationComponent', () => {
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: RecommendationService, useClass: mockServices.RecommendationsServicesStub},
           {provide: HttpService, useClass: mockServices.DataStub},
-          {provide: UserService, useClass: mockServices.UserStub}
+          {provide: UserService, useClass: mockServices.UserStub},
+          { provide: CommonService, useClass: mockServices.CommonServiceStub }
         ]
       }
     })
