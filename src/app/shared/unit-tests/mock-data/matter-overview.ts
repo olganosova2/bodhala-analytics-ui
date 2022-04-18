@@ -1751,3 +1751,152 @@ export const MOCK_FIRMS_FOR_MATTER = {
   }],
   "error": null
 };
+export const MOCK_MATTER_LIST_BY_CLIENT = {
+  "result": [{
+    "id": "032776-00481",
+    "name": "GEPIF III Lux Structure"
+  }, {
+    "id": "087260/834",
+    "name": "Lux Restructuring"
+  }],
+  "error": null
+};
+export const MOCK_BM_CONFIG = {
+  "result": {
+    "enabled": {
+      "id": 10227,
+      "org_id": 159,
+      "client_id": null,
+      "user_id": null,
+      "description": "config for analytics practice areas",
+      "name": "analytics.practice.bodhala.areas",
+      "value": "Smart Practice Areas",
+      "json_config": "Smart Practice Areas",
+      "created_by": null,
+      "created_on": "2022-02-16T21:20:19.773960",
+      "deleted_by": null,
+      "deleted_on": null,
+      "modified_by": 841,
+      "modified_on": "2022-02-16T21:20:19.773960"
+    },
+    "config": {
+      "id": 10235,
+      "org_id": null,
+      "client_id": 110,
+      "user_id": null,
+      "description": "Config to select matters for a client to benchmark",
+      "name": "benchmarks.matter.config",
+      "value": "0",
+      "json_config": {
+        "matters": ["061439-00107"],
+        "smartPAs": []
+      },
+      "created_by": 841,
+      "created_on": "2022-03-17T14:28:31.387104",
+      "deleted_by": null,
+      "deleted_on": null,
+      "modified_by": 841,
+      "modified_on": "2022-03-17T15:51:18.841849"
+    }
+  },
+  "error": null
+};
+export const MOCK_BM_MATTERS = {
+  "result": [{
+    "total_billed": 52457.33,
+    "total_expenses": 11817.93,
+    "total_hours_billed": 83.1,
+    "client_matter_id": "061439-00107",
+    "matter_name": "Project Acero / Incorporation Dutch entities",
+    "bh_lawfirm_id": 92,
+    "firm_name": "Kramer Levin Naftalis & Frankel",
+    "smart_pa": "Litigation"
+  }, {
+    "total_billed": 16294.59,
+    "total_expenses": 1867.4,
+    "total_hours_billed": 19.6,
+    "client_matter_id": "061439-00107",
+    "matter_name": "Canyon _ Art Insurance Analysis",
+    "bh_lawfirm_id": 92,
+    "firm_name": "Kramer Levin Naftalis & Frankel",
+    "smart_pa": "Litigation"
+  }],
+  "error": null
+};
+export const MOCK_MATTER_ELIGIBILITY = {
+  "result": {
+    "score": 0.7,
+    "smart_pa": "Litigation",
+    "market_matters": [{
+      "sim_matter_id": "100303",
+      "sim_client_id": 113,
+      "sim_score": 0.8272
+    }, {
+      "sim_matter_id": "100303",
+      "sim_client_id": 59,
+      "sim_score": 0.8272
+    }, {
+      "sim_matter_id": "100025",
+      "sim_client_id": 59,
+      "sim_score": 0.979
+    }, {
+      "sim_matter_id": "100420",
+      "sim_client_id": 59,
+      "sim_score": 0.8762
+    }, {
+      "sim_matter_id": "100089",
+      "sim_client_id": 59,
+      "sim_score": 0.8648
+    }, {
+      "sim_matter_id": "100026",
+      "sim_client_id": 113,
+      "sim_score": 0.8344
+    }, {
+      "sim_matter_id": "100026",
+      "sim_client_id": 59,
+      "sim_score": 0.8344
+    }, {
+      "sim_matter_id": "100242",
+      "sim_client_id": 113,
+      "sim_score": 0.821
+    }, {
+      "sim_matter_id": "100242",
+      "sim_client_id": 59,
+      "sim_score": 0.821
+    }, {
+      "sim_matter_id": "LEO-0515",
+      "sim_client_id": 471,
+      "sim_score": 0.7779
+    }],
+    "internal_matters": [{
+      "sim_matter_id": "087260/848",
+      "sim_client_id": 110,
+      "sim_score": 0.9537
+    }, {
+      "sim_matter_id": "061439-00007",
+      "sim_client_id": 110,
+      "sim_score": 0.8752
+    }, {
+      "sim_matter_id": "087260/835",
+      "sim_client_id": 110,
+      "sim_score": 0.8115
+    }, {
+      "sim_matter_id": "087260/585",
+      "sim_client_id": 110,
+      "sim_score": 0.8316
+    }, {
+      "sim_matter_id": "261068",
+      "sim_client_id": 110,
+      "sim_score": 0.7666
+    }, {
+      "sim_matter_id": "061439-10052",
+      "sim_client_id": 110,
+      "sim_score": 0.7106
+    }, {
+      "sim_matter_id": "087260/814",
+      "sim_client_id": 110,
+      "sim_score": 0.7654
+    }]
+  },
+  "error": null
+};

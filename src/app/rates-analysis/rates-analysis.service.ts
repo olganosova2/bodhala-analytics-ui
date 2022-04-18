@@ -23,7 +23,7 @@ export class RatesAnalysisService {
             return;
           }
           const bm = data.result;
-          resolve({benchmark: bm, firm_name: data.firm_name});
+          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms});
         },
         err => {
           return {error: err};
@@ -49,7 +49,28 @@ export class RatesAnalysisService {
       return this.httpService.makeGetRequest('getFirmRateAnalysisIncreaseData', params).subscribe(
         (data: any) => {
           if (!data.result) {
-            return;
+            resolve(data);
+          }
+          resolve(data);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
+
+  getBenchmarkInsight(benchmark: any): Promise<any> {
+    const params = {
+      firm: benchmark.bh_lawfirm_id,
+      pa: benchmark.smart_practice_area,
+      yyyy: benchmark.year
+    };
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getBenchmarkInsight', params).subscribe(
+        (data: any) => {
+          if (!data.result) {
+            resolve(data);
           }
           resolve(data);
         },

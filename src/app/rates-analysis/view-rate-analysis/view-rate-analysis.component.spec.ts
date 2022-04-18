@@ -81,6 +81,51 @@ describe('ViewRateAnalysisComponent', () => {
   });
 
   it('should create', () => {
+    component.ngOnInit();
+    expect(component).toBeTruthy();
+  });
+
+  it('should getColor', () => {
+    let result = component.getColor(8);
+    expect(result).toEqual('#FF8B4A');
+    fixture.detectChanges();
+
+    result = component.getColor(5);
+    expect(result).toEqual('#FFC327');
+    fixture.detectChanges();
+
+    result = component.getColor(-4);
+    expect(result).toEqual('#3EDB73');
+  });
+
+  it('should toggleInsight', () => {
+    component.toggleInsight(false);
+    expect(component.insightExpanded).toEqual(false);
+  });
+
+  it('should export', () => {
+    component.export();
+    expect(component).toBeTruthy();
+  });
+
+  it('should goBack', () => {
+    component.goBack();
+    expect(component).toBeTruthy();
+  });
+
+  it('should goToDetail', () => {
+    component.benchmark = mockBM;
+    component.firmId = mockBM.bh_lawfirm_id;
+    component.firmYearData = MOCK_RATE_ANALYSIS_RESULT.result.firm_data;
+    component.overallSpendData = MOCK_RATE_ANALYSIS_RESULT.result.overall_spend;
+    component.internalYearData = MOCK_RATE_ANALYSIS_RESULT.result.internal_data;
+    component.marketAverageData = MOCK_RATE_ANALYSIS_RESULT.result.market_average;
+    component.practiceArea = mockBM.smart_practice_area;
+    component.year = mockBM.year;
+    component.numPartnerTiers = 3;
+    component.peerFirms = mockBM.peers;
+    component.cluster = 1;
+    component.goToDetail();
     expect(component).toBeTruthy();
   });
 

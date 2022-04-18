@@ -128,7 +128,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
         if (data[0].result) {
           const firms = data[0].result || [];
           if (firms.length > 0) {
-            totalSpend = firms[0].total_billed_all || 1;
+            totalSpend = (this.filtersService.includeExpenses ? firms[0].total_billed_all + firms[0].total_expenses_all : firms[0].total_billed_all) || 1;
             // tslint:disable-next-line:prefer-for-of
             for (let ix = 0; ix < firms.length; ix++) {
               if (firms[ix].id.toString() === this.firmId) {
@@ -144,16 +144,15 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
             if (firms.length > 0) {
               this.commonServ.pageSubtitle = firms[0].firm_name;
               this.firm = firms[0];
-              this.percentOfTotal = firms[0].total_billed / totalSpend;
+              this.percentOfTotal = (this.filtersService.includeExpenses ? firms[0].total_billed + firms[0].total_expenses : firms[0].total_billed)  / totalSpend;
             }
           }
         }
       } else {
-
         if (data[0].result) {
           const firms = data[0].result || [];
           if (firms.length > 0) {
-            totalSpend = firms[0].total_billed_all || 1;
+            totalSpend = (this.filtersService.includeExpenses ? firms[0].total_billed_all + firms[0].total_expenses_all : firms[0].total_billed_all) || 1;
             // tslint:disable-next-line:prefer-for-of
             for (let ix = 0; ix < firms.length; ix++) {
               if (firms[ix].id.toString() === this.firmId) {
@@ -169,7 +168,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
             if (firms.length > 0) {
               // this conditional handles for the case when the firm RC being viewed is not in the saved filter firms list
               if (this.rank < 0) {
-                totalSpend += firms[0].total_billed;
+                totalSpend += this.filtersService.includeExpenses ? firms[0].total_billed_all + firms[0].total_expenses_all : firms[0].total_billed_all;
                 const otherFirms = data[0].result || [];
                 const currentFirm = firms[0];
                 otherFirms.push(currentFirm);
@@ -188,7 +187,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               }
               this.commonServ.pageSubtitle = firms[0].firm_name;
               this.firm = firms[0];
-              this.percentOfTotal = firms[0].total_billed / totalSpend;
+              this.percentOfTotal = (this.filtersService.includeExpenses ? firms[0].total_billed + firms[0].total_expenses : firms[0].total_billed)  / totalSpend;
             }
           }
         }

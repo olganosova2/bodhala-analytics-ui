@@ -1,5 +1,5 @@
 <div>
-  <div *ngIf="messageService.messages.length>0" class="content-body">
+  <div *ngIf="messageService.messages && messageService.messages.length>0" class="content-body">
     <div *ngFor="let message of messageService.messages;let i = $index;" class="mt10 mb10 mr20">
       <bd-message-item [alert]="message" [index]="i"></bd-message-item>
     </div>
@@ -21,9 +21,17 @@
       </div>
     </ngb-alert>
 
-    <mat-tab-group [(selectedIndex)]="selIndex" (selectedTabChange)="changeTab($event)" *ngIf="!selectedClient.missingSmartPA">
+    <mat-tab-group [(selectedIndex)]="selIndex"  *ngIf="!selectedClient.missingSmartPA">
       <mat-tab label="Benchmarking Setup">
         <div class="panel-wrapper" >
+          <div class="pull-right mb10" *ngIf="this.clientBmConfig && this.clientBmConfig.id">
+            <button mat-flat-button color="primary"  (click)="deleteConfig(this.clientBmConfig.id);">REMOVE ALL SETTINGS</button>
+
+          </div>
+          <div class="mb20 full-width">
+            <p-radioButton name="bmSetupType" value="HideButton" (click)="hideButton()" [(ngModel)]="bmSetupType"></p-radioButton>
+            Disable Matter Benchmarking
+          </div>
           <div class="mb20 full-width">
             <p-radioButton name="bmSetupType" value="AllMatters" (click)="selectAll()" [(ngModel)]="bmSetupType"></p-radioButton>
               Benchmark all matters
@@ -41,7 +49,7 @@
           <div class="p-grid full-width">
             <div class="p-col-11">
               <mat-form-field appearance="outline" class="full-width">
-                <input type="text"  #matterInput matInput  autocomplete="off"  required (input)="loadMatters($event.target.value)" [readonly]="bmSetupType === 'AllMatters'"
+                <input type="text"  #matterInput matInput  autocomplete="off"  required (input)="loadMatters($event.target.value)" [readonly]="bmSetupType !== 'SelectedMatters'"
                        maxlength="255" [matAutocomplete]="auto" name="matterId" placeholder="Type to search by Matter ID or Matter Name">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="selectMatter($event)">
                   <mat-option *ngFor="let option of filteredNames; let i = index" [value]="option">
@@ -56,7 +64,7 @@
           </div>
 
 
-        <table class="full-width mt20" *ngIf="displayMatters.length > 0">
+        <table class="full-width mt20 mb20" *ngIf="displayMatters.length > 0">
           <tr>
             <th>Matter Name</th>
             <th>Matter ID</th>
@@ -73,7 +81,40 @@
           </tr>
 
         </table>
+          <div class="mt20" *ngIf="smartPAs.length>0">
+            <p-radioButton name="bmSetupType" value="SelectedPAs" [(ngModel)]="bmSetupType"></p-radioButton>
+            Benchmark Specific Practice Areas
+            <div class="justify-start mt20">
+              <div class="mt15">
+                <p-multiSelect [style]="{width:'400px'}" [options]="smartPAs" *ngIf="clientBmConfig.json_config && clientBmConfig.json_config.smartPAs"
+                               [filter]="false" [disabled]="bmSetupType !== 'SelectedPAs'"
+                               [(ngModel)]="clientBmConfig.json_config.smartPAs" [ngModelOptions]="{standalone: true}"
+                               placeholder="Select practice areas..."
+                               [showToggleAll]="false" [showHeader]="false"
+                               name="SelectedPAs" ngDefaultControl>
+                </p-multiSelect>
+              </div>
+              <div class="ml20">
+                <button mat-flat-button color="primary" class="mt5 pt10 pb10"
+                        [disabled]="!clientBmConfig.json_config || !clientBmConfig.json_config.smartPAs || clientBmConfig.json_config.smartPAs.length === 0" (click)="addSmartPA();">SAVE</button>
+              </div>
+            </div>
+          </div>
+
+          <table class="half-width mt20" *ngIf="displayPAs.length > 0">
+            <tr>
+              <th>Smart Practice Area</th>
+              <th>Delete</th>
+            </tr>
+            <tr *ngFor="let pa of displayPAs">
+              <td>{{pa}}</td>
+              <td><i class="material-icons pointer-hand" (click)=deletePA(pa)>delete</i></td>
+            </tr>
+
+          </table>
+          <div class="bottom-spacer"></div>
         </div>
+
       </mat-tab>
       <mat-tab label="Matter-Specific Insights" >
         <bd-admin-insights *ngIf="clientWasSelected" [page]="'BM'" [selectedClient]="selectedClient"></bd-admin-insights>

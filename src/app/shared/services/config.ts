@@ -119,7 +119,9 @@ export const END_POINTS_URLS = {
   getFirmRateAnalysisIncreaseData: {url: BASE_URL + 'analytics/getFirmRateAnalysisIncreaseData', showLoading: true},
   getRateBenchmarks: {url: BASE_URL + 'analytics/getRateBenchmarks', showLoading: true},
   getRateBenchmark: {url: BASE_URL + 'analytics/getRateBenchmark', showLoading: true},
-  getTKGranularityRateData: {url: BASE_URL + 'analytics/getTKGranularityRateData', showLoading: true},
+  getAssociateGranularityRateData: {url: BASE_URL + 'analytics/getAssociateGranularityRateData', showLoading: true},
+  getPartnerGranularityRateData: {url: BASE_URL + 'analytics/getPartnerGranularityRateData', showLoading: true},
+  getBenchmarkInsight: {url: BASE_URL + 'analytics/getBenchmarkInsight', showLoading: true},
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
   getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},
@@ -131,6 +133,9 @@ export const END_POINTS_URLS = {
   getBenchmarkMatters: {url: BASE_URL + 'analytics/getBenchmarkMatters', showLoading: true},
   getBenchmarkMattersConfig: {url: BASE_URL + 'analytics/getBenchmarkMattersConfig', showLoading: true},
   checkBenchmarkMatterEligibility: {url: BASE_URL + 'analytics/checkBenchmarkMatterEligibility', showLoading: true},
+  getCustomInternalMatters: {url: BASE_URL + 'analytics/getCustomInternalMatters', showLoading: true},
+  saveBMCustomInternalMatters: {url: BASE_URL + 'analytics/saveBMCustomInternalMatters', showLoading: true},
+  deleteBMCustomInternalMatters: {url: BASE_URL + 'analytics/deleteBMCustomInternalMatters', showLoading: true},
 
 
   // ADMIN
@@ -186,6 +191,7 @@ export const END_POINTS_URLS = {
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
   saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
   saveBenchmarkMattersConfig: {url: BASE_URL + 'admin/saveBenchmarkMattersConfig', showLoading: true},
+  getAdminRateInsight: {url: BASE_URL + 'admin/getAdminRateInsight', showLoading: true}
 
 };
 
@@ -210,6 +216,7 @@ export const ROUTES = [
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
   {name: 'matter.benchmarking', routePath: 'analytics-ui/admin/matter-benchmarks', fragment: '/admin/matter-benchmarks'},
+  {name: 'app.rates-benchmarking.list', routePath: 'analytics-ui/admin/rate-benchmarks', fragment: '/admin/rate-benchmarks'},
   {name: 'app.yoy.rate.increase', routePath: 'analytics-ui/yoy-rate-increase', fragment: '/yoy-rate-increase'},
 ];
 

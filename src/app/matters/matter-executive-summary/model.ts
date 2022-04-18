@@ -5,10 +5,10 @@ export const HARDCODED_MATTER_ID = '061439-00107'; // '056130-0000274'; // '1499
 export const RECORDS_NUMBER_THRESHOLD = 2;
 
 export enum MetricCardType {
-  TotalSpend = 'TotalSpend',
   AverageRates = 'AverageRates',
-  TotalHoursWorked = 'TotalHoursWorked',
   PercentOfHoursWorked = 'PercentOfHoursWorked',
+  TotalHoursWorked = 'TotalHoursWorked',
+  TotalSpend = 'TotalSpend',
   AverageTkOnMatter = 'AverageTkOnMatter'
 }
 
@@ -56,6 +56,7 @@ export interface IMatterTotalsMetric {
   format?: string;
   icon?: string;
   size?: number;
+  noData?: boolean;
 }
 
 export interface IMatterTotalsPanel {
@@ -146,6 +147,19 @@ export interface IMetricDisplayData {
 export interface IInternalMatter {
   sim_client_id;
   sim_matter_id;
+}
+export interface ICustomInternalMatters {
+  id: string;
+  bh_client_id: number;
+  client_matter_id: string;
+  matters: Array<string>;
+}
+export interface IMatterWithNames {
+  client_matter_id: string;
+  matter_name: string;
+  total?: number;
+  expenses?: number;
+  total_with_expenses?: number;
 }
 
 export const matterColumnChartOptions = {

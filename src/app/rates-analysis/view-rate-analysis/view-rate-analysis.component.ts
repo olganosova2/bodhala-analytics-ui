@@ -40,6 +40,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   firmCostImpactFormatted: string;
   cohortCostImpactFormatted: string;
   helpText: string = 'An estimated increase in spend should your rates increase at this rate.';
+  totalSpendText: string = 'This Total Spend figure only includes Partner and Associate line items.';
   marketBlendedRateLowerRangeDiff: string;
   marketBlendedRateUpperRangeDiff: string;
   internalBlendedRateDiff: string;
@@ -65,6 +66,10 @@ export class ViewRateAnalysisComponent implements OnInit {
   overallSpendPAData: any;
   pctOfTotalSpend: string;
   pctOfPASpend: string;
+  insightText: string;
+  insightExpanded: boolean = false;
+  cluster: number;
+  numPartnerTiers: number;
 
 
   constructor(private route: ActivatedRoute,
@@ -95,10 +100,27 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
-        this.peerFirms = this.benchmark.peers;
-        const ix = this.peerFirms.findIndex(p => p === this.firmName);
+        this.peerFirms = result.peer_firms;
+        const ix = result.peer_firms.findIndex(p => p === this.firmName);
+        this.peerFirms = [];
         if (ix >= 0) {
-          this.peerFirms.splice(ix, 1);
+          result.peer_firms.splice(ix, 1);
+        }
+        if (result.peer_firms) {
+          let counter = 0;
+          for (const firm of result.peer_firms) {
+            if ((firm.length + counter) < 115) {
+              this.peerFirms.push(firm);
+            }
+            counter += firm.length;
+          }
+        }
+        const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
+        if (insightResult.result) {
+          if (insightResult.result.is_enabled) {
+            this.insightText = insightResult.result.description;
+
+          }
         }
         // this.getData();
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
@@ -131,6 +153,12 @@ export class ViewRateAnalysisComponent implements OnInit {
           this.internalYearData = data.result.internal_data[0];
         }
       }
+      if (data.result.num_tiers) {
+        this.numPartnerTiers = data.result.num_tiers;
+      }
+      if (data.result.cluster) {
+        this.cluster = data.result.cluster;
+      }
       if (data.result.overall_spend) {
         this.overallSpendData = data.result.overall_spend;
       }
@@ -150,6 +178,7 @@ export class ViewRateAnalysisComponent implements OnInit {
         } else {
           firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, (data.result.max_year + 1), true, validRange, this.year);
         }
+        const maxYear = data.result.max_year;
         const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result_classification, data.result.max_year, false, true, this.year);
         this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;
         this.cohortClassificationRateIncreaseData = cohortClassificationRateIncreasePct.classificationData;
@@ -157,29 +186,26 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.cohortRateIncreasePct = cohortClassificationRateIncreasePct.rateIncreasePct;
         this.firmRateIncreasePct *= 100;
         this.cohortRateIncreasePct *= 100;
-        this.firmTotalSpend = firmClassificationRateIncreasePct.total;
+        if (this.firmYearData) {
+          // if difference is more than equal to 2 we can't calculate total firm spend using the effective rate query
+          this.firmTotalSpend = this.firmYearData.total_atty_billed;
+        } else {
+          this.firmTotalSpend = firmClassificationRateIncreasePct.total;
+        }
         this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
 
         this.firmRateIncreaseColor = this.getColor(this.firmRateIncreasePct);
         this.cohortRateIncreaseColor = this.getColor(this.cohortRateIncreasePct);
 
         const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
-        if (this.firmTotalSpend && projectedCostImpact) {
-          if (projectedCostImpact.firmProjectedImpact) {
-            if (validRange) {
-              this.firmCostImpact = projectedCostImpact.firmProjectedImpact - this.firmTotalSpend;
-            } else {
-              const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
-              this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
-            }
-            this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
-          }
-          if (projectedCostImpact.marketProjectedImpact) {
-            // this.cohortCostImpact = projectedCostImpact.marketProjectedImpact - this.firmTotalSpend;
-            const projectedCohortSpend = this.firmTotalSpend * (1 + (this.cohortRateIncreasePct / 100));
-            this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
-            this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
-          }
+        if (this.firmTotalSpend) {
+          const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
+          this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
+          this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
+
+          const projectedCohortSpend = this.firmTotalSpend * (1 + (this.cohortRateIncreasePct / 100));
+          this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
+          this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
         }
         const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.firmYearData, this.marketAverageData);
         this.costImpactGrade = historicalCostImpact.cost_impact;
@@ -222,7 +248,10 @@ export class ViewRateAnalysisComponent implements OnInit {
       bm: this.benchmark,
       totalSpend: this.overallSpendData,
       market: this.marketAverageData,
-      internal: this.internalYearData
+      internal: this.internalYearData,
+      cluster: this.cluster,
+      numTiers: this.numPartnerTiers,
+      peerFirms: this.peerFirms
     };
     this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
     {state:
@@ -293,6 +322,10 @@ export class ViewRateAnalysisComponent implements OnInit {
     }
   }
 
+  toggleInsight(toExpand: boolean): void {
+    this.insightExpanded = toExpand;
+  }
+
   getColor(increasePct: number): string {
     increasePct = Math.round(increasePct);
     let result = '';
@@ -306,5 +339,22 @@ export class ViewRateAnalysisComponent implements OnInit {
       result = '#3EDB73';
     }
     return result;
+  }
+
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    let exportName = '';
+    if (this.userService.currentUser.client_info.org.name !== null) {
+      exportName = this.userService.currentUser.client_info.org.name + ' Rate Benchmark - ' + this.firmName + ' - ' + this.benchmark.smart_practice_area;
+    } else {
+      exportName = 'Rate Benchmark';
+    }
+    setTimeout(() => {
+      this.commonServ.generatePdfOuter(exportName, 'exportDiv', null);
+    }, 200);
+  }
+
+  goBack(): void {
+    this.router.navigate(['/analytics-ui/rate-benchmarking']);
   }
 }

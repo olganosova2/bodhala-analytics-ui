@@ -3,7 +3,8 @@ export enum IAdminInsightType {
   BB = 'BB',
   BPI = 'BPI',
   IQ = 'IQ',
-  Blended = 'Blended'
+  Blended = 'Blended',
+  RateBM = 'RateBM'
 }
 export interface IClient {
   bh_client_id: number;

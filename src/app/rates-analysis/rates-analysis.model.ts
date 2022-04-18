@@ -11,6 +11,11 @@ export const percentFormatter = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 0
 });
 
+export const formatter = new Intl.NumberFormat('en-US', {
+  maximumFractionDigits: 0,
+  minimumFractionDigits: 0
+});
+
 export interface IRateBenchmark {
   id: number;
   bh_client_id?: number;

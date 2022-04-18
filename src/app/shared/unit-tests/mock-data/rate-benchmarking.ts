@@ -1471,4 +1471,577 @@ export const MOCK_COHORT_RATE_INCREASE_CLASS_DATA = [
   }
 ];
 
+export const MOCK_BENCHMARK = {
+  "benchmark": {
+      "id": 17,
+      "bh_client_id": 1541,
+      "bh_lawfirm_id": 5,
+      "smart_practice_area": "Litigation",
+      "year": 2020,
+      "peers": [
+          "DLA Piper",
+          "Baker & McKenzie",
+          "Latham & Watkins",
+          "Jones Day",
+          "Sidley Austin",
+          "Kirkland & Ellis"
+      ],
+      "created_by": "2809",
+      "created_on": "2022-03-15T14:52:05.418765",
+      "deleted_by": null,
+      "deleted_on": null,
+      "modified_by": null,
+      "modified_on": null
+  },
+  "firm_name": "Kirkland & Ellis"
+};
+
+
+export const MOCK_GET_BENCHMARK = {
+  "result": {
+      "id": 29,
+      "bh_client_id": 1556,
+      "bh_lawfirm_id": 14,
+      "smart_practice_area": "M&A",
+      "year": 2020,
+      "peers": [
+          "Skadden, Arps, Slate, Meagher & Flom",
+          "Gibson, Dunn & Crutcher",
+          "Sullivan & Cromwell",
+          "Ropes & Gray",
+          "Paul, Weiss, Rifkind, Wharton & Garrison",
+          "Proskauer Rose"
+      ],
+      "created_by": "1999",
+      "created_on": "2022-04-05T08:59:57.316261",
+      "deleted_by": null,
+      "deleted_on": null,
+      "modified_by": null,
+      "modified_on": null
+  },
+  "error": null,
+  "firm_name": "Sullivan & Cromwell",
+  "peer_firms": [
+      "Cravath, Swaine & Moore",
+      "Milbank, Tweed, Hadley & McCloy",
+      "Ropes & Gray",
+      "Simpson Thacher & Bartlett",
+      "Skadden, Arps, Slate, Meagher & Flom",
+      "Willkie Farr & Gallagher"
+  ]
+};
+
+export const MOCK_RATE_ANALYSIS_DATA = {
+  "result": {
+      "num_tiers": 4,
+      "cluster": 2,
+      "valid_range": true,
+      "max_year": 2020,
+      "firm_data": [
+          [
+              {
+                  "id": 5,
+                  "name": "Kirkland & Ellis",
+                  "total_billed": 15554950.2059,
+                  "total_block_billed": 5772880.4025,
+                  "total_afa": 0,
+                  "total_expenses": 55203.52,
+                  "closed_matters": 59,
+                  "total_matters": 86,
+                  "total_matters_all": 86,
+                  "total_billed_all": 15554950.2059,
+                  "total_afa_all": 0,
+                  "total_expenses_all": 55203.52,
+                  "leverage": 4.5,
+                  "total_partners": 436,
+                  "total_associates": 350,
+                  "total_paralegals": 49,
+                  "total_hours": 15516.75,
+                  "total_partner_hours": 6468.75,
+                  "total_associate_hours": 8471,
+                  "total_paralegal_hours": 566,
+                  "total_non_lawyer_hours": 577,
+                  "avg_matter_cost": 183280.81203898304,
+                  "avg_matter_cost_including_expenses": 184011.06220847456,
+                  "avg_matter_duration": 187.0581395348837,
+                  "total_partner_billed": 8050828.1023,
+                  "total_associate_billed": 7307787.4264,
+                  "total_paralegal_billed": 192663.7534,
+                  "total_non_lawyer_billed": 196334.6772,
+                  "avg_partner_rate": 1254.0025,
+                  "avg_associate_rate": 868.1409,
+                  "avg_paralegal_rate": 340.3953,
+                  "total_writeoff": -839.2958,
+                  "total_writeoff_hours": 101,
+                  "total_partner_writeoff": -181.7745,
+                  "total_partner_writeoff_hours": 48.5,
+                  "total_associate_writeoff": -657.5213,
+                  "total_associate_writeoff_hours": 52.5,
+                  "total_paralegal_writeoff": 0,
+                  "total_paralegal_writeoff_hours": 0,
+                  "blended_rate": 1035.0908,
+                  "total_atty_billed": 15359454.8245,
+                  "total_atty_hours": 14838.75,
+                  "firmographic_leverage": 1.17942176870748,
+                  "bodhala_price_index": 2374.2787290743963
+              }
+          ],
+          []
+      ],
+      "overall_pa_spend": {
+          "total_block_billed": 6282360.4202,
+          "percent_block_billed": 34.745947823274655,
+          "total_spend": {
+              "total": 18621418.7564,
+              "total_billed": 18621418.7564,
+              "total_afa": 0
+          },
+          "total_spend_including_expenses": {
+              "total": 18682613.9764,
+              "total_billed": 18621418.7564,
+              "total_afa": 0,
+              "total_expenses": 61195.22
+          },
+          "associate_tks_per_matter": {
+              "avg": 3.96
+          },
+          "partner_tks_per_matter": {
+              "avg": 4.296
+          },
+          "avg_matter_cost": {
+              "avg_cost": 164292.98521578946
+          },
+          "total_partner_billed": 9096903.391,
+          "total_associate_billed": 8983940.0275,
+          "avg_matter_cost_including_expenses": {
+              "avg_cost": 164987.35900526316
+          },
+          "avg_matter_duration": {
+              "avg_duration": 234.888
+          },
+          "industry_benchmarks": {},
+          "avg_partner_rate": 1278.5693938201418,
+          "avg_associate_rate": 879.9198437717295,
+          "avg_paralegal_legal_assistant_rate": 342.17896622516554,
+          "avg_blended_rate": 1043.630591131697,
+          "avg_leverage": 1.4350847850682709,
+          "bodhala_price_index": 2541.3289736966008,
+          "total_partner_hours": 7163.55,
+          "total_associate_hours": 10263.2,
+          "total_paralegal_hours": 604,
+          "total_hours": 18567.25,
+          "start_date": "2020-01-01",
+          "end_date": "2020-12-31"
+      },
+      "overall_spend": {
+          "total_block_billed": 16521523.9414,
+          "percent_block_billed": 36.959548401693986,
+          "total_spend": {
+              "total": 64820228.4896,
+              "total_billed": 45927357.9627,
+              "total_afa": 18892870.5269
+          },
+          "total_spend_including_expenses": {
+              "total": 70823654.6696,
+              "total_billed": 45927357.9627,
+              "total_afa": 18892870.5269,
+              "total_expenses": 6003426.18
+          },
+          "associate_tks_per_matter": {
+              "avg": 2.786995515695067
+          },
+          "partner_tks_per_matter": {
+              "avg": 2.5829596412556053
+          },
+          "avg_matter_cost": {
+              "avg_cost": 174723.19952671957
+          },
+          "total_partner_billed": 19421556.9608,
+          "total_associate_billed": 25280082.1443,
+          "avg_matter_cost_including_expenses": {
+              "avg_cost": 184339.50852142856
+          },
+          "avg_matter_duration": {
+              "avg_duration": 226.9304932735426
+          },
+          "industry_benchmarks": {},
+          "avg_partner_rate": 1122.1477222153208,
+          "avg_associate_rate": 631.1277445817419,
+          "avg_paralegal_legal_assistant_rate": 306.50250401760087,
+          "avg_blended_rate": 779.2695990545029,
+          "avg_leverage": 2.3145256577293853,
+          "bodhala_price_index": 2582.9090803546405,
+          "total_partner_hours": 17420.15,
+          "total_associate_hours": 40136.75,
+          "total_paralegal_hours": 2091.8,
+          "total_hours": 61360.8,
+          "start_date": "2020-01-01",
+          "end_date": "2020-12-31"
+      },
+      "cohort_rate_result_classification": [
+          {
+              "total_billed": 7241935.4837,
+              "total_afa": 102095.3785,
+              "total_spend": 7344030.8622,
+              "total_hours": 10315.6679,
+              "effective_rate": 711.9297,
+              "bh_classification": "associate",
+              "year": 2020
+          },
+          {
+              "total_billed": 3894995.2355,
+              "total_afa": 0,
+              "total_spend": 3894995.2355,
+              "total_hours": 3578.737,
+              "effective_rate": 1088.3714,
+              "bh_classification": "partner",
+              "year": 2020
+          },
+          {
+              "total_billed": 6567792.7349,
+              "total_afa": 3330.509,
+              "total_spend": 6571123.2439,
+              "total_hours": 9516.7473,
+              "effective_rate": 690.4799,
+              "bh_classification": "associate",
+              "year": 2019
+          },
+          {
+              "total_billed": 4674844.3943,
+              "total_afa": 0,
+              "total_spend": 4674844.3943,
+              "total_hours": 4512.3478,
+              "effective_rate": 1036.0115,
+              "bh_classification": "partner",
+              "year": 2019
+          }
+      ],
+      "firm_rate_result_classification": [
+          {
+              "total_billed": 6749367.9121,
+              "total_afa": 0,
+              "total_spend": 6749367.9121,
+              "total_hours": 8418.5,
+              "effective_rate": 801.7304,
+              "bh_classification": "associate",
+              "year": 2020
+          },
+          {
+              "total_billed": 7115042.329,
+              "total_afa": 0,
+              "total_spend": 7115042.329,
+              "total_hours": 6420.25,
+              "effective_rate": 1108.2188,
+              "bh_classification": "partner",
+              "year": 2020
+          },
+          {
+              "total_billed": 3221864.8147,
+              "total_afa": 0,
+              "total_spend": 3221864.8147,
+              "total_hours": 4627,
+              "effective_rate": 696.3183,
+              "bh_classification": "associate",
+              "year": 2019
+          },
+          {
+              "total_billed": 3039717.8925,
+              "total_afa": 0,
+              "total_spend": 3039717.8925,
+              "total_hours": 2745.75,
+              "effective_rate": 1107.0628,
+              "bh_classification": "partner",
+              "year": 2019
+          }
+      ],
+      "market_average": [
+          {
+              "avg_bpi": 2415.26104549,
+              "avg_blended_rate": 744.13841,
+              "avg_partner_rate": 950.3840700000001,
+              "avg_associate_rate": 642.83019,
+              "sd_bpi": 1001.502388470505,
+              "sd_blended_rate": 174.16076661622157,
+              "sd_partner_rate": 180.59438293208348,
+              "sd_associate_rate": 156.7520726527404,
+              "num_firms": 10,
+              "sqrt_firms": 3.1622776601683795,
+              "bpi_hi": 3035.998656904448,
+              "bpi_lo": 1794.523434075552,
+              "blended_rate_hi": 852.0843715034622,
+              "blended_rate_lo": 636.1924484965378,
+              "associate_hi": 739.9861311968309,
+              "associate_lo": 545.6742488031691,
+              "partner_hi": 1062.3176282088123,
+              "partner_lo": 838.4505117911879
+          }
+      ],
+      "internal_data": [
+          {
+              "avg_bpi": 2499.887514952,
+              "avg_blended_rate": 731.23754,
+              "avg_partner_rate": 930.6612499999999,
+              "avg_associate_rate": 633.68958,
+              "sd_bpi": 1196.8448658125956,
+              "sd_blended_rate": 168.63174721051195,
+              "sd_partner_rate": 165.87539638761982,
+              "sd_associate_rate": 150.79532788541562,
+              "num_firms": 10,
+              "sqrt_firms": 3.1622776601683795,
+              "bpi_hi": 3241.6996481938927,
+              "bpi_lo": 1758.0753817101072,
+              "blended_rate_hi": 835.7565797717967,
+              "blended_rate_lo": 626.7185002282032,
+              "associate_hi": 727.1534925394438,
+              "associate_lo": 540.2256674605561,
+              "partner_hi": 1033.4718858321562,
+              "partner_lo": 827.8506141678436
+          }
+      ]
+  },
+  "error": null
+};
+
+export const MOCK_HISTORY = {
+  "data": {
+      "firmYear": {
+          "id": 14,
+          "name": "Sullivan & Cromwell",
+          "total_billed": 1235011.9712,
+          "total_block_billed": 534140.1811,
+          "total_afa": 0,
+          "total_expenses": 4418.75,
+          "closed_matters": 4,
+          "total_matters": 4,
+          "total_matters_all": 4,
+          "total_billed_all": 1235011.9712,
+          "total_afa_all": 0,
+          "total_expenses_all": 4418.75,
+          "leverage": 5,
+          "total_partners": 10,
+          "total_associates": 16,
+          "total_paralegals": 6,
+          "total_hours": 910.25,
+          "total_partner_hours": 252.75,
+          "total_associate_hours": 633.5,
+          "total_paralegal_hours": 21,
+          "total_non_lawyer_hours": 24,
+          "avg_matter_cost": 327921.9928,
+          "avg_matter_cost_including_expenses": 329026.6803,
+          "avg_matter_duration": 120,
+          "total_partner_billed": 523523.0343,
+          "total_associate_billed": 699907.5516,
+          "total_paralegal_billed": 10237.9806,
+          "total_non_lawyer_billed": 11581.3853,
+          "avg_partner_rate": 2071.3077,
+          "avg_associate_rate": 1104.8264,
+          "avg_paralegal_rate": 487.5228,
+          "total_writeoff": 0,
+          "total_writeoff_hours": 0,
+          "total_partner_writeoff": 0,
+          "total_partner_writeoff_hours": 0,
+          "total_associate_writeoff": 0,
+          "total_associate_writeoff_hours": 0,
+          "total_paralegal_writeoff": 0,
+          "total_paralegal_writeoff_hours": 0,
+          "blended_rate": 1380.4576,
+          "total_atty_billed": 1223430.5859,
+          "total_atty_hours": 886.25,
+          "firmographic_leverage": 3.56571428571429,
+          "bodhala_price_index": 4840.477095548962
+      },
+      "bm": {
+          "id": 29,
+          "bh_client_id": 1556,
+          "bh_lawfirm_id": 14,
+          "smart_practice_area": "M&A",
+          "year": 2020,
+          "peers": [
+              "Skadden, Arps, Slate, Meagher & Flom",
+              "Gibson, Dunn & Crutcher",
+              "Sullivan & Cromwell",
+              "Ropes & Gray",
+              "Paul, Weiss, Rifkind, Wharton & Garrison",
+              "Proskauer Rose"
+          ],
+          "created_by": "1999",
+          "created_on": "2022-04-05T08:59:57.316261",
+          "deleted_by": null,
+          "deleted_on": null,
+          "modified_by": null,
+          "modified_on": null
+      },
+      "totalSpend": {
+          "total_block_billed": 16521523.9414,
+          "percent_block_billed": 36.959548401693986,
+          "total_spend": {
+              "total": 64820228.4896,
+              "total_billed": 45927357.9627,
+              "total_afa": 18892870.5269
+          },
+          "total_spend_including_expenses": {
+              "total": 70823654.6696,
+              "total_billed": 45927357.9627,
+              "total_afa": 18892870.5269,
+              "total_expenses": 6003426.18
+          },
+          "associate_tks_per_matter": {
+              "avg": 2.786995515695067
+          },
+          "partner_tks_per_matter": {
+              "avg": 2.5829596412556053
+          },
+          "avg_matter_cost": {
+              "avg_cost": 174723.19952671957
+          },
+          "total_partner_billed": 19421556.9608,
+          "total_associate_billed": 25280082.1443,
+          "avg_matter_cost_including_expenses": {
+              "avg_cost": 184339.50852142856
+          },
+          "avg_matter_duration": {
+              "avg_duration": 226.9304932735426
+          },
+          "industry_benchmarks": {},
+          "avg_partner_rate": 1122.1477222153208,
+          "avg_associate_rate": 631.1277445817419,
+          "avg_paralegal_legal_assistant_rate": 306.50250401760087,
+          "avg_blended_rate": 779.2695990545029,
+          "avg_leverage": 2.3145256577293853,
+          "bodhala_price_index": 2582.9090803546405,
+          "total_partner_hours": 17420.15,
+          "total_associate_hours": 40136.75,
+          "total_paralegal_hours": 2091.8,
+          "total_hours": 61360.8,
+          "start_date": "2020-01-01",
+          "end_date": "2020-12-31"
+      },
+      "market": {
+          "avg_bpi": 3399.866488663462,
+          "avg_blended_rate": 936.4503192307692,
+          "avg_partner_rate": 1250.9600961538463,
+          "avg_associate_rate": 799.0665846153845,
+          "sd_bpi": 1441.6908491539305,
+          "sd_blended_rate": 155.756915098271,
+          "sd_partner_rate": 242.40644258039018,
+          "sd_associate_rate": 123.98888937783902,
+          "num_firms": 26,
+          "sqrt_firms": 5.0990195135927845,
+          "bpi_hi": 3954.0346099677668,
+          "bpi_lo": 2845.698367359157,
+          "blended_rate_hi": 996.3213498826028,
+          "blended_rate_lo": 876.5792885789356,
+          "associate_hi": 846.7263793137055,
+          "associate_lo": 751.4067899170635,
+          "partner_hi": 1344.1381328707123,
+          "partner_lo": 1157.7820594369803
+      },
+      "internal": {
+          "avg_bpi": 3410.24562775,
+          "avg_blended_rate": 929.8107,
+          "avg_partner_rate": 1247.6134346153847,
+          "avg_associate_rate": 792.0201076923076,
+          "sd_bpi": 1494.4679427882083,
+          "sd_blended_rate": 163.85707966044677,
+          "sd_partner_rate": 252.53778933058712,
+          "sd_associate_rate": 131.17225793398543,
+          "num_firms": 26,
+          "sqrt_firms": 5.0990195135927845,
+          "bpi_hi": 3984.700610723971,
+          "bpi_lo": 2835.7906447760292,
+          "blended_rate_hi": 992.7953336689512,
+          "blended_rate_lo": 866.8260663310488,
+          "associate_hi": 842.4411003684976,
+          "associate_lo": 741.5991150161177,
+          "partner_hi": 1344.6858356463017,
+          "partner_lo": 1150.5410335844676
+      },
+      "cluster": 1,
+      "numTiers": 4,
+      "peerFirms": [
+          "Cravath, Swaine & Moore",
+          "Milbank, Tweed, Hadley & McCloy",
+          "Ropes & Gray",
+          "Simpson Thacher & Bartlett"
+      ]
+  },
+  "navigationId": 3
+};
+
+export const MOCK_PARTNER_DATA = {
+  "result": {
+      "market_average": [
+          {
+              "avg_partner_rate": 1227.0174436548223,
+              "sd_partner_rate": 254.15604197142355,
+              "num_tks": 197,
+              "sqrt_tks": 14.035668847618199,
+              "num_firms": 17,
+              "sqrt_firms": 4.123105625617661,
+              "partner_hi": 1347.8355568675697,
+              "partner_lo": 1106.1993304420748
+          }
+      ],
+      "internal_data": [
+          {
+              "avg_partner_rate": 1220.9862829015544,
+              "sd_partner_rate": 257.4098804753617,
+              "num_tks": 193,
+              "sqrt_tks": 13.892443989449804,
+              "num_firms": 17,
+              "sqrt_firms": 4.123105625617661,
+              "partner_hi": 1343.3511727547289,
+              "partner_lo": 1098.62139304838
+          }
+      ],
+      "firm_data": [
+          {
+              "total_partner_billed": null,
+              "total_partner_writeoff": null,
+              "total_partner_hours": null,
+              "total_partner_writeoff_hours": null,
+              "rate": null
+          }
+      ]
+  },
+  "error": null
+};
+
+export const MOCK_ASSOC_DATA = {
+  "result": {
+      "market_average": [
+          {
+              "avg_associate_rate": 713.672492476754,
+              "sd_associate_rate": 196.7751166460841,
+              "num_tks": 1183,
+              "num_firms": 25,
+              "sqrt_firms": 5,
+              "associate_hi": 790.808338202019,
+              "associate_lo": 636.536646751489
+          }
+      ],
+      "internal_data": [
+          {
+              "avg_associate_rate": 709.1397096856415,
+              "sd_associate_rate": 199.51277894781578,
+              "num_tks": 1177,
+              "num_firms": 25,
+              "sqrt_firms": 5,
+              "associate_hi": 787.3487190331853,
+              "associate_lo": 630.9307003380977
+          }
+      ],
+      "firm_data": [
+          {
+              "total_associate_billed": 142055.0926,
+              "total_associate_writeoff": 0,
+              "total_associate_hours": 147,
+              "total_associate_writeoff_hours": 0,
+              "rate": 966.3611
+          }
+      ]
+  },
+  "error": null
+};
+
 

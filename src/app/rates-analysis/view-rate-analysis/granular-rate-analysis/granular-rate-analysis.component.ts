@@ -6,7 +6,7 @@ import {AgGridService} from 'bodhala-ui-elements';
 import {Subscription} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import { RatesAnalysisService } from '../../rates-analysis.service';
-import { IRateBenchmark, moneyFormatter, percentFormatter, COST_IMPACT_GRADES, rateBenchmarkingChartOptions } from '../../rates-analysis.model';
+import { IRateBenchmark, moneyFormatter, percentFormatter, formatter, COST_IMPACT_GRADES, rateBenchmarkingChartOptions } from '../../rates-analysis.model';
 
 @Component({
   selector: 'bd-granular-rate-analysis',
@@ -27,6 +27,9 @@ export class GranularRateAnalysisComponent implements OnInit {
   internalData: any;
   overallSpendData: any;
   loaded: boolean = false;
+  cluster: number;
+  numPartnerTiers: number;
+  totalHours: string;
 
 
   constructor(private route: ActivatedRoute,
@@ -50,9 +53,13 @@ export class GranularRateAnalysisComponent implements OnInit {
       if (history.state.data.bm) {
         this.benchmark = history.state.data.bm;
       }
+      if (history.state.data.cluster) {
+        this.cluster = history.state.data.cluster;
+      }
       if (history.state.data.firmYear) {
         this.firmYearData = history.state.data.firmYear;
         this.firmName = this.firmYearData.name;
+        this.totalHours = this.firmYearData.total_atty_hours;
       }
       if (history.state.data.internal) {
         this.internalData = history.state.data.internal;
@@ -63,10 +70,15 @@ export class GranularRateAnalysisComponent implements OnInit {
       if (history.state.data.totalSpend) {
         this.overallSpendData = history.state.data.totalSpend;
       }
+      if (history.state.data.numTiers) {
+        this.numPartnerTiers = history.state.data.numTiers;
+      }
+      if (history.state.data.peerFirms) {
+        this.peerFirms = history.state.data.peerFirms;
+      }
       this.firmId = this.benchmark.bh_lawfirm_id;
       this.practiceArea = this.benchmark.smart_practice_area;
       this.year = this.benchmark.year;
-      this.peerFirms = this.benchmark.peers;
       const ix = this.peerFirms.findIndex(p => p === this.firmName);
       if (ix >= 0) {
         this.peerFirms.splice(ix, 1);
@@ -81,27 +93,50 @@ export class GranularRateAnalysisComponent implements OnInit {
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
-        this.peerFirms = this.benchmark.peers;
-        const ix = this.peerFirms.findIndex(p => p === this.firmName);
+        const ix = result.peer_firms.findIndex(p => p === this.firmName);
+        this.peerFirms = [];
         if (ix >= 0) {
-          this.peerFirms.splice(ix, 1);
+          result.peer_firms.splice(ix, 1);
+        }
+        if (result.peer_firms) {
+          let counter = 0;
+          for (const firm of result.peer_firms) {
+            if ((firm.length + counter) < 115) {
+              this.peerFirms.push(firm);
+            }
+            counter += firm.length;
+          }
         }
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
+
         if (rateAnalysisData.result.firm_data) {
           if (rateAnalysisData.result.firm_data.length > 0) {
             this.firmYearData = rateAnalysisData.result.firm_data[0];
             this.firmYearData = this.firmYearData[0];
             this.firmName = this.firmYearData.name;
+            this.totalHours = this.firmYearData.total_atty_hours;
           }
         }
         if (rateAnalysisData.result.overall_spend) {
           this.overallSpendData = rateAnalysisData.result.overall_spend;
         }
+        if (rateAnalysisData.result.cluster) {
+          this.cluster = rateAnalysisData.result.cluster;
+        }
+        if (rateAnalysisData.result.num_tiers) {
+          this.numPartnerTiers = rateAnalysisData.result.num_tiers;
+        }
         this.loaded = true;
       });
     }
+  }
 
+  counter(i: number) {
+    return new Array(i);
+  }
 
+  goBack(): void {
+    this.router.navigate(['/analytics-ui/rate-benchmarking/view/' + this.benchmark.id]);
   }
 
 }

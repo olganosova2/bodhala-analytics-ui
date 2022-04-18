@@ -3073,5 +3073,352 @@ export const MOCK_CLIENTS_CONFIGS_EXTENDED = {
   }],
   "error": null
 }
+export const MOCK_ANALYTICS_CLIENTS = {
+  "result": [{
+    "bh_client_id": 460,
+    "org_name": "3074 Tech",
+    "org_id": 402
+  }, {
+    "bh_client_id": 105,
+    "org_name": "AB INBEV",
+    "org_id": 157
+  }, {
+    "bh_client_id": 190,
+    "org_name": "AIG Test",
+    "org_id": 232
+  }, {
+    "bh_client_id": 27,
+    "org_name": "Acme Corp",
+    "org_id": 63
+  }, {
+    "bh_client_id": 479,
+    "org_name": "Advance Publications",
+    "org_id": 404
+  }, {
+    "bh_client_id": 103,
+    "org_name": "Astellas",
+    "org_id": 155
+  }, {
+    "bh_client_id": 462,
+    "org_name": "BNP Paribus",
+    "org_id": 400
+  }, {
+    "bh_client_id": 110,
+    "org_name": "Blackrock",
+    "org_id": 159
+  }, {
+    "bh_client_id": 157,
+    "org_name": "Blackstone",
+    "org_id": 199
+  }, {
+    "bh_client_id": 113,
+    "org_name": "Bloomberg",
+    "org_id": 161
+  }, {
+    "bh_client_id": 120,
+    "org_name": "Bridgewater",
+    "org_id": 162
+  }, {
+    "bh_client_id": 256,
+    "org_name": "Dupe TK Test",
+    "org_id": 298
+  }, {
+    "bh_client_id": 289,
+    "org_name": "Expensify",
+    "org_id": 331
+  }, {
+    "bh_client_id": 59,
+    "org_name": "GoldenTree Asset Management, LP",
+    "org_id": 142
+  }, {
+    "bh_client_id": 471,
+    "org_name": "Lockton",
+    "org_id": 401
+  }, {
+    "bh_client_id": 78,
+    "org_name": "Macquarie",
+    "org_id": 147
+  }, {
+    "bh_client_id": 223,
+    "org_name": "Morgan Stanley",
+    "org_id": 265
+  }, {
+    "bh_client_id": 1000000,
+    "org_name": "SIRP Client Organization",
+    "org_id": 1000000
+  }, {
+    "bh_client_id": 89,
+    "org_name": "State Farm",
+    "org_id": 154
+  }, {
+    "bh_client_id": 111,
+    "org_name": "State Farm Wannbe",
+    "org_id": 160
+  }, {
+    "bh_client_id": 87,
+    "org_name": "Stryker",
+    "org_id": 153
+  }, {
+    "bh_client_id": 121,
+    "org_name": "Tishman Speyer",
+    "org_id": 163
+  }, {
+    "bh_client_id": 463,
+    "org_name": "Tishman Test",
+    "org_id": 403
+  }, {
+    "bh_client_id": 47,
+    "org_name": "Ventas",
+    "org_id": 137
+  }, {
+    "bh_client_id": 74,
+    "org_name": "XL Catlin",
+    "org_id": 144
+  }],
+  "error": null
+}
+export const MOCK_ADMIN_INSIGHTS =  {
+  "result": [{
+    "insight_type": "BB",
+    "title": "Blackrock BB",
+    "id": 9,
+    "client_matter_id": "Blackrock BB",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2021-12-15T11:28:04.027461",
+    "deleted_on": null,
+    "modified_on": "2021-12-15T11:28:04.027488",
+    "client_id": 110,
+    "description": "Blackrock BB",
+    "bh_lawfirm_id": null,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "BPI",
+    "title": "Blackrock BPI",
+    "id": 10,
+    "client_matter_id": "Blackrock BPI",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2021-12-15T11:28:22.583158",
+    "deleted_on": null,
+    "modified_on": "2021-12-15T11:28:22.583181",
+    "client_id": 110,
+    "description": "Blackrock BPI",
+    "bh_lawfirm_id": null,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 31,
+    "client_matter_id": "087260/785",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-01-03T12:24:33.214709",
+    "deleted_on": null,
+    "modified_on": "2022-01-03T12:24:33.214739",
+    "client_id": 110,
+    "description": "Ontario premier to make announcement Monday after cabinet met to discuss new COVID-19 restrictions\nOntario Premier Doug Ford will make an announcement on Monday following a cabinet meeting yesterday on possible new COVID-19 restrictions, including shutting down indoor dining, tighter gathering limits and further school closures.",
+    "bh_lawfirm_id": 4,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 26,
+    "client_matter_id": "116332.0004",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2021-12-17T15:37:37.323509",
+    "deleted_on": null,
+    "modified_on": "2021-12-17T15:47:56.045538",
+    "client_id": 110,
+    "description": "EL - COMPLIANCE MATTERS - SEPTEMBER Insight 3",
+    "bh_lawfirm_id": 59,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 29,
+    "client_matter_id": "056130-0000227",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2021-12-20T18:55:56.985869",
+    "deleted_on": null,
+    "modified_on": "2021-12-20T18:55:56.985896",
+    "client_id": 110,
+    "description": "xxxxx",
+    "bh_lawfirm_id": 20,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 25,
+    "client_matter_id": "116332.0018",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2021-12-17T15:29:58.772596",
+    "deleted_on": null,
+    "modified_on": "2021-12-21T09:11:51.436169",
+    "client_id": 110,
+    "description": " EL - COMPLIANCE MATTERS - NOVEMBER 234",
+    "bh_lawfirm_id": 59,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 33,
+    "client_matter_id": "10001320",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-01-12T14:59:33.267453",
+    "deleted_on": null,
+    "modified_on": "2022-01-12T14:59:33.267481",
+    "client_id": 110,
+    "description": "200600 - DC General Representation - Day Pitney Insight",
+    "bh_lawfirm_id": 137,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 34,
+    "client_matter_id": "10001320",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-01-12T15:00:29.159215",
+    "deleted_on": null,
+    "modified_on": "2022-01-12T15:00:29.159239",
+    "client_id": 110,
+    "description": "200600 - DC General Representation - Clyde & Co Insight",
+    "bh_lawfirm_id": 450,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 32,
+    "client_matter_id": "087260/834",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-01-06T15:32:30.167633",
+    "deleted_on": null,
+    "modified_on": "2022-01-14T09:56:52.402783",
+    "client_id": 110,
+    "description": "In 1980, physicist Tim Berners-Lee, a contractor at CERN, proposed and prototyped ENQUIRE, a system for CERN researchers to use and share documents. In 1989, Berners-Lee wrote a memo proposing an Internet-based hypertext system.[3] Berners-Lee specified HTML and wrote the browser and server software in late 1990. That year, Berners-Lee and CERN data systems engineer Robert Cailliau collaborated on a joint request for funding, but the project was not formally adopted by CERN. In his personal notes[4] from 1990 he listed[5] \"some of the many areas in which hypertext is used\" and put an encyclopedia first.\n\nThe first publicly available description of HTML was a document called \"HTML Tags\", first mentioned on the Internet by Tim Berners-Lee in late 1991.[6][7] It describes 18 elements comprising the initial, relatively simple design of HTML. Except for the hyperlink tag, these were strongly influenced by SGMLguid, an in-house Standard Generalized Markup Language (SGML)-based documentation format at CERN. Eleven of these elements still exist in HTML 4.[8]\n\nHTML is a markup language that web browsers use to interpret and compose text, images, and other material into visual or audible web pages. Default characteristics for every item of HTML markup are defined in the browser, and these characteristics can be altered or enhanced by the web page designer's additional use of CSS. Many of the text elements are found in the 1988 ISO technical report TR 9537 Techniques for using SGML, which in turn covers the features of early text formatting languages such as that used by the RUNOFF command developed in the early 1960s for the CTSS (Compatible Time-Sharing System) operating system: these formatting commands were derived from the commands used by typesetters to manually format documents. However, the SGML concept of generalized markup is based on elements (nested annotated ranges with attributes) rather than merely print effects, with also the separation of structure and markup;",
+    "bh_lawfirm_id": 4,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 36,
+    "client_matter_id": "087260/818",
+    "smart_practice_area": null,
+    "is_enabled": false,
+    "created_on": "2022-02-16T13:13:20.978840",
+    "deleted_on": null,
+    "modified_on": "2022-02-16T13:15:56.424025",
+    "client_id": 110,
+    "description": "Just Test",
+    "bh_lawfirm_id": 4,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "IQ",
+    "title": "Invoice IQ",
+    "id": 39,
+    "client_matter_id": null,
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-03-03T11:47:55.411718",
+    "deleted_on": null,
+    "modified_on": "2022-03-03T11:47:55.411748",
+    "client_id": 110,
+    "description": "Invoice IQ desc",
+    "bh_lawfirm_id": null,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Blended",
+    "title": "Blended rate",
+    "id": 40,
+    "client_matter_id": null,
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-03-03T11:48:14.099405",
+    "deleted_on": null,
+    "modified_on": "2022-03-03T11:48:14.099485",
+    "client_id": 110,
+    "description": "Blended rate desc",
+    "bh_lawfirm_id": null,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 37,
+    "client_matter_id": "061439-00107",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-03-01T10:48:10.847533",
+    "deleted_on": null,
+    "modified_on": "2022-03-03T11:53:03.921407",
+    "client_id": 110,
+    "description": "Russian convoy 65-km long threatens Kyiv as artillery pounds Kharkiv\nRussian shelling pounded the central square in Ukraine's second-largest city and other civilian targets Tuesday and a 65-kilometre-long convoy of tanks and other vehicles threatened the capital \u2014 as Ukraine's embattled president accused Moscow of resorting to terror tactics to press Europe's largest ground war in generations.!!!!",
+    "bh_lawfirm_id": 92,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }, {
+    "insight_type": "Matter",
+    "title": "Bodhala Insight",
+    "id": 38,
+    "client_matter_id": "087260/848",
+    "smart_practice_area": null,
+    "is_enabled": true,
+    "created_on": "2022-03-01T11:51:09.919133",
+    "deleted_on": null,
+    "modified_on": "2022-03-03T11:53:47.472844",
+    "client_id": 110,
+    "description": "Project Alpha Recommendation !!!",
+    "bh_lawfirm_id": 4,
+    "year": null,
+    "created_by": "olga.nosova@bodhala.com",
+    "deleted_by": null,
+    "modified_by": "olga.nosova@bodhala.com"
+  }],
+  "error": null
+}
+
 
 

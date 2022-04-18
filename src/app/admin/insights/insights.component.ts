@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy, ViewChild, EventEmitter, Output} from '@angular/core';
 import {IClient, IDates, IInsight, IAdminInsightType, ISummary, IClientMatter} from './models';
 import {HttpService, MessageType, MessagingService, UserService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
@@ -19,6 +19,7 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestInsights: Subscription;
   pendingRequestInsightsSummary: Subscription;
+  pendingRequestRateInsights: Subscription;
   selectedClientId: number = -1;
   clients: Array<IClient>;
   insights: Array<IInsight> = [];
@@ -29,6 +30,8 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
   matters: Array<IClientMatter> = [];
   @Input() page: string = 'Insights';
   @Input() selectedClient: IClient;
+  @Input() rateBM: any;
+  @Output() insightSaved: EventEmitter<any> = new EventEmitter<boolean>();
 
   @ViewChild(MatterInsightsComponent) matterInsightsComp: MatterInsightsComponent;
 
@@ -48,6 +51,10 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
     if (this.page === 'BM') {
       this.selectedClientId = this.selectedClient.bh_client_id;
       this.getClientInsights(this.selectedClient);
+    }
+    if (this.page === 'rateBM') {
+      this.selectedClientId = this.selectedClient.bh_client_id;
+      this.getClientRateBMInsights(this.selectedClient.bh_client_id, this.rateBM);
     }
   }
 
@@ -85,6 +92,26 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+  getClientRateBMInsights(clientId: number, benchmark: any): void {
+    const params = {
+      firm: benchmark.bh_lawfirm_id,
+      pa: benchmark.smart_practice_area,
+      yyyy: benchmark.year,
+      client: clientId
+    };
+    this.pendingRequestInsights = this.httpService.makeGetRequest<IInsight>('getAdminRateInsight', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          this.selectedInsight = data.result;
+        } else {
+          this.insights.push(this.createNewInsight('RateBM'));
+          this.selectedInsight = this.insights[0];
+        }
+      }
+    );
+  }
+
   loadMatters(): void {
     const params = { clientId: this.selectedClientId.toString()};
     this.pendingRequest = this.httpService.makeGetRequest<IClientMatter>('getMatterListByClient', params).subscribe(
@@ -103,6 +130,11 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
         const successMessage = {status: 'SUCCESS', message: 'Insight successfully saved'};
         this.messageService.messages.push({type: MessageType.SUCCESS, message: successMessage});
         window.scroll(0, 0);
+        if (this.page === 'rateBM') {
+          setTimeout(() => {
+            this.insightSaved.emit(true);
+          });
+        }
       }
     );
   }
@@ -114,7 +146,9 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
       title: type === 'Matter' ? 'Bodhala Insight' : '',
       description: '',
       client_matter_id: null,
-      bh_lawfirm_id: null,
+      bh_lawfirm_id: (type === 'RateBM' && this.rateBM) ? this.rateBM.bh_lawfirm_id : null,
+      smart_practice_area: (type === 'RateBM' && this.rateBM) ? this.rateBM.smart_practice_area : '',
+      year: (type === 'RateBM' && this.rateBM) ? this.rateBM.year : null,
       is_enabled: true,
       client_id: this.selectedClientId,
       created_on: null,
@@ -153,6 +187,11 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
       }
       if (this.page === 'BM') {
         if (type === IAdminInsightType.Matter) { // for matter insight always create empty insight on load
+          this.insights.push(this.createNewInsight(type));
+        }
+      }
+      if (this.page === 'rateBM') {
+        if (type === IAdminInsightType.RateBM) {
           this.insights.push(this.createNewInsight(type));
         }
       }
@@ -196,6 +235,9 @@ export class AdminInsightsComponent implements OnInit, OnDestroy {
     }
     if (this.pendingRequestInsightsSummary) {
       this.pendingRequestInsightsSummary.unsubscribe();
+    }
+    if (this.pendingRequestRateInsights) {
+      this.pendingRequestRateInsights.unsubscribe();
     }
   }
 

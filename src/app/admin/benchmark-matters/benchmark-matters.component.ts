@@ -10,6 +10,7 @@ import * as config from '../../shared/services/config';
 import {IEntityConfig} from '../client-configs/client-configs-model';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatDialog} from '@angular/material/dialog';
+import {SelectItem} from 'primeng/api';
 
 @Component({
   selector: 'bd-benchmark-matters',
@@ -18,6 +19,7 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
+  pendingRequestDelete: Subscription;
   errorMessage: any;
   successText: string;
   pendingRequestMatters: Subscription;
@@ -26,10 +28,12 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   similarityScore: number = 0;
   bmSetupType: IBmSetupType;
   displayMatters: Array<any> = [];
+  displayPAs: Array<string> = [];
   filteredNames: Array<IClientMatter> = [];
   selectedMatter: IClientMatter;
   selIndex: number = 0;
   clientWasSelected: boolean = false;
+  smartPAs: SelectItem[] = [];
   constructor(private httpService: HttpService,
               public matterAnalysisService: MatterAnalysisService,
               public messageService: MessagingService,
@@ -46,6 +50,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   getClientBmData(client: IClient): void {
     this.clearClient();
     this.selectedClient = client;
+    this.getSmartPAs();
     const params = {clientId: this.selectedClient.bh_client_id, orgId: this.selectedClient.org_id, configName: BM_MATTER_CONFIG_NAME};
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getBenchmarkMattersConfig', params).subscribe(
       (data: any) => {
@@ -65,11 +70,39 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       }
     );
   }
+  getSmartPAs(): void {
+    const params = {clientId: this.selectedClient.bh_client_id};
+    this.pendingRequest = this.httpService.makeGetRequest('getPracticeAreaListByClientAdmin', params).subscribe(
+      (data: any) => {
+        if (!data.result) {
+          return;
+        }
+        for (const result of data.result.bodhala) {
+          this.smartPAs.push({label: result, value: result});
+        }
+      }
+    );
+  }
   processBmConfig(cfg: IEntityConfig): void {
     if (!cfg) {
       this.clientBmConfig = Object.assign({}, this.createNewBmConfig());
     } else {
       this.clientBmConfig = Object.assign({}, cfg);
+      if (this.clientBmConfig.json_config && !this.clientBmConfig.json_config.smartPAs) {
+        this.clientBmConfig.json_config.smartPAs = []; // for already existing configs
+      }
+      if (this.clientBmConfig.json_config && !this.clientBmConfig.json_config.hideButton) {
+        this.clientBmConfig.json_config.hideButton = 0; // for already existing configs
+      }
+      if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.smartPAs && this.clientBmConfig.json_config.smartPAs.length > 0) {
+        this.bmSetupType = IBmSetupType.SelectedPAs;
+        this.displayPAs = Object.assign([], this.clientBmConfig.json_config.smartPAs);
+        return;
+      }
+      if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.hideButton) {
+        this.bmSetupType = IBmSetupType.HideButton;
+        return;
+      }
       if (this.clientBmConfig.json_config && this.clientBmConfig.json_config.matters) {
         if (this.clientBmConfig.json_config.matters.length > 0) {
           this.getMattersData();
@@ -115,6 +148,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.selectedClient = null;
     this.clientBmConfig = null;
     this.displayMatters = [];
+    this.displayPAs = [];
     this.similarityScore = 0;
     this.errorMessage = null;
     this.successText = null;
@@ -122,6 +156,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.filteredNames = [];
     this.selectedMatter = null;
     this.selIndex = 0;
+    this.smartPAs = [];
   }
   createNewBmConfig(): IEntityConfig {
     const json = Object.assign({}, defaultBmMatterJson);
@@ -158,12 +193,25 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
   getOptionText(option) {
     return option ? option.name : null;
   }
+  hideButton(): void {
+    const defaultLocal = Object.assign({}, defaultBmMatterJson);
+    defaultLocal.hideButton = 1;
+    this.clientBmConfig.json_config = Object.assign({}, defaultLocal);
+    this.saveClientConfig(0);
+  }
   selectAll(): void {
     this.clientBmConfig.json_config = Object.assign({}, defaultBmMatterJson);
     this.saveClientConfig(1);
   }
+  addSmartPA(): void {
+    this.clientBmConfig.json_config.hideButton = 0;
+    this.clientBmConfig.json_config.matters = [];
+    this.saveClientConfig(3);
+  }
   addMatter(): void {
     this.clientBmConfig.json_config.matters.push(this.selectedMatter.id);
+    this.clientBmConfig.json_config.smartPAs = [];
+    this.clientBmConfig.json_config.hideButton = 0;
     this.saveClientConfig(2);
   }
   saveClientConfig(option: number): void {
@@ -173,13 +221,19 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makePostRequest('saveClientConfig', params).subscribe(
       (data: any) => {
         const updConfig = data.result;
+        this.clientBmConfig = Object.assign({}, data.result);
         if (updConfig) {
          this.successText = 'Settings have been saved successfully';
          this.selectedMatter = null;
-         if (option === 1) {
+         if (option === 1 || option === 0) {
            this.displayMatters = [];
-         } else {
+           this.displayPAs = [];
+         } else if (option === 2) {
            this.getMattersData();
+           this.displayPAs = [];
+         } else if (option === 3) {
+           this.displayPAs = this.clientBmConfig.json_config.smartPAs;
+           this.displayMatters = [];
          }
         }
         if (data.error) {
@@ -205,12 +259,34 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
       }
     });
   }
-  changeTab(evt: any): void {
+  deletePA(pa: string): void {
+    const ix = this.clientBmConfig.json_config.smartPAs.indexOf(pa);
+    if (ix >= 0) {
+      this.clientBmConfig.json_config.smartPAs.splice(ix, 1);
+      this.saveClientConfig(3);
+    }
+  }
+  deleteConfig(configId: number): void {
+    const params = { id: configId};
+    this.pendingRequestDelete = this.httpService.makeDeleteRequest('deleteClientConfig', params).subscribe(
+      (data: any) => {
+        const deleted = data.result;
+        if (deleted) {
+          this.clientBmConfig = Object.assign({}, this.createNewBmConfig());
+          this.displayPAs = [];
+          this.displayMatters = [];
+          this.bmSetupType = IBmSetupType.SelectedMatters;
+        }
+      }
+    );
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
+    }
+    if (this.pendingRequestDelete) {
+      this.pendingRequestDelete.unsubscribe();
     }
     if (this.pendingRequestMatters) {
       this.pendingRequestMatters.unsubscribe();

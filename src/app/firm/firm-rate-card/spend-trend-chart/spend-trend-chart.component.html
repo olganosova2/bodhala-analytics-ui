@@ -31,9 +31,9 @@
         <span class="tab-button"
             [ngClass]="{'tab-button-selected': selectedChart === chartTypes.ASSOCIATE_RATE}"
             (click)="changeViewMode(chartTypes.ASSOCIATE_RATE)">Associate Rate</span>
-        <span class="tab-button"
-            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.PARALEGAL_RATE}"
-            (click)="changeViewMode(chartTypes.PARALEGAL_RATE)">Paralegal Rate</span>
+      <span class="tab-button"
+            [ngClass]="{'tab-button-selected': selectedChart === chartTypes.BLOCK_BILLING}"
+            (click)="changeViewMode(chartTypes.BLOCK_BILLING)">Block Billed</span>
 
     </div>
     <chart [options]="options" (load)="saveInstance($event.context)" width="100%"></chart>
