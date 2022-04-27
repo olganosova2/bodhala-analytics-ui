@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, MetricCardType, MetricGrade, RECORDS_NUMBER_THRESHOLD} from './model';
+import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterOverview, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, MetricCardType, MetricGrade, RECORDS_NUMBER_THRESHOLD} from './model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
@@ -371,6 +371,28 @@ export class MatterAnalysisService {
       doc.staffing_rating = staffingAllocationMetric[0];
     }
   }
+  processLandingMatter(record: IMatterOverview): void {
+    const marketRecords = record.xdata;
+    const summaryData = marketRecords.find(e => e.client_matter_id === record.client_matter_id);
+    if (!summaryData) {
+      return;
+    }
+    const ix = marketRecords.indexOf(summaryData);
+    marketRecords.splice(ix, 1);
+    const marketData = this.calculateMarketData(marketRecords);
+    const totalSpendMetric = this.formatTkTotalSpend(summaryData, marketData, marketRecords);
+    if (totalSpendMetric && totalSpendMetric.length > 0) {
+      record.cost_rating = totalSpendMetric[0];
+    }
+    const avgRatesMetric = this.formatAverageRate(summaryData, marketData, marketRecords);
+    if (avgRatesMetric && avgRatesMetric.length > 0) {
+      record.rates_rating = avgRatesMetric[0];
+    }
+    const staffingAllocationMetric = this.formatTotalHours(summaryData, marketData, marketRecords);
+    if (staffingAllocationMetric && staffingAllocationMetric.length > 0) {
+      record.staffing_rating = staffingAllocationMetric[0];
+    }
+  }
 
   convertClassicDocToMatter(doc: IMatterDocument): IMatterExecSummary {
     const summaryData = this.createEmptySingleMatterData();
@@ -414,7 +436,9 @@ export class MatterAnalysisService {
 
     return summaryData;
   }
+  formatMattersOverviewRecords(records: Array<IMatterOverview>): void {
 
+  }
   calculateBarSize(panels: Array<IMatterTotalsPanel>): void {
     for (const panel of panels) {
       if (panel.subMetrics && panel.subMetrics.length === 2) {

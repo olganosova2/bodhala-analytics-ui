@@ -1,0 +1,11 @@
+<div class="exs-div ml20" id="matterAnalysis">
+  <div class="mb20">
+    <div><h3 class="roboto-bold">Practice Area Overview</h3></div>
+    <div *ngIf="!this.userBMSetup">No Benchmarking Settings</div>
+    <div *ngIf="this.userBMSetup === 'AllMatters' || this.userBMSetup === 'SmartPAs'">
+    <div class="font-bold mt10 mr10 mb10">Select Smart Practice Area: </div>
+    <p-dropdown [options]="smartPAs" [(ngModel)]="smartPA" autoWidth="false"  [style]="{'width':'300px'}"
+               (onChange)="getBMEligibleMattersByPA($event)"></p-dropdown>
+    </div>
+  </div>
+</div>

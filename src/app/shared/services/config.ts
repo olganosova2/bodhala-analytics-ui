@@ -136,6 +136,8 @@ export const END_POINTS_URLS = {
   getCustomInternalMatters: {url: BASE_URL + 'analytics/getCustomInternalMatters', showLoading: true},
   saveBMCustomInternalMatters: {url: BASE_URL + 'analytics/saveBMCustomInternalMatters', showLoading: true},
   deleteBMCustomInternalMatters: {url: BASE_URL + 'analytics/deleteBMCustomInternalMatters', showLoading: true},
+  getBMEligibleMattersByPA: {url: BASE_URL + 'analytics/getBMEligibleMattersByPA', showLoading: true},
+  getClientBMMatters: {url: BASE_URL + 'analytics/getClientBMMatters', showLoading: true},
 
 
   // ADMIN
