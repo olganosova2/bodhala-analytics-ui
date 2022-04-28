@@ -715,7 +715,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           }
           rec.notable_metrics = formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
           this.insightsForm.controls[rec.sort_order + 'opportunity'].setValue(rec.opportunity);
-        } else if (rec.type === 'Shift Work to Other Firms') {
+        } else if (rec.type === 'Shift Work to Other Firms' && this.parent.topPATopFirm) {
           rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
                                 moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         } else if (rec.type === 'Custom Recommendation') {
