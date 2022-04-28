@@ -54,10 +54,12 @@
         <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation' && rec.potential_savings !== null && rec.potential_savings !== undefined">
           {{rec.potential_savings_formatted}}
           <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
+          <br/><input  [(ngModel)]="rec.savings_override" ngDefaultControl (focusout)="saveNextStep(rec)" [ngModelOptions]="{standalone: true}"/>
         </td>
         <td (focusout)="saveNextStep(rec)" *ngIf="rec.type !== 'Custom Recommendation' && (rec.potential_savings === null || rec.potential_savings === undefined)">
           $0
           <em class="icon-pencil" title="Edit" (click)="openModal(rec)" style="cursor: pointer;"></em>
+
         </td>
         <td (focusout)="saveNextStep(rec)" *ngIf="rec.type === 'Custom Recommendation'">
           <!-- <label>$</label>

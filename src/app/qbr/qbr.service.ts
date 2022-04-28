@@ -375,6 +375,7 @@ export class QbrService {
         rec.notable_metrics = rec.recommendation;
       } else if (rec.section === 'Next Steps') {
         rec.action = rec.recommendation;
+        rec.savings_override = rec.potential_savings;
       }
       rec.sort_order = i;
       i++;
