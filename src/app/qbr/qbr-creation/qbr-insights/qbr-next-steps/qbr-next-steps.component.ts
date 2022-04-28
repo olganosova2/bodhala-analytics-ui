@@ -46,6 +46,7 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
       this.nextStepsForm.addControl(rec.sort_order + 'title', new FormControl(rec.title, [Validators.minLength(10), Validators.maxLength(35)]));
       this.nextStepsForm.addControl(rec.sort_order + 'opportunity', new FormControl(rec.opportunity, [Validators.minLength(40), Validators.maxLength(200)]));
       this.nextStepsForm.addControl(rec.sort_order + 'action', new FormControl(rec.action, [Validators.minLength(40), Validators.maxLength(200)]));
+      // this.nextStepsForm.addControl(rec.sort_order + 'savings_override', new FormControl(rec.savings_override, [Validators.minLength(0), Validators.maxLength(25)]));
       if (rec.type === 'Custom Recommendation') {
         this.nextStepsForm.addControl(rec.sort_order + 'savings', new FormControl(rec.potential_savings, Validators.required));
       }
@@ -116,6 +117,10 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     } else {
       if (rec.type === 'Custom Recommendation') {
         rec.potential_savings = this.nextStepsForm.controls[rec.sort_order + 'savings'].value;
+      }
+      if (rec.savings_override && rec.type !== 'Custom Recommendation') {
+        rec.potential_savings = rec.savings_override;
+        rec.potential_savings_formatted = moneyFormatter.format(rec.potential_savings);
       }
       rec = await this.qbrService.saveNextStep(rec);
     }

@@ -223,6 +223,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       savedInsights = this.recommendations.map(r => Object.assign({}, r, {temp_id: r.id, id: null}));
 
       for (const insight of savedInsights) {
+
         const savedNextStep = this.nextSteps.filter(ns => ns.corresponding_insight_id === insight.temp_id);
         if (savedNextStep.length > 0) {
           insight.id = savedNextStep[0].id;
@@ -274,6 +275,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             insight.sort_order = null;
             insight.section = 'Next Steps';
         }
+
       }
       this.nextSteps = [];
     } else {
@@ -287,6 +289,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     }
     for (let savedInsight of savedInsights) {
       if (savedInsight.included) {
+        const savedPotentialSavings = savedInsight.potential_savings;
         if (savedInsight.type === 'Increase Discounts') {
           if (!savedInsight.previouslySaved) {
             savedInsight.current_discount_pct = 0;
@@ -517,6 +520,10 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           }
           this.nextSteps.push(savedInsight);
         }
+        if (savedPotentialSavings) {
+          savedInsight.potential_savings = savedPotentialSavings;
+          savedInsight.potential_savings_formatted = moneyFormatter.format(savedInsight.potential_savings);
+        }
         if (savedInsight.id !== null) {
           savedInsight = await this.qbrService.saveNextStep(savedInsight);
         }
@@ -708,7 +715,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
           }
           rec.notable_metrics = formatter.format(this.parent.reportData.percent_block_billed) + '%\nPercent Block Billed\n' + formatter.format(this.parent.reportData.bb_trend) + '%\nBlock Billing Trend';
           this.insightsForm.controls[rec.sort_order + 'opportunity'].setValue(rec.opportunity);
-        } else if (rec.type === 'Shift Work to Other Firms') {
+        } else if (rec.type === 'Shift Work to Other Firms' && this.parent.topPATopFirm) {
           rec.notable_metrics = moneyFormatter.format(this.parent.topPATopFirm.avg_blended_rate) + '\n' + this.parent.topPATopFirm.firm_name + ' Blended Rate\n' +
                                 moneyFormatter.format(this.parent.topPASecondFirm.avg_blended_rate) + '\n' + this.parent.topPASecondFirm.firm_name + ' Blended Rate';
         } else if (rec.type === 'Custom Recommendation') {

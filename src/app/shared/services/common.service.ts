@@ -288,5 +288,16 @@ export class CommonService {
     const mean = array.reduce((a, b) => a + b) / n;
     return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n);
   }
+  numberOnly(event): boolean {
+    const charCode = event.keyCode;
+    if (charCode >= 44 && charCode <=  46) {
+      return true;
+    }
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      return false;
+    }
+    return true;
+
+  }
 }
 

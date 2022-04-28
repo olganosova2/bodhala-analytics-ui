@@ -375,6 +375,9 @@ export class QbrService {
         rec.notable_metrics = rec.recommendation;
       } else if (rec.section === 'Next Steps') {
         rec.action = rec.recommendation;
+        if (rec.potential_savings) {
+          rec.savings_override = Math.round(rec.potential_savings * 100) / 100;
+        }
       }
       rec.sort_order = i;
       i++;
@@ -413,6 +416,10 @@ export class QbrService {
           let recResult;
           if (data.result) {
             recResult = data.result;
+            if (recResult.potential_savings) {
+              recResult.savings_override = Math.round(recResult.potential_savings * 100) / 100;
+              recResult.potential_savings_formatted = moneyFormatter.format(recResult.potential_savings);
+            }
           }
 
           resolve(recResult);
