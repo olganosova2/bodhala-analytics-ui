@@ -379,6 +379,7 @@ export class MatterAnalysisService {
     }
     const ix = marketRecords.indexOf(summaryData);
     marketRecords.splice(ix, 1);
+    this.calculateSingleMatterData(summaryData);
     const marketData = this.calculateMarketData(marketRecords);
     const totalSpendMetric = this.formatTkTotalSpend(summaryData, marketData, marketRecords);
     if (totalSpendMetric && totalSpendMetric.length > 0) {

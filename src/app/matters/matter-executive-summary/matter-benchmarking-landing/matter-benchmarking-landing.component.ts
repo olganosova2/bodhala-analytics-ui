@@ -70,7 +70,14 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
     const params = {clientId: this.userService.currentUser.client_info.id, matters: JSON.stringify(this.selectedByAdminMatters)};
     this.pendingRequest = this.httpService.makeGetRequest<IBmMatters>('getClientBMMatters', params).subscribe(
       (data: any) => {
-
+        if (!data.result  || data.error) {
+          return;
+        }
+        this.matters = Object.assign([], data.result);
+        for (const rec of this.matters) {
+          rec.total_billed = this.filtersService.includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
+          this.matterAnalysisService.processLandingMatter(rec);
+        }
       }
     );
   }
@@ -109,6 +116,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
         }
         this.matters = Object.assign([], data.result);
         for (const rec of this.matters) {
+          rec.total_billed = this.filtersService.includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
           this.matterAnalysisService.processLandingMatter(rec);
         }
       }
