@@ -223,6 +223,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       savedInsights = this.recommendations.map(r => Object.assign({}, r, {temp_id: r.id, id: null}));
 
       for (const insight of savedInsights) {
+
         const savedNextStep = this.nextSteps.filter(ns => ns.corresponding_insight_id === insight.temp_id);
         if (savedNextStep.length > 0) {
           insight.id = savedNextStep[0].id;
@@ -274,6 +275,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             insight.sort_order = null;
             insight.section = 'Next Steps';
         }
+
       }
       this.nextSteps = [];
     } else {
@@ -287,6 +289,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
     }
     for (let savedInsight of savedInsights) {
       if (savedInsight.included) {
+        const savedPotentialSavings = savedInsight.potential_savings;
         if (savedInsight.type === 'Increase Discounts') {
           if (!savedInsight.previouslySaved) {
             savedInsight.current_discount_pct = 0;
@@ -516,6 +519,10 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
             savedInsight.sort_order = sortOrder;
           }
           this.nextSteps.push(savedInsight);
+        }
+        if (savedPotentialSavings) {
+          savedInsight.potential_savings = savedPotentialSavings;
+          savedInsight.potential_savings_formatted = moneyFormatter.format(savedInsight.potential_savings);
         }
         if (savedInsight.id !== null) {
           savedInsight = await this.qbrService.saveNextStep(savedInsight);
