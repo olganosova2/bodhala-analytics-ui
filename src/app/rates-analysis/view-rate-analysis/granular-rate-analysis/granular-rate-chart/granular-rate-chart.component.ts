@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { RatesAnalysisService } from '../../../rates-analysis.service';
 import { moneyFormatter, percentFormatter, formatter, COST_IMPACT_GRADES } from '../../../rates-analysis.model';
 import { InvokeFunctionExpr } from '@angular/compiler';
@@ -11,7 +11,7 @@ import { HttpService } from 'bodhala-ui-common';
   templateUrl: './granular-rate-chart.component.html',
   styleUrls: ['./granular-rate-chart.component.scss']
 })
-export class GranularRateChartComponent implements OnInit {
+export class GranularRateChartComponent implements OnInit, AfterViewInit {
   pendingRequest: Subscription;
   @Input() selectedFirm: string;
   @Input() classification: string;
@@ -23,6 +23,7 @@ export class GranularRateChartComponent implements OnInit {
   @Input() firmName: string;
   @Input() tier: number;
   @Input() totalHours: number;
+  @Input() numTiers: number;
 
   marketAverageLowerRange: number;
   marketAverageUpperRange: number;
@@ -72,6 +73,9 @@ export class GranularRateChartComponent implements OnInit {
   rateImpact: string;
   rateImpactColor: string;
   validFirmData: boolean = true;
+  loaded: boolean = false;
+  rateImpactWidth: string = '54%';
+  classificationWidth: string = '46%';
   helpText: string = 'Rate Impact is determined by a combination of % over market/internal rates and % of hours worked by this TK classification.';
 
   @ViewChild('chartPanel') chartPanel: ElementRef<HTMLElement>;
@@ -80,16 +84,66 @@ export class GranularRateChartComponent implements OnInit {
               public httpService: HttpService) {
   }
 
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event) {
-  //   this.resizeChart();
-  // }
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (this.loaded) {
+      this.resizeChart();
+    }
+  }
 
   ngOnInit(): void {
     if (this.classification === 'associate') {
       this.getAssociateData();
     } else if (this.classification === 'partner') {
-      this.getPartnerData();
+      if (this.tier === 1 && this.numTiers === 2) {
+        this.seniority = 'Junior';
+      } else if (this.tier === 2 && this.numTiers === 2) {
+        this.seniority = 'Senior';
+      } else if (this.tier === 1 && this.numTiers === 3) {
+        this.seniority = 'Junior';
+      } else if (this.tier === 2 && this.numTiers === 3) {
+        this.seniority = 'Mid-level';
+      } else if (this.tier === 3 && this.numTiers === 3) {
+        this.seniority = 'Senior';
+      } else if (this.tier === 1 && this.numTiers === 4) {
+        this.seniority = 'Junior';
+      } else if (this.tier === 2 && this.numTiers === 4) {
+        this.seniority = 'Mid-level';
+      } else if (this.tier === 3 && this.numTiers === 4) {
+        this.seniority = 'Mid-level';
+      } else if (this.tier === 4 && this.numTiers === 4) {
+        this.seniority = 'Senior';
+      }
+      if (this.numTiers === 4) {
+        if (this.tier !== 3) {
+          this.getPartnerData();
+        }
+      } else {
+        this.getPartnerData();
+      }
+
+    }
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.loaded) {
+        this.resizeChart();
+      }
+    });
+  }
+
+  resizeChart(): void {
+    this.calculateChartMetrics();
+    if (this.chartPanel) {
+      if (this.chartPanel.nativeElement.offsetWidth <= 1188) {
+        this.rateImpactWidth = '70%';
+        this.classificationWidth = '30%';
+      }
+      else if (this.chartPanel.nativeElement.offsetWidth > 1188) {
+        this.rateImpactWidth = '54%';
+        this.classificationWidth = '46%';
+      }
     }
   }
 
@@ -133,9 +187,11 @@ export class GranularRateChartComponent implements OnInit {
             this.internalData = data.result.internal_data[0];
             if (this.internalData.num_firms < 3) {
               this.validInternalBM = false;
+              this.marketAverageHeight = '84px';
             }
           }
         }
+        this.loaded = true;
         this.calculateChartMetrics();
       },
       err => {
@@ -150,6 +206,7 @@ export class GranularRateChartComponent implements OnInit {
       firmId: this.benchmark.bh_lawfirm_id,
       yyyy: this.benchmark.year,
       tier: this.tier,
+      numTiers: this.numTiers,
       cluster: this.cluster
     };
     this.pendingRequest = this.httpService.makeGetRequest('getPartnerGranularityRateData', params).subscribe(
@@ -183,9 +240,11 @@ export class GranularRateChartComponent implements OnInit {
             this.internalData = data.result.internal_data[0];
             if (this.internalData.num_firms < 3) {
               this.validInternalBM = false;
+              this.marketAverageHeight = '84px';
             }
           }
         }
+        this.loaded = true;
         this.calculateChartMetrics();
       },
       err => {
@@ -352,8 +411,10 @@ export class GranularRateChartComponent implements OnInit {
   calculateBarWidth(rate: number): number {
     let result = 0;
     const max = this.highestRate || 1;
-    const divWidth = this.chartPanel.nativeElement.offsetWidth - 50;
-    result = rate * divWidth / max;
+    if (this.chartPanel) {
+      const divWidth = this.chartPanel.nativeElement.offsetWidth - 50;
+      result = rate * divWidth / max;
+    }
     return result;
   }
 
