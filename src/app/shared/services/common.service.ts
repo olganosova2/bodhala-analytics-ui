@@ -14,6 +14,12 @@ export interface IClient {
   org_id: number;
   org_name: string;
 }
+export interface IHeaderColumn {
+  label: string;
+  field: string;
+  direction?: number;
+  width?: string;
+}
 export interface IBenchmarkFirm {
   id: number;
   name: string;

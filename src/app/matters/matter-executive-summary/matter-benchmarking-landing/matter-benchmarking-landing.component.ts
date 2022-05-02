@@ -1,6 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {CommonService} from '../../../shared/services/common.service';
+import {CommonService, IHeaderColumn} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import {Subscription} from 'rxjs';
 import {BMSetupType, IMatterOverview} from '../model';
 import {IBmMatters} from '../../../admin/benchmark-matters/model';
 import {SelectItem} from 'primeng/api';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'bd-matter-benchmarking-landing',
@@ -18,11 +19,19 @@ import {SelectItem} from 'primeng/api';
 export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   userBMSetup: BMSetupType;
+  pageEvent: PageEvent;
   selectedByAdminMatters: Array<string> = [];
   selectedByAdminSmartPAs: Array<string> = [];
   smartPAs: Array<SelectItem> = [];
   smartPA: SelectItem[];
   matters: Array<IMatterOverview> = [];
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  totalMattersCount: number = 0;
+  orderBy: string = 'total_billed desc';
+  columns: Array<IHeaderColumn> = [];
+
+  @ViewChild('paginator') paginator: MatPaginator;
 
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -51,6 +60,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
           if (json.matters && json.matters.length > 0) {
             this.userBMSetup = BMSetupType.SelectedMatters;
             this.selectedByAdminMatters = Object.assign([], json.matters);
+            this.formatTableColumns();
             this.getSelectedMattersData();
             return;
           }
@@ -58,6 +68,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
             this.userBMSetup = BMSetupType.SmartPAs;
             this.selectedByAdminSmartPAs = Object.assign([], json.smartPAs);
             this.smartPAs = this.formatSmartDD(json.smartPAs);
+            this.formatTableColumns();
             return;
           }
           this.userBMSetup = BMSetupType.AllMatters;
@@ -66,8 +77,44 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
       }
     }
   }
+  formatTableColumns(): void {
+    this.columns.push({ label: 'Matters', field: 'matter_name', direction: null, width: '25%'});
+    this.columns.push({ label: 'Matter ID', field: 'client_matter_id', direction: null, width: '20%'});
+    this.columns.push({ label: 'Total Cost', field: 'total_billed', direction: -1, width: '*'});
+    this.columns.push({ label: '# Hours Worked', field: 'total_hours_billed', direction: null, width: '*'});
+    if (this.userBMSetup === BMSetupType.SelectedMatters) {
+      this.columns.push({ label: 'Practice Area', field: 'smart_pa', direction: null, width: '*'});
+    }
+    this.columns.push({ label: 'Primary Firm', field: 'firm_name', direction: null, width: '*'});
+  }
+  sort(column: IHeaderColumn): void {
+   // always start from page 1
+    this.goToFirstPage();
+    this.orderBy = this.getSortByString(column);
+    for (const col of this.columns) {
+      if (col.field !== column.field) {
+        col.direction = null;
+      }
+    }
+    if (this.userBMSetup === BMSetupType.SelectedMatters) {
+      this.getSelectedMattersData();
+    } else {
+      this.getBMEligibleMattersByPA();
+    }
+  }
+  getSortByString(column: IHeaderColumn): string {
+    const result = 'total_billed desc';
+    let direction = null;
+    if (column.direction === 1) {
+      direction = ' asc';
+    }
+    if (column.direction === -1) {
+      direction = ' desc';
+    }
+    return column.field + direction;
+  }
   getSelectedMattersData(): void {
-    const params = {clientId: this.userService.currentUser.client_info.id, matters: JSON.stringify(this.selectedByAdminMatters)};
+    const params = {clientId: this.userService.currentUser.client_info.id, matters: JSON.stringify(this.selectedByAdminMatters), orderBy: this.orderBy};
     this.pendingRequest = this.httpService.makeGetRequest<IBmMatters>('getClientBMMatters', params).subscribe(
       (data: any) => {
         if (!data.result  || data.error) {
@@ -100,27 +147,44 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
     }
     return result;
   }
-  getBMEligibleMattersByPA(evt: SelectItem): void {
+  changeSmartPA(evt: SelectItem): void {
     if (!evt.value) {
       return;
     }
+    this.goToFirstPage();
+    this.getBMEligibleMattersByPA();
+  }
+  getBMEligibleMattersByPA(): void {
     const params = {
       clientId: this.userService.currentUser.client_info.id,
-      smartPa: evt.value, // 'Real Estate', // 'Capital Markets',
-      orderBy: 'total_billed desc'
+      smartPa: this.smartPA.toString(), // 'Real Estate', // 'Capital Markets',
+      orderBy: this.orderBy,
+      pageNum: this.pageNumber,
+      pageSize: this.pageSize
     };
     this.pendingRequest = this.httpService.makeGetRequest('getBMEligibleMattersByPA', params).subscribe(
       (data: any) => {
         if (!data.result  || data.error) {
           return;
         }
-        this.matters = Object.assign([], data.result);
+        this.matters = Object.assign([], data.result.matters);
+        this.totalMattersCount = data.result.num_matters;
         for (const rec of this.matters) {
           rec.total_billed = this.filtersService.includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
           this.matterAnalysisService.processLandingMatter(rec);
         }
       }
     );
+  }
+  goToFirstPage() {
+    this.pageNumber = 1;
+    this.paginator.pageIndex = this.pageNumber - 1; // number of the page you want to jump.
+  }
+  public getNextPrevPage(event?: PageEvent): PageEvent{
+    this.pageNumber = event.pageIndex + 1;
+    this.pageSize = event.pageSize;
+    this.getBMEligibleMattersByPA();
+    return event;
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

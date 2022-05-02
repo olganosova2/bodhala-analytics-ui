@@ -182,6 +182,7 @@ export interface IMatterOverview {
   staffing_rating?: IMetricDisplayData;
 }
 
+
 export const matterColumnChartOptions = {
   chart: {
     type: 'column'
