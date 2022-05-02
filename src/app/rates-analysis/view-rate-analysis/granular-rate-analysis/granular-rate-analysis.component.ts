@@ -101,7 +101,7 @@ export class GranularRateAnalysisComponent implements OnInit {
         if (result.peer_firms) {
           let counter = 0;
           for (const firm of result.peer_firms) {
-            if ((firm.length + counter) < 115) {
+            if ((firm.length + counter) < 110) {
               this.peerFirms.push(firm);
             }
             counter += firm.length;

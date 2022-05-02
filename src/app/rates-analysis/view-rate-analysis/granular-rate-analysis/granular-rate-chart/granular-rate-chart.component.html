@@ -1,11 +1,11 @@
 <div class="p-grid full-width" style="padding: 32px; border-bottom: 2px solid #E9F1F4; padding-bottom: 4.5em;">
-  <div style="width: 50%; padding-left: 1em;">
+  <div [ngStyle]="{'width': classificationWidth, 'padding-left': '1em'}">
     <em class="icon-user" style="font-size: 20px;"></em>
-    <span *ngIf="classification === 'partner'" class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">Partner Tier {{tier}}</span>
+    <span *ngIf="classification === 'partner'" class="header-span" style="display: inline; font-size: 24px !important; padding-left: 1em;">{{seniority}} Partner</span>
     <span *ngIf="classification === 'associate'" class="header-span">{{seniority}} Associate</span>
   </div>
 
-  <div style="width: 50%; padding-top: 1em;" *ngIf="validFirmData">
+  <div [ngStyle]="{'width': rateImpactWidth, 'padding-left': '1em'}" *ngIf="validFirmData">
     <div class="rate-impact">
       <div style="display: inline; position: absolute; margin-top: 8px;">
         <span class="ml10 pointer-hand" placement="bottom"
