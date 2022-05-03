@@ -178,7 +178,9 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
   }
   goToFirstPage() {
     this.pageNumber = 1;
-    this.paginator.pageIndex = this.pageNumber - 1; // number of the page you want to jump.
+    if (this.paginator) {
+      this.paginator.pageIndex = this.pageNumber - 1; // number of the page you want to jump.
+    }
   }
   public getNextPrevPage(event?: PageEvent): PageEvent{
     this.pageNumber = event.pageIndex + 1;
