@@ -25,7 +25,7 @@ export class InsightsComponent implements OnInit {
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getClientInsights').subscribe(
       (data: any) => {
         this.insights = data.result.sort(this.utilService.dynamicSort('insight_type'));
-        this.insights = this.insights.filter(e => e.insight_type !== 'Matter');
+        this.insights = this.insights.filter(e => e.insight_type !== 'Matter' && e.insight_type !== 'RateBM');
         if (this.insights.length > 0) {
           this.selectedInsight = this.insights[0];
           setTimeout(() => {
