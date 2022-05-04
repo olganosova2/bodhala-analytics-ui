@@ -1,0 +1,7 @@
+<span class="pointer-hand" (click)="changeDirection()">
+  {{column.label}}
+  <span >
+  <mat-icon *ngIf="column.direction === -1">arrow_downward</mat-icon>
+  <mat-icon *ngIf="column.direction === 1">arrow_upward</mat-icon>
+  </span>
+</span>
