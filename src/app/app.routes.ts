@@ -86,7 +86,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/matter-executive-summary', component: MatterExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-tasks', component: MatterDocumentsOverviewComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'analytics-ui/matter-landing', component: MatterBenchmarkingLandingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/matter-benchmarking', component: MatterBenchmarkingLandingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   // MatterStaffingComponent
 
   // ADMIN
