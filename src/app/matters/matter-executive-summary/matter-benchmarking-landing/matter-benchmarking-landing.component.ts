@@ -72,6 +72,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
             return;
           }
           this.userBMSetup = BMSetupType.AllMatters;
+          this.formatTableColumns();
           this.getSmartPAs();
         }
       }
