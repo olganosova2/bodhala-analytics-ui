@@ -30,6 +30,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
   totalMattersCount: number = 0;
   orderBy: string = 'total_billed desc';
   columns: Array<IHeaderColumn> = [];
+  noEligibleMattersFound: boolean;
 
   @ViewChild('paginator') paginator: MatPaginator;
 
@@ -156,6 +157,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
     this.getBMEligibleMattersByPA();
   }
   getBMEligibleMattersByPA(): void {
+    this.noEligibleMattersFound = null;
     const params = {
       clientId: this.userService.currentUser.client_info.id,
       smartPa: this.smartPA.toString(), // 'Real Estate', // 'Capital Markets',
@@ -168,6 +170,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
         if (!data.result  || data.error) {
           return;
         }
+        this.noEligibleMattersFound = (data.result.matters && data.result.matters.length === 0);
         this.matters = Object.assign([], data.result.matters);
         this.totalMattersCount = data.result.num_matters;
         for (const rec of this.matters) {

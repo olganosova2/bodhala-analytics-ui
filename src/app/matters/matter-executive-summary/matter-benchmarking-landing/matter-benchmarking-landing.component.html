@@ -7,6 +7,7 @@
     <p-dropdown [options]="smartPAs" [(ngModel)]="smartPA" autoWidth="false"  [style]="{'width':'300px'}"
                (onChange)="changeSmartPA($event)"></p-dropdown>
     </div>
+    <div *ngIf="noEligibleMattersFound" class="mt10 mb10">No eligible matters found</div>
     <div class="panel-wrapper mt20" *ngIf="matters.length > 0">
     <table class="full-width" >
       <thead>
