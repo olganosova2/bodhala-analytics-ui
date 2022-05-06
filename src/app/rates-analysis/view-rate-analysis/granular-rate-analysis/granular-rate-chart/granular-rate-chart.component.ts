@@ -164,7 +164,8 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         if (data.result.market_average) {
           if (data.result.market_average.length > 0) {
             this.marketAverageData = data.result.market_average[0];
-            if (this.marketAverageData.num_firms < 2) {
+            this.marketAverageData.num_firms = 2;
+            if (this.marketAverageData.num_firms < 3) {
               this.validMarketAverage = false;
             }
           }
@@ -217,7 +218,8 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         if (data.result.market_average) {
           if (data.result.market_average.length > 0) {
             this.marketAverageData = data.result.market_average[0];
-            if (this.marketAverageData.num_firms < 2) {
+            this.marketAverageData.num_firms = 2;
+            if (this.marketAverageData.num_firms < 3) {
               this.validMarketAverage = false;
             }
           }
@@ -255,6 +257,17 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
 
   calculateChartMetrics(): void {
     if (this.classification === 'associate') {
+      const associateRates = [];
+      if (this.marketAverageData.associate_hi !== null && this.validMarketAverage) {
+        associateRates.push(this.marketAverageData.associate_hi);
+      }
+      if (this.internalData.avg_associate_rate !== null && this.validInternalBM) {
+        associateRates.push(this.internalData.avg_associate_rate);
+      }
+      if (this.firmYearData.rate !== null) {
+        associateRates.push(this.firmYearData.rate);
+      }
+      this.highestRate = Math.max(...associateRates);
       if (this.marketAverageData.associate_hi > this.firmYearData.rate && this.marketAverageData.associate_hi > this.internalData.avg_associate_rate) {
         this.highestRate = this.marketAverageData.associate_hi;
       } else if (this.firmYearData.rate > this.marketAverageData.associate_hi && this.firmYearData.rate > this.internalData.avg_associate_rate) {
@@ -310,16 +323,17 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
       this.internalRateDeltaPct = this.internalRateDelta / this.firmYearData.rate;
       this.internalRateDeltaPct *= 100;
     } else if (this.classification === 'partner') {
-
-      if (this.marketAverageData.partner_hi > this.firmYearData.rate && this.marketAverageData.partner_hi > this.internalData.avg_partner_rate) {
-        this.highestRate = this.marketAverageData.partner_hi;
-      } else if (this.firmYearData.rate > this.marketAverageData.partner_hi && this.firmYearData.rate > this.internalData.avg_partner_rate) {
-        this.highestRate = this.firmYearData.rate;
-      } else if (this.internalData.avg_partner_rate > this.firmYearData.rate && this.internalData.rate > this.marketAverageData.partner_hi) {
-        this.highestRate = this.internalData.avg_partner_rate;
-      } else {
-        this.highestRate = this.firmYearData.rate;
+      const partnerRates = [];
+      if (this.marketAverageData.partner_hi !== null && this.validMarketAverage) {
+        partnerRates.push(this.marketAverageData.partner_hi);
       }
+      if (this.internalData.avg_partner_rate !== null && this.validInternalBM) {
+        partnerRates.push(this.internalData.avg_partner_rate);
+      }
+      if (this.firmYearData.rate !== null) {
+        partnerRates.push(this.firmYearData.rate);
+      }
+      this.highestRate = Math.max(...partnerRates);
       this.topBarDollars = this.firmYearData.rate;
       this.topBarWidth = this.calculateBarWidth(this.firmYearData.rate) + 'px';
       this.bottomBarDollars = this.internalData.avg_partner_rate;
