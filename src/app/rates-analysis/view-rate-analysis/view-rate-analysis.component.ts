@@ -29,6 +29,12 @@ export class ViewRateAnalysisComponent implements OnInit {
   firmYearData: any;
   internalYearData: any;
   marketAverageData: any;
+  partnerMarketAverageData: any;
+  associateMarketAverageData: any;
+  blendedMarketAverageData: any;
+  partnerInternalData: any;
+  associateInternalData: any;
+  blendedInternalData: any;
   firmRateIncreasePct: number;
   cohortRateIncreasePct: number;
   firmClassificationRateIncreaseData: Array<any>;
@@ -137,20 +143,40 @@ export class ViewRateAnalysisComponent implements OnInit {
 
   processData(data): void {
     if (data.result) {
-      if (data.result.market_average) {
-        if (data.result.market_average.length > 0) {
-          this.marketAverageData = data.result.market_average[0];
+      if (data.result.partner_market_average) {
+        if (data.result.partner_market_average.length > 0) {
+          this.partnerMarketAverageData = data.result.partner_market_average[0];
+        }
+      }
+      if (data.result.associate_market_average) {
+        if (data.result.associate_market_average.length > 0) {
+          this.associateMarketAverageData = data.result.associate_market_average[0];
+        }
+      }
+      if (data.result.blended_market_average) {
+        if (data.result.blended_market_average.length > 0) {
+          this.blendedMarketAverageData = data.result.blended_market_average[0];
+        }
+      }
+      if (data.result.partner_internal_data) {
+        if (data.result.partner_internal_data.length > 0) {
+          this.partnerInternalData = data.result.partner_internal_data[0];
+        }
+      }
+      if (data.result.associate_internal_data) {
+        if (data.result.associate_internal_data.length > 0) {
+          this.associateInternalData = data.result.associate_internal_data[0];
+        }
+      }
+      if (data.result.blended_internal_data) {
+        if (data.result.blended_internal_data.length > 0) {
+          this.blendedInternalData = data.result.blended_internal_data[0];
         }
       }
       if (data.result.firm_data) {
         if (data.result.firm_data.length > 0) {
           this.firmYearData = data.result.firm_data[0];
           this.firmYearData = this.firmYearData[0];
-        }
-      }
-      if (data.result.internal_data) {
-        if (data.result.internal_data.length > 0) {
-          this.internalYearData = data.result.internal_data[0];
         }
       }
       if (data.result.num_tiers) {
@@ -197,7 +223,7 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.firmRateIncreaseColor = this.getColor(this.firmRateIncreasePct);
         this.cohortRateIncreaseColor = this.getColor(this.cohortRateIncreasePct);
 
-        const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
+        // const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
         if (this.firmTotalSpend) {
           const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
           this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
@@ -207,7 +233,7 @@ export class ViewRateAnalysisComponent implements OnInit {
           this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
           this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
         }
-        const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.firmYearData, this.marketAverageData);
+        const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.firmYearData, this.blendedMarketAverageData);
         this.costImpactGrade = historicalCostImpact.cost_impact;
         this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
         this.costImpactLower = historicalCostImpact.blended_rate_lower_diff;

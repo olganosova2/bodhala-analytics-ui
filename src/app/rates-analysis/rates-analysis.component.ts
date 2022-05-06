@@ -120,42 +120,52 @@ export class RatesAnalysisComponent implements OnInit {
         }
       }
 
-      if (bm.market_data) {
-        if (bm.market_data.length > 0) {
-          bm.market_data = bm.market_data[0];
-          if (bm.associate_rate >= bm.market_data.associate_hi) {
-            bm.assoc_lower_diff = bm.associate_rate - bm.market_data.associate_hi;
-            bm.assoc_upper_diff = bm.associate_rate - bm.market_data.associate_lo;
+      if (bm.associate_market_data) {
+        if (bm.associate_market_data.length > 0) {
+          bm.associate_market_data = bm.associate_market_data[0];
+          if (bm.associate_rate >= bm.associate_market_data.associate_hi) {
+            bm.assoc_lower_diff = bm.associate_rate - bm.associate_market_data.associate_hi;
+            bm.assoc_upper_diff = bm.associate_rate - bm.associate_market_data.associate_lo;
             bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.associate_rate;
             bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.associate_rate;
             bm.assoc_within_range = false;
-          } else if (bm.associate_rate <= bm.market_data.associate_lo) {
-            bm.assoc_lower_diff = bm.associate_rate - bm.market_data.associate_lo;
-            bm.assoc_upper_diff = bm.associate_rate - bm.market_data.associate_hi;
+          } else if (bm.associate_rate <= bm.associate_market_data.associate_lo) {
+            bm.assoc_lower_diff = bm.associate_rate - bm.associate_market_data.associate_lo;
+            bm.assoc_upper_diff = bm.associate_rate - bm.associate_market_data.associate_hi;
             bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.associate_rate;
             bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.associate_rate;
             bm.assoc_within_range = false;
           } else {
             bm.assoc_within_range = true;
           }
-
-          if (bm.partner_rate >= bm.market_data.partner_hi) {
-            bm.partner_lower_diff = bm.partner_rate - bm.market_data.partner_hi;
-            bm.partner_upper_diff = bm.partner_rate - bm.market_data.partner_lo;
+        }
+      }
+      if (bm.partner_market_data) {
+        if (bm.partner_market_data.length > 0) {
+          bm.partner_market_data = bm.partner_market_data[0];
+          if (bm.partner_rate >= bm.partner_market_data.partner_hi) {
+            bm.partner_lower_diff = bm.partner_rate - bm.partner_market_data.partner_hi;
+            bm.partner_upper_diff = bm.partner_rate - bm.partner_market_data.partner_lo;
             bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_rate;
             bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_rate;
             bm.partner_within_range = false;
-          } else if (bm.partner_rate <= bm.market_data.partner_lo) {
-            bm.partner_lower_diff = bm.partner_rate - bm.market_data.partner_lo;
-            bm.partner_upper_diff = bm.partner_rate - bm.market_data.partner_hi;
+          } else if (bm.partner_rate <= bm.partner_market_data.partner_lo) {
+            bm.partner_lower_diff = bm.partner_rate - bm.partner_market_data.partner_lo;
+            bm.partner_upper_diff = bm.partner_rate - bm.partner_market_data.partner_hi;
             bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_rate;
             bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_rate;
             bm.partner_within_range = false;
           } else {
             bm.partner_within_range = true;
           }
+        }
+      }
+
+      if (bm.blended_market_data) {
+        if (bm.blended_market_data.length > 0) {
+          bm.blended_market_data = bm.blended_market_data[0];
           if (bm.firm_data !== undefined && bm.firm_data !== null) {
-            const costImpactResult = this.ratesService.calculateHistoricalCostImpact(bm.firm_data, bm.market_data);
+            const costImpactResult = this.ratesService.calculateHistoricalCostImpact(bm.firm_data, bm.blended_market_data);
             bm.blended_rate_lower_diff = costImpactResult.blended_rate_lower_diff;
             bm.blended_rate_upper_diff = costImpactResult.blended_rate_upper_diff;
             bm.blended_rate_lower_diff_pct = costImpactResult.blended_rate_lower_diff_pct;
@@ -170,7 +180,6 @@ export class RatesAnalysisComponent implements OnInit {
             bm.cost_impact = null;
             bm.blended_within_range = null;
           }
-
         }
       }
     }
@@ -185,7 +194,7 @@ export class RatesAnalysisComponent implements OnInit {
     let result = '';
     if (params.value !== null) {
       if (params.data.assoc_within_range) {
-        result = 'Within range (' + moneyFormatter.format(params.data.market_data.associate_lo) + ' - ' + moneyFormatter.format(params.data.market_data.associate_hi) + ')';
+        result = 'Within range (' + moneyFormatter.format(params.data.associate_market_data.associate_lo) + ' - ' + moneyFormatter.format(params.data.associate_market_data.associate_hi) + ')';
       } else if (params.data.assoc_lower_diff_pct < 0 && params.data.assoc_upper_diff_pct < 0) {
         result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.assoc_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.assoc_upper_diff * -1)) + '</span>' +
                   '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.assoc_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.assoc_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
@@ -204,7 +213,7 @@ export class RatesAnalysisComponent implements OnInit {
     let result = '';
     if (params.value !== null) {
       if (params.data.partner_within_range) {
-        result = 'Within range (' + moneyFormatter.format(params.data.market_data.partner_lo) + ' - ' + moneyFormatter.format(params.data.market_data.partner_hi) + ')';
+        result = 'Within range (' + moneyFormatter.format(params.data.partner_market_data.partner_lo) + ' - ' + moneyFormatter.format(params.data.partner_market_data.partner_hi) + ')';
       } else if (params.data.partner_lower_diff_pct < 0 && params.data.partner_upper_diff_pct < 0) {
         result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.partner_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.partner_upper_diff * -1)) + '</span>' +
                   '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.partner_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.partner_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
