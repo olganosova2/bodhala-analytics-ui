@@ -76,7 +76,7 @@ describe('RatesAnalysisComponent', () => {
         assoc_within_range: false,
         assoc_lower_diff_pct: -0.05,
         assoc_upper_diff_pct: -0.10,
-        market_data: {
+        associate_market_data: {
           associate_lo: 400,
           associate_hi: 600,
         }
@@ -107,7 +107,7 @@ describe('RatesAnalysisComponent', () => {
         partner_within_range: false,
         partner_lower_diff_pct: -0.05,
         partner_upper_diff_pct: -0.10,
-        market_data: {
+        partner_market_data: {
           partner_lo: 800,
           partner_hi: 1000
         }
