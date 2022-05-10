@@ -164,7 +164,6 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         if (data.result.market_average) {
           if (data.result.market_average.length > 0) {
             this.marketAverageData = data.result.market_average[0];
-            this.marketAverageData.num_firms = 2;
             if (this.marketAverageData.num_firms < 3) {
               this.validMarketAverage = false;
             }
@@ -218,7 +217,6 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         if (data.result.market_average) {
           if (data.result.market_average.length > 0) {
             this.marketAverageData = data.result.market_average[0];
-            this.marketAverageData.num_firms = 2;
             if (this.marketAverageData.num_firms < 3) {
               this.validMarketAverage = false;
             }
