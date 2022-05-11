@@ -161,6 +161,7 @@ import {BenchmarkMattersComponent} from '../../admin/benchmark-matters/benchmark
 import {CustomInternalMattersComponent} from '../../matters/matter-executive-summary/custom-internal-matters/custom-internal-matters.component';
 import {MatterBenchmarkingLandingComponent} from '../../matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
 import {TableHeaderSortComponent} from '../components/table-header-sort/table-header-sort.component';
+import {BmTimekeepersTableComponent} from '../../matters/matter-executive-summary/bm-timekeepers-table/bm-timekeepers-table.component';
 
 
 
@@ -316,7 +317,8 @@ export const DECLARATIONS = [
   BenchmarkMattersComponent,
   CustomInternalMattersComponent,
   MatterBenchmarkingLandingComponent,
-  TableHeaderSortComponent
+  TableHeaderSortComponent,
+  BmTimekeepersTableComponent
 ];
 
 export const PROVIDERS = [
