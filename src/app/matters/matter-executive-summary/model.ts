@@ -1,7 +1,7 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
 const groupDistance = window.screen.width > 1440 ? 0.4 : window.screen.width > 1200 ? 0.35 : 0.25;
 
-export const HARDCODED_MATTER_ID = '061439-00107'; // '056130-0000274'; // '149945'; //   '061439-10014'; //   '373046-00021'; // '10001320'; 056130-0000087
+export const HARDCODED_MATTER_ID = '061439-00107'; // '056130-0000274'; // '149945'; //   '061439-10014'; //   '373046-00021'; // '10001320'; 056130-0000087  198309
 export const RECORDS_NUMBER_THRESHOLD = 2;
 
 export enum BMSetupType {
@@ -180,6 +180,20 @@ export interface IMatterOverview {
   cost_rating?: IMetricDisplayData;
   rates_rating?: IMetricDisplayData;
   staffing_rating?: IMetricDisplayData;
+}
+export interface INamedTimekeepersBM {
+  tk_id: string;
+  first_name: string;
+  last_name: string;
+  tk_level: string;
+  bh_classification: string;
+  total_billed: number;
+  total_expenses: number;
+  total_hours_billed: number;
+  avg_rate: number;
+  client_matter_id: string;
+  bodhala_classification?: string;
+  percent_of_work?: number;
 }
 
 

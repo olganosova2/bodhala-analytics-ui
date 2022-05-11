@@ -138,6 +138,8 @@ export const END_POINTS_URLS = {
   deleteBMCustomInternalMatters: {url: BASE_URL + 'analytics/deleteBMCustomInternalMatters', showLoading: true},
   getBMEligibleMattersByPA: {url: BASE_URL + 'analytics/getBMEligibleMattersByPA', showLoading: true},
   getClientBMMatters: {url: BASE_URL + 'analytics/getClientBMMatters', showLoading: true},
+  getNamedTKforBMMatter: {url: BASE_URL + 'analytics/getNamedTKforBMMatter', showLoading: false},
+  getNamedTKforBMDocument: {url: BASE_URL + 'analytics/getNamedTKforBMDocument', showLoading: false},
 
 
   // ADMIN

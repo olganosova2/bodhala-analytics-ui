@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterOverview, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, MetricCardType, MetricGrade, RECORDS_NUMBER_THRESHOLD} from './model';
+import {IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterOverview, IMatterTotalsMetric, IMatterTotalsPanel, IMetricDisplayData, INamedTimekeepersBM, MetricCardType, MetricGrade, RECORDS_NUMBER_THRESHOLD} from './model';
 import {FiltersService} from '../../shared/services/filters.service';
 import {UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
+import {YoyRateIncreaseService} from '../../savings-calculator/yoy-rate-increase/yoy-rate-increase.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class MatterAnalysisService {
 
   constructor(public filtersService: FiltersService,
               public utilService: UtilService,
+              public yoyRateIncreaseService: YoyRateIncreaseService,
               public commonServ: CommonService) {
   }
 
@@ -462,5 +464,15 @@ export class MatterAnalysisService {
       result.push({ id: matter, name: matter, sortField: matter});
     }
     return result;
+  }
+  processTks(timekeepers: Array<INamedTimekeepersBM>): void {
+    for (const tk of timekeepers) {
+      tk.bodhala_classification = this.yoyRateIncreaseService.tkNameCellRenderer({ value: tk.tk_level});
+      const includeExpenses = this.filtersService.includeExpenses;
+      tk.total_billed = includeExpenses ? tk.total_billed + tk.total_expenses : tk.total_billed;
+    }
+  }
+  getPercentOfWork(hours: number, totalHours: number): number {
+    return hours = hours / ( totalHours || 1) * 100;
   }
 }
