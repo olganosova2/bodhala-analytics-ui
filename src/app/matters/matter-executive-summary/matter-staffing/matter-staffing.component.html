@@ -22,6 +22,9 @@
                              [internalRecords]="internalRecords"
                              [metricType]="metric"></bd-matter-total-spend>
     </div>
+    <div *ngIf="summaryData && timekeepers.length > 0" class="panel-wrapper mt20">
+      <bd-bm-timekeepers-table [timekeepers]="timekeepers" [totalHours]="summaryData.total_hours_billed"></bd-bm-timekeepers-table>
+    </div>
     <div class="spinner-card" [hidden]="summaryData">
       <mat-spinner diameter="50" color="primary"></mat-spinner>
     </div>

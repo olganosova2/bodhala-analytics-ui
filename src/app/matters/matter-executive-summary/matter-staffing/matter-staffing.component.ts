@@ -1,12 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, MetricCardType} from '../model';
+import {IInternalMatter, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, INamedTimekeepersBM, MetricCardType} from '../model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
+import {YoyRateIncreaseService} from '../../../savings-calculator/yoy-rate-increase/yoy-rate-increase.service';
 
 @Component({
   selector: 'bd-matter-staffing',
@@ -15,6 +16,7 @@ import {MatterAnalysisService} from '../matter-analysis.service';
 })
 export class MatterStaffingComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
+  pendingRequestTk: Subscription;
   matterId: string;
   firmId: number;
   summaryData: IMatterExecSummary;
@@ -24,14 +26,13 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
   internalRecords: Array<IMatterExecSummary> = [];
   internalMatters: Array<IInternalMatter> = [];
   totalPanels: Array<IMatterTotalsPanel> = [];
-  insightText: string;
-  insightExpanded: boolean = false;
   documents: Array<IMatterDocument> = [];
   totalRecordsDocs: number;
   marketMatters: Array<string> =  [];
   metrics: Array<string> = [];
   isLoaded: boolean = false;
   errorMessage: string;
+  timekeepers: Array<INamedTimekeepersBM> = [];
   constructor(private route: ActivatedRoute,
               public commonServ: CommonService,
               public appStateService: AppStateService,
@@ -51,13 +52,16 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; } );
     if (this.matterId) {
       this.getMatterSummary();
+      this.getNamedTKforBMMatter();
     }
   }
   selectFirm(evt: number) {
     this.firmId = evt; // 8668; // 8635;
     if (this.firmId) {
       this.summaryData = null;
+      this.timekeepers = [];
       this.getMatterSummary();
+      this.getNamedTKforBMMatter();
     }
   }
 
@@ -94,11 +98,36 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
       }
     );
   }
+  getNamedTKforBMMatter(): void {
+    const arrFirms = [];
+    if (this.firmId && this.firmId !== undefined) {
+      arrFirms.push(this.firmId.toString());
+    }
+    const arrMatters = [];
+    arrMatters.push(this.matterId);
+    const params = { clientId: this.userService.currentUser.client_info_id,
+      matterId: this.matterId,
+      firms: JSON.stringify(arrFirms),
+      matters: JSON.stringify(arrMatters)
+    };
+    this.pendingRequestTk = this.httpService.makeGetRequest<INamedTimekeepersBM>('getNamedTKforBMMatter', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          this.timekeepers = (data.result || []).filter(e => e.total_billed > 0);
+          this.matterAnalysisService.processTks(this.timekeepers);
+        }
+      }
+    );
+  }
+
 
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
+    }
+    if (this.pendingRequestTk) {
+      this.pendingRequestTk.unsubscribe();
     }
   }
 

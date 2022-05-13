@@ -59,14 +59,14 @@
 
           <div class="roboto-bold p-md-4-title mt20">Top Partner</div>
           <div>{{document.partner_first_name}} {{document.partner_last_name}} </div>
-          <div class="roboto-bold p-md-4-title mt20"># Partners
-            <span class="roboto-div" *ngIf="document.partners">{{document.partners}}</span>
-            <span class="roboto-div" *ngIf="!document.partners">0</span>
-          </div>
-          <div class="roboto-bold p-md-4-title mt20"># Associates
-            <span class="roboto-div" *ngIf="document.associates">{{document.associates}}</span>
-            <span class="roboto-div" *ngIf="!document.associates">0</span>
-          </div>
+<!--          <div class="roboto-bold p-md-4-title mt20"># Partners-->
+<!--            <span class="roboto-div" *ngIf="document.partners">{{document.partners}}</span>-->
+<!--            <span class="roboto-div" *ngIf="!document.partners">0</span>-->
+<!--          </div>-->
+<!--          <div class="roboto-bold p-md-4-title mt20"># Associates-->
+<!--            <span class="roboto-div" *ngIf="document.associates">{{document.associates}}</span>-->
+<!--            <span class="roboto-div" *ngIf="!document.associates">0</span>-->
+<!--          </div>-->
 
 
         </div>
@@ -88,8 +88,13 @@
           </div>
         </div>
 
+        <div *ngIf="timekeepers.length > 0" class="rates-chart pt20 mt20 mb20 pl15 pr10">
+          <bd-bm-timekeepers-table [timekeepers]="timekeepers" [totalHours]="summaryData.total_hours_billed" [page]="'Documents'"></bd-bm-timekeepers-table>
+        </div>
+
       </div>
     </div>
+
 
   </div>
   </mat-dialog-content>
