@@ -29,6 +29,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
   pageSize: number = 10;
   totalMattersCount: number = 0;
   orderBy: string = 'total_billed desc';
+  searchWord: string;
   columns: Array<IHeaderColumn> = [];
   noEligibleMattersFound: boolean;
 
@@ -163,8 +164,14 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
       smartPa: this.smartPA.toString(), // 'Real Estate', // 'Capital Markets',
       orderBy: this.orderBy,
       pageNum: this.pageNumber,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
+      search: null
     };
+    if (this.searchWord && this.searchWord.length > 3) {
+      params.search = this.searchWord.trim();
+    } else {
+      delete params.search;
+    }
     this.pendingRequest = this.httpService.makeGetRequest('getBMEligibleMattersByPA', params).subscribe(
       (data: any) => {
         if (!data.result  || data.error) {
@@ -191,6 +198,13 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
     this.pageSize = event.pageSize;
     this.getBMEligibleMattersByPA();
     return event;
+  }
+  makeSearch(): void {
+    if (this.searchWord && (this.searchWord.length > 0 && this.searchWord.length < 3)) {
+      return;
+    }
+    this.goToFirstPage();
+    this.getBMEligibleMattersByPA();
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

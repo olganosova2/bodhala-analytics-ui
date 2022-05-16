@@ -262,6 +262,10 @@ h1, h2, h3, h4, h5, h6, th {
   display: flex;
   justify-content: flex-start;
 }
+.justify-end {
+  display: flex;
+  justify-content: flex-end;
+}
 .justify-between {
   display: flex;
   justify-content: space-between;

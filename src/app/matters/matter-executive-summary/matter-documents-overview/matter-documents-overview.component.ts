@@ -5,7 +5,7 @@ import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui
 import {FiltersService} from '../../../shared/services/filters.service';
 import {MatDialog} from '@angular/material/dialog';
 import {MatterAnalysisService} from '../matter-analysis.service';
-import {IInternalMatter, IMarketDocumentData, IMatterDocument, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsPanel} from '../model';
+import {DocumentAndActivityType, IInternalMatter, IMarketDocumentData, IMatterDocument, IMatterDocumentSection, IMatterExecSummary, IMatterMarketDocument, IMatterTotalsPanel} from '../model';
 import {Subscription} from 'rxjs';
 import {SAVINGS_CALCULATOR_CONFIG} from '../../../shared/services/config';
 import {MatterDocumentModalComponent} from './matter-document-modal/matter-document-modal.component';
@@ -20,6 +20,7 @@ import {MOCK_MARKET_DOCS} from '../../../shared/unit-tests/mock-data/matter-over
 export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   documents: Array<IMatterDocument> = [];
+  sections: Array<IMatterDocumentSection> = [];
   marketData: Array<IMarketDocumentData> = [];
   internalMatters: Array<IInternalMatter> = [];
   matterId: string;
@@ -76,18 +77,24 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
         }
         this.documents = (data.result || []);
         if (this.documents.length > 0) {
-          this.getMarketData(this.documents);
+          const docs = this.documents.filter(e => e.entity_type === DocumentAndActivityType.PROCEEDING || e.entity_type === DocumentAndActivityType.LEGAL_DOC) || [];
+          const tasks = this.documents.filter(e => e.entity_type === DocumentAndActivityType.ACTIVITY) || [];
+          this.sections.push({title: 'Tasks', documents: tasks });
+          this.sections.push({title: 'Documents', documents: docs });
+          this.getMarketData(this.sections);
         }
         this.totalRecordsDocs = this.documents.length;
       }
     );
   }
-  getMarketData(documents: Array<IMatterDocument>): void {
+  getMarketData(sections: Array<IMatterDocumentSection>): void {
     // const params = { matterId: this.matterId, client_id: this.userService.currentUser.client_info_id, documents: []};
     let idx = 0;
-    for (const doc of documents) {
-      doc.index = idx;
-      idx ++;
+    for (const section of sections) {
+      for (const doc of section.documents) {
+        doc.index = idx;
+        idx ++;
+      }
     }
     // this.marketData = MOCK_MARKET_DOCS;
     this.isLoaded = false;
@@ -97,21 +104,25 @@ export class MatterDocumentsOverviewComponent implements OnInit, OnDestroy {
         this.isLoaded = true;
         const records =  (data.result.documents || []);
         // this.marketData = (data.result.documents || []);
-        this.processMarketDocsData(this.documents, records);
+        for (const section of sections) {
+          this.processMarketDocsData(section.documents, records);
+        }
         this.internalMatters = data.result.internal_matters || [];
-        this.matterAnalysisService.getDocumentLandingRatings(documents, this.marketData);
+        for (const section of sections) {
+          this.matterAnalysisService.getDocumentLandingRatings(section.documents, this.marketData);
+        }
       }
     );
 
   }
   processMarketDocsData(documents: Array<IMatterDocument>, marketData: Array<IMatterMarketDocument>): void {
     const result = [];
-    for (const doc of this.documents) {
+    for (const doc of documents) {
       const filtered = marketData.filter(e => e.entity === doc.canonical && e.entity_type === doc.entity_type && e.category === doc.category);
       const docMarketRecords = { index: doc.index, market_data: filtered};
       result.push(docMarketRecords);
     }
-    this.marketData = result;
+    this.marketData = [ ...this.marketData, ...result];
   }
   openDetails(document: IMatterDocument): void {
     const modalConfig = {...SAVINGS_CALCULATOR_CONFIG.detailsDialogConfig, data: Object.assign([], document)};

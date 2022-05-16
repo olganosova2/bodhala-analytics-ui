@@ -11,14 +11,14 @@
     </div>
   </div>
   <bd-matter-title-bar [matterId]="matterId" [title]="'Task & Document Analysis'" [index]="2"></bd-matter-title-bar>
-
-  <div class="panel-wrapper mt20">
-
-    <div class="mt20" *ngIf="totalRecordsDocs === 0">No documents found.</div>
-    <table class="full-width">
+  <div class="mt20" *ngIf="totalRecordsDocs === 0">No documents found.</div>
+  <div class="panel-wrapper mt20" *ngFor="let section of sections">
+    <div class="exs-panel-title mb10">{{section.title}}</div>
+    <div class="mt20" *ngIf="section.documents.length === 0">No records found.</div>
+    <table class="full-width" *ngIf="section.documents.length > 0">
       <thead>
       <tr class="roboto-bold">
-        <th>Document / Task</th>
+        <th><span *ngIf="section.title === 'Documents'">Document</span><span *ngIf="section.title === 'Tasks'">Task</span></th>
         <th>Total Cost</th>
         <th># Hours Worked</th>
         <th>Cost Rating</th>
@@ -26,7 +26,7 @@
         <th>Staffing Efficiency</th>
       </tr>
       </thead>
-      <tr *ngFor="let doc of documents">
+      <tr *ngFor="let doc of section.documents">
         <td>
 
           <span  class="pointer-hand href-link-primary" (click)="openDetails(doc)">{{doc.canonical}}</span>
@@ -53,9 +53,9 @@
       </tr>
 
     </table>
-    <div class="spinner-card" [hidden]="isLoaded">
-      <mat-spinner diameter="50" color="primary"></mat-spinner>
-    </div>
+  </div>
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
   </div>
 </div>
 

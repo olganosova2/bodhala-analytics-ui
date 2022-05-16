@@ -24,6 +24,11 @@ export enum MetricGrade {
   POOR = 'POOR',
   NODATA = 'NODATA',
 }
+export enum DocumentAndActivityType {
+  LEGAL_DOC = 'LEGAL_DOC',
+  PROCEEDING = 'PROCEEDING',
+  ACTIVITY = 'ACTIVITY'
+}
 
 export interface IMatterExecSummary {
   matter_name?: string;
@@ -109,6 +114,10 @@ export interface IMatterDocument {
   rates_rating?: IMetricDisplayData;
   staffing_rating?: IMetricDisplayData;
   hasEnoughData?: boolean;
+}
+export interface IMatterDocumentSection {
+  title: string;
+  documents: Array<IMatterDocument>;
 }
 export interface IMatterMarketDocument {
   bh_client_id: number;
