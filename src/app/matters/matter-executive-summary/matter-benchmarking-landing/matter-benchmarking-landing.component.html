@@ -9,7 +9,11 @@
     </div>
     <div *ngIf="noEligibleMattersFound" class="mt10 mb10">No eligible matters found</div>
     <div class="panel-wrapper mt20" *ngIf="matters.length > 0">
-    <table class="full-width" >
+      <div *ngIf="userBMSetup !== 'SelectedMatters'" class="justify-end">
+        <span class="mr10"><i>Search by Matter Name, Matter ID or Firm Name (hit Enter to search or clear):</i></span>
+        <input [(ngModel)]="searchWord" ngDefaultControl (keydown.enter)="makeSearch()"/>
+      </div>
+      <table class="full-width" >
       <thead>
       <tr class="roboto-bold">
         <th *ngFor="let column of columns" width="{{column.width}}">

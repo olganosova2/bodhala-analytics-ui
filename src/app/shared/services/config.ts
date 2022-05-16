@@ -319,4 +319,3 @@ export const quillConfig = {
     ['link', 'image']                         // link and image, video
   ]
 };
-
