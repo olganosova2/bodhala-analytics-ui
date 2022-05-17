@@ -23,7 +23,7 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
   selectedByAdminMatters: Array<string> = [];
   selectedByAdminSmartPAs: Array<string> = [];
   smartPAs: Array<SelectItem> = [];
-  smartPA: SelectItem[];
+  smartPA: SelectItem;
   matters: Array<IMatterOverview> = [];
   pageNumber: number = 1;
   pageSize: number = 10;

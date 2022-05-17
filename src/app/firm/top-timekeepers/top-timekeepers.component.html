@@ -21,7 +21,7 @@
     <div class="p-col-4">Total Spend</div>
   </div>
   <div class="p-grid table-row" *ngFor="let tk of timekeepers">
-    <div class="p-col-5"><span class="primary-pill">{{commonServ.formatTkName(tk.name)}}</span></div>
+    <div class="p-col-5"><span class="primary-pill">{{tk.name}}</span></div>
     <div class="p-col-3"><span class="primary-pill table-pill-2">${{tk.current_rate | number:'1.2-2'}}</span></div>
     <div class="p-col-4"><span class="primary-pill table-pill-2">${{tk.total | number:'1.0-0'}}</span></div>
   </div>
