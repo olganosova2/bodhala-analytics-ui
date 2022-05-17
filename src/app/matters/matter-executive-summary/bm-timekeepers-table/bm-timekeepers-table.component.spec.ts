@@ -8,6 +8,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
+import {MOCK_NAMED_TKS} from '../../../shared/unit-tests/mock-data/matter-overview';
+import {BMSetupType} from '../model';
 
 describe('BmTimekeepersTableComponent', () => {
   let component: BmTimekeepersTableComponent;
@@ -41,10 +43,16 @@ describe('BmTimekeepersTableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BmTimekeepersTableComponent);
     component = fixture.componentInstance;
+    component.timekeepers = MOCK_NAMED_TKS.result;
+    component.totalHours = 100;
     fixture.detectChanges();
   });
 
   it('should create BmTimekeepersTableComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should sort', () => {
+    component.sort({label: 'Last Name', field: 'last_name'});
+    expect(component.columns.length).toBe(7);
   });
 });
