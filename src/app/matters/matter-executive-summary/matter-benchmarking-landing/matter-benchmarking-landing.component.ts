@@ -154,6 +154,8 @@ export class MatterBenchmarkingLandingComponent implements OnInit, OnDestroy {
     if (!evt.value) {
       return;
     }
+    this.orderBy = 'total_billed desc';
+    this.searchWord = null;
     this.goToFirstPage();
     this.getBMEligibleMattersByPA();
   }
