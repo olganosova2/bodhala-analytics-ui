@@ -200,6 +200,9 @@ import { GranularRateChartComponent } from './rates-analysis/view-rate-analysis/
 import { BenchmarkMattersComponent } from './admin/benchmark-matters/benchmark-matters.component';
 import { RateInsightModalComponent } from './admin/admin-rate-benchmarks/rate-insight-modal/rate-insight-modal.component';
 import { CustomInternalMattersComponent } from './matters/matter-executive-summary/custom-internal-matters/custom-internal-matters.component';
+import { MatterBenchmarkingLandingComponent } from './matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
+import { TableHeaderSortComponent } from './shared/components/table-header-sort/table-header-sort.component';
+import { BmTimekeepersTableComponent } from './matters/matter-executive-summary/bm-timekeepers-table/bm-timekeepers-table.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -352,7 +355,10 @@ highcharts.setOptions({
     GranularRateChartComponent,
     BenchmarkMattersComponent,
     RateInsightModalComponent,
-    CustomInternalMattersComponent
+    CustomInternalMattersComponent,
+    MatterBenchmarkingLandingComponent,
+    TableHeaderSortComponent,
+    BmTimekeepersTableComponent
   ],
   entryComponents: [
     PillComponent,

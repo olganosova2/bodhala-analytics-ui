@@ -90,7 +90,6 @@ export class MatterTotalsMetricsComponent implements OnInit, OnDestroy {
     );
   }
   ngOnDestroy() {
-    this.commonServ.clearTitles();
     if (this.pendingRequest) {
       this.pendingRequest.unsubscribe();
     }

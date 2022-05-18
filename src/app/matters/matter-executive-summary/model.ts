@@ -1,8 +1,14 @@
 import {baseColumnChartOptions} from '../../shared/models/base-chart';
 const groupDistance = window.screen.width > 1440 ? 0.4 : window.screen.width > 1200 ? 0.35 : 0.25;
 
-export const HARDCODED_MATTER_ID = '061439-00107'; // '056130-0000274'; // '149945'; //   '061439-10014'; //   '373046-00021'; // '10001320'; 056130-0000087
+export const HARDCODED_MATTER_ID = '061439-00107'; // '056130-0000274'; // '149945'; //   '061439-10014'; //   '373046-00021'; // '10001320'; 056130-0000087  198309
 export const RECORDS_NUMBER_THRESHOLD = 2;
+
+export enum BMSetupType {
+  AllMatters = 'AllMatters',
+  SelectedMatters = 'SelectedMatters',
+  SmartPAs = 'SmartPAs'
+}
 
 export enum MetricCardType {
   AverageRates = 'AverageRates',
@@ -17,6 +23,11 @@ export enum MetricGrade {
   FAIR = 'FAIR',
   POOR = 'POOR',
   NODATA = 'NODATA',
+}
+export enum DocumentAndActivityType {
+  LEGAL_DOC = 'LEGAL_DOC',
+  PROCEEDING = 'PROCEEDING',
+  ACTIVITY = 'ACTIVITY'
 }
 
 export interface IMatterExecSummary {
@@ -104,6 +115,10 @@ export interface IMatterDocument {
   staffing_rating?: IMetricDisplayData;
   hasEnoughData?: boolean;
 }
+export interface IMatterDocumentSection {
+  title: string;
+  documents: Array<IMatterDocument>;
+}
 export interface IMatterMarketDocument {
   bh_client_id: number;
   client_matter_id: string;
@@ -161,6 +176,35 @@ export interface IMatterWithNames {
   expenses?: number;
   total_with_expenses?: number;
 }
+export interface IMatterOverview {
+  client_matter_id: string;
+  matter_name: string;
+  total_billed: number;
+  total_expenses: number;
+  total_hours_billed: number;
+  smart_pa: string;
+  bh_lawfirm_id: number;
+  firm_name: string;
+  xdata: Array<IMatterExecSummary>;
+  cost_rating?: IMetricDisplayData;
+  rates_rating?: IMetricDisplayData;
+  staffing_rating?: IMetricDisplayData;
+}
+export interface INamedTimekeepersBM {
+  tk_id: string;
+  first_name: string;
+  last_name: string;
+  tk_level: string;
+  bh_classification: string;
+  total_billed: number;
+  total_expenses: number;
+  total_hours_billed: number;
+  avg_rate: number;
+  client_matter_id: string;
+  bodhala_classification?: string;
+  percent_of_work?: number;
+}
+
 
 export const matterColumnChartOptions = {
   chart: {

@@ -136,6 +136,10 @@ export const END_POINTS_URLS = {
   getCustomInternalMatters: {url: BASE_URL + 'analytics/getCustomInternalMatters', showLoading: true},
   saveBMCustomInternalMatters: {url: BASE_URL + 'analytics/saveBMCustomInternalMatters', showLoading: true},
   deleteBMCustomInternalMatters: {url: BASE_URL + 'analytics/deleteBMCustomInternalMatters', showLoading: true},
+  getBMEligibleMattersByPA: {url: BASE_URL + 'analytics/getBMEligibleMattersByPA', showLoading: true},
+  getClientBMMatters: {url: BASE_URL + 'analytics/getClientBMMatters', showLoading: true},
+  getNamedTKforBMMatter: {url: BASE_URL + 'analytics/getNamedTKforBMMatter', showLoading: false},
+  getNamedTKforBMDocument: {url: BASE_URL + 'analytics/getNamedTKforBMDocument', showLoading: false},
 
 
   // ADMIN
@@ -212,6 +216,7 @@ export const ROUTES = [
   {name: 'app.client.recommendations', routePath: 'analytics-ui/admin/client-recommendations', fragment: '/client-recommendations'},
   {name: 'app.ledes.imports', routePath: 'analytics-ui/admin/ledes-imports', fragment: '/ledes-imports'},
   {name: 'analytics.qbrs.dashboard', routePath: 'analytics-ui/qbrs/dashboard', fragment: '/qbrs/'},
+  {name: 'app.matter.benchmarking', routePath: 'analytics-ui/matter-benchmarking', fragment: '/matter-benchmarking'},
   {name: 'app.uploads-manage-launchpad', routePath: 'analytics-ui/admin/insights', fragment: '/admin/insights'},
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings
@@ -314,4 +319,3 @@ export const quillConfig = {
     ['link', 'image']                         // link and image, video
   ]
 };
-

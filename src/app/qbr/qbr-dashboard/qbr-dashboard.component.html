@@ -1,6 +1,6 @@
 <div>
-  <div *ngIf="noRecordsFound" class="mb10 mt10">No Records found</div>
-  <ag-grid-angular
+  <div *ngIf="noRecordsFound" class="mb10 mt10">No QBRs found</div>
+  <ag-grid-angular [hidden] = "noRecordsFound"
       #agGrid
       style="width: 100%;"
       [ngStyle]="{'height': agGridService.setGridHeight(qbrs, paginationPageSize) +'px'}"

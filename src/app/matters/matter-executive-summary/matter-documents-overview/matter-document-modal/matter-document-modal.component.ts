@@ -1,6 +1,6 @@
 import {Component, ElementRef, HostListener, Inject, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {barTkPercentOptions, currencyAxisChartOptions, documentsRatesOptions, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, IMetricDisplayData, matterColumnChartOptions, MetricCardType, RECORDS_NUMBER_THRESHOLD} from '../../model';
+import {barTkPercentOptions, currencyAxisChartOptions, documentsRatesOptions, IMatterDocument, IMatterExecSummary, IMatterTotalsPanel, IMetricDisplayData, INamedTimekeepersBM, matterColumnChartOptions, MetricCardType, RECORDS_NUMBER_THRESHOLD} from '../../model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../../shared/services/common.service';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs';
 })
 export class MatterDocumentModalComponent implements OnInit {
   pendingRequest: Subscription;
+  pendingRequestTk: Subscription;
   document: IMatterDocument;
   matterId: string;
   firmId: number;
@@ -33,6 +34,7 @@ export class MatterDocumentModalComponent implements OnInit {
   internalMetricData: Array<IMetricDisplayData> = [];
   marketMetricDataHr: Array<IMetricDisplayData> = [];
   internalMetricDataHr: Array<IMetricDisplayData> = [];
+  timekeepers: Array<INamedTimekeepersBM> = [];
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
   @ViewChild('chartDivHr') chartDivHr: ElementRef<HTMLElement>;
 
@@ -62,6 +64,7 @@ export class MatterDocumentModalComponent implements OnInit {
   ngOnInit(): void {
     this.matterId = this.document.client_matter_id;
     this.getDocumentBenchmarks();
+    this.getNamedTKforBMDocument();
   }
 
   getDocumentBenchmarks(): void {
@@ -101,6 +104,23 @@ export class MatterDocumentModalComponent implements OnInit {
       }
     );
 
+  }
+  getNamedTKforBMDocument(): void {
+    const params = {
+      clientId: this.userService.currentUser.client_info_id,
+      matterId: this.matterId,
+      entity: this.document.canonical,
+      category: this.document.category,
+      entity_type: this.document.entity_type
+    };
+    this.pendingRequestTk = this.httpService.makeGetRequest<INamedTimekeepersBM>('getNamedTKforBMDocument', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          this.timekeepers = (data.result || []).filter(e => e.total_billed > 0);
+          this.matterAnalysisService.processTks(this.timekeepers);
+        }
+      }
+    );
   }
   loadChartsConfig(): void {
     this.marketMetricData = this.matterAnalysisService.formatAverageRate(this.summaryData, this.marketData, this.marketRecords);

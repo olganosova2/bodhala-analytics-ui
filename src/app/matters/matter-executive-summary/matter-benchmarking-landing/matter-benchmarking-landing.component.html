@@ -1,0 +1,70 @@
+<div class="exs-div ml20" id="matterAnalysis">
+  <div class="mb20">
+    <div><h3 class="roboto-bold">Practice Area Overview</h3></div>
+    <div *ngIf="!this.userBMSetup">No Benchmarking Settings</div>
+    <div *ngIf="this.userBMSetup === 'AllMatters' || this.userBMSetup === 'SmartPAs'">
+    <div class="font-bold mt10 mr10 mb10">Select Smart Practice Area: </div>
+    <p-dropdown [options]="smartPAs" [(ngModel)]="smartPA" autoWidth="false"  [style]="{'width':'300px'}"
+               (onChange)="changeSmartPA($event)"></p-dropdown>
+    </div>
+
+    <div *ngIf="userBMSetup !== 'SelectedMatters' && smartPA" class="justify-end">
+      <span class="mr10"><i>Search by Matter Name, Matter ID or Firm Name (hit Enter to search or clear):</i></span>
+      <input [(ngModel)]="searchWord" ngDefaultControl (keydown.enter)="makeSearch()"/>
+    </div>
+    <div *ngIf="noEligibleMattersFound" class="mt10 mb10 roboto-bold">No eligible matters found</div>
+    <div class="panel-wrapper mt20" *ngIf="matters.length > 0">
+
+      <table class="full-width" >
+      <thead>
+      <tr class="roboto-bold">
+        <th *ngFor="let column of columns" width="{{column.width}}">
+          <bd-table-header-sort [column]="column" (sortDirectionChanged)="sort($event)"></bd-table-header-sort>
+        </th>
+        <th width="5%">Cost Rating</th>
+        <th width="5%">Rates Rating</th>
+        <th width="5%">Staffing Efficiency</th>
+      </tr>
+      </thead>
+      <tr *ngFor="let doc of matters">
+        <td>
+          <span class="totals-badge  pr10 pointer-hand" class="pointer-hand href-link-primary"
+                [routerLink]="['/analytics-ui/matter-executive-summary']" [queryParams]="{matterId: doc.client_matter_id}">{{doc.matter_name}}</span>
+        </td>
+        <td >{{doc.client_matter_id}}</td>
+        <td>${{doc.total_billed | number:'1.0-0'}}</td>
+        <td>{{doc.total_hours_billed | number:'1.1-1'}}</td>
+        <td *ngIf="userBMSetup === 'SelectedMatters'">{{doc.smart_pa}}</td>
+        <td>{{doc.firm_name}}</td>
+        <td><span  *ngIf="doc.cost_rating?.grade" [ngClass]=" {'font-qbr-red': doc.cost_rating?.grade === 'POOR',
+              'font-qbr-green': doc.cost_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.cost_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.cost_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.cost_rating?.grade">No Available Benchmark</span>
+        </td>
+        <td><span  *ngIf="doc.rates_rating?.grade" [ngClass]=" {'font-qbr-red': doc.rates_rating?.grade === 'POOR',
+              'font-qbr-green': doc.rates_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.rates_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.rates_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.rates_rating?.grade">No Available Benchmark</span>
+        </td>
+        <td><span *ngIf="doc.staffing_rating?.grade" [ngClass]=" {'font-qbr-red': doc.staffing_rating?.grade === 'POOR',
+              'font-qbr-green': doc.staffing_rating?.grade === 'GOOD',
+              'font-qbr-orange': doc.staffing_rating?.grade === 'FAIR'}">{{commonServ.capitalize(doc.staffing_rating?.grade)}}</span>
+          <span class="no-bm" *ngIf="!doc.staffing_rating?.grade">No Available Benchmark</span>
+        </td>
+
+
+      </tr>
+
+    </table>
+      <div *ngIf="userBMSetup !== 'SelectedMatters' && totalMattersCount > pageSize">
+        <mat-paginator [length]="totalMattersCount" #paginator
+                       [pageSize]="pageSize"
+                       [showFirstLastButtons]="true"
+                       [pageSizeOptions]="[10, 25, 50, 100]"
+                       (page)="pageEvent = getNextPrevPage($event)"
+                       aria-label="Select page">
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

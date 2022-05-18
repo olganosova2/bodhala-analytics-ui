@@ -1,0 +1,28 @@
+<div class="exs-panel-title"  [ngClass]="{'roboto-div': page === 'Documents'}">
+   <span *ngIf="page !== 'Documents'">
+  <img  alt="icon" src="assets/images/avg_ass_matter.svg" width="40px"/>
+ Staffing Breakdown</span>
+  <span *ngIf="page === 'Documents'">
+    Staffing & Rate Analysis
+  </span>
+</div>
+<table class="full-width mt15" >
+  <thead>
+  <tr class="roboto-bold">
+    <th *ngFor="let column of columns" width="{{column.width}}">
+      <bd-table-header-sort [column]="column" (sortDirectionChanged)="sort($event)"></bd-table-header-sort>
+    </th>
+
+  </tr>
+  </thead>
+  <tr *ngFor="let tk of timekeepers">
+    <td>{{ tk.last_name }}</td>
+    <td >{{ tk.first_name}}</td>
+    <td >{{ tk.bodhala_classification}}</td>
+    <td>${{tk.avg_rate | number:'1.0-0'}}</td>
+    <td>{{tk.total_hours_billed| number:'1.0-0'}}</td>
+    <td>${{tk.total_billed | number:'1.2-2'}}</td>
+    <td>{{matterAnalysisService.getPercentOfWork(tk.total_hours_billed, totalHours) | number:'1.1-1'}}%</td>
+  </tr>
+
+</table>

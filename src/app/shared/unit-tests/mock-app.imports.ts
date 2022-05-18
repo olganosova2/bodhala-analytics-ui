@@ -159,6 +159,9 @@ import {MatterDocumentModalComponent} from '../../matters/matter-executive-summa
 import {InternalMattersOverlayComponent} from '../../matters/matter-executive-summary/internal-matters-overlay/internal-matters-overlay.component';
 import {BenchmarkMattersComponent} from '../../admin/benchmark-matters/benchmark-matters.component';
 import {CustomInternalMattersComponent} from '../../matters/matter-executive-summary/custom-internal-matters/custom-internal-matters.component';
+import {MatterBenchmarkingLandingComponent} from '../../matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
+import {TableHeaderSortComponent} from '../components/table-header-sort/table-header-sort.component';
+import {BmTimekeepersTableComponent} from '../../matters/matter-executive-summary/bm-timekeepers-table/bm-timekeepers-table.component';
 
 
 
@@ -312,7 +315,10 @@ export const DECLARATIONS = [
   MatterMetricTableComponent,
   InternalMattersOverlayComponent,
   BenchmarkMattersComponent,
-  CustomInternalMattersComponent
+  CustomInternalMattersComponent,
+  MatterBenchmarkingLandingComponent,
+  TableHeaderSortComponent,
+  BmTimekeepersTableComponent
 ];
 
 export const PROVIDERS = [
