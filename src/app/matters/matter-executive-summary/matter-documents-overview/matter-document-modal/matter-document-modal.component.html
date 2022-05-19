@@ -40,7 +40,7 @@
               <ng-container *ngIf = "(i ===0 && internalRecords.length > 0) || (i === 1 && marketRecords.length > 0)">
                 <div class="p-col-3 roboto-bold ">{{subMetric.label}}</div>
                 <div class="p-col-3 left-border-gray no-left-padding">
-                  <span class="metric-bar" [ngClass]="{'metric-bar-yellow': subMetric.label === 'Internal'}" [ngStyle]="{'width': subMetric.size + '%'}"></span></div>
+                  <span class="metric-bar" [ngClass]="{'metric-bar-yellow': subMetric.label === 'Panel'}" [ngStyle]="{'width': subMetric.size + '%'}"></span></div>
                 <div class="p-col-6 no-right-padding">
                 {{ subMetric?.format }}{{subMetric?.amount | number:'1.0-0'}}
                   <span class="ml5" [ngClass]="{'font-qbr-green': subMetric?.direction <= 0, 'font-red': subMetric?.direction > 0}">{{ subMetric?.increase | number:'1.0-0'}}%

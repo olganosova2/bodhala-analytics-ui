@@ -141,8 +141,8 @@ export class MatterDocumentModalComponent implements OnInit {
 
     defaultRateOptions.series.push({name: 'Actual', color: '#000000', data: this.marketMetricData.map(e => e.actual)});
     if (this.internalRecords.length > 0 && this.document.hasEnoughData) {
-      defaultRateOptions.series.push({name: 'Internal', color: '#FFC327', data: this.internalMetricData.map(e => e.market)});
-      defaultTkChartOptions.xAxis.categories.push('Internal');
+      defaultRateOptions.series.push({name: 'Panel', color: '#FFC327', data: this.internalMetricData.map(e => e.market)});
+      defaultTkChartOptions.xAxis.categories.push('Panel');
     }
     if (this.marketRecords.length > 0 && this.document.hasEnoughData) {
       defaultRateOptions.series.push({ name: 'Market', color: '#00D1FF', data: this.marketMetricData.map(e => e.market)});
