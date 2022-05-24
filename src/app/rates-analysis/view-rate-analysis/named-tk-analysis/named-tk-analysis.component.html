@@ -30,10 +30,27 @@
     </div>
   </div>
 
-  <h3 style="padding-bottom: 40px;">Named Timekeeper Benchmarks<br>& Cost Analysis</h3>
+  <h3 style="padding-bottom: 20px;">Named Timekeeper Benchmarks<br>& Cost Analysis</h3>
 
-  <div>
+  <div class="nav-wrapper">
+    <div class="nav-pill" style="order: 0;" (click)="goToOverviewPage()">
+      Rates Overview
+    </div>
+    <div class="nav-pill" style="order: 1;" (click)="goToTKPage()">
+      Timekeeper Level Analysis
+    </div>
+    <div class="nav-pill" style="order: 2; background: black; color: white;">
+      Named Timekeeper Analysis
+    </div>
+  </div>
+
+  <div style="background: white; border-radius: 8px;">
     <!-- <h4>Rate Increase Prevention</h4> -->
+
+    <div class="full-width mb10" style="padding-top: 10px;">
+      <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
+      <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+    </div>
     <ag-grid-angular
         #agGrid
         style="width: 100%;"

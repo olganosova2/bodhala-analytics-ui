@@ -287,6 +287,10 @@ export class ViewRateAnalysisComponent implements OnInit {
     });
   }
 
+  goToNamedTKPage(): void {
+
+  }
+
   setStyle(): any {
     const styles = {
       'background-image': '-webkit-linear-gradient(bottom, #FFFFFF 67%,' +  this.costImpactColor + ' 33%)',

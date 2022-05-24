@@ -31,7 +31,19 @@
     </div>
   </div>
 
-  <h3 style="padding-bottom: 40px;">Rate Benchmarking Overview</h3>
+  <h3 style="padding-bottom: 20px;">Rate Benchmarking Overview</h3>
+
+  <div class="nav-wrapper">
+    <div class="nav-pill" style="order: 0; background: black; color: white;">
+      Rates Overview
+    </div>
+    <div class="nav-pill" style="order: 1;" (click)="goToDetail()">
+      Timekeeper Level Analysis
+    </div>
+    <div class="nav-pill" style="order: 2;"  (click)="goToNamedTKPage()">
+      Named Timekeeper Analysis
+    </div>
+  </div>
 
   <div class="p-grid"  style="flex-wrap: nowrap !important;">
     <!-- [ngStyle]="{'background-color': costImpactColor} -->
@@ -202,9 +214,9 @@
     </div>
   </div>
 
-  <div class="mt40" style="flex-direction: row; justify-content: center; align-items: center; display: flex;">
+  <!-- <div class="mt40" style="flex-direction: row; justify-content: center; align-items: center; display: flex;">
 
     <button class="primary-button" style="background: black; color: white; font-family: 'Roboto'; font-size: 16px; height: 64px; width: 475px;" (click)="goToDetail()">See Timekeeper Level Benchmarks & Cost Analysis<i class="fa fa-chevron-right" style="padding-left: 6px; font-weight: 400;"></i></button>
-  </div>
+  </div> -->
 
 </div>

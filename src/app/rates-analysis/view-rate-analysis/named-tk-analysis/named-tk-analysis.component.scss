@@ -9,6 +9,10 @@
   padding: 8px 0px;
 }
 
+.ag-theme-alpine {
+  font-family: "Roboto", sans-serif;
+}
+
 h3 {
   font-family: 'Roboto Bold' !important;
   font-size: 40px;
@@ -32,4 +36,45 @@ h3 {
   display: inline-block;
   margin-right: 1em;
   margin-bottom: 0.4em;
+}
+
+.nav-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  padding-bottom: 40px;
+  width: 660px;
+}
+
+.nav-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 6px 17px;
+  background: #FFFFFF;
+  color: black;
+  border-radius: 99px;
+  flex: none;
+  font-family: 'Roboto';
+  cursor: pointer;
+}
+
+.rate-span {
+  font-family: "Roboto Bold";
+  font-size: 12px;
+}
+
+.pct-span {
+  font-family: "Roboto";
+  font-size: 12px;
+  border-radius: 17px;
+  width: 82px;
+  height: 24px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 8px;
+  color: white;
 }

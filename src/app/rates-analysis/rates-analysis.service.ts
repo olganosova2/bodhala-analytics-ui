@@ -295,4 +295,29 @@ export class RatesAnalysisService {
     }
     return result;
   }
+
+  // get market average, internal, and firm year data for the granularity page
+  // for each seniority bucket
+  getGranularityPageData(bm: any, numTiers: number): Promise<any> {
+    const params = {
+      pa: bm.smart_practice_area,
+      firm: bm.bh_lawfirm_id,
+      yyyy: bm.year,
+      numPartnerTiers: numTiers
+    };
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getGranularityPageData', params).subscribe(
+        (data: any) => {
+          console.log("DATA: ", data)
+          if (!data.result) {
+            resolve(data);
+          }
+          resolve(data.result);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
+  }
 }
