@@ -40,7 +40,7 @@
     <div class="nav-pill" style="order: 1;" (click)="goToDetail()">
       Timekeeper Level Analysis
     </div>
-    <div class="nav-pill" style="order: 2;"  (click)="goToNamedTKPage()">
+    <div [hidden]="!userService.hasEntitlement('rate.benchmarking.tks')" class="nav-pill" style="order: 2;" (click)="goToNamedTKPage()">
       Named Timekeeper Analysis
     </div>
   </div>
@@ -94,75 +94,6 @@
 
         </div>
       </div>
-
-    </div>
-
-  </div>
-
-  <div class="p-grid mt40" style="flex-wrap: nowrap !important; display: none;">
-    <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setIncreaseStyle()" style="height: 175px; background: #FFFFFF; border-radius: 24px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px 16px 0px 16px;">
-      <div class="p-grid">
-        <div class="p-md-12" style="width: 72%; padding: 0px !important; margin-top: 8px;">
-          <em class="icon-bar-chart" style="font-size: 18px; position: absolute; margin-left: 20px; margin-top: 20px;"></em>
-          <div class="header-span" style="line-height: 26px; font-size: 22px !important; padding-left: 2.5em !important;">
-            Last Year's Average<br>
-            <span style="padding-left: 2.5em;">Rate Increase:</span>
-          </div>
-          <div class="generic" style="line-height: 20px; margin-left: 1.25em; margin-top: .5em; margin-bottom: 0.5em;">
-            If your rates change by the same percentage as<br>
-            last year, your projected cost impact is
-          </div>
-          <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important; margin-top: .75em;" [ngStyle]="{'color': firmRateIncreaseColor}">
-            <span *ngIf="firmCostImpact > 0">+</span> {{firmCostImpactFormatted}}
-            <span class="ml10 pointer-hand" placement="bottom"
-                [ngbPopover]="helpText"
-                popoverTitle="Projected Cost Increase"
-                [openDelay]="100"
-                [closeDelay]="2000"
-                triggers="mouseenter:mouseleave"
-                style="height: 16px; width: 16px; margin-top: 2em; margin-right: 0.5em; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px; font-weight: 400; justify-content: center; align-items: center; display: inline-flex; font-family: 'Roboto'; float: right;">?
-            </span>
-          </div>
-        </div>
-
-        <div class="p-md-12" style="padding: 0px !important; width: 28%; font-size: 48px; font-family: 'Roboto Bold'; display: flex; justify-content: center; align-items: center; color: white;" >
-          {{firmRateIncreasePct | number:'1.0-0'}}%
-        </div>
-      </div>
-    </div>
-
-    <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setMarketIncreaseStyle()" style="height: 175px; background: #FFFFFF; border-radius: 24px; width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px 16px 0px 16px;">
-      <div class="p-grid">
-        <div class="p-md-12" style="width: 72%; padding: 0px !important; margin-top: 8px;">
-          <em class="icon-bar-chart" style="font-size: 18px; position: absolute; margin-left: 20px; margin-top: 20px;"></em>
-          <div class="header-span" style="line-height: 26px; font-size: 22px !important; padding-left: 2.5em !important;">
-            Last Year's Estimated Market<br>
-            <span style="padding-left: 2.5em;">Rate Increase:</span>
-          </div>
-          <!-- <em class="icon-bar-chart"></em>
-          <span class="header-span" style="display: inline;">Last Year's Average<br>Rate Increase:</span> -->
-          <div class="generic" style="line-height: 20px; margin-left: 1.25em; margin-top: .5em; margin-bottom: 0.5em;">
-            If your rates change by the estimated market rate<br>
-            increase, your projected cost impact
-          </div>
-          <div class="header-span" style="font-size: 32px !important; margin-left: .5em; padding-left: 0px !important;" [ngStyle]="{'color': cohortRateIncreaseColor}">
-            <span *ngIf="cohortCostImpact > 0">+</span> {{cohortCostImpactFormatted}}
-            <span class="ml10 pointer-hand" placement="bottom"
-                [ngbPopover]="helpText"
-                popoverTitle="Projected Cost Increase"
-                [openDelay]="100"
-                [closeDelay]="2000"
-                triggers="mouseenter:mouseleave"
-                style="height: 16px; width: 16px; margin-top: 2em; margin-right: 0.5em; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px; font-weight: 400; justify-content: center; align-items: center; display: inline-flex; float: right; font-family: 'Roboto';">?
-            </span>
-          </div>
-        </div>
-
-        <div class="p-md-12" style="padding: 0px !important; width: 28%; font-size: 48px; font-family: 'Roboto Bold'; display: flex; justify-content: center; align-items: center; color: white;" >
-          {{cohortRateIncreasePct | number:'1.0-0'}}%
-        </div>
-      </div>
-
 
     </div>
 

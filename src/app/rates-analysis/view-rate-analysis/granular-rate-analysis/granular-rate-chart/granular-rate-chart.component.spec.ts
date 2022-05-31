@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FiltersService} from '../../../../shared/services/filters.service';
 import * as mockServices from '../../../../shared/unit-tests/mock-services';
 import { RatesAnalysisService } from '../../../rates-analysis.service';
-import { MOCK_RATE_ANALYSIS_RESULT, MOCK_HISTORY, MOCK_BENCHMARK } from 'src/app/shared/unit-tests/mock-data/rate-benchmarking';
+import { MOCK_RATE_ANALYSIS_RESULT, MOCK_HISTORY, MOCK_BENCHMARK, MOCK_PARTNER_MARKET_INTERNAL_DATA, MOCK_SENIOR_ASSOCIATE_MI_DATA, MOCK_MID_ASSOCIATE_MI_DATA, MOCK_JUNIOR_ASSOCIATE_MI_DATA } from 'src/app/shared/unit-tests/mock-data/rate-benchmarking';
 
 describe('GranularRateChartComponent', () => {
   let component: GranularRateChartComponent;
@@ -56,11 +56,13 @@ describe('GranularRateChartComponent', () => {
   it('should create w/associate', () => {
     component.classification = 'associate';
     component.seniority = 'junior';
+    component.marketInternalData = MOCK_JUNIOR_ASSOCIATE_MI_DATA;
     component.ngOnInit();
     expect(component).toBeTruthy();
   });
 
   it('should create w/partner', () => {
+    component.marketInternalData = MOCK_PARTNER_MARKET_INTERNAL_DATA;
     component.classification = 'partner';
     component.ngOnInit();
     expect(component).toBeTruthy();

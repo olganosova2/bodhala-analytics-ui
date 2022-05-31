@@ -3,7 +3,7 @@
   <div style="width: 12% !important; padding: 32px 0px 32px 48px !important;">
 
     <div class="labels mb10">{{selectedFirm}}</div>
-    <div *ngIf="validInternalBM" class="labels mb5">Internal</div>
+    <div *ngIf="validInternalBM" class="labels mb5">Panel</div>
   </div>
   <div #chartPanel  style="width: 88% !important; display: inline-block; position: relative; z-index: 1; padding: 32px !important;">
     <!-- (mouseenter)="showInfo($event, op3)" (mouseleave)="showInfo($event, op3)" -->
@@ -80,7 +80,7 @@
 
   <div class="p-grid" style="padding-top: 1em;" *ngIf="validInternalBM">
     <div style="width: 20%;">
-      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important;">Internal Rate</span>
+      <span class="header-span" style="font-size: 16px !important; font-weight: 400 !important; font-family: 'Roboto' !important;">Panel Rate</span>
     </div>
 
     <div style="width: 15%;">

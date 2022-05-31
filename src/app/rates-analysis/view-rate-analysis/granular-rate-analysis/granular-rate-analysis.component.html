@@ -33,7 +33,7 @@
     <div class="nav-pill" style="order: 1; background: black; color: white;">
       Timekeeper Level Analysis
     </div>
-    <div class="nav-pill" style="order: 2;"  (click)="goToNamedTKPage()">
+    <div [hidden]="!userService.hasEntitlement('rate.benchmarking.tks')" class="nav-pill" style="order: 2;"  (click)="goToNamedTKPage()">
       Named Timekeeper Analysis
     </div>
   </div>

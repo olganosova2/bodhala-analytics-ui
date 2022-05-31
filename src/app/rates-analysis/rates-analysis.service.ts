@@ -23,7 +23,7 @@ export class RatesAnalysisService {
             return;
           }
           const bm = data.result;
-          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms});
+          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms, num_tiers: data.num_tiers});
         },
         err => {
           return {error: err};
@@ -308,7 +308,6 @@ export class RatesAnalysisService {
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getGranularityPageData', params).subscribe(
         (data: any) => {
-          console.log("DATA: ", data)
           if (!data.result) {
             resolve(data);
           }

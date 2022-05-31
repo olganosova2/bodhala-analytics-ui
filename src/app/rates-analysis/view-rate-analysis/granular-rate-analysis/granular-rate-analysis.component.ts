@@ -32,9 +32,9 @@ export class GranularRateAnalysisComponent implements OnInit {
   // vars to store seniority bucket market average and interal data
   firmAssociateSeniorityData: any;
   firmPartnerSeniorityData: any;
-  juniorAssociateMIData: any;
-  midAssociateMIData: any;
-  seniorAssociateMIData: any;
+  juniorAssociateMIData: any = null;
+  midAssociateMIData: any = null;
+  seniorAssociateMIData: any = null;
   partnerMIData: any;
   juniorAssocFirmHours: number;
   midAssocFirmHours: number;
@@ -122,7 +122,6 @@ export class GranularRateAnalysisComponent implements OnInit {
           }
         }
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
-
         if (rateAnalysisData.result.firm_data) {
           if (rateAnalysisData.result.firm_data.length > 0) {
             this.firmYearData = rateAnalysisData.result.firm_data[0];
@@ -141,7 +140,6 @@ export class GranularRateAnalysisComponent implements OnInit {
           this.numPartnerTiers = rateAnalysisData.result.num_tiers;
         }
         const granularResult = await this.ratesService.getGranularityPageData(this.benchmark, this.numPartnerTiers);
-
         this.setData(granularResult);
       });
     }
@@ -201,6 +199,7 @@ export class GranularRateAnalysisComponent implements OnInit {
       associateSeniorMarketInternal: this.seniorAssociateMIData,
       firmAssociateData: this.firmAssociateSeniorityData,
       firmPartnerData: this.firmPartnerSeniorityData,
+      firmYearData: this.firmYearData,
       cluster: this.cluster,
       numTiers: this.numPartnerTiers,
       peerFirms: this.peerFirms
@@ -215,7 +214,7 @@ export class GranularRateAnalysisComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/' + this.benchmark.id]);
+    this.router.navigate(['/analytics-ui/rate-benchmarking/']);
   }
 
 }

@@ -98,7 +98,6 @@ export class ViewRateAnalysisComponent implements OnInit {
     this.setUpChartOptions();
     this.route.paramMap
       .subscribe(async params => {
-        // this.report = this.qbrService.savedQBR;
         this.benchmarkId = Number(params.get('id'));
         const result = await this.ratesService.getBenchmark(this.benchmarkId);
         this.firmName = result.firm_name;
@@ -192,26 +191,13 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.overallSpendPAData = data.result.overall_pa_spend;
       }
       this.loaded = true;
-      if (data.result.max_year && data.result.firm_rate_result_classification && data.result.cohort_rate_result_classification) {
+      if (data.result.max_year) {
         const validRange = data.result.valid_range;
-        let firmClassificationRateIncreasePct = {
+        const firmClassificationRateIncreasePct = {
           classificationData: null,
           rateIncreasePct: null,
           total: null,
         };
-        if (validRange) {
-          firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, data.result.max_year, true, validRange, this.year);
-        } else {
-          firmClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.firm_rate_result_classification, (data.result.max_year + 1), true, validRange, this.year);
-        }
-        const maxYear = data.result.max_year;
-        const cohortClassificationRateIncreasePct = this.ratesService.calculateRateIncreasePctClassification(data.result.cohort_rate_result_classification, data.result.max_year, false, true, this.year);
-        this.firmClassificationRateIncreaseData = firmClassificationRateIncreasePct.classificationData;
-        this.cohortClassificationRateIncreaseData = cohortClassificationRateIncreasePct.classificationData;
-        this.firmRateIncreasePct = firmClassificationRateIncreasePct.rateIncreasePct;
-        this.cohortRateIncreasePct = cohortClassificationRateIncreasePct.rateIncreasePct;
-        this.firmRateIncreasePct *= 100;
-        this.cohortRateIncreasePct *= 100;
         if (this.firmYearData) {
           // if difference is more than equal to 2 we can't calculate total firm spend using the effective rate query
           this.firmTotalSpend = this.firmYearData.total_atty_billed;
@@ -219,9 +205,6 @@ export class ViewRateAnalysisComponent implements OnInit {
           this.firmTotalSpend = firmClassificationRateIncreasePct.total;
         }
         this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
-
-        this.firmRateIncreaseColor = this.getColor(this.firmRateIncreasePct);
-        this.cohortRateIncreaseColor = this.getColor(this.cohortRateIncreasePct);
 
         // const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
         if (this.firmTotalSpend) {
@@ -288,7 +271,20 @@ export class ViewRateAnalysisComponent implements OnInit {
   }
 
   goToNamedTKPage(): void {
-
+    const detailData = {
+      firmYear: this.firmYearData,
+      bm: this.benchmark,
+      cluster: this.cluster,
+      numTiers: this.numPartnerTiers,
+      peerFirms: this.peerFirms,
+      overviewPage: true
+    };
+    this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
+    {state:
+      {
+        data: detailData
+      }
+    });
   }
 
   setStyle(): any {
