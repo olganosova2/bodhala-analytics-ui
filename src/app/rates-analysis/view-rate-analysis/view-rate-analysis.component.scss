@@ -137,3 +137,25 @@ h3 {
   margin-right: 1em;
   margin-bottom: 0.4em;
 }
+
+.nav-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding-bottom: 41px;
+  gap: 8px;
+  width: 660px;
+}
+
+.nav-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 6px 17px;
+  background: #FFFFFF;
+  color: black;
+  border-radius: 99px;
+  flex: none;
+  font-family: 'Roboto';
+  cursor: pointer;
+}

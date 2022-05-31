@@ -23,7 +23,7 @@ export class RatesAnalysisService {
             return;
           }
           const bm = data.result;
-          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms});
+          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms, num_tiers: data.num_tiers});
         },
         err => {
           return {error: err};
@@ -294,5 +294,29 @@ export class RatesAnalysisService {
       result.cost_impact = 'POSITIVE';
     }
     return result;
+  }
+
+  // get market average, internal, and firm year data for the granularity page
+  // for each seniority bucket
+  getGranularityPageData(bm: any, numTiers: number): Promise<any> {
+    const params = {
+      pa: bm.smart_practice_area,
+      firm: bm.bh_lawfirm_id,
+      yyyy: bm.year,
+      numPartnerTiers: numTiers
+    };
+    return new Promise((resolve, reject) => {
+      return this.httpService.makeGetRequest('getGranularityPageData', params).subscribe(
+        (data: any) => {
+          if (!data.result) {
+            resolve(data);
+          }
+          resolve(data.result);
+        },
+        err => {
+          return {error: err};
+        }
+      );
+    });
   }
 }

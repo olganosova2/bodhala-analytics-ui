@@ -37,6 +37,7 @@ import {RatesAnalysisComponent} from './rates-analysis/rates-analysis.component'
 import {AdminRateBenchmarksComponent} from './admin/admin-rate-benchmarks/admin-rate-benchmarks.component';
 import {ViewRateAnalysisComponent} from './rates-analysis/view-rate-analysis/view-rate-analysis.component';
 import { GranularRateAnalysisComponent } from './rates-analysis/view-rate-analysis/granular-rate-analysis/granular-rate-analysis.component';
+import { NamedTkAnalysisComponent } from './rates-analysis/view-rate-analysis/named-tk-analysis/named-tk-analysis.component';
 
 import {MatterExecutiveSummaryComponent} from './matters/matter-executive-summary/matter-executive-summary.component';
 import {AdminInsightsComponent} from './admin/insights/insights.component';
@@ -82,6 +83,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/rate-benchmarking', component: RatesAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/rate-benchmarking/view/:id', component: ViewRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/rate-benchmarking/view/detail/:id', component: GranularRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking/view/named/:id', component: NamedTkAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   {path: 'analytics-ui/matter-executive-summary', component: MatterExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},

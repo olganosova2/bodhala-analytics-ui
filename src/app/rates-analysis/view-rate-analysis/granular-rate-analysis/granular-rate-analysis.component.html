@@ -24,35 +24,48 @@
     </div>
   </div>
 
-  <h3 style="padding-bottom: 40px;">Timekeeper Level Benchmarks<br>& Cost Analysis</h3>
+  <h3 style="padding-bottom: 20px;">Timekeeper Level Benchmarks<br>& Cost Analysis</h3>
+
+  <div class="nav-wrapper">
+    <div class="nav-pill" style="order: 0;" (click)="goToOverviewPage()">
+      Rates Overview
+    </div>
+    <div class="nav-pill" style="order: 1; background: black; color: white;">
+      Timekeeper Level Analysis
+    </div>
+    <div [hidden]="!userService.hasEntitlement('rate.benchmarking.tks')" class="nav-pill" style="order: 2;"  (click)="goToNamedTKPage()">
+      Named Timekeeper Analysis
+    </div>
+  </div>
 
   <div *ngFor="let in of counter(numPartnerTiers); let i = index;">
     <div class="panel-wrapper mt40" style="padding: 0px !important;" [hidden]="numPartnerTiers === 4 && i === 2">
       <div>
         <bd-granular-rate-chart *ngIf="loaded" [classification]="'partner'" [tier]="i + 1" [overallSpendData]="overallSpendData" [numTiers]="numPartnerTiers"
-                                [firmName]="firmName" [firmSpendData]="firmYearData" [benchmark]="benchmark" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
+                                [firmName]="firmName" [marketInternalData]="partnerMIData" [firmPartnerSeniorityData]="firmPartnerSeniorityData"
+                                [benchmark]="benchmark" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
       </div>
     </div>
   </div>
 
   <div class="panel-wrapper mt40" style="padding: 0px !important;">
     <div>
-      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Junior'" [overallSpendData]="overallSpendData"
-                              [firmName]="firmName" [benchmark]="benchmark" [firmSpendData]="firmYearData" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
+      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Junior'" [marketInternalData]="juniorAssociateMIData"
+                              [firmName]="firmName" [totalSeniorityHours]="juniorAssocFirmHours" [seniorityFirmRate]="juniorAssocFirmRate" [benchmark]="benchmark" [firmAssociateSeniorityData]="firmAssociateSeniorityData" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
     </div>
   </div>
 
   <div class="panel-wrapper mt40" style="padding: 0px !important;">
     <div>
-      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Mid-level'" [overallSpendData]="overallSpendData"
-                              [firmName]="firmName" [benchmark]="benchmark" [firmSpendData]="firmYearData" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
+      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Mid-Level'" [marketInternalData]="midAssociateMIData"
+                              [firmName]="firmName" [totalSeniorityHours]="midAssocFirmHours" [seniorityFirmRate]="midAssocFirmRate" [benchmark]="benchmark" [firmAssociateSeniorityData]="firmAssociateSeniorityData" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
     </div>
   </div>
 
   <div class="panel-wrapper mt40" style="padding: 0px !important;">
     <div>
-      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Senior'" [overallSpendData]="overallSpendData"
-                              [firmName]="firmName" [firmSpendData]="firmYearData" [benchmark]="benchmark" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
+      <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Senior'" [marketInternalData]="seniorAssociateMIData"
+                              [firmName]="firmName" [totalSeniorityHours]="seniorAssocFirmHours" [seniorityFirmRate]="seniorAssocFirmRate" [firmAssociateSeniorityData]="firmAssociateSeniorityData" [benchmark]="benchmark" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
     </div>
   </div>
 
