@@ -41,6 +41,7 @@ export class PaTopLeadPartnersComponent implements OnInit, OnDestroy {
     } else {
       params.practiceAreas = JSON.stringify(arr);
     }
+    params.smartPAs = this.bodhalaPA;
 
     const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
