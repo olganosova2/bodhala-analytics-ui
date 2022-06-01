@@ -376,7 +376,7 @@ export class ViewRateAnalysisComponent implements OnInit {
       exportName = 'Rate Benchmark';
     }
     setTimeout(() => {
-      this.commonServ.generatePdfOuter(exportName, 'exportDiv', null);
+      this.commonServ.generatePdfRateBM(exportName, 'exportDiv');
     }, 200);
   }
 

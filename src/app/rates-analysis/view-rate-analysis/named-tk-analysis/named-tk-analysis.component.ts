@@ -93,8 +93,8 @@ export class NamedTkAnalysisComponent implements OnInit {
       if (history.state.data.peerFirms) {
         this.peerFirms = history.state.data.peerFirms;
       }
-      if (history.state.data.firmYearData) {
-        this.firmYearData = history.state.data.firmYearData;
+      if (history.state.data.firmYear) {
+        this.firmYearData = history.state.data.firmYear;
         this.firmName = this.firmYearData.name;
       }
       if (history.state.data.associateJuniorMarketInternal) {
@@ -322,6 +322,8 @@ export class NamedTkAnalysisComponent implements OnInit {
 
             if (partner.rate >= this.juniorPartnerData.market_partner_rate_lo && partner.rate <= this.juniorPartnerData.market_partner_rate_hi) {
               partner.within_market_range = true;
+              partner.market_lower_diff = null;
+              partner.market_upper_diff = null;
             } else {
               partner.within_market_range = false;
               const lowerDiff = partner.rate - this.juniorPartnerData.market_partner_rate_lo;
@@ -352,6 +354,8 @@ export class NamedTkAnalysisComponent implements OnInit {
             partner.market_range = moneyFormatter.format(this.midPartnerData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.midPartnerData.market_partner_rate_hi);
             if (partner.rate >= this.midPartnerData.market_partner_rate_lo && partner.rate <= this.midPartnerData.market_partner_rate_hi) {
               partner.within_market_range = true;
+              partner.market_lower_diff = null;
+              partner.market_upper_diff = null;
             } else {
               partner.within_market_range = false;
               const lowerDiff = partner.rate - this.midPartnerData.market_partner_rate_lo;
@@ -383,6 +387,8 @@ export class NamedTkAnalysisComponent implements OnInit {
 
             if (partner.rate >= this.seniorPartnerData.market_partner_rate_lo && partner.rate <= this.seniorPartnerData.market_partner_rate_hi) {
               partner.within_market_range = true;
+              partner.market_lower_diff = null;
+              partner.market_upper_diff = null;
             } else {
               partner.within_market_range = false;
               const lowerDiff = partner.rate - this.seniorPartnerData.market_partner_rate_lo;
@@ -432,6 +438,8 @@ export class NamedTkAnalysisComponent implements OnInit {
 
             if (associate.rate >= this.juniorAssociateData.market_associate_rate_lo && associate.rate <= this.juniorAssociateData.market_associate_rate_hi) {
               associate.within_market_range = true;
+              associate.market_lower_diff = null;
+              associate.market_upper_diff = null;
             } else {
               associate.within_market_range = false;
               const lowerDiff = associate.rate - this.juniorAssociateData.market_associate_rate_lo;
@@ -466,6 +474,8 @@ export class NamedTkAnalysisComponent implements OnInit {
 
             if (associate.rate >= this.midAssociateData.market_associate_rate_lo && associate.rate <= this.midAssociateData.market_associate_rate_hi) {
               associate.within_market_range = true;
+              associate.market_lower_diff = null;
+              associate.market_upper_diff = null;
             } else {
               associate.within_market_range = false;
               const lowerDiff = associate.rate - this.midAssociateData.market_associate_rate_lo;
@@ -498,6 +508,8 @@ export class NamedTkAnalysisComponent implements OnInit {
             associate.market_range = moneyFormatter.format(this.seniorAssociateData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.seniorAssociateData.market_associate_rate_hi);
             if (associate.rate >= this.seniorAssociateData.market_associate_rate_lo && associate.rate <= this.seniorAssociateData.market_associate_rate_hi) {
               associate.within_market_range = true;
+              associate.market_lower_diff = null;
+              associate.market_upper_diff = null;
             } else {
               associate.within_market_range = false;
               const lowerDiff = associate.rate - this.seniorAssociateData.market_associate_rate_lo;
@@ -616,6 +628,98 @@ export class NamedTkAnalysisComponent implements OnInit {
         data: detailData
       }
     });
+  }
+
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    let exportName = '';
+    if (this.userService.currentUser.client_info.org.name !== null) {
+      exportName = this.userService.currentUser.client_info.org.name + ' Rate BM (Named TKs) - ' + this.firmName + ' - ' + this.benchmark.smart_practice_area;
+    } else {
+      exportName = 'Rate Benchmark';
+    }
+    setTimeout(() => {
+      this.commonServ.generatePdfRateBM(exportName, 'exportDiv');
+    }, 200);
+  }
+
+  // including these duplicated functions (from export-button component in bodhala-ui/elements)
+  // here so we can export the named TKs grid as XLSX/CSV from the download button in this component
+  cellCallback(params): string {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0,
+      minimumFractionDigits: 0
+    });
+    let cellVal = params.value;
+    if (cellVal === undefined) {
+      return;
+    }
+    if (params.column.colDef.cellRenderer && params.column.colDef.cellRenderer !== 'agGroupCellRenderer' && params.column.colDef.cellRenderer !== 'btnRenderer') {
+      cellVal = params.column.colDef.cellRenderer(params);
+    }
+    if (typeof(cellVal) === 'string') {
+      if (cellVal.includes('href') || cellVal.includes('cursor: pointer') || cellVal.includes('margin-top') || cellVal.includes('background-color: yellow')) {
+        cellVal = params.value;
+      }
+      if (cellVal.includes('span')) {
+        cellVal = formatter.format(params.value);
+      }
+    }
+    if (params.column.colId === 'market_lower_diff') {
+      if ((params.value === null || isNaN(params.value)) && !params.node.data.within_market_range) {
+        cellVal = '--';
+      } else {
+        if (params.node.data.within_market_range) {
+          cellVal = 'Rate is within range';
+        } else {
+          if (params.node.data.market_lower_diff < 0 && params.node.data.market_upper_diff < 0) {
+            cellVal = percentFormatter.format(params.node.data.market_lower_diff) + ' - ' + percentFormatter.format(params.node.data.market_upper_diff);
+          } else if (params.node.data.market_lower_diff > 0 && params.node.data.market_upper_diff > 0 && params.node.data.market_upper_diff < 0.2) {
+            cellVal = percentFormatter.format(params.node.data.market_upper_diff) + ' - ' + percentFormatter.format(params.node.data.market_lower_diff);
+          } else if (params.node.data.market_lower_diff > 0 && params.node.data.market_upper_diff > 0 && params.node.data.market_upper_diff >= 0.2) {
+            cellVal = percentFormatter.format(params.node.data.market_upper_diff) + ' - ' + percentFormatter.format(params.node.data.market_lower_diff);
+          }
+        }
+      }
+    }
+    if (params.column.colId === 'internal_rate_diff' || params.column.colId === 'firm_diff') {
+      if (params.value === null || isNaN(params.value)) {
+        cellVal = '--';
+      } else {
+        if (params.value < 0) {
+          cellVal = percentFormatter.format(params.value);
+        } else if (params.value > 0 && params.value < 0.2) {
+          cellVal = percentFormatter.format(params.value);
+        } else if (params.value > 0.2) {
+          cellVal = percentFormatter.format(params.value);
+        } else if (params.value === 0) {
+          cellVal = percentFormatter.format(params.value);
+        }
+      }
+    }
+    return cellVal;
+  }
+
+  gridExport(type: string): void {
+    let name = document.getElementsByClassName('page_description')[0].textContent;
+    name = name.trim();
+    if (type === 'csv') {
+      name += '.csv';
+      const params = {
+        fileName: name,
+        processCellCallback: this.cellCallback
+      };
+      this.gridOptions.api.exportDataAsCsv(params);
+    } else if (type === 'xlsx') {
+      name += '.xlsx';
+      const params = {
+        fileName: name,
+        processCellCallback: this.cellCallback
+      };
+      this.gridOptions.api.exportDataAsExcel(params);
+    }
   }
 
   saveGridConfig(evt: any): void {
