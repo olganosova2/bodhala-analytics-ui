@@ -221,6 +221,51 @@ export class CommonService {
       });
   }
 
+  generatePdfRateBM(title: string, divId: string) {
+    this.pdfLoading = true;
+    const adjusters = [1, 1];
+    const docName = title ? title : 'Export PDF';
+    const exportElement = document.getElementById(divId);
+    if (!exportElement) {
+      return;
+    }
+
+    const htmlWidth = exportElement.offsetWidth;
+    const htmlHeight = exportElement.offsetHeight;
+    const topLeftMargin = 0;
+    const pdfWidth = htmlWidth + (topLeftMargin * 2);
+    let pdfHeight = htmlHeight;
+    if (pdfHeight < pdfWidth) {
+      pdfHeight = pdfWidth;
+    }
+    const canvasImageWidth = htmlWidth;
+    const canvasImageHeight = htmlHeight;
+    const totalPDFPages = Math.ceil(htmlHeight / pdfHeight) - 1;
+
+    html2canvas(document.getElementById(divId), {
+      useCORS: true,
+      width: htmlWidth,
+      height: htmlHeight,
+      scrollY: -window.scrollY,
+      scrollX: 0
+    }).then(canvas => {
+
+      canvas.getContext('2d');
+      this.exportImage = canvas.toDataURL('image/jpeg', 1.0);
+
+      // const pdf = new jspdf(orientation, 'pt', [pdfWidth, pdfHeight]);
+      const pdf = new jspdf('p', 'pt', [pdfWidth / adjusters[0], pdfHeight / adjusters[1]]);
+      pdf.setFillColor('#FFFFFF');
+      pdf.addImage(this.exportImage, 'JPG', topLeftMargin, topLeftMargin, canvasImageWidth, canvasImageHeight);
+      pdf.rect(0, (pdfHeight - (topLeftMargin * 3)), pdfWidth, (topLeftMargin * 3), 'F');
+      pdf.save(docName);
+      this.pdfLoading = false;
+    })
+      .catch(() => {
+        this.pdfLoading = false;
+        /* This is fired when the promise executes without the DOM */
+      });
+  }
 
   capitalize(word: string): string {
     if (!word) {

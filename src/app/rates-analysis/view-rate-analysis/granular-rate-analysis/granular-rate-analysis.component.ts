@@ -199,7 +199,7 @@ export class GranularRateAnalysisComponent implements OnInit {
       associateSeniorMarketInternal: this.seniorAssociateMIData,
       firmAssociateData: this.firmAssociateSeniorityData,
       firmPartnerData: this.firmPartnerSeniorityData,
-      firmYearData: this.firmYearData,
+      firmYear: this.firmYearData,
       cluster: this.cluster,
       numTiers: this.numPartnerTiers,
       peerFirms: this.peerFirms
@@ -211,6 +211,19 @@ export class GranularRateAnalysisComponent implements OnInit {
       }
     });
 
+  }
+
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    let exportName = '';
+    if (this.userService.currentUser.client_info.org.name !== null) {
+      exportName = this.userService.currentUser.client_info.org.name + ' Rate BM (TK Seniority) - ' + this.firmName + ' - ' + this.benchmark.smart_practice_area;
+    } else {
+      exportName = 'Rate Benchmark';
+    }
+    setTimeout(() => {
+      this.commonServ.generatePdfRateBM(exportName, 'exportDiv');
+    }, 200);
   }
 
   goBack(): void {

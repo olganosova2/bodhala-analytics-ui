@@ -81,10 +81,6 @@ h3 {
   font-family: Roboto;
 }
 
-.icon-filter {
-  filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);
-}
-
 .insights-bar {
   border: 1px solid $light-gray;
   color: $body-color;
@@ -158,4 +154,13 @@ h3 {
   flex: none;
   font-family: 'Roboto';
   cursor: pointer;
+}
+
+.download-button {
+  order: 3;
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  border: 1px solid transparent;
+  background: #D6DEE1;
 }

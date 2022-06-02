@@ -1,7 +1,7 @@
-<div style="padding: 0px 16px 16px 24px;" id="exportDiv">
-  <div style="display: inline !important;">
+<div style="padding: 0px 16px 16px 24px; background: #E9F1F4;" id="exportDiv">
+  <div style="padding: 12px 28px 8px 0px;">
 
-    <button class="back-button" (click)="goBack()"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
+    <button data-html2canvas-ignore="true" class="back-button" (click)="goBack()"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
 
     <div style="display: inline !important; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
 
@@ -44,6 +44,17 @@
     <div class="nav-pill" style="order: 2; background: black; color: white;">
       Named Timekeeper Analysis
     </div>
+    <button data-html2canvas-ignore="true" class="download-button" [matMenuTriggerFor]="menu">
+      <img src="assets/images/Downloads.svg" style="filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);" width="16px" height="16px" alt="icon"/>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="export()">Export this page (PDF)</button>
+      <button mat-menu-item (click)="gridExport('xlsx')">Export Named TK Detail (XLSX)</button>
+      <button mat-menu-item (click)="gridExport('csv')">Export Named TK Detail (CSV)</button>
+    </mat-menu>
+    <!-- <button data-html2canvas-ignore="true" class="download-button" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">
+      <img src="assets/images/Downloads.svg" style="filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);" width="16px" height="16px" alt="icon"/>
+    </button> -->
   </div>
 
   <div style="background: white; border-radius: 8px;">
