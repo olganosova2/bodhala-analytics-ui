@@ -188,7 +188,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_matter_cost_formatted = '--';
       }
       if (firm.total_billed > 0 && (firm.total_billed !== null || firm.total_billed !== undefined)) {
-        firm.block_billed_per = firm.firm_block_billed / firm.total_billed;
+        firm.block_billed_per = firm.firm_block_billed / firm.firm_attorney_billed;
       } else {
         firm.block_billed_per = 0;
       }
@@ -219,7 +219,7 @@ export class EsTableComponent implements OnInit {
         firm.avg_matter_cost_formatted = '--';
       }
       if (firm.total_billed > 0 && (firm.total_billed !== null || firm.total_billed !== undefined)) {
-        firm.block_billed_per = firm.firm_block_billed / firm.total_billed;
+        firm.block_billed_per = firm.firm_block_billed / firm.firm_attorney_billed;
       } else {
         firm.block_billed_per = 0;
       }
