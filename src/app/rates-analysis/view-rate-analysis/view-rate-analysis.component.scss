@@ -81,10 +81,6 @@ h3 {
   font-family: Roboto;
 }
 
-.icon-filter {
-  filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);
-}
-
 .insights-bar {
   border: 1px solid $light-gray;
   color: $body-color;
@@ -136,4 +132,35 @@ h3 {
   display: inline-block;
   margin-right: 1em;
   margin-bottom: 0.4em;
+}
+
+.nav-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding-bottom: 41px;
+  gap: 8px;
+  width: 660px;
+}
+
+.nav-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 6px 17px;
+  background: #FFFFFF;
+  color: black;
+  border-radius: 99px;
+  flex: none;
+  font-family: 'Roboto';
+  cursor: pointer;
+}
+
+.download-button {
+  order: 3;
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  border: 1px solid transparent;
+  background: #D6DEE1;
 }

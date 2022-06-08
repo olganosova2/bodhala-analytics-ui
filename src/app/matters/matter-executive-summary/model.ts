@@ -261,7 +261,7 @@ export const matterColumnChartOptions = {
     color: '#000000',
     data: []
   }, {
-    name: 'Internal',
+    name: 'Panel',
     color: '#FFC327',
     data: []
   }, {
@@ -325,7 +325,7 @@ export const barTkPercentOptions = {
     text: null
   },
   xAxis: {
-    categories: ['Actual', 'Internal', 'Market'],
+    categories: ['Actual', 'Panel', 'Market'],
     labels: {
       style: {
         fontSize: 16

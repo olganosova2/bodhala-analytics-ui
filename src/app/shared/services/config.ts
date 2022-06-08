@@ -122,6 +122,9 @@ export const END_POINTS_URLS = {
   getAssociateGranularityRateData: {url: BASE_URL + 'analytics/getAssociateGranularityRateData', showLoading: true},
   getPartnerGranularityRateData: {url: BASE_URL + 'analytics/getPartnerGranularityRateData', showLoading: true},
   getBenchmarkInsight: {url: BASE_URL + 'analytics/getBenchmarkInsight', showLoading: true},
+  getRateBMNamedTKData: {url: BASE_URL + 'analytics/getRateBMNamedTKData', showLoading: true},
+  getGranularityPageData: {url: BASE_URL + 'analytics/getGranularityPageData', showLoading: true},
+
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
   getMatterDocuments: {url: BASE_URL + 'analytics/getMatterNERData', showLoading: false},

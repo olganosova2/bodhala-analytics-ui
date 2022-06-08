@@ -33,8 +33,9 @@ import {MOCK_LEDES_IMPORTS, MOCK_UPLOAD_DATA, MOCK_CREATE_FIRM_RESULT, MOCK_FIND
 import {MOCK_YOY_RATE_INCREASE} from './mock-data/yoy-rate-increase';
 import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qbr-executive-summary';
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
-import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT, MOCK_RATE_BENCHMARK_RESULT, MOCK_BENCHMARK, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA} from './mock-data/rate-benchmarking';
 import {CLIENT_BM_MATTERS, MOCK_BM_CLIENT_PAS, MOCK_BM_CONFIG, MOCK_BM_MATTERS, MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_ELIGIBILITY, MOCK_MATTER_LIST_BY_CLIENT, MOCK_MATTER_OVERVIEW, MOCK_NAMED_TKS} from './mock-data/matter-overview';
+import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT,
+  MOCK_RATE_BENCHMARK_RESULT, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA, MOCK_GRANULARITY_PAGE_RESULT, MOCK_RATE_BM_NAMED_TK_DATA} from './mock-data/rate-benchmarking';
 import {MOCK_FIRM_CLUSTER} from './mock-data/firm-cluster';
 
 export const ngWindow = {
@@ -360,15 +361,8 @@ export class DataStub {
         return of (MOCK_FIRM_CLUSTER);
       case 'getAdminMatterInsight':
         return of (MOCK_FIRM_CLUSTER);
-        // MOCK_NAMED_TKS
-      case 'getNamedTKforBMMatter':
-        return of (MOCK_NAMED_TKS.result);
-      case 'getNamedTKforBMDocument':
-        return of (MOCK_NAMED_TKS.result);
-      case 'getClientBMMatters':
-        return of (CLIENT_BM_MATTERS);
-      case 'getBMEligibleMattersByPA':
-        return of (MOCK_BM_CLIENT_PAS);
+      case 'getRateBMNamedTKData':
+        return of (MOCK_RATE_BM_NAMED_TK_DATA);
 
       default:
         return of([]);
@@ -642,6 +636,9 @@ export class RatesAnalysisServiceStub {
 
   public getRateAnalysisData(bm: any) {
     return (MOCK_RATE_ANALYSIS_DATA);
+  }
+  public getGranularityPageData() {
+    return (MOCK_GRANULARITY_PAGE_RESULT.result);
   }
 }
 

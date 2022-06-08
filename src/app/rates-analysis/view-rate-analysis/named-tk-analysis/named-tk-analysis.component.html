@@ -1,0 +1,83 @@
+<div style="padding: 0px 16px 16px 24px; background: #E9F1F4;" id="exportDiv">
+  <div style="padding: 12px 28px 8px 0px;">
+
+    <button data-html2canvas-ignore="true" class="back-button" (click)="goBack()"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
+
+    <div style="display: inline !important; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
+
+      <span class="header-span" style="padding-left: 0em !important; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
+      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{firmName}}</span>
+
+      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
+      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{practiceArea}}</span>
+
+      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
+      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{year}}</span>
+    </div>
+
+    <!-- <div style="float: right">
+      <button class="primary-button ml20" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">Export
+        <img src="assets/images/Downloads.svg" width="25px" height="20px" alt="icon"/>
+      </button>
+    </div> -->
+
+    <div class="peer-firms" *ngIf="loaded">
+      <p style="text-align: center; font-family: 'Roboto Bold' !important; font-size: 14px;">Comparison Peer Firms</p>
+      <div id="peerFirmsDisplay" style="line-height: 2em; height: 4.8em; overflow: clip; text-align: center; margin-top: -0.75em; font-family: 'Roboto Bold' !important; font-size: 14px;">
+        <div *ngFor="let firm of peerFirms; let i = index; let last = last; let first = first;" style="display: inline;">
+          <div class="firm-name-pill">{{firm}}</div>
+          <span style="background: #DEE8EB important; " *ngIf="last"> & others...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="padding-bottom: 20px;">Named Timekeeper Benchmarks<br>& Cost Analysis</h3>
+
+  <div class="nav-wrapper">
+    <div class="nav-pill" style="order: 0;" (click)="goToOverviewPage()">
+      Rates Overview
+    </div>
+    <div class="nav-pill" style="order: 1;" (click)="goToTKPage()">
+      Timekeeper Level Analysis
+    </div>
+    <div class="nav-pill" style="order: 2; background: black; color: white;">
+      Named Timekeeper Analysis
+    </div>
+    <button data-html2canvas-ignore="true" class="download-button" [matMenuTriggerFor]="menu">
+      <img src="assets/images/Downloads.svg" style="filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);" width="16px" height="16px" alt="icon"/>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="export()">Export this page (PDF)</button>
+      <button mat-menu-item (click)="gridExport('xlsx')">Export Named TK Detail (XLSX)</button>
+      <button mat-menu-item (click)="gridExport('csv')">Export Named TK Detail (CSV)</button>
+    </mat-menu>
+    <!-- <button data-html2canvas-ignore="true" class="download-button" (click)="export()" [disabled]="commonServ.pdfLoading" [ngClass]="{'button-disabled': commonServ.pdfLoading}">
+      <img src="assets/images/Downloads.svg" style="filter: invert(100%) sepia(90%) saturate(39%) hue-rotate(135deg) brightness(110%) contrast(111%);" width="16px" height="16px" alt="icon"/>
+    </button> -->
+  </div>
+
+  <div style="background: white; border-radius: 8px;">
+    <!-- <h4>Rate Increase Prevention</h4> -->
+
+    <div class="full-width mb10" style="padding-top: 10px;">
+      <lib-export-button [gridOptions]="gridOptions"></lib-export-button>
+      <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+    </div>
+    <ag-grid-angular
+        #agGrid
+        style="width: 100%;"
+        [ngStyle]="{'height': agGridService.setGridHeight(namedTKs, paginationPageSize) +'px'}"
+        class="ag-theme-alpine"
+        [pagination]="true"
+        [paginationPageSize]="paginationPageSize"
+        [sideBar]="sideBarConfig"
+        (displayedColumnsChanged)="saveGridConfig($event)"
+        (sortChanged)="saveGridConfig($event);"
+        (columnResized)="saveGridConfig($event);"
+        [suppressAggFuncInHeader]="true"
+        [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </div>
+
+</div>

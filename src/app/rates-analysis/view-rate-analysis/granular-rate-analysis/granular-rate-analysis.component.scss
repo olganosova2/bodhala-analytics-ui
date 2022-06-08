@@ -91,6 +91,33 @@ h3 {
   margin-bottom: 0.4em;
 }
 
+.nav-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  width: 660px;
+}
 
+.nav-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 6px 17px;
+  background: #FFFFFF;
+  color: black;
+  border-radius: 99px;
+  flex: none;
+  font-family: 'Roboto';
+  cursor: pointer;
+}
 
+.download-button {
+  order: 3;
+  height: 32px;
+  width: 32px;
+  border-radius: 32px;
+  border: 1px solid transparent;
+  background: #D6DEE1;
+}
 

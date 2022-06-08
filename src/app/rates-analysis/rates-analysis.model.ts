@@ -31,6 +31,19 @@ export interface IRateBenchmark {
   modified_on?: string;
 }
 
+export interface INamedTimekeepersRateBM {
+  first_name: string;
+  last_name: string;
+  classification: string;
+  grad_date: string;
+  office_location: string;
+  avg_effective_rate: number;
+  avg_billed_rate: number;
+  total_hours: number;
+  total_billed: number;
+  num_matters: number;
+}
+
 export const smartPracticeAreas = [
   {label: 'Banking & Credit', value: 'Banking & Credit'},
   {label: 'Bankruptcy', value: 'Bankruptcy'},
