@@ -73,7 +73,7 @@ pipelines:
     develop:
       - step: *install-dependencies
       - step: *lint
-      #- step: *test
+      - step: *test
       - step: *build-assets
       - step: *build-image-and-push-to-ecr
       - step:
