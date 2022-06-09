@@ -337,7 +337,7 @@ export class NamedTkAnalysisComponent implements OnInit {
             partner.market_upper_diff = null;
           }
           if (this.juniorPartnerData.internal_num_firms >= 3) {
-            partner.internal_rate = this.juniorPartnerData.internal_avg_associate_rate;
+            partner.internal_rate = this.juniorPartnerData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / partner.rate;
           } else {
@@ -369,7 +369,7 @@ export class NamedTkAnalysisComponent implements OnInit {
             partner.market_upper_diff = null;
           }
           if (this.midPartnerData.internal_num_firms >= 3) {
-            partner.internal_rate = this.midPartnerData.internal_avg_associate_rate;
+            partner.internal_rate = this.midPartnerData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / partner.rate;
           } else {
@@ -402,7 +402,7 @@ export class NamedTkAnalysisComponent implements OnInit {
             partner.market_upper_diff = null;
           }
           if (this.seniorPartnerData.internal_num_firms >= 3) {
-            partner.internal_rate = this.seniorPartnerData.internal_avg_associate_rate;
+            partner.internal_rate = this.seniorPartnerData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / partner.rate;
           } else {
