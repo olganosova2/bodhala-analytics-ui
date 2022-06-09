@@ -204,6 +204,7 @@ import { MatterBenchmarkingLandingComponent } from './matters/matter-executive-s
 import { TableHeaderSortComponent } from './shared/components/table-header-sort/table-header-sort.component';
 import { BmTimekeepersTableComponent } from './matters/matter-executive-summary/bm-timekeepers-table/bm-timekeepers-table.component';
 import { NamedTkAnalysisComponent } from './rates-analysis/view-rate-analysis/named-tk-analysis/named-tk-analysis.component';
+import { PeerFirmsModalComponent } from './admin/admin-rate-benchmarks/peer-firms-modal/peer-firms-modal.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -360,7 +361,8 @@ highcharts.setOptions({
     MatterBenchmarkingLandingComponent,
     TableHeaderSortComponent,
     BmTimekeepersTableComponent,
-    NamedTkAnalysisComponent
+    NamedTkAnalysisComponent,
+    PeerFirmsModalComponent
   ],
   entryComponents: [
     PillComponent,

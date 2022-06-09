@@ -102,6 +102,7 @@ export class ViewRateAnalysisComponent implements OnInit {
         const result = await this.ratesService.getBenchmark(this.benchmarkId);
         this.firmName = result.firm_name;
         this.benchmark = result.benchmark;
+        console.log("benchmark: ", this.benchmark)
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;

@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Comparison Peer Firms</h1>
+<div mat-dialog-content>
+  <div class="p-grid full-width">
+    <div class="p-col-4">
+      <h5>Add/Remove Firms</h5>
+      <p-dropdown #firmOptionsDropdown class="dropdown ml5" appendTo="body" [style]="{width:'350px'}" [options]="firmOptions"
+                  placeholder="Select a firm" (onChange)="firmSelected($event)" [disabled]="!loaded" [group]="true" [filter]="true" [showClear]="true">
+      </p-dropdown>
+
+      <div *ngIf="selectedFirm" style="padding-top: 1em;">
+        <p><b>Firm:</b> {{selectedFirm.firm_name}}</p>
+        <p><b>Cluster:</b> {{selectedFirm.cluster}}</p>
+        <p><b>Avg Partner Rate:</b> ${{selectedFirm.avg_partner_rate | number:'1.0-0'}}</p>
+        <p><b>Avg Associate Rate:</b> ${{selectedFirm.avg_associate_rate | number:'1.0-0'}}</p>
+        <p><b>Avg Blended Rate:</b> ${{selectedFirm.blended_rate | number:'1.0-0'}}</p>
+        <p><b>Total Spend in PA/Year:</b> ${{selectedFirm.total_billed | number:'1.0-0'}}</p>
+        <button class="primary-button" (click)="addFirm()" style="margin-bottom: 1em;">Add to list</button>
+      </div>
+    </div>
+
+    <div class="p-col-8">
+      <!-- <lib-export-button [gridOptions]="gridOptions"></lib-export-button> -->
+      <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+      <button class="primary-button ml10" [ngClass]="{'button-disabled': !loaded}" [disabled]="!loaded" (click)="resetFirmOptions()" style="margin-bottom: 1em;">Reset to Bodhala Default</button>
+      <button class="primary-button ml10" [ngClass]="{'button-disabled': !validFirmSelection || !loaded}" [disabled]="!validFirmSelection || !loaded" (click)="saveMarketFirmData()">Save</button>
+      <button class="primary-button ml10" [ngClass]="{'button-disabled': !loaded}" [disabled]="!loaded"  (click)="removeAll()">Remove All</button>
+      <ag-grid-angular
+          #agGrid
+          style="border: 1px solid gray;"
+          [ngStyle]="{'height': '525px'}"
+          class="ag-theme-alpine"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          (setSideBarVisible)="false"
+          [suppressAggFuncInHeader]="true"
+          [gridOptions]="gridOptions">
+      </ag-grid-angular>
+    </div>
+
+    <!-- <span class="note">
+      *Note: firms available for selection are those that have spend in the PA/year of this benchmark
+    </span> -->
+  </div>
+</div>
