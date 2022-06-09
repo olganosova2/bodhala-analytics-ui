@@ -1,0 +1,49 @@
+replicaCount: 1
+
+image:
+  digest: ""
+  pullPolicy: IfNotPresent
+  repository: bodhala-analytics-ui
+  tag: ""
+
+service:
+  port: 80
+  type: ClusterIP
+
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Bodhala-Service 'bodhala-analytics-ui';
+  className: nginx
+  enabled: true
+  hosts:
+    - host: eks-int.bodhala.com
+      paths:
+        - path: /analytics-ui/
+          pathType: Prefix
+  tls: []
+
+# ---
+
+affinity: {}
+fullnameOverride: ""
+imagePullSecrets: []
+nameOverride: ""
+nodeSelector: {}
+podAnnotations: {}
+podSecurityContext: {}
+resources: {}
+securityContext: {}
+tolerations: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+serviceAccount:
+  create: false
+  annotations: {}
+  name: ""
