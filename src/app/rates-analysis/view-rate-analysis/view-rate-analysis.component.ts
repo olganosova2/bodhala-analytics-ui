@@ -252,39 +252,43 @@ export class ViewRateAnalysisComponent implements OnInit {
   }
 
   goToDetail(): void {
-    const detailData = {
-      firmYear: this.firmYearData,
-      bm: this.benchmark,
-      totalSpend: this.overallSpendData,
-      market: this.marketAverageData,
-      internal: this.internalYearData,
-      cluster: this.cluster,
-      numTiers: this.numPartnerTiers,
-      peerFirms: this.peerFirms
-    };
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
-    {state:
-      {
-        data: detailData
-      }
-    });
+    if (this.loaded) {
+      const detailData = {
+        firmYear: this.firmYearData,
+        bm: this.benchmark,
+        totalSpend: this.overallSpendData,
+        market: this.marketAverageData,
+        internal: this.internalYearData,
+        cluster: this.cluster,
+        numTiers: this.numPartnerTiers,
+        peerFirms: this.peerFirms
+      };
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
+      {state:
+        {
+          data: detailData
+        }
+      });
+    }
   }
 
   goToNamedTKPage(): void {
-    const detailData = {
-      firmYear: this.firmYearData,
-      bm: this.benchmark,
-      cluster: this.cluster,
-      numTiers: this.numPartnerTiers,
-      peerFirms: this.peerFirms,
-      overviewPage: true
-    };
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
-    {state:
-      {
-        data: detailData
-      }
-    });
+    if (this.loaded) {
+      const detailData = {
+        firmYear: this.firmYearData,
+        bm: this.benchmark,
+        cluster: this.cluster,
+        numTiers: this.numPartnerTiers,
+        peerFirms: this.peerFirms,
+        overviewPage: true
+      };
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
+      {state:
+        {
+          data: detailData
+        }
+      });
+    }
   }
 
   setStyle(): any {

@@ -131,7 +131,7 @@ describe('BenchmarkMattersComponent', () => {
     component.selectAll();
     expect(component.clientBmConfig.json_config).toBeUndefined();
   });
-  it('should addSmartPA', () => {
+  xit('should addSmartPA', () => {
     component.clientBmConfig = Object.assign({}, component.createNewBmConfig());
     component.addSmartPA();
     expect(component.clientBmConfig.json_config).toBeUndefined();

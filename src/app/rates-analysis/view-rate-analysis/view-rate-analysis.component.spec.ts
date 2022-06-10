@@ -44,7 +44,8 @@ describe('ViewRateAnalysisComponent', () => {
     deleted_by: null,
     deleted_on: null,
     modified_by: null,
-    modified_on: null
+    modified_on: null,
+    market_avg_firms: null
   };
 
   beforeEach(async(() => {

@@ -187,30 +187,33 @@ export class GranularRateAnalysisComponent implements OnInit {
   }
 
   goToOverviewPage(): void {
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.benchmark.id]);
+    if (this.loaded) {
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.benchmark.id]);
+    }
   }
 
   goToNamedTKPage(): void {
-    const detailData = {
-      bm: this.benchmark,
-      partnerMarketInternal: this.partnerMIData,
-      associateJuniorMarketInternal: this.juniorAssociateMIData,
-      associateMidMarketInternal: this.midAssociateMIData,
-      associateSeniorMarketInternal: this.seniorAssociateMIData,
-      firmAssociateData: this.firmAssociateSeniorityData,
-      firmPartnerData: this.firmPartnerSeniorityData,
-      firmYear: this.firmYearData,
-      cluster: this.cluster,
-      numTiers: this.numPartnerTiers,
-      peerFirms: this.peerFirms
-    };
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
-    {state:
-      {
-        data: detailData
-      }
-    });
-
+    if (this.loaded) {
+      const detailData = {
+        bm: this.benchmark,
+        partnerMarketInternal: this.partnerMIData,
+        associateJuniorMarketInternal: this.juniorAssociateMIData,
+        associateMidMarketInternal: this.midAssociateMIData,
+        associateSeniorMarketInternal: this.seniorAssociateMIData,
+        firmAssociateData: this.firmAssociateSeniorityData,
+        firmPartnerData: this.firmPartnerSeniorityData,
+        firmYear: this.firmYearData,
+        cluster: this.cluster,
+        numTiers: this.numPartnerTiers,
+        peerFirms: this.peerFirms
+      };
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
+      {state:
+        {
+          data: detailData
+        }
+      });
+    }
   }
 
   export(): void {

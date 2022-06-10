@@ -198,7 +198,9 @@ export const END_POINTS_URLS = {
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
   saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
   saveBenchmarkMattersConfig: {url: BASE_URL + 'admin/saveBenchmarkMattersConfig', showLoading: true},
-  getAdminRateInsight: {url: BASE_URL + 'admin/getAdminRateInsight', showLoading: true}
+  getAdminRateInsight: {url: BASE_URL + 'admin/getAdminRateInsight', showLoading: true},
+  getPeerFirmData: {url: BASE_URL + 'admin/getPeerFirmData', showLoading: true},
+  saveMarketFirmData: {url: BASE_URL + 'admin/saveMarketFirmData', showLoading: true},
 
 };
 

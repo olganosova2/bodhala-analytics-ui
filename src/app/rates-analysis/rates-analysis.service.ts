@@ -38,12 +38,19 @@ export class RatesAnalysisService {
     const paParam = [];
     paParam.push(bm.smart_practice_area);
     firmParam.push(bm.bh_lawfirm_id.toString());
+    let getDataByCluster = true;
+    if (bm.market_avg_firms !== null) {
+      getDataByCluster = false;
+    }
     const params = {
+      bmId: bm.id,
       firmId: bm.bh_lawfirm_id,
       smartPA: bm.smart_practice_area,
       marketAverageYear: bm.year,
       firms: JSON.stringify(firmParam),
-      bdPracticeAreas: JSON.stringify(paParam)
+      bdPracticeAreas: JSON.stringify(paParam),
+      getByCluster: getDataByCluster,
+      market_firms: bm.market_avg_firms
     };
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getFirmRateAnalysisIncreaseData', params).subscribe(
@@ -299,11 +306,18 @@ export class RatesAnalysisService {
   // get market average, internal, and firm year data for the granularity page
   // for each seniority bucket
   getGranularityPageData(bm: any, numTiers: number): Promise<any> {
+    let getDataByCluster = true;
+    if (bm.market_avg_firms !== null) {
+      getDataByCluster = false;
+    }
     const params = {
+      bmId: bm.id,
       pa: bm.smart_practice_area,
       firm: bm.bh_lawfirm_id,
       yyyy: bm.year,
-      numPartnerTiers: numTiers
+      numPartnerTiers: numTiers,
+      market_firms: bm.market_avg_firms,
+      getCluster: getDataByCluster
     };
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getGranularityPageData', params).subscribe(
