@@ -225,14 +225,21 @@ export class NamedTkAnalysisComponent implements OnInit {
     const paParam = [];
     paParam.push(this.benchmark.smart_practice_area);
     firmParam.push(this.benchmark.bh_lawfirm_id.toString());
+    let getDataByCluster = true;
+    if (this.benchmark.market_avg_firms !== null) {
+      getDataByCluster = false;
+    }
     const params = {
+      bmId: this.benchmark.id,
       pa: this.benchmark.smart_practice_area,
       firm: this.benchmark.bh_lawfirm_id,
       yyyy: this.benchmark.year,
       numPartnerTiers: this.numTiers,
       miData: getMarketInternalData,
       firms: JSON.stringify(firmParam),
-      bdPracticeAreas: JSON.stringify(paParam)
+      bdPracticeAreas: JSON.stringify(paParam),
+      getByCluster: getDataByCluster,
+      market_firms: this.benchmark.market_avg_firms
     };
     this.pendingRequest = this.httpService.makeGetRequest('getRateBMNamedTKData', params).subscribe(
       (data: any) => {
@@ -608,26 +615,30 @@ export class NamedTkAnalysisComponent implements OnInit {
   }
 
   goToOverviewPage(): void {
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.benchmark.id]);
+    if (this.loaded) {
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.benchmark.id]);
+    }
   }
 
   goToTKPage(): void {
-    const detailData = {
-      firmYear: this.firmYearData,
-      bm: this.benchmark,
-      totalSpend: this.overallSpendData,
-      // internal: this.internalYearData,
-      firmName: this.firmName,
-      cluster: this.cluster,
-      numTiers: this.numTiers,
-      peerFirms: this.peerFirms
-    };
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
-    {state:
-      {
-        data: detailData
-      }
-    });
+    if (this.loaded) {
+      const detailData = {
+        firmYear: this.firmYearData,
+        bm: this.benchmark,
+        totalSpend: this.overallSpendData,
+        // internal: this.internalYearData,
+        firmName: this.firmName,
+        cluster: this.cluster,
+        numTiers: this.numTiers,
+        peerFirms: this.peerFirms
+      };
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
+      {state:
+        {
+          data: detailData
+        }
+      });
+    }
   }
 
   export(): void {

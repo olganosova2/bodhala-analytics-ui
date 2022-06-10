@@ -93,7 +93,6 @@ export class AdminRateBenchmarksComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log("result: ", result);
       if (!result) {
         this.getClientRateBenchmarks();
         return;
@@ -165,7 +164,7 @@ export class AdminRateBenchmarksComponent implements OnInit {
   }
   createNewBenchmark(): IRateBenchmark {
     return { id: null, bh_client_id: this.selectedClient.bh_client_id, bh_lawfirm_id: null, year: null, smart_practice_area: null, peers: [], created_on: null, created_by: null,
-              modified_by: null, modified_on: null, deleted_by: null, deleted_on: null};
+              modified_by: null, modified_on: null, deleted_by: null, deleted_on: null, market_avg_firms: null};
   }
 
   deleteCellRenderer() {

@@ -8,6 +8,8 @@ import { AdminRateBenchmarksComponent } from '../admin-rate-benchmarks.component
 import {CommonService, IClient} from '../../../shared/services/common.service';
 import { SelectItemGroup } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'bd-peer-firms-modal',
@@ -39,6 +41,8 @@ export class PeerFirmsModalComponent implements OnInit {
   firmOptions: SelectItemGroup[] = [];
   selectedFirm: any;
   @ViewChild('firmOptionsDropdown', {static: false}) firmOptionsDropdown: Dropdown;
+  popoverText: string = 'Firms available for selection are those that have spend in the PA/year of this benchmark';
+  resetTooltip: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public userService: UserService,
@@ -55,12 +59,11 @@ export class PeerFirmsModalComponent implements OnInit {
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState('ClientConfigsGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
+    this.resetTooltip = 'Set list of firms to those with the same cluster as ' + this.benchmark.firm_name
+                        + '. Does not automatically save the list of firms.';
     this.initColumns();
-    console.log("this.data: ", this.data)
-    console.log("parentDialogRef: ", this.parentDialogRef)
     const result = await this.getPeerFirmData();
     this.loaded = true;
-    console.log("result: ", result)
     if (result.current_cluster_market_firms) {
       if (result.current_cluster_market_firms.length > 0) {
         this.processCurrentClusterMarketFirms(result.current_cluster_market_firms);
@@ -81,8 +84,6 @@ export class PeerFirmsModalComponent implements OnInit {
     } else {
       this.validFirmSelection = false;
     }
-    console.log("firms processed: ", this.selectedPeerFirms)
-    console.log("this.peerFirmOptions: ", this.peerFirmOptions)
     this.loadGrid();
   }
 
@@ -94,7 +95,7 @@ export class PeerFirmsModalComponent implements OnInit {
       {headerName: 'Avg Associate Rate', field: 'avg_associate_rate', ...this.defaultColumn, width: 95, cellRenderer: this.agGridService.roundCurrencyCellRenderer},
       {headerName: 'Avg Blended Rate', field: 'blended_rate', ...this.defaultColumn, width: 90, cellRenderer: this.agGridService.roundCurrencyCellRenderer},
       {headerName: 'Total Spend in PA/Year', field: 'total_billed', ...this.defaultColumn, width: 120, cellRenderer: this.agGridService.roundCurrencyCellRenderer},
-      {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 80, suppressMenu: true, onCellClicked: this.removeFirmFromSelectedList.bind(this)},
+      {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 80, suppressMenu: true, onCellClicked: this.removeFirmFromSelectedList.bind(this, true)},
     ];
   }
 
@@ -114,7 +115,7 @@ export class PeerFirmsModalComponent implements OnInit {
   getPeerFirmData(): Promise<any> {
     let getCluster = true;
     if (this.benchmark.market_avg_firms) {
-      getCluster = false
+      getCluster = false;
     }
     const params = {
       pa: this.benchmark.smart_practice_area,
@@ -124,7 +125,6 @@ export class PeerFirmsModalComponent implements OnInit {
       get_cluster: getCluster,
       client: this.selectedClient.bh_client_id
     };
-    console.log("params: ", params)
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getPeerFirmData', params).subscribe(
         (data: any) => {
@@ -141,18 +141,14 @@ export class PeerFirmsModalComponent implements OnInit {
   }
 
   saveMarketFirmData() {
-    console.log("saveMarketFirmData: ", this.selectedPeerFirms)
     const marketFirms = this.selectedPeerFirms.map(value => value.firm_id);
-    console.log("marketFirms: ", marketFirms, typeof(marketFirms))
     const params = {
       firmList: marketFirms,
       bmId: this.benchmark.id,
       client: this.selectedClient.bh_client_id
     };
-    console.log("params: ", params)
     this.pendingRequest = this.httpService.makePostRequest('saveMarketFirmData', params).subscribe(
       (data: any) => {
-        console.log("data: ", data)
         if (data.result) {
           this.benchmark = data.result;
         }
@@ -180,7 +176,6 @@ export class PeerFirmsModalComponent implements OnInit {
     marketFirmOptions.sort((a, b) => b.cluster - a.cluster);
     const firmClusterOptions = [];
     const maxCluster = marketFirmOptions[0].cluster;
-    console.log("this.selectedPeerFirms: ", this.selectedPeerFirms)
     if (maxCluster > 0) {
       for (let i = 1; i <= maxCluster; i++) {
         const cluster = marketFirmOptions.filter(f => f.cluster === i);
@@ -188,10 +183,10 @@ export class PeerFirmsModalComponent implements OnInit {
         for (const firm of cluster) {
           if (this.selectedPeerFirms.filter(f => f.firm_id === firm.firm_id).length === 0) {
             clusterFirms.push({label: firm.firm_name, value: firm.firm_id});
-            this.peerFirmOptions.push(firm)
+            this.peerFirmOptions.push(firm);
           }
         }
-        clusterFirms.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+        clusterFirms.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
         firmClusterOptions.push({label: 'Cluster ' + i.toString(), items: clusterFirms});
       }
     }
@@ -201,7 +196,7 @@ export class PeerFirmsModalComponent implements OnInit {
       for (const firm of noClusterFirms) {
         if (this.selectedPeerFirms.filter(f => f.firm_id === firm.firm_id).length === 0) {
           noClusterFirmOptions.push({label: firm.firm_name, value: firm.firm_id});
-          this.peerFirmOptions.push(firm)
+          this.peerFirmOptions.push(firm);
         }
       }
       firmClusterOptions.push({label: 'No Cluster', items: noClusterFirmOptions});
@@ -242,6 +237,11 @@ export class PeerFirmsModalComponent implements OnInit {
 
     this.selectedFirm = null;
     this.firmOptionsDropdown.clear(null);
+    if (this.selectedPeerFirms.length >= 3) {
+      this.validFirmSelection = true;
+    } else {
+      this.validFirmSelection = false;
+    }
     this.loadGrid();
   }
 
@@ -249,6 +249,18 @@ export class PeerFirmsModalComponent implements OnInit {
   // note this does not automatically revert the market_avg_firms column
   // in the benchmark_rate table to null (must save first)
   resetFirmOptions(): void {
+    let cluster = 0;
+    if (this.clusterDefaultFirms.length > 0) {
+      cluster = this.clusterDefaultFirms[0].cluster;
+    }
+    this.peerFirmOptions = this.peerFirmOptions.filter(f => f.cluster !== cluster);
+    for (const option of this.firmOptions) {
+
+      if (option.label === 'Cluster ' + cluster.toString()) {
+        option.items = [];
+      }
+    }
+
     this.selectedPeerFirms = this.clusterDefaultFirms;
     if (this.selectedPeerFirms.length > 2) {
       this.validFirmSelection = true;
@@ -260,31 +272,54 @@ export class PeerFirmsModalComponent implements OnInit {
 
   // clear the current set of firms, which invalidates the current firm selection (min of 3)
   removeAll(): void {
+    for (const firm of this.selectedPeerFirms) {
+      this.removeFirmFromSelectedList(false, firm);
+    }
     this.selectedPeerFirms = [];
     this.validFirmSelection = false;
     this.loadGrid();
 
   }
 
-  removeFirmFromSelectedList(item: any): void {
-    console.log("removeFirmFromList: ", item);
-    this.selectedPeerFirms = this.selectedPeerFirms.filter(f => f.firm_id !== item.data.firm_id);
+  removeFirmFromSelectedList(fromGrid: boolean, item: any): void {
+    if (fromGrid) {
+      this.selectedPeerFirms = this.selectedPeerFirms.filter(f => f.firm_id !== item.data.firm_id);
+    } else {
+      this.selectedPeerFirms = this.selectedPeerFirms.filter(f => f.firm_id !== item.firm_id);
+    }
     if (this.selectedPeerFirms.length > 2) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;
     }
-    let label = ''
-    this.peerFirmOptions.push(item.data);
-    if (item.data.cluster > 0) {
-      label = 'Cluster ' + item.data.cluster.toString();
+    let label = '';
+    if (fromGrid) {
+      this.peerFirmOptions.push(item.data);
     } else {
-      label = 'No Cluster';
+      this.peerFirmOptions.push(item);
+    }
+
+    if (fromGrid) {
+      if (item.data.cluster > 0) {
+        label = 'Cluster ' + item.data.cluster.toString();
+      } else {
+        label = 'No Cluster';
+      }
+    } else {
+      if (item.cluster > 0) {
+        label = 'Cluster ' + item.cluster.toString();
+      } else {
+        label = 'No Cluster';
+      }
     }
     for (const option of this.firmOptions) {
       if (option.label === label) {
-        option.items.push({label: item.data.firm_name, value: item.data.firm_id});
-        option.items.sort((a,b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+        if (fromGrid) {
+          option.items.push({label: item.data.firm_name, value: item.data.firm_id});
+        } else {
+          option.items.push({label: item.firm_name, value: item.firm_id});
+        }
+        option.items.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
       }
     }
     this.loadGrid();
@@ -297,11 +332,6 @@ export class PeerFirmsModalComponent implements OnInit {
   deleteCellRenderer() {
     const value = '<button mat-flat-button type="button" style="width: 40px; border: none; background-color: #e1e2e3;"><em class="icon-trash"></em></button>';
     return value;
-  }
-
-  resetBodhalaDefault(): void {
-    this.gridOptions.api.setRowData(this.clusterDefaultFirms);
-    this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
 
   changePageSize(evt: any): void {

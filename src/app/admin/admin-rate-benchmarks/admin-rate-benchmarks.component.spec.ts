@@ -70,7 +70,7 @@ describe('AdminRateBenchmarksComponent', () => {
 
   it('should execute deleteCellRenderer', () => {
     const result = component.deleteCellRenderer();
-    expect(result).toBe('<button mat-flat-button type="button" style="width: 60px;border: none;background-color: #e1e2e3;"><em class="icon-trash"></em></button>');
+    expect(result).toBe('<button mat-flat-button type="button" style="width: 60px; border: none; background-color: #e1e2e3;"><em class="icon-trash"></em></button>');
   });
 
   it('should openDeleteDialog', () => {

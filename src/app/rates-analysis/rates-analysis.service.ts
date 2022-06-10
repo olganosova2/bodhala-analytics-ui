@@ -43,6 +43,7 @@ export class RatesAnalysisService {
       getDataByCluster = false;
     }
     const params = {
+      bmId: bm.id,
       firmId: bm.bh_lawfirm_id,
       smartPA: bm.smart_practice_area,
       marketAverageYear: bm.year,
@@ -310,6 +311,7 @@ export class RatesAnalysisService {
       getDataByCluster = false;
     }
     const params = {
+      bmId: bm.id,
       pa: bm.smart_practice_area,
       firm: bm.bh_lawfirm_id,
       yyyy: bm.year,
