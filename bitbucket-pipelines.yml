@@ -66,6 +66,7 @@ definitions:
                 - infra/helm/values.yaml
               SET:
                 - "image.digest=$(cat image_digest.txt)"
+                - "ingress.hosts[0].host=eks-${NAMESPACE}.bodhala.com"
               WAIT: "true"
 
 pipelines:
@@ -80,8 +81,18 @@ pipelines:
           <<: *deploy
           deployment: int
           name: Deploy to int
+    release:
+      - step: *install-dependencies
+      - step: *lint
+      - step: *test
+      - step: *build-assets
+      - step: *build-image-and-push-to-ecr
+      - step:
+          <<: *deploy
+          deployment: stage
+          name: Deploy to stage
 
-    "{master,release}":
+    master:
       - step:
           caches:
             - node
