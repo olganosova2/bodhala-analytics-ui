@@ -1,32 +1,116 @@
-image: node:10.15.3
-
-pipelines:
-
-  branches:
-    '{master,release,develop}':
-      - step:
-          caches:
-          - node
-          script:
-          - ./test.sh
-          - pipe: atlassian/aws-s3-deploy:0.3.8
-            variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                AWS_DEFAULT_REGION: 'us-east-2'
-                S3_BUCKET: 'bodhala-analytics-ui/$BITBUCKET_BRANCH/dist'
-                LOCAL_PATH: '$(pwd)/dist/'
-                ACL: 'public-read'          
-          
-  pull-requests:
-    '**':
-      - step:
-          caches:
-          - node
-          script:
-          - ./test.sh
+image: node:12.22.10
 
 definitions:
   caches:
     chrome: /usr/bin/xvfb-chrome
+  steps:
+    - step: &install-dependencies
+        caches:
+          - node
+        name: Install Dependencies
+        size: 2x
+        script:
+          - npm install
+    - step: &lint
+        caches:
+          - node
+        name: Lint
+        script:
+          - ./node_modules/@angular/cli/bin/ng lint
+    - step: &test
+        caches:
+          - node
+        name: Test
+        image: atlassianlabs/docker-node-jdk-chrome-firefox:latest
+        size: 2x
+        script:
+          - ./node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless
+    - step: &build-assets
+        artifacts:
+          - dist/**
+        caches:
+          - node
+        name: Build
+        script:
+          # TODO change BODHALA_RFP_NG_TARGET/NAMESPACE to use BITBUCKET_BRANCH --
+          # because configuration should be based on the branch, not the environment
+          # or -- just set BODHALA_RFP_NG_TARGET as a BB deployment envvar.
+          - ./node_modules/@angular/cli/bin/ng build --configuration $NAMESPACE --base-href /analytics-ui/
+    - step: &build-image-and-push-to-ecr
+        artifacts:
+          - image_digest.txt
+        name: Build image and push to ECR
+        services:
+          - docker
+        script:
+          - docker build -t bodhala-analytics-ui .
+          - pipe: atlassian/aws-ecr-push-image:1.5.0
+            variables:
+              IMAGE_NAME: bodhala-analytics-ui
+          - docker image inspect ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/bodhala-analytics-ui -f '{{ index .RepoDigests 0 }}' > image_digest.txt
+          - cat image_digest.txt
+    - step: &deploy
+        caches:
+          - docker
+        script:
+          - pipe: docker://yvogl/aws-eks-helm-deploy:1.0.2
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              AWS_REGION: $AWS_DEFAULT_REGION
+              CLUSTER_NAME: $CLUSTER_NAME
+              NAMESPACE: $NAMESPACE
+              RELEASE_NAME: bodhala-analytics-ui
+              CHART: infra/helm
+              VALUES:
+                - infra/helm/values.yaml
+              SET:
+                - "image.digest=$(cat image_digest.txt)"
+                - "ingress.hosts[0].host=eks-${NAMESPACE}.bodhala.com"
+              WAIT: "true"
 
+pipelines:
+  branches:
+    develop:
+      - step: *install-dependencies
+      - step: *lint
+      - step: *test
+      - step: *build-assets
+      - step: *build-image-and-push-to-ecr
+      - step:
+          <<: *deploy
+          deployment: int
+          name: Deploy to int
+    release:
+      - step: *install-dependencies
+      - step: *lint
+      - step: *test
+      - step: *build-assets
+      - step: *build-image-and-push-to-ecr
+      - step:
+          <<: *deploy
+          deployment: stage
+          name: Deploy to stage
+
+    master:
+      - step:
+          caches:
+            - node
+          script:
+            - ./test.sh
+            - pipe: atlassian/aws-s3-deploy:0.3.5
+              variables:
+                AWS_ACCESS_KEY_ID: "$AWS_ACCESS_KEY_ID"
+                AWS_SECRET_ACCESS_KEY: "$AWS_SECRET_ACCESS_KEY"
+                AWS_DEFAULT_REGION: "us-east-2"
+                S3_BUCKET: "bodhala-analytics-ui/$BITBUCKET_BRANCH/dist"
+                LOCAL_PATH: "$(pwd)/dist/"
+                ACL: "public-read"
+
+  pull-requests:
+    "**":
+      - step:
+          caches:
+            - node
+          script:
+            - ./test.sh
