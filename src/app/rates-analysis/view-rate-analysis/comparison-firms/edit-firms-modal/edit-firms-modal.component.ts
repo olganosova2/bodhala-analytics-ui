@@ -4,29 +4,23 @@ import {Subscription} from 'rxjs';
 import {AgGridService} from 'bodhala-ui-elements';
 import {GridOptions} from 'ag-grid-community';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { AdminRateBenchmarksComponent } from '../admin-rate-benchmarks.component';
-import {CommonService, IClient} from '../../../shared/services/common.service';
+import {CommonService} from '../../../../shared/services/common.service';
 import { SelectItemGroup } from 'primeng/api';
 import { Dropdown } from 'primeng/dropdown';
-import { MatTooltipModule } from '@angular/material/tooltip';
-
+import {ComparisonFirmsComponent} from '../comparison-firms.component';
 
 @Component({
-  selector: 'bd-peer-firms-modal',
-  templateUrl: './peer-firms-modal.component.html',
-  styleUrls: ['./peer-firms-modal.component.scss']
+  selector: 'bd-edit-firms-modal',
+  templateUrl: './edit-firms-modal.component.html',
+  styleUrls: ['./edit-firms-modal.component.scss']
 })
-export class PeerFirmsModalComponent implements OnInit {
-
+export class EditFirmsModalComponent implements OnInit {
   pendingRequest: Subscription;
   errorMessage: any;
   loaded: boolean = false;
   saving: boolean = false;
-  selectedClient: IClient;
-  page: string;
   benchmark: any;
-  parentDialogRef: MatDialogRef<AdminRateBenchmarksComponent>;
-  selectedPeerFirms: Array<any> = [];
+  selectedPanelFirms: Array<any> = [];
   clusterDefaultFirms: Array<any> = [];
   peerFirmOptions: Array<any> = [];
   paginationPageSize: number = 10;
@@ -41,43 +35,47 @@ export class PeerFirmsModalComponent implements OnInit {
   firmOptions: SelectItemGroup[] = [];
   selectedFirm: any;
   @ViewChild('firmOptionsDropdown', {static: false}) firmOptionsDropdown: Dropdown;
-  popoverText: string = 'Firms available for selection are those that have spend in the PA/year of this benchmark';
-  resetTooltip: string = 'Set list of firms to those with the same cluster as the selected firm. Does not automatically save the list of firms.';
+  popoverText: string = 'Firms available for selection are those that have spend in the PA/year of this benchmark for this client';
+  resetTooltip: string;
+  parentDialogRef: MatDialogRef<ComparisonFirmsComponent>;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public userService: UserService,
               public commonServ: CommonService,
               private httpService: HttpService,
               public agGridService: AgGridService,
-              public dialogRef: MatDialogRef<PeerFirmsModalComponent>) {}
+              public dialogRef: MatDialogRef<EditFirmsModalComponent>) {}
 
   async ngOnInit(): Promise<void> {
-    this.selectedClient = this.data.client;
     this.benchmark = this.data.benchmark;
     this.parentDialogRef = this.data.dialog;
     this.defaultColumn = this.agGridService.getDefaultColumn();
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState('ClientConfigsGrid');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
+    this.resetTooltip = 'Set list of firms to those with the same cluster as ' + this.benchmark.firm_name
+                        + '. Does not automatically save the list of firms.';
     this.initColumns();
-    const result = await this.getPeerFirmData();
+
+    const result = await this.getPanelFirmData();
     this.loaded = true;
-    if (result.current_cluster_market_firms) {
-      if (result.current_cluster_market_firms.length > 0) {
-        this.processCurrentClusterMarketFirms(result.current_cluster_market_firms);
+    if (result.current_cluster_internal_firms) {
+      if (result.current_cluster_internal_firms.length > 0) {
+        this.processCurrentClusterInternalFirms(result.current_cluster_internal_firms);
       }
     }
-    if (result.current_selected_market_firms) {
-      if (result.current_selected_market_firms.length > 0) {
-        this.processCurrentSelectedMarketFirms(result.current_selected_market_firms);
+    if (result.current_selected_internal_firms) {
+      if (result.current_selected_internal_firms.length > 0) {
+        this.processCurrentSelectedInternalFirms(result.current_selected_internal_firms);
       }
     }
-    if (result.possible_market_firms) {
-      if (result.possible_market_firms.length > 0) {
-        this.processMarketFirmOptions(result.possible_market_firms);
+    if (result.possible_internal_firms) {
+      if (result.possible_internal_firms.length > 0) {
+        this.processInternalFirmOptions(result.possible_internal_firms);
       }
     }
-    if (this.selectedPeerFirms.length > 2) {
+
+    if (this.selectedPanelFirms.length > 2) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;
@@ -105,27 +103,29 @@ export class PeerFirmsModalComponent implements OnInit {
       this.defaultState = this.gridOptions.columnApi.getColumnState();
       this.firstLoad = false;
     }
-    this.gridOptions.api.setRowData(this.selectedPeerFirms);
+    this.gridOptions.api.setRowData(this.selectedPanelFirms);
     this.agGridService.restoreGrid(this.savedState, this.gridOptions);
   }
 
-  getPeerFirmData(): Promise<any> {
+  // comment TBD
+  getPanelFirmData(): Promise<any> {
     let getCluster = true;
-    let marketFirms = [];
-    if (this.benchmark.market_avg_firms) {
+    let internalFirms = [];
+    if (this.benchmark.internal_firms) {
       getCluster = false;
-      marketFirms = this.benchmark.market_avg_firms.map(value => value.id);
+      internalFirms = this.benchmark.internal_firms.map(value => value.id);
     }
     const params = {
+      bmId: this.benchmark.id,
       pa: this.benchmark.smart_practice_area,
       firm: this.benchmark.bh_lawfirm_id,
       yyyy: this.benchmark.year,
-      market_firms: marketFirms,
+      internal_firms: internalFirms,
       get_cluster: getCluster,
-      client: this.selectedClient.bh_client_id
+      client: this.benchmark.bh_client_id
     };
     return new Promise((resolve, reject) => {
-      return this.httpService.makeGetRequest('getPeerFirmData', params).subscribe(
+      return this.httpService.makeGetRequest('getPanelFirmData', params).subscribe(
         (data: any) => {
           if (!data.result) {
             resolve(data);
@@ -139,18 +139,19 @@ export class PeerFirmsModalComponent implements OnInit {
     });
   }
 
-  saveMarketFirmData() {
-    this.selectedPeerFirms.sort((a, b) => b.total_billed - a.total_billed);
-    const marketFirms = this.selectedPeerFirms.map(f => ({ id: f.firm_id, name: f.firm_name }));
+  savePanelFirmData() {
+    this.selectedPanelFirms.sort((a, b) => b.total_billed - a.total_billed);
+    const internalFirms = this.selectedPanelFirms.map(f => ({ id: f.firm_id, name: f.firm_name }));
     const params = {
-      firmList: marketFirms,
+      firmList: internalFirms,
       bmId: this.benchmark.id,
-      client: this.selectedClient.bh_client_id
+      client: this.benchmark.bh_client_id
     };
-    this.pendingRequest = this.httpService.makePostRequest('saveMarketFirmData', params).subscribe(
+    this.pendingRequest = this.httpService.makePostRequest('savePanelFirmData', params).subscribe(
       (data: any) => {
         if (data.result) {
           this.benchmark = data.result;
+          this.dialogRef.close(this.benchmark);
         }
         if (data.error) {
           this.errorMessage = data.error;
@@ -160,28 +161,28 @@ export class PeerFirmsModalComponent implements OnInit {
 
   }
 
-  processCurrentClusterMarketFirms(currentMarketFirms: Array<any>): void {
-    for (const firm of currentMarketFirms) {
+  processCurrentClusterInternalFirms(currentInternalFirms: Array<any>): void {
+    for (const firm of currentInternalFirms) {
       if (firm.cluster === 0) {
         firm.cluster = '--';
       }
-      if (this.benchmark.market_avg_firms === null) {
-        this.selectedPeerFirms.push(firm);
+      if (this.benchmark.internal_firms === null) {
+        this.selectedPanelFirms.push(firm);
       }
       this.clusterDefaultFirms.push(firm);
     }
   }
 
-  processMarketFirmOptions(marketFirmOptions: Array<any>): void {
-    marketFirmOptions.sort((a, b) => b.cluster - a.cluster);
+  processInternalFirmOptions(internalFirmOptions: Array<any>): void {
+    internalFirmOptions.sort((a, b) => b.cluster - a.cluster);
     const firmClusterOptions = [];
-    const maxCluster = marketFirmOptions[0].cluster;
+    const maxCluster = internalFirmOptions[0].cluster;
     if (maxCluster > 0) {
       for (let i = 1; i <= maxCluster; i++) {
-        const cluster = marketFirmOptions.filter(f => f.cluster === i);
+        const cluster = internalFirmOptions.filter(f => f.cluster === i);
         const clusterFirms = [];
         for (const firm of cluster) {
-          if (this.selectedPeerFirms.filter(f => f.firm_id === firm.firm_id).length === 0) {
+          if (this.selectedPanelFirms.filter(f => f.firm_id === firm.firm_id).length === 0) {
             clusterFirms.push({label: firm.firm_name, value: firm.firm_id});
             this.peerFirmOptions.push(firm);
           }
@@ -190,11 +191,11 @@ export class PeerFirmsModalComponent implements OnInit {
         firmClusterOptions.push({label: 'Cluster ' + i.toString(), items: clusterFirms});
       }
     }
-    const noClusterFirms = marketFirmOptions.filter(f => f.cluster === 0);
+    const noClusterFirms = internalFirmOptions.filter(f => f.cluster === 0);
     if (noClusterFirms.length > 0) {
       const noClusterFirmOptions = [];
       for (const firm of noClusterFirms) {
-        if (this.selectedPeerFirms.filter(f => f.firm_id === firm.firm_id).length === 0) {
+        if (this.selectedPanelFirms.filter(f => f.firm_id === firm.firm_id).length === 0) {
           noClusterFirmOptions.push({label: firm.firm_name, value: firm.firm_id});
           this.peerFirmOptions.push(firm);
         }
@@ -204,12 +205,12 @@ export class PeerFirmsModalComponent implements OnInit {
     this.firmOptions = firmClusterOptions;
   }
 
-  processCurrentSelectedMarketFirms(selectedMarketFirms: Array<any>): void {
-    for (const firm of selectedMarketFirms) {
+  processCurrentSelectedInternalFirms(selectedInternalFirms: Array<any>): void {
+    for (const firm of selectedInternalFirms) {
       if (firm.cluster === 0) {
         firm.cluster = '--';
       }
-      this.selectedPeerFirms.push(firm);
+      this.selectedPanelFirms.push(firm);
     }
   }
 
@@ -221,7 +222,7 @@ export class PeerFirmsModalComponent implements OnInit {
   }
 
   addFirm(): void {
-    this.selectedPeerFirms.push(this.selectedFirm);
+    this.selectedPanelFirms.push(this.selectedFirm);
     this.peerFirmOptions = this.peerFirmOptions.filter(f => f.firm_id !== this.selectedFirm.firm_id);
     let label = '';
     if (this.selectedFirm.cluster > 0) {
@@ -237,7 +238,7 @@ export class PeerFirmsModalComponent implements OnInit {
 
     this.selectedFirm = null;
     this.firmOptionsDropdown.clear(null);
-    if (this.selectedPeerFirms.length >= 3) {
+    if (this.selectedPanelFirms.length >= 3) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;
@@ -261,8 +262,8 @@ export class PeerFirmsModalComponent implements OnInit {
       }
     }
 
-    this.selectedPeerFirms = this.clusterDefaultFirms;
-    if (this.selectedPeerFirms.length > 2) {
+    this.selectedPanelFirms = this.clusterDefaultFirms;
+    if (this.selectedPanelFirms.length > 2) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;
@@ -272,10 +273,10 @@ export class PeerFirmsModalComponent implements OnInit {
 
   // clear the current set of firms, which invalidates the current firm selection (min of 3)
   removeAll(): void {
-    for (const firm of this.selectedPeerFirms) {
+    for (const firm of this.selectedPanelFirms) {
       this.removeFirmFromSelectedList(false, firm);
     }
-    this.selectedPeerFirms = [];
+    this.selectedPanelFirms = [];
     this.validFirmSelection = false;
     this.loadGrid();
 
@@ -283,11 +284,11 @@ export class PeerFirmsModalComponent implements OnInit {
 
   removeFirmFromSelectedList(fromGrid: boolean, item: any): void {
     if (fromGrid) {
-      this.selectedPeerFirms = this.selectedPeerFirms.filter(f => f.firm_id !== item.data.firm_id);
+      this.selectedPanelFirms = this.selectedPanelFirms.filter(f => f.firm_id !== item.data.firm_id);
     } else {
-      this.selectedPeerFirms = this.selectedPeerFirms.filter(f => f.firm_id !== item.firm_id);
+      this.selectedPanelFirms = this.selectedPanelFirms.filter(f => f.firm_id !== item.firm_id);
     }
-    if (this.selectedPeerFirms.length > 2) {
+    if (this.selectedPanelFirms.length > 2) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;

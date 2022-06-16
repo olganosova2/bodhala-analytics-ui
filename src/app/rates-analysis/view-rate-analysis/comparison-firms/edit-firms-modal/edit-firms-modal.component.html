@@ -1,0 +1,72 @@
+<div>
+  <div mat-dialog-title style="display: flow-root;">
+    <div class="pull-left">
+      <h4>Comparison Panel Firms</h4>
+    </div>
+    <div class="pull-right">
+      <button #tooltip="matTooltip" matTooltip="Note: Changes to Panel Firms will not save if you close the modal before clicking the Save button"  mat-flat-button style="float: right;" class="btn-grey" [mat-dialog-close]="false">Close</button>
+    </div>
+  </div>
+  <mat-dialog-content>
+    <div class="p-grid full-width">
+      <div class="p-col-4">
+        <div style="padding-bottom: .5em;">
+          <h5 style="display: inline;">Add/Remove Firms</h5>
+          <span class="ml10 pointer-hand" placement="bottom"
+                  [ngbPopover]="popoverText"
+                  popoverTitle="Note"
+                  [openDelay]="100"
+                  [closeDelay]="2000"
+                  triggers="mouseenter:mouseleave"
+                  style="margin-left: 0.75em; height: 16px; width: 16px; color: black !important; background: #D6DEE1; border-radius: 16px; font-size: 13px;justify-content: center; align-items: center; display: inline-flex; font-family: 'Roboto';">?
+        </span>
+        </div>
+
+        <p-dropdown #firmOptionsDropdown class="dropdown ml5" appendTo="body" [style]="{width:'350px'}" [options]="firmOptions"
+                    placeholder="Select a firm" (onChange)="firmSelected($event)" [disabled]="!loaded" [group]="true" [filter]="true" [showClear]="true">
+        </p-dropdown>
+
+        <div *ngIf="selectedFirm" style="padding-top: 1em;">
+          <p><b>Firm:</b> {{selectedFirm.firm_name}}</p>
+          <p><b>Cluster:</b> {{selectedFirm.cluster}}</p>
+          <p><b>Avg Partner Rate:</b> ${{selectedFirm.avg_partner_rate | number:'1.0-0'}}</p>
+          <p><b>Avg Associate Rate:</b> ${{selectedFirm.avg_associate_rate | number:'1.0-0'}}</p>
+          <p><b>Avg Blended Rate:</b> ${{selectedFirm.blended_rate | number:'1.0-0'}}</p>
+          <p><b>Total Spend in PA/Year:</b> ${{selectedFirm.total_billed | number:'1.0-0'}}</p>
+          <button class="primary-button" (click)="addFirm()" style="margin-bottom: 1em;">Add to list</button>
+        </div>
+      </div>
+
+      <div class="p-col-8">
+        <!-- <lib-export-button [gridOptions]="gridOptions"></lib-export-button> -->
+        <lib-page-size [pageSize]="paginationPageSize" (pageSizeChanged)="changePageSize($event)"></lib-page-size>
+        <button #tooltip="matTooltip" matTooltip="{{resetTooltip}}"
+                class="primary-button ml10" [ngClass]="{'button-disabled': !loaded}" [disabled]="!loaded"
+                (click)="resetFirmOptions()" style="margin-bottom: 1em;">Reset to Bodhala Default</button>
+        <button #tooltip="matTooltip" matTooltip="Saves list of panel firms. Must have at least 3
+                  firms in the grid to save. Saving clears the cache for each API call related to this Rate BM"
+                class="primary-button ml10" [ngClass]="{'button-disabled': !validFirmSelection || !loaded}"
+                [disabled]="!validFirmSelection || !loaded" (click)="savePanelFirmData()">Save</button>
+        <button tooltip="Remove all firms from the list (disables save button)"
+                class="primary-button ml10" [ngClass]="{'button-disabled': !loaded}" [disabled]="!loaded"
+                (click)="removeAll()">Remove All</button>
+        <ag-grid-angular
+            #agGrid
+            style="border: 1px solid gray;"
+            [ngStyle]="{'height': '495px'}"
+            class="ag-theme-alpine"
+            [pagination]="true"
+            [paginationPageSize]="paginationPageSize"
+            (setSideBarVisible)="false"
+            [suppressAggFuncInHeader]="true"
+            [gridOptions]="gridOptions">
+        </ag-grid-angular>
+      </div>
+
+      <span stye="font-weight: 700;">
+        Comparison Market Firms are determined by Bodhala's Firm Clustering Model. To modify firms used for market comparison, please work with your Client Success team.
+      </span>
+
+    </div>
+  </mat-dialog-content>
+</div>

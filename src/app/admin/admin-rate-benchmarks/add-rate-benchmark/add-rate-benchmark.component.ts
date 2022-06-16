@@ -33,7 +33,6 @@ export class AddRateBenchmarkComponent implements OnInit, OnDestroy {
   smartPAOptions: SelectItem[] = smartPracticeAreas;
   allFirmsCluster: Array<any>;
   yearOptions: SelectItem[] = [];
-  peerFirms: Array<string>;
   selectedFirmCluster: number = 1;
 
   benchmarkForm = new FormGroup({

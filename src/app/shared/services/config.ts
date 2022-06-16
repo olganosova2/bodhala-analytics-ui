@@ -124,6 +124,8 @@ export const END_POINTS_URLS = {
   getBenchmarkInsight: {url: BASE_URL + 'analytics/getBenchmarkInsight', showLoading: true},
   getRateBMNamedTKData: {url: BASE_URL + 'analytics/getRateBMNamedTKData', showLoading: true},
   getGranularityPageData: {url: BASE_URL + 'analytics/getGranularityPageData', showLoading: true},
+  getPanelFirmData: {url: BASE_URL + 'analytics/getPanelFirmData', showLoading: true},
+  savePanelFirmData: {url: BASE_URL + 'analytics/savePanelFirmData', showLoading: true},
 
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
