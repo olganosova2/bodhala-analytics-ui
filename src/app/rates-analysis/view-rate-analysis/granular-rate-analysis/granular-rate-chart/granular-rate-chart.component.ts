@@ -14,7 +14,8 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
   @Input() selectedFirm: string;
   @Input() classification: string;
   @Input() seniority: string;
-  @Input() marketInternalData: any;
+  @Input() internalData: any;
+  @Input() marketData: any;
   @Input() firmPartnerSeniorityData: any;
   @Input() firmAssociateSeniorityData: any;
   @Input() benchmark: any;
@@ -89,16 +90,19 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     if (this.classification === 'associate') {
-      if (this.marketInternalData) {
-        if (this.marketInternalData.market_num_firms < 3) {
+      if (this.marketData) {
+        if (this.marketData.market_num_firms < 3) {
           this.validMarketAverage = false;
         }
-        if (this.marketInternalData.internal_num_firms < 3) {
+      } else {
+        this.validMarketAverage = false;
+      }
+      if (this.internalData) {
+        if (this.internalData.internal_num_firms < 3) {
           this.validInternalBM = false;
           this.marketAverageHeight = '84px';
         }
       } else {
-        this.validMarketAverage = false;
         this.validInternalBM = false;
         this.marketAverageHeight = '84px';
       }
@@ -152,20 +156,27 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         this.totalSeniorityHours = this.firmPartnerSeniorityData.total_senior_partner_hours;
       }
 
-      const marketData = this.marketInternalData.filter(m => m.seniority === this.seniority);
+      const marketData = this.marketData.filter(m => m.seniority === this.seniority);
       if (marketData.length > 0) {
-        this.marketInternalData = marketData[0];
+        this.marketData = marketData[0];
       }
-      if ('seniority' in this.marketInternalData) {
-        if (this.marketInternalData.market_num_firms < 3) {
+      if ('seniority' in this.marketData) {
+        if (this.marketData.market_num_firms < 3) {
           this.validMarketAverage = false;
         }
-        if (this.marketInternalData.internal_num_firms < 3) {
+      } else {
+        this.validMarketAverage = false;
+      }
+      const internalData = this.internalData.filter(m => m.seniority === this.seniority);
+      if (internalData.length > 0) {
+        this.internalData = internalData[0];
+      }
+      if ('seniority' in this.internalData) {
+        if (this.internalData.internal_num_firms < 3) {
           this.validInternalBM = false;
           this.marketAverageHeight = '84px';
         }
       } else {
-        this.validMarketAverage = false;
         this.validInternalBM = false;
         this.marketAverageHeight = '84px';
       }
@@ -204,119 +215,80 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
   }
 
   calculateChartMetrics(): void {
-    if (this.marketInternalData) {
-      if (this.classification === 'associate') {
-        const associateRates = [];
-        if (this.marketInternalData.market_associate_rate_hi !== null && this.validMarketAverage) {
-          associateRates.push(this.marketInternalData.market_associate_rate_hi );
-        }
-        if (this.marketInternalData.internal_avg_associate_rate !== null && this.validInternalBM) {
-          associateRates.push(this.marketInternalData.internal_avg_associate_rate);
-        }
-        if (this.seniorityFirmRate !== null) {
-          associateRates.push(this.seniorityFirmRate);
-        }
-        this.highestRate = Math.max(...associateRates);
 
-        this.topBarDollars = this.seniorityFirmRate;
-        this.topBarWidth = this.calculateBarWidth(this.seniorityFirmRate) + 'px';
-        this.bottomBarDollars = this.marketInternalData.internal_avg_associate_rate;
-        this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);
-        this.bottomBarWidth = this.calculateBarWidth(this.marketInternalData.internal_avg_associate_rate) + 'px';
 
-        const lowerRange = this.calculateBarWidth(this.marketInternalData.market_associate_rate_lo);
-        const upperRange = this.calculateBarWidth(this.marketInternalData.market_associate_rate_hi);
+    if (this.classification === 'associate') {
+      const associateRates = [];
+      // this.topBarDollars = this.seniorityFirmRate;
+
+      if (this.marketData) {
+        if (this.marketData.market_associate_rate_hi !== null && this.validMarketAverage) {
+          associateRates.push(this.marketData.market_associate_rate_hi );
+        }
+
+        const lowerRange = this.calculateBarWidth(this.marketData.market_associate_rate_lo);
+        const upperRange = this.calculateBarWidth(this.marketData.market_associate_rate_hi);
         const width = upperRange - lowerRange;
         if (width < 65) {
           this.modifyMarketDisplay = true;
         }
-        this.marketAverageLowerRange = this.marketInternalData.market_associate_rate_lo;
-        this.marketAverageUpperRange =  this.marketInternalData.market_associate_rate_hi;
-        this.marketAverageMedian = (this.marketInternalData.market_associate_rate_hi + this.marketInternalData.market_associate_rate_lo) / 2;
-        this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketInternalData.market_associate_rate_lo);
-        this.marketAverageUpperRangeFormatted =  moneyFormatter.format(this.marketInternalData.market_associate_rate_hi);
+        this.marketAverageLowerRange = this.marketData.market_associate_rate_lo;
+        this.marketAverageUpperRange =  this.marketData.market_associate_rate_hi;
+        this.marketAverageMedian = (this.marketData.market_associate_rate_hi + this.marketData.market_associate_rate_lo) / 2;
+        this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketData.market_associate_rate_lo);
+        this.marketAverageUpperRangeFormatted =  moneyFormatter.format(this.marketData.market_associate_rate_hi);
 
         this.marketAverageLeft = lowerRange + 'px';
         this.marketAverageWidth = width + 'px';
-        if (this.seniorityFirmRate > this.marketInternalData.market_associate_rate_hi) {
 
-          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketInternalData.market_associate_rate_hi;
-          this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketInternalData.market_associate_rate_lo;
+        if (this.seniorityFirmRate > this.marketData.market_associate_rate_hi) {
+          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_associate_rate_hi;
+          this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketData.market_associate_rate_lo;
           this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
           this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
-        } else if (this.seniorityFirmRate < this.marketInternalData.market_associate_rate_lo) {
-          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketInternalData.market_associate_rate_lo;
-          this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketInternalData.market_associate_rate_hi;
+        } else if (this.seniorityFirmRate < this.marketData.market_associate_rate_lo) {
+          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_associate_rate_lo;
+          this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketData.market_associate_rate_hi;
           this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
           this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
         } else {
-          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketInternalData.market_associate_rate_lo;
-          this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketInternalData.market_associate_rate_hi;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
-          this.withinRange = true;
-        }
-
-        this.marketRateLowerDeltaPct *= 100;
-        this.marketRateUpperDeltaPct *= 100;
-        this.internalRateDelta = this.seniorityFirmRate - this.marketInternalData.internal_avg_associate_rate;
-        this.internalRateDeltaPct = this.internalRateDelta / this.seniorityFirmRate;
-        this.internalRateDeltaPct *= 100;
-      } else if (this.classification === 'partner') {
-        const partnerRates = [];
-        if (this.marketInternalData.market_partner_rate_hi !== null && this.validMarketAverage) {
-          partnerRates.push(this.marketInternalData.market_partner_rate_hi);
-        }
-        if (this.marketInternalData.internal_avg_partner_rate !== null && this.validInternalBM) {
-          partnerRates.push(this.marketInternalData.internal_avg_partner_rate);
-        }
-        if (this.seniorityFirmRate !== null) {
-          partnerRates.push(this.seniorityFirmRate);
-        }
-        this.highestRate = Math.max(...partnerRates);
-        this.topBarDollars = this.seniorityFirmRate;
-        this.topBarWidth = this.calculateBarWidth(this.seniorityFirmRate) + 'px';
-        this.bottomBarDollars = this.marketInternalData.internal_avg_partner_rate;
-        this.bottomBarWidth = this.calculateBarWidth(this.marketInternalData.internal_avg_partner_rate) + 'px';
-
-        this.marketAverageLowerRange = this.marketInternalData.market_partner_rate_lo;
-        this.marketAverageUpperRange = this.marketInternalData.market_partner_rate_hi;
-        this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketInternalData.market_partner_rate_lo);
-        this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.marketInternalData.market_partner_rate_hi);
-        this.marketAverageMedian = (this.marketInternalData.market_partner_rate_hi + this.marketInternalData.market_partner_rate_lo) / 2;
-        const lowerRange = this.calculateBarWidth(this.marketInternalData.market_partner_rate_lo);
-        const upperRange = this.calculateBarWidth(this.marketInternalData.market_partner_rate_hi);
-        const width = upperRange - lowerRange;
-        if (width < 65) {
-          this.modifyMarketDisplay = true;
-        }
-        this.marketAverageLeft = lowerRange + 'px';
-        this.marketAverageWidth = width + 'px';
-
-        if (this.seniorityFirmRate > this.marketInternalData.market_partner_rate_hi) {
-          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketInternalData.market_partner_rate_hi;
-          this.marketRateUpperDelta = this.seniorityFirmRate - this.marketInternalData.market_partner_rate_lo;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
-        } else if (this.seniorityFirmRate < this.marketInternalData.market_partner_rate_lo) {
-          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketInternalData.market_partner_rate_lo;
-          this.marketRateUpperDelta = this.seniorityFirmRate - this.marketInternalData.market_partner_rate_hi;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
-        } else {
-          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketInternalData.market_partner_rate_lo;
-          this.marketRateUpperDelta = this.seniorityFirmRate - this.marketInternalData.market_partner_rate_hi;
+          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_associate_rate_lo;
+          this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketData.market_associate_rate_hi;
           this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
           this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
           this.withinRange = true;
         }
         this.marketRateLowerDeltaPct *= 100;
         this.marketRateUpperDeltaPct *= 100;
-
-        this.internalRateDelta = this.seniorityFirmRate - this.marketInternalData.internal_avg_partner_rate;
-        this.internalRateDeltaPct = this.internalRateDelta / this.seniorityFirmRate;
-        this.internalRateDeltaPct *= 100;
+      } else {
+        this.validMarketAverage = false;
       }
+
+      if (this.internalData) {
+        if (this.internalData.internal_avg_associate_rate !== null && this.validInternalBM) {
+          associateRates.push(this.internalData.internal_avg_associate_rate);
+        }
+
+        this.bottomBarDollars = this.internalData.internal_avg_associate_rate;
+        this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);
+        this.bottomBarWidth = this.calculateBarWidth(this.internalData.internal_avg_associate_rate) + 'px';
+
+        this.internalRateDelta = this.seniorityFirmRate - this.internalData.internal_avg_associate_rate;
+        this.internalRateDeltaPct = this.internalRateDelta / this.seniorityFirmRate;
+        this.internalRateDeltaPct *= 100;
+
+      } else {
+        this.validInternalBM = false;
+      }
+
+      if (this.seniorityFirmRate !== null) {
+        associateRates.push(this.seniorityFirmRate);
+      }
+      this.highestRate = Math.max(...associateRates);
+      this.topBarWidth = this.calculateBarWidth(this.seniorityFirmRate) + 'px';
+      this.topBarDollars = this.seniorityFirmRate;
+      this.topBarDollarFormatted = moneyFormatter.format(this.topBarDollars);
+
       let marketAvgCostImpactHigh = this.marketRateUpperDelta * this.totalSeniorityHours;
       let marketAvgCostImpactLow = this.marketRateLowerDelta * this.totalSeniorityHours;
       let internalCostImpact = this.internalRateDelta * this.totalSeniorityHours;
@@ -340,13 +312,99 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
       const impact = this.calcluateRateImpact();
       this.rateImpact = impact.impact;
       this.rateImpactColor = impact.color;
-    } else {
-      this.validMarketAverage = false;
-      this.validInternalBM = false;
-      this.highestRate = this.seniorityFirmRate;
-      this.topBarDollars = this.seniorityFirmRate;
+
+    } else if (this.classification === 'partner') {
+      const partnerRates = [];
+
+      if (this.marketData) {
+        if (this.marketData.market_partner_rate_hi !== null && this.validMarketAverage) {
+          partnerRates.push(this.marketData.market_partner_rate_hi);
+        }
+
+        this.marketAverageLowerRange = this.marketData.market_partner_rate_lo;
+        this.marketAverageUpperRange = this.marketData.market_partner_rate_hi;
+        this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketData.market_partner_rate_lo);
+        this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.marketData.market_partner_rate_hi);
+        this.marketAverageMedian = (this.marketData.market_partner_rate_hi + this.marketData.market_partner_rate_lo) / 2;
+        const lowerRange = this.calculateBarWidth(this.marketData.market_partner_rate_lo);
+        const upperRange = this.calculateBarWidth(this.marketData.market_partner_rate_hi);
+        const width = upperRange - lowerRange;
+        if (width < 65) {
+          this.modifyMarketDisplay = true;
+        }
+        this.marketAverageLeft = lowerRange + 'px';
+        this.marketAverageWidth = width + 'px';
+
+        if (this.seniorityFirmRate > this.marketData.market_partner_rate_hi) {
+          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_hi;
+          this.marketRateUpperDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_lo;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+        } else if (this.seniorityFirmRate < this.marketData.market_partner_rate_lo) {
+          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_lo;
+          this.marketRateUpperDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_hi;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+        } else {
+          this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_lo;
+          this.marketRateUpperDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_hi;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+          this.withinRange = true;
+        }
+        this.marketRateLowerDeltaPct *= 100;
+        this.marketRateUpperDeltaPct *= 100;
+      } else {
+        this.validMarketAverage = false;
+      }
+
+      if (this.internalData) {
+        if (this.internalData.internal_avg_partner_rate !== null && this.validInternalBM) {
+          partnerRates.push(this.internalData.internal_avg_partner_rate);
+        }
+
+        this.bottomBarDollars = this.internalData.internal_avg_partner_rate;
+        this.bottomBarWidth = this.calculateBarWidth(this.internalData.internal_avg_partner_rate) + 'px';
+
+        this.internalRateDelta = this.seniorityFirmRate - this.internalData.internal_avg_partner_rate;
+        this.internalRateDeltaPct = this.internalRateDelta / this.seniorityFirmRate;
+        this.internalRateDeltaPct *= 100;
+
+      } else {
+        this.validInternalBM = false;
+      }
+
+      if (this.seniorityFirmRate !== null) {
+        partnerRates.push(this.seniorityFirmRate);
+      }
       this.topBarWidth = this.calculateBarWidth(this.seniorityFirmRate) + 'px';
+      this.highestRate = Math.max(...partnerRates);
+      this.topBarDollars = this.seniorityFirmRate;
       this.topBarDollarFormatted = moneyFormatter.format(this.topBarDollars);
+
+      let marketAvgCostImpactHigh = this.marketRateUpperDelta * this.totalSeniorityHours;
+      let marketAvgCostImpactLow = this.marketRateLowerDelta * this.totalSeniorityHours;
+      let internalCostImpact = this.internalRateDelta * this.totalSeniorityHours;
+      if (marketAvgCostImpactHigh < 0) {
+        marketAvgCostImpactHigh *= -1;
+      }
+      if (marketAvgCostImpactLow < 0) {
+        marketAvgCostImpactLow *= -1;
+      }
+      if (internalCostImpact < 0) {
+        internalCostImpact *= -1;
+      }
+      this.marketRateMedianDeltaPct = ((this.seniorityFirmRate - this.marketAverageMedian) / this.seniorityFirmRate) * 100;
+      this.marketAvgHighCostImpact = moneyFormatter.format(marketAvgCostImpactHigh);
+      this.marketAvgLowCostImpact = moneyFormatter.format(marketAvgCostImpactLow);
+      this.internalRateCostImpact = moneyFormatter.format(internalCostImpact);
+      this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);
+      this.topBarDollarFormatted = moneyFormatter.format(this.topBarDollars);
+      this.topBarColor = this.getBarColor();
+      this.internalRateColor = this.getRateColor(this.internalRateDeltaPct);
+      const impact = this.calcluateRateImpact();
+      this.rateImpact = impact.impact;
+      this.rateImpactColor = impact.color;
     }
   }
 

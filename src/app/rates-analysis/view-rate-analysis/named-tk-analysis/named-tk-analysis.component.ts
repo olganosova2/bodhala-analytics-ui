@@ -22,7 +22,6 @@ export class NamedTkAnalysisComponent implements OnInit {
   firmName: string;
   firmId: number;
   year: number;
-  peerFirms: Array<string>;
   firmYearData: any;
   overallSpendData: any;
   loaded: boolean = false;
@@ -37,18 +36,26 @@ export class NamedTkAnalysisComponent implements OnInit {
   sideBarConfig: any;
   defaultColumn: any;
   defaultState: any;
-  juniorPartnerData: any;
-  midPartnerData: any;
-  seniorPartnerData: any;
-  juniorAssociateData: any;
-  midAssociateData: any;
-  seniorAssociateData: any;
+  juniorPartnerMarketData: any;
+  midPartnerMarketData: any;
+  seniorPartnerMarketData: any;
+  juniorPartnerInternalData: any;
+  midPartnerInternalData: any;
+  seniorPartnerInternalData: any;
+  juniorAssociateMarketData: any;
+  midAssociateMarketData: any;
+  seniorAssociateMarketData: any;
+  juniorAssociateInternalData: any;
+  midAssociateInternalData: any;
+  seniorAssociateInternalData: any;
   firmPartnerJuniorRate: number;
   firmPartnerMidRate: number;
   firmPartnerSeniorRate: number;
   firmAssocJuniorRate: number;
   firmAssocMidRate: number;
   firmAssocSeniorRate: number;
+  marketAvgFirms: Array<any>;
+  internalFirms: Array<any>;
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -90,34 +97,60 @@ export class NamedTkAnalysisComponent implements OnInit {
       if (history.state.data.numTiers) {
         this.numTiers = history.state.data.numTiers;
       }
-      if (history.state.data.peerFirms) {
-        this.peerFirms = history.state.data.peerFirms;
-      }
       if (history.state.data.firmYear) {
         this.firmYearData = history.state.data.firmYear;
         this.firmName = this.firmYearData.name;
       }
-      if (history.state.data.associateJuniorMarketInternal) {
-        this.juniorAssociateData = history.state.data.associateJuniorMarketInternal;
+      if (history.state.data.associateJuniorMarket) {
+        this.juniorAssociateMarketData = history.state.data.associateJuniorMarket;
       }
-      if (history.state.data.associateMidMarketInternal) {
-        this.midAssociateData = history.state.data.associateMidMarketInternal;
+      if (history.state.data.associateMidMarket) {
+        this.midAssociateMarketData = history.state.data.associateMidMarket;
       }
-      if (history.state.data.associateSeniorMarketInternal) {
-        this.seniorAssociateData = history.state.data.associateSeniorMarketInternal;
+      if (history.state.data.associateSeniorMarket) {
+        this.seniorAssociateMarketData = history.state.data.associateSeniorMarket;
       }
-      if (history.state.data.partnerMarketInternal) {
-        const junior = history.state.data.partnerMarketInternal.filter(p => p.seniority === 'Junior');
+      if (history.state.data.associateJuniorInternal) {
+        this.juniorAssociateInternalData = history.state.data.associateJuniorInternal;
+      }
+      if (history.state.data.associateMidInternal) {
+        this.midAssociateInternalData = history.state.data.associateMidInternal;
+      }
+      if (history.state.data.associateSeniorInternal) {
+        this.seniorAssociateInternalData = history.state.data.associateSeniorInternal;
+      }
+      if (history.state.data.marketFirms) {
+        this.marketAvgFirms = history.state.data.marketFirms;
+      }
+      if (history.state.data.panel) {
+        this.internalFirms = history.state.data.panel;
+      }
+      if (history.state.data.partnerMarket) {
+        const junior = history.state.data.partnerMarket.filter(p => p.seniority === 'Junior');
         if (junior.length > 0) {
-          this.juniorPartnerData = junior[0];
+          this.juniorPartnerMarketData = junior[0];
         }
-        const mid = history.state.data.partnerMarketInternal.filter(p => p.seniority === 'Mid-Level');
+        const mid = history.state.data.partnerMarket.filter(p => p.seniority === 'Mid-Level');
         if (mid.length > 0) {
-          this.midPartnerData = mid[0];
+          this.midPartnerMarketData = mid[0];
         }
-        const senior = history.state.data.partnerMarketInternal.filter(p => p.seniority === 'Senior');
+        const senior = history.state.data.partnerMarket.filter(p => p.seniority === 'Senior');
         if (senior.length > 0) {
-          this.seniorPartnerData = senior[0];
+          this.seniorPartnerMarketData = senior[0];
+        }
+      }
+      if (history.state.data.partnerInternal) {
+        const junior = history.state.data.partnerInternal.filter(p => p.seniority === 'Junior');
+        if (junior.length > 0) {
+          this.juniorPartnerInternalData = junior[0];
+        }
+        const mid = history.state.data.partnerInternal.filter(p => p.seniority === 'Mid-Level');
+        if (mid.length > 0) {
+          this.midPartnerInternalData = mid[0];
+        }
+        const senior = history.state.data.partnerInternal.filter(p => p.seniority === 'Senior');
+        if (senior.length > 0) {
+          this.seniorPartnerInternalData = senior[0];
         }
       }
       if (history.state.data.firmPartnerData) {
@@ -145,16 +178,9 @@ export class NamedTkAnalysisComponent implements OnInit {
       if (history.state.data.numTiers) {
         this.numTiers = history.state.data.numTiers;
       }
-      if (history.state.data.peerFirms) {
-        this.peerFirms = history.state.data.peerFirms;
-      }
       this.firmId = this.benchmark.bh_lawfirm_id;
       this.practiceArea = this.benchmark.smart_practice_area;
       this.year = this.benchmark.year;
-      const ix = this.peerFirms.findIndex(p => p === this.firmName);
-      if (ix >= 0) {
-        this.peerFirms.splice(ix, 1);
-      }
       this.getNamedTKData(needAllData);
       this.loaded = true;
     } else {
@@ -163,24 +189,20 @@ export class NamedTkAnalysisComponent implements OnInit {
         const result = await this.ratesService.getBenchmark(this.benchmarkId);
         this.firmName = result.firm_name;
         this.benchmark = result.benchmark;
+        if (this.benchmark.market_avg_firms) {
+          this.marketAvgFirms = this.benchmark.market_avg_firms;
+        } else {
+          this.marketAvgFirms = result.market_firms;
+        }
+        if (this.benchmark.internal_firms) {
+          this.internalFirms = this.benchmark.internal_firms;
+        } else {
+          this.internalFirms = result.internal_firms;
+        }
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
         this.numTiers = result.num_tiers;
-        const ix = result.peer_firms.findIndex(p => p === this.firmName);
-        this.peerFirms = [];
-        if (ix >= 0) {
-          result.peer_firms.splice(ix, 1);
-        }
-        if (result.peer_firms) {
-          let counter = 0;
-          for (const firm of result.peer_firms) {
-            if ((firm.length + counter) < 110) {
-              this.peerFirms.push(firm);
-            }
-            counter += firm.length;
-          }
-        }
         this.getNamedTKData(true);
         this.loaded = true;
       });
@@ -225,10 +247,20 @@ export class NamedTkAnalysisComponent implements OnInit {
     const paParam = [];
     paParam.push(this.benchmark.smart_practice_area);
     firmParam.push(this.benchmark.bh_lawfirm_id.toString());
-    let getDataByCluster = true;
+    let getMarketDataByCluster = true;
+    let marketFirms = null;
     if (this.benchmark.market_avg_firms !== null) {
-      getDataByCluster = false;
+      getMarketDataByCluster = false;
+      marketFirms = this.benchmark.market_avg_firms.map(value => value.id);
     }
+
+    let getInternalDataByCluster = true;
+    let internalFirms = null;
+    if (this.benchmark.internal_firms !== null) {
+      getInternalDataByCluster = false;
+      internalFirms = this.benchmark.internal_firms.map(value => value.id);
+    }
+
     const params = {
       bmId: this.benchmark.id,
       pa: this.benchmark.smart_practice_area,
@@ -238,8 +270,10 @@ export class NamedTkAnalysisComponent implements OnInit {
       miData: getMarketInternalData,
       firms: JSON.stringify(firmParam),
       bdPracticeAreas: JSON.stringify(paParam),
-      getByCluster: getDataByCluster,
-      market_firms: this.benchmark.market_avg_firms
+      getMarketByCluster: getMarketDataByCluster,
+      market_firms: marketFirms,
+      getInternalByCluster: getInternalDataByCluster,
+      internal_firms: internalFirms
     };
     this.pendingRequest = this.httpService.makeGetRequest('getRateBMNamedTKData', params).subscribe(
       (data: any) => {
@@ -247,32 +281,60 @@ export class NamedTkAnalysisComponent implements OnInit {
         if (!data.result) {
           return;
         }
-        if (data.result.partner_market_internal) {
-          this.juniorPartnerData = data.result.partner_market_internal.filter(p => p.seniority === 'Junior');
-          if (this.juniorPartnerData.length > 0) {
-            this.juniorPartnerData = this.juniorPartnerData[0];
+        if (data.result.partner_market) {
+          this.juniorPartnerMarketData = data.result.partner_market.filter(p => p.seniority === 'Junior');
+          if (this.juniorPartnerMarketData.length > 0) {
+            this.juniorPartnerMarketData = this.juniorPartnerMarketData[0];
           }
-          this.midPartnerData = data.result.partner_market_internal.filter(p => p.seniority === 'Mid-Level');
-          if (this.midPartnerData.length > 0) {
-            this.midPartnerData = this.midPartnerData[0];
+          this.midPartnerMarketData = data.result.partner_market.filter(p => p.seniority === 'Mid-Level');
+          if (this.midPartnerMarketData.length > 0) {
+            this.midPartnerMarketData = this.midPartnerMarketData[0];
           }
-          this.seniorPartnerData = data.result.partner_market_internal.filter(p => p.seniority === 'Senior');
-          if (this.seniorPartnerData.length > 0) {
-            this.seniorPartnerData = this.seniorPartnerData[0];
+          this.seniorPartnerMarketData = data.result.partner_market.filter(p => p.seniority === 'Senior');
+          if (this.seniorPartnerMarketData.length > 0) {
+            this.seniorPartnerMarketData = this.seniorPartnerMarketData[0];
           }
         }
-        if (data.result.associate_market_internal) {
-          this.juniorAssociateData = data.result.associate_market_internal.filter(p => p.seniority === 'Junior');
-          if (this.juniorAssociateData.length > 0) {
-            this.juniorAssociateData = this.juniorAssociateData[0];
+        if (data.result.partner_internal) {
+          this.juniorPartnerInternalData = data.result.partner_internal.filter(p => p.seniority === 'Junior');
+          if (this.juniorPartnerInternalData.length > 0) {
+            this.juniorPartnerInternalData = this.juniorPartnerInternalData[0];
           }
-          this.midAssociateData = data.result.associate_market_internal.filter(p => p.seniority === 'Mid-Level');
-          if (this.midAssociateData.length > 0) {
-            this.midAssociateData = this.midAssociateData[0];
+          this.midPartnerInternalData = data.result.partner_internal.filter(p => p.seniority === 'Mid-Level');
+          if (this.midPartnerInternalData.length > 0) {
+            this.midPartnerInternalData = this.midPartnerInternalData[0];
           }
-          this.seniorAssociateData = data.result.associate_market_internal.filter(p => p.seniority === 'Senior');
-          if (this.seniorAssociateData.length > 0) {
-            this.seniorAssociateData = this.seniorAssociateData[0];
+          this.seniorPartnerInternalData = data.result.partner_internal.filter(p => p.seniority === 'Senior');
+          if (this.seniorPartnerInternalData.length > 0) {
+            this.seniorPartnerInternalData = this.seniorPartnerInternalData[0];
+          }
+        }
+        if (data.result.associate_market) {
+          this.juniorAssociateMarketData = data.result.associate_market.filter(p => p.seniority === 'Junior');
+          if (this.juniorAssociateMarketData.length > 0) {
+            this.juniorAssociateMarketData = this.juniorAssociateMarketData[0];
+          }
+          this.midAssociateMarketData = data.result.associate_market.filter(p => p.seniority === 'Mid-Level');
+          if (this.midAssociateMarketData.length > 0) {
+            this.midAssociateMarketData = this.midAssociateMarketData[0];
+          }
+          this.seniorAssociateMarketData = data.result.associate_market.filter(p => p.seniority === 'Senior');
+          if (this.seniorAssociateMarketData.length > 0) {
+            this.seniorAssociateMarketData = this.seniorAssociateMarketData[0];
+          }
+        }
+        if (data.result.associate_internal) {
+          this.juniorAssociateInternalData = data.result.associate_internal.filter(p => p.seniority === 'Junior');
+          if (this.juniorAssociateInternalData.length > 0) {
+            this.juniorAssociateInternalData = this.juniorAssociateInternalData[0];
+          }
+          this.midAssociateInternalData = data.result.associate_internal.filter(p => p.seniority === 'Mid-Level');
+          if (this.midAssociateInternalData.length > 0) {
+            this.midAssociateInternalData = this.midAssociateInternalData[0];
+          }
+          this.seniorAssociateInternalData = data.result.associate_internal.filter(p => p.seniority === 'Senior');
+          if (this.seniorAssociateInternalData.length > 0) {
+            this.seniorAssociateInternalData = this.seniorAssociateInternalData[0];
           }
         }
         if (data.result.firm_partner) {
@@ -323,18 +385,18 @@ export class NamedTkAnalysisComponent implements OnInit {
         partner.firm_avg_rate = this.firmPartnerJuniorRate;
         const firmDiff = partner.rate - partner.firm_avg_rate;
         partner.firm_diff = firmDiff / partner.rate;
-        if (this.juniorPartnerData) {
-          if (this.juniorPartnerData.market_num_firms >= 3) {
-            partner.market_range = moneyFormatter.format(this.juniorPartnerData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.juniorPartnerData.market_partner_rate_hi);
+        if (this.juniorPartnerMarketData) {
+          if (this.juniorPartnerMarketData.market_num_firms >= 3) {
+            partner.market_range = moneyFormatter.format(this.juniorPartnerMarketData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.juniorPartnerMarketData.market_partner_rate_hi);
 
-            if (partner.rate >= this.juniorPartnerData.market_partner_rate_lo && partner.rate <= this.juniorPartnerData.market_partner_rate_hi) {
+            if (partner.rate >= this.juniorPartnerMarketData.market_partner_rate_lo && partner.rate <= this.juniorPartnerMarketData.market_partner_rate_hi) {
               partner.within_market_range = true;
               partner.market_lower_diff = null;
               partner.market_upper_diff = null;
             } else {
               partner.within_market_range = false;
-              const lowerDiff = partner.rate - this.juniorPartnerData.market_partner_rate_lo;
-              const upperDiff = partner.rate - this.juniorPartnerData.market_partner_rate_hi;
+              const lowerDiff = partner.rate - this.juniorPartnerMarketData.market_partner_rate_lo;
+              const upperDiff = partner.rate - this.juniorPartnerMarketData.market_partner_rate_hi;
               partner.market_lower_diff = lowerDiff / partner.rate;
               partner.market_upper_diff = upperDiff / partner.rate;
             }
@@ -343,30 +405,39 @@ export class NamedTkAnalysisComponent implements OnInit {
             partner.market_lower_diff = null;
             partner.market_upper_diff = null;
           }
-          if (this.juniorPartnerData.internal_num_firms >= 3) {
-            partner.internal_rate = this.juniorPartnerData.internal_avg_partner_rate;
+        } else {
+          partner.market_range = '--';
+          partner.market_lower_diff = null;
+          partner.market_upper_diff = null;
+        }
+        if (this.juniorPartnerInternalData) {
+          if (this.juniorPartnerInternalData.internal_num_firms >= 3) {
+            partner.internal_rate = this.juniorPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / partner.rate;
           } else {
             partner.internal_rate = '--';
             partner.internal_rate_diff = null;
           }
+        } else {
+          partner.internal_rate = '--';
+          partner.internal_rate_diff = null;
         }
       } else if (partner.classification === 'Mid-level Partner') {
         partner.firm_avg_rate = this.firmPartnerMidRate;
         const firmDiff = partner.rate - partner.firm_avg_rate;
         partner.firm_diff = firmDiff / partner.rate;
-        if (this.midPartnerData) {
-          if (this.midPartnerData.market_num_firms >= 3) {
-            partner.market_range = moneyFormatter.format(this.midPartnerData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.midPartnerData.market_partner_rate_hi);
-            if (partner.rate >= this.midPartnerData.market_partner_rate_lo && partner.rate <= this.midPartnerData.market_partner_rate_hi) {
+        if (this.midPartnerMarketData) {
+          if (this.midPartnerMarketData.market_num_firms >= 3) {
+            partner.market_range = moneyFormatter.format(this.midPartnerMarketData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.midPartnerMarketData.market_partner_rate_hi);
+            if (partner.rate >= this.midPartnerMarketData.market_partner_rate_lo && partner.rate <= this.midPartnerMarketData.market_partner_rate_hi) {
               partner.within_market_range = true;
               partner.market_lower_diff = null;
               partner.market_upper_diff = null;
             } else {
               partner.within_market_range = false;
-              const lowerDiff = partner.rate - this.midPartnerData.market_partner_rate_lo;
-              const upperDiff = partner.rate - this.midPartnerData.market_partner_rate_hi;
+              const lowerDiff = partner.rate - this.midPartnerMarketData.market_partner_rate_lo;
+              const upperDiff = partner.rate - this.midPartnerMarketData.market_partner_rate_hi;
               partner.market_lower_diff = lowerDiff / partner.rate;
               partner.market_upper_diff = upperDiff / partner.rate;
             }
@@ -375,31 +446,40 @@ export class NamedTkAnalysisComponent implements OnInit {
             partner.market_lower_diff = null;
             partner.market_upper_diff = null;
           }
-          if (this.midPartnerData.internal_num_firms >= 3) {
-            partner.internal_rate = this.midPartnerData.internal_avg_partner_rate;
+        } else {
+          partner.market_range = '--';
+          partner.market_lower_diff = null;
+          partner.market_upper_diff = null;
+        }
+        if (this.midPartnerInternalData) {
+          if (this.midPartnerInternalData.internal_num_firms >= 3) {
+            partner.internal_rate = this.midPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / partner.rate;
           } else {
             partner.internal_rate = '--';
             partner.internal_rate_diff = null;
           }
+        } else {
+          partner.internal_rate = '--';
+          partner.internal_rate_diff = null;
         }
       } else if (partner.classification === 'Senior Partner') {
         partner.firm_avg_rate = this.firmPartnerSeniorRate;
         const firmDiff = partner.rate - partner.firm_avg_rate;
         partner.firm_diff = firmDiff / partner.rate;
-        if (this.seniorPartnerData) {
-          if (this.seniorPartnerData.market_num_firms >= 3) {
-            partner.market_range = moneyFormatter.format(this.seniorPartnerData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.seniorPartnerData.market_partner_rate_hi);
+        if (this.seniorPartnerMarketData) {
+          if (this.seniorPartnerMarketData.market_num_firms >= 3) {
+            partner.market_range = moneyFormatter.format(this.seniorPartnerMarketData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.seniorPartnerMarketData.market_partner_rate_hi);
 
-            if (partner.rate >= this.seniorPartnerData.market_partner_rate_lo && partner.rate <= this.seniorPartnerData.market_partner_rate_hi) {
+            if (partner.rate >= this.seniorPartnerMarketData.market_partner_rate_lo && partner.rate <= this.seniorPartnerMarketData.market_partner_rate_hi) {
               partner.within_market_range = true;
               partner.market_lower_diff = null;
               partner.market_upper_diff = null;
             } else {
               partner.within_market_range = false;
-              const lowerDiff = partner.rate - this.seniorPartnerData.market_partner_rate_lo;
-              const upperDiff = partner.rate - this.seniorPartnerData.market_partner_rate_hi;
+              const lowerDiff = partner.rate - this.seniorPartnerMarketData.market_partner_rate_lo;
+              const upperDiff = partner.rate - this.seniorPartnerMarketData.market_partner_rate_hi;
               partner.market_lower_diff = lowerDiff / partner.rate;
               partner.market_upper_diff = upperDiff / partner.rate;
             }
@@ -408,14 +488,23 @@ export class NamedTkAnalysisComponent implements OnInit {
             partner.market_lower_diff = null;
             partner.market_upper_diff = null;
           }
-          if (this.seniorPartnerData.internal_num_firms >= 3) {
-            partner.internal_rate = this.seniorPartnerData.internal_avg_partner_rate;
+        } else {
+          partner.market_range = '--';
+          partner.market_lower_diff = null;
+          partner.market_upper_diff = null;
+        }
+        if (this.seniorPartnerInternalData) {
+          if (this.seniorPartnerInternalData.internal_num_firms >= 3) {
+            partner.internal_rate = this.seniorPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / partner.rate;
           } else {
             partner.internal_rate = '--';
             partner.internal_rate_diff = null;
           }
+        } else {
+          partner.internal_rate = '--';
+          partner.internal_rate_diff = null;
         }
       }
       partner.timekeeper_name = partner.last_name + ', ' + partner.first_name;
@@ -439,35 +528,43 @@ export class NamedTkAnalysisComponent implements OnInit {
         const firmDiff = associate.rate - associate.firm_avg_rate;
         associate.firm_diff = firmDiff / associate.rate;
 
-        if (this.juniorAssociateData) {
-          if (this.juniorAssociateData.market_num_firms >= 3) {
-            associate.market_range = moneyFormatter.format(this.juniorAssociateData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.juniorAssociateData.market_associate_rate_hi);
-
-            if (associate.rate >= this.juniorAssociateData.market_associate_rate_lo && associate.rate <= this.juniorAssociateData.market_associate_rate_hi) {
+        if (this.juniorAssociateMarketData) {
+          if (this.juniorAssociateMarketData.market_num_firms >= 3) {
+            associate.market_range = moneyFormatter.format(this.juniorAssociateMarketData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.juniorAssociateMarketData.market_associate_rate_hi);
+            if (associate.rate >= this.juniorAssociateMarketData.market_associate_rate_lo && associate.rate <= this.juniorAssociateMarketData.market_associate_rate_hi) {
               associate.within_market_range = true;
               associate.market_lower_diff = null;
               associate.market_upper_diff = null;
             } else {
               associate.within_market_range = false;
-              const lowerDiff = associate.rate - this.juniorAssociateData.market_associate_rate_lo;
-              const upperDiff = associate.rate - this.juniorAssociateData.market_associate_rate_hi;
+              const lowerDiff = associate.rate - this.juniorAssociateMarketData.market_associate_rate_lo;
+              const upperDiff = associate.rate - this.juniorAssociateMarketData.market_associate_rate_hi;
               associate.market_lower_diff = lowerDiff / associate.rate;
               associate.market_upper_diff = upperDiff / associate.rate;
             }
-
           } else {
             associate.market_range = '--';
             associate.market_lower_diff = null;
             associate.market_upper_diff = null;
           }
-          if (this.juniorAssociateData.internal_num_firms >= 3) {
-            associate.internal_rate = this.juniorAssociateData.internal_avg_associate_rate;
+        } else {
+          associate.market_range = '--';
+          associate.market_lower_diff = null;
+          associate.market_upper_diff = null;
+        }
+
+        if (this.juniorAssociateInternalData) {
+          if (this.juniorAssociateInternalData.internal_num_firms >= 3) {
+            associate.internal_rate = this.juniorAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
             associate.internal_rate_diff = diff / associate.rate;
           } else {
             associate.internal_rate = '--';
             associate.internal_rate_diff = null;
           }
+        } else {
+          associate.internal_rate = '--';
+          associate.internal_rate_diff = null;
         }
       } else if (associate.predicted_seniority >= 4 && associate.predicted_seniority < 7) {
         associate.classification = 'Mid-level Associate';
@@ -475,52 +572,61 @@ export class NamedTkAnalysisComponent implements OnInit {
         const firmDiff = associate.rate - associate.firm_avg_rate;
         associate.firm_diff = firmDiff / associate.rate;
 
-        if (this.midAssociateData) {
-          if (this.midAssociateData.market_num_firms >= 3) {
-            associate.market_range = moneyFormatter.format(this.midAssociateData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.midAssociateData.market_associate_rate_hi);
+        if (this.midAssociateMarketData) {
+          if (this.midAssociateMarketData.market_num_firms >= 3) {
+            associate.market_range = moneyFormatter.format(this.midAssociateMarketData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.midAssociateMarketData.market_associate_rate_hi);
 
-            if (associate.rate >= this.midAssociateData.market_associate_rate_lo && associate.rate <= this.midAssociateData.market_associate_rate_hi) {
+            if (associate.rate >= this.midAssociateMarketData.market_associate_rate_lo && associate.rate <= this.midAssociateMarketData.market_associate_rate_hi) {
               associate.within_market_range = true;
               associate.market_lower_diff = null;
               associate.market_upper_diff = null;
             } else {
               associate.within_market_range = false;
-              const lowerDiff = associate.rate - this.midAssociateData.market_associate_rate_lo;
-              const upperDiff = associate.rate - this.midAssociateData.market_associate_rate_hi;
+              const lowerDiff = associate.rate - this.midAssociateMarketData.market_associate_rate_lo;
+              const upperDiff = associate.rate - this.midAssociateMarketData.market_associate_rate_hi;
               associate.market_lower_diff = lowerDiff / associate.rate;
               associate.market_upper_diff = upperDiff / associate.rate;
             }
-
           } else {
             associate.market_range = '--';
             associate.market_lower_diff = null;
             associate.market_upper_diff = null;
           }
-          if (this.midAssociateData.internal_num_firms >= 3) {
-            associate.internal_rate = this.midAssociateData.internal_avg_associate_rate;
+        } else {
+          associate.market_range = '--';
+          associate.market_lower_diff = null;
+          associate.market_upper_diff = null;
+        }
+
+        if (this.midAssociateInternalData) {
+          if (this.midAssociateInternalData.internal_num_firms >= 3) {
+            associate.internal_rate = this.midAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
             associate.internal_rate_diff = diff / associate.rate;
           } else {
             associate.internal_rate = '--';
             associate.internal_rate_diff = null;
           }
+        } else {
+          associate.internal_rate = '--';
+          associate.internal_rate_diff = null;
         }
       } else if (associate.predicted_seniority >= 7) {
         associate.classification = 'Senior Associate';
         associate.firm_avg_rate = this.firmAssocSeniorRate;
         const firmDiff = associate.rate - associate.firm_avg_rate;
         associate.firm_diff = firmDiff / associate.rate;
-        if (this.seniorAssociateData) {
-          if (this.seniorAssociateData.market_num_firms >= 3) {
-            associate.market_range = moneyFormatter.format(this.seniorAssociateData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.seniorAssociateData.market_associate_rate_hi);
-            if (associate.rate >= this.seniorAssociateData.market_associate_rate_lo && associate.rate <= this.seniorAssociateData.market_associate_rate_hi) {
+        if (this.seniorAssociateMarketData) {
+          if (this.seniorAssociateMarketData.market_num_firms >= 3) {
+            associate.market_range = moneyFormatter.format(this.seniorAssociateMarketData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.seniorAssociateMarketData.market_associate_rate_hi);
+            if (associate.rate >= this.seniorAssociateMarketData.market_associate_rate_lo && associate.rate <= this.seniorAssociateMarketData.market_associate_rate_hi) {
               associate.within_market_range = true;
               associate.market_lower_diff = null;
               associate.market_upper_diff = null;
             } else {
               associate.within_market_range = false;
-              const lowerDiff = associate.rate - this.seniorAssociateData.market_associate_rate_lo;
-              const upperDiff = associate.rate - this.seniorAssociateData.market_associate_rate_hi;
+              const lowerDiff = associate.rate - this.seniorAssociateMarketData.market_associate_rate_lo;
+              const upperDiff = associate.rate - this.seniorAssociateMarketData.market_associate_rate_hi;
               associate.market_lower_diff = lowerDiff / associate.rate;
               associate.market_upper_diff = upperDiff / associate.rate;
             }
@@ -529,8 +635,14 @@ export class NamedTkAnalysisComponent implements OnInit {
             associate.market_lower_diff = null;
             associate.market_upper_diff = null;
           }
-          if (this.seniorAssociateData.internal_num_firms >= 3) {
-            associate.internal_rate = this.seniorAssociateData.internal_avg_associate_rate;
+        } else {
+          associate.market_range = '--';
+          associate.market_lower_diff = null;
+          associate.market_upper_diff = null;
+        }
+        if (this.seniorAssociateInternalData) {
+          if (this.seniorAssociateInternalData.internal_num_firms >= 3) {
+            associate.internal_rate = this.seniorAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
             associate.internal_rate_diff = diff / associate.rate;
           } else {
@@ -630,7 +742,8 @@ export class NamedTkAnalysisComponent implements OnInit {
         firmName: this.firmName,
         cluster: this.cluster,
         numTiers: this.numTiers,
-        peerFirms: this.peerFirms
+        panel: this.internalFirms,
+        marketFirms: this.marketAvgFirms
       };
       this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
       {state:

@@ -7,7 +7,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FiltersService} from '../../../shared/services/filters.service';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 import { RatesAnalysisService } from '../../rates-analysis.service';
-import { MOCK_RATE_ANALYSIS_RESULT, MOCK_NAMED_TK_HISTORY, MOCK_PARTNER_MARKET_INTERNAL_DATA, MOCK_SENIOR_ASSOCIATE_MI_DATA, MOCK_MID_ASSOCIATE_MI_DATA, MOCK_JUNIOR_ASSOCIATE_MI_DATA } from 'src/app/shared/unit-tests/mock-data/rate-benchmarking';
+import { MOCK_RATE_ANALYSIS_RESULT, MOCK_NAMED_TK_HISTORY, MOCK_PARTNER_MARKET_DATA, MOCK_PARTNER_INTERNAL_DATA,
+         MOCK_SENIOR_ASSOCIATE_MARKET_DATA, MOCK_MID_ASSOCIATE_MARKET_DATA, MOCK_JUNIOR_ASSOCIATE_MARKET_DATA,
+         MOCK_SENIOR_ASSOCIATE_INTERNAL_DATA, MOCK_MID_ASSOCIATE_INTERNAL_DATA, MOCK_JUNIOR_ASSOCIATE_INTERNAL_DATA, MOCK_INTERNAL_FIRMS, MOCK_MARKET_FIRMS, MOCK_BENCHMARK} from 'src/app/shared/unit-tests/mock-data/rate-benchmarking';
 import { AgGridService } from 'bodhala-ui-elements';
 
 describe('NamedTkAnalysisComponent', () => {
@@ -50,12 +52,22 @@ describe('NamedTkAnalysisComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NamedTkAnalysisComponent);
     component = fixture.componentInstance;
-    component.seniorAssociateData = MOCK_SENIOR_ASSOCIATE_MI_DATA;
-    component.midAssociateData = MOCK_MID_ASSOCIATE_MI_DATA;
-    component.juniorAssociateData = MOCK_JUNIOR_ASSOCIATE_MI_DATA;
-    component.seniorPartnerData = MOCK_PARTNER_MARKET_INTERNAL_DATA[1];
-    component.midPartnerData = MOCK_PARTNER_MARKET_INTERNAL_DATA[0];
-    component.juniorPartnerData = MOCK_PARTNER_MARKET_INTERNAL_DATA[2];
+    component.benchmark = MOCK_BENCHMARK.benchmark;
+    component.internalFirms = MOCK_INTERNAL_FIRMS;
+    component.marketAvgFirms = MOCK_MARKET_FIRMS;
+    component.seniorAssociateMarketData = MOCK_SENIOR_ASSOCIATE_MARKET_DATA;
+    component.midAssociateMarketData = MOCK_MID_ASSOCIATE_MARKET_DATA;
+    component.juniorAssociateMarketData = MOCK_JUNIOR_ASSOCIATE_MARKET_DATA;
+    component.seniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[1];
+    component.midPartnerMarketData = MOCK_PARTNER_MARKET_DATA[0];
+    component.juniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[2];
+
+    component.seniorAssociateInternalData = MOCK_SENIOR_ASSOCIATE_INTERNAL_DATA;
+    component.midAssociateInternalData = MOCK_MID_ASSOCIATE_INTERNAL_DATA;
+    component.juniorAssociateInternalData = MOCK_JUNIOR_ASSOCIATE_INTERNAL_DATA;
+    component.seniorPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[1];
+    component.midPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[0];
+    component.juniorPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[2];
     fixture.detectChanges();
   });
 
@@ -67,9 +79,9 @@ describe('NamedTkAnalysisComponent', () => {
 
   it('should create w/history', () => {
     history.state.data = MOCK_NAMED_TK_HISTORY.data;
-    component.seniorPartnerData = MOCK_PARTNER_MARKET_INTERNAL_DATA[1];
-    component.midPartnerData = MOCK_PARTNER_MARKET_INTERNAL_DATA[0];
-    component.juniorPartnerData = MOCK_PARTNER_MARKET_INTERNAL_DATA[2];
+    component.seniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[1];
+    component.midPartnerMarketData = MOCK_PARTNER_MARKET_DATA[0];
+    component.juniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[2];
     component.ngOnInit();
     expect(component).toBeTruthy();
   });

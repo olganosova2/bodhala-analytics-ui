@@ -205,6 +205,8 @@ import { TableHeaderSortComponent } from './shared/components/table-header-sort/
 import { BmTimekeepersTableComponent } from './matters/matter-executive-summary/bm-timekeepers-table/bm-timekeepers-table.component';
 import { NamedTkAnalysisComponent } from './rates-analysis/view-rate-analysis/named-tk-analysis/named-tk-analysis.component';
 import { PeerFirmsModalComponent } from './admin/admin-rate-benchmarks/peer-firms-modal/peer-firms-modal.component';
+import { ComparisonFirmsComponent } from './rates-analysis/view-rate-analysis/comparison-firms/comparison-firms.component';
+import { EditFirmsModalComponent } from './rates-analysis/view-rate-analysis/comparison-firms/edit-firms-modal/edit-firms-modal.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -362,7 +364,9 @@ highcharts.setOptions({
     TableHeaderSortComponent,
     BmTimekeepersTableComponent,
     NamedTkAnalysisComponent,
-    PeerFirmsModalComponent
+    PeerFirmsModalComponent,
+    ComparisonFirmsComponent,
+    EditFirmsModalComponent
   ],
   entryComponents: [
     PillComponent,

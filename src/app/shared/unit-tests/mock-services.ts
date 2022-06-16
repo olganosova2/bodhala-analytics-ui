@@ -631,9 +631,8 @@ export class RatesAnalysisServiceStub {
 
   public getBenchmark() {
     const bm = MOCK_GET_BENCHMARK.result;
-    return({benchmark: bm, firm_name: MOCK_GET_BENCHMARK.firm_name, peer_firms: MOCK_GET_BENCHMARK.peer_firms});
+    return({benchmark: bm, firm_name: MOCK_GET_BENCHMARK.firm_name, market_firms: null, internal_firms: null});
   }
-
   public getRateAnalysisData(bm: any) {
     return (MOCK_RATE_ANALYSIS_DATA);
   }

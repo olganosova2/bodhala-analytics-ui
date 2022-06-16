@@ -1491,7 +1491,17 @@ export const MOCK_BENCHMARK = {
       "deleted_by": null,
       "deleted_on": null,
       "modified_by": null,
-      "modified_on": null
+      "modified_on": null,
+      "market_avg_firms": [
+        {"id": 4,"name": "Skadden, Arps, Slate, Meagher & Flom"},
+        {"id": 32,"name": "Akin Gump Strauss Hauer & Feld"},
+        {"id": 8, "name": "Sidley Austin"}
+      ],
+      "internal_firms": [
+        {"id": 4,"name": "Skadden, Arps, Slate, Meagher & Flom"},
+        {"id": 32,"name": "Akin Gump Strauss Hauer & Feld"},
+        {"id": 8, "name": "Sidley Austin"}
+      ]
   },
   "firm_name": "Kirkland & Ellis"
 };
@@ -1499,11 +1509,11 @@ export const MOCK_BENCHMARK = {
 
 export const MOCK_GET_BENCHMARK = {
   "result": {
-      "id": 29,
-      "bh_client_id": 1556,
-      "bh_lawfirm_id": 14,
-      "smart_practice_area": "M&A",
-      "year": 2020,
+      "id": 36,
+      "bh_client_id": 1498,
+      "bh_lawfirm_id": 21,
+      "smart_practice_area": "Funds",
+      "year": 2021,
       "peers": [
           "Skadden, Arps, Slate, Meagher & Flom",
           "Gibson, Dunn & Crutcher",
@@ -1512,23 +1522,78 @@ export const MOCK_GET_BENCHMARK = {
           "Paul, Weiss, Rifkind, Wharton & Garrison",
           "Proskauer Rose"
       ],
-      "created_by": "1999",
-      "created_on": "2022-04-05T08:59:57.316261",
+      "market_avg_firms": [
+          {
+              "id": 65,
+              "name": "Fried, Frank, Harris, Shriver & Jacobson"
+          },
+          {
+              "id": 59,
+              "name": "Willkie Farr & Gallagher"
+          },
+          {
+              "id": 13,
+              "name": "Weil, Gotshal & Manges"
+          },
+          {
+              "id": 23,
+              "name": "Ropes & Gray"
+          },
+          {
+              "id": 4,
+              "name": "Skadden, Arps, Slate, Meagher & Flom"
+          },
+          {
+              "id": 32,
+              "name": "Akin Gump Strauss Hauer & Feld"
+          },
+          {
+              "id": 8,
+              "name": "Sidley Austin"
+          },
+          {
+              "id": 30,
+              "name": "King & Spalding"
+          },
+          {
+              "id": 24,
+              "name": "Paul Hastings"
+          },
+          {
+              "id": 58,
+              "name": "Wilson Sonsini Goodrich & Rosati"
+          }
+      ],
+      "internal_firms": [
+          {
+              "id": 42,
+              "name": "Debevoise & Plimpton"
+          },
+          {
+              "id": 5,
+              "name": "Kirkland & Ellis"
+          },
+          {
+              "id": 3,
+              "name": "Latham & Watkins"
+          },
+          {
+              "id": 268,
+              "name": "Linklaters"
+          }
+      ],
+      "created_by": "2809",
+      "created_on": "2022-04-19T15:50:07.372772",
       "deleted_by": null,
       "deleted_on": null,
-      "modified_by": null,
-      "modified_on": null
+      "modified_by": "2439",
+      "modified_on": "2022-06-15T13:41:47.838272"
   },
   "error": null,
-  "firm_name": "Sullivan & Cromwell",
-  "peer_firms": [
-      "Cravath, Swaine & Moore",
-      "Milbank, Tweed, Hadley & McCloy",
-      "Ropes & Gray",
-      "Simpson Thacher & Bartlett",
-      "Skadden, Arps, Slate, Meagher & Flom",
-      "Willkie Farr & Gallagher"
-  ]
+  "firm_name": "Simpson Thacher & Bartlett",
+  "num_tiers": 4,
+  "market_firms": null,
+  "internal_firms": null
 };
 
 export const MOCK_RATE_ANALYSIS_DATA = {
@@ -1869,7 +1934,67 @@ export const MOCK_HISTORY = {
           "deleted_by": null,
           "deleted_on": null,
           "modified_by": null,
-          "modified_on": null
+          "modified_on": null,
+          "market_avg_firms": [
+            {
+                "id": 65,
+                "name": "Fried, Frank, Harris, Shriver & Jacobson"
+            },
+            {
+                "id": 59,
+                "name": "Willkie Farr & Gallagher"
+            },
+            {
+                "id": 13,
+                "name": "Weil, Gotshal & Manges"
+            },
+            {
+                "id": 23,
+                "name": "Ropes & Gray"
+            },
+            {
+                "id": 4,
+                "name": "Skadden, Arps, Slate, Meagher & Flom"
+            },
+            {
+                "id": 32,
+                "name": "Akin Gump Strauss Hauer & Feld"
+            },
+            {
+                "id": 8,
+                "name": "Sidley Austin"
+            },
+            {
+                "id": 30,
+                "name": "King & Spalding"
+            },
+            {
+                "id": 24,
+                "name": "Paul Hastings"
+            },
+            {
+                "id": 58,
+                "name": "Wilson Sonsini Goodrich & Rosati"
+            }
+        ],
+        "internal_firms": [
+            {
+                "id": 42,
+                "name": "Debevoise & Plimpton"
+            },
+            {
+                "id": 5,
+                "name": "Kirkland & Ellis"
+            },
+            {
+                "id": 3,
+                "name": "Latham & Watkins"
+            },
+            {
+                "id": 268,
+                "name": "Linklaters"
+            }
+        ],
       },
       "totalSpend": {
           "total_block_billed": 16521523.9414,
@@ -1957,13 +2082,7 @@ export const MOCK_HISTORY = {
           "partner_lo": 1150.5410335844676
       },
       "cluster": 1,
-      "numTiers": 4,
-      "peerFirms": [
-          "Cravath, Swaine & Moore",
-          "Milbank, Tweed, Hadley & McCloy",
-          "Ropes & Gray",
-          "Simpson Thacher & Bartlett"
-      ]
+      "numTiers": 4
   },
   "navigationId": 3
 };
@@ -2045,11 +2164,34 @@ export const MOCK_ASSOC_DATA = {
 };
 
 
-export const MOCK_PARTNER_MARKET_INTERNAL_DATA = [
+export const MOCK_PARTNER_MARKET_DATA = [
+  {
+      "seniority": "Mid-Level",
+      "market_num_firms": 17,
+      "market_avg_partner_rate": 1282.4864470588236,
+      "market_partner_rate_lo": 1155.6006230859546,
+      "market_partner_rate_hi": 1409.3722710316927
+  },
+  {
+      "seniority": "Senior",
+      "market_num_firms": 14,
+      "market_avg_partner_rate": 1484.7292071428571,
+      "market_partner_rate_lo": 1381.3392873744997,
+      "market_partner_rate_hi": 1588.1191269112146
+  },
+  {
+      "seniority": "Junior",
+      "market_num_firms": 14,
+      "market_avg_partner_rate": 1186.7594785714284,
+      "market_partner_rate_lo": 1031.7263826167155,
+      "market_partner_rate_hi": 1341.7925745261414
+  }
+];
+
+export const MOCK_PARTNER_INTERNAL_DATA = [
   {
       "seniority": "Mid-Level",
       "internal_num_firms": 4,
-      "market_num_firms": 17,
       "internal_avg_partner_rate": 1414.3106,
       "internal_partner_rate_lo": 1331.8633820546252,
       "internal_partner_rate_hi": 1496.7578179453749,
@@ -2060,61 +2202,65 @@ export const MOCK_PARTNER_MARKET_INTERNAL_DATA = [
   {
       "seniority": "Senior",
       "internal_num_firms": 4,
-      "market_num_firms": 14,
       "internal_avg_partner_rate": 1633.077375,
       "internal_partner_rate_lo": 1518.904346450356,
-      "internal_partner_rate_hi": 1747.2504035496443,
-      "market_avg_partner_rate": 1484.7292071428571,
-      "market_partner_rate_lo": 1381.3392873744997,
-      "market_partner_rate_hi": 1588.1191269112146
+      "internal_partner_rate_hi": 1747.2504035496443
   },
   {
       "seniority": "Junior",
       "internal_num_firms": 2,
-      "market_num_firms": 14,
       "internal_avg_partner_rate": 1184.9436,
       "internal_partner_rate_lo": 1145.1451158831073,
-      "internal_partner_rate_hi": 1224.7420841168928,
-      "market_avg_partner_rate": 1186.7594785714284,
-      "market_partner_rate_lo": 1031.7263826167155,
-      "market_partner_rate_hi": 1341.7925745261414
+      "internal_partner_rate_hi": 1224.7420841168928
   }
 ];
 
-export const MOCK_SENIOR_ASSOCIATE_MI_DATA = {
+export const MOCK_SENIOR_ASSOCIATE_MARKET_DATA = {
   "seniority": "Senior",
-  "internal_num_firms": 4,
   "market_num_firms": 17,
-  "internal_avg_associate_rate": 1076.0182,
-  "internal_associate_rate_lo": 970.4608649407451,
-  "internal_associate_rate_hi": 1181.575535059255,
   "market_avg_associate_rate": 944.485005882353,
   "market_associate_rate_lo": 865.2684900800783,
   "market_associate_rate_hi": 1023.7015216846277
 };
 
-export const MOCK_MID_ASSOCIATE_MI_DATA = {
+export const MOCK_SENIOR_ASSOCIATE_INTERNAL_DATA = {
+  "seniority": "Senior",
+  "internal_num_firms": 4,
+  "internal_avg_associate_rate": 1076.0182,
+  "internal_associate_rate_lo": 970.4608649407451,
+  "internal_associate_rate_hi": 1181.575535059255,
+};
+
+export const MOCK_MID_ASSOCIATE_MARKET_DATA = {
   "seniority": "Mid-Level",
-  "internal_num_firms": 2,
   "market_num_firms": 17,
-  "internal_avg_associate_rate": 902.1644,
-  "internal_associate_rate_lo": 739.3932414391045,
-  "internal_associate_rate_hi": 1064.9355585608955,
   "market_avg_associate_rate": 814.6084941176471,
   "market_associate_rate_lo": 725.9173107406798,
   "market_associate_rate_hi": 903.2996774946143
 };
 
-export const MOCK_JUNIOR_ASSOCIATE_MI_DATA = {
-  "seniority": "Junior",
+export const MOCK_MID_ASSOCIATE_INTERNAL_DATA = {
+  "seniority": "Mid-Level",
   "internal_num_firms": 2,
+  "internal_avg_associate_rate": 902.1644,
+  "internal_associate_rate_lo": 739.3932414391045,
+  "internal_associate_rate_hi": 1064.9355585608955
+};
+
+export const MOCK_JUNIOR_ASSOCIATE_MARKET_DATA = {
+  "seniority": "Junior",
   "market_num_firms": 15,
-  "internal_avg_associate_rate": 710.3721,
-  "internal_associate_rate_lo": 664.1046523238492,
-  "internal_associate_rate_hi": 756.6395476761509,
   "market_avg_associate_rate": 616.8211533333334,
   "market_associate_rate_lo": 551.1329951168772,
   "market_associate_rate_hi": 682.5093115497897
+};
+
+export const MOCK_JUNIOR_ASSOCIATE_INTERNAL_DATA = {
+  "seniority": "Junior",
+  "internal_num_firms": 2,
+  "internal_avg_associate_rate": 710.3721,
+  "internal_associate_rate_lo": 664.1046523238492,
+  "internal_associate_rate_hi": 756.6395476761509
 };
 
 export const MOCK_GRANULARITY_PAGE_RESULT = {
@@ -2763,7 +2909,67 @@ export const MOCK_NAMED_TK_HISTORY = {
           "deleted_by": null,
           "deleted_on": null,
           "modified_by": null,
-          "modified_on": null
+          "modified_on": null,
+          "market_avg_firms": [
+            {
+                "id": 65,
+                "name": "Fried, Frank, Harris, Shriver & Jacobson"
+            },
+            {
+                "id": 59,
+                "name": "Willkie Farr & Gallagher"
+            },
+            {
+                "id": 13,
+                "name": "Weil, Gotshal & Manges"
+            },
+            {
+                "id": 23,
+                "name": "Ropes & Gray"
+            },
+            {
+                "id": 4,
+                "name": "Skadden, Arps, Slate, Meagher & Flom"
+            },
+            {
+                "id": 32,
+                "name": "Akin Gump Strauss Hauer & Feld"
+            },
+            {
+                "id": 8,
+                "name": "Sidley Austin"
+            },
+            {
+                "id": 30,
+                "name": "King & Spalding"
+            },
+            {
+                "id": 24,
+                "name": "Paul Hastings"
+            },
+            {
+                "id": 58,
+                "name": "Wilson Sonsini Goodrich & Rosati"
+            }
+        ],
+        "internal_firms": [
+            {
+                "id": 42,
+                "name": "Debevoise & Plimpton"
+            },
+            {
+                "id": 5,
+                "name": "Kirkland & Ellis"
+            },
+            {
+                "id": 3,
+                "name": "Latham & Watkins"
+            },
+            {
+                "id": 268,
+                "name": "Linklaters"
+            }
+        ],
       },
       "partnerMarketInternal": [
           {
@@ -2914,13 +3120,7 @@ export const MOCK_NAMED_TK_HISTORY = {
           "bodhala_price_index": 3778.8348094977778
       },
       "cluster": 1,
-      "numTiers": 3,
-      "peerFirms": [
-          "Cravath, Swaine & Moore",
-          "Milbank, Tweed, Hadley & McCloy",
-          "Ropes & Gray",
-          "Simpson Thacher & Bartlett"
-      ]
+      "numTiers": 3
   },
   "navigationId": 2
 };
@@ -3512,3 +3712,66 @@ export const MOCK_PEER_FIRMS_ADMIN_RESPONSE = {
   },
   "error": null
 }
+
+
+export const MOCK_MARKET_FIRMS = [
+  {
+      "id": 65,
+      "name": "Fried, Frank, Harris, Shriver & Jacobson"
+  },
+  {
+      "id": 59,
+      "name": "Willkie Farr & Gallagher"
+  },
+  {
+      "id": 13,
+      "name": "Weil, Gotshal & Manges"
+  },
+  {
+      "id": 23,
+      "name": "Ropes & Gray"
+  },
+  {
+      "id": 4,
+      "name": "Skadden, Arps, Slate, Meagher & Flom"
+  },
+  {
+      "id": 32,
+      "name": "Akin Gump Strauss Hauer & Feld"
+  },
+  {
+      "id": 8,
+      "name": "Sidley Austin"
+  },
+  {
+      "id": 30,
+      "name": "King & Spalding"
+  },
+  {
+      "id": 24,
+      "name": "Paul Hastings"
+  },
+  {
+      "id": 58,
+      "name": "Wilson Sonsini Goodrich & Rosati"
+  }
+];
+
+export const MOCK_INTERNAL_FIRMS = [
+  {
+      "id": 42,
+      "name": "Debevoise & Plimpton"
+  },
+  {
+      "id": 5,
+      "name": "Kirkland & Ellis"
+  },
+  {
+      "id": 3,
+      "name": "Latham & Watkins"
+  },
+  {
+      "id": 268,
+      "name": "Linklaters"
+  }
+];

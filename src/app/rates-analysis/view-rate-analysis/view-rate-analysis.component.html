@@ -15,14 +15,9 @@
     </div>
 
     <div class="peer-firms" *ngIf="loaded">
-      <p style="text-align: center; font-family: 'Roboto Bold' !important; font-size: 14px;">Comparison Peer Firms</p>
-      <div id="peerFirmsDisplay" style="line-height: 2em; height: 4.8em; overflow: clip; text-align: center; margin-top: -0.75em; font-family: 'Roboto Bold' !important; font-size: 14px;">
-        <div *ngFor="let firm of peerFirms; let i = index; let last = last; let first = first;" style="display: inline;">
-          <div class="firm-name-pill">{{firm}}</div>
-          <span style="background: #DEE8EB important; " *ngIf="last"> & others...</span>
-        </div>
-      </div>
+      <bd-comparison-firms [marketFirms]="marketAvgFirms" [panelFirms]="internalFirms" [benchmark]="benchmark"></bd-comparison-firms>
     </div>
+
   </div>
 
   <h3 style="padding-bottom: 20px;">Rate Benchmarking Overview</h3>
