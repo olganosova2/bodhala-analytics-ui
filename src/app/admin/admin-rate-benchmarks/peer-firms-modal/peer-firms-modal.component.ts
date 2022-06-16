@@ -43,6 +43,7 @@ export class PeerFirmsModalComponent implements OnInit {
   @ViewChild('firmOptionsDropdown', {static: false}) firmOptionsDropdown: Dropdown;
   popoverText: string = 'Firms available for selection are those that have spend in the PA/year of this benchmark';
   resetTooltip: string = 'Set list of firms to those with the same cluster as the selected firm. Does not automatically save the list of firms.';
+  cluster: number = 0;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public userService: UserService,
@@ -76,6 +77,9 @@ export class PeerFirmsModalComponent implements OnInit {
       if (result.possible_market_firms.length > 0) {
         this.processMarketFirmOptions(result.possible_market_firms);
       }
+    }
+    if (result.cluster) {
+      this.cluster = result.cluster;
     }
     if (this.selectedPeerFirms.length > 2) {
       this.validFirmSelection = true;
@@ -249,14 +253,29 @@ export class PeerFirmsModalComponent implements OnInit {
   // note this does not automatically revert the market_avg_firms column
   // in the benchmark_rate table to null (must save first)
   resetFirmOptions(): void {
-    let cluster = 0;
-    if (this.clusterDefaultFirms.length > 0) {
-      cluster = this.clusterDefaultFirms[0].cluster;
-    }
-    this.peerFirmOptions = this.peerFirmOptions.filter(f => f.cluster !== cluster);
-    for (const option of this.firmOptions) {
+    this.clusterDefaultFirms = this.clusterDefaultFirms.filter(f => f.cluster === this.cluster);
+    const removedFirms = this.selectedPeerFirms.filter(f => f.cluster !== this.cluster);
+    this.peerFirmOptions = this.peerFirmOptions.filter(f => f.cluster !== this.cluster);
 
-      if (option.label === 'Cluster ' + cluster.toString()) {
+    for (const firm of removedFirms) {
+      this.peerFirmOptions.push(firm);
+      if (firm.cluster > 0) {
+        const ix = this.firmOptions.findIndex(f => f.label === 'Cluster ' + firm.cluster.toString());
+        if (ix >= 0) {
+          this.firmOptions[ix].items.push({label: firm.firm_name, value: firm.firm_id});
+          this.firmOptions[ix].items.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+        }
+      } else if (firm.cluster === 0) {
+        const ix = this.firmOptions.findIndex(f => f.label === 'No Cluster');
+        if (ix >= 0) {
+          this.firmOptions[ix].items.push({label: firm.firm_name, value: firm.firm_id});
+          this.firmOptions[ix].items.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+        }
+      }
+    }
+
+    for (const option of this.firmOptions) {
+      if (option.label === 'Cluster ' + this.cluster.toString()) {
         option.items = [];
       }
     }
