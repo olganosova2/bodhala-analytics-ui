@@ -126,8 +126,8 @@ export class RatesAnalysisComponent implements OnInit {
           if (bm.associate_rate >= bm.associate_market_data.associate_hi) {
             bm.assoc_lower_diff = bm.associate_rate - bm.associate_market_data.associate_hi;
             bm.assoc_upper_diff = bm.associate_rate - bm.associate_market_data.associate_lo;
-            bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.associate_rate;
-            bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.associate_rate;
+            bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.associate_market_data.associate_hi;
+            bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.associate_market_data.associate_lo;
             bm.assoc_within_range = false;
           } else if (bm.associate_rate <= bm.associate_market_data.associate_lo) {
             bm.assoc_lower_diff = bm.associate_rate - bm.associate_market_data.associate_lo;
@@ -146,14 +146,14 @@ export class RatesAnalysisComponent implements OnInit {
           if (bm.partner_rate >= bm.partner_market_data.partner_hi) {
             bm.partner_lower_diff = bm.partner_rate - bm.partner_market_data.partner_hi;
             bm.partner_upper_diff = bm.partner_rate - bm.partner_market_data.partner_lo;
-            bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_rate;
-            bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_rate;
+            bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_market_data.partner_hi;
+            bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_market_data.partner_lo;
             bm.partner_within_range = false;
           } else if (bm.partner_rate <= bm.partner_market_data.partner_lo) {
             bm.partner_lower_diff = bm.partner_rate - bm.partner_market_data.partner_lo;
             bm.partner_upper_diff = bm.partner_rate - bm.partner_market_data.partner_hi;
-            bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_rate;
-            bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_rate;
+            bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_market_data.partner_lo;
+            bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_market_data.partner_hi;
             bm.partner_within_range = false;
           } else {
             bm.partner_within_range = true;

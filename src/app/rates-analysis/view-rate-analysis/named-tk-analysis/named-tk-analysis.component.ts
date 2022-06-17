@@ -362,7 +362,7 @@ export class NamedTkAnalysisComponent implements OnInit {
         }
         this.processPartnerData(data.result.partners);
         this.processAssociateData(data.result.associates);
-        this.namedTKs.sort((a, b) => (a.last_name > b.last_name) ? 1 : -1);
+        this.namedTKs.sort((a, b) => (b.total_billed > a.total_billed) ? 1 : -1);
         this.buildGrid();
       },
       err => {
@@ -384,7 +384,7 @@ export class NamedTkAnalysisComponent implements OnInit {
       if (partner.classification === 'Junior Partner') {
         partner.firm_avg_rate = this.firmPartnerJuniorRate;
         const firmDiff = partner.rate - partner.firm_avg_rate;
-        partner.firm_diff = firmDiff / partner.rate;
+        partner.firm_diff = firmDiff / partner.firm_avg_rate;
         if (this.juniorPartnerMarketData) {
           if (this.juniorPartnerMarketData.market_num_firms >= 3) {
             partner.market_range = moneyFormatter.format(this.juniorPartnerMarketData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.juniorPartnerMarketData.market_partner_rate_hi);
@@ -397,8 +397,8 @@ export class NamedTkAnalysisComponent implements OnInit {
               partner.within_market_range = false;
               const lowerDiff = partner.rate - this.juniorPartnerMarketData.market_partner_rate_lo;
               const upperDiff = partner.rate - this.juniorPartnerMarketData.market_partner_rate_hi;
-              partner.market_lower_diff = lowerDiff / partner.rate;
-              partner.market_upper_diff = upperDiff / partner.rate;
+              partner.market_lower_diff = lowerDiff / this.juniorPartnerMarketData.market_partner_rate_lo;
+              partner.market_upper_diff = upperDiff / this.juniorPartnerMarketData.market_partner_rate_hi;
             }
           } else {
             partner.market_range = '--';
@@ -414,7 +414,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           if (this.juniorPartnerInternalData.internal_num_firms >= 3) {
             partner.internal_rate = this.juniorPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
-            partner.internal_rate_diff = diff / partner.rate;
+            partner.internal_rate_diff = diff / this.juniorPartnerInternalData.internal_avg_partner_rate;
           } else {
             partner.internal_rate = '--';
             partner.internal_rate_diff = null;
@@ -426,7 +426,7 @@ export class NamedTkAnalysisComponent implements OnInit {
       } else if (partner.classification === 'Mid-level Partner') {
         partner.firm_avg_rate = this.firmPartnerMidRate;
         const firmDiff = partner.rate - partner.firm_avg_rate;
-        partner.firm_diff = firmDiff / partner.rate;
+        partner.firm_diff = firmDiff / partner.firm_avg_rate;
         if (this.midPartnerMarketData) {
           if (this.midPartnerMarketData.market_num_firms >= 3) {
             partner.market_range = moneyFormatter.format(this.midPartnerMarketData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.midPartnerMarketData.market_partner_rate_hi);
@@ -438,8 +438,8 @@ export class NamedTkAnalysisComponent implements OnInit {
               partner.within_market_range = false;
               const lowerDiff = partner.rate - this.midPartnerMarketData.market_partner_rate_lo;
               const upperDiff = partner.rate - this.midPartnerMarketData.market_partner_rate_hi;
-              partner.market_lower_diff = lowerDiff / partner.rate;
-              partner.market_upper_diff = upperDiff / partner.rate;
+              partner.market_lower_diff = lowerDiff / this.midPartnerMarketData.market_partner_rate_lo;
+              partner.market_upper_diff = upperDiff / this.midPartnerMarketData.market_partner_rate_hi;
             }
           } else {
             partner.market_range = '--';
@@ -455,7 +455,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           if (this.midPartnerInternalData.internal_num_firms >= 3) {
             partner.internal_rate = this.midPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
-            partner.internal_rate_diff = diff / partner.rate;
+            partner.internal_rate_diff = diff / this.midPartnerInternalData.internal_avg_partner_rate;
           } else {
             partner.internal_rate = '--';
             partner.internal_rate_diff = null;
@@ -467,7 +467,7 @@ export class NamedTkAnalysisComponent implements OnInit {
       } else if (partner.classification === 'Senior Partner') {
         partner.firm_avg_rate = this.firmPartnerSeniorRate;
         const firmDiff = partner.rate - partner.firm_avg_rate;
-        partner.firm_diff = firmDiff / partner.rate;
+        partner.firm_diff = firmDiff / partner.firm_avg_rate;
         if (this.seniorPartnerMarketData) {
           if (this.seniorPartnerMarketData.market_num_firms >= 3) {
             partner.market_range = moneyFormatter.format(this.seniorPartnerMarketData.market_partner_rate_lo) + ' - ' + moneyFormatter.format(this.seniorPartnerMarketData.market_partner_rate_hi);
@@ -480,8 +480,8 @@ export class NamedTkAnalysisComponent implements OnInit {
               partner.within_market_range = false;
               const lowerDiff = partner.rate - this.seniorPartnerMarketData.market_partner_rate_lo;
               const upperDiff = partner.rate - this.seniorPartnerMarketData.market_partner_rate_hi;
-              partner.market_lower_diff = lowerDiff / partner.rate;
-              partner.market_upper_diff = upperDiff / partner.rate;
+              partner.market_lower_diff = lowerDiff / this.seniorPartnerMarketData.market_partner_rate_lo;
+              partner.market_upper_diff = upperDiff / this.seniorPartnerMarketData.market_partner_rate_hi;
             }
           } else {
             partner.market_range = '--';
@@ -497,7 +497,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           if (this.seniorPartnerInternalData.internal_num_firms >= 3) {
             partner.internal_rate = this.seniorPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
-            partner.internal_rate_diff = diff / partner.rate;
+            partner.internal_rate_diff = diff / this.seniorPartnerInternalData.internal_avg_partner_rate;
           } else {
             partner.internal_rate = '--';
             partner.internal_rate_diff = null;
@@ -526,7 +526,7 @@ export class NamedTkAnalysisComponent implements OnInit {
         associate.classification = 'Junior Associate';
         associate.firm_avg_rate = this.firmAssocJuniorRate;
         const firmDiff = associate.rate - associate.firm_avg_rate;
-        associate.firm_diff = firmDiff / associate.rate;
+        associate.firm_diff = firmDiff / associate.firm_avg_rate;
 
         if (this.juniorAssociateMarketData) {
           if (this.juniorAssociateMarketData.market_num_firms >= 3) {
@@ -539,8 +539,8 @@ export class NamedTkAnalysisComponent implements OnInit {
               associate.within_market_range = false;
               const lowerDiff = associate.rate - this.juniorAssociateMarketData.market_associate_rate_lo;
               const upperDiff = associate.rate - this.juniorAssociateMarketData.market_associate_rate_hi;
-              associate.market_lower_diff = lowerDiff / associate.rate;
-              associate.market_upper_diff = upperDiff / associate.rate;
+              associate.market_lower_diff = lowerDiff / this.juniorAssociateMarketData.market_associate_rate_lo;
+              associate.market_upper_diff = upperDiff / this.juniorAssociateMarketData.market_associate_rate_hi;
             }
           } else {
             associate.market_range = '--';
@@ -557,7 +557,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           if (this.juniorAssociateInternalData.internal_num_firms >= 3) {
             associate.internal_rate = this.juniorAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
-            associate.internal_rate_diff = diff / associate.rate;
+            associate.internal_rate_diff = diff / this.juniorAssociateInternalData.internal_avg_associate_rate;
           } else {
             associate.internal_rate = '--';
             associate.internal_rate_diff = null;
@@ -570,7 +570,7 @@ export class NamedTkAnalysisComponent implements OnInit {
         associate.classification = 'Mid-level Associate';
         associate.firm_avg_rate = this.firmAssocMidRate;
         const firmDiff = associate.rate - associate.firm_avg_rate;
-        associate.firm_diff = firmDiff / associate.rate;
+        associate.firm_diff = firmDiff / associate.firm_avg_rate;
 
         if (this.midAssociateMarketData) {
           if (this.midAssociateMarketData.market_num_firms >= 3) {
@@ -584,8 +584,8 @@ export class NamedTkAnalysisComponent implements OnInit {
               associate.within_market_range = false;
               const lowerDiff = associate.rate - this.midAssociateMarketData.market_associate_rate_lo;
               const upperDiff = associate.rate - this.midAssociateMarketData.market_associate_rate_hi;
-              associate.market_lower_diff = lowerDiff / associate.rate;
-              associate.market_upper_diff = upperDiff / associate.rate;
+              associate.market_lower_diff = lowerDiff / this.midAssociateMarketData.market_associate_rate_lo;
+              associate.market_upper_diff = upperDiff / this.midAssociateMarketData.market_associate_rate_hi;
             }
           } else {
             associate.market_range = '--';
@@ -602,7 +602,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           if (this.midAssociateInternalData.internal_num_firms >= 3) {
             associate.internal_rate = this.midAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
-            associate.internal_rate_diff = diff / associate.rate;
+            associate.internal_rate_diff = diff / this.midAssociateInternalData.internal_avg_associate_rate;
           } else {
             associate.internal_rate = '--';
             associate.internal_rate_diff = null;
@@ -615,7 +615,7 @@ export class NamedTkAnalysisComponent implements OnInit {
         associate.classification = 'Senior Associate';
         associate.firm_avg_rate = this.firmAssocSeniorRate;
         const firmDiff = associate.rate - associate.firm_avg_rate;
-        associate.firm_diff = firmDiff / associate.rate;
+        associate.firm_diff = firmDiff / associate.firm_avg_rate;
         if (this.seniorAssociateMarketData) {
           if (this.seniorAssociateMarketData.market_num_firms >= 3) {
             associate.market_range = moneyFormatter.format(this.seniorAssociateMarketData.market_associate_rate_lo) + ' - ' + moneyFormatter.format(this.seniorAssociateMarketData.market_associate_rate_hi);
@@ -627,8 +627,8 @@ export class NamedTkAnalysisComponent implements OnInit {
               associate.within_market_range = false;
               const lowerDiff = associate.rate - this.seniorAssociateMarketData.market_associate_rate_lo;
               const upperDiff = associate.rate - this.seniorAssociateMarketData.market_associate_rate_hi;
-              associate.market_lower_diff = lowerDiff / associate.rate;
-              associate.market_upper_diff = upperDiff / associate.rate;
+              associate.market_lower_diff = lowerDiff / this.seniorAssociateMarketData.market_associate_rate_lo;
+              associate.market_upper_diff = upperDiff / this.seniorAssociateMarketData.market_associate_rate_hi;
             }
           } else {
             associate.market_range = '--';
@@ -644,7 +644,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           if (this.seniorAssociateInternalData.internal_num_firms >= 3) {
             associate.internal_rate = this.seniorAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
-            associate.internal_rate_diff = diff / associate.rate;
+            associate.internal_rate_diff = diff / this.seniorAssociateInternalData.internal_avg_associate_rate;
           } else {
             associate.internal_rate = '--';
             associate.internal_rate_diff = null;

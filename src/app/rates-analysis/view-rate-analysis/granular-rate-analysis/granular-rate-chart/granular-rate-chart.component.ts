@@ -244,18 +244,18 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         if (this.seniorityFirmRate > this.marketData.market_associate_rate_hi) {
           this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_associate_rate_hi;
           this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketData.market_associate_rate_lo;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketData.market_associate_rate_hi;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketData.market_associate_rate_lo;
         } else if (this.seniorityFirmRate < this.marketData.market_associate_rate_lo) {
           this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_associate_rate_lo;
           this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketData.market_associate_rate_hi;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketData.market_associate_rate_lo;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketData.market_associate_rate_hi;
         } else {
           this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_associate_rate_lo;
           this.marketRateUpperDelta  = this.seniorityFirmRate - this.marketData.market_associate_rate_hi;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketData.market_associate_rate_lo;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketData.market_associate_rate_hi;
           this.withinRange = true;
         }
         this.marketRateLowerDeltaPct *= 100;
@@ -274,7 +274,7 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         this.bottomBarWidth = this.calculateBarWidth(this.internalData.internal_avg_associate_rate) + 'px';
 
         this.internalRateDelta = this.seniorityFirmRate - this.internalData.internal_avg_associate_rate;
-        this.internalRateDeltaPct = this.internalRateDelta / this.seniorityFirmRate;
+        this.internalRateDeltaPct = this.internalRateDelta / this.internalData.internal_avg_associate_rate;
         this.internalRateDeltaPct *= 100;
 
       } else {
@@ -338,18 +338,18 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         if (this.seniorityFirmRate > this.marketData.market_partner_rate_hi) {
           this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_hi;
           this.marketRateUpperDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_lo;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketData.market_partner_rate_hi;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketData.market_partner_rate_lo;
         } else if (this.seniorityFirmRate < this.marketData.market_partner_rate_lo) {
           this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_lo;
           this.marketRateUpperDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_hi;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketData.market_partner_rate_lo;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketData.market_partner_rate_hi;
         } else {
           this.marketRateLowerDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_lo;
           this.marketRateUpperDelta = this.seniorityFirmRate - this.marketData.market_partner_rate_hi;
-          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.seniorityFirmRate;
-          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.seniorityFirmRate;
+          this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketData.market_partner_rate_lo;
+          this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketData.market_partner_rate_hi;
           this.withinRange = true;
         }
         this.marketRateLowerDeltaPct *= 100;
@@ -367,7 +367,7 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         this.bottomBarWidth = this.calculateBarWidth(this.internalData.internal_avg_partner_rate) + 'px';
 
         this.internalRateDelta = this.seniorityFirmRate - this.internalData.internal_avg_partner_rate;
-        this.internalRateDeltaPct = this.internalRateDelta / this.seniorityFirmRate;
+        this.internalRateDeltaPct = this.internalRateDelta / this.internalData.internal_avg_partner_rate;
         this.internalRateDeltaPct *= 100;
 
       } else {

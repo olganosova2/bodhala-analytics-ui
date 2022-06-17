@@ -46,13 +46,6 @@ export class ViewRateAnalysisComponent implements OnInit {
   cohortCostImpactFormatted: string;
   helpText: string = 'An estimated increase in spend should your rates increase at this rate.';
   totalSpendText: string = 'This Total Spend figure only includes Partner and Associate line items.';
-  marketBlendedRateLowerRangeDiff: string;
-  marketBlendedRateUpperRangeDiff: string;
-  internalBlendedRateDiff: string;
-
-  marketBPILowerRangeDiff: string;
-  marketBPIUpperRangeDiff: string;
-  internalBPIDiff: string;
   costImpactGrade: string;
   costImpactLower: number;
   costImpactUpper: number;
