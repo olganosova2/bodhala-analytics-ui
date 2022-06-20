@@ -80,8 +80,8 @@ export class AddRateBenchmarkComponent implements OnInit, OnDestroy {
           if (data.result && data.cluster_res) {
             this.allFirmsCluster = data.cluster_res;
             const firmOptions = data.result;
-
-            for (let i = 1; i < 8; i++) {
+            // think of a way to make the limit dynamic
+            for (let i = 1; i <= 8; i++) {
               const cluster = firmOptions.filter(f => f.cluster === i);
               const clusterFirms = [];
               if (cluster) {
