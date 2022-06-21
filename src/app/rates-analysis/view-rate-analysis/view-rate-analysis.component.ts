@@ -45,7 +45,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   firmCostImpactFormatted: string;
   cohortCostImpactFormatted: string;
   helpText: string = 'An estimated increase in spend should your rates increase at this rate.';
-  totalSpendText: string = 'This Total Spend figure only includes Partner and Associate line items.';
+  totalSpendText: string = 'Total Spend represents all fee spend within the Practice Area and Year of this benchmark';
   costImpactGrade: string;
   costImpactLower: number;
   costImpactUpper: number;

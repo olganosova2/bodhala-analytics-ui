@@ -32,7 +32,7 @@ export class ComparisonFirmsComponent implements OnInit {
     let counter = 0;
     if (this.panelFirms) {
       for (const firm of this.panelFirms) {
-        if ((firm.name.length + counter) < 60) {
+        if ((firm.name.length + counter) < 57) {
           this.displayedPanelFirms.push(firm.name);
           counter += firm.name.length;
         }
