@@ -58,7 +58,7 @@
       <div style="display: flex; justify-content: center; align-items: center; font-size: 22px; font-family: 'Roboto'">
         <span *ngIf="blendedWithinRange"><span style="font-style: italic; font-family: 'Roboto Bold' !important; text-decoration: underline;">MORE</span> than if you paid the lowest market rates</span>
         <span *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important; text-decoration: underline;">MORE</span> than if your rates were within the market average</span>
-        <span *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important; text-decoration: underline;">LESS</span> than if your rates were within the market average</span>
+        <span *ngIf="!blendedWithinRange && costImpactLower <= 0 && costImpactUpper < 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important; text-decoration: underline;">LESS</span> than if your rates were within the market average</span>
       </div>
 
     </div>
