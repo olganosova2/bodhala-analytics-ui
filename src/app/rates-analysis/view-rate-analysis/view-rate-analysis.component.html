@@ -43,14 +43,22 @@
       <img src="assets/images/bills-white.svg" alt="icon" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px;"/>
       <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">{{year}} Cost Impact: <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">{{costImpactGrade}}</span></span>
       <div style="display: flex; justify-content: center; align-items: center; font-size: 40px; font-family: 'Roboto Bold'" [ngStyle]="{'color': costImpactColor}">
-        <span style="padding-top: 8px;" *ngIf="blendedWithinRange">~{{costImpactLowerFormatted}} </span>
-        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange">~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
+
+
+
+
+        <span style="padding-top: 8px;" *ngIf="blendedWithinRange && loaded">
+          <span style="font-size: 22px; color: black; font-family: 'Roboto';">You paid</span>
+          ~{{costImpactLowerFormatted}} </span>
+        <span style="padding-top: 8px;" *ngIf="!blendedWithinRange && loaded">
+          <span style="font-size: 22px; color: black; font-family: 'Roboto';">You paid</span>
+           ~{{costImpactLowerFormatted}} - {{costImpactUpperFormatted}} </span>
       </div>
 
       <div style="display: flex; justify-content: center; align-items: center; font-size: 22px; font-family: 'Roboto'">
-        <span *ngIf="blendedWithinRange"><span style="font-style: italic; font-family: 'Roboto Bold' !important;">more</span> than if you paid the lowest market rates</span>
-        <span *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important;">more</span> than if your rates were market appropriate</span>
-        <span *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important;">less</span> than if your rates were market appropriate</span>
+        <span *ngIf="blendedWithinRange"><span style="font-style: italic; font-family: 'Roboto Bold' !important; text-decoration: underline;">MORE</span> than if you paid the lowest market rates</span>
+        <span *ngIf="!blendedWithinRange && costImpactLower > 0 && costImpactUpper > 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important; text-decoration: underline;">MORE</span> than if your rates were within the market average</span>
+        <span *ngIf="!blendedWithinRange && costImpactLower < 0 && costImpactUpper < 0"><span style="font-style: italic; font-family: 'Roboto Bold' !important; text-decoration: underline;">LESS</span> than if your rates were within the market average</span>
       </div>
 
     </div>
