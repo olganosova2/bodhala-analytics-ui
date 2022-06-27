@@ -58,6 +58,7 @@ export const END_POINTS_URLS = {
   getDiscountsByClientPAs: {url: BASE_URL + 'analytics/getDiscountsByClientPAs', showLoading: true},
   spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
+  getDiversityChartData: {url: BASE_URL + 'analytics/getDiversityChartData', showLoading: true},
   // executive summary
   getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},
   getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
