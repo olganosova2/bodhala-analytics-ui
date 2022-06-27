@@ -16,7 +16,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {FirmDiscountsComponent} from './firm-discounts/firm-discounts.component';
 import {IUiAnnotation} from '../shared/components/annotations/model';
-import {DiversityChartsComponent} from 'bodhala-ui-elements';
+import {DiversityChartsComponent} from './diversity-charts/diversity-charts.component';
+
 
 @Component({
   selector: 'bd-firm',
