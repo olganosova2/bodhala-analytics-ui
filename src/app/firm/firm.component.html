@@ -100,7 +100,7 @@
         <bd-top-matters [firmId]="firmId" #topMatters *ngIf="firmId && firm"></bd-top-matters>
       </div>
       <div class="ui-md-12 p-lg-7 p-xl-8 div-diversity no-right-padding" #diversity>
-        <bd-diversity-charts [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('data.analytics.diversity')" #diversityCharts></bd-diversity-charts>
+        <lib-bd-diversity-charts [firmId]="firmId" *ngIf="firmId && userService.hasEntitlement('data.analytics.diversity')" #diversityCharts></lib-bd-diversity-charts>
       </div>
     </div>
   </div>
