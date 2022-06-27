@@ -207,7 +207,6 @@ import { NamedTkAnalysisComponent } from './rates-analysis/view-rate-analysis/na
 import { PeerFirmsModalComponent } from './admin/admin-rate-benchmarks/peer-firms-modal/peer-firms-modal.component';
 import { ComparisonFirmsComponent } from './rates-analysis/view-rate-analysis/comparison-firms/comparison-firms.component';
 import { EditFirmsModalComponent } from './rates-analysis/view-rate-analysis/comparison-firms/edit-firms-modal/edit-firms-modal.component';
-import {DiversityChartsComponent} from './firm/diversity-charts/diversity-charts.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -367,8 +366,7 @@ highcharts.setOptions({
     NamedTkAnalysisComponent,
     PeerFirmsModalComponent,
     ComparisonFirmsComponent,
-    EditFirmsModalComponent,
-    DiversityChartsComponent
+    EditFirmsModalComponent
   ],
   entryComponents: [
     PillComponent,
