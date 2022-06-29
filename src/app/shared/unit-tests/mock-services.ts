@@ -35,7 +35,7 @@ import {MOCK_QBR_DATA, MOCK_QBR_RECOMMENDATIONS, MOCK_QBRS} from './mock-data/qb
 import { MOCK_QBR, MOCK_QUARTER_DATES, MOCK_SAVED_QBR_RECOMMENDATIONS } from './mock-data/qbr';
 import {CLIENT_BM_MATTERS, MOCK_BM_CLIENT_PAS, MOCK_BM_CONFIG, MOCK_BM_MATTERS, MOCK_FIRMS_FOR_MATTER, MOCK_MARKET_DOCS, MOCK_MATTER_BREAKDOWN_BYNAME, MOCK_MATTER_DOCUMENTS, MOCK_MATTER_ELIGIBILITY, MOCK_MATTER_LIST_BY_CLIENT, MOCK_MATTER_OVERVIEW, MOCK_NAMED_TKS} from './mock-data/matter-overview';
 import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT,
-  MOCK_RATE_BENCHMARK_RESULT, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA, MOCK_GRANULARITY_PAGE_RESULT, MOCK_RATE_BM_NAMED_TK_DATA} from './mock-data/rate-benchmarking';
+  MOCK_RATE_BENCHMARK_RESULT, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA, MOCK_GRANULARITY_PAGE_RESULT, MOCK_RATE_BM_NAMED_TK_DATA, MOCK_PEER_FIRMS_ADMIN_RESPONSE} from './mock-data/rate-benchmarking';
 import {MOCK_FIRM_CLUSTER} from './mock-data/firm-cluster';
 
 export const ngWindow = {
@@ -631,14 +631,17 @@ export class RatesAnalysisServiceStub {
 
   public getBenchmark() {
     const bm = MOCK_GET_BENCHMARK.result;
-    return({benchmark: bm, firm_name: MOCK_GET_BENCHMARK.firm_name, peer_firms: MOCK_GET_BENCHMARK.peer_firms});
+    return({benchmark: bm, firm_name: MOCK_GET_BENCHMARK.firm_name, market_firms: null, internal_firms: null});
   }
-
   public getRateAnalysisData(bm: any) {
     return (MOCK_RATE_ANALYSIS_DATA);
   }
   public getGranularityPageData() {
     return (MOCK_GRANULARITY_PAGE_RESULT.result);
+  }
+
+  public getPeerFirmData() {
+    return (MOCK_PEER_FIRMS_ADMIN_RESPONSE.result);
   }
 }
 

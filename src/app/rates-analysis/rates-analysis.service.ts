@@ -23,7 +23,7 @@ export class RatesAnalysisService {
             return;
           }
           const bm = data.result;
-          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms, num_tiers: data.num_tiers});
+          resolve({benchmark: bm, firm_name: data.firm_name, peer_firms: data.peer_firms, num_tiers: data.num_tiers, market_firms: data.market_firms, internal_firms: data.internal_firms});
         },
         err => {
           return {error: err};
@@ -38,12 +38,31 @@ export class RatesAnalysisService {
     const paParam = [];
     paParam.push(bm.smart_practice_area);
     firmParam.push(bm.bh_lawfirm_id.toString());
+    let getMarketDataByCluster = true;
+    let marketFirms = null;
+    if (bm.market_avg_firms !== null) {
+      getMarketDataByCluster = false;
+      marketFirms = bm.market_avg_firms.map(value => value.id);
+    }
+
+    let getInternalDataByCluster = true;
+    let internalFirms = null;
+    if (bm.internal_firms !== null) {
+      getInternalDataByCluster = false;
+      internalFirms = bm.internal_firms.map(value => value.id);
+    }
+
     const params = {
+      bmId: bm.id,
       firmId: bm.bh_lawfirm_id,
       smartPA: bm.smart_practice_area,
       marketAverageYear: bm.year,
       firms: JSON.stringify(firmParam),
-      bdPracticeAreas: JSON.stringify(paParam)
+      bdPracticeAreas: JSON.stringify(paParam),
+      getMarketByCluster: getMarketDataByCluster,
+      market_firms: marketFirms,
+      getInternalByCluster: getInternalDataByCluster,
+      internal_firms: internalFirms
     };
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getFirmRateAnalysisIncreaseData', params).subscribe(
@@ -299,11 +318,30 @@ export class RatesAnalysisService {
   // get market average, internal, and firm year data for the granularity page
   // for each seniority bucket
   getGranularityPageData(bm: any, numTiers: number): Promise<any> {
+    let getMarketDataByCluster = true;
+    let marketFirms = null;
+    if (bm.market_avg_firms !== null) {
+      getMarketDataByCluster = false;
+      marketFirms = bm.market_avg_firms.map(value => value.id);
+    }
+
+    let getInternalDataByCluster = true;
+    let internalFirms = null;
+    if (bm.internal_firms !== null) {
+      getInternalDataByCluster = false;
+      internalFirms = bm.internal_firms.map(value => value.id);
+    }
+
     const params = {
+      bmId: bm.id,
       pa: bm.smart_practice_area,
       firm: bm.bh_lawfirm_id,
       yyyy: bm.year,
-      numPartnerTiers: numTiers
+      numPartnerTiers: numTiers,
+      market_firms: marketFirms,
+      getMarketCluster: getMarketDataByCluster,
+      internal_firms: internalFirms,
+      getInternalCluster: getInternalDataByCluster
     };
     return new Promise((resolve, reject) => {
       return this.httpService.makeGetRequest('getGranularityPageData', params).subscribe(

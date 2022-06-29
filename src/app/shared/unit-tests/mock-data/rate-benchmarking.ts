@@ -1491,7 +1491,17 @@ export const MOCK_BENCHMARK = {
       "deleted_by": null,
       "deleted_on": null,
       "modified_by": null,
-      "modified_on": null
+      "modified_on": null,
+      "market_avg_firms": [
+        {"id": 4,"name": "Skadden, Arps, Slate, Meagher & Flom"},
+        {"id": 32,"name": "Akin Gump Strauss Hauer & Feld"},
+        {"id": 8, "name": "Sidley Austin"}
+      ],
+      "internal_firms": [
+        {"id": 4,"name": "Skadden, Arps, Slate, Meagher & Flom"},
+        {"id": 32,"name": "Akin Gump Strauss Hauer & Feld"},
+        {"id": 8, "name": "Sidley Austin"}
+      ]
   },
   "firm_name": "Kirkland & Ellis"
 };
@@ -1499,11 +1509,11 @@ export const MOCK_BENCHMARK = {
 
 export const MOCK_GET_BENCHMARK = {
   "result": {
-      "id": 29,
-      "bh_client_id": 1556,
-      "bh_lawfirm_id": 14,
-      "smart_practice_area": "M&A",
-      "year": 2020,
+      "id": 36,
+      "bh_client_id": 1498,
+      "bh_lawfirm_id": 21,
+      "smart_practice_area": "Funds",
+      "year": 2021,
       "peers": [
           "Skadden, Arps, Slate, Meagher & Flom",
           "Gibson, Dunn & Crutcher",
@@ -1512,23 +1522,78 @@ export const MOCK_GET_BENCHMARK = {
           "Paul, Weiss, Rifkind, Wharton & Garrison",
           "Proskauer Rose"
       ],
-      "created_by": "1999",
-      "created_on": "2022-04-05T08:59:57.316261",
+      "market_avg_firms": [
+          {
+              "id": 65,
+              "name": "Fried, Frank, Harris, Shriver & Jacobson"
+          },
+          {
+              "id": 59,
+              "name": "Willkie Farr & Gallagher"
+          },
+          {
+              "id": 13,
+              "name": "Weil, Gotshal & Manges"
+          },
+          {
+              "id": 23,
+              "name": "Ropes & Gray"
+          },
+          {
+              "id": 4,
+              "name": "Skadden, Arps, Slate, Meagher & Flom"
+          },
+          {
+              "id": 32,
+              "name": "Akin Gump Strauss Hauer & Feld"
+          },
+          {
+              "id": 8,
+              "name": "Sidley Austin"
+          },
+          {
+              "id": 30,
+              "name": "King & Spalding"
+          },
+          {
+              "id": 24,
+              "name": "Paul Hastings"
+          },
+          {
+              "id": 58,
+              "name": "Wilson Sonsini Goodrich & Rosati"
+          }
+      ],
+      "internal_firms": [
+          {
+              "id": 42,
+              "name": "Debevoise & Plimpton"
+          },
+          {
+              "id": 5,
+              "name": "Kirkland & Ellis"
+          },
+          {
+              "id": 3,
+              "name": "Latham & Watkins"
+          },
+          {
+              "id": 268,
+              "name": "Linklaters"
+          }
+      ],
+      "created_by": "2809",
+      "created_on": "2022-04-19T15:50:07.372772",
       "deleted_by": null,
       "deleted_on": null,
-      "modified_by": null,
-      "modified_on": null
+      "modified_by": "2439",
+      "modified_on": "2022-06-15T13:41:47.838272"
   },
   "error": null,
-  "firm_name": "Sullivan & Cromwell",
-  "peer_firms": [
-      "Cravath, Swaine & Moore",
-      "Milbank, Tweed, Hadley & McCloy",
-      "Ropes & Gray",
-      "Simpson Thacher & Bartlett",
-      "Skadden, Arps, Slate, Meagher & Flom",
-      "Willkie Farr & Gallagher"
-  ]
+  "firm_name": "Simpson Thacher & Bartlett",
+  "num_tiers": 4,
+  "market_firms": null,
+  "internal_firms": null
 };
 
 export const MOCK_RATE_ANALYSIS_DATA = {
@@ -1869,7 +1934,67 @@ export const MOCK_HISTORY = {
           "deleted_by": null,
           "deleted_on": null,
           "modified_by": null,
-          "modified_on": null
+          "modified_on": null,
+          "market_avg_firms": [
+            {
+                "id": 65,
+                "name": "Fried, Frank, Harris, Shriver & Jacobson"
+            },
+            {
+                "id": 59,
+                "name": "Willkie Farr & Gallagher"
+            },
+            {
+                "id": 13,
+                "name": "Weil, Gotshal & Manges"
+            },
+            {
+                "id": 23,
+                "name": "Ropes & Gray"
+            },
+            {
+                "id": 4,
+                "name": "Skadden, Arps, Slate, Meagher & Flom"
+            },
+            {
+                "id": 32,
+                "name": "Akin Gump Strauss Hauer & Feld"
+            },
+            {
+                "id": 8,
+                "name": "Sidley Austin"
+            },
+            {
+                "id": 30,
+                "name": "King & Spalding"
+            },
+            {
+                "id": 24,
+                "name": "Paul Hastings"
+            },
+            {
+                "id": 58,
+                "name": "Wilson Sonsini Goodrich & Rosati"
+            }
+        ],
+        "internal_firms": [
+            {
+                "id": 42,
+                "name": "Debevoise & Plimpton"
+            },
+            {
+                "id": 5,
+                "name": "Kirkland & Ellis"
+            },
+            {
+                "id": 3,
+                "name": "Latham & Watkins"
+            },
+            {
+                "id": 268,
+                "name": "Linklaters"
+            }
+        ],
       },
       "totalSpend": {
           "total_block_billed": 16521523.9414,
@@ -1957,13 +2082,7 @@ export const MOCK_HISTORY = {
           "partner_lo": 1150.5410335844676
       },
       "cluster": 1,
-      "numTiers": 4,
-      "peerFirms": [
-          "Cravath, Swaine & Moore",
-          "Milbank, Tweed, Hadley & McCloy",
-          "Ropes & Gray",
-          "Simpson Thacher & Bartlett"
-      ]
+      "numTiers": 4
   },
   "navigationId": 3
 };
@@ -2045,11 +2164,34 @@ export const MOCK_ASSOC_DATA = {
 };
 
 
-export const MOCK_PARTNER_MARKET_INTERNAL_DATA = [
+export const MOCK_PARTNER_MARKET_DATA = [
+  {
+      "seniority": "Mid-Level",
+      "market_num_firms": 17,
+      "market_avg_partner_rate": 1282.4864470588236,
+      "market_partner_rate_lo": 1155.6006230859546,
+      "market_partner_rate_hi": 1409.3722710316927
+  },
+  {
+      "seniority": "Senior",
+      "market_num_firms": 14,
+      "market_avg_partner_rate": 1484.7292071428571,
+      "market_partner_rate_lo": 1381.3392873744997,
+      "market_partner_rate_hi": 1588.1191269112146
+  },
+  {
+      "seniority": "Junior",
+      "market_num_firms": 14,
+      "market_avg_partner_rate": 1186.7594785714284,
+      "market_partner_rate_lo": 1031.7263826167155,
+      "market_partner_rate_hi": 1341.7925745261414
+  }
+];
+
+export const MOCK_PARTNER_INTERNAL_DATA = [
   {
       "seniority": "Mid-Level",
       "internal_num_firms": 4,
-      "market_num_firms": 17,
       "internal_avg_partner_rate": 1414.3106,
       "internal_partner_rate_lo": 1331.8633820546252,
       "internal_partner_rate_hi": 1496.7578179453749,
@@ -2060,61 +2202,65 @@ export const MOCK_PARTNER_MARKET_INTERNAL_DATA = [
   {
       "seniority": "Senior",
       "internal_num_firms": 4,
-      "market_num_firms": 14,
       "internal_avg_partner_rate": 1633.077375,
       "internal_partner_rate_lo": 1518.904346450356,
-      "internal_partner_rate_hi": 1747.2504035496443,
-      "market_avg_partner_rate": 1484.7292071428571,
-      "market_partner_rate_lo": 1381.3392873744997,
-      "market_partner_rate_hi": 1588.1191269112146
+      "internal_partner_rate_hi": 1747.2504035496443
   },
   {
       "seniority": "Junior",
       "internal_num_firms": 2,
-      "market_num_firms": 14,
       "internal_avg_partner_rate": 1184.9436,
       "internal_partner_rate_lo": 1145.1451158831073,
-      "internal_partner_rate_hi": 1224.7420841168928,
-      "market_avg_partner_rate": 1186.7594785714284,
-      "market_partner_rate_lo": 1031.7263826167155,
-      "market_partner_rate_hi": 1341.7925745261414
+      "internal_partner_rate_hi": 1224.7420841168928
   }
 ];
 
-export const MOCK_SENIOR_ASSOCIATE_MI_DATA = {
+export const MOCK_SENIOR_ASSOCIATE_MARKET_DATA = {
   "seniority": "Senior",
-  "internal_num_firms": 4,
   "market_num_firms": 17,
-  "internal_avg_associate_rate": 1076.0182,
-  "internal_associate_rate_lo": 970.4608649407451,
-  "internal_associate_rate_hi": 1181.575535059255,
   "market_avg_associate_rate": 944.485005882353,
   "market_associate_rate_lo": 865.2684900800783,
   "market_associate_rate_hi": 1023.7015216846277
 };
 
-export const MOCK_MID_ASSOCIATE_MI_DATA = {
+export const MOCK_SENIOR_ASSOCIATE_INTERNAL_DATA = {
+  "seniority": "Senior",
+  "internal_num_firms": 4,
+  "internal_avg_associate_rate": 1076.0182,
+  "internal_associate_rate_lo": 970.4608649407451,
+  "internal_associate_rate_hi": 1181.575535059255,
+};
+
+export const MOCK_MID_ASSOCIATE_MARKET_DATA = {
   "seniority": "Mid-Level",
-  "internal_num_firms": 2,
   "market_num_firms": 17,
-  "internal_avg_associate_rate": 902.1644,
-  "internal_associate_rate_lo": 739.3932414391045,
-  "internal_associate_rate_hi": 1064.9355585608955,
   "market_avg_associate_rate": 814.6084941176471,
   "market_associate_rate_lo": 725.9173107406798,
   "market_associate_rate_hi": 903.2996774946143
 };
 
-export const MOCK_JUNIOR_ASSOCIATE_MI_DATA = {
-  "seniority": "Junior",
+export const MOCK_MID_ASSOCIATE_INTERNAL_DATA = {
+  "seniority": "Mid-Level",
   "internal_num_firms": 2,
+  "internal_avg_associate_rate": 902.1644,
+  "internal_associate_rate_lo": 739.3932414391045,
+  "internal_associate_rate_hi": 1064.9355585608955
+};
+
+export const MOCK_JUNIOR_ASSOCIATE_MARKET_DATA = {
+  "seniority": "Junior",
   "market_num_firms": 15,
-  "internal_avg_associate_rate": 710.3721,
-  "internal_associate_rate_lo": 664.1046523238492,
-  "internal_associate_rate_hi": 756.6395476761509,
   "market_avg_associate_rate": 616.8211533333334,
   "market_associate_rate_lo": 551.1329951168772,
   "market_associate_rate_hi": 682.5093115497897
+};
+
+export const MOCK_JUNIOR_ASSOCIATE_INTERNAL_DATA = {
+  "seniority": "Junior",
+  "internal_num_firms": 2,
+  "internal_avg_associate_rate": 710.3721,
+  "internal_associate_rate_lo": 664.1046523238492,
+  "internal_associate_rate_hi": 756.6395476761509
 };
 
 export const MOCK_GRANULARITY_PAGE_RESULT = {
@@ -2763,7 +2909,67 @@ export const MOCK_NAMED_TK_HISTORY = {
           "deleted_by": null,
           "deleted_on": null,
           "modified_by": null,
-          "modified_on": null
+          "modified_on": null,
+          "market_avg_firms": [
+            {
+                "id": 65,
+                "name": "Fried, Frank, Harris, Shriver & Jacobson"
+            },
+            {
+                "id": 59,
+                "name": "Willkie Farr & Gallagher"
+            },
+            {
+                "id": 13,
+                "name": "Weil, Gotshal & Manges"
+            },
+            {
+                "id": 23,
+                "name": "Ropes & Gray"
+            },
+            {
+                "id": 4,
+                "name": "Skadden, Arps, Slate, Meagher & Flom"
+            },
+            {
+                "id": 32,
+                "name": "Akin Gump Strauss Hauer & Feld"
+            },
+            {
+                "id": 8,
+                "name": "Sidley Austin"
+            },
+            {
+                "id": 30,
+                "name": "King & Spalding"
+            },
+            {
+                "id": 24,
+                "name": "Paul Hastings"
+            },
+            {
+                "id": 58,
+                "name": "Wilson Sonsini Goodrich & Rosati"
+            }
+        ],
+        "internal_firms": [
+            {
+                "id": 42,
+                "name": "Debevoise & Plimpton"
+            },
+            {
+                "id": 5,
+                "name": "Kirkland & Ellis"
+            },
+            {
+                "id": 3,
+                "name": "Latham & Watkins"
+            },
+            {
+                "id": 268,
+                "name": "Linklaters"
+            }
+        ],
       },
       "partnerMarketInternal": [
           {
@@ -2914,13 +3120,658 @@ export const MOCK_NAMED_TK_HISTORY = {
           "bodhala_price_index": 3778.8348094977778
       },
       "cluster": 1,
-      "numTiers": 3,
-      "peerFirms": [
-          "Cravath, Swaine & Moore",
-          "Milbank, Tweed, Hadley & McCloy",
-          "Ropes & Gray",
-          "Simpson Thacher & Bartlett"
-      ]
+      "numTiers": 3
   },
   "navigationId": 2
 };
+
+
+export const MOCK_PEER_FIRMS_ADMIN_RESPONSE = {
+  "result": {
+      "current_selected_market_firms": [
+          {
+              "firm_id": 32,
+              "firm_name": "Akin Gump Strauss Hauer & Feld",
+              "cluster": 1,
+              "total_billed": 1301382.5173,
+              "total_partner_hours": 220.5,
+              "total_associate_hours": 1137.8,
+              "total_partner_writeoff": -612,
+              "total_associate_writeoff": -9061,
+              "total_partner_writeoff_hours": -0.4,
+              "total_associate_writeoff_hours": -8.2,
+              "total_partner_billed": 268380.2526,
+              "total_associate_billed": 925239.4889,
+              "total_partner_billed_minus_writeoff": 268992.2526,
+              "total_partner_hours_minus_writeoff": 220.9,
+              "total_associate_billed_minus_writeoff": 934300.4889,
+              "total_associate_hours_minus_writeoff": 1146,
+              "atty_hours": 1366.9,
+              "atty_billed": 1203292.7415,
+              "avg_associate_rate": 815.2709,
+              "avg_partner_rate": 1217.7105,
+              "blended_rate": 880.3078
+          },
+          {
+              "firm_id": 65,
+              "firm_name": "Fried, Frank, Harris, Shriver & Jacobson",
+              "cluster": 1,
+              "total_billed": 30223907.3725,
+              "total_partner_hours": 6013.71,
+              "total_associate_hours": 31776.6598,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": -3242.54,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": -4.51,
+              "total_partner_billed": 6606328.8102,
+              "total_associate_billed": 22725310.4959,
+              "total_partner_billed_minus_writeoff": 6606328.8102,
+              "total_partner_hours_minus_writeoff": 6013.71,
+              "total_associate_billed_minus_writeoff": 22728553.0359,
+              "total_associate_hours_minus_writeoff": 31781.1698,
+              "atty_hours": 37794.8798,
+              "atty_billed": 29334881.8461,
+              "avg_associate_rate": 715.1578,
+              "avg_partner_rate": 1098.5446,
+              "blended_rate": 776.1602
+          },
+          {
+              "firm_id": 30,
+              "firm_name": "King & Spalding",
+              "cluster": 1,
+              "total_billed": 739500.0638,
+              "total_partner_hours": 215.4,
+              "total_associate_hours": 842,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 236026.4831,
+              "total_associate_billed": 501541.5323,
+              "total_partner_billed_minus_writeoff": 236026.4831,
+              "total_partner_hours_minus_writeoff": 215.4,
+              "total_associate_billed_minus_writeoff": 501541.5323,
+              "total_associate_hours_minus_writeoff": 842,
+              "atty_hours": 1057.4,
+              "atty_billed": 737568.0154,
+              "avg_associate_rate": 595.655,
+              "avg_partner_rate": 1095.7589,
+              "blended_rate": 697.5298
+          },
+          {
+              "firm_id": 8,
+              "firm_name": "Sidley Austin",
+              "cluster": 1,
+              "total_billed": 1016752.495,
+              "total_partner_hours": 283.45,
+              "total_associate_hours": 1171.2,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 278443.32,
+              "total_associate_billed": 727979.275,
+              "total_partner_billed_minus_writeoff": 278443.32,
+              "total_partner_hours_minus_writeoff": 283.45,
+              "total_associate_billed_minus_writeoff": 727979.275,
+              "total_associate_hours_minus_writeoff": 1171.2,
+              "atty_hours": 1454.65,
+              "atty_billed": 1006422.595,
+              "avg_associate_rate": 621.567,
+              "avg_partner_rate": 982.3366,
+              "blended_rate": 691.8658
+          }
+      ],
+      "possible_market_firms": [
+          {
+              "firm_id": 32637,
+              "firm_name": "Plesner",
+              "cluster": 0,
+              "total_billed": 3334.2769,
+              "total_partner_hours": 0,
+              "total_associate_hours": 6.98,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 0,
+              "total_associate_billed": 3334.2769,
+              "total_partner_billed_minus_writeoff": 0,
+              "total_partner_hours_minus_writeoff": 0,
+              "total_associate_billed_minus_writeoff": 3334.2769,
+              "total_associate_hours_minus_writeoff": 6.98,
+              "atty_hours": 6.98,
+              "atty_billed": 3334.2769,
+              "avg_associate_rate": 477.6901,
+              "avg_partner_rate": 0,
+              "blended_rate": 477.6901
+          },
+          {
+              "firm_id": 30307,
+              "firm_name": "Reitler Kailas",
+              "cluster": 0,
+              "total_billed": 56624.9,
+              "total_partner_hours": 102.5,
+              "total_associate_hours": 2,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 55319.9,
+              "total_associate_billed": 1305,
+              "total_partner_billed_minus_writeoff": 55319.9,
+              "total_partner_hours_minus_writeoff": 102.5,
+              "total_associate_billed_minus_writeoff": 1305,
+              "total_associate_hours_minus_writeoff": 2,
+              "atty_hours": 104.5,
+              "atty_billed": 56624.9,
+              "avg_associate_rate": 652.5,
+              "avg_partner_rate": 539.7063,
+              "blended_rate": 541.865
+          },
+          {
+              "firm_id": 9362,
+              "firm_name": "Rexach & Pico",
+              "cluster": 0,
+              "total_billed": 20502.5,
+              "total_partner_hours": 55.25,
+              "total_associate_hours": 3.25,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 19706.25,
+              "total_associate_billed": 796.25,
+              "total_partner_billed_minus_writeoff": 19706.25,
+              "total_partner_hours_minus_writeoff": 55.25,
+              "total_associate_billed_minus_writeoff": 796.25,
+              "total_associate_hours_minus_writeoff": 3.25,
+              "atty_hours": 58.5,
+              "atty_billed": 20502.5,
+              "avg_associate_rate": 245,
+              "avg_partner_rate": 356.6742,
+              "blended_rate": 350.47
+          },
+          {
+              "firm_id": 6935,
+              "firm_name": "Schellenberg Wittmer",
+              "cluster": 0,
+              "total_billed": 45417.9205,
+              "total_partner_hours": 17.6,
+              "total_associate_hours": 80.5,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 11353.593,
+              "total_associate_billed": 30817.181,
+              "total_partner_billed_minus_writeoff": 11353.593,
+              "total_partner_hours_minus_writeoff": 17.6,
+              "total_associate_billed_minus_writeoff": 30817.181,
+              "total_associate_hours_minus_writeoff": 80.5,
+              "atty_hours": 98.1,
+              "atty_billed": 42170.774,
+              "avg_associate_rate": 382.8221,
+              "avg_partner_rate": 645.0905,
+              "blended_rate": 429.8753
+          },
+          {
+              "firm_id": 30874,
+              "firm_name": "Shardul, Amarchand, Mangaldas & Co.",
+              "cluster": 0,
+              "total_billed": 43531.0438,
+              "total_partner_hours": 2.5,
+              "total_associate_hours": 9,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 506.28,
+              "total_associate_billed": 1822.6,
+              "total_partner_billed_minus_writeoff": 506.28,
+              "total_partner_hours_minus_writeoff": 2.5,
+              "total_associate_billed_minus_writeoff": 1822.6,
+              "total_associate_hours_minus_writeoff": 9,
+              "atty_hours": 11.5,
+              "atty_billed": 2328.88,
+              "avg_associate_rate": 202.5111,
+              "avg_partner_rate": 202.512,
+              "blended_rate": 202.5113
+          },
+          {
+              "firm_id": 933,
+              "firm_name": "Simmons & Simmons",
+              "cluster": 0,
+              "total_billed": 818161.416,
+              "total_partner_hours": 82.84,
+              "total_associate_hours": 6042.79,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 68842.9824,
+              "total_associate_billed": 665932.0867,
+              "total_partner_billed_minus_writeoff": 68842.9824,
+              "total_partner_hours_minus_writeoff": 82.84,
+              "total_associate_billed_minus_writeoff": 665932.0867,
+              "total_associate_hours_minus_writeoff": 6042.79,
+              "atty_hours": 6125.63,
+              "atty_billed": 734775.0691,
+              "avg_associate_rate": 110.2027,
+              "avg_partner_rate": 831.0355,
+              "blended_rate": 119.9509
+          },
+          {
+              "firm_id": 30875,
+              "firm_name": "Slaughter & May",
+              "cluster": 0,
+              "total_billed": 3821.66,
+              "total_partner_hours": 2.2,
+              "total_associate_hours": 0.9,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 2819.65,
+              "total_associate_billed": 1002.01,
+              "total_partner_billed_minus_writeoff": 2819.65,
+              "total_partner_hours_minus_writeoff": 2.2,
+              "total_associate_billed_minus_writeoff": 1002.01,
+              "total_associate_hours_minus_writeoff": 0.9,
+              "atty_hours": 3.1,
+              "atty_billed": 3821.66,
+              "avg_associate_rate": 1113.3444,
+              "avg_partner_rate": 1281.659,
+              "blended_rate": 1232.7935
+          },
+          {
+              "firm_id": 7626,
+              "firm_name": "Spartin Planning",
+              "cluster": 0,
+              "total_billed": 1978,
+              "total_partner_hours": 0,
+              "total_associate_hours": 4.3,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 0,
+              "total_associate_billed": 1978,
+              "total_partner_billed_minus_writeoff": 0,
+              "total_partner_hours_minus_writeoff": 0,
+              "total_associate_billed_minus_writeoff": 1978,
+              "total_associate_hours_minus_writeoff": 4.3,
+              "atty_hours": 4.3,
+              "atty_billed": 1978,
+              "avg_associate_rate": 460,
+              "avg_partner_rate": 0,
+              "blended_rate": 460
+          },
+          {
+              "firm_id": 8248,
+              "firm_name": "Stibbe",
+              "cluster": 0,
+              "total_billed": 4623.6029,
+              "total_partner_hours": 0,
+              "total_associate_hours": 8.4,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 0,
+              "total_associate_billed": 4623.6029,
+              "total_partner_billed_minus_writeoff": 0,
+              "total_partner_hours_minus_writeoff": 0,
+              "total_associate_billed_minus_writeoff": 4623.6029,
+              "total_associate_hours_minus_writeoff": 8.4,
+              "atty_hours": 8.4,
+              "atty_billed": 4623.6029,
+              "avg_associate_rate": 550.4289,
+              "avg_partner_rate": 0,
+              "blended_rate": 550.4289
+          },
+          {
+              "firm_id": 7836,
+              "firm_name": "Stikeman Elliott (NY) LLP",
+              "cluster": 0,
+              "total_billed": 38482.8831,
+              "total_partner_hours": 4185.81,
+              "total_associate_hours": 6.03,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 15884.293,
+              "total_associate_billed": 3623.8,
+              "total_partner_billed_minus_writeoff": 15884.293,
+              "total_partner_hours_minus_writeoff": 4185.81,
+              "total_associate_billed_minus_writeoff": 3623.8,
+              "total_associate_hours_minus_writeoff": 6.03,
+              "atty_hours": 4191.84,
+              "atty_billed": 19508.093,
+              "avg_associate_rate": 600.9618,
+              "avg_partner_rate": 3.7947,
+              "blended_rate": 4.6538
+          },
+          {
+              "firm_id": 30493,
+              "firm_name": "TMI Associates",
+              "cluster": 0,
+              "total_billed": 18662.0806,
+              "total_partner_hours": 6.4,
+              "total_associate_hours": 15.1,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 2928.7223,
+              "total_associate_billed": 3456.2807,
+              "total_partner_billed_minus_writeoff": 2928.7223,
+              "total_partner_hours_minus_writeoff": 6.4,
+              "total_associate_billed_minus_writeoff": 3456.2807,
+              "total_associate_hours_minus_writeoff": 15.1,
+              "atty_hours": 21.5,
+              "atty_billed": 6385.003,
+              "avg_associate_rate": 228.8927,
+              "avg_partner_rate": 457.6128,
+              "blended_rate": 296.9768
+          },
+          {
+              "firm_id": 588,
+              "firm_name": "Torys",
+              "cluster": 0,
+              "total_billed": 508070.9,
+              "total_partner_hours": 168.2,
+              "total_associate_hours": 557.9,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 168018.7,
+              "total_associate_billed": 299522.7,
+              "total_partner_billed_minus_writeoff": 168018.7,
+              "total_partner_hours_minus_writeoff": 168.2,
+              "total_associate_billed_minus_writeoff": 299522.7,
+              "total_associate_hours_minus_writeoff": 557.9,
+              "atty_hours": 726.1,
+              "atty_billed": 467541.4,
+              "avg_associate_rate": 536.8752,
+              "avg_partner_rate": 998.9221,
+              "blended_rate": 643.9077
+          },
+          {
+              "firm_id": 919,
+              "firm_name": "Travers Smith",
+              "cluster": 0,
+              "total_billed": 889393.3319,
+              "total_partner_hours": 7.1,
+              "total_associate_hours": 10.6,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 10039.3272,
+              "total_associate_billed": 9971.8829,
+              "total_partner_billed_minus_writeoff": 10039.3272,
+              "total_partner_hours_minus_writeoff": 7.1,
+              "total_associate_billed_minus_writeoff": 9971.8829,
+              "total_associate_hours_minus_writeoff": 10.6,
+              "atty_hours": 17.7,
+              "atty_billed": 20011.2101,
+              "avg_associate_rate": 940.7436,
+              "avg_partner_rate": 1413.9897,
+              "blended_rate": 1130.5768
+          },
+          {
+              "firm_id": 8363,
+              "firm_name": "Trilegal",
+              "cluster": 0,
+              "total_billed": 710,
+              "total_partner_hours": 0,
+              "total_associate_hours": 1.7,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 0,
+              "total_associate_billed": 710,
+              "total_partner_billed_minus_writeoff": 0,
+              "total_partner_hours_minus_writeoff": 0,
+              "total_associate_billed_minus_writeoff": 710,
+              "total_associate_hours_minus_writeoff": 1.7,
+              "atty_hours": 1.7,
+              "atty_billed": 710,
+              "avg_associate_rate": 417.647,
+              "avg_partner_rate": 0,
+              "blended_rate": 417.647
+          },
+          {
+              "firm_id": 8207,
+              "firm_name": "Uria Menendez Abogados",
+              "cluster": 0,
+              "total_billed": 56103.9293,
+              "total_partner_hours": 85.124,
+              "total_associate_hours": 0,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 56103.9293,
+              "total_associate_billed": 0,
+              "total_partner_billed_minus_writeoff": 56103.9293,
+              "total_partner_hours_minus_writeoff": 85.124,
+              "total_associate_billed_minus_writeoff": 0,
+              "total_associate_hours_minus_writeoff": 0,
+              "atty_hours": 85.124,
+              "atty_billed": 56103.9293,
+              "avg_associate_rate": 0,
+              "avg_partner_rate": 659.0847,
+              "blended_rate": 659.0847
+          },
+          {
+              "firm_id": 4323,
+              "firm_name": "Walkers Law Firm",
+              "cluster": 0,
+              "total_billed": 509730.6098,
+              "total_partner_hours": 144.7,
+              "total_associate_hours": 488.8,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 140407.8298,
+              "total_associate_billed": 321940.43,
+              "total_partner_billed_minus_writeoff": 140407.8298,
+              "total_partner_hours_minus_writeoff": 144.7,
+              "total_associate_billed_minus_writeoff": 321940.43,
+              "total_associate_hours_minus_writeoff": 488.8,
+              "atty_hours": 633.5,
+              "atty_billed": 462348.2598,
+              "avg_associate_rate": 658.6342,
+              "avg_partner_rate": 970.3374,
+              "blended_rate": 729.8315
+          },
+          {
+              "firm_id": 265,
+              "firm_name": "ZwillGen",
+              "cluster": 0,
+              "total_billed": 4485,
+              "total_partner_hours": 0,
+              "total_associate_hours": 7.9,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 0,
+              "total_associate_billed": 4485,
+              "total_partner_billed_minus_writeoff": 0,
+              "total_partner_hours_minus_writeoff": 0,
+              "total_associate_billed_minus_writeoff": 4485,
+              "total_associate_hours_minus_writeoff": 7.9,
+              "atty_hours": 7.9,
+              "atty_billed": 4485,
+              "avg_associate_rate": 567.7215,
+              "avg_partner_rate": 0,
+              "blended_rate": 567.7215
+          },
+          {
+              "firm_id": 40222,
+              "firm_name": "ferrere international",
+              "cluster": 0,
+              "total_billed": 4500,
+              "total_partner_hours": 22,
+              "total_associate_hours": 0,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 4500,
+              "total_associate_billed": 0,
+              "total_partner_billed_minus_writeoff": 4500,
+              "total_partner_hours_minus_writeoff": 22,
+              "total_associate_billed_minus_writeoff": 0,
+              "total_associate_hours_minus_writeoff": 0,
+              "atty_hours": 22,
+              "atty_billed": 4500,
+              "avg_associate_rate": 0,
+              "avg_partner_rate": 204.5454,
+              "blended_rate": 204.5454
+          }
+      ],
+      "current_cluster_market_firms": [
+          {
+              "firm_id": 13,
+              "firm_name": "Weil, Gotshal & Manges",
+              "cluster": 1,
+              "total_billed": 16085402.91,
+              "total_partner_hours": 2860.46,
+              "total_associate_hours": 14449.7,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 3571241.06,
+              "total_associate_billed": 11969478.15,
+              "total_partner_billed_minus_writeoff": 3571241.06,
+              "total_partner_hours_minus_writeoff": 2860.46,
+              "total_associate_billed_minus_writeoff": 11969478.15,
+              "total_associate_hours_minus_writeoff": 14449.7,
+              "atty_hours": 17310.16,
+              "atty_billed": 15540719.21,
+              "avg_associate_rate": 828.3547,
+              "avg_partner_rate": 1248.4848,
+              "blended_rate": 897.7802
+          },
+          {
+              "firm_id": 59,
+              "firm_name": "Willkie Farr & Gallagher",
+              "cluster": 1,
+              "total_billed": 18318849.5057,
+              "total_partner_hours": 5918.8,
+              "total_associate_hours": 20854.4,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 5430575.0798,
+              "total_associate_billed": 11920525.4741,
+              "total_partner_billed_minus_writeoff": 5430575.0798,
+              "total_partner_hours_minus_writeoff": 5918.8,
+              "total_associate_billed_minus_writeoff": 11920525.4741,
+              "total_associate_hours_minus_writeoff": 20854.4,
+              "atty_hours": 26773.2,
+              "atty_billed": 17351100.5539,
+              "avg_associate_rate": 571.6072,
+              "avg_partner_rate": 917.5128,
+              "blended_rate": 648.0772
+          },
+          {
+              "firm_id": 58,
+              "firm_name": "Wilson Sonsini Goodrich & Rosati",
+              "cluster": 1,
+              "total_billed": 1322.05,
+              "total_partner_hours": 0,
+              "total_associate_hours": 1.6,
+              "total_partner_writeoff": 0,
+              "total_associate_writeoff": 0,
+              "total_partner_writeoff_hours": 0,
+              "total_associate_writeoff_hours": 0,
+              "total_partner_billed": 0,
+              "total_associate_billed": 1322.05,
+              "total_partner_billed_minus_writeoff": 0,
+              "total_partner_hours_minus_writeoff": 0,
+              "total_associate_billed_minus_writeoff": 1322.05,
+              "total_associate_hours_minus_writeoff": 1.6,
+              "atty_hours": 1.6,
+              "atty_billed": 1322.05,
+              "avg_associate_rate": 826.2812,
+              "avg_partner_rate": 0,
+              "blended_rate": 826.2812
+          }
+      ]
+  },
+  "error": null
+}
+
+
+export const MOCK_MARKET_FIRMS = [
+  {
+      "id": 65,
+      "name": "Fried, Frank, Harris, Shriver & Jacobson"
+  },
+  {
+      "id": 59,
+      "name": "Willkie Farr & Gallagher"
+  },
+  {
+      "id": 13,
+      "name": "Weil, Gotshal & Manges"
+  },
+  {
+      "id": 23,
+      "name": "Ropes & Gray"
+  },
+  {
+      "id": 4,
+      "name": "Skadden, Arps, Slate, Meagher & Flom"
+  },
+  {
+      "id": 32,
+      "name": "Akin Gump Strauss Hauer & Feld"
+  },
+  {
+      "id": 8,
+      "name": "Sidley Austin"
+  },
+  {
+      "id": 30,
+      "name": "King & Spalding"
+  },
+  {
+      "id": 24,
+      "name": "Paul Hastings"
+  },
+  {
+      "id": 58,
+      "name": "Wilson Sonsini Goodrich & Rosati"
+  }
+];
+
+export const MOCK_INTERNAL_FIRMS = [
+  {
+      "id": 42,
+      "name": "Debevoise & Plimpton"
+  },
+  {
+      "id": 5,
+      "name": "Kirkland & Ellis"
+  },
+  {
+      "id": 3,
+      "name": "Latham & Watkins"
+  },
+  {
+      "id": 268,
+      "name": "Linklaters"
+  }
+];

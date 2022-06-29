@@ -10,6 +10,9 @@ import {QbrType} from './qbr-model';
 import {BenchmarkService} from '../benchmarks/benchmark.service';
 import {MOCK_QUARTER_DATES, MOCK_GENERIC_QBR_RECOMMENDATIONS, MOCK_SAVED_QBR_RECOMMENDATIONS, MOCK_QBR} from '../shared/unit-tests/mock-data/qbr';
 import { MOCK_QBR_DATA } from '../shared/unit-tests/mock-data/qbr-executive-summary';
+import * as _moment from 'moment';
+
+const moment = _moment;
 
 describe('QbrService', () => {
 
@@ -30,8 +33,8 @@ describe('QbrService', () => {
   });
   it('QbrService should formatPayloadDates', () => {
     const service: QbrService = TestBed.inject(QbrService);
-    const result = service.formatPayloadDates('2019-03-01', QbrType.YoY);
-    expect(result.comparisonStartDate).toBe('2018-03-01T00:00:00-05:00');
+    const result = service.formatPayloadDates('2020-03-01', QbrType.YoY);
+    expect(moment(result.comparisonStartDate).year()).toBe(2019);
   });
 
   it('QbrService should constructSelectableQuarterDates', inject([QbrService], (service: QbrService) => {

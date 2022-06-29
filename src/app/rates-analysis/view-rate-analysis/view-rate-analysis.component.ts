@@ -19,7 +19,6 @@ export class ViewRateAnalysisComponent implements OnInit {
   pendingRequest: Subscription;
   benchmarkId: number;
   benchmark: IRateBenchmark;
-  peerFirms: Array<string>;
   loaded: boolean = false;
   diffsCalculated: boolean = false;
   practiceArea: string;
@@ -46,14 +45,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   firmCostImpactFormatted: string;
   cohortCostImpactFormatted: string;
   helpText: string = 'An estimated increase in spend should your rates increase at this rate.';
-  totalSpendText: string = 'This Total Spend figure only includes Partner and Associate line items.';
-  marketBlendedRateLowerRangeDiff: string;
-  marketBlendedRateUpperRangeDiff: string;
-  internalBlendedRateDiff: string;
-
-  marketBPILowerRangeDiff: string;
-  marketBPIUpperRangeDiff: string;
-  internalBPIDiff: string;
+  totalSpendText: string = 'Total Spend represents all fee spend within the Practice Area and Year of this benchmark';
   costImpactGrade: string;
   costImpactLower: number;
   costImpactUpper: number;
@@ -76,6 +68,8 @@ export class ViewRateAnalysisComponent implements OnInit {
   insightExpanded: boolean = false;
   cluster: number;
   numPartnerTiers: number;
+  marketAvgFirms: Array<any>;
+  internalFirms: Array<any>;
 
 
   constructor(private route: ActivatedRoute,
@@ -102,24 +96,20 @@ export class ViewRateAnalysisComponent implements OnInit {
         const result = await this.ratesService.getBenchmark(this.benchmarkId);
         this.firmName = result.firm_name;
         this.benchmark = result.benchmark;
+        if (this.benchmark.market_avg_firms) {
+          this.marketAvgFirms = this.benchmark.market_avg_firms;
+        } else {
+          this.marketAvgFirms = result.market_firms;
+        }
+        if (this.benchmark.internal_firms) {
+          this.internalFirms = this.benchmark.internal_firms;
+        } else {
+          this.internalFirms = result.internal_firms;
+        }
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
-        this.peerFirms = result.peer_firms;
-        const ix = result.peer_firms.findIndex(p => p === this.firmName);
-        this.peerFirms = [];
-        if (ix >= 0) {
-          result.peer_firms.splice(ix, 1);
-        }
-        if (result.peer_firms) {
-          let counter = 0;
-          for (const firm of result.peer_firms) {
-            if ((firm.length + counter) < 110) {
-              this.peerFirms.push(firm);
-            }
-            counter += firm.length;
-          }
-        }
+
         const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
         if (insightResult.result) {
           if (insightResult.result.is_enabled) {
@@ -200,7 +190,7 @@ export class ViewRateAnalysisComponent implements OnInit {
         };
         if (this.firmYearData) {
           // if difference is more than equal to 2 we can't calculate total firm spend using the effective rate query
-          this.firmTotalSpend = this.firmYearData.total_atty_billed;
+          this.firmTotalSpend = this.firmYearData.total_billed + this.firmYearData.total_afa;
         } else {
           this.firmTotalSpend = firmClassificationRateIncreasePct.total;
         }
@@ -252,39 +242,45 @@ export class ViewRateAnalysisComponent implements OnInit {
   }
 
   goToDetail(): void {
-    const detailData = {
-      firmYear: this.firmYearData,
-      bm: this.benchmark,
-      totalSpend: this.overallSpendData,
-      market: this.marketAverageData,
-      internal: this.internalYearData,
-      cluster: this.cluster,
-      numTiers: this.numPartnerTiers,
-      peerFirms: this.peerFirms
-    };
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
-    {state:
-      {
-        data: detailData
-      }
-    });
+    if (this.loaded) {
+      const detailData = {
+        firmYear: this.firmYearData,
+        bm: this.benchmark,
+        totalSpend: this.overallSpendData,
+        market: this.marketAverageData,
+        internal: this.internalYearData,
+        cluster: this.cluster,
+        numTiers: this.numPartnerTiers,
+        panel: this.internalFirms,
+        marketFirms: this.marketAvgFirms
+      };
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/detail/', this.benchmark.id],
+      {state:
+        {
+          data: detailData
+        }
+      });
+    }
   }
 
   goToNamedTKPage(): void {
-    const detailData = {
-      firmYear: this.firmYearData,
-      bm: this.benchmark,
-      cluster: this.cluster,
-      numTiers: this.numPartnerTiers,
-      peerFirms: this.peerFirms,
-      overviewPage: true
-    };
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
-    {state:
-      {
-        data: detailData
-      }
-    });
+    if (this.loaded) {
+      const detailData = {
+        firmYear: this.firmYearData,
+        bm: this.benchmark,
+        cluster: this.cluster,
+        numTiers: this.numPartnerTiers,
+        overviewPage: true,
+        panel: this.internalFirms,
+        marketFirms: this.marketAvgFirms
+      };
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
+      {state:
+        {
+          data: detailData
+        }
+      });
+    }
   }
 
   setStyle(): any {

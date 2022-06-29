@@ -17,6 +17,8 @@ export const formatter = new Intl.NumberFormat('en-US', {
 });
 
 export interface IRateBenchmark {
+  internal_firms: any;
+  market_avg_firms: any;
   id: number;
   bh_client_id?: number;
   bh_lawfirm_id?: number;

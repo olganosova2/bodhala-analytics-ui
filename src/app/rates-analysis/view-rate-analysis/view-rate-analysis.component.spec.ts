@@ -7,7 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FiltersService} from '../../shared/services/filters.service';
 import * as mockServices from '../../shared/unit-tests/mock-services';
 import { RatesAnalysisService } from '../rates-analysis.service';
-import { MOCK_RATE_ANALYSIS_RESULT } from 'src/app/shared/unit-tests/mock-data/rate-benchmarking';
+import { MOCK_RATE_ANALYSIS_RESULT, MOCK_BENCHMARK } from 'src/app/shared/unit-tests/mock-data/rate-benchmarking';
 import { rateBenchmarkingChartOptions } from '../rates-analysis.model';
 
 
@@ -44,7 +44,9 @@ describe('ViewRateAnalysisComponent', () => {
     deleted_by: null,
     deleted_on: null,
     modified_by: null,
-    modified_on: null
+    modified_on: null,
+    market_avg_firms: MOCK_BENCHMARK.benchmark.market_avg_firms,
+    internal_firms: MOCK_BENCHMARK.benchmark.internal_firms,
   };
 
   beforeEach(async(() => {
@@ -76,7 +78,6 @@ describe('ViewRateAnalysisComponent', () => {
     component.firmId = mockBM.bh_lawfirm_id;
     component.practiceArea = mockBM.smart_practice_area;
     component.year = mockBM.year;
-    component.peerFirms = mockBM.peers;
     fixture.detectChanges();
   });
 
@@ -123,7 +124,6 @@ describe('ViewRateAnalysisComponent', () => {
     component.practiceArea = mockBM.smart_practice_area;
     component.year = mockBM.year;
     component.numPartnerTiers = 3;
-    component.peerFirms = mockBM.peers;
     component.cluster = 1;
     component.goToDetail();
     expect(component).toBeTruthy();

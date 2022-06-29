@@ -20,7 +20,6 @@ export class GranularRateAnalysisComponent implements OnInit {
   firmName: string;
   firmId: number;
   year: number;
-  peerFirms: Array<string>;
   firmYearData: any;
   marketAverageData: any;
   internalData: any;
@@ -32,17 +31,22 @@ export class GranularRateAnalysisComponent implements OnInit {
   // vars to store seniority bucket market average and interal data
   firmAssociateSeniorityData: any;
   firmPartnerSeniorityData: any;
-  juniorAssociateMIData: any = null;
-  midAssociateMIData: any = null;
-  seniorAssociateMIData: any = null;
-  partnerMIData: any;
+  juniorAssociateMarketData: any = null;
+  midAssociateMarketData: any = null;
+  seniorAssociateMarketData: any = null;
+  juniorAssociateInternalData: any = null;
+  midAssociateInternalData: any = null;
+  seniorAssociateInternalData: any = null;
+  partnerMarketData: any;
+  partnerInternalData: any;
   juniorAssocFirmHours: number;
   midAssocFirmHours: number;
   seniorAssocFirmHours: number;
   juniorAssocFirmRate: number;
   midAssocFirmRate: number;
   seniorAssocFirmRate: number;
-
+  marketAvgFirms: Array<any>;
+  internalFirms: Array<any>;
 
 
   constructor(private route: ActivatedRoute,
@@ -79,22 +83,21 @@ export class GranularRateAnalysisComponent implements OnInit {
       if (history.state.data.market) {
         this.marketAverageData = history.state.data.market;
       }
+      if (history.state.data.marketFirms) {
+        this.marketAvgFirms = history.state.data.marketFirms;
+      }
+      if (history.state.data.panel) {
+        this.internalFirms = history.state.data.panel;
+      }
       if (history.state.data.totalSpend) {
         this.overallSpendData = history.state.data.totalSpend;
       }
       if (history.state.data.numTiers) {
         this.numPartnerTiers = history.state.data.numTiers;
       }
-      if (history.state.data.peerFirms) {
-        this.peerFirms = history.state.data.peerFirms;
-      }
       this.firmId = this.benchmark.bh_lawfirm_id;
       this.practiceArea = this.benchmark.smart_practice_area;
       this.year = this.benchmark.year;
-      const ix = this.peerFirms.findIndex(p => p === this.firmName);
-      if (ix >= 0) {
-        this.peerFirms.splice(ix, 1);
-      }
 
       const granularResult = await this.ratesService.getGranularityPageData(this.benchmark, this.numPartnerTiers);
       this.setData(granularResult);
@@ -104,23 +107,19 @@ export class GranularRateAnalysisComponent implements OnInit {
         const result = await this.ratesService.getBenchmark(this.benchmarkId);
         this.firmName = result.firm_name;
         this.benchmark = result.benchmark;
+        if (this.benchmark.market_avg_firms) {
+          this.marketAvgFirms = this.benchmark.market_avg_firms;
+        } else {
+          this.marketAvgFirms = result.market_firms;
+        }
+        if (this.benchmark.internal_firms) {
+          this.internalFirms = this.benchmark.internal_firms;
+        } else {
+          this.internalFirms = result.internal_firms;
+        }
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
-        const ix = result.peer_firms.findIndex(p => p === this.firmName);
-        this.peerFirms = [];
-        if (ix >= 0) {
-          result.peer_firms.splice(ix, 1);
-        }
-        if (result.peer_firms) {
-          let counter = 0;
-          for (const firm of result.peer_firms) {
-            if ((firm.length + counter) < 110) {
-              this.peerFirms.push(firm);
-            }
-            counter += firm.length;
-          }
-        }
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
         if (rateAnalysisData.result.firm_data) {
           if (rateAnalysisData.result.firm_data.length > 0) {
@@ -146,18 +145,32 @@ export class GranularRateAnalysisComponent implements OnInit {
   }
 
   setData(granularResult: any): void {
-    if (granularResult.associate_market_internal) {
-      const junior = granularResult.associate_market_internal.filter(a => a.seniority === 'Junior');
+    if (granularResult.associate_market) {
+      const junior = granularResult.associate_market.filter(a => a.seniority === 'Junior');
       if (junior.length > 0) {
-        this.juniorAssociateMIData = junior[0];
+        this.juniorAssociateMarketData = junior[0];
       }
-      const mid = granularResult.associate_market_internal.filter(a => a.seniority === 'Mid-Level');
+      const mid = granularResult.associate_market.filter(a => a.seniority === 'Mid-Level');
       if (mid.length > 0) {
-        this.midAssociateMIData = mid[0];
+        this.midAssociateMarketData = mid[0];
       }
-      const senior = granularResult.associate_market_internal.filter(a => a.seniority === 'Senior');
+      const senior = granularResult.associate_market.filter(a => a.seniority === 'Senior');
       if (senior.length > 0) {
-        this.seniorAssociateMIData = senior[0];
+        this.seniorAssociateMarketData = senior[0];
+      }
+    }
+    if (granularResult.associate_internal) {
+      const junior = granularResult.associate_internal.filter(a => a.seniority === 'Junior');
+      if (junior.length > 0) {
+        this.juniorAssociateInternalData = junior[0];
+      }
+      const mid = granularResult.associate_internal.filter(a => a.seniority === 'Mid-Level');
+      if (mid.length > 0) {
+        this.midAssociateInternalData = mid[0];
+      }
+      const senior = granularResult.associate_internal.filter(a => a.seniority === 'Senior');
+      if (senior.length > 0) {
+        this.seniorAssociateInternalData = senior[0];
       }
     }
     if (granularResult.firm_associate) {
@@ -171,8 +184,11 @@ export class GranularRateAnalysisComponent implements OnInit {
         this.seniorAssocFirmRate = this.firmAssociateSeniorityData.senior_rate;
       }
     }
-    if (granularResult.partner_market_internal) {
-      this.partnerMIData = granularResult.partner_market_internal;
+    if (granularResult.partner_market) {
+      this.partnerMarketData = granularResult.partner_market;
+    }
+    if (granularResult.partner_internal) {
+      this.partnerInternalData = granularResult.partner_internal;
     }
     if (granularResult.firm_partner) {
       if (granularResult.firm_partner.length > 0) {
@@ -187,30 +203,38 @@ export class GranularRateAnalysisComponent implements OnInit {
   }
 
   goToOverviewPage(): void {
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.benchmark.id]);
+    if (this.loaded) {
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.benchmark.id]);
+    }
   }
 
   goToNamedTKPage(): void {
-    const detailData = {
-      bm: this.benchmark,
-      partnerMarketInternal: this.partnerMIData,
-      associateJuniorMarketInternal: this.juniorAssociateMIData,
-      associateMidMarketInternal: this.midAssociateMIData,
-      associateSeniorMarketInternal: this.seniorAssociateMIData,
-      firmAssociateData: this.firmAssociateSeniorityData,
-      firmPartnerData: this.firmPartnerSeniorityData,
-      firmYear: this.firmYearData,
-      cluster: this.cluster,
-      numTiers: this.numPartnerTiers,
-      peerFirms: this.peerFirms
-    };
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
-    {state:
-      {
-        data: detailData
-      }
-    });
-
+    if (this.loaded) {
+      const detailData = {
+        bm: this.benchmark,
+        partnerMarket: this.partnerMarketData,
+        partnerInternal: this.partnerInternalData,
+        associateJuniorMarket: this.juniorAssociateMarketData,
+        associateMidMarket: this.midAssociateMarketData,
+        associateSeniorMarket: this.seniorAssociateMarketData,
+        associateJuniorInternal: this.juniorAssociateInternalData,
+        associateMidInternal: this.midAssociateInternalData,
+        associateSeniorInternal: this.seniorAssociateInternalData,
+        firmAssociateData: this.firmAssociateSeniorityData,
+        firmPartnerData: this.firmPartnerSeniorityData,
+        firmYear: this.firmYearData,
+        cluster: this.cluster,
+        numTiers: this.numPartnerTiers,
+        panel: this.internalFirms,
+        marketFirms: this.marketAvgFirms
+      };
+      this.router.navigate(['/analytics-ui/rate-benchmarking/view/named/', this.benchmark.id],
+      {state:
+        {
+          data: detailData
+        }
+      });
+    }
   }
 
   export(): void {

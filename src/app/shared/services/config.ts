@@ -58,6 +58,7 @@ export const END_POINTS_URLS = {
   getDiscountsByClientPAs: {url: BASE_URL + 'analytics/getDiscountsByClientPAs', showLoading: true},
   spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
+  getDiversityChartData: {url: BASE_URL + 'analytics/getDiversityChartData', showLoading: true},
   // executive summary
   getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},
   getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
@@ -124,6 +125,8 @@ export const END_POINTS_URLS = {
   getBenchmarkInsight: {url: BASE_URL + 'analytics/getBenchmarkInsight', showLoading: true},
   getRateBMNamedTKData: {url: BASE_URL + 'analytics/getRateBMNamedTKData', showLoading: true},
   getGranularityPageData: {url: BASE_URL + 'analytics/getGranularityPageData', showLoading: true},
+  getPanelFirmData: {url: BASE_URL + 'analytics/getPanelFirmData', showLoading: true},
+  savePanelFirmData: {url: BASE_URL + 'analytics/savePanelFirmData', showLoading: true},
 
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
@@ -198,7 +201,9 @@ export const END_POINTS_URLS = {
   getInsightsSummary: {url: BASE_URL + 'admin/insights/summary', showLoading: false},
   saveClientInsight: {url: BASE_URL + 'admin/uploads/insights', showLoading: true},
   saveBenchmarkMattersConfig: {url: BASE_URL + 'admin/saveBenchmarkMattersConfig', showLoading: true},
-  getAdminRateInsight: {url: BASE_URL + 'admin/getAdminRateInsight', showLoading: true}
+  getAdminRateInsight: {url: BASE_URL + 'admin/getAdminRateInsight', showLoading: true},
+  getPeerFirmData: {url: BASE_URL + 'admin/getPeerFirmData', showLoading: true},
+  saveMarketFirmData: {url: BASE_URL + 'admin/saveMarketFirmData', showLoading: true},
 
 };
 

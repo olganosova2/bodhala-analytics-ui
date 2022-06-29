@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../shared/services/common.service';
 import {Subscription} from 'rxjs';
@@ -16,13 +16,16 @@ import {MatDialog} from '@angular/material/dialog';
 import {SAVINGS_CALCULATOR_CONFIG} from '../shared/services/config';
 import {FirmDiscountsComponent} from './firm-discounts/firm-discounts.component';
 import {IUiAnnotation} from '../shared/components/annotations/model';
+import {DiversityChartsComponent} from 'bodhala-ui-elements';
+
+
 
 @Component({
   selector: 'bd-firm',
   templateUrl: './firm.component.html',
   styleUrls: ['./firm.component.scss']
 })
-export class FirmComponent implements OnInit, OnDestroy {
+export class FirmComponent implements OnInit, AfterViewInit, OnDestroy {
   firmId: string;
   firm: IFirm;
   pageName: string = 'app.client-dashboard.firm-detail';
@@ -39,7 +42,7 @@ export class FirmComponent implements OnInit, OnDestroy {
   @ViewChild(TopTimekeepersComponent) topTKs: TopTimekeepersComponent;
   @ViewChild(TopMattersComponent) topMatters: TopMattersComponent;
   @ViewChild(SpendByMonthComponent) spendByMonth: SpendByMonthComponent;
-  @ViewChild(DiversityComponent) diversity: DiversityComponent;
+  @ViewChild(DiversityChartsComponent) diversityCharts: DiversityChartsComponent;
   @ViewChild(UtbmsComponent) utbms: UtbmsComponent;
   @ViewChild(ScoreTrendComponent) scoreAndTrend: ScoreTrendComponent;
 
@@ -60,6 +63,13 @@ export class FirmComponent implements OnInit, OnDestroy {
       this.firmId = params.get('id');
       this.loadFirm();
       this.getFirmData();
+    });
+  }
+  ngAfterViewInit() {
+    setTimeout(() => {
+      if (this.diversityCharts && this.userService.hasEntitlement('data.analytics.diversity')) {
+        this.diversityCharts.load();
+      }
     });
   }
 
@@ -92,9 +102,7 @@ export class FirmComponent implements OnInit, OnDestroy {
     this.topMatters.getMatters();
     this.spendByMonth.getSpendByMonth();
     this.scoreAndTrend.ngOnInit();
-    if (this.diversity && this.userService.hasEntitlement('data.analytics.diversity')) {
-      this.diversity.getDiversity();
-    }
+
     if (this.utbms && this.userService.hasEntitlement('analytics.utbms.codes')) {
       this.utbms.getUTBMS();
     }

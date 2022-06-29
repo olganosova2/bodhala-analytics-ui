@@ -111,13 +111,13 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       if (this.selectedFirmData.blended_rate > this.marketAverageData.blended_rate_hi) {
         this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_hi;
         this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.blended_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.blended_rate;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.blended_rate_hi;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.blended_rate_lo;
       } else if (this.selectedFirmData.blended_rate < this.marketAverageData.blended_rate_lo) {
         this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_lo;
         this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.blended_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.blended_rate;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.blended_rate_lo;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.blended_rate_hi;
       } else {
         this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_lo;
         this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_hi;
@@ -128,7 +128,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       this.marketRateUpperDeltaPct *= 100;
 
       this.internalRateDelta = this.selectedFirmData.blended_rate - this.internalData.avg_blended_rate;
-      this.internalRateDeltaPct = this.internalRateDelta / this.selectedFirmData.blended_rate;
+      this.internalRateDeltaPct = this.internalRateDelta / this.internalData.avg_blended_rate;
       this.internalRateDeltaPct *= 100;
     } else if (this.rateType === 'Partner') {
 
@@ -162,13 +162,13 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       if (this.selectedFirmData.avg_partner_rate > this.marketAverageData.partner_hi) {
         this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_hi;
         this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.avg_partner_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.avg_partner_rate;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.partner_hi;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.partner_lo;
       } else if (this.selectedFirmData.avg_partner_rate < this.marketAverageData.partner_lo) {
         this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_lo;
         this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.avg_partner_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.avg_partner_rate;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.partner_lo;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.partner_hi;
       } else {
         this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_lo;
         this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_hi;
@@ -178,7 +178,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       this.marketRateUpperDeltaPct *= 100;
 
       this.internalRateDelta = this.selectedFirmData.avg_partner_rate - this.internalData.avg_partner_rate;
-      this.internalRateDeltaPct = this.internalRateDelta / this.selectedFirmData.avg_partner_rate;
+      this.internalRateDeltaPct = this.internalRateDelta / this.internalData.avg_partner_rate;
       this.internalRateDeltaPct *= 100;
 
     } else if (this.rateType === 'Associate') {
@@ -213,13 +213,13 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       if (this.selectedFirmData.avg_associate_rate > this.marketAverageData.associate_hi) {
         this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_hi;
         this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.avg_associate_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.avg_associate_rate;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.associate_hi;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.associate_lo;
       } else if (this.selectedFirmData.avg_associate_rate < this.marketAverageData.associate_lo) {
         this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_lo;
         this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.selectedFirmData.avg_associate_rate;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.selectedFirmData.avg_associate_rate;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.associate_lo;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.associate_hi;
       } else {
         this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_lo;
         this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_hi;
@@ -229,7 +229,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       this.marketRateUpperDeltaPct *= 100;
 
       this.internalRateDelta = this.selectedFirmData.avg_associate_rate - this.internalData.avg_associate_rate;
-      this.internalRateDeltaPct = this.internalRateDelta / this.selectedFirmData.avg_associate_rate;
+      this.internalRateDeltaPct = this.internalRateDelta / this.internalData.avg_associate_rate;
       this.internalRateDeltaPct *= 100;
 
     }
