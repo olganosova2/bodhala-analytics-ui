@@ -66,7 +66,7 @@ definitions:
                 - infra/helm/values.yaml
               SET:
                 - "image.digest=$(cat image_digest.txt)"
-                - "ingress.hosts[0].host=eks-${NAMESPACE}.bodhala.com"
+                - "ingress.hosts[0].host=${NAMESPACE}.bodhala.com"
               WAIT: "true"
 
 pipelines:
