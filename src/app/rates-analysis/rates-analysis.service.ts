@@ -265,7 +265,7 @@ export class RatesAnalysisService {
     return projectedImpact;
   }
 
-  calculateHistoricalCostImpact(firmData, marketAverageData) {
+  calculateHistoricalCostImpact(benchmark) {
     const result = {
       blended_rate_lower_diff: 0,
       blended_rate_upper_diff: 0,
@@ -274,11 +274,11 @@ export class RatesAnalysisService {
       cost_impact: '',
       blended_within_range: false
     };
-    if (firmData.blended_rate >= marketAverageData.blended_rate_hi && firmData.blended_rate >= marketAverageData.blended_rate_lo) {
-      result.blended_rate_lower_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_hi);
-      result.blended_rate_upper_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_lo);
-      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / firmData.total_atty_billed;
-      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / firmData.total_atty_billed;
+    if (benchmark.firm_blended_rate >= benchmark.blended_market_hi && benchmark.firm_blended_rate >= benchmark.blended_market_lo) {
+      result.blended_rate_lower_diff = benchmark.firm_total_atty_billed - (benchmark.firm_total_atty_hours * benchmark.blended_market_hi);
+      result.blended_rate_upper_diff = benchmark.firm_total_atty_billed - (benchmark.firm_total_atty_hours * benchmark.blended_market_lo);
+      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / benchmark.firm_total_atty_billed;
+      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / benchmark.firm_total_atty_billed;
       result.blended_within_range = false;
       if (result.blended_rate_upper_diff_pct >= 0.2) {
         result.cost_impact = 'HIGH';
@@ -289,11 +289,11 @@ export class RatesAnalysisService {
       } else {
         result.cost_impact = 'NONE';
       }
-    } else if (firmData.blended_rate >= marketAverageData.blended_rate_lo && firmData.blended_rate <= marketAverageData.blended_rate_hi) {
-      result.blended_rate_lower_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_lo);
-      result.blended_rate_upper_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_hi);
-      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / firmData.total_atty_billed;
-      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / firmData.total_atty_billed;
+    } else if (benchmark.firm_blended_rate >= benchmark.blended_market_lo && benchmark.firm_blended_rate <= benchmark.blended_market_hi) {
+      result.blended_rate_lower_diff = benchmark.firm_total_atty_billed - (benchmark.firm_total_atty_hours * benchmark.blended_market_lo);
+      result.blended_rate_upper_diff = benchmark.firm_total_atty_billed - (benchmark.firm_total_atty_hours * benchmark.blended_market_hi);
+      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / benchmark.firm_total_atty_billed;
+      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / benchmark.firm_total_atty_billed;
       result.blended_within_range = true;
       if (result.blended_rate_lower_diff_pct >= 0.2) {
         result.cost_impact = 'HIGH';
@@ -304,11 +304,11 @@ export class RatesAnalysisService {
       } else {
         result.cost_impact = 'NONE';
       }
-    } else if (firmData.blended_rate <= marketAverageData.blended_rate_lo && firmData.blended_rate <= marketAverageData.blended_rate_hi) {
-      result.blended_rate_lower_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_lo);
-      result.blended_rate_upper_diff = firmData.total_atty_billed - (firmData.total_atty_hours * marketAverageData.blended_rate_hi);
-      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / firmData.total_atty_billed;
-      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / firmData.total_atty_billed;
+    } else if (benchmark.firm_blended_rate <= benchmark.blended_market_lo && benchmark.firm_blended_rate <= benchmark.blended_market_hi) {
+      result.blended_rate_lower_diff = benchmark.firm_total_atty_billed - (benchmark.firm_total_atty_hours * benchmark.blended_market_lo);
+      result.blended_rate_upper_diff = benchmark.firm_total_atty_billed - (benchmark.firm_total_atty_hours * benchmark.blended_market_hi);
+      result.blended_rate_lower_diff_pct = result.blended_rate_lower_diff / benchmark.firm_total_atty_billed;
+      result.blended_rate_upper_diff_pct = result.blended_rate_upper_diff / benchmark.firm_total_atty_billed;
       result.blended_within_range = false;
       result.cost_impact = 'POSITIVE';
     }
