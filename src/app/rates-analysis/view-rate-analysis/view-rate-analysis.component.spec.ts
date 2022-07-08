@@ -47,6 +47,21 @@ describe('ViewRateAnalysisComponent', () => {
     modified_on: null,
     market_avg_firms: MOCK_BENCHMARK.benchmark.market_avg_firms,
     internal_firms: MOCK_BENCHMARK.benchmark.internal_firms,
+    blended_market_hi: 1000,
+    blended_market_lo: 900,
+    blended_market_internal: 950,
+    blended_market_num_firms: 4,
+    blended_internal_num_firms: 4,
+    partner_market_lo: 1200,
+    partner_market_hi: 1300,
+    partner_internal: 1100,
+    partner_market_num_firms: 5,
+    partner_internal_num_firms: 5,
+    associate_market_lo: 800,
+    associate_market_hi: 900,
+    associate_internal: 850,
+    associate_market_num_firms: 4,
+    associate_internal_num_firms: 4
   };
 
   beforeEach(async(() => {

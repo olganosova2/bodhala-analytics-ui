@@ -119,7 +119,7 @@
     </div>
 
     <div>
-      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="partnerInternalData" [marketAverageData]="partnerMarketAverageData"
+      <bd-rate-analysis-chart *ngIf="loaded" [benchmark]="benchmark" [selectedFirm]="firmName" [selectedFirmData]="firmYearData"
                               [rateType]="'Partner'"></bd-rate-analysis-chart>
     </div>
   </div>
@@ -130,7 +130,7 @@
     </div>
 
     <div>
-      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="associateInternalData" [marketAverageData]="associateMarketAverageData"
+      <bd-rate-analysis-chart *ngIf="loaded" [benchmark]="benchmark" [selectedFirm]="firmName" [selectedFirmData]="firmYearData"
                               [rateType]="'Associate'"></bd-rate-analysis-chart>
     </div>
   </div>
@@ -140,7 +140,7 @@
       <span class="header-span">Historical Blended Rate</span>
     </div>
     <div>
-      <bd-rate-analysis-chart *ngIf="loaded" [selectedFirm]="firmName" [selectedFirmData]="firmYearData" [internalData]="blendedInternalData" [marketAverageData]="blendedMarketAverageData"
+      <bd-rate-analysis-chart *ngIf="loaded" [benchmark]="benchmark" [selectedFirm]="firmName" [selectedFirmData]="firmYearData"
                               [rateType]="'Blended'"></bd-rate-analysis-chart>
     </div>
   </div>

@@ -124,7 +124,6 @@ export class GranularRateAnalysisComponent implements OnInit {
         if (rateAnalysisData.result.firm_data) {
           if (rateAnalysisData.result.firm_data.length > 0) {
             this.firmYearData = rateAnalysisData.result.firm_data[0];
-            this.firmYearData = this.firmYearData[0];
             this.firmName = this.firmYearData.name;
             this.totalHours = this.firmYearData.total_atty_hours;
           }
@@ -145,34 +144,79 @@ export class GranularRateAnalysisComponent implements OnInit {
   }
 
   setData(granularResult: any): void {
-    if (granularResult.associate_market) {
-      const junior = granularResult.associate_market.filter(a => a.seniority === 'Junior');
-      if (junior.length > 0) {
-        this.juniorAssociateMarketData = junior[0];
-      }
-      const mid = granularResult.associate_market.filter(a => a.seniority === 'Mid-Level');
-      if (mid.length > 0) {
-        this.midAssociateMarketData = mid[0];
-      }
-      const senior = granularResult.associate_market.filter(a => a.seniority === 'Senior');
-      if (senior.length > 0) {
-        this.seniorAssociateMarketData = senior[0];
-      }
+    if (granularResult.market_internal) {
+      this.juniorAssociateMarketData = {
+        market_associate_rate_hi: granularResult.market_internal.junior_associate_market_hi,
+        market_associate_rate_lo: granularResult.market_internal.junior_associate_market_lo,
+        market_num_firms: granularResult.market_internal.junior_associate_market_num_firms
+      };
+      this.midAssociateMarketData = {
+        market_associate_rate_hi: granularResult.market_internal.mid_associate_market_hi,
+        market_associate_rate_lo: granularResult.market_internal.mid_associate_market_lo,
+        market_num_firms: granularResult.market_internal.mid_associate_market_num_firms
+      };
+      this.seniorAssociateMarketData = {
+        market_associate_rate_hi: granularResult.market_internal.senior_associate_market_hi,
+        market_associate_rate_lo: granularResult.market_internal.senior_associate_market_lo,
+        market_num_firms: granularResult.market_internal.senior_associate_market_num_firms
+      };
+      this.juniorAssociateInternalData = {
+        internal_num_firms: granularResult.market_internal.junior_associate_internal_num_firms,
+        internal_avg_associate_rate: granularResult.market_internal.junior_associate_internal
+      };
+      this.midAssociateInternalData = {
+        internal_num_firms: granularResult.market_internal.mid_associate_internal_num_firms,
+        internal_avg_associate_rate: granularResult.market_internal.mid_associate_internal
+      };
+      this.seniorAssociateInternalData = {
+        internal_num_firms: granularResult.market_internal.senior_associate_internal_num_firms,
+        internal_avg_associate_rate: granularResult.market_internal.senior_associate_internal
+      };
+
+      this.partnerInternalData = [];
+      this.partnerMarketData = [];
+
+      const juniorPartnerMarket = {
+        market_partner_rate_hi: granularResult.market_internal.junior_partner_market_hi,
+        market_partner_rate_lo: granularResult.market_internal.junior_partner_market_lo,
+        market_num_firms: granularResult.market_internal.junior_partner_market_num_firms,
+        seniority: 'Junior'
+      };
+      const midPartnerMarket = {
+        market_partner_rate_hi: granularResult.market_internal.mid_partner_market_hi,
+        market_partner_rate_lo: granularResult.market_internal.mid_partner_market_lo,
+        market_num_firms: granularResult.market_internal.mid_partner_market_num_firms,
+        seniority: 'Mid-Level'
+      };
+      const seniorPartnerMarket = {
+        market_partner_rate_hi: granularResult.market_internal.senior_partner_market_hi,
+        market_partner_rate_lo: granularResult.market_internal.senior_partner_market_lo,
+        market_num_firms: granularResult.market_internal.senior_partner_market_num_firms,
+        seniority: 'Senior'
+      };
+      const juniorPartnerInternal = {
+        internal_avg_partner_rate: granularResult.market_internal.junior_partner_internal,
+        internal_num_firms: granularResult.market_internal.junior_partner_internal_num_firms,
+        seniority: 'Junior'
+      };
+      const midPartnerInternal = {
+        internal_avg_partner_rate: granularResult.market_internal.mid_partner_internal,
+        internal_num_firms: granularResult.market_internal.mid_partner_internal_num_firms,
+        seniority: 'Mid-Level'
+      };
+      const seniorPartnerInternal = {
+        internal_avg_partner_rate: granularResult.market_internal.senior_partner_internal,
+        internal_num_firms: granularResult.market_internal.senior_partner_internal_num_firms,
+        seniority: 'Senior'
+      };
+      this.partnerMarketData.push(juniorPartnerMarket);
+      this.partnerMarketData.push(midPartnerMarket);
+      this.partnerMarketData.push(seniorPartnerMarket);
+      this.partnerInternalData.push(juniorPartnerInternal);
+      this.partnerInternalData.push(midPartnerInternal);
+      this.partnerInternalData.push(seniorPartnerInternal);
     }
-    if (granularResult.associate_internal) {
-      const junior = granularResult.associate_internal.filter(a => a.seniority === 'Junior');
-      if (junior.length > 0) {
-        this.juniorAssociateInternalData = junior[0];
-      }
-      const mid = granularResult.associate_internal.filter(a => a.seniority === 'Mid-Level');
-      if (mid.length > 0) {
-        this.midAssociateInternalData = mid[0];
-      }
-      const senior = granularResult.associate_internal.filter(a => a.seniority === 'Senior');
-      if (senior.length > 0) {
-        this.seniorAssociateInternalData = senior[0];
-      }
-    }
+
     if (granularResult.firm_associate) {
       if (granularResult.firm_associate.length > 0) {
         this.firmAssociateSeniorityData = granularResult.firm_associate[0];
@@ -183,12 +227,6 @@ export class GranularRateAnalysisComponent implements OnInit {
         this.seniorAssocFirmHours = this.firmAssociateSeniorityData.total_senior_assoc_hours;
         this.seniorAssocFirmRate = this.firmAssociateSeniorityData.senior_rate;
       }
-    }
-    if (granularResult.partner_market) {
-      this.partnerMarketData = granularResult.partner_market;
-    }
-    if (granularResult.partner_internal) {
-      this.partnerInternalData = granularResult.partner_internal;
     }
     if (granularResult.firm_partner) {
       if (granularResult.firm_partner.length > 0) {

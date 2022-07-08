@@ -10,8 +10,7 @@ import { moneyFormatter } from '../../rates-analysis.model';
 export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
   @Input() selectedFirm: string;
   @Input() selectedFirmData: any;
-  @Input() internalData: any;
-  @Input() marketAverageData: any;
+  @Input() benchmark: any;
   @Input() rateType: string;
 
   marketAverageLowerRange: number;
@@ -57,12 +56,30 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    if (this.internalData.num_firms < 3) {
-      this.validInternalBM = false;
-      this.marketAverageHeight = '84px';
-    }
-    if (this.marketAverageData.num_firms < 3) {
-      this.validMarketAverage = false;
+    if (this.rateType === 'Blended') {
+      if (this.benchmark.blended_market_num_firms < 3) {
+        this.validMarketAverage = false;
+      }
+      if (this.benchmark.blended_internal_num_firms < 3) {
+        this.validInternalBM = false;
+        this.marketAverageHeight = '84px';
+      }
+    } else if (this.rateType === 'Associate') {
+      if (this.benchmark.associate_market_num_firms < 3) {
+        this.validMarketAverage = false;
+      }
+      if (this.benchmark.associate_internal_num_firms < 3) {
+        this.validInternalBM = false;
+        this.marketAverageHeight = '84px';
+      }
+    } else if (this.rateType === 'Partner') {
+      if (this.benchmark.partner_market_num_firms < 3) {
+        this.validMarketAverage = false;
+      }
+      if (this.benchmark.partner_internal_num_firms < 3) {
+        this.validInternalBM = false;
+        this.marketAverageHeight = '84px';
+      }
     }
   }
 
@@ -78,80 +95,80 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
 
   calculateChartMetrics(): void {
     if (this.rateType === 'Blended') {
-      if (this.marketAverageData.blended_rate_hi > this.selectedFirmData.blended_rate && this.marketAverageData.blended_rate_hi > this.internalData.avg_blended_rate) {
-        this.highestRate = this.marketAverageData.blended_rate_hi;
-      } else if (this.selectedFirmData.blended_rate > this.marketAverageData.blended_rate_hi && this.selectedFirmData.blended_rate > this.internalData.avg_blended_rate) {
+      if (this.benchmark.blended_market_hi > this.selectedFirmData.blended_rate && this.benchmark.blended_market_hi > this.benchmark.blended_internal) {
+        this.highestRate = this.benchmark.blended_market_hi;
+      } else if (this.selectedFirmData.blended_rate > this.benchmark.blended_market_hi && this.selectedFirmData.blended_rate > this.benchmark.blended_internal) {
         this.highestRate = this.selectedFirmData.blended_rate;
-      } else if (this.internalData.avg_blended_rate > this.selectedFirmData.blended_rate && this.internalData.avg_blended_rate > this.marketAverageData.blended_rate_hi) {
-        this.highestRate = this.internalData.avg_blended_rate;
+      } else if (this.benchmark.blended_internal > this.selectedFirmData.blended_rate && this.benchmark.blended_internal > this.benchmark.blended_market_hi) {
+        this.highestRate = this.benchmark.blended_internal;
       } else {
         // random number - return to
         this.highestRate = this.selectedFirmData.blended_rate;
       }
       this.topBarDollars = this.selectedFirmData.blended_rate;
       this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.blended_rate) + 'px';
-      this.bottomBarDollars = this.internalData.avg_blended_rate;
+      this.bottomBarDollars = this.benchmark.blended_internal;
       this.bottomBarDollarFormatted = moneyFormatter.format(this.bottomBarDollars);
-      this.bottomBarWidth = this.calculateBarWidth(this.internalData.avg_blended_rate) + 'px';
+      this.bottomBarWidth = this.calculateBarWidth(this.benchmark.blended_internal) + 'px';
 
-      const lowerRange = this.calculateBarWidth(this.marketAverageData.blended_rate_lo);
-      const upperRange = this.calculateBarWidth(this.marketAverageData.blended_rate_hi);
+      const lowerRange = this.calculateBarWidth(this.benchmark.blended_market_lo);
+      const upperRange = this.calculateBarWidth(this.benchmark.blended_market_hi);
       const width = upperRange - lowerRange;
       if (width < 65) {
         this.modifyMarketDisplay = true;
       }
-      this.marketAverageLowerRange = this.marketAverageData.blended_rate_lo;
-      this.marketAverageUpperRange =  this.marketAverageData.blended_rate_hi;
-      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketAverageData.blended_rate_lo);
-      this.marketAverageUpperRangeFormatted =  moneyFormatter.format(this.marketAverageData.blended_rate_hi);
+      this.marketAverageLowerRange = this.benchmark.blended_market_lo;
+      this.marketAverageUpperRange =  this.benchmark.blended_market_hi;
+      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.benchmark.blended_market_lo);
+      this.marketAverageUpperRangeFormatted =  moneyFormatter.format(this.benchmark.blended_market_hi);
 
       this.marketAverageLeft = lowerRange + 'px';
       this.marketAverageWidth = width + 'px';
 
-      if (this.selectedFirmData.blended_rate > this.marketAverageData.blended_rate_hi) {
-        this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_hi;
-        this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.blended_rate_hi;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.blended_rate_lo;
-      } else if (this.selectedFirmData.blended_rate < this.marketAverageData.blended_rate_lo) {
-        this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_lo;
-        this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.blended_rate_lo;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.blended_rate_hi;
+      if (this.selectedFirmData.blended_rate > this.benchmark.blended_market_hi) {
+        this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.benchmark.blended_market_hi;
+        this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.benchmark.blended_market_lo;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.benchmark.blended_market_hi;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.benchmark.blended_market_lo;
+      } else if (this.selectedFirmData.blended_rate < this.benchmark.blended_market_lo) {
+        this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.benchmark.blended_market_lo;
+        this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.benchmark.blended_market_hi;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.benchmark.blended_market_lo;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.benchmark.blended_market_hi;
       } else {
-        this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_lo;
-        this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.marketAverageData.blended_rate_hi;
+        this.marketRateLowerDelta = this.selectedFirmData.blended_rate - this.benchmark.blended_market_lo;
+        this.marketRateUpperDelta  = this.selectedFirmData.blended_rate - this.benchmark.blended_market_hi;
         this.withinRange = true;
       }
 
       this.marketRateLowerDeltaPct *= 100;
       this.marketRateUpperDeltaPct *= 100;
 
-      this.internalRateDelta = this.selectedFirmData.blended_rate - this.internalData.avg_blended_rate;
-      this.internalRateDeltaPct = this.internalRateDelta / this.internalData.avg_blended_rate;
+      this.internalRateDelta = this.selectedFirmData.blended_rate - this.benchmark.blended_internal;
+      this.internalRateDeltaPct = this.internalRateDelta / this.benchmark.blended_internal;
       this.internalRateDeltaPct *= 100;
     } else if (this.rateType === 'Partner') {
 
-      if (this.marketAverageData.partner_hi > this.selectedFirmData.avg_partner_rate && this.marketAverageData.partner_hi > this.internalData.avg_partner_rate) {
-        this.highestRate = this.marketAverageData.partner_hi;
-      } else if (this.selectedFirmData.avg_partner_rate > this.marketAverageData.partner_hi && this.selectedFirmData.avg_partner_rate > this.internalData.avg_partner_rate) {
+      if (this.benchmark.partner_market_hi > this.selectedFirmData.avg_partner_rate && this.benchmark.partner_market_hi > this.benchmark.partner_internal) {
+        this.highestRate = this.benchmark.partner_market_hi;
+      } else if (this.selectedFirmData.avg_partner_rate > this.benchmark.partner_market_hi && this.selectedFirmData.avg_partner_rate > this.benchmark.partner_internal) {
         this.highestRate = this.selectedFirmData.avg_partner_rate;
-      } else if (this.internalData.avg_partner_rate > this.selectedFirmData.avg_partner_rate && this.internalData.avg_partner_rate > this.marketAverageData.partner_hi) {
-        this.highestRate = this.internalData.avg_partner_rate;
+      } else if (this.benchmark.partner_internal > this.selectedFirmData.avg_partner_rate && this.benchmark.partner_internal > this.benchmark.partner_market_hi) {
+        this.highestRate = this.benchmark.partner_internal;
       } else {
         this.highestRate = this.selectedFirmData.avg_partner_rate;
       }
       this.topBarDollars = this.selectedFirmData.avg_partner_rate;
       this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.avg_partner_rate) + 'px';
-      this.bottomBarDollars = this.internalData.avg_partner_rate;
-      this.bottomBarWidth = this.calculateBarWidth(this.internalData.avg_partner_rate) + 'px';
+      this.bottomBarDollars = this.benchmark.partner_internal;
+      this.bottomBarWidth = this.calculateBarWidth(this.benchmark.partner_internal) + 'px';
 
-      this.marketAverageLowerRange = this.marketAverageData.partner_lo;
-      this.marketAverageUpperRange = this.marketAverageData.partner_hi;
-      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketAverageData.partner_lo);
-      this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.marketAverageData.partner_hi);
-      const lowerRange = this.calculateBarWidth(this.marketAverageData.partner_lo);
-      const upperRange = this.calculateBarWidth(this.marketAverageData.partner_hi);
+      this.marketAverageLowerRange = this.benchmark.partner_market_lo;
+      this.marketAverageUpperRange = this.benchmark.partner_market_hi;
+      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.benchmark.partner_market_lo);
+      this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.benchmark.partner_market_hi);
+      const lowerRange = this.calculateBarWidth(this.benchmark.partner_market_lo);
+      const upperRange = this.calculateBarWidth(this.benchmark.partner_market_hi);
       const width = upperRange - lowerRange;
       if (width < 65) {
         this.modifyMarketDisplay = true;
@@ -159,50 +176,50 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       this.marketAverageLeft = lowerRange + 'px';
       this.marketAverageWidth = width + 'px';
 
-      if (this.selectedFirmData.avg_partner_rate > this.marketAverageData.partner_hi) {
-        this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_hi;
-        this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.partner_hi;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.partner_lo;
-      } else if (this.selectedFirmData.avg_partner_rate < this.marketAverageData.partner_lo) {
-        this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_lo;
-        this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.partner_lo;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.partner_hi;
+      if (this.selectedFirmData.avg_partner_rate > this.benchmark.partner_market_hi) {
+        this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.benchmark.partner_market_hi;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.benchmark.partner_market_lo;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.benchmark.partner_market_hi;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.benchmark.partner_market_lo;
+      } else if (this.selectedFirmData.avg_partner_rate < this.benchmark.partner_market_lo) {
+        this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.benchmark.partner_market_lo;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.benchmark.partner_market_hi;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.benchmark.partner_market_lo;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.benchmark.partner_market_hi;
       } else {
-        this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_lo;
-        this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.marketAverageData.partner_hi;
+        this.marketRateLowerDelta = this.selectedFirmData.avg_partner_rate - this.benchmark.partner_market_lo;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_partner_rate - this.benchmark.partner_market_hi;
         this.withinRange = true;
       }
       this.marketRateLowerDeltaPct *= 100;
       this.marketRateUpperDeltaPct *= 100;
 
-      this.internalRateDelta = this.selectedFirmData.avg_partner_rate - this.internalData.avg_partner_rate;
-      this.internalRateDeltaPct = this.internalRateDelta / this.internalData.avg_partner_rate;
+      this.internalRateDelta = this.selectedFirmData.avg_partner_rate - this.benchmark.partner_internal;
+      this.internalRateDeltaPct = this.internalRateDelta / this.benchmark.partner_internal;
       this.internalRateDeltaPct *= 100;
 
     } else if (this.rateType === 'Associate') {
 
-      if (this.marketAverageData.associate_hi > this.selectedFirmData.avg_associate_rate && this.marketAverageData.associate_hi > this.internalData.avg_associate_rate) {
-        this.highestRate = this.marketAverageData.associate_hi;
-      } else if (this.selectedFirmData.avg_associate_rate > this.marketAverageData.associate_hi && this.selectedFirmData.avg_associate_rate > this.internalData.avg_associate_rate) {
+      if (this.benchmark.associate_market_hi > this.selectedFirmData.avg_associate_rate && this.benchmark.associate_market_hi > this.benchmark.associate_internal) {
+        this.highestRate = this.benchmark.associate_market_hi;
+      } else if (this.selectedFirmData.avg_associate_rate > this.benchmark.associate_market_hi && this.selectedFirmData.avg_associate_rate > this.benchmark.associate_internal) {
         this.highestRate = this.selectedFirmData.avg_associate_rate;
-      } else if (this.internalData.avg_associate_rate > this.selectedFirmData.avg_associate_rate && this.internalData.avg_associate_rate > this.marketAverageData.associate_hi) {
-        this.highestRate = this.internalData.avg_associate_rate;
+      } else if (this.benchmark.associate_internal > this.selectedFirmData.avg_associate_rate && this.benchmark.associate_internal > this.benchmark.associate_market_hi) {
+        this.highestRate = this.benchmark.associate_internal;
       } else {
         this.highestRate = this.selectedFirmData.avg_associate_rate;
       }
       this.topBarDollars = this.selectedFirmData.avg_associate_rate;
       this.topBarWidth = this.calculateBarWidth(this.selectedFirmData.avg_associate_rate) + 'px';
-      this.bottomBarDollars = this.internalData.avg_associate_rate;
-      this.bottomBarWidth = this.calculateBarWidth(this.internalData.avg_associate_rate) + 'px';
+      this.bottomBarDollars = this.benchmark.associate_internal;
+      this.bottomBarWidth = this.calculateBarWidth(this.benchmark.associate_internal) + 'px';
 
-      this.marketAverageLowerRange = this.marketAverageData.associate_lo;
-      this.marketAverageUpperRange = this.marketAverageData.associate_hi;
-      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.marketAverageData.associate_lo);
-      this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.marketAverageData.associate_hi);
-      const lowerRange = this.calculateBarWidth(this.marketAverageData.associate_lo);
-      const upperRange = this.calculateBarWidth(this.marketAverageData.associate_hi);
+      this.marketAverageLowerRange = this.benchmark.associate_market_lo;
+      this.marketAverageUpperRange = this.benchmark.associate_market_hi;
+      this.marketAverageLowerRangeFormatted = moneyFormatter.format(this.benchmark.associate_market_lo);
+      this.marketAverageUpperRangeFormatted = moneyFormatter.format(this.benchmark.associate_market_hi);
+      const lowerRange = this.calculateBarWidth(this.benchmark.associate_market_lo);
+      const upperRange = this.calculateBarWidth(this.benchmark.associate_market_hi);
       const width = upperRange - lowerRange;
       if (width < 65) {
         this.modifyMarketDisplay = true;
@@ -210,26 +227,26 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       this.marketAverageLeft = lowerRange + 'px';
       this.marketAverageWidth = width + 'px';
 
-      if (this.selectedFirmData.avg_associate_rate > this.marketAverageData.associate_hi) {
-        this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_hi;
-        this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_lo;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.associate_hi;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.associate_lo;
-      } else if (this.selectedFirmData.avg_associate_rate < this.marketAverageData.associate_lo) {
-        this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_lo;
-        this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_hi;
-        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.marketAverageData.associate_lo;
-        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.marketAverageData.associate_hi;
+      if (this.selectedFirmData.avg_associate_rate > this.benchmark.associate_market_hi) {
+        this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.benchmark.associate_market_hi;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.benchmark.associate_market_lo;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.benchmark.associate_market_hi;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.benchmark.associate_market_lo;
+      } else if (this.selectedFirmData.avg_associate_rate < this.benchmark.associate_market_lo) {
+        this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.benchmark.associate_market_lo;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.benchmark.associate_market_hi;
+        this.marketRateLowerDeltaPct = this.marketRateLowerDelta / this.benchmark.associate_market_lo;
+        this.marketRateUpperDeltaPct = this.marketRateUpperDelta / this.benchmark.associate_market_hi;
       } else {
-        this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_lo;
-        this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.marketAverageData.associate_hi;
+        this.marketRateLowerDelta = this.selectedFirmData.avg_associate_rate - this.benchmark.associate_market_lo;
+        this.marketRateUpperDelta = this.selectedFirmData.avg_associate_rate - this.benchmark.associate_market_hi;
         this.withinRange = true;
       }
       this.marketRateLowerDeltaPct *= 100;
       this.marketRateUpperDeltaPct *= 100;
 
-      this.internalRateDelta = this.selectedFirmData.avg_associate_rate - this.internalData.avg_associate_rate;
-      this.internalRateDeltaPct = this.internalRateDelta / this.internalData.avg_associate_rate;
+      this.internalRateDelta = this.selectedFirmData.avg_associate_rate - this.benchmark.associate_internal;
+      this.internalRateDeltaPct = this.internalRateDelta / this.benchmark.associate_internal;
       this.internalRateDeltaPct *= 100;
 
     }

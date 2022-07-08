@@ -281,61 +281,63 @@ export class NamedTkAnalysisComponent implements OnInit {
         if (!data.result) {
           return;
         }
-        if (data.result.partner_market) {
-          this.juniorPartnerMarketData = data.result.partner_market.filter(p => p.seniority === 'Junior');
-          if (this.juniorPartnerMarketData.length > 0) {
-            this.juniorPartnerMarketData = this.juniorPartnerMarketData[0];
-          }
-          this.midPartnerMarketData = data.result.partner_market.filter(p => p.seniority === 'Mid-Level');
-          if (this.midPartnerMarketData.length > 0) {
-            this.midPartnerMarketData = this.midPartnerMarketData[0];
-          }
-          this.seniorPartnerMarketData = data.result.partner_market.filter(p => p.seniority === 'Senior');
-          if (this.seniorPartnerMarketData.length > 0) {
-            this.seniorPartnerMarketData = this.seniorPartnerMarketData[0];
-          }
-        }
-        if (data.result.partner_internal) {
-          this.juniorPartnerInternalData = data.result.partner_internal.filter(p => p.seniority === 'Junior');
-          if (this.juniorPartnerInternalData.length > 0) {
-            this.juniorPartnerInternalData = this.juniorPartnerInternalData[0];
-          }
-          this.midPartnerInternalData = data.result.partner_internal.filter(p => p.seniority === 'Mid-Level');
-          if (this.midPartnerInternalData.length > 0) {
-            this.midPartnerInternalData = this.midPartnerInternalData[0];
-          }
-          this.seniorPartnerInternalData = data.result.partner_internal.filter(p => p.seniority === 'Senior');
-          if (this.seniorPartnerInternalData.length > 0) {
-            this.seniorPartnerInternalData = this.seniorPartnerInternalData[0];
-          }
-        }
-        if (data.result.associate_market) {
-          this.juniorAssociateMarketData = data.result.associate_market.filter(p => p.seniority === 'Junior');
-          if (this.juniorAssociateMarketData.length > 0) {
-            this.juniorAssociateMarketData = this.juniorAssociateMarketData[0];
-          }
-          this.midAssociateMarketData = data.result.associate_market.filter(p => p.seniority === 'Mid-Level');
-          if (this.midAssociateMarketData.length > 0) {
-            this.midAssociateMarketData = this.midAssociateMarketData[0];
-          }
-          this.seniorAssociateMarketData = data.result.associate_market.filter(p => p.seniority === 'Senior');
-          if (this.seniorAssociateMarketData.length > 0) {
-            this.seniorAssociateMarketData = this.seniorAssociateMarketData[0];
-          }
-        }
-        if (data.result.associate_internal) {
-          this.juniorAssociateInternalData = data.result.associate_internal.filter(p => p.seniority === 'Junior');
-          if (this.juniorAssociateInternalData.length > 0) {
-            this.juniorAssociateInternalData = this.juniorAssociateInternalData[0];
-          }
-          this.midAssociateInternalData = data.result.associate_internal.filter(p => p.seniority === 'Mid-Level');
-          if (this.midAssociateInternalData.length > 0) {
-            this.midAssociateInternalData = this.midAssociateInternalData[0];
-          }
-          this.seniorAssociateInternalData = data.result.associate_internal.filter(p => p.seniority === 'Senior');
-          if (this.seniorAssociateInternalData.length > 0) {
-            this.seniorAssociateInternalData = this.seniorAssociateInternalData[0];
-          }
+
+        if (data.result.market_internal) {
+          this.juniorAssociateMarketData = {
+            market_associate_rate_hi: data.result.market_internal.junior_associate_market_hi,
+            market_associate_rate_lo: data.result.market_internal.junior_associate_market_lo,
+            market_num_firms: data.result.market_internal.junior_associate_market_num_firms
+          };
+          this.midAssociateMarketData = {
+            market_associate_rate_hi: data.result.market_internal.mid_associate_market_hi,
+            market_associate_rate_lo: data.result.market_internal.mid_associate_market_lo,
+            market_num_firms: data.result.market_internal.mid_associate_market_num_firms
+          };
+          this.seniorAssociateMarketData = {
+            market_associate_rate_hi: data.result.market_internal.senior_associate_market_hi,
+            market_associate_rate_lo: data.result.market_internal.senior_associate_market_lo,
+            market_num_firms: data.result.market_internal.senior_associate_market_num_firms
+          };
+          this.juniorAssociateInternalData = {
+            internal_num_firms: data.result.market_internal.junior_associate_internal_num_firms,
+            internal_avg_associate_rate: data.result.market_internal.junior_associate_internal
+          };
+          this.midAssociateInternalData = {
+            internal_num_firms: data.result.market_internal.mid_associate_internal_num_firms,
+            internal_avg_associate_rate: data.result.market_internal.mid_associate_internal
+          };
+          this.seniorAssociateInternalData = {
+            internal_num_firms: data.result.market_internal.senior_associate_internal_num_firms,
+            internal_avg_associate_rate: data.result.market_internal.senior_associate_internal
+          };
+
+          this.juniorPartnerMarketData = {
+            market_partner_rate_hi: data.result.market_internal.junior_partner_market_hi,
+            market_partner_rate_lo: data.result.market_internal.junior_partner_market_lo,
+            market_num_firms: data.result.market_internal.junior_partner_market_num_firms
+          };
+          this.midPartnerMarketData = {
+            market_partner_rate_hi: data.result.market_internal.mid_partner_market_hi,
+            market_partner_rate_lo: data.result.market_internal.mid_partner_market_lo,
+            market_num_firms: data.result.market_internal.mid_partner_market_num_firms
+          };
+          this.seniorPartnerMarketData = {
+            market_partner_rate_hi: data.result.market_internal.senior_partner_market_hi,
+            market_partner_rate_lo: data.result.market_internal.senior_partner_market_lo,
+            market_num_firms: data.result.market_internal.senior_partner_market_num_firms
+          };
+          this.juniorPartnerInternalData = {
+            internal_avg_partner_rate: data.result.market_internal.junior_partner_internal,
+            internal_num_firms: data.result.market_internal.junior_partner_internal_num_firms
+          };
+          this.midPartnerInternalData = {
+            internal_avg_partner_rate: data.result.market_internal.mid_partner_internal,
+            internal_num_firms: data.result.market_internal.mid_partner_internal_num_firms
+          };
+          this.seniorPartnerInternalData = {
+            internal_avg_partner_rate: data.result.market_internal.senior_partner_internal,
+            internal_num_firms: data.result.market_internal.senior_partner_internal_num_firms
+          };
         }
         if (data.result.firm_partner) {
           if (data.result.firm_partner.length > 0) {

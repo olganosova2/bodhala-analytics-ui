@@ -132,40 +132,10 @@ export class ViewRateAnalysisComponent implements OnInit {
 
   processData(data): void {
     if (data.result) {
-      if (data.result.partner_market_average) {
-        if (data.result.partner_market_average.length > 0) {
-          this.partnerMarketAverageData = data.result.partner_market_average[0];
-        }
-      }
-      if (data.result.associate_market_average) {
-        if (data.result.associate_market_average.length > 0) {
-          this.associateMarketAverageData = data.result.associate_market_average[0];
-        }
-      }
-      if (data.result.blended_market_average) {
-        if (data.result.blended_market_average.length > 0) {
-          this.blendedMarketAverageData = data.result.blended_market_average[0];
-        }
-      }
-      if (data.result.partner_internal_data) {
-        if (data.result.partner_internal_data.length > 0) {
-          this.partnerInternalData = data.result.partner_internal_data[0];
-        }
-      }
-      if (data.result.associate_internal_data) {
-        if (data.result.associate_internal_data.length > 0) {
-          this.associateInternalData = data.result.associate_internal_data[0];
-        }
-      }
-      if (data.result.blended_internal_data) {
-        if (data.result.blended_internal_data.length > 0) {
-          this.blendedInternalData = data.result.blended_internal_data[0];
-        }
-      }
       if (data.result.firm_data) {
         if (data.result.firm_data.length > 0) {
           this.firmYearData = data.result.firm_data[0];
-          this.firmYearData = this.firmYearData[0];
+          this.firmYearData.name = this.firmName;
         }
       }
       if (data.result.num_tiers) {
@@ -175,69 +145,67 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.cluster = data.result.cluster;
       }
       if (data.result.overall_spend) {
-        this.overallSpendData = data.result.overall_spend;
+        if (data.result.overall_spend.length > 0) {
+          this.overallSpendData = data.result.overall_spend[0];
+        }
       }
       if (data.result.overall_pa_spend) {
-        this.overallSpendPAData = data.result.overall_pa_spend;
+        if (data.result.overall_pa_spend.length > 0) {
+          this.overallSpendPAData = data.result.overall_pa_spend[0];
+
+        }
       }
       this.loaded = true;
-      if (data.result.max_year) {
-        const validRange = data.result.valid_range;
-        const firmClassificationRateIncreasePct = {
-          classificationData: null,
-          rateIncreasePct: null,
-          total: null,
-        };
-        if (this.firmYearData) {
-          // if difference is more than equal to 2 we can't calculate total firm spend using the effective rate query
-          this.firmTotalSpend = this.firmYearData.total_billed + this.firmYearData.total_afa;
-        } else {
-          this.firmTotalSpend = firmClassificationRateIncreasePct.total;
-        }
-        this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
 
-        // const projectedCostImpact = this.ratesService.calculateProjectedCostImpact(this.firmClassificationRateIncreaseData, this.cohortClassificationRateIncreaseData);
-        if (this.firmTotalSpend) {
-          const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
-          this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
-          this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
-
-          const projectedCohortSpend = this.firmTotalSpend * (1 + (this.cohortRateIncreasePct / 100));
-          this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
-          this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
-        }
-        const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.firmYearData, this.blendedMarketAverageData);
-        this.costImpactGrade = historicalCostImpact.cost_impact;
-        this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
-        this.costImpactLower = historicalCostImpact.blended_rate_lower_diff;
-        this.costImpactUpper = historicalCostImpact.blended_rate_upper_diff;
-        if (this.costImpactUpper < 0 && this.costImpactLower < 0) {
-          this.costImpactColor = '#3EDB73';
-        } else {
-          this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
-        }
-        if (this.costImpactLower >= 10000) {
-          this.costImpactLower = Math.ceil(this.costImpactLower / 10000) * 10000;
-        } else {
-          this.costImpactLower = Math.ceil(this.costImpactLower / 1000) * 1000;
-        }
-        if (this.costImpactUpper >= 10000) {
-          this.costImpactUpper = Math.ceil(this.costImpactUpper / 10000) * 10000;
-        } else {
-          this.costImpactUpper = Math.ceil(this.costImpactUpper / 1000) * 1000;
-        }
-        if (this.costImpactLower > 0) {
-          this.costImpactLowerFormatted = moneyFormatter.format(this.costImpactLower);
-        } else {
-          this.costImpactLowerFormatted = moneyFormatter.format((this.costImpactLower * -1));
-        }
-        if (this.costImpactUpper > 0) {
-          this.costImpactUpperFormatted = moneyFormatter.format(this.costImpactUpper);
-        } else {
-          this.costImpactUpperFormatted = moneyFormatter.format((this.costImpactUpper * -1));
-        }
-        this.blendedWithinRange = historicalCostImpact.blended_within_range;
+      if (this.firmYearData) {
+        this.firmTotalSpend = this.firmYearData.total_billed + this.firmYearData.total_afa;
+      } else {
+        this.firmTotalSpend = null;
       }
+      this.firmTotalSpendFormatted = moneyFormatter.format(this.firmTotalSpend);
+
+      if (this.firmTotalSpend) {
+        const totalFirmSpend = this.firmTotalSpend * (1 + (this.firmRateIncreasePct / 100));
+        this.firmCostImpact = totalFirmSpend - this.firmTotalSpend;
+        this.firmCostImpactFormatted = moneyFormatter.format(this.firmCostImpact);
+
+        const projectedCohortSpend = this.firmTotalSpend * (1 + (this.cohortRateIncreasePct / 100));
+        this.cohortCostImpact = projectedCohortSpend - this.firmTotalSpend;
+        this.cohortCostImpactFormatted = moneyFormatter.format(this.cohortCostImpact);
+      }
+      const historicalCostImpact = this.ratesService.calculateHistoricalCostImpact(this.benchmark);
+
+      this.costImpactGrade = historicalCostImpact.cost_impact;
+      this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
+      this.costImpactLower = historicalCostImpact.blended_rate_lower_diff;
+      this.costImpactUpper = historicalCostImpact.blended_rate_upper_diff;
+      if (this.costImpactUpper < 0 && this.costImpactLower < 0) {
+        this.costImpactColor = '#3EDB73';
+      } else {
+        this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
+      }
+      if (this.costImpactLower >= 10000) {
+        this.costImpactLower = Math.ceil(this.costImpactLower / 10000) * 10000;
+      } else {
+        this.costImpactLower = Math.ceil(this.costImpactLower / 1000) * 1000;
+      }
+      if (this.costImpactUpper >= 10000) {
+        this.costImpactUpper = Math.ceil(this.costImpactUpper / 10000) * 10000;
+      } else {
+        this.costImpactUpper = Math.ceil(this.costImpactUpper / 1000) * 1000;
+      }
+      if (this.costImpactLower > 0) {
+        this.costImpactLowerFormatted = moneyFormatter.format(this.costImpactLower);
+      } else {
+        this.costImpactLowerFormatted = moneyFormatter.format((this.costImpactLower * -1));
+      }
+      if (this.costImpactUpper > 0) {
+        this.costImpactUpperFormatted = moneyFormatter.format(this.costImpactUpper);
+      } else {
+        this.costImpactUpperFormatted = moneyFormatter.format((this.costImpactUpper * -1));
+      }
+      this.blendedWithinRange = historicalCostImpact.blended_within_range;
+
     }
   }
 
@@ -308,9 +276,9 @@ export class ViewRateAnalysisComponent implements OnInit {
     this.chartTotal = chartInstance;
     let result = [0, 0];
     if (this.overallSpendData) {
-      if (this.overallSpendData.total_spend) {
-        if (this.overallSpendData.total_spend.total > 0) {
-          let pctOfSpend = this.firmTotalSpend / this.overallSpendData.total_spend.total;
+      if (this.overallSpendData.total_billed) {
+        if (this.overallSpendData.total_billed > 0) {
+          let pctOfSpend = this.firmTotalSpend / (this.overallSpendData.total_billed + this.overallSpendData.total_afa);
           setTimeout(() => {
             this.pctOfTotalSpend = percentFormatter.format(pctOfSpend);
             pctOfSpend *= 100;
@@ -328,9 +296,9 @@ export class ViewRateAnalysisComponent implements OnInit {
     this.chartTotalPA = chartInstance;
     let result = [0, 0];
     if (this.overallSpendPAData) {
-      if (this.overallSpendPAData.total_spend) {
-        if (this.overallSpendPAData.total_spend.total > 0) {
-          let pctOfSpend = this.firmTotalSpend / this.overallSpendPAData.total_spend.total;
+      if (this.overallSpendPAData.total_billed) {
+        if (this.overallSpendPAData.total_billed > 0) {
+          let pctOfSpend = this.firmTotalSpend / (this.overallSpendPAData.total_billed + this.overallSpendPAData.total_afa);
           setTimeout(() => {
             this.pctOfPASpend = percentFormatter.format(pctOfSpend);
             pctOfSpend *= 100;
