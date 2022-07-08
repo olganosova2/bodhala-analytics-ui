@@ -162,7 +162,7 @@ export class RatesAnalysisComponent implements OnInit {
     let result = '';
     if (params.value !== null) {
       if (params.data.assoc_within_range) {
-        result = 'Within range (' + moneyFormatter.format(params.data.associate_market_data.associate_lo) + ' - ' + moneyFormatter.format(params.data.associate_market_data.associate_hi) + ')';
+        result = 'Within range (' + moneyFormatter.format(params.data.associate_market_lo) + ' - ' + moneyFormatter.format(params.data.associate_market_hi) + ')';
       } else if (params.data.assoc_lower_diff_pct < 0 && params.data.assoc_upper_diff_pct < 0) {
         result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.assoc_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.assoc_upper_diff * -1)) + '</span>' +
                   '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.assoc_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.assoc_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
@@ -181,7 +181,7 @@ export class RatesAnalysisComponent implements OnInit {
     let result = '';
     if (params.value !== null) {
       if (params.data.partner_within_range) {
-        result = 'Within range (' + moneyFormatter.format(params.data.partner_market_data.partner_lo) + ' - ' + moneyFormatter.format(params.data.partner_market_data.partner_hi) + ')';
+        result = 'Within range (' + moneyFormatter.format(params.data.partner_market_lo) + ' - ' + moneyFormatter.format(params.data.partner_market_hi) + ')';
       } else if (params.data.partner_lower_diff_pct < 0 && params.data.partner_upper_diff_pct < 0) {
         result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.partner_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.partner_upper_diff * -1)) + '</span>' +
                   '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.partner_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.partner_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
