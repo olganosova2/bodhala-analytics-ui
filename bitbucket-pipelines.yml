@@ -25,34 +25,22 @@ definitions:
         size: 2x
         script:
           - ./node_modules/@angular/cli/bin/ng test --watch=false --browsers=ChromeHeadless
-    - step: &build-assets
-        artifacts:
-          - dist/**
+    - step: &compile-build-push-and-deploy
         caches:
-          - node
-        name: Build
-        script:
-          # TODO change BODHALA_RFP_NG_TARGET/NAMESPACE to use BITBUCKET_BRANCH --
-          # because configuration should be based on the branch, not the environment
-          # or -- just set BODHALA_RFP_NG_TARGET as a BB deployment envvar.
-          - ./node_modules/@angular/cli/bin/ng build --configuration $NAMESPACE --base-href /analytics-ui/
-    - step: &build-image-and-push-to-ecr
-        artifacts:
-          - image_digest.txt
-        name: Build image and push to ECR
-        services:
           - docker
+          - node
+        name: Compile Build Push and Deploy
         script:
+          # First, compile JS assets for the given namespace
+          - ./node_modules/@angular/cli/bin/ng build --configuration $NAMESPACE --base-href /analytics-ui/
+          # Then build Docker image and push to ECR, saving the image digest for further reference
           - docker build -t bodhala-analytics-ui .
           - pipe: atlassian/aws-ecr-push-image:1.5.0
             variables:
               IMAGE_NAME: bodhala-analytics-ui
           - docker image inspect ${AWS_ACCOUNT}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/bodhala-analytics-ui -f '{{ index .RepoDigests 0 }}' > image_digest.txt
           - cat image_digest.txt
-    - step: &deploy
-        caches:
-          - docker
-        script:
+          # Perform a Helm release for the image that was just built.
           - pipe: docker://yvogl/aws-eks-helm-deploy:1.0.2
             variables:
               AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
@@ -66,8 +54,10 @@ definitions:
                 - infra/helm/values.yaml
               SET:
                 - "image.digest=$(cat image_digest.txt)"
-                - "ingress.hosts[0].host=eks-${NAMESPACE}.bodhala.com"
+                - "ingress.hosts[0].host=${NAMESPACE}.bodhala.com"
               WAIT: "true"
+        services:
+          - docker
 
 pipelines:
   branches:
@@ -75,20 +65,16 @@ pipelines:
       - step: *install-dependencies
       - step: *lint
       # - step: *test
-      - step: *build-assets
-      - step: *build-image-and-push-to-ecr
       - step:
-          <<: *deploy
+          <<: *compile-build-push-and-deploy
           deployment: int
           name: Deploy to int
     release:
       - step: *install-dependencies
       - step: *lint
       # - step: *test
-      - step: *build-assets
-      - step: *build-image-and-push-to-ecr
       - step:
-          <<: *deploy
+          <<: *compile-build-push-and-deploy
           deployment: stage
           name: Deploy to stage
 
