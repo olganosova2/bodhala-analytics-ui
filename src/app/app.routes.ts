@@ -45,6 +45,7 @@ import {MatterStaffingComponent} from './matters/matter-executive-summary/matter
 import {MatterDocumentsOverviewComponent} from './matters/matter-executive-summary/matter-documents-overview/matter-documents-overview.component';
 import {BenchmarkMattersComponent} from './admin/benchmark-matters/benchmark-matters.component';
 import {MatterBenchmarkingLandingComponent} from './matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
+import {FrcPeerFirmsComponent} from './firm/frc-peer-firms/frc-peer-firms.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -89,7 +90,9 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-tasks', component: MatterDocumentsOverviewComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-benchmarking', component: MatterBenchmarkingLandingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  // MatterStaffingComponent
+  // FRC
+  {path: 'analytics-ui/frc-peer-firms', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/firm/frc-peer-firms/:id', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},

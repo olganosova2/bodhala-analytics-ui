@@ -1,0 +1,461 @@
+import { Injectable } from '@angular/core';
+import {FiltersService} from '../../shared/services/filters.service';
+import {IMatterExecSummary, MetricCardType, MetricGrade} from '../../matters/matter-executive-summary/model';
+import {CommonService} from '../../shared/services/common.service';
+import {UtilService} from 'bodhala-ui-common';
+// export const MOCK_PEER_FIRMS = [ 4, 724, 8, 23, 59, 92, 20, 292, 63, 924];
+export const MOCK_PEER_FIRMS = [ 4, 724, 8, 23, 59, 92, 20, 63, 924];
+export const CLIENT_CONFIG_KEY_METRICS_NAME = 'frc.key-metrics';
+export const barTkPercentOptions = {
+  chart: {
+    type: 'bar'
+  },
+  credits: {
+    enabled: false
+  },
+  title: {
+    text: null
+  },
+  xAxis: {
+    categories: ['Firm', 'Comparison Firms'],
+    labels: {
+      style: {
+        fontSize: 16
+      }
+    }
+  },
+  yAxis: {
+    min: 0,
+    max: 100,
+    tickInterval: 25,
+    title: {
+      text: null
+    },
+    labels: {
+      format: '{value}%',
+      style: {
+        fontSize: 16
+      }
+    }
+  },
+  legend: {
+    reversed: true,
+    align: 'right',
+    verticalAlign: 'top',
+    x: 0,
+    y: 0
+  },
+  plotOptions: {
+    series: {
+      stacking: 'normal',
+      dataLabels: {
+        enabled: true,
+        // format: '{point.y:,.0f} %',
+        formatter() {
+          return (this.y !== 0) ? this.y + '%' : '';
+        },
+        style: {
+          textOutline: 'none'
+        }
+      },
+      pointWidth: 40,
+      groupPadding: 0.1
+    }
+  },
+  tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.y:,.0f}%'
+  },
+  series: [
+    {
+      name: 'Legal Assistant',
+      color: '#FF8B4A',
+      dataLabels: {
+        color: 'black'
+      },
+      data: []
+    },
+    {name: 'Paralegal',
+    color: '#00D1FF',
+    dataLabels: {
+      color: 'black'
+    },
+    data: []
+  }, {
+    name: 'Associate',
+    color: '#FFC907',
+    data: []
+  }, {
+    name: 'Partner',
+    color: '#000000',
+    data: []
+  }]
+};
+export interface IPeerFirms {
+  bh_lawfirm_id: number;
+  firm_name: string;
+  total_billed: number;
+  total_expenses: number;
+  total_hours_billed: number;
+  total_block_billed: number;
+  total_matters: number;
+  partner_billed: number;
+  partner_writeoff: number;
+  associate_billed: number;
+  associate_writeoff: number;
+  partner_hours: number;
+  associate_hours: number;
+  partner_writeoff_hours: number;
+  associate_writeoff_hours: number;
+  paralegal_hours: number;
+  legal_assistant_hours: number;
+  paralegal_writeoff_hours: number;
+  legal_assistant_writeoff_hours: number;
+  paralegal_billed: number;
+  legal_assistant_billed: number;
+  paralegal_writeoff: number;
+  legal_assistant_writeoff: number;
+  avg_partner_rate: number;
+  avg_associate_rate: number;
+  avg_legal_assistant_rate: number;
+  avg_paralegal_rate: number;
+  avg_matter_cost: number;
+  avg_matter_cost_including_expenses: number;
+  avg_matter_hours: number;
+  percent_total_block_billed: number;
+  total_tk_hours?: number;
+  blended_rate?: number;
+  percent_partner_hours?: number;
+  percent_associate_hours?: number;
+  percent_legal_assistant_hours?: number;
+  percent_paralegal_hours?: number;
+}
+export enum MetricType {
+  AveragePartnerRate = 'avg_partner_rate',
+  AverageAssociateRate = 'avg_associate_rate',
+  BlendedRate = 'blended_rate',
+  TotalSpend = 'total_billed',
+  TotalMatters = 'total_matters',
+  TotalHours = 'total_hours_billed',
+  AvgerageMatterCost = 'avg_matter_cost',
+  AvgerageMatterHours = 'avg_matter_hours',
+  BlockBilling = 'percent_total_block_billed',
+  AverageParalegalRate = 'avg_paralegal_rate',
+  AverageLegalAssistant = 'avg_legal_assistant_rate',
+  PartnerHours = 'partner_hours',
+  AssociateHours = 'associate_hours',
+  ParalegalHours = 'paralegal_hours'
+
+}
+export interface IMetricDisplayData {
+  metricType?: MetricType;
+  icon?: string;
+  fieldName?: string;
+  label?: string;
+  actual?: number;
+  firms?: number;
+  increase?: number;
+  direction?: number;
+  grade?: MetricGrade;
+  format?: string;
+  keyMetric?: boolean;
+  lastCell?: boolean;
+  selected?: boolean;
+}
+export interface IFRCTimekeeper {
+  tk_id: string;
+  first_name: string;
+  last_name: string;
+  tk_level: string;
+  bh_classification: string;
+  total_billed: number;
+  total_expenses: number;
+  total_hours_billed: number;
+  avg_rate: number;
+  bodhala_classification?: string;
+}
+@Injectable({
+  providedIn: 'root'
+})
+export class FrcServiceService {
+
+  constructor(public filtersService: FiltersService,
+              public utilService: UtilService,
+              public commonServ: CommonService) { }
+
+  calculateSingleFirmData(summaryData: IPeerFirms): void {
+    const includeExpenses = this.filtersService.includeExpenses;
+    summaryData.total_tk_hours = (summaryData.partner_hours - summaryData.partner_writeoff) + (summaryData.associate_hours - summaryData.associate_writeoff_hours) +
+      (summaryData.legal_assistant_hours - summaryData.legal_assistant_writeoff_hours) + (summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours);
+    summaryData.total_billed = includeExpenses ? summaryData.total_billed + summaryData.total_expenses : summaryData.total_billed;
+    summaryData.percent_total_block_billed =  summaryData.total_block_billed / (summaryData.total_billed || 1) * 100;
+    const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
+    const lawyerHours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours);
+    summaryData.blended_rate = lawyerBilled / (lawyerHours || 1);
+    summaryData.partner_hours = summaryData.partner_hours - summaryData.partner_writeoff;
+    summaryData.associate_hours = summaryData.associate_hours - summaryData.associate_writeoff_hours;
+    summaryData.paralegal_hours = summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours;
+    summaryData.percent_partner_hours = Math.round(summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100) ;
+    summaryData.percent_associate_hours = Math.round(summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100) ;
+    summaryData.percent_legal_assistant_hours = Math.round(summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100);
+    summaryData.percent_paralegal_hours = Math.round(summaryData.paralegal_hours / (summaryData.total_tk_hours || 1) * 100);
+    if (includeExpenses) {
+      summaryData.avg_matter_cost = summaryData.avg_matter_cost_including_expenses;
+    }
+  }
+  createEmptySingleFirmData(): IPeerFirms {
+    return {
+      bh_lawfirm_id: 0,
+    firm_name: '',
+    total_billed: 0,
+    total_expenses: 0,
+    total_hours_billed: 0,
+    total_block_billed: 0,
+    total_matters: 0,
+    partner_billed: 0,
+    partner_writeoff: 0,
+    associate_billed: 0,
+    associate_writeoff: 0,
+    partner_hours: 0,
+    associate_hours: 0,
+    partner_writeoff_hours: 0,
+    associate_writeoff_hours: 0,
+    paralegal_hours: 0,
+    legal_assistant_hours: 0,
+    paralegal_writeoff_hours: 0,
+    legal_assistant_writeoff_hours: 0,
+    paralegal_billed: 0,
+    legal_assistant_billed: 0,
+    paralegal_writeoff: 0,
+    legal_assistant_writeoff: 0,
+    avg_partner_rate: 0,
+    avg_associate_rate: 0,
+    avg_legal_assistant_rate: 0,
+    avg_paralegal_rate: 0,
+    avg_matter_cost: 0,
+    avg_matter_cost_including_expenses: 0,
+    avg_matter_hours: 0,
+    percent_total_block_billed: 0,
+    total_tk_hours: 0,
+    blended_rate: 0,
+    percent_partner_hours: 0,
+    percent_associate_hours: 0,
+    percent_legal_assistant_hours: 0,
+    percent_paralegal_hours: 0
+    };
+  }
+  calculatePeersData(firmsRecords: Array<any>): IPeerFirms {
+    const firmData = this.createEmptySingleFirmData();
+    const firmsCount = firmsRecords.length;
+    if (!firmsCount) {
+      return firmData;
+    }
+    for (const rec of firmsRecords) {
+      this.calculateSingleFirmData(rec);
+    }
+    firmData.firm_name = 'Comparison Firms';
+    const reducerTotalBilled = (previousValue, currentValue) => previousValue.total_billed + currentValue.total_billed;
+    firmData.total_billed = firmsRecords.reduce((a, b) => ({total_billed: a.total_billed + b.total_billed})).total_billed / firmsCount;
+    firmData.partner_billed = firmsRecords.reduce((a, b) => ({partner_billed: a.partner_billed + b.partner_billed})).partner_billed / firmsCount;
+    firmData.associate_billed = firmsRecords.reduce((a, b) => ({associate_billed: a.associate_billed + b.associate_billed})).associate_billed / firmsCount;
+    firmData.paralegal_billed = firmsRecords.reduce((a, b) => ({paralegal_billed: a.paralegal_billed + b.paralegal_billed})).paralegal_billed / firmsCount;
+    firmData.legal_assistant_billed = firmsRecords.reduce((a, b) => ({legal_assistant_billed: a.legal_assistant_billed + b.legal_assistant_billed})).legal_assistant_billed / firmsCount;
+    firmData.avg_associate_rate = firmsRecords.reduce((a, b) => ({avg_associate_rate: a.avg_associate_rate + b.avg_associate_rate})).avg_associate_rate / firmsCount;
+    firmData.avg_partner_rate = firmsRecords.reduce((a, b) => ({avg_partner_rate: a.avg_partner_rate + b.avg_partner_rate})).avg_partner_rate / firmsCount;
+    firmData.avg_paralegal_rate = firmsRecords.reduce((a, b) => ({avg_paralegal_rate: a.avg_paralegal_rate + b.avg_paralegal_rate})).avg_paralegal_rate / firmsCount;
+    firmData.avg_legal_assistant_rate = firmsRecords.reduce((a, b) => ({avg_legal_assistant_rate: a.avg_legal_assistant_rate + b.avg_legal_assistant_rate})).avg_legal_assistant_rate / firmsCount;
+    firmData.blended_rate = firmsRecords.reduce((a, b) => ({blended_rate: a.blended_rate + b.blended_rate})).blended_rate / firmsCount;
+    firmData.total_hours_billed = firmsRecords.reduce((a, b) => ({total_hours_billed: a.total_hours_billed + b.total_hours_billed})).total_hours_billed / firmsCount;
+    firmData.partner_hours = firmsRecords.reduce((a, b) => ({partner_hours: a.partner_hours + b.partner_hours})).partner_hours / firmsCount;
+    firmData.associate_hours = firmsRecords.reduce((a, b) => ({associate_hours: a.associate_hours + b.associate_hours})).associate_hours / firmsCount;
+    firmData.paralegal_hours = firmsRecords.reduce((a, b) => ({paralegal_hours: a.paralegal_hours + b.paralegal_hours})).paralegal_hours / firmsCount;
+    firmData.legal_assistant_hours = firmsRecords.reduce((a, b) => ({legal_assistant_hours: a.legal_assistant_hours + b.legal_assistant_hours})).legal_assistant_hours / firmsCount;
+    firmData.percent_partner_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmsCount);
+    firmData.percent_associate_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmsCount);
+    firmData.percent_paralegal_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount);
+    firmData.percent_legal_assistant_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount);
+    firmData.total_matters = firmsRecords.reduce((a, b) => ({total_matters: a.total_matters + b.total_matters})).total_matters / firmsCount;
+    firmData.avg_matter_cost = firmsRecords.reduce((a, b) => ({avg_matter_cost: a.avg_matter_cost + b.avg_matter_cost})).avg_matter_cost / firmsCount;
+    firmData.avg_matter_hours = firmsRecords.reduce((a, b) => ({avg_matter_hours: a.avg_matter_hours + b.avg_matter_hours})).avg_matter_hours / firmsCount;
+    firmData.avg_matter_hours = firmsRecords.reduce((a, b) => ({avg_matter_hours: a.avg_matter_hours + b.avg_matter_hours})).avg_matter_hours / firmsCount;
+    firmData.percent_total_block_billed = firmsRecords.reduce((a, b) => ({percent_total_block_billed: a.percent_total_block_billed + b.percent_total_block_billed})).percent_total_block_billed / firmsCount;
+
+    return firmData;
+  }
+  buildMetrics(summaryData: IPeerFirms, firmData: IPeerFirms, firmsRecords: Array<IPeerFirms>): Array<IMetricDisplayData> {
+    const result = [];
+    let ix = 0;
+    for (const metricName of Object.keys(MetricType)) {
+      if (typeof MetricType[metricName] !== 'string') {
+        continue;
+      }
+      const metric = {
+        metricType: MetricType[metricName],
+        fieldName: MetricType[metricName],
+        actual: summaryData[MetricType[metricName]],
+        firms: firmData[MetricType[metricName]],
+        increase: firmData[MetricType[metricName]] ? ((summaryData[MetricType[metricName]] / firmData[MetricType[metricName]]) - 1) * 100 : 0,
+        direction: firmData[MetricType[metricName]] > summaryData[MetricType[metricName]] ? -1 : 1,
+        keyMetric: false
+      }
+      if (ix > 2) {
+        metric.keyMetric = true;
+      }
+      this.getMetricIconAndLabel(metric);
+      this.getGrade(metric, summaryData, firmsRecords);
+      result.push(metric);
+      ix += 1;
+    }
+    return result;
+  }
+  getMetricIconAndLabel(metric: IMetricDisplayData): void {
+    metric.format = null;
+    metric.icon = 'bills.svg';
+    switch (metric.fieldName) {
+      case 'avg_partner_rate':
+        metric.label = 'Average Partner Rate';
+        metric.format = 'dollar';
+        break;
+      case 'avg_associate_rate':
+        metric.label = 'Average Associate Rate';
+        metric.format = 'dollar';
+        break;
+      case 'total_billed':
+        metric.label = 'Overall Spend';
+        metric.format = 'dollar';
+        break;
+      case 'total_matters':
+        metric.icon = 'avg_matter_cost.svg';
+        metric.label = 'Total Matters';
+        break;
+      case 'total_hours_billed':
+        metric.icon = 'clock-sm.png';
+        metric.label = 'Total Hours';
+        break;
+      case 'avg_matter_cost':
+        metric.label = 'Average Matter Cost';
+        metric.format = 'dollar';
+        break;
+      case 'avg_matter_hours':
+        metric.label = 'Avg. Matter Hours';
+        metric.icon = 'clock-sm.png';
+        break;
+      case 'blended_rate':
+        metric.label = 'Average Blended Rate';
+        metric.format = 'dollar';
+        break;
+      case 'percent_total_block_billed':
+        metric.label = 'Block Billing';
+        metric.format = 'percent';
+        break;
+      case 'avg_legal_assistant_rate':
+        metric.label = 'Avg. Legal Assistant Rate';
+        metric.format = 'dollar';
+        break;
+      case 'avg_paralegal_rate':
+        metric.label = 'Avg. Paralegal Rate';
+        metric.format = 'dollar';
+        break;
+      case 'partner_hours':
+        metric.label = 'Partner Hours Worked';
+        metric.icon = 'clock-sm.png';
+        break;
+      case 'associate_hours':
+        metric.label = 'Associate Hours Worked';
+        metric.icon = 'clock-sm.png';
+        break;
+      case 'paralegal_hours':
+        metric.label = 'Paralegal Hours Worked';
+        metric.icon = 'clock-sm.png';
+        break;
+      default:
+        metric.icon = 'bills.svg';
+        break;
+    }
+  }
+  getGrade(tk: IMetricDisplayData, summaryData: IPeerFirms, marketRecords: Array<IPeerFirms>): void {
+    const prop = tk.fieldName;
+    tk.grade = MetricGrade.NODATA;
+    if (marketRecords.length === 0) {
+      return;
+    }
+    if (prop === 'total_billed' || prop === 'total_hours_billed' || prop === 'total_matters') {
+      return;
+    }
+    const actual = summaryData[prop];
+    const compareRecords = Object.assign([], marketRecords.sort(this.utilService.dynamicSort(prop)));
+
+    const values = compareRecords.map(e => e[prop]);
+    values.push(actual);
+    const stdRec = this.commonServ.getStandardDeviation(values);
+    const avgRec = values.reduce((a, b) => a + b) / (values.length || 1);
+    const zRec = (actual - avgRec) / (stdRec || 1);
+    const minRec = compareRecords[0];
+    const maxRec = compareRecords[compareRecords.length - 1];
+    const bmDiff = maxRec[prop] - minRec[prop];
+
+    if (prop !== 'partner_hours' && prop !== 'associate_hours' && prop !== 'paralegal_hours') {
+      if (zRec <= -0.5) {
+        tk.grade = MetricGrade.GOOD;
+      } else if (zRec > -0.5 && zRec < 0.5)  {
+        tk.grade = MetricGrade.FAIR;
+      } else {
+        tk.grade = MetricGrade.POOR;
+      }
+    } else {
+      if (zRec >= -0.5 && zRec <= 0.5) {
+        tk.grade = MetricGrade.GOOD;
+      } else if ((zRec >= -1 && zRec < -0.5) || (zRec > 0.5 && zRec <= 1)) {
+        tk.grade = MetricGrade.FAIR;
+      } else {
+        tk.grade = MetricGrade.POOR;
+      }
+    }
+  }
+  formatPercentOfTkWorked(summaryData: IPeerFirms, firmsData: IPeerFirms): Array<IMetricDisplayData> {
+    const result = [];
+    result.push({label: 'Partner', actual: summaryData.percent_partner_hours, firms: firmsData.percent_partner_hours, fieldName: 'percent_partner_hours'});
+    result.push({label: 'Associate', actual: summaryData.percent_associate_hours, firms: firmsData.percent_associate_hours, fieldName: 'percent_associate_hours'});
+    result.push({label: 'Paralegal', actual: summaryData.percent_paralegal_hours, firms: firmsData.percent_paralegal_hours, fieldName: 'percent_paralegal_hours'});
+    result.push({label: 'Legal Assistant', actual: summaryData.percent_legal_assistant_hours, firms: firmsData.percent_legal_assistant_hours, fieldName: 'percent_legal_assistant_hours'});
+
+    return result;
+  }
+  processSavedMetrics(keyMetrics: Array<IMetricDisplayData>): Array<IMetricDisplayData> {
+    let result = [];
+    const savedMetrics = this.commonServ.getClientConfigJson(CLIENT_CONFIG_KEY_METRICS_NAME) || [];
+    if (savedMetrics.length === 0) { // no config for visible metrics
+      result = Object.assign([], keyMetrics);
+      for (const m of result) {
+        m.selected = true;
+      }
+      return result;
+    }
+    for (const saved of savedMetrics) {
+      const found = keyMetrics.find(e => e.fieldName === saved);
+      if (found) {
+        found.selected = true;
+        result.push(found);
+      }
+    }
+    return result;
+  }
+  processTotalSpend(records: Array<any>): void {
+    for (const rec of records) {
+      const includeExpenses = this.filtersService.includeExpenses;
+      rec.total_billed = includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
+    }
+  }
+  processTotals(records: Array<any>, prop: string): number {
+    let total = 0;
+    for (const rec of records) {
+      total += rec[prop];
+    }
+    return total;
+  }
+  getPercentOfWork(current: number, total: number): number {
+    return current = current / ( total || 1) * 100;
+  }
+
+
+}

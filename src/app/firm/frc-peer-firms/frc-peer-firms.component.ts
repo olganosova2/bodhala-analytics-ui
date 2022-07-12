@@ -1,0 +1,186 @@
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
+import {CommonService} from '../../shared/services/common.service';
+import {FrcServiceService, IMetricDisplayData, IPeerFirms, MOCK_PEER_FIRMS} from './frc-service.service';
+import {Subscription} from 'rxjs';
+import {FiltersService} from '../../shared/services/filters.service';
+import {barTkPercentOptions} from './frc-service.service';
+import {ActivatedRoute} from '@angular/router';
+import {VisibleKeyMetricsComponent} from './visible-key-metrics/visible-key-metrics.component';
+import {MatDialog} from '@angular/material/dialog';
+import {FrcNotesComponent} from './frc-notes/frc-notes.component';
+import {IUiAnnotation} from '../../shared/components/annotations/model';
+
+@Component({
+  selector: 'bd-frc-peer-firms',
+  templateUrl: './frc-peer-firms.component.html',
+  styleUrls: ['./frc-peer-firms.component.scss']
+})
+export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
+  pendingRequest: Subscription;
+  firmId: number; // = 292;
+  firm: IPeerFirms;
+  peerFirms: Array<number> = MOCK_PEER_FIRMS;
+  peerFirmsNames: Array<string> = [];
+  startDate: string = '2014-04-09';
+  endDate: string = '2019-07-30';
+  frcData: Array<IPeerFirms> = [];
+  summaryData: IPeerFirms;
+  internalData: IPeerFirms;
+  internalRecords: Array<IPeerFirms> = [];
+  frcMetrics: Array<IMetricDisplayData> = [];
+  summaryMetrics: Array<IMetricDisplayData> = [];
+  keyMetrics: Array<IMetricDisplayData> = [];
+  chartMetricData: Array<IMetricDisplayData> = [];
+  note: IUiAnnotation;
+  notes: Array<IUiAnnotation> = [];
+  url: string;
+
+  chart: any;
+  options: any = Object.assign({}, barTkPercentOptions);
+  @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
+
+
+  constructor(private httpService: HttpService,
+              private route: ActivatedRoute,
+              public commonServ: CommonService,
+              public frcService: FrcServiceService,
+              public userService: UserService,
+              public dialog: MatDialog,
+              public appStateService: AppStateService,
+              public filtersService: FiltersService
+  ) {
+    this.commonServ.pageTitle = 'Firm Report Card';
+    this.commonServ.pageSubtitle = 'Peer Firm Comparison';
+  }
+
+  ngOnInit(): void {
+    this.url = this.commonServ.formatPath(window.location.pathname);
+    this.route.paramMap.subscribe(params => {
+      this.firmId = Number(params.get('id'));
+      this.getPeerFirmsData();
+      this.getAnnotations();
+    });
+  }
+
+  getPeerFirmsData(): void {
+    this.summaryData = null;
+    const params = {clientId: this.userService.currentUser.client_info_id, startdate: this.startDate, enddate: this.endDate, firms: null};
+    let arr = [];
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      arr = arr.concat(this.peerFirms);
+      params.firms = JSON.stringify(arr);
+    }
+    this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
+      (data: any) => {
+        if (data.result && data.result.length > 0) {
+          this.frcData = data.result || [];
+          const found = this.frcData.find(e => e.bh_lawfirm_id === this.firmId);
+          this.summaryData = Object.assign({}, found);
+          this.firm = Object.assign({}, found);
+          this.frcService.calculateSingleFirmData(this.summaryData);
+          this.internalRecords = this.frcData.filter(e => e.bh_lawfirm_id !== this.firmId) || [];
+          this.peerFirmsNames = this.internalRecords.map(e => e.firm_name);
+          this.internalData = this.frcService.calculatePeersData(this.internalRecords);
+          this.frcMetrics = this.frcService.buildMetrics(this.summaryData, this.internalData, this.internalRecords);
+          this.summaryMetrics = this.frcMetrics.filter(e => e.keyMetric === false);
+          this.keyMetrics = this.frcMetrics.filter(e => e.keyMetric === true);
+          this.chartMetricData = this.frcService.formatPercentOfTkWorked(this.summaryData, this.internalData);
+        }
+      }
+    );
+  }
+
+  saveInstance(chartInstance): void {
+    this.chart = chartInstance;
+
+    this.chart.series[3].setData(this.getPercentOfHoursWorkedChartData(this.chartMetricData, 0));
+    this.chart.series[2].setData(this.getPercentOfHoursWorkedChartData(this.chartMetricData, 1));
+    this.chart.series[1].setData(this.getPercentOfHoursWorkedChartData(this.chartMetricData, 2));
+    this.chart.series[0].setData(this.getPercentOfHoursWorkedChartData(this.chartMetricData, 3));
+    this.chart.xAxis[0].categories = [this.firm.firm_name, 'Comparison Firms'];
+    this.chart.xAxis[0].redraw();
+    this.chart.redraw();
+
+    setTimeout(() => {
+      this.resizeChart();
+    });
+  }
+  resizeChart(): void {
+    const width = this.chartDiv.nativeElement.offsetWidth - 20;
+    const height =  250;
+
+    if (!this.chart || width <= 0) {
+      return;
+    }
+    this.chart.setSize(width, height, false);
+  }
+  getPercentOfHoursWorkedChartData(chartMetricData: Array<IMetricDisplayData>, index: number): Array<number> {
+    const result = [];
+    result.push(chartMetricData[index].actual);
+    result.push(chartMetricData[index].firms);
+    return result;
+  }
+  goBack(): void {
+
+  }
+  viewSavedReports(): void {
+
+  }
+  getAnnotations(): void {
+    this.notes = [];
+    const params = {
+      userId: this.userService.currentUser.id,
+      url: this.url,
+      clientId: this.userService.currentUser.client_info_id,
+      uiId: null
+    };
+    this.pendingRequest = this.httpService.makeGetRequest<IUiAnnotation>('getAnnotations', params).subscribe(
+      (data: any) => {
+        this.notes = data.result || [];
+        if (this.notes.length > 0) {
+          this.note = this.notes[0];
+        }
+      }
+    );
+  }
+  addNotes(mode: string): void {
+    const packaged = { firmId: this.firmId, action: mode, note: this.note};
+    const dialogConfig =  {
+      height: '400px',
+      width: '60vw',
+    }
+    const modalConfig = {...dialogConfig, data: Object.assign([], packaged)};
+    const dialogRef = this.dialog.open(FrcNotesComponent, {...modalConfig, disableClose: false });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.note = result;
+      if (this.note.deleted_on) {
+        this.note = null;
+      }
+    });
+  }
+  saveFrc(): void {
+
+  }
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    const exportName = this.firm.firm_name + '- FRC';
+
+    setTimeout(() => {
+      this.commonServ.generatePdfOuter(exportName, 'frcDiv', null);
+    }, 200);
+  }
+
+  ngOnDestroy() {
+    this.commonServ.clearTitles();
+    if (this.pendingRequest) {
+      this.pendingRequest.unsubscribe();
+    }
+  }
+
+}

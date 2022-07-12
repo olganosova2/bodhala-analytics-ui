@@ -1,0 +1,24 @@
+<div class = "justify-between">
+  <div class="roboto-bold dialog-title">Select Key Metrics</div>
+
+  <div ><mat-icon  mat-dialog-close>close</mat-icon></div>
+
+</div>
+<div class="p-text-italic mb20">At least two metrics must be selected</div>
+<div class="p-grid">
+  <div class="p-col-6">
+    <div *ngFor="let item of keyMetrics.slice(0, itemTopRowCount);let i=index;" class="mb10">
+      <mat-checkbox [(ngModel)]="item.selected"></mat-checkbox><span class="ml10 pb10">{{item.label}}</span>
+    </div>
+
+  </div>
+  <div class="p-col-6">
+    <div *ngFor="let item of keyMetrics.slice(itemTopRowCount);let i=index;" class="mb10">
+      <mat-checkbox [(ngModel)]="item.selected"></mat-checkbox><span class="ml10 pb10">{{item.label}}</span>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button class="primary-button mr10"  (click)="save()" [disabled]="validate()" [ngClass]="{'disabled-button' : validate()}">Save</button>
+  <button mat-button mat-dialog-close class="cancel-button">Cancel</button>
+</div>

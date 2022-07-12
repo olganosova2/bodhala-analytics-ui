@@ -465,7 +465,7 @@ export class MatterAnalysisService {
     }
     return result;
   }
-  processTks(timekeepers: Array<INamedTimekeepersBM>): void {
+  processTks(timekeepers: Array<any>): void {
     for (const tk of timekeepers) {
       tk.bodhala_classification = this.yoyRateIncreaseService.tkNameCellRenderer({ value: tk.tk_level});
       const includeExpenses = this.filtersService.includeExpenses;

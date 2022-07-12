@@ -1,0 +1,17 @@
+@import "../../../../assets/styles/colors.scss";
+.flex-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.flex-item {
+  text-align: center;
+  flex-basis: 100%;
+}
+.bottom-border {
+  border-bottom: #D8DAE5 1px solid;
+}
+button {
+  font-family: Roboto Mono, "Helvetica Neue", sans-serif;
+  font-size: 12px;
+}

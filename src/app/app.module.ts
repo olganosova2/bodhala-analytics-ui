@@ -207,6 +207,12 @@ import { NamedTkAnalysisComponent } from './rates-analysis/view-rate-analysis/na
 import { PeerFirmsModalComponent } from './admin/admin-rate-benchmarks/peer-firms-modal/peer-firms-modal.component';
 import { ComparisonFirmsComponent } from './rates-analysis/view-rate-analysis/comparison-firms/comparison-firms.component';
 import { EditFirmsModalComponent } from './rates-analysis/view-rate-analysis/comparison-firms/edit-firms-modal/edit-firms-modal.component';
+import { FrcPeerFirmsComponent } from './firm/frc-peer-firms/frc-peer-firms.component';
+import { FrcKeyMetricsComponent } from './firm/frc-peer-firms/frc-key-metrics/frc-key-metrics.component';
+import { KeyMetricItemComponent } from './firm/frc-peer-firms/key-metric-item/key-metric-item.component';
+import { VisibleKeyMetricsComponent } from './firm/frc-peer-firms/visible-key-metrics/visible-key-metrics.component';
+import { FrcNotesComponent } from './firm/frc-peer-firms/frc-notes/frc-notes.component';
+import { FrcTablesComponent } from './firm/frc-peer-firms/frc-tables/frc-tables.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -366,7 +372,13 @@ highcharts.setOptions({
     NamedTkAnalysisComponent,
     PeerFirmsModalComponent,
     ComparisonFirmsComponent,
-    EditFirmsModalComponent
+    EditFirmsModalComponent,
+    FrcPeerFirmsComponent,
+    FrcKeyMetricsComponent,
+    KeyMetricItemComponent,
+    VisibleKeyMetricsComponent,
+    FrcNotesComponent,
+    FrcTablesComponent
   ],
   entryComponents: [
     PillComponent,
@@ -376,7 +388,9 @@ highcharts.setOptions({
     HelpModalComponent,
     SavingsFirmGridComponent,
     AddEditConfigComponent,
-    FirmDiscountsComponent
+    FirmDiscountsComponent,
+    VisibleKeyMetricsComponent,
+    FrcNotesComponent
   ],
   imports: [
     HttpClientModule,

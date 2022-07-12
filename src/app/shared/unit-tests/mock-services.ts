@@ -37,6 +37,7 @@ import {CLIENT_BM_MATTERS, MOCK_BM_CLIENT_PAS, MOCK_BM_CONFIG, MOCK_BM_MATTERS, 
 import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT,
   MOCK_RATE_BENCHMARK_RESULT, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA, MOCK_GRANULARITY_PAGE_RESULT, MOCK_RATE_BM_NAMED_TK_DATA, MOCK_PEER_FIRMS_ADMIN_RESPONSE} from './mock-data/rate-benchmarking';
 import {MOCK_FIRM_CLUSTER} from './mock-data/firm-cluster';
+import {MOCK_PEER_FIRMS_ARRAY} from './mock-data/frc';
 
 export const ngWindow = {
   location: {
@@ -363,6 +364,9 @@ export class DataStub {
         return of (MOCK_FIRM_CLUSTER);
       case 'getRateBMNamedTKData':
         return of (MOCK_RATE_BM_NAMED_TK_DATA);
+      case 'getFRCKeyMetrics':
+        return of (MOCK_PEER_FIRMS_ARRAY);
+
 
       default:
         return of([]);

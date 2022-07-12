@@ -162,6 +162,12 @@ import {CustomInternalMattersComponent} from '../../matters/matter-executive-sum
 import {MatterBenchmarkingLandingComponent} from '../../matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
 import {TableHeaderSortComponent} from '../components/table-header-sort/table-header-sort.component';
 import {BmTimekeepersTableComponent} from '../../matters/matter-executive-summary/bm-timekeepers-table/bm-timekeepers-table.component';
+import {FrcPeerFirmsComponent} from '../../firm/frc-peer-firms/frc-peer-firms.component';
+import {FrcKeyMetricsComponent} from '../../firm/frc-peer-firms/frc-key-metrics/frc-key-metrics.component';
+import {KeyMetricItemComponent} from '../../firm/frc-peer-firms/key-metric-item/key-metric-item.component';
+import {VisibleKeyMetricsComponent} from '../../firm/frc-peer-firms/visible-key-metrics/visible-key-metrics.component';
+import {FrcNotesComponent} from '../../firm/frc-peer-firms/frc-notes/frc-notes.component';
+import {FrcTablesComponent} from '../../firm/frc-peer-firms/frc-tables/frc-tables.component';
 
 
 
@@ -318,7 +324,13 @@ export const DECLARATIONS = [
   CustomInternalMattersComponent,
   MatterBenchmarkingLandingComponent,
   TableHeaderSortComponent,
-  BmTimekeepersTableComponent
+  BmTimekeepersTableComponent,
+  FrcPeerFirmsComponent,
+  FrcKeyMetricsComponent,
+  KeyMetricItemComponent,
+  VisibleKeyMetricsComponent,
+  FrcNotesComponent,
+  FrcTablesComponent
 ];
 
 export const PROVIDERS = [

@@ -356,5 +356,16 @@ export class CommonService {
     }
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
+  getClientConfigJson(setting: string): any {
+    let result = null; // make default
+    if (this.userService.config !== undefined) {
+      const prop = this.userService.config[setting];
+      if (!prop) {
+        return result;
+      }
+      result = prop.configs[0] ? prop.configs[0].json_config : null;
+    }
+    return result;
+  }
 }
 
