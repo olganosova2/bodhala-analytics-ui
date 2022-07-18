@@ -16,11 +16,13 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   pendingRequestSmartPAs: Subscription;
   pendingRequestMatters: Subscription;
-  @Input() startDate: string;
-  @Input() endDate: string;
+  @Input() filterSet: any;
   @Input() firmId: number;
   timekeepers: Array<IFRCTimekeeper> = [];
   smartPAs: Array<any> = [];
+  matters: Array<any> = [];
+  isSmartPA: boolean = false;
+  mattersLoaded: boolean = true;
 
   constructor( private httpService: HttpService,
                public commonServ: CommonService,
@@ -32,13 +34,14 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
                public filtersService: FiltersService) { }
 
   ngOnInit(): void {
+    const strSmartPAs = this.commonServ.getClientPASetting();
+    this.isSmartPA = strSmartPAs === 'Smart Practice Areas' || strSmartPAs === 'Both';
+    this.getMatters();
     this.getTimekeepers();
     this.getSmartPAs();
   }
   getSmartPAs(): void {
-    const strSmartPAs = this.commonServ.getClientPASetting();
-    const isSmartPA = strSmartPAs === 'Smart Practice Areas' || strSmartPAs === 'Both';
-    const params = { ... this.getParams(), ... {bodhalaPAs: isSmartPA }};
+    const params = { ... this.getParams(), ... {bodhalaPAs: this.isSmartPA }};
     this.pendingRequest = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
       (data: any) => {
         if (data.result && data.result.length > 0) {
@@ -50,6 +53,19 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
             rec.percent_of_hours = this.frcService.getPercentOfWork(rec.total_hours, totalHours);
             rec.percent_of_spend = this.frcService.getPercentOfWork(rec.total_billed, totalSpend);
           }
+        }
+      }
+    );
+
+  }
+  getMatters(): void {
+    this.mattersLoaded = false;
+    this.pendingRequest = this.httpService.makeGetRequest<IFRCTimekeeper>('getSpendByMatterTable', this.getParams()).subscribe(
+      (data: any) => {
+        if (data.result && data.result.length > 0) {
+          this.matters = data.result || [];
+          this.processMatters(this.matters);
+          this.mattersLoaded = true;
         }
       }
     );
@@ -67,13 +83,41 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
 
   }
   getParams(): any {
-    const params = {clientId: this.userService.currentUser.client_info_id, startdate: this.startDate, enddate: this.endDate, firms: null};
+    const params = Object.assign({}, this.filterSet);
     const arr = [];
     if (this.firmId) {
       arr.push(this.firmId.toString());
       params.firms = JSON.stringify(arr);
     }
+    if (params.peerFirms) {
+      delete params.peerFirms;
+    }
     return params;
+  }
+  processMatters(matters: Array<any>): void {
+    for (const rec of this.matters) {
+      rec.matter_cost = rec.total_billed + rec.total_afa;
+      rec.matter_cost_including_expenses = rec.total_billed + rec.total_afa + rec.total_expenses;
+      rec.matter_cost = this.filtersService.includeExpenses ? rec.matter_cost_including_expenses : rec.matter_cost;
+      rec.total_billed_and_afa = rec.total_billed + rec.total_afa;
+      if (rec.total_hours > 0 && rec.total_hours !== null) {
+        rec.partner_hours_per = (rec.partner_hours / rec.total_hours) * 100;
+        rec.associate_hours_per = (rec.associate_hours / rec.total_hours) * 100;
+        const othersHours = rec.total_hours - rec.partner_hours - rec.associate_hours;
+        rec.others_hours_per = (othersHours / rec.total_hours) * 100;
+      } else {
+        rec.partner_hours_per = 0;
+        rec.associate_hours_per = 0;
+        rec.others_hours_per = 0;
+      }
+      this.formamMatterPercentOfWork(rec);
+      const clientPa = rec.client_matter_type && rec.client_matter_type.length > 0 ? rec.client_matter_type[0] : 'N/A';
+      rec.practice_area = this.isSmartPA ? rec.bodhala_practice_area : clientPa;
+    }
+    this.matters = this.matters.sort(this.utilService.dynamicSort('-matter_cost')).slice(0, 5);
+  }
+  formamMatterPercentOfWork(rec: any): void {
+    rec.staffing_leverage = Math.round(rec.partner_hours_per) + '% Partner / ' + Math.round(rec.associate_hours_per) + '% Associate / ' + Math.round(rec.others_hours_per) + '% Other';
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

@@ -3,8 +3,8 @@ import {FiltersService} from '../../shared/services/filters.service';
 import {IMatterExecSummary, MetricCardType, MetricGrade} from '../../matters/matter-executive-summary/model';
 import {CommonService} from '../../shared/services/common.service';
 import {UtilService} from 'bodhala-ui-common';
-// export const MOCK_PEER_FIRMS = [ 4, 724, 8, 23, 59, 92, 20, 292, 63, 924];
-export const MOCK_PEER_FIRMS = [ 4, 724, 8, 23, 59, 92, 20, 63, 924];
+export const MOCK_PEER_FIRMS_ALL = [ 4, 724, 8, 23, 59, 92, 20, 292, 63, 924];
+export const MOCK_PEER_FIRMS = [ 4,  8, 23, 59, 92, 20, 292, 63, 924];
 export const CLIENT_CONFIG_KEY_METRICS_NAME = 'frc.key-metrics';
 export const barTkPercentOptions = {
   chart: {
@@ -139,13 +139,28 @@ export enum MetricType {
   TotalHours = 'total_hours_billed',
   AvgerageMatterCost = 'avg_matter_cost',
   AvgerageMatterHours = 'avg_matter_hours',
-  BlockBilling = 'percent_total_block_billed',
-  AverageParalegalRate = 'avg_paralegal_rate',
-  AverageLegalAssistant = 'avg_legal_assistant_rate',
   PartnerHours = 'partner_hours',
   AssociateHours = 'associate_hours',
-  ParalegalHours = 'paralegal_hours'
-
+  ParalegalHours = 'paralegal_hours',
+  BlockBilling = 'percent_total_block_billed',
+  AverageParalegalRate = 'avg_paralegal_rate',
+  AverageLegalAssistant = 'avg_legal_assistant_rate'
+}
+export enum MetricTypeComparison {
+  TotalSpend = 'total_billed',
+  TotalMatters = 'total_matters',
+  TotalHours = 'total_hours_billed',
+  AvgerageMatterCost = 'avg_matter_cost',
+  AvgerageMatterHours = 'avg_matter_hours',
+  BlendedRate = 'blended_rate',
+  AveragePartnerRate = 'avg_partner_rate',
+  AverageAssociateRate = 'avg_associate_rate',
+  PartnerHours = 'partner_hours',
+  AssociateHours = 'associate_hours',
+  ParalegalHours = 'paralegal_hours',
+  BlockBilling = 'percent_total_block_billed',
+  AverageLegalAssistant = 'avg_legal_assistant_rate',
+  AverageParalegalRate = 'avg_paralegal_rate'
 }
 export interface IMetricDisplayData {
   metricType?: MetricType;
@@ -181,6 +196,7 @@ export class FrcServiceService {
 
   constructor(public filtersService: FiltersService,
               public utilService: UtilService,
+              public userService: UtilService,
               public commonServ: CommonService) { }
 
   calculateSingleFirmData(summaryData: IPeerFirms): void {
@@ -455,6 +471,19 @@ export class FrcServiceService {
   }
   getPercentOfWork(current: number, total: number): number {
     return current = current / ( total || 1) * 100;
+  }
+  formatFRCComparisonFirmsData(records: Array<IPeerFirms>): any {
+    const result = [];
+    const originals = Object.assign([], records);
+    for (const rec of records) {
+      const currentFirm = {bh_lawfirm_id: rec.bh_lawfirm_id, firm_name: rec.firm_name, frcMetrics: []};
+      const summaryData = originals.find(e => e.bh_lawfirm_id === rec.bh_lawfirm_id);
+      this.calculateSingleFirmData(summaryData);
+      const internalData = this.calculatePeersData(originals);
+      currentFirm.frcMetrics = this.buildMetrics(summaryData, internalData, originals);
+      result.push(currentFirm);
+    }
+    return result;
   }
 
 

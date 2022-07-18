@@ -168,6 +168,8 @@ import {KeyMetricItemComponent} from '../../firm/frc-peer-firms/key-metric-item/
 import {VisibleKeyMetricsComponent} from '../../firm/frc-peer-firms/visible-key-metrics/visible-key-metrics.component';
 import {FrcNotesComponent} from '../../firm/frc-peer-firms/frc-notes/frc-notes.component';
 import {FrcTablesComponent} from '../../firm/frc-peer-firms/frc-tables/frc-tables.component';
+import {FrcFirmComparisonComponent} from '../../firm/frc-peer-firms/frc-firm-comparison/frc-firm-comparison.component';
+import {FrcComparisonCellComponent} from '../../firm/frc-peer-firms/frc-firm-comparison/frc-comparison-cell/frc-comparison-cell.component';
 
 
 
@@ -330,7 +332,9 @@ export const DECLARATIONS = [
   KeyMetricItemComponent,
   VisibleKeyMetricsComponent,
   FrcNotesComponent,
-  FrcTablesComponent
+  FrcTablesComponent,
+  FrcFirmComparisonComponent,
+  FrcComparisonCellComponent
 ];
 
 export const PROVIDERS = [

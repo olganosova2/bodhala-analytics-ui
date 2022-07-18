@@ -15,6 +15,32 @@
     </tr>
   </table>
 </div>
+<div class="panel-wrapper mt20 position-relative matters-table">
+  <h4>Top 5 Matters</h4>
+  <table class="full-width mt20">
+    <thead>
+    <tr class="roboto-bold">
+      <th>Matter Name</th>
+      <th >Practice Area</th>
+      <th>Total Billed</th>
+      <th>Total Hours</th>
+      <th>Blended Rate</th>
+      <th>Staffing Leverage</th>
+    </tr>
+    </thead>
+    <tr *ngFor="let tk of matters">
+      <td>{{ tk.matter_name}}</td>
+      <td>{{ tk.practice_area}}</td>
+      <td>${{tk.matter_cost | number:'1.0-0'}}</td>
+      <td>{{tk.total_hours | number:'1.0-0'}}</td>
+      <td>${{tk.blended_rate | number:'1.0-0'}}</td>
+      <td>{{ tk.staffing_leverage}}</td>
+    </tr>
+  </table>
+  <div class="spinner-card" [hidden]="mattersLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
+</div>
 <div class="panel-wrapper mt20">
   <h4>Top 10 Timekeepers</h4>
   <table class="full-width mt20">

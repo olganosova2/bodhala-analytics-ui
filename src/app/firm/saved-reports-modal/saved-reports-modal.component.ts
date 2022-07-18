@@ -3,7 +3,7 @@ import {UserService, HttpService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {GridOptions, _} from 'ag-grid-community';
 import { DatePipe } from '@angular/common';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
 import {CommonService} from '../../shared/services/common.service';
 import {Router} from '@angular/router';
@@ -23,6 +23,8 @@ export class SavedReportsModalComponent implements OnInit {
   sideBarConfig: any;
   defaultColumn: any;
   defaultState: any;
+  firmName: string;
+  isFRC: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public agGridService: AgGridService,
@@ -30,6 +32,7 @@ export class SavedReportsModalComponent implements OnInit {
               public userService: UserService,
               public httpService: HttpService,
               public datepipe: DatePipe,
+              public dialogRef: MatDialogRef<SavedReportsModalComponent>,
               public router: Router) { }
 
   ngOnInit(): void {
@@ -42,11 +45,21 @@ export class SavedReportsModalComponent implements OnInit {
     for (const rec of this.savedReportData) {
       rec.print_date = this.dateFormatter(rec.print_date);
       rec.username = this.userService.currentUser.first_name + ' ' + this.userService.currentUser.last_name;
-      const temp = rec.filter_set.datestring.split('&');
-      rec.startdate = temp[1].split('=')[1];
-      rec.enddate = temp[2].split('=')[1];
-      rec.startdate = this.dateFormatter(rec.startdate);
-      rec.enddate = this.dateFormatter(rec.enddate);
+      if (rec.filter_set.datestring) {
+        const temp = rec.filter_set.datestring.split('&');
+        rec.startdate = temp[1].split('=')[1];
+        rec.enddate = temp[2].split('=')[1];
+        rec.startdate = this.dateFormatter(rec.startdate);
+        rec.enddate = this.dateFormatter(rec.enddate);
+        this.firmName = this.commonServ.pageSubtitle;
+      }
+      if (rec.filter_set.startdate) {
+        this.isFRC = true;
+        rec.startdate = this.dateFormatter(rec.filter_set.startdate);
+        rec.enddate = this.dateFormatter(rec.filter_set.enddate);
+        this.firmName = rec.firm_name;
+      }
+
     }
   }
 
@@ -79,10 +92,17 @@ export class SavedReportsModalComponent implements OnInit {
     }
     this.pendingRequest = this.httpService.makeDeleteRequest('deleteSavedExport', params).subscribe(
       (data: any) => {
+        if (this.isFRC) {
+          this.dialogRef.close({ deletedId: exportData.id});
+          return;
+        }
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate(['analytics-ui/firm/report-card/' + lawfirmId]);
         });
       }
     );
+  }
+  view(data): void {
+    this.dialogRef.close({ exportedData: data});
   }
 }

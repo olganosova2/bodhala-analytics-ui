@@ -10,6 +10,9 @@ import {VisibleKeyMetricsComponent} from './visible-key-metrics/visible-key-metr
 import {MatDialog} from '@angular/material/dialog';
 import {FrcNotesComponent} from './frc-notes/frc-notes.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
+import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
+import {BillingTotalsComponent} from '../billing-totals/billing-totals.component';
+import {DatesPickerComponent} from 'bodhala-ui-elements';
 
 @Component({
   selector: 'bd-frc-peer-firms',
@@ -20,10 +23,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   firmId: number; // = 292;
   firm: IPeerFirms;
-  peerFirms: Array<number> = MOCK_PEER_FIRMS;
   peerFirmsNames: Array<string> = [];
-  startDate: string = '2014-04-09';
-  endDate: string = '2019-07-30';
   frcData: Array<IPeerFirms> = [];
   summaryData: IPeerFirms;
   internalData: IPeerFirms;
@@ -34,7 +34,14 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   chartMetricData: Array<IMetricDisplayData> = [];
   note: IUiAnnotation;
   notes: Array<IUiAnnotation> = [];
+  savedReports: Array<any> = [];
   url: string;
+  frcCardSaved: boolean = false;
+  filterSet: any = {};
+  dpFilter: any;
+  dpFilter2: any;
+  @ViewChild('dpDates') dpDates: DatesPickerComponent;
+  @ViewChild('dpDates2') dpDates2: DatesPickerComponent;
 
   chart: any;
   options: any = Object.assign({}, barTkPercentOptions);
@@ -47,6 +54,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
               public frcService: FrcServiceService,
               public userService: UserService,
               public dialog: MatDialog,
+              public matDialog: MatDialog,
               public appStateService: AppStateService,
               public filtersService: FiltersService
   ) {
@@ -55,26 +63,41 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.dpFilter = Object.assign({}, this.commonServ.formatDatesPickerFilter());
+    this.dpFilter2 =  Object.assign({}, this.commonServ.formatDatesPickerFilter());
     this.url = this.commonServ.formatPath(window.location.pathname);
     this.route.paramMap.subscribe(params => {
       this.firmId = Number(params.get('id'));
+      this.setUpFilters();
       this.getPeerFirmsData();
       this.getAnnotations();
     });
   }
+  setUpFilters(): void {
+    this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
+    this.filterSet.peerFirms = MOCK_PEER_FIRMS;
+    // this.filterSet.startdate = '2014-04-09';
+    // this.filterSet.enddate = '2019-07-30';
+  }
 
   getPeerFirmsData(): void {
     this.summaryData = null;
-    const params = {clientId: this.userService.currentUser.client_info_id, startdate: this.startDate, enddate: this.endDate, firms: null};
+    this.chartMetricData = [];
+    // const params = {clientId: this.userService.currentUser.client_info_id, startdate: this.filterSet.startdate, enddate: this.filterSet.enddate, firms: null};
+    const params = Object.assign({}, this.filterSet);
     let arr = [];
     if (this.firmId) {
-      arr.push(this.firmId.toString());
-      arr = arr.concat(this.peerFirms);
+      arr.push(this.firmId);
+      arr = arr.concat(this.filterSet.peerFirms);
       params.firms = JSON.stringify(arr);
+    }
+    if (params.peerFirms) {
+      delete params.peerFirms;
     }
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {
         if (data.result && data.result.length > 0) {
+          this.checkSavedReports();
           this.frcData = data.result || [];
           const found = this.frcData.find(e => e.bh_lawfirm_id === this.firmId);
           this.summaryData = Object.assign({}, found);
@@ -83,7 +106,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
           this.internalRecords = this.frcData.filter(e => e.bh_lawfirm_id !== this.firmId) || [];
           this.peerFirmsNames = this.internalRecords.map(e => e.firm_name);
           this.internalData = this.frcService.calculatePeersData(this.internalRecords);
-          this.frcMetrics = this.frcService.buildMetrics(this.summaryData, this.internalData, this.internalRecords);
+          this.frcMetrics = this.frcService.buildMetrics(this.summaryData, this.internalData, this.frcData);
           this.summaryMetrics = this.frcMetrics.filter(e => e.keyMetric === false);
           this.keyMetrics = this.frcMetrics.filter(e => e.keyMetric === true);
           this.chartMetricData = this.frcService.formatPercentOfTkWorked(this.summaryData, this.internalData);
@@ -126,7 +149,25 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
 
   }
   viewSavedReports(): void {
+    const dialogConfig =  {
+      width: '60vw',
+    }
+    const modalConfig = {...dialogConfig, data: Object.assign([], this.savedReports)};
+    const dialogRef = this.matDialog.open(SavedReportsModalComponent, {...modalConfig, disableClose: false });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      if (result.deletedId) {
+        this.checkSavedReports();
+        return;
+      }
+      if (result.exportedData && result.exportedData.filter_set) {
+        this.filterSet = Object.assign({}, result.exportedData.filter_set);
+        this.getPeerFirmsData();
+      }
+    });
   }
   getAnnotations(): void {
     this.notes = [];
@@ -141,6 +182,25 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
         this.notes = data.result || [];
         if (this.notes.length > 0) {
           this.note = this.notes[0];
+        }
+      }
+    );
+  }
+  checkSavedReports(): void {
+    this.savedReports = [];
+    const params = {} as any;
+    const arr = [];
+    if (this.firmId) {
+      arr.push(this.firmId.toString());
+      params.firmId = JSON.stringify(arr);
+    }
+    this.pendingRequest = this.httpService.makeGetRequest<IUiAnnotation>('getSavedExports', params).subscribe(
+      (data: any) => {
+        this.savedReports = ( data.result || []).filter( e => e.page_name === this.commonServ.getPageId());
+        for (const rep of this.savedReports) {
+          if (this.firm) {
+            rep.firm_name = this.firm.firm_name;
+          }
         }
       }
     );
@@ -165,7 +225,14 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     });
   }
   saveFrc(): void {
-
+    this.commonServ.saveReport(this.firmId, this.filterSet).subscribe(
+        (data: any) => {
+          if (data && data.result) {
+            this.checkSavedReports();
+            this.frcCardSaved = true;
+          }
+        }
+      );
   }
   export(): void {
     this.commonServ.pdfLoading = true;
@@ -174,6 +241,14 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'frcDiv', null);
     }, 200);
+  }
+  setUpDates(): void {
+    const x = this.dpDates;
+
+  }
+  setUpDates2(): void {
+    const x = this.dpDates2;
+
   }
 
   ngOnDestroy() {

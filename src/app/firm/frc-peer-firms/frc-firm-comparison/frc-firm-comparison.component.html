@@ -1,0 +1,12 @@
+<div *ngIf="formattedMetrics && formattedMetrics.length > 0">
+  <ag-grid-angular
+      #agGrid
+      style="width: 100%; height:840px"
+      [pagination]="false"
+      class="ag-theme-alpine"
+      [sideBar]="sideBarConfig"
+      [rowData]="formattedMetrics"
+      [suppressAggFuncInHeader]="true"
+      [gridOptions]="gridOptions">
+  </ag-grid-angular>
+</div>

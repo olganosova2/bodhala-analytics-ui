@@ -1,14 +1,19 @@
-th {
-    border: .5px solid black;
-    padding: 5px;
-}
-td {
-    border: .5px solid black;
-    padding: 5px;
-}
+@import "../../../assets/styles/colors.scss";
+
 .action-button {
     border-radius: 4px;
     font-size: 14px;
     border-color: transparent;
     margin: 5px 5px;
+}
+
+td, th {
+  padding: 15px 10px;
+}
+td {
+  border: 1px solid $light-gray;
+}
+button {
+  font-family: Roboto Mono, "Helvetica Neue", sans-serif;
+  font-size: 12px;
 }

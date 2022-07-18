@@ -55,6 +55,7 @@ import {appRouterConfig} from './app.routes';
 import { InjectionToken } from '@angular/core';
 import { QuillModule } from 'ngx-quill';
 import { MultiSelectModule } from 'primeng/multiselect';
+
 import { MatStepperModule } from '@angular/material/stepper';
 
 
@@ -213,6 +214,8 @@ import { KeyMetricItemComponent } from './firm/frc-peer-firms/key-metric-item/ke
 import { VisibleKeyMetricsComponent } from './firm/frc-peer-firms/visible-key-metrics/visible-key-metrics.component';
 import { FrcNotesComponent } from './firm/frc-peer-firms/frc-notes/frc-notes.component';
 import { FrcTablesComponent } from './firm/frc-peer-firms/frc-tables/frc-tables.component';
+import { FrcFirmComparisonComponent } from './firm/frc-peer-firms/frc-firm-comparison/frc-firm-comparison.component';
+import { FrcComparisonCellComponent } from './firm/frc-peer-firms/frc-firm-comparison/frc-comparison-cell/frc-comparison-cell.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -378,7 +381,9 @@ highcharts.setOptions({
     KeyMetricItemComponent,
     VisibleKeyMetricsComponent,
     FrcNotesComponent,
-    FrcTablesComponent
+    FrcTablesComponent,
+    FrcFirmComparisonComponent,
+    FrcComparisonCellComponent
   ],
   entryComponents: [
     PillComponent,

@@ -46,6 +46,7 @@ import {MatterDocumentsOverviewComponent} from './matters/matter-executive-summa
 import {BenchmarkMattersComponent} from './admin/benchmark-matters/benchmark-matters.component';
 import {MatterBenchmarkingLandingComponent} from './matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
 import {FrcPeerFirmsComponent} from './firm/frc-peer-firms/frc-peer-firms.component';
+import {FrcFirmComparisonComponent} from './firm/frc-peer-firms/frc-firm-comparison/frc-firm-comparison.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -53,7 +54,7 @@ export const appRouterConfig: Routes = [
   {path: 'firm/:id', component: FirmComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/firm/:id', component: FirmComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'firm', component: FirmComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'analytics-ui/firm', component: FirmComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+ // {path: 'analytics-ui/firm', component: FirmComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'benchmarking', component: BenchmarkOverviewComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/benchmarking', component: BenchmarkOverviewComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'matter', component: MattersComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
@@ -93,6 +94,7 @@ export const appRouterConfig: Routes = [
   // FRC
   {path: 'analytics-ui/frc-peer-firms', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/firm/frc-peer-firms/:id', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/frc-firm-comparison', component: FrcFirmComparisonComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},

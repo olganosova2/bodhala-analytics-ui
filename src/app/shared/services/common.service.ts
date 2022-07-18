@@ -9,6 +9,10 @@ import {IUiAnnotation} from '../components/annotations/model';
 import {HELP_MODAL_CONFIG} from './config';
 import {HelpModalComponent} from '../components/help-modal/help-modal.component';
 import {MatDialog} from '@angular/material/dialog';
+import * as _moment from 'moment';
+
+const moment = _moment;
+
 export interface IClient {
   bh_client_id: number;
   org_id: number;
@@ -366,6 +370,41 @@ export class CommonService {
       result = prop.configs[0] ? prop.configs[0].json_config : null;
     }
     return result;
+  }
+  getPageId(): string {
+    return this.pageTitle + ' > ' + this.pageSubtitle;
+  }
+  saveReport(firmId: number, filterSet: any): any {
+    const params = {} as any;
+    params.filter_set = filterSet;
+    params.firmId = firmId;
+    params.pageName = this.getPageId();
+    const savedView = null;
+    params.savedView = savedView;
+    return this.httpService.makePostRequest('saveExport', params);
+  }
+  formatDatesPickerFilter(): any {
+    const filters = this.filtersService.getCurrentUserCombinedFilters();
+    return {
+      display: true,
+      displayName: 'Date Range',
+      exclude: false,
+      fieldName: 'dateRange',
+      filterGroup: 'Dates',
+      isCapped: false,
+      isMatterTag: false,
+      matterCollection: '',
+      maxDate: '2019-07-30',
+      maxRange: 0,
+      minDate: '2014-04-09',
+      minRange: 0,
+      options: null,
+      ordered: false,
+      preload: 0,
+      step: null,
+      type: 'DATERANGE',
+      value: { startDate: moment(filters.startdate), endDate: moment(filters.enddate) }
+    };
   }
 }
 

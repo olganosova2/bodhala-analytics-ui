@@ -56,13 +56,13 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   selectFirm(evt: number) {
     this.firmId = evt; // 8668; // 8635;
-    if (this.firmId) {
+   // if (this.firmId) {
       this.summaryData = null;
       this.getMatterInsight(evt);
       setTimeout(() => {
         this.totalMetrics.getMatterSummary();
       });
-    }
+    //}
   }
   assignData(evt: any): void {
     this.summaryData = evt.summaryData;

@@ -63,6 +63,7 @@ export const END_POINTS_URLS = {
   getFRCTimekeepers: {url: BASE_URL + 'analytics/getFRCTimekeepers', showLoading: false},
   getConfigByNameAndUserRecent: {url: BASE_URL + 'analytics/getConfigByNameAndUserRecent', showLoading: false},
   saveClientEntityConfig: {url: BASE_URL + 'analytics/saveClientConfig', showLoading: true},
+  getSpendByMatterTable: {url: BASE_URL + 'analytics/getSpendByMatterTable', showLoading: false},
 
   // executive summary
   getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},
