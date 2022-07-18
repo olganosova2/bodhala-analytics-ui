@@ -16,8 +16,11 @@
                 </tr>
                 <tr *ngFor="let firm of topFirms">
                   <td><a class="href-link-primary" href="/analytics-ui/firm/{{firm.id}}">{{firm.firm_name}}</a></td>
-                  <td>{{firm.avg_matter_cost_formatted}} <span *ngIf="firm.avg_matter_cost_trend > 0" class="arrow-up"><br/><em class="fa fa-arrow-up"></em> {{firm.avg_matter_cost_trend | number:'1.0-0'}}%</span>
-                    <span *ngIf="firm.avg_matter_cost_trend < 0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.avg_matter_cost_trend * -1) | number:'1.0-0'}}%</span></td>
+                  <td>{{firm.avg_matter_cost_formatted}}
+                    <span *ngIf="firm.avg_matter_cost_trend > 0" class="arrow-up"><br/><em class="fa fa-arrow-up"></em> {{firm.avg_matter_cost_trend | number:'1.0-0'}}%</span>
+                    <span *ngIf="firm.avg_matter_cost_trend < 0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.avg_matter_cost_trend * -1) | number:'1.0-0'}}%</span>
+                    <span *ngIf="firm.avg_matter_cost_trend === 0" style="color: gray;"><br/>N/A</span>
+                  </td>
                     <td>{{firm.block_billed_per | number:'1.0-0'}}% <span *ngIf="firm.block_billed_per_trend > 0" class="arrow-up"><br/><em  class="fa fa-arrow-up"></em> {{firm.block_billed_per_trend | number:'1.0-0'}}%</span>
                       <span *ngIf="firm.block_billed_per_trend<0" class="arrow-down"><br/><em  class="fa fa-arrow-down"></em> {{(firm.block_billed_per_trend * -1) | number:'1.0-0'}}%</span></td>
                     <td>{{firm.blended_rate_formatted}} <span *ngIf="firm.blended_rate_trend > 0" class="arrow-up"><br/><em  class="fa fa-arrow-up"></em> {{firm.blended_rate_trend | number:'1.0-0'}}%</span>
