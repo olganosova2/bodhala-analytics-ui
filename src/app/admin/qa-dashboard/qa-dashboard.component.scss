@@ -1,0 +1,13 @@
+@import "../../../assets/styles/colors.scss";
+@import "../../../assets/styles/variables.scss";
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid $light-gray;
+  vertical-align: top;
+}
+.action-box {
+  border: 1px solid $light-gray;
+  border-radius: 25px;
+  padding: 20px;
+}

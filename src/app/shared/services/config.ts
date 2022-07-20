@@ -204,7 +204,7 @@ export const END_POINTS_URLS = {
   getAdminRateInsight: {url: BASE_URL + 'admin/getAdminRateInsight', showLoading: true},
   getPeerFirmData: {url: BASE_URL + 'admin/getPeerFirmData', showLoading: true},
   saveMarketFirmData: {url: BASE_URL + 'admin/saveMarketFirmData', showLoading: true},
-
+  getQAHealthChecks: {url: BASE_URL + 'admin/getQAHealthChecks', showLoading: true},
 };
 
 export const ROUTES = [
@@ -231,6 +231,7 @@ export const ROUTES = [
   {name: 'matter.benchmarking', routePath: 'analytics-ui/admin/matter-benchmarks', fragment: '/admin/matter-benchmarks'},
   {name: 'app.rates-benchmarking.list', routePath: 'analytics-ui/admin/rate-benchmarks', fragment: '/admin/rate-benchmarks'},
   {name: 'app.yoy.rate.increase', routePath: 'analytics-ui/yoy-rate-increase', fragment: '/yoy-rate-increase'},
+  {name: 'app.qa-dashboard', routePath: 'analytics-ui/admin/qa-dashboard', fragment: '/qa-dashboard'},
 ];
 
 

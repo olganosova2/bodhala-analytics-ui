@@ -207,6 +207,8 @@ import { NamedTkAnalysisComponent } from './rates-analysis/view-rate-analysis/na
 import { PeerFirmsModalComponent } from './admin/admin-rate-benchmarks/peer-firms-modal/peer-firms-modal.component';
 import { ComparisonFirmsComponent } from './rates-analysis/view-rate-analysis/comparison-firms/comparison-firms.component';
 import { EditFirmsModalComponent } from './rates-analysis/view-rate-analysis/comparison-firms/edit-firms-modal/edit-firms-modal.component';
+import { QaDashboardComponent } from './admin/qa-dashboard/qa-dashboard.component';
+import { QaDashboardGridComponent } from './admin/qa-dashboard/qa-dashboard-grid/qa-dashboard-grid.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -366,7 +368,9 @@ highcharts.setOptions({
     NamedTkAnalysisComponent,
     PeerFirmsModalComponent,
     ComparisonFirmsComponent,
-    EditFirmsModalComponent
+    EditFirmsModalComponent,
+    QaDashboardComponent,
+    QaDashboardGridComponent
   ],
   entryComponents: [
     PillComponent,
