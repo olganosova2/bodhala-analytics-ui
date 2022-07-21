@@ -36,7 +36,7 @@ export class QaDashboardComponent implements OnInit {
               public dialog: MatDialog,
               public agGridService: AgGridService,
               public userService: UserService) {
-    this.commonServ.pageTitle = 'Data Validation Checks';
+    this.commonServ.pageTitle = 'Data QA Dashboard';
   }
 
   ngOnInit(): void {
