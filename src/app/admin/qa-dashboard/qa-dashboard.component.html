@@ -94,7 +94,7 @@
   </div>
   <div *ngIf="selectedClient" class=" panel-wrapper mt20">
     <h4>Timekeeper with Effective Rate > $2000</h4>
-    <div *ngIf="tkMoreThan24.length === 0">No records found.</div>
+    <div *ngIf="tkMoreThan2k.length === 0">No records found.</div>
     <bd-qa-dashboard-grid *ngIf="tkMoreThan2k.length > 0 && tkMoreThan2kCols.length > 0"
                           [rowData]="tkMoreThan2k" [columnDefs]="tkMoreThan2kCols" [gridHeight]="getGridHeight(tkMoreThan2k)">
     </bd-qa-dashboard-grid>
