@@ -28,6 +28,7 @@ export class QaDashboardComponent implements OnInit {
   tkMoreThan24Cols: Array<any> = [];
   tkMoreThan2k: Array<any> = [];
   tkMoreThan2kCols: Array<any> = [];
+  isLoading: boolean = false;
   constructor(private httpService: HttpService,
               public matterAnalysisService: MatterAnalysisService,
               public messageService: MessagingService,
@@ -44,7 +45,12 @@ export class QaDashboardComponent implements OnInit {
   }
 
   getInvalidDateLines(client: IClient): void {
+    this.isLoading = true;
     this.selectedClient = null;
+    this.invalidDateLines = [];
+    this.multipleMattersData = [];
+    this.tkMoreThan24 = [];
+    this.tkMoreThan2k = [];
     this.selectedClient = client;
     const params = {clientId: this.selectedClient.bh_client_id };
     this.pendingRequest = this.httpService.makeGetRequest('getQAHealthChecks', params).subscribe(
@@ -55,12 +61,15 @@ export class QaDashboardComponent implements OnInit {
           this.tkMoreThan24 = data.result.tk_more_24 || [];
           this.tkMoreThan2k = data.result.tk_more_2000 || [];
           this.formatColumns();
+          this.isLoading = false;
         }
       }
     );
   }
   formatColumns(): void {
     this.invalidDateLinesCols = [
+      { headerName: 'ID', field: 'id', ... this.defaultColumn, filter: 'agTextColumnFilter', width: 150, hide: true },
+
       { headerName: 'Line Item Date', field: 'line_item_date', ... this.defaultColumn, filter: 'agDateColumnFilter', width: 150, valueFormatter: this.dateFormatter , floatingFilter: true },
       { headerName: 'Invoice Date', field: 'invoice_date', ... this.defaultColumn, filter: 'agDateColumnFilter', width: 150, valueFormatter: this.dateFormatter , floatingFilter: true },
 

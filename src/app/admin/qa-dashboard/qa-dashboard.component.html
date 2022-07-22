@@ -6,7 +6,8 @@
 
   <div *ngIf="selectedClient" class=" panel-wrapper mt20">
     <h4>Incorrect Dates</h4>
-    <div *ngIf="invalidDateLines.length === 0">No records found.</div>
+    <div *ngIf="invalidDateLines.length === 0 && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
     <bd-qa-dashboard-grid *ngIf="invalidDateLines.length > 0 && invalidDateLinesCols.length > 0"
                           [rowData]="invalidDateLines" [columnDefs]="invalidDateLinesCols" [gridHeight]="getGridHeight(invalidDateLines)">
     </bd-qa-dashboard-grid>
@@ -30,7 +31,8 @@
   </div>
   <div *ngIf="selectedClient" class=" panel-wrapper mt20">
     <h4>Multiple matters names</h4>
-    <div *ngIf="multipleMattersData.length === 0">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
     <bd-qa-dashboard-grid *ngIf="multipleMattersData.length > 0 && multipleMattersData.length > 0"
                           [rowData]="multipleMattersData" [columnDefs]="multipleMattersCols" [gridHeight]="'650px'">
     </bd-qa-dashboard-grid>
@@ -59,7 +61,8 @@
   </div>
   <div *ngIf="selectedClient" class=" panel-wrapper mt20">
     <h4>TK Daily Billing greater than 24 hours/day</h4>
-    <div *ngIf="tkMoreThan24.length === 0">No records found.</div>
+    <div *ngIf="tkMoreThan24.length === 0  && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
     <bd-qa-dashboard-grid *ngIf="tkMoreThan24.length > 0 && tkMoreThan24Cols.length > 0"
                           [rowData]="tkMoreThan24" [columnDefs]="tkMoreThan24Cols" [gridHeight]="getGridHeight(tkMoreThan24)">
     </bd-qa-dashboard-grid>
@@ -94,7 +97,8 @@
   </div>
   <div *ngIf="selectedClient" class=" panel-wrapper mt20">
     <h4>Timekeeper with Effective Rate > $2000</h4>
-    <div *ngIf="tkMoreThan2k.length === 0">No records found.</div>
+    <div *ngIf="tkMoreThan2k.length === 0  && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
     <bd-qa-dashboard-grid *ngIf="tkMoreThan2k.length > 0 && tkMoreThan2kCols.length > 0"
                           [rowData]="tkMoreThan2k" [columnDefs]="tkMoreThan2kCols" [gridHeight]="getGridHeight(tkMoreThan2k)">
     </bd-qa-dashboard-grid>
