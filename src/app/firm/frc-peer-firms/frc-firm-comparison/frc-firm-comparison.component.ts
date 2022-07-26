@@ -60,15 +60,15 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   }
   initColumns(): void {
     const defs = [];
-    let column = {headerName: 'Metric', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  floatingFilter: true, pinned: true };
+    let column = {headerName: '', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  floatingFilter: true, pinned: true, cellStyle: {'font-weight': '600' }};
     defs.push(column);
     const averageColumn = Object.assign({}, this.comparisonData[0]);
-    column = {headerName: 'Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  floatingFilter: true, pinned: true,
+    column = {headerName: 'Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  floatingFilter: true, pinned: true, headerClass: 'text-underline',
       cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: averageColumn}};
     defs.push(column);
     for (const sub of this.comparisonData) {
-      const col = {headerName: sub.firm_name, field: this.getFieldName(sub.bh_lawfirm_id), ...this.defaultColumn, width: 200, suppressMenu: true, editable: true,
-         cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: sub} };
+      const col = {headerName: sub.firm_name, field: this.getFieldName(sub.bh_lawfirm_id), ...this.defaultColumn, width: 180, suppressMenu: true, editable: true, headerClass: 'text-underline',
+         cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: sub}, cellStyle: {'border-left-color': '#cccccc'} };
       defs.push(col);
     }
     this.gridOptions.columnDefs = Object.assign([], defs);

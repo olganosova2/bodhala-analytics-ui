@@ -129,6 +129,8 @@ export interface IPeerFirms {
   percent_associate_hours?: number;
   percent_legal_assistant_hours?: number;
   percent_paralegal_hours?: number;
+  minority_hours?: number;
+  female_hours?: number;
 }
 export enum MetricType {
   AveragePartnerRate = 'avg_partner_rate',
@@ -139,9 +141,9 @@ export enum MetricType {
   TotalHours = 'total_hours_billed',
   AvgerageMatterCost = 'avg_matter_cost',
   AvgerageMatterHours = 'avg_matter_hours',
-  PartnerHours = 'partner_hours',
-  AssociateHours = 'associate_hours',
-  ParalegalHours = 'paralegal_hours',
+  PartnerHours = 'percent_partner_hours',
+  AssociateHours = 'percent_associate_hours',
+  ParalegalHours = 'percent_paralegal_hours',
   BlockBilling = 'percent_total_block_billed',
   AverageParalegalRate = 'avg_paralegal_rate',
   AverageLegalAssistant = 'avg_legal_assistant_rate'
@@ -150,14 +152,14 @@ export enum MetricTypeComparison {
   TotalSpend = 'total_billed',
   TotalMatters = 'total_matters',
   TotalHours = 'total_hours_billed',
-  AvgerageMatterCost = 'avg_matter_cost',
-  AvgerageMatterHours = 'avg_matter_hours',
   BlendedRate = 'blended_rate',
   AveragePartnerRate = 'avg_partner_rate',
   AverageAssociateRate = 'avg_associate_rate',
-  PartnerHours = 'partner_hours',
-  AssociateHours = 'associate_hours',
-  ParalegalHours = 'paralegal_hours',
+  PartnerHours = 'percent_partner_hours',
+  AssociateHours = 'percent_associate_hours',
+  ParalegalHours = 'percent_paralegal_hours',
+  AvgerageMatterCost = 'avg_matter_cost',
+  AvgerageMatterHours = 'avg_matter_hours',
   BlockBilling = 'percent_total_block_billed',
   AverageLegalAssistant = 'avg_legal_assistant_rate',
   AverageParalegalRate = 'avg_paralegal_rate'
@@ -204,7 +206,8 @@ export class FrcServiceService {
     summaryData.total_tk_hours = (summaryData.partner_hours - summaryData.partner_writeoff) + (summaryData.associate_hours - summaryData.associate_writeoff_hours) +
       (summaryData.legal_assistant_hours - summaryData.legal_assistant_writeoff_hours) + (summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours);
     summaryData.total_billed = includeExpenses ? summaryData.total_billed + summaryData.total_expenses : summaryData.total_billed;
-    summaryData.percent_total_block_billed =  summaryData.total_block_billed / (summaryData.total_billed || 1) * 100;
+    const billedByLawyers = summaryData.partner_billed + summaryData.associate_billed;
+    summaryData.percent_total_block_billed =  summaryData.total_block_billed / (billedByLawyers || 1) * 100;
     const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
     const lawyerHours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours);
     summaryData.blended_rate = lawyerBilled / (lawyerHours || 1);
@@ -313,7 +316,11 @@ export class FrcServiceService {
         increase: firmData[MetricType[metricName]] ? ((summaryData[MetricType[metricName]] / firmData[MetricType[metricName]]) - 1) * 100 : 0,
         direction: firmData[MetricType[metricName]] > summaryData[MetricType[metricName]] ? -1 : 1,
         keyMetric: false
+      };
+      if (metricName === 'BlockBilling' || metricName === 'PartnerHours' || metricName === 'AssociateHours' || metricName === 'ParalegalHours') {
+        metric.increase = summaryData[MetricType[metricName]] - firmData[MetricType[metricName]];
       }
+      metric.increase = Math.abs(metric.increase);
       if (ix > 2) {
         metric.keyMetric = true;
       }
@@ -384,6 +391,21 @@ export class FrcServiceService {
         metric.label = 'Paralegal Hours Worked';
         metric.icon = 'clock-sm.png';
         break;
+      case 'percent_partner_hours':
+        metric.label = 'Partner Hours Worked';
+        metric.icon = 'clock-sm.png';
+        metric.format = 'percent';
+        break;
+      case 'percent_associate_hours':
+        metric.label = 'Associate Hours Worked';
+        metric.icon = 'clock-sm.png';
+        metric.format = 'percent';
+        break;
+      case 'percent_paralegal_hours':
+        metric.label = 'Paralegal Hours Worked';
+        metric.icon = 'clock-sm.png';
+        metric.format = 'percent';
+        break;
       default:
         metric.icon = 'bills.svg';
         break;
@@ -402,7 +424,6 @@ export class FrcServiceService {
     const compareRecords = Object.assign([], marketRecords.sort(this.utilService.dynamicSort(prop)));
 
     const values = compareRecords.map(e => e[prop]);
-    values.push(actual);
     const stdRec = this.commonServ.getStandardDeviation(values);
     const avgRec = values.reduce((a, b) => a + b) / (values.length || 1);
     const zRec = (actual - avgRec) / (stdRec || 1);
@@ -410,7 +431,7 @@ export class FrcServiceService {
     const maxRec = compareRecords[compareRecords.length - 1];
     const bmDiff = maxRec[prop] - minRec[prop];
 
-    if (prop !== 'partner_hours' && prop !== 'associate_hours' && prop !== 'paralegal_hours') {
+    if (prop !== 'percent_partner_hours' && prop !== 'percent_associate_hours' && prop !== 'percent_paralegal_hours') {
       if (zRec <= -0.5) {
         tk.grade = MetricGrade.GOOD;
       } else if (zRec > -0.5 && zRec < 0.5)  {

@@ -106,6 +106,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
           this.internalRecords = this.frcData.filter(e => e.bh_lawfirm_id !== this.firmId) || [];
           this.peerFirmsNames = this.internalRecords.map(e => e.firm_name);
           this.internalData = this.frcService.calculatePeersData(this.internalRecords);
+          const originals = this.frcService.calculatePeersData(this.frcData);
           this.frcMetrics = this.frcService.buildMetrics(this.summaryData, this.internalData, this.frcData);
           this.summaryMetrics = this.frcMetrics.filter(e => e.keyMetric === false);
           this.keyMetrics = this.frcMetrics.filter(e => e.keyMetric === true);
