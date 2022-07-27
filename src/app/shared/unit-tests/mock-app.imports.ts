@@ -162,6 +162,8 @@ import {CustomInternalMattersComponent} from '../../matters/matter-executive-sum
 import {MatterBenchmarkingLandingComponent} from '../../matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
 import {TableHeaderSortComponent} from '../components/table-header-sort/table-header-sort.component';
 import {BmTimekeepersTableComponent} from '../../matters/matter-executive-summary/bm-timekeepers-table/bm-timekeepers-table.component';
+import {QaDashboardGridComponent} from '../../admin/qa-dashboard/qa-dashboard-grid/qa-dashboard-grid.component';
+import {QaDashboardComponent} from '../../admin/qa-dashboard/qa-dashboard.component';
 
 
 
@@ -318,7 +320,9 @@ export const DECLARATIONS = [
   CustomInternalMattersComponent,
   MatterBenchmarkingLandingComponent,
   TableHeaderSortComponent,
-  BmTimekeepersTableComponent
+  BmTimekeepersTableComponent,
+  QaDashboardGridComponent,
+  QaDashboardComponent
 ];
 
 export const PROVIDERS = [
