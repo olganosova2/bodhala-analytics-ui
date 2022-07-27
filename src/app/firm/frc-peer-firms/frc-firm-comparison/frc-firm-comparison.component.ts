@@ -123,6 +123,17 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   getFieldName(id: number): string {
     return 'firm_' + id.toString();
   }
+  goBack(): void {
+
+  }
+  export(): void {
+    this.commonServ.pdfLoading = true;
+    const exportName = 'Firm Report Card Comparison';
+
+    setTimeout(() => {
+      this.commonServ.generatePdfOuter(exportName, 'frcDiv', null);
+    }, 200);
+  }
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {

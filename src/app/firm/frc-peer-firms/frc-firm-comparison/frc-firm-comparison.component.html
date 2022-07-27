@@ -1,7 +1,15 @@
+<div id="frcDiv">
+  <div class="justify-between mr20 mb15">
+  <h1 class="roboto-bold">Firm Report Card Comparison</h1>
+    <div>
+      <button (click)="goBack()" class="primary-button mr10"><em class="fa fa-chevron-left mr10"></em><span>Back</span></button>
+      <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
+    </div>
+  </div>
 <div *ngIf="formattedMetrics && formattedMetrics.length > 0">
   <ag-grid-angular
       #agGrid
-      style="width: 100%; height:840px"
+      style="width: 100%; height:920px"
       [pagination]="false"
       class="ag-theme-alpine"
       [sideBar]="sideBarConfig"
@@ -9,4 +17,5 @@
       [suppressAggFuncInHeader]="true"
       [gridOptions]="gridOptions">
   </ag-grid-angular>
+</div>
 </div>

@@ -5,12 +5,12 @@
   </div>
   <div class="flex-container bottom-border" [ngClass]="{'bottom-border' : this.filteredMetrics.length > 5}">
     <div *ngFor="let item of filteredMetrics.slice(0, itemTopRowCount);let i=index;" class="flex-item">
-      <bd-key-metric-item [item]="item" [isLastCell]="item.lastCell"></bd-key-metric-item>
+      <bd-key-metric-item [item]="item" [isLastCell]="item.lastCell" [totalMetrics]="this.filteredMetrics.length"></bd-key-metric-item>
     </div>
   </div>
   <div class="flex-container" *ngIf="this.filteredMetrics.length > 5">
     <div *ngFor="let item of filteredMetrics.slice(itemTopRowCount);let i=index;" class="flex-item">
-      <bd-key-metric-item [item]="item" [isLastCell]="item.lastCell"></bd-key-metric-item>
+      <bd-key-metric-item [item]="item" [isLastCell]="item.lastCell" [totalMetrics]="this.filteredMetrics.length"></bd-key-metric-item>
     </div>
   </div>
 <!--  <div class="spinner-card" [hidden]="isLoaded">-->

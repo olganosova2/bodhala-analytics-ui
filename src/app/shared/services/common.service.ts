@@ -383,8 +383,16 @@ export class CommonService {
     params.savedView = savedView;
     return this.httpService.makePostRequest('saveExport', params);
   }
-  formatDatesPickerFilter(): any {
-    const filters = this.filtersService.getCurrentUserCombinedFilters();
+  formatDatesPickerFilter(startDate: string, endDate: string): any {
+    const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    const tempFiltersDict = JSON.parse(tempFilters);
+    let savedMaxDate = moment().format('YYYT-MM-DD');
+    let savedMinDate = moment().add(-10, 'years').format('YYYT-MM-DD');
+    const found = tempFiltersDict.dataFilters.find(e => e.fieldName === 'dateRange');
+    if (found) {
+      savedMaxDate = found.maxDate;
+      savedMinDate = found.minDate;
+    }
     return {
       display: true,
       displayName: 'Date Range',
@@ -394,16 +402,16 @@ export class CommonService {
       isCapped: false,
       isMatterTag: false,
       matterCollection: '',
-      maxDate: '2019-07-30',
+      maxDate: savedMaxDate,
       maxRange: 0,
-      minDate: '2014-04-09',
+      minDate: savedMinDate,
       minRange: 0,
       options: null,
       ordered: false,
       preload: 0,
       step: null,
       type: 'DATERANGE',
-      value: { startDate: moment(filters.startdate), endDate: moment(filters.enddate) }
+      value: { startDate: moment(startDate), endDate: moment(endDate) }
     };
   }
 }

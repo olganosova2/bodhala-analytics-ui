@@ -13,6 +13,9 @@ import {IUiAnnotation} from '../../shared/components/annotations/model';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
 import {BillingTotalsComponent} from '../billing-totals/billing-totals.component';
 import {DatesPickerComponent} from 'bodhala-ui-elements';
+import * as _moment from 'moment';
+
+const moment = _moment;
 
 @Component({
   selector: 'bd-frc-peer-firms',
@@ -63,8 +66,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.dpFilter = Object.assign({}, this.commonServ.formatDatesPickerFilter());
-    this.dpFilter2 =  Object.assign({}, this.commonServ.formatDatesPickerFilter());
+
     this.url = this.commonServ.formatPath(window.location.pathname);
     this.route.paramMap.subscribe(params => {
       this.firmId = Number(params.get('id'));
@@ -76,6 +78,10 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   setUpFilters(): void {
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
     this.filterSet.peerFirms = MOCK_PEER_FIRMS;
+    this.dpFilter = Object.assign({}, this.commonServ.formatDatesPickerFilter(this.filterSet.startdate, this.filterSet.enddate));
+    const compaStartdate = moment(this.filterSet.startdate).add(-1, 'years').format('YYYY-MM-DD');
+    const compaEnddate = moment(this.filterSet.enddate).add(-1, 'years').format('YYYY-MM-DD');
+    this.dpFilter2 =  Object.assign({}, this.commonServ.formatDatesPickerFilter(compaStartdate, compaEnddate));
     // this.filterSet.startdate = '2014-04-09';
     // this.filterSet.enddate = '2019-07-30';
   }
@@ -152,7 +158,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   viewSavedReports(): void {
     const dialogConfig =  {
       width: '60vw',
-    }
+    };
     const modalConfig = {...dialogConfig, data: Object.assign([], this.savedReports)};
     const dialogRef = this.matDialog.open(SavedReportsModalComponent, {...modalConfig, disableClose: false });
 
@@ -211,7 +217,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     const dialogConfig =  {
       height: '400px',
       width: '60vw',
-    }
+    };
     const modalConfig = {...dialogConfig, data: Object.assign([], packaged)};
     const dialogRef = this.dialog.open(FrcNotesComponent, {...modalConfig, disableClose: false });
 

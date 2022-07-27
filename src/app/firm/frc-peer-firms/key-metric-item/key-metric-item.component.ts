@@ -9,6 +9,7 @@ import {IMetricDisplayData} from '../frc-service.service';
 export class KeyMetricItemComponent implements OnInit {
   @Input() isLastCell: boolean = false;
   @Input() item: IMetricDisplayData;
+  @Input() totalMetrics: number = 12;
 
   constructor() { }
 

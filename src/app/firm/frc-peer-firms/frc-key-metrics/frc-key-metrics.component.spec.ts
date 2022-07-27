@@ -6,7 +6,7 @@ import {FrcPeerFirmsComponent} from '../frc-peer-firms.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
-import * as mockServices from  '../../../shared/unit-tests/mock-services';
+import * as mockServices from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 
 describe('FrcKeyMetricsComponent', () => {

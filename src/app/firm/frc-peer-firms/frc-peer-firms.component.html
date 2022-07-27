@@ -9,8 +9,10 @@
     <div class="justify-between mr20">
       <div>
         <div class="frc-page-title roboto-bold mb15">{{ firm?.firm_name}}</div>
-<!--        <lib-dates-picker #dpDates class="filter-button" [filter]="dpFilter" [allFilters]="[]" [isExternal]="true" (datesChangeRequested)="setUpDates()"></lib-dates-picker>-->
-<!--        <lib-dates-picker #dpDates2 class="filter-button" [filter]="dpFilter" [allFilters]="[]" [isExternal]="true" (datesChangeRequested)="setUpDates2()"></lib-dates-picker>-->
+        <div *ngIf="dpFilter">
+          <lib-dates-picker #dpDates class="filter-button" [filter]="dpFilter" [allFilters]="[]" [isExternal]="true" (datesChangeRequested)="setUpDates()"></lib-dates-picker>
+          <lib-dates-picker #dpDates2 class="filter-button" [filter]="dpFilter2" [allFilters]="[]" [isExternal]="true" (datesChangeRequested)="setUpDates2()"></lib-dates-picker>
+        </div>
         <div class="roboto-bold">Timeframe: <span class="font-gray font-normal">{{ this.filterSet.startdate | date: 'MMM dd, yyyy' }} - {{ this.filterSet.enddate | date: 'MMM dd, yyyy' }}</span></div>
       </div>
       <div class="mt20">
@@ -26,7 +28,7 @@
       </div>
       <div>
         <span class="totals-badge oval-label-black mr5">Comparison Firms Report</span>
-        <span class="totals-badge oval-label-white pointer-hand" [routerLink]="['/analytics-ui/frc-trends']"  [queryParams]="{firmId: firmId}">Trend Analysis Report</span>
+        <span class="totals-badge oval-label-white pointer-hand" [routerLink]="['/analytics-ui/frc-trends', firmId]" >Trend Analysis Report</span>
 
       </div>
     </div>

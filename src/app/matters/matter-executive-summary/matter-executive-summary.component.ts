@@ -46,24 +46,27 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
               public router: Router,
               public dialog: MatDialog,
               public utilService: UtilService,
-              public matterAnalysisService: MatterAnalysisService) { }
+              public matterAnalysisService: MatterAnalysisService) {
+  }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {  this.matterId = params.matterId; });
+    this.route.queryParams.subscribe(params => {
+      this.matterId = params.matterId;
+    });
     if (!this.matterId) {
       this.matterId = HARDCODED_MATTER_ID;
     }
   }
+
   selectFirm(evt: number) {
     this.firmId = evt; // 8668; // 8635;
-   // if (this.firmId) {
-      this.summaryData = null;
-      this.getMatterInsight(evt);
-      setTimeout(() => {
-        this.totalMetrics.getMatterSummary();
-      });
-    //}
+    this.summaryData = null;
+    this.getMatterInsight(evt);
+    setTimeout(() => {
+      this.totalMetrics.getMatterSummary();
+    });
   }
+
   assignData(evt: any): void {
     this.summaryData = evt.summaryData;
     this.marketData = evt.marketData;
@@ -72,6 +75,7 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
     this.internalRecords = evt.internalRecords;
     this.internalMatters = evt.internalMatters;
   }
+
   getMatterInsight(firmId: number): void {
     const params = {client_id: this.userService.currentUser.client_info_id, matter_id: this.matterId, firm_id: firmId};
     this.pendingRequest = this.httpService.makeGetRequest<IInsight>('getMatterInsight', params).subscribe(
@@ -82,9 +86,11 @@ export class MatterExecutiveSummaryComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   toggleInsight(toExpand: boolean): void {
     this.insightExpanded = toExpand;
   }
+
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {

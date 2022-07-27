@@ -46,9 +46,9 @@ export class FrcKeyMetricsComponent implements OnInit {
   openDetails(): void {
     const packaged = { filteredMetrics: this.filteredMetrics,  keyMetrics: this.keyMetrics};
     const dialogConfig =  {
-      height: '400px',
+      height: '450px',
         width: '40vw',
-    }
+    };
     const modalConfig = {...dialogConfig, data: Object.assign([], packaged)};
     const dialogRef = this.dialog.open(VisibleKeyMetricsComponent, {...modalConfig, disableClose: false });
 
