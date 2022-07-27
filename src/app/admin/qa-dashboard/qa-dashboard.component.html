@@ -1,0 +1,110 @@
+<div class="">
+  <div class="font-bold mb20 mt15">Please select a client</div>
+  <div class="mt10">
+    <bd-client-drop-down (clientSelected)="getInvalidDateLines($event)"></bd-client-drop-down>
+  </div>
+
+  <div *ngIf="selectedClient" class=" panel-wrapper mt20">
+    <h4>Incorrect Dates</h4>
+    <div *ngIf="invalidDateLines.length === 0 && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
+    <bd-qa-dashboard-grid *ngIf="invalidDateLines.length > 0 && invalidDateLinesCols.length > 0"
+                          [rowData]="invalidDateLines" [columnDefs]="invalidDateLinesCols" [gridHeight]="getGridHeight(invalidDateLines)">
+    </bd-qa-dashboard-grid>
+<!--    <table class="full-width mt15" *ngIf="invalidDateLines.length > 0">-->
+<!--      <tr class="font-bold">-->
+<!--        <th>Date</th>-->
+<!--        <th>Line #</th>-->
+<!--        <th>Matter ID</th>-->
+<!--        <th>Firm</th>-->
+<!--        <th>Batch ID</th>-->
+<!--      </tr>-->
+<!--      <tr *ngFor="let line of invalidDateLines">-->
+<!--        <td>{{line.line_item_date | date: 'mediumDate'}}</td>-->
+<!--        <td>{{line.line_item_number}}</td>-->
+<!--        <td>{{line.matter_name}}</td>-->
+<!--        <td>{{line.firm_name}}</td>-->
+<!--        <td>{{line.bh_batch_id}}</td>-->
+<!--      </tr>-->
+<!--    </table>-->
+    <div class="font-bold mt15 action-box" *ngIf="invalidDateLines.length>0">ACTION: Update line_item_date = invoice_date</div>
+  </div>
+  <div *ngIf="selectedClient" class=" panel-wrapper mt20">
+    <h4>Multiple matters names</h4>
+    <div *ngIf="multipleMattersData.length === 0 && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
+    <bd-qa-dashboard-grid *ngIf="multipleMattersData.length > 0 && multipleMattersData.length > 0"
+                          [rowData]="multipleMattersData" [columnDefs]="multipleMattersCols" [gridHeight]="'650px'">
+    </bd-qa-dashboard-grid>
+    <!--    <table class="full-width mt15" *ngIf="multipleMattersData.length > 0">-->
+    <!--      <tr class="font-bold">-->
+    <!--        <th>Firm</th>-->
+    <!--        <th>Client Matter ID</th>-->
+    <!--        <th>Matters count</th>-->
+    <!--        <th>Matter names</th>-->
+    <!--      </tr>-->
+    <!--      <tr *ngFor="let line of multipleMattersData">-->
+    <!--        <td>{{line.firm}}</td>-->
+    <!--        <td>{{line.client_matter_id}}</td>-->
+    <!--        <td>{{line.matter_count}}</td>-->
+    <!--        <td>-->
+    <!--          <div *ngFor="let matter of line.matter_names; let i=index">-->
+    <!--            <span *ngIf="i < 20">{{matter}}</span>-->
+    <!--          </div>-->
+    <!--        </td>-->
+
+    <!--      </tr>-->
+    <!--    </table>-->
+    <div class="font-bold mt15 action-box" *ngIf="multipleMattersData.length>0">
+      ACTION: Use this list to identify Matter Names that contain <i>” … for professional services rendered … ”</i> consider, renaming these matters to a more descriptive name if known/provided.
+    </div>
+  </div>
+  <div *ngIf="selectedClient" class=" panel-wrapper mt20">
+    <h4>TK Daily Billing greater than 24 hours/day</h4>
+    <div *ngIf="tkMoreThan24.length === 0  && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
+    <bd-qa-dashboard-grid *ngIf="tkMoreThan24.length > 0 && tkMoreThan24Cols.length > 0"
+                          [rowData]="tkMoreThan24" [columnDefs]="tkMoreThan24Cols" [gridHeight]="getGridHeight(tkMoreThan24)">
+    </bd-qa-dashboard-grid>
+<!--    <table class="full-width mt15" *ngIf="tkMoreThan24.length > 0">-->
+<!--      <tr class="font-bold">-->
+<!--        <th>Date</th>-->
+<!--        <th>Timekeeper</th>-->
+<!--        <th>Classification</th>-->
+<!--        <th>Firm</th>-->
+<!--        <th>Batch Id</th>-->
+<!--        <th>Hours</th>-->
+<!--        <th>Matters</th>-->
+<!--        <th>Total Billed</th>-->
+<!--      </tr>-->
+<!--      <tr *ngFor="let line of tkMoreThan24">-->
+<!--        <td>{{line.line_item_date | date: 'mediumDate'}}</td>-->
+<!--        <td>{{line.tk_name}}</td>-->
+<!--        <td>{{line.bh_classification}}</td>-->
+<!--        <td>{{line.firm_name}}</td>-->
+<!--        <td>{{line.bh_batch_id}}</td>-->
+<!--        <td>{{line.hours}}</td>-->
+<!--        <td>{{line.matters}}</td>-->
+<!--        <td>${{line.total_billed | number:'1.0-0'}}</td>-->
+
+<!--      </tr>-->
+<!--    </table>-->
+    <div class="font-bold mt15 action-box" *ngIf="tkMoreThan24.length>0">
+      ACTION: Verify in the raw file, if the law firm sent invoice data where the line_item_date = invoice_date for the impacted rows. If so, then ask the law firm to update the data to reflect the actual line_item_date for the line items.<br/>
+     - <br/>
+      Note, on the Bodhala platform these rows will be reflected on the Firm>Timekeeper>High Daily Billers Page.
+    </div>
+  </div>
+  <div *ngIf="selectedClient" class=" panel-wrapper mt20">
+    <h4>Timekeeper with Effective Rate > $2000</h4>
+    <div *ngIf="tkMoreThan2k.length === 0  && !isLoading">No records found.</div>
+    <div *ngIf="multipleMattersData.length === 0 && isLoading">Loading ...</div>
+    <bd-qa-dashboard-grid *ngIf="tkMoreThan2k.length > 0 && tkMoreThan2kCols.length > 0"
+                          [rowData]="tkMoreThan2k" [columnDefs]="tkMoreThan2kCols" [gridHeight]="getGridHeight(tkMoreThan2k)">
+    </bd-qa-dashboard-grid>
+    <div class="font-bold mt15 action-box" *ngIf="tkMoreThan2k.length>0">
+      ACTION: Check the invoice for positive IFs that should be applied as follows: is_afa = TRUE and line_item_adjustment_code = ‘F’.
+    </div>
+  </div>
+
+</div>

@@ -13,6 +13,11 @@
     </div>
   </div>
   <mat-dialog-content>
+    <div *ngIf="inProgress" style="position: absolute; padding-left: 700px;">
+      <mat-spinner></mat-spinner>
+      Saving the Rate BM and calculating market averages and panel rates
+    </div>
+
     <mat-vertical-stepper #stepper>
       <form [formGroup]="benchmarkForm">
         <mat-step #firmStep [stepControl]="benchmarkForm" errorMessage="Firm is required." [hasError]="firmStep.interacted && firmStep.isErrorState && benchmarkForm.value.firm === null">

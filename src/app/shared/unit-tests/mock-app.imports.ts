@@ -170,6 +170,8 @@ import {FrcNotesComponent} from '../../firm/frc-peer-firms/frc-notes/frc-notes.c
 import {FrcTablesComponent} from '../../firm/frc-peer-firms/frc-tables/frc-tables.component';
 import {FrcFirmComparisonComponent} from '../../firm/frc-peer-firms/frc-firm-comparison/frc-firm-comparison.component';
 import {FrcComparisonCellComponent} from '../../firm/frc-peer-firms/frc-firm-comparison/frc-comparison-cell/frc-comparison-cell.component';
+import {QaDashboardGridComponent} from '../../admin/qa-dashboard/qa-dashboard-grid/qa-dashboard-grid.component';
+import {QaDashboardComponent} from '../../admin/qa-dashboard/qa-dashboard.component';
 
 
 
@@ -335,6 +337,9 @@ export const DECLARATIONS = [
   FrcTablesComponent,
   FrcFirmComparisonComponent,
   FrcComparisonCellComponent
+  BmTimekeepersTableComponent,
+  QaDashboardGridComponent,
+  QaDashboardComponent
 ];
 
 export const PROVIDERS = [

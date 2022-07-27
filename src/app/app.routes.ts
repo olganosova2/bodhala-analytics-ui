@@ -47,6 +47,7 @@ import {BenchmarkMattersComponent} from './admin/benchmark-matters/benchmark-mat
 import {MatterBenchmarkingLandingComponent} from './matters/matter-executive-summary/matter-benchmarking-landing/matter-benchmarking-landing.component';
 import {FrcPeerFirmsComponent} from './firm/frc-peer-firms/frc-peer-firms.component';
 import {FrcFirmComparisonComponent} from './firm/frc-peer-firms/frc-firm-comparison/frc-firm-comparison.component';
+import {QaDashboardComponent} from './admin/qa-dashboard/qa-dashboard.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -115,8 +116,9 @@ export const appRouterConfig: Routes = [
   // {path: 'analytics-ui/admin/rate-benchmarks/:clientId', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/insights', component: AdminInsightsComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
   {path: 'analytics-ui/admin/matter-benchmarks', component: BenchmarkMattersComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
+  {path: 'analytics-ui/admin/qa-dashboard', component: QaDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},
 
-  //
+  // QaDashboardComponent
 
   {path: '**',  component: LaunchpadComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}}
   ];

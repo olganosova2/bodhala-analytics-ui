@@ -31,6 +31,21 @@ export interface IRateBenchmark {
   deleted_on?: string;
   modified_by?: string;
   modified_on?: string;
+  blended_market_hi: number;
+  blended_market_lo: number;
+  blended_market_internal: number;
+  blended_market_num_firms: number;
+  blended_internal_num_firms: number;
+  partner_market_lo: number;
+  partner_market_hi: number;
+  partner_internal: number;
+  partner_market_num_firms: number;
+  partner_internal_num_firms: number;
+  associate_market_lo: number;
+  associate_market_hi: number;
+  associate_internal: number;
+  associate_market_num_firms: number;
+  associate_internal_num_firms: number;
 }
 
 export interface INamedTimekeepersRateBM {

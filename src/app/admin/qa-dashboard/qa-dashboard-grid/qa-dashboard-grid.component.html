@@ -1,0 +1,16 @@
+<div *ngIf="loaded">
+  <div class="card-wrapper clear-both mt20">
+    <ag-grid-angular
+        #agGrid
+        style="width: 100%;"
+        [ngStyle]="{'height': gridHeight}"
+        class="ag-theme-alpine"
+        [pagination]="true"
+        [paginationPageSize]="paginationPageSize"
+        [sideBar]="sideBarConfig"
+        [rowData]="rowData"
+        [getRowHeight]="getRowHeight"
+        [gridOptions]="gridOptions">
+    </ag-grid-angular>
+  </div>
+</div>

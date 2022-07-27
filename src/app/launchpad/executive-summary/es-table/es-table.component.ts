@@ -238,9 +238,8 @@ export class EsTableComponent implements OnInit {
 
     for (const firm of this.topFirms) {
       for (const priorYearFirm of this.topFirmsPriorYear) {
-
         if (priorYearFirm.firm_name === firm.firm_name) {
-          if (firm.avg_matter_cost > 0 && firm.avg_matter_cost !== null && firm.avg_matter_cost !== undefined) {
+          if (firm.avg_matter_cost > 0 && firm.avg_matter_cost !== null && firm.avg_matter_cost !== undefined && priorYearFirm.avg_matter_cost > 0 && priorYearFirm.avg_matter_cost !== null && priorYearFirm.avg_matter_cost !== undefined) {
             if (firm.avg_matter_cost > priorYearFirm.avg_matter_cost) {
               firm.avg_matter_cost_trend = ((firm.avg_matter_cost / priorYearFirm.avg_matter_cost) - 1) * 100;
             } else {

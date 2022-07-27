@@ -57,9 +57,9 @@ export class RatesAnalysisComponent implements OnInit {
       {headerName: 'Year', field: 'year', ...this.defaultColumn, width: 75, cellStyle: {fontFamily: 'Roboto'}},
       {headerName: 'Cost Impact', field: 'cost_impact', ...this.defaultColumn, cellRenderer: this.costImpactCellRenderer.bind(this)},
       {headerName: 'Historical Cost Impact', field: 'year', ...this.defaultColumn, width: 165, cellRenderer: this.historicalCostRenderer.bind(this)},
-      {headerName: 'Average Assoc. Rate', field: 'associate_rate', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer, width: 105},
+      {headerName: 'Average Assoc. Rate', field: 'firm_associate_rate', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer, width: 105},
       {headerName: 'Assoc. +/- Per Hour', field: 'assoc_lower_diff', ...this.defaultColumn, width: 210, cellRenderer: this.associateRateDiffRenderer.bind(this)},
-      {headerName: 'Average Partner Rate', field: 'partner_rate', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer, width: 95},
+      {headerName: 'Average Partner Rate', field: 'firm_partner_rate', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer, width: 95},
       {headerName: 'Partner +/- Per Hour', field: 'partner_lower_diff', ...this.defaultColumn, width: 210, cellRenderer: this.partnerRateDiffRenderer.bind(this)},
       {cellRenderer: this.viewCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.view.bind(this)},
     ];
@@ -96,90 +96,58 @@ export class RatesAnalysisComponent implements OnInit {
     for (const bm of this.clientRateBenchmarks) {
       // still need to determine how cost impact severity is calculated (Certain % of spend?)
       bm.cost_impact = 'TBD';
-      bm.partner_rate = 0;
-      bm.associate_rate = 0;
-      if (bm.firm_data) {
-        if (bm.firm_data.length > 0) {
-          let tempFirmData = bm.firm_data[0];
-          tempFirmData = tempFirmData[0];
-          bm.firm_data = tempFirmData;
-          if (tempFirmData !== undefined  && tempFirmData !== null) {
-            bm.associate_rate = tempFirmData.avg_associate_rate;
-            bm.partner_rate = tempFirmData.avg_partner_rate;
-            bm.blended_rate = tempFirmData.blended_rate;
-            bm.total_atty_hours = tempFirmData.total_atty_hours;
-            bm.total_atty_billed = tempFirmData.total_atty_billed;
-          } else {
-            bm.associate_rate = null;
-            bm.partner_rate = null;
-            bm.blended_rate = null;
-            bm.total_atty_hours = null;
-            bm.total_atty_billed = null;
-          }
 
+      if (bm.associate_market_hi && bm.associate_market_lo) {
+        if (bm.firm_associate_rate >= bm.associate_market_hi) {
+          bm.assoc_lower_diff = bm.firm_associate_rate - bm.associate_market_hi;
+          bm.assoc_upper_diff = bm.firm_associate_rate - bm.associate_market_lo;
+          bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.associate_market_hi;
+          bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.associate_market_lo;
+          bm.assoc_within_range = false;
+        } else if (bm.firm_associate_rate <= bm.associate_market_lo) {
+          bm.assoc_lower_diff = bm.firm_associate_rate - bm.associate_market_lo;
+          bm.assoc_upper_diff = bm.firm_associate_rate - bm.associate_market_hi;
+          bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.firm_associate_rate;
+          bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.firm_associate_rate;
+          bm.assoc_within_range = false;
+        } else {
+          bm.assoc_within_range = true;
+        }
+      }
+      if (bm.partner_market_hi && bm.partner_market_lo) {
+        if (bm.firm_partner_rate >= bm.partner_market_hi) {
+          bm.partner_lower_diff = bm.firm_partner_rate - bm.partner_market_hi;
+          bm.partner_upper_diff = bm.firm_partner_rate - bm.partner_market_lo;
+          bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_market_hi;
+          bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_market_lo;
+          bm.partner_within_range = false;
+        } else if (bm.firm_partner_rate <= bm.partner_market_lo) {
+          bm.partner_lower_diff = bm.firm_partner_rate - bm.partner_market_lo;
+          bm.partner_upper_diff = bm.firm_partner_rate - bm.partner_market_hi;
+          bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_market_lo;
+          bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_market_hi;
+          bm.partner_within_range = false;
+        } else {
+          bm.partner_within_range = true;
         }
       }
 
-      if (bm.associate_market_data) {
-        if (bm.associate_market_data.length > 0) {
-          bm.associate_market_data = bm.associate_market_data[0];
-          if (bm.associate_rate >= bm.associate_market_data.associate_hi) {
-            bm.assoc_lower_diff = bm.associate_rate - bm.associate_market_data.associate_hi;
-            bm.assoc_upper_diff = bm.associate_rate - bm.associate_market_data.associate_lo;
-            bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.associate_market_data.associate_hi;
-            bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.associate_market_data.associate_lo;
-            bm.assoc_within_range = false;
-          } else if (bm.associate_rate <= bm.associate_market_data.associate_lo) {
-            bm.assoc_lower_diff = bm.associate_rate - bm.associate_market_data.associate_lo;
-            bm.assoc_upper_diff = bm.associate_rate - bm.associate_market_data.associate_hi;
-            bm.assoc_lower_diff_pct = bm.assoc_lower_diff / bm.associate_rate;
-            bm.assoc_upper_diff_pct = bm.assoc_upper_diff / bm.associate_rate;
-            bm.assoc_within_range = false;
-          } else {
-            bm.assoc_within_range = true;
-          }
-        }
-      }
-      if (bm.partner_market_data) {
-        if (bm.partner_market_data.length > 0) {
-          bm.partner_market_data = bm.partner_market_data[0];
-          if (bm.partner_rate >= bm.partner_market_data.partner_hi) {
-            bm.partner_lower_diff = bm.partner_rate - bm.partner_market_data.partner_hi;
-            bm.partner_upper_diff = bm.partner_rate - bm.partner_market_data.partner_lo;
-            bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_market_data.partner_hi;
-            bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_market_data.partner_lo;
-            bm.partner_within_range = false;
-          } else if (bm.partner_rate <= bm.partner_market_data.partner_lo) {
-            bm.partner_lower_diff = bm.partner_rate - bm.partner_market_data.partner_lo;
-            bm.partner_upper_diff = bm.partner_rate - bm.partner_market_data.partner_hi;
-            bm.partner_lower_diff_pct = bm.partner_lower_diff / bm.partner_market_data.partner_lo;
-            bm.partner_upper_diff_pct = bm.partner_upper_diff / bm.partner_market_data.partner_hi;
-            bm.partner_within_range = false;
-          } else {
-            bm.partner_within_range = true;
-          }
-        }
-      }
-
-      if (bm.blended_market_data) {
-        if (bm.blended_market_data.length > 0) {
-          bm.blended_market_data = bm.blended_market_data[0];
-          if (bm.firm_data !== undefined && bm.firm_data !== null) {
-            const costImpactResult = this.ratesService.calculateHistoricalCostImpact(bm.firm_data, bm.blended_market_data);
-            bm.blended_rate_lower_diff = costImpactResult.blended_rate_lower_diff;
-            bm.blended_rate_upper_diff = costImpactResult.blended_rate_upper_diff;
-            bm.blended_rate_lower_diff_pct = costImpactResult.blended_rate_lower_diff_pct;
-            bm.blended_rate_upper_diff_pct = costImpactResult.blended_rate_upper_diff_pct;
-            bm.cost_impact = costImpactResult.cost_impact;
-            bm.blended_within_range = costImpactResult.blended_within_range;
-          } else {
-            bm.blended_rate_lower_diff = null;
-            bm.blended_rate_upper_diff = null;
-            bm.blended_rate_lower_diff_pct = null;
-            bm.blended_rate_upper_diff_pct = null;
-            bm.cost_impact = null;
-            bm.blended_within_range = null;
-          }
+      if (bm.blended_market_hi && bm.blended_market_lo) {
+        if (bm.firm_blended_rate !== undefined && bm.firm_blended_rate !== null) {
+          const costImpactResult = this.ratesService.calculateHistoricalCostImpact(bm);
+          bm.blended_rate_lower_diff = costImpactResult.blended_rate_lower_diff;
+          bm.blended_rate_upper_diff = costImpactResult.blended_rate_upper_diff;
+          bm.blended_rate_lower_diff_pct = costImpactResult.blended_rate_lower_diff_pct;
+          bm.blended_rate_upper_diff_pct = costImpactResult.blended_rate_upper_diff_pct;
+          bm.cost_impact = costImpactResult.cost_impact;
+          bm.blended_within_range = costImpactResult.blended_within_range;
+        } else {
+          bm.blended_rate_lower_diff = null;
+          bm.blended_rate_upper_diff = null;
+          bm.blended_rate_lower_diff_pct = null;
+          bm.blended_rate_upper_diff_pct = null;
+          bm.cost_impact = null;
+          bm.blended_within_range = null;
         }
       }
     }
@@ -194,7 +162,7 @@ export class RatesAnalysisComponent implements OnInit {
     let result = '';
     if (params.value !== null) {
       if (params.data.assoc_within_range) {
-        result = 'Within range (' + moneyFormatter.format(params.data.associate_market_data.associate_lo) + ' - ' + moneyFormatter.format(params.data.associate_market_data.associate_hi) + ')';
+        result = 'Within range (' + moneyFormatter.format(params.data.associate_market_lo) + ' - ' + moneyFormatter.format(params.data.associate_market_hi) + ')';
       } else if (params.data.assoc_lower_diff_pct < 0 && params.data.assoc_upper_diff_pct < 0) {
         result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.assoc_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.assoc_upper_diff * -1)) + '</span>' +
                   '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.assoc_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.assoc_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
@@ -213,7 +181,7 @@ export class RatesAnalysisComponent implements OnInit {
     let result = '';
     if (params.value !== null) {
       if (params.data.partner_within_range) {
-        result = 'Within range (' + moneyFormatter.format(params.data.partner_market_data.partner_lo) + ' - ' + moneyFormatter.format(params.data.partner_market_data.partner_hi) + ')';
+        result = 'Within range (' + moneyFormatter.format(params.data.partner_market_lo) + ' - ' + moneyFormatter.format(params.data.partner_market_hi) + ')';
       } else if (params.data.partner_lower_diff_pct < 0 && params.data.partner_upper_diff_pct < 0) {
         result = '<span class="rate-span" style="color: #3EDB73; font-family: Roboto Bold; font-size: 12px;">-' + moneyFormatter.format((params.data.partner_lower_diff * -1)) + ' - ' + moneyFormatter.format((params.data.partner_upper_diff * -1)) + '</span>' +
                   '<span class="pct-span" style="background: #3EDB73; margin-left: 0.5em; font-family: Roboto; font-size: 12px; border-radius: 17px; width: 82px; padding: 8px 8px; color: white;">' + percentFormatter.format((params.data.partner_lower_diff_pct * -1)) + ' - ' + percentFormatter.format((params.data.partner_upper_diff_pct * -1)) + '  <em class="fa fa-arrow-down" style="color: white;"></em</span>';
