@@ -175,6 +175,24 @@ export enum MetricTypeComparison {
   FemaleHours = 'percent_female_hours',
   MinorityHours = 'percent_minority_hours'
 }
+export enum MetricTypeTrends {
+  TotalSpend = 'total_billed',
+  TotalMatters = 'total_matters',
+  TotalHours = 'total_hours_billed',
+  AvgerageMatterCost = 'avg_matter_cost',
+  AvgerageMatterHours = 'avg_matter_hours',
+  BlendedRate = 'blended_rate',
+  AveragePartnerRate = 'avg_partner_rate',
+  AverageAssociateRate = 'avg_associate_rate',
+  PartnerHours = 'percent_partner_hours',
+  AssociateHours = 'percent_associate_hours',
+  ParalegalHours = 'percent_paralegal_hours',
+  BlockBilling = 'percent_total_block_billed',
+  AverageLegalAssistant = 'avg_legal_assistant_rate',
+  AverageParalegalRate = 'avg_paralegal_rate',
+  // FemaleHours = 'percent_female_hours',
+  // MinorityHours = 'percent_minority_hours'
+}
 
 export interface IMetricDisplayData {
   metricType?: MetricType;
@@ -368,7 +386,12 @@ export class FrcServiceService {
         metric.keyMetric = true;
       }
       this.getMetricIconAndLabel(metric);
-      this.getGrade(metric, summaryData, firmsRecords);
+      if (firmsRecords.length === 0) {
+        this.getTrendsGrade(metric, summaryData);
+      }else{
+        this.getGrade(metric, summaryData, firmsRecords);
+      }
+
       result.push(metric);
       ix += 1;
     }
@@ -418,6 +441,14 @@ export class FrcServiceService {
       } else {
         tk.grade = MetricGrade.POOR;
       }
+    }
+  }
+  getTrendsGrade(tk: IMetricDisplayData, summaryData: IPeerFirms): void {
+    const prop = tk.fieldName;
+    tk.grade = MetricGrade.NODATA;
+    if (prop === 'total_billed' || prop === 'total_hours_billed' || prop === 'total_matters' || prop === 'avg_matter_cost' || prop === 'avg_matter_hours' ||
+      prop === 'percent_partner_hours' || prop === 'percent_associate_hours' || prop === 'percent_paralegal_hours') {
+      return;
     }
   }
 

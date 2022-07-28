@@ -1,0 +1,12 @@
+@import "../../../../assets/styles/colors.scss";
+.left-titles {
+  width: 40%;
+}
+:host ::ng-deep {
+  .filters-panel {
+    height: 430px !important;
+    .btn {
+      font-family: 'Sharp Sans', sans-serif !important;
+    }
+  }
+}

@@ -48,6 +48,7 @@ import {MatterBenchmarkingLandingComponent} from './matters/matter-executive-sum
 import {FrcPeerFirmsComponent} from './firm/frc-peer-firms/frc-peer-firms.component';
 import {FrcFirmComparisonComponent} from './firm/frc-peer-firms/frc-firm-comparison/frc-firm-comparison.component';
 import {QaDashboardComponent} from './admin/qa-dashboard/qa-dashboard.component';
+import {FrcTrendsComponent} from './firm/frc-peer-firms/frc-trends/frc-trends.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -96,6 +97,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/frc-peer-firms', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/firm/frc-peer-firms/:id', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/frc-firm-comparison', component: FrcFirmComparisonComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/frc-trends/:id', component: FrcTrendsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   // ADMIN
   {path: 'analytics-ui/admin/benchmarks', component: AdminBenchmarksComponent,  canActivate: [AuthService], data: {expectedRoles: ['ADMIN']}},

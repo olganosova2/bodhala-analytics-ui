@@ -16,6 +16,7 @@ export class FrcKeyMetricsComponent implements OnInit {
   itemTopRowCount: number = 6;
   filteredMetrics: Array<IMetricDisplayData> = [];
   savedMetrics: Array<string> = [];
+  isTrends: boolean = false;
   @Input() keyMetrics: Array<IMetricDisplayData> = [];
 
   constructor(private httpService: HttpService,
@@ -27,7 +28,13 @@ export class FrcKeyMetricsComponent implements OnInit {
               public filtersService: FiltersService) { }
 
   ngOnInit(): void {
-    this.filteredMetrics = this.frcService.processSavedMetrics(this.keyMetrics);
+    const url = this.commonServ.formatPath(window.location.pathname);
+    if (url.indexOf('frc-trends') > 0) {
+      this.isTrends = true;
+      this.filteredMetrics = Object.assign([], this.keyMetrics);
+    }else {
+      this.filteredMetrics = this.frcService.processSavedMetrics(this.keyMetrics);
+    }
     this.filterMetrics();
   }
   filterMetrics(): void {

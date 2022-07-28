@@ -1,4 +1,15 @@
-<div id="frcDiv">
+<div>
+  <div>
+    <lib-bd-filters
+      (sendFilters)="refreshData($event)"
+      [pageName]="pageName"
+      [excludeFilters]="excludeFilters"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+</div>
+<div class="pt40" *ngIf="noFirmsSelected">Please select at least one Firm</div>
+<div class="pt40" id="frcDiv" *ngIf="!noFirmsSelected">
   <div class="justify-between mr20 mb15">
   <h1 class="roboto-bold">Firm Report Card Comparison</h1>
     <div>
@@ -18,4 +29,7 @@
       [gridOptions]="gridOptions">
   </ag-grid-angular>
 </div>
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
 </div>

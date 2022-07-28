@@ -59,11 +59,12 @@ export const END_POINTS_URLS = {
   spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
   getDiversityChartData: {url: BASE_URL + 'analytics/getDiversityChartData', showLoading: true},
-  getFRCKeyMetrics: {url: BASE_URL + 'analytics/getFRCKeyMetrics', showLoading: true},
+  getFRCKeyMetrics: {url: BASE_URL + 'analytics/getFRCKeyMetrics', showLoading: false},
   getFRCTimekeepers: {url: BASE_URL + 'analytics/getFRCTimekeepers', showLoading: false},
   getConfigByNameAndUserRecent: {url: BASE_URL + 'analytics/getConfigByNameAndUserRecent', showLoading: false},
   saveClientEntityConfig: {url: BASE_URL + 'analytics/saveClientConfig', showLoading: true},
   getSpendByMatterTable: {url: BASE_URL + 'analytics/getSpendByMatterTable', showLoading: false},
+  getComparisonFRCKeyMetrics: {url: BASE_URL + 'analytics/getComparisonFRCKeyMetrics', showLoading: true},
 
   // executive summary
   getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},

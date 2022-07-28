@@ -31,6 +31,10 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   firstLoad: boolean = true;
   paginationPageSize: any = 10;
   metrics: any = MetricTypeComparison;
+  excludeFilters: Array<string> = [];
+  pageName: string = 'analytics-ui/frc-firm-comparison/';
+  noFirmsSelected: boolean = false;
+  isLoaded: boolean = false;
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -52,11 +56,21 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.gridOptions.headerHeight = 60;
     this.setUpFilters();
-    this.getPeerFirmsData();
   }
   setUpFilters(): void {
+    this.noFirmsSelected = true;
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
-    this.filterSet.peerFirms = MOCK_PEER_FIRMS_ALL;
+    if (!this.filterSet.firms) {
+      return;
+    }
+    const jsonFirms = JSON.parse(this.filterSet.firms);
+    if (jsonFirms.length === 0){
+      return;
+    }
+    this.noFirmsSelected = false;
+    setTimeout(() => {
+      this.getPeerFirmsData();
+    });
   }
   initColumns(): void {
     const defs = [];
@@ -74,17 +88,23 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.gridOptions.columnDefs = Object.assign([], defs);
     this.firstLoad = false;
   }
+  refreshData(evt: any): void {
+    this.setUpFilters();
+  }
   getPeerFirmsData(): void {
+    this.isLoaded = false;
+    this.formattedMetrics = [];
+    if (this.noFirmsSelected) {
+      return;
+    }
     const params = Object.assign({}, this.filterSet);
     let arr = [];
-    arr = arr.concat(this.filterSet.peerFirms);
+    arr = arr.concat(JSON.parse(this.filterSet.firms));
     params.firms = JSON.stringify(arr);
 
-    if (params.peerFirms) {
-      delete params.peerFirms;
-    }
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {
+        this.isLoaded = true;
         if (data.result && data.result.length > 0) {
           this.frcData = data.result || [];
           this.comparisonData = this.frcService.formatFRCComparisonFirmsData(this.frcData);

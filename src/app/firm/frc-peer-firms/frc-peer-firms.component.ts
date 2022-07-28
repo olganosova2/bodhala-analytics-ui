@@ -41,11 +41,10 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   url: string;
   frcCardSaved: boolean = false;
   filterSet: any = {};
-  dpFilter: any;
-  dpFilter2: any;
-  @ViewChild('dpDates') dpDates: DatesPickerComponent;
-  @ViewChild('dpDates2') dpDates2: DatesPickerComponent;
-
+  excludeFilters: Array<string> = [];
+  pageName: string = 'analytics-ui/frc-peer-firms/';
+  noFirmsSelected: boolean = false;
+  isLoaded: boolean = false;
   chart: any;
   options: any = Object.assign({}, barTkPercentOptions);
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
@@ -62,7 +61,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService
   ) {
     this.commonServ.pageTitle = 'Firm Report Card';
-    this.commonServ.pageSubtitle = 'Peer Firm Comparison';
+    this.commonServ.pageSubtitle = 'Comparison Firms Report';
   }
 
   ngOnInit(): void {
@@ -76,36 +75,46 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     });
   }
   setUpFilters(): void {
+    this.noFirmsSelected = false;
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
-    this.filterSet.peerFirms = MOCK_PEER_FIRMS;
-    this.dpFilter = Object.assign({}, this.commonServ.formatDatesPickerFilter(this.filterSet.startdate, this.filterSet.enddate));
-    const compaStartdate = moment(this.filterSet.startdate).add(-1, 'years').format('YYYY-MM-DD');
-    const compaEnddate = moment(this.filterSet.enddate).add(-1, 'years').format('YYYY-MM-DD');
-    this.dpFilter2 =  Object.assign({}, this.commonServ.formatDatesPickerFilter(compaStartdate, compaEnddate));
-    // this.filterSet.startdate = '2014-04-09';
-    // this.filterSet.enddate = '2019-07-30';
+    if (!this.filterSet.firms) {
+      this.noFirmsSelected = true;
+      return;
+    }
+    const jsonFirms = JSON.parse(this.filterSet.firms);
+    if (jsonFirms.length === 0 || (jsonFirms.length === 1 && jsonFirms[0] === this.firmId)){
+      this.noFirmsSelected = true;
+    }
+    // this.filterSet.firms = MOCK_PEER_FIRMS;
   }
 
   getPeerFirmsData(): void {
+    this.isLoaded = false;
     this.summaryData = null;
+    this.frcMetrics = [];
+    this.summaryMetrics = [];
+    this.keyMetrics = [];
     this.chartMetricData = [];
-    // const params = {clientId: this.userService.currentUser.client_info_id, startdate: this.filterSet.startdate, enddate: this.filterSet.enddate, firms: null};
+    if (this.noFirmsSelected) {
+      return;
+    }
     const params = Object.assign({}, this.filterSet);
     let arr = [];
     if (this.firmId) {
       arr.push(this.firmId);
-      arr = arr.concat(this.filterSet.peerFirms);
+      arr = arr.concat(JSON.parse(this.filterSet.firms));
       params.firms = JSON.stringify(arr);
-    }
-    if (params.peerFirms) {
-      delete params.peerFirms;
     }
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {
+        this.isLoaded = true;
         if (data.result && data.result.length > 0) {
           this.checkSavedReports();
           this.frcData = data.result || [];
-          const found = this.frcData.find(e => e.bh_lawfirm_id === this.firmId);
+          let found = this.frcData.find(e => e.bh_lawfirm_id === this.firmId);
+          if (!found){
+            found = this.frcService.createEmptySingleFirmData();
+          }
           this.summaryData = Object.assign({}, found);
           this.firm = Object.assign({}, found);
           this.frcService.calculateSingleFirmData(this.summaryData);
@@ -120,6 +129,10 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
         }
       }
     );
+  }
+  refreshData(evt: any): void {
+    this.setUpFilters();
+    this.getPeerFirmsData();
   }
 
   saveInstance(chartInstance): void {
@@ -243,19 +256,11 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   }
   export(): void {
     this.commonServ.pdfLoading = true;
-    const exportName = this.firm.firm_name + '- FRC';
+    const exportName = this.firm.firm_name + '- Comparison Firms Report';
 
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'frcDiv', null);
     }, 200);
-  }
-  setUpDates(): void {
-    const x = this.dpDates;
-
-  }
-  setUpDates2(): void {
-    const x = this.dpDates2;
-
   }
 
   ngOnDestroy() {

@@ -217,6 +217,7 @@ import { FrcFirmComparisonComponent } from './firm/frc-peer-firms/frc-firm-compa
 import { FrcComparisonCellComponent } from './firm/frc-peer-firms/frc-firm-comparison/frc-comparison-cell/frc-comparison-cell.component';
 import { QaDashboardComponent } from './admin/qa-dashboard/qa-dashboard.component';
 import { QaDashboardGridComponent } from './admin/qa-dashboard/qa-dashboard-grid/qa-dashboard-grid.component';
+import { FrcTrendsComponent } from './firm/frc-peer-firms/frc-trends/frc-trends.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -384,10 +385,11 @@ highcharts.setOptions({
     FrcNotesComponent,
     FrcTablesComponent,
     FrcFirmComparisonComponent,
-    FrcComparisonCellComponent
+    FrcComparisonCellComponent,
     EditFirmsModalComponent,
     QaDashboardComponent,
-    QaDashboardGridComponent
+    QaDashboardGridComponent,
+    FrcTrendsComponent
   ],
   entryComponents: [
     PillComponent,
