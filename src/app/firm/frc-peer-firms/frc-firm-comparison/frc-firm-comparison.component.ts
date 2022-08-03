@@ -34,7 +34,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   excludeFilters: Array<string> = [];
   pageName: string = 'analytics-ui/frc-firm-comparison/';
   noFirmsSelected: boolean = false;
-  isLoaded: boolean = false;
+  isLoaded: boolean = true;
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
               public commonServ: CommonService,
@@ -74,10 +74,10 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   }
   initColumns(): void {
     const defs = [];
-    let column = {headerName: '', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  floatingFilter: true, pinned: true, cellStyle: {'font-weight': '600' }};
+    let column = {headerName: '', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  pinned: true, cellStyle: {'font-weight': '600' }};
     defs.push(column);
     const averageColumn = Object.assign({}, this.comparisonData[0]);
-    column = {headerName: 'Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  floatingFilter: true, pinned: true, headerClass: 'text-underline',
+    column = {headerName: 'Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  pinned: true, headerClass: 'text-underline',
       cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: averageColumn}};
     defs.push(column);
     for (const sub of this.comparisonData) {
@@ -92,11 +92,11 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.setUpFilters();
   }
   getPeerFirmsData(): void {
-    this.isLoaded = false;
     this.formattedMetrics = [];
     if (this.noFirmsSelected) {
       return;
     }
+    this.isLoaded = false;
     const params = Object.assign({}, this.filterSet);
     let arr = [];
     arr = arr.concat(JSON.parse(this.filterSet.firms));

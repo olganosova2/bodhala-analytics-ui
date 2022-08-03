@@ -2,7 +2,8 @@ import {Injectable} from '@angular/core';
 import {FiltersService} from '../../shared/services/filters.service';
 import {IMatterExecSummary, MetricCardType, MetricGrade} from '../../matters/matter-executive-summary/model';
 import {CommonService} from '../../shared/services/common.service';
-import {UtilService} from 'bodhala-ui-common';
+import {HttpService, UtilService, UserService} from 'bodhala-ui-common';
+import {forkJoin} from 'rxjs';
 
 export const MOCK_PEER_FIRMS_ALL = [4, 724, 8, 23, 59, 92, 20, 292, 63, 924];
 export const MOCK_PEER_FIRMS = [4, 8, 23, 59, 92, 20, 292, 63, 924];
@@ -93,6 +94,23 @@ export const barTkPercentOptions = {
       data: []
     }]
 };
+
+export enum TrendsChartMode  {
+  YoY = 'YoY',
+  QoQ = 'QoQ'
+}
+export enum TrendChart {
+  TOTAL_SPEND = 'TOTAL_SPEND',
+  MATTER_COST = 'MATTER_COST',
+  PARTNER_HOURS = 'PARTNER_HOURS',
+  ASSOCIATE_HOURS = 'ASSOCIATE_HOURS',
+  PARALEGAL_HOURS = 'PARALEGAL_HOURS',
+  AVG_MATTER_DURATION = 'AVG_MATTER_DURATION',
+  BLENDED_RATE = 'BLENDED_RATE',
+  PARTNER_RATE = 'PARTNER_RATE',
+  ASSOCIATE_RATE = 'ASSOCIATE_RATE',
+  BLOCK_BILLING = 'BLOCK_BILLING'
+}
 
 export interface IPeerFirms {
   bh_lawfirm_id: number;
@@ -190,8 +208,8 @@ export enum MetricTypeTrends {
   BlockBilling = 'percent_total_block_billed',
   AverageLegalAssistant = 'avg_legal_assistant_rate',
   AverageParalegalRate = 'avg_paralegal_rate',
-  // FemaleHours = 'percent_female_hours',
-  // MinorityHours = 'percent_minority_hours'
+  FemaleHours = 'percent_female_hours',
+  MinorityHours = 'percent_minority_hours'
 }
 
 export interface IMetricDisplayData {
@@ -230,7 +248,8 @@ export class FrcServiceService {
 
   constructor(public filtersService: FiltersService,
               public utilService: UtilService,
-              public userService: UtilService,
+              public userService: UserService,
+              public httpService: HttpService,
               public commonServ: CommonService) {
   }
 
@@ -450,6 +469,37 @@ export class FrcServiceService {
       prop === 'percent_partner_hours' || prop === 'percent_associate_hours' || prop === 'percent_paralegal_hours') {
       return;
     }
+    if (prop === 'percent_female_hours' || prop === 'percent_minority_hours') {
+      const delta = (tk.increase / (tk.firms || 1)) * 100;
+      if (tk.direction === 1) {
+        tk.grade = MetricGrade.GOOD;
+        return;
+      }
+      if (tk.direction === -1 && Math.abs(delta) <= 10) {
+        tk.grade = MetricGrade.FAIR;
+        return;
+      }
+      if (tk.direction === -1 && Math.abs(delta) > 10) {
+        tk.grade = MetricGrade.POOR;
+        return;
+      }
+    }
+    if (tk.direction === -1) {
+      tk.grade = MetricGrade.GOOD;
+      return;
+    }
+    let increase =  tk.increase;
+    if (prop === 'percent_total_block_billed') {
+      increase = (tk.increase / (tk.firms || 1)) * 100;
+    }
+    if (tk.direction === 1 && Math.abs(increase) <= 10) {
+      tk.grade = MetricGrade.FAIR;
+      return;
+    }
+    if (tk.direction === 1 && Math.abs(increase) > 10) {
+      tk.grade = MetricGrade.POOR;
+      return;
+    }
   }
 
   getMetricIconAndLabel(metric: IMetricDisplayData): void {
@@ -596,6 +646,23 @@ export class FrcServiceService {
 
   getPercentOfWork(current: number, total: number): number {
     return current = current / (total || 1) * 100;
+  }
+  getYearQuarterData(id: any): any {
+    const paramsYear = { clientId: this.userService.currentUser.client_info_id, firms: null};
+    const arr = [];
+    arr.push(id);
+    paramsYear.firms = JSON.stringify(arr);
+    const paramsQuoter = {firmId: id};
+    const quarterResponse = this.httpService.makeGetRequest('spendByQuarter', paramsQuoter);
+    const yearResponse = this.httpService.makeGetRequest('getSpendByYear', paramsYear);
+    return forkJoin([quarterResponse, yearResponse]);
+  }
+  calcBlendedRate(rec: any): number {
+    const result = 0;
+    if (!rec.partner_hours) {
+      return result;
+    }
+    return (rec.total_partner_billed + rec.total_associate_billed - rec.total_partner_writeoff - rec.total_associate_writeoff) / (rec.partner_hours + rec.associate_hours - rec.partner_writeoff_hours - rec.associate_writeoff_hours);
   }
 
 

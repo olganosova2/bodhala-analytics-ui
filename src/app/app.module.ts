@@ -88,6 +88,7 @@ import { BenchmarkRowComponent } from './benchmarks/benchmark-row/benchmark-row.
 import { BenchmarksGridComponent } from './benchmarks/benchmarks-grid/benchmarks-grid.component';
 import { TwoBarsComponent } from './benchmarks/two-bars/two-bars.component';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {PanelModule} from 'primeng/panel';
 import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
@@ -218,6 +219,7 @@ import { FrcComparisonCellComponent } from './firm/frc-peer-firms/frc-firm-compa
 import { QaDashboardComponent } from './admin/qa-dashboard/qa-dashboard.component';
 import { QaDashboardGridComponent } from './admin/qa-dashboard/qa-dashboard-grid/qa-dashboard-grid.component';
 import { FrcTrendsComponent } from './firm/frc-peer-firms/frc-trends/frc-trends.component';
+import { FrcTrendsChartComponent } from './firm/frc-peer-firms/frc-trends-chart/frc-trends-chart.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -389,7 +391,8 @@ highcharts.setOptions({
     EditFirmsModalComponent,
     QaDashboardComponent,
     QaDashboardGridComponent,
-    FrcTrendsComponent
+    FrcTrendsComponent,
+    FrcTrendsChartComponent
   ],
   entryComponents: [
     PillComponent,
@@ -453,7 +456,8 @@ highcharts.setOptions({
     QuillModule.forRoot(),
     ClickOutsideModule,
     MultiSelectModule,
-    AceEditorModule
+    AceEditorModule,
+    PanelModule
   ],
   providers: [CookieService,
     UserService,

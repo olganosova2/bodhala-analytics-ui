@@ -25,7 +25,7 @@ const moment = _moment;
 export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   firmId: number; // = 292;
-  firm: IPeerFirms;
+  firm: any;
   peerFirmsNames: Array<string> = [];
   frcData: Array<IPeerFirms> = [];
   summaryData: IPeerFirms;
@@ -44,7 +44,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   excludeFilters: Array<string> = [];
   pageName: string = 'analytics-ui/frc-peer-firms/';
   noFirmsSelected: boolean = false;
-  isLoaded: boolean = false;
+  isLoaded: boolean = true;
   chart: any;
   options: any = Object.assign({}, barTkPercentOptions);
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
@@ -70,6 +70,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(params => {
       this.firmId = Number(params.get('id'));
       this.setUpFilters();
+      this.getFirmNames();
       this.getPeerFirmsData();
       this.getAnnotations();
     });
@@ -87,17 +88,41 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     }
     // this.filterSet.firms = MOCK_PEER_FIRMS;
   }
+  getFirmNames(): void {
+    const params = { clientId: this.userService.currentUser.client_info_id, firms: null};
+    let arr = [];
+    if (this.firmId) {
+      arr.push(this.firmId);
+      if (this.filterSet.firms && this.filterSet.firms.length > 0) {
+        arr = arr.concat(JSON.parse(this.filterSet.firms));
+      }
+      params.firms = JSON.stringify(arr);
+    }
+    this.pendingRequest = this.httpService.makeGetRequest('getFirmNames', params).subscribe(
+      (data: any) => {
+        const records = data.result || [];
+        const found = records.find(e => e.bh_lawfirm_id === this.firmId);
+        if (found) {
+          this.firm = Object.assign({}, found);
+        }
+        const otherFirms = records.filter(e => e.bh_lawfirm_id !== this.firmId);
+        this.peerFirmsNames = otherFirms.map(e => e.firm_name);
+        this.checkSavedReports();
+      }
+    );
+  }
 
   getPeerFirmsData(): void {
-    this.isLoaded = false;
     this.summaryData = null;
     this.frcMetrics = [];
     this.summaryMetrics = [];
     this.keyMetrics = [];
     this.chartMetricData = [];
+    this.peerFirmsNames = [];
     if (this.noFirmsSelected) {
       return;
     }
+    this.isLoaded = false;
     const params = Object.assign({}, this.filterSet);
     let arr = [];
     if (this.firmId) {
@@ -109,7 +134,6 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.isLoaded = true;
         if (data.result && data.result.length > 0) {
-          this.checkSavedReports();
           this.frcData = data.result || [];
           let found = this.frcData.find(e => e.bh_lawfirm_id === this.firmId);
           if (!found){
@@ -185,6 +209,10 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       }
       if (result.exportedData && result.exportedData.filter_set) {
         this.filterSet = Object.assign({}, result.exportedData.filter_set);
+        this.noFirmsSelected = false;
+        if (!this.filterSet.firms || this.filterSet.firms.lenght === 0) {
+          this.noFirmsSelected = true;
+        }
         this.getPeerFirmsData();
       }
     });

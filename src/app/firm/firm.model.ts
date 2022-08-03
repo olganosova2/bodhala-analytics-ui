@@ -323,10 +323,8 @@ export const spendByQuarterChartAdditionalOptions = {
     verticalAlign: 'top'
   },
   plotOptions: {
-    line: {
-      colors: ['#9D02FE', '#6F00FF'],
-    },
     series: {
+      color: '#FF8B4A',
       label: {
         connectorAllowed: false
       }

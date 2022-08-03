@@ -24,8 +24,8 @@
         <div><span class="roboto-bold mr10">Report Timeframe:</span> <span class="text-underline font-gray">
           {{ this.filterSet.startdate | date: 'MMM dd, yyyy' }} - {{ this.filterSet.enddate | date: 'MMM dd, yyyy' }}</span></div>
         <div class="mt10 width-70"><div class="justify-start">
-          <div class="roboto-bold mr10">Compare Timeframe:</div>
-          <div *ngIf="dpFilter">
+          <div class="roboto-bold mr10 mt7">Compare Timeframe:</div>
+          <div *ngIf="dpFilter && !dialogOpened">
             <lib-dates-picker #dpDates class="filter-button" [filter]="dpFilter" [allFilters]="[]" [isExternal]="true" (datesChangeRequested)="setUpCompareDates()"></lib-dates-picker>
           </div>
         </div>
@@ -45,4 +45,17 @@
     </div>
   </div>
   <bd-frc-key-metrics *ngIf="summaryData && keyMetrics.length > 0" [keyMetrics]="keyMetrics"></bd-frc-key-metrics>
+  <div class="mt20" *ngIf="quarterData && quarterData.length > 0">
+    <div class="text-right pointer-hand mb20 mr20">
+      <span class="mode-switch mode-switch-left"  [ngClass]="{'mode-switch-selected': trendsChartMode === 'QoQ'}" (click)="switchChartMode()">QoQ</span>
+      <span class="mode-switch mode-switch-right" [ngClass]="{'mode-switch-selected': trendsChartMode === 'YoY'}" (click)="switchChartMode()">YoY</span>
+    </div>
+    <div *ngFor="let chart of charts">
+      <bd-frc-trends-chart [quarterData]="quarterData" [yearData]="yearData" [selectedChart]="chart" [trendsChartMode]="trendsChartMode"></bd-frc-trends-chart>
+    </div>
+  </div>
+
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
 </div>

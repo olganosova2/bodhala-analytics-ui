@@ -3,10 +3,14 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+
 }
 .flex-item {
   text-align: center;
   flex-basis: 100%;
+}
+.flex-item-border-right {
+  border-right: #D8DAE5 1px solid;
 }
 .bottom-border {
   border-bottom: #D8DAE5 1px solid;

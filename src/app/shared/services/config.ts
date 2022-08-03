@@ -64,7 +64,9 @@ export const END_POINTS_URLS = {
   getConfigByNameAndUserRecent: {url: BASE_URL + 'analytics/getConfigByNameAndUserRecent', showLoading: false},
   saveClientEntityConfig: {url: BASE_URL + 'analytics/saveClientConfig', showLoading: true},
   getSpendByMatterTable: {url: BASE_URL + 'analytics/getSpendByMatterTable', showLoading: false},
-  getComparisonFRCKeyMetrics: {url: BASE_URL + 'analytics/getComparisonFRCKeyMetrics', showLoading: true},
+  getComparisonFRCKeyMetrics: {url: BASE_URL + 'analytics/getComparisonFRCKeyMetrics', showLoading: false},
+  getFirmNames:  {url: BASE_URL + 'analytics/getFirmNames', showLoading: false},
+  getSpendByYear:  {url: BASE_URL + 'analytics/getSpendByYear', showLoading: false},
 
   // executive summary
   getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},

@@ -4,7 +4,6 @@ import {CommonService} from '../../../shared/services/common.service';
 import {FrcServiceService, IFRCTimekeeper} from '../frc-service.service';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {Subscription} from 'rxjs';
-import {TK_LEVELS_SHORT_MAP} from '../../../benchmarks/benchmark.service';
 import {MatterAnalysisService} from '../../../matters/matter-executive-summary/matter-analysis.service';
 
 @Component({
@@ -62,10 +61,10 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
     this.mattersLoaded = false;
     this.pendingRequest = this.httpService.makeGetRequest<IFRCTimekeeper>('getSpendByMatterTable', this.getParams()).subscribe(
       (data: any) => {
+        this.mattersLoaded = true;
         if (data.result && data.result.length > 0) {
           this.matters = data.result || [];
           this.processMatters(this.matters);
-          this.mattersLoaded = true;
         }
       }
     );
