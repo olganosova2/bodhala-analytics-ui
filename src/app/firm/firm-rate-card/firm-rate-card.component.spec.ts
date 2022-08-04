@@ -75,12 +75,6 @@ describe('FirmRateCardComponent', () => {
     component.loadNotes(notes);
     expect(component.notes.length).toBe(1);
   });
-  it('should formatLogoUrl', () => {
-    const url = '/img/clients/img123';
-    const result = component.formatLogoUrl(url);
-    expect(result).toBeTruthy();
-  });
-
   it('should compareDates', () => {
     const dates = {startdate: '2017-09-25', enddate: '2019-09-25'};
     component.comparisonStartDate = '2017-09-25';

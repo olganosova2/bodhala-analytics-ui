@@ -2,9 +2,5 @@
   "/ui-api": {
     "target": "http://127.0.0.1:5000",
     "secure": false
-  },
-  "/img/clients": {
-    "target": "https://bodhala-assets.s3.amazonaws.com",
-    "secure": false
   }
 }
