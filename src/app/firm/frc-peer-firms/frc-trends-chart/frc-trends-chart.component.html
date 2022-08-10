@@ -2,8 +2,8 @@
   <div class="justify-between">
     <h2 class="mb15">{{chartHeader}}</h2>
     <span><span class="totals-badge mr20">
-      <em *ngIf=" increase > 0" class="fa fa-arrow-up"></em>
-                  <em *ngIf=" increase < 0" class="fa fa-arrow-down"></em>
+      <em *ngIf=" direction > 0" class="fa fa-arrow-up"></em>
+                  <em *ngIf=" direction < 0" class="fa fa-arrow-down"></em>
       {{increase}}% since last
       <span *ngIf="trendsChartMode === 'YoY'">year</span>
       <span *ngIf="trendsChartMode === 'QoQ'">quarter</span>
@@ -13,6 +13,6 @@
     </span>
   </div>
 
-  <chart [options]="options" (load)="saveInstance($event.context)" width="100%" [hidden]="isCollapsed"></chart>
+  <chart [options]="options" *ngIf="modeDefined" (load)="saveInstance($event.context)" width="100%" [hidden]="isCollapsed"></chart>
 </div>
 

@@ -258,6 +258,9 @@ h1, h2, h3, h4, h5, h6, th {
 .half-width {
   width: 50%;
 }
+.width-65 {
+  width: 65%;
+}
 .width-70 {
   width: 70%;
 }
@@ -635,6 +638,17 @@ h1, h2, h3, h4, h5, h6 {
   color: $body-color;
   padding: 5px;
   background-color: $light-gray;
+}
+.oval-label-grid {
+  width: 80px;
+  border-radius: 31px;
+  font-size: 14px;
+  color: $body-color;
+  padding: 0 10px;
+  background-color: $light-gray;
+  display: block;
+  margin: 5px 3px 7px;
+  text-align: center;
 }
 .oval-label-red {
   color: #fff;

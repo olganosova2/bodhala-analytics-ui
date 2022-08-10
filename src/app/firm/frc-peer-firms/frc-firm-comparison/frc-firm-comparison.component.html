@@ -13,7 +13,7 @@
   <div class="justify-between mr20 mb15">
   <h1 class="roboto-bold">Firm Report Card Comparison</h1>
     <div>
-      <button (click)="goBack()" class="primary-button mr10"><em class="fa fa-chevron-left mr10"></em><span>Back</span></button>
+      <button [routerLink]="['/analytics-ui/frc-dashboard']" class="primary-button mr10"><em class="fa fa-chevron-left mr10"></em><span>Back</span></button>
       <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
     </div>
   </div>

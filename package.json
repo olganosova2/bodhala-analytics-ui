@@ -52,6 +52,8 @@
     "fontawesome": "4.5.0",
     "highcharts": "^8.2.0",
     "highcharts-border-radius": "0.0.2",
+    "highcharts-export-data": "^0.1.7",
+    "highcharts-exporting": "^0.1.7",
     "highcharts-rounded-corners": "^1.0.6",
     "html2canvas": "^1.0.0-rc.5",
     "jspdf": "^1.5.3",

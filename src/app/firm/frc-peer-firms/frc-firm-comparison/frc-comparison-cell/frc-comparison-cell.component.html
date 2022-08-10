@@ -9,14 +9,14 @@
   </div>
     <div>
 <span class="oval-label" *ngIf="!isAverageColumn"
-      [ngClass]=" {'oval-label-red': metric.grade === 'POOR',
-              'oval-label-green': metric.grade === 'GOOD',
-              'oval-label-orange': metric.grade === 'FAIR',
-              'oval-label-black': metric.grade === 'NODATA'}">
+      [ngClass]=" {'oval-label-red': metric?.grade === 'POOR',
+              'oval-label-green': metric?.grade === 'GOOD',
+              'oval-label-orange': metric?.grade === 'FAIR',
+              'oval-label-black': metric?.grade === 'NODATA'}">
 
-          <span class="increase-span ml5">  {{ metric.increase | number:'1.0-0'}}%
-           <em *ngIf="metric.direction > 0" class="fa fa-arrow-up"></em>
-            <em *ngIf="metric.direction < 0" class="fa fa-arrow-down"></em>
+          <span class="increase-span ml5">  {{ metric?.increase | number:'1.0-0'}}%
+           <em *ngIf="metric?.direction > 0" class="fa fa-arrow-up"></em>
+            <em *ngIf="metric?.direction < 0" class="fa fa-arrow-down"></em>
             </span>
         </span>
     </div>

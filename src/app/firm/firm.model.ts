@@ -219,7 +219,7 @@ export const trendChart = {
     spacingTop: 10,
     zoomType: false,
   },
-  exporting: {   enabled: false  },
+  exporting: {   enabled: true  },
   credits: { enabled: false },
   title: { text: null },
   tooltip: {
@@ -274,7 +274,7 @@ export const spendByQuarterChartAdditionalOptions = {
     spacingTop: 10,
     zoomType: false,
   },
-  exporting: {   enabled: false  },
+  exporting: {   enabled: true  },
   credits: { enabled: false },
   title: { text: null },
   tooltip: {
@@ -346,7 +346,7 @@ export const pieDonut = {
 
   },
   exporting: {
-    enabled: false
+    enabled: true
   },
   plotOptions: {
     pie: {

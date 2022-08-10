@@ -12,7 +12,7 @@
 <div class="exs-div font-red" *ngIf="noFirmsSelected">No comparison firms selected.</div>
 <div class="exs-div" id="frcDiv">
   <div class="mb20">
-    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10" (click)="goBack()"><em class="fa fa-chevron-left mr10"></em>Back</span>Firm Report Card</div>
+    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10" [routerLink]="['/analytics-ui/frc-dashboard']"><em class="fa fa-chevron-left mr10"></em>Back</span>Firm Report Card</div>
     <ngb-alert type="success" *ngIf="frcCardSaved" (close)="frcCardSaved=false">
       <div class="font-green font-bold">
         Report has been saved successfully.
@@ -25,15 +25,15 @@
       </div>
       <div class="mt20">
         <button (click)="viewSavedReports()" class="primary-button mr10" *ngIf="savedReports.length > 0"><span class="mr10">View Historical Report Cards</span> <em class="fa fa-chevron-right"></em></button>
-        <ng-container *ngIf="!noFirmsSelected">
+        <ng-container>
         <button (click)="addNotes('Add')" class="primary-button mr10"><span class="mr10">Add Notes</span> <em class="fa fa-chevron-right"></em></button>
         <button  (click)="saveFrc()" class="primary-button mr10"><span>Save</span></button>
         <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
         </ng-container>
       </div>
     </div>
-    <div class="justify-between mr20">
-      <div class="mt10 width-70"><span class="roboto-bold mr10">Comparison Firms:</span>
+    <div class="justify-between">
+      <div class="mt10 width-65"><span class="roboto-bold mr10">Comparison Firms:</span>
         <span class="totals-badge oval-label-white mr5 mb5" *ngFor="let firm of peerFirmsNames">{{firm}}</span>
       </div>
       <div>
@@ -42,7 +42,9 @@
 
       </div>
     </div>
-
+    <div class="text-right" *ngIf="summaryData?.assessment">
+      <span class="totals-badge oval-label-white mr20" ><span class="roboto-bold">Assessment:</span> {{summaryData?.assessment}}</span>
+    </div>
     <div class="p-grid mr10 mt20">
       <div class="p-col-4 pr20" *ngFor="let metric of summaryMetrics">
         <div class="summary-card">

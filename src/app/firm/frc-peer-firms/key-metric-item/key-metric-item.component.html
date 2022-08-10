@@ -1,27 +1,28 @@
-<div class="cell-item" [ngClass]="{'cell-last': isLastCell}">
-  <div *ngIf="item.icon" class="img-div mt20"><img src="assets/images/{{item.icon}}" alt="icon"/></div>
-  <div [ngClass]="{'item-label': totalMetrics > 12}">{{item.label}}</div>
+<div *ngIf="item" class="cell-item" [ngClass]="{'cell-last': isLastCell}">
+  <div *ngIf="item?.icon" class="img-div mt20"><img src="assets/images/{{item?.icon}}" alt="icon"/></div>
+  <div [ngClass]="{'item-label': totalMetrics > 12}">{{item?.label}}</div>
   <div class="metric-number roboto-bold" [ngClass]=" {'label-red': item.grade === 'POOR',
               'label-green': item.grade === 'GOOD',
-              'label-orange': item.grade === 'FAIR'}"><span *ngIf="item.format === 'dollar'">$</span>{{ item.actual | number:'1.0-0' }}
+              'label-orange': item.grade === 'FAIR', 'actual-label': totalMetrics > 12}"><span *ngIf="item.format === 'dollar'">$</span>{{ item.actual | number:'1.0-0' }}
     <span *ngIf="item.format === 'percent'">%</span>
   </div>
   <div class="p-grid mt10" [ngClass]="{'bottom-numbers': totalMetrics > 12}">
     <div class="p-col-6">
       <span class="roboto-bold" *ngIf="!isTrends">Average</span>
-      <span class="roboto-bold" *ngIf="isTrends">Comparison Timeframe</span>
+      <span class="roboto-bold" *ngIf="isTrends">Comp.</span>
       <br/>
       <span *ngIf="item.format === 'dollar'">$</span>{{ item.firms | number:'1.0-0' }}
       <span *ngIf="item.format === 'percent'">%</span>
     </div>
     <div class="p-col-6">
       <span class="pt10 roboto-bold">% +/-</span><br/>
-      <span [ngClass]=" {'label-red': item.grade === 'POOR',
-              'label-green': item.grade === 'GOOD',
-              'label-orange': item.grade === 'FAIR'}">{{ item.increase | number:'1.1-1' }}%
-                  <em *ngIf=" item.direction > 0" class="fa fa-arrow-up"></em>
-                  <em *ngIf=" item.direction <= 0" class="fa fa-arrow-down"></em>
+      <span [ngClass]=" {'label-red': item?.grade === 'POOR',
+              'label-green': item?.grade === 'GOOD',
+              'label-orange': item?.grade === 'FAIR'}">{{ item?.increase | number:'1.1-1' }}%
+                  <em *ngIf=" item?.direction > 0" class="fa fa-arrow-up"></em>
+                  <em *ngIf=" item?.direction <= 0" class="fa fa-arrow-down"></em>
                 </span>
     </div>
   </div>
 </div>
+

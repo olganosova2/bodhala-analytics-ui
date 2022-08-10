@@ -46,6 +46,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   noFirmsSelected: boolean = false;
   isLoaded: boolean = true;
   chart: any;
+  customReport: boolean = false;
   options: any = Object.assign({}, barTkPercentOptions);
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
 
@@ -80,13 +81,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
     if (!this.filterSet.firms) {
       this.noFirmsSelected = true;
-      return;
     }
-    const jsonFirms = JSON.parse(this.filterSet.firms);
-    if (jsonFirms.length === 0 || (jsonFirms.length === 1 && jsonFirms[0] === this.firmId)){
-      this.noFirmsSelected = true;
-    }
-    // this.filterSet.firms = MOCK_PEER_FIRMS;
   }
   getFirmNames(): void {
     const params = { clientId: this.userService.currentUser.client_info_id, firms: null};
@@ -119,16 +114,18 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.keyMetrics = [];
     this.chartMetricData = [];
     this.peerFirmsNames = [];
-    if (this.noFirmsSelected) {
-      return;
-    }
     this.isLoaded = false;
     const params = Object.assign({}, this.filterSet);
     let arr = [];
     if (this.firmId) {
       arr.push(this.firmId);
-      arr = arr.concat(JSON.parse(this.filterSet.firms));
+      if (this.filterSet.firms) {
+        arr = arr.concat(JSON.parse(this.filterSet.firms));
+      }
       params.firms = JSON.stringify(arr);
+    }
+    if (this.frcService.customReport) {
+      params.customFirmId = this.firmId;
     }
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {

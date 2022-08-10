@@ -46,6 +46,8 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
 import borderRadius from 'highcharts-border-radius';
 import rounded from 'highcharts-rounded-corners/rounded-corners.js';
+import HC_exporting from 'highcharts/modules/exporting';
+import HC_exportData from 'highcharts/modules/export-data';
 import { ChartModule } from 'angular2-highcharts';
 import { DropdownModule } from 'primeng/dropdown';
 import * as CONFIG from './shared/services/config';
@@ -156,6 +158,8 @@ import { QbrExecutiveSummaryComponent } from './qbr/qbr-executive-summary/qbr-ex
 import { YoyNumberWidgetComponent } from './qbr/yoy-number-widget/yoy-number-widget.component';
 import { QbrExecutiveSummaryRightComponent } from './qbr/qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
 rounded(highcharts);
+// HC_exporting(highcharts);
+// HC_exportData(highcharts);
 import { QbrComponent } from './qbr/qbr.component';
 import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 import { QbrDeckComponent } from './qbr/qbr-deck/qbr-deck.component';
@@ -220,6 +224,7 @@ import { QaDashboardComponent } from './admin/qa-dashboard/qa-dashboard.componen
 import { QaDashboardGridComponent } from './admin/qa-dashboard/qa-dashboard-grid/qa-dashboard-grid.component';
 import { FrcTrendsComponent } from './firm/frc-peer-firms/frc-trends/frc-trends.component';
 import { FrcTrendsChartComponent } from './firm/frc-peer-firms/frc-trends-chart/frc-trends-chart.component';
+import { FrcDashboardComponent } from './firm/frc-peer-firms/frc-dashboard/frc-dashboard.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -392,7 +397,8 @@ highcharts.setOptions({
     QaDashboardComponent,
     QaDashboardGridComponent,
     FrcTrendsComponent,
-    FrcTrendsChartComponent
+    FrcTrendsChartComponent,
+    FrcDashboardComponent
   ],
   entryComponents: [
     PillComponent,

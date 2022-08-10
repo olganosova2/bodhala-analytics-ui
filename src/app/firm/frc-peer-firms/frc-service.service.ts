@@ -154,6 +154,31 @@ export interface IPeerFirms {
   female_hours?: number;
   percent_minority_hours?: number;
   percent_female_hours?: number;
+  score?: number;
+  assessment?: string;
+}
+export interface IYearQuarterSpend {
+  year: number;
+  partner_rate: number;
+  associate_rate: number;
+  non_lawyer_rate: number;
+  paralegal_rate: number;
+  total_billed: number;
+  total_partner_billed: number;
+  total_associate_billed: number;
+  total_partner_writeoff: number;
+  total_associate_writeoff: number;
+  avg_matter_cost: number;
+  total_hours: number;
+  partner_hours: number;
+  associate_hours: number;
+  paralegal_hours: number;
+  partner_writeoff_hours: number;
+  associate_writeoff_hours: number;
+  total_matters: number;
+  avg_duration_days: number;
+  total_block_billed: number;
+  block_billed_percent: number;
 }
 
 export enum MetricType {
@@ -172,7 +197,8 @@ export enum MetricType {
   AverageParalegalRate = 'avg_paralegal_rate',
   AverageLegalAssistant = 'avg_legal_assistant_rate',
   FemaleHours = 'percent_female_hours',
-  MinorityHours = 'percent_minority_hours'
+  MinorityHours = 'percent_minority_hours',
+  Score = 'score'
 }
 
 export enum MetricTypeComparison {
@@ -245,12 +271,18 @@ export interface IFRCTimekeeper {
   providedIn: 'root'
 })
 export class FrcServiceService {
+  customReport: boolean;
 
   constructor(public filtersService: FiltersService,
               public utilService: UtilService,
               public userService: UserService,
               public httpService: HttpService,
               public commonServ: CommonService) {
+    if (this.userService.config !== undefined) {
+      if ('custom.report.card.metic' in this.userService.config) {
+        this.customReport = true;
+      }
+    }
   }
 
   calculateSingleFirmData(summaryData: IPeerFirms): void {
@@ -319,7 +351,9 @@ export class FrcServiceService {
       minority_hours: 0,
       female_hours: 0,
       percent_minority_hours: 0,
-      percent_female_hours: 0
+      percent_female_hours: 0,
+      score: 0,
+      assessment: ''
     };
   }
 
@@ -362,6 +396,7 @@ export class FrcServiceService {
     firmData.female_hours = firmsRecords.reduce((a, b) => ({female_hours: a.female_hours + b.female_hours})).female_hours / firmsCount;
     firmData.percent_minority_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_minority_hours: a.percent_minority_hours + b.percent_minority_hours})).percent_minority_hours / firmsCount);
     firmData.percent_female_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_female_hours: a.percent_female_hours + b.percent_female_hours})).percent_female_hours / firmsCount);
+    firmData.score = Math.round(firmsRecords.reduce((a, b) => ({score: a.score + b.score})).score / firmsCount);
 
     return firmData;
   }
@@ -373,8 +408,9 @@ export class FrcServiceService {
       const currentFirm = {bh_lawfirm_id: rec.bh_lawfirm_id, firm_name: rec.firm_name, frcMetrics: []};
       const summaryData = originals.find(e => e.bh_lawfirm_id === rec.bh_lawfirm_id);
       this.calculateSingleFirmData(summaryData);
-      const internalData = this.calculatePeersData(originals);
-      currentFirm.frcMetrics = this.buildMetrics(summaryData, internalData, originals);
+      const filtered = originals; //  originals.filter(e => e.bh_lawfirm_id !== rec.bh_lawfirm_id) || [];
+      const internalData = this.calculatePeersData(filtered);
+      currentFirm.frcMetrics = this.buildMetrics(summaryData, internalData, filtered);
       result.push(currentFirm);
     }
     return result;
@@ -385,6 +421,9 @@ export class FrcServiceService {
     let ix = 0;
     for (const metricName of Object.keys(MetricType)) {
       if (typeof MetricType[metricName] !== 'string') {
+        continue;
+      }
+      if (!this.customReport && metricName === 'Score') {
         continue;
       }
       const metric = {
@@ -423,7 +462,7 @@ export class FrcServiceService {
     if (marketRecords.length === 0) {
       return;
     }
-    if (prop === 'total_billed' || prop === 'total_hours_billed' || prop === 'total_matters') {
+    if (prop === 'total_billed' || prop === 'total_hours_billed' || prop === 'total_matters' || prop === 'score') {
       return;
     }
     const actual = summaryData[prop];
@@ -587,6 +626,11 @@ export class FrcServiceService {
         metric.icon = 'clock-sm.png';
         metric.format = 'percent';
         break;
+      case 'score':
+        metric.label = 'Score';
+        metric.icon = 'bpi.svg';
+        metric.format = 'number';
+        break;
       default:
         metric.icon = 'bills.svg';
         break;
@@ -605,7 +649,7 @@ export class FrcServiceService {
     return result;
   }
 
-  processSavedMetrics(keyMetrics: Array<IMetricDisplayData>): Array<IMetricDisplayData> {
+  processSavedMetrics(keyMetrics: Array<IMetricDisplayData>, isTrends: boolean): Array<IMetricDisplayData> {
     const result = [];
     const savedMetrics = this.commonServ.getClientConfigJson(CLIENT_CONFIG_KEY_METRICS_NAME) || [];
     if (savedMetrics.length === 0) { // no config for visible metrics
@@ -619,12 +663,13 @@ export class FrcServiceService {
       }
       return result;
     }
-    for (const saved of savedMetrics) {
-      const found = keyMetrics.find(e => e.fieldName === saved);
-      if (found) {
-        found.selected = true;
-        result.push(found);
-      }
+    for (const metric of keyMetrics) {
+     if (savedMetrics.indexOf(metric.fieldName) >= 0 || (isTrends && ['blended_rate', 'avg_partner_rate', 'avg_associate_rate'].includes(metric.fieldName))) {
+       const found = Object.assign({}, metric);
+       found.selected = true;
+       metric.selected = true;
+       result.push(found);
+     }
     }
     return result;
   }

@@ -37,14 +37,6 @@ export class VisibleKeyMetricsComponent implements OnInit {
   ngOnInit(): void {
     this.getClientMetricsConfig();
   }
-  processSavedMetrics(): void {
-    for (const metric of this.keyMetrics) {
-      const found = this.filteredMetrics.find(e => e.fieldName === metric.fieldName);
-      if (found) {
-        metric.selected = true;
-      }
-    }
-  }
   save(): void {
     const params = Object.assign({}, this.createConfig());
     if (this.configId) {

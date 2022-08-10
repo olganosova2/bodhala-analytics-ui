@@ -10,7 +10,6 @@ import {IUiAnnotation} from '../../../shared/components/annotations/model';
 import {DatesPickerComponent} from 'bodhala-ui-elements';
 import {SavedReportsModalComponent} from '../../saved-reports-modal/saved-reports-modal.component';
 import * as _moment from 'moment';
-import {ScoreBadgeComponent} from '../../score-trend/score-badge/score-badge.component';
 import {FrcTrendsChartComponent} from '../frc-trends-chart/frc-trends-chart.component';
 
 const moment = _moment;

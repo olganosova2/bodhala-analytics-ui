@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
@@ -22,6 +22,8 @@ export class FrcTrendsChartComponent implements OnInit {
   chartHeader: string = 'Total Spend';
   isCollapsed: boolean = false;
   increase: number = 0;
+  direction: number = 0;
+  modeDefined: boolean = true;
   @Input() quarterData: Array<any> = [];
   @Input() yearData: Array<any> = [];
   @Input() trendsChartMode: TrendsChartMode = TrendsChartMode.YoY;
@@ -37,6 +39,10 @@ export class FrcTrendsChartComponent implements OnInit {
               public matDialog: MatDialog,
               public appStateService: AppStateService,
               public filtersService: FiltersService) { }
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.resizeChart();
+  }
 
   ngOnInit(): void {
     this.options = Object.assign({}, spendByQuarterOptions);
@@ -180,10 +186,16 @@ export class FrcTrendsChartComponent implements OnInit {
     });
   }
   switchMode(): void {
+    this.modeDefined = false;
     const chartData = this.trendsChartMode === TrendsChartMode.QoQ ? this.quarterData : this.yearData;
-    this.renderChart(chartData);
+    setTimeout(() => {
+      this.modeDefined = true;
+      this.renderChart(chartData);
+    });
   }
   calculateIncrease(chartData: Array<any>, chartType: string): void {
+    this.increase = 0;
+    this.direction = 0;
     if (chartData.length < 2) {
       return;
     }
@@ -194,6 +206,13 @@ export class FrcTrendsChartComponent implements OnInit {
     } else {
       this.increase = Math.round(((last - previous) / (previous || 1)) * 100);
     }
+    if (this.increase > 0) {
+      this.direction = 1;
+    }
+    if (this.increase < 0) {
+      this.direction = -1;
+    }
+    this.increase = Math.abs(this.increase);
   }
 
 }

@@ -54,7 +54,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState('FRCGrid_Comparison');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
-    this.gridOptions.headerHeight = 60;
+    this.gridOptions.headerHeight = 80;
     this.setUpFilters();
   }
   setUpFilters(): void {

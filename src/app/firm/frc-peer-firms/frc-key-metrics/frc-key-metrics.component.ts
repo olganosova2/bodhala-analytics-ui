@@ -31,10 +31,8 @@ export class FrcKeyMetricsComponent implements OnInit {
     const url = this.commonServ.formatPath(window.location.pathname);
     if (url.indexOf('frc-trends') > 0) {
       this.isTrends = true;
-      this.filteredMetrics = Object.assign([], this.keyMetrics);
-    }else {
-      this.filteredMetrics = this.frcService.processSavedMetrics(this.keyMetrics);
     }
+    this.filteredMetrics = this.frcService.processSavedMetrics(this.keyMetrics, this.isTrends);
     this.filterMetrics();
   }
   filterMetrics(): void {
@@ -45,7 +43,7 @@ export class FrcKeyMetricsComponent implements OnInit {
       this.itemTopRowCount = Math.ceil(this.filteredMetrics.length / 2);
       this.filteredMetrics[this.itemTopRowCount - 1].lastCell = true;
       this.filteredMetrics[this.filteredMetrics.length - 1].lastCell = true;
-    } else {
+    } else if (this.filteredMetrics.length > 0) {
       this.itemTopRowCount = this.filteredMetrics.length;
       this.filteredMetrics[this.filteredMetrics.length - 1].lastCell = true;
     }
@@ -63,7 +61,13 @@ export class FrcKeyMetricsComponent implements OnInit {
       if (!result) {
         return;
       }
+      const mapped  = result.map(e => e.fieldName);
       this.filteredMetrics = Object.assign([], result);
+      if (this.userService.config !== undefined && this.userService.config[CLIENT_CONFIG_KEY_METRICS_NAME] && this.userService.config[CLIENT_CONFIG_KEY_METRICS_NAME].configs.length > 0) {
+        this.userService.config[CLIENT_CONFIG_KEY_METRICS_NAME].configs[0].json_config = Object.assign([], mapped);
+      } else if (this.userService.config !== undefined) {
+        this.userService.config[CLIENT_CONFIG_KEY_METRICS_NAME] = { configs: [ { description: '', value: null, json_config: Object.assign([], mapped)}] };
+      }
       this.filterMetrics();
     });
   }
