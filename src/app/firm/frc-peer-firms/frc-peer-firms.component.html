@@ -9,10 +9,9 @@
     ></lib-bd-filters>
   </div>
 </div>
-<div class="exs-div font-red" *ngIf="noFirmsSelected">No comparison firms selected.</div>
 <div class="exs-div" id="frcDiv">
   <div class="mb20">
-    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10" [routerLink]="['/analytics-ui/frc-dashboard']"><em class="fa fa-chevron-left mr10"></em>Back</span>Firm Report Card</div>
+    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10" (click)="goBack()"><em class="fa fa-chevron-left mr10"></em>Back</span>Firm Report Card</div>
     <ngb-alert type="success" *ngIf="frcCardSaved" (close)="frcCardSaved=false">
       <div class="font-green font-bold">
         Report has been saved successfully.
@@ -77,7 +76,8 @@
         </div>
       </div>
     </div>
-    <div class="mt20 mb20" #chartDiv *ngIf="chartMetricData && summaryData">
+    <div class="mt20 mb20 panel-wrapper mr20" #chartDiv *ngIf="chartMetricData && summaryData">
+      <h4><img width="40px" class="mb5" alt="icon" src="assets/images/clock-sm.png"> % of Hours Worked</h4>
       <chart (load)="saveInstance($event.context)" [options]="options"></chart>
     </div>
     <div class="notes-div justify-start mb20 mr20" *ngIf="note && note?.notes && summaryData">

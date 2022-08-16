@@ -4,6 +4,7 @@ import {CommonService} from '../../shared/services/common.service';
 import {FrcServiceService, IMetricDisplayData, IPeerFirms, MOCK_PEER_FIRMS} from './frc-service.service';
 import {Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
+import {FiltersService as ElementsFiltersService} from 'bodhala-ui-elements';
 import {barTkPercentOptions} from './frc-service.service';
 import {ActivatedRoute} from '@angular/router';
 import {VisibleKeyMetricsComponent} from './visible-key-metrics/visible-key-metrics.component';
@@ -59,7 +60,8 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
               public dialog: MatDialog,
               public matDialog: MatDialog,
               public appStateService: AppStateService,
-              public filtersService: FiltersService
+              public filtersService: FiltersService,
+              public elemFiltersService: ElementsFiltersService
   ) {
     this.commonServ.pageTitle = 'Firm Report Card';
     this.commonServ.pageSubtitle = 'Comparison Firms Report';
@@ -71,40 +73,14 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(params => {
       this.firmId = Number(params.get('id'));
       this.setUpFilters();
-      this.getFirmNames();
       this.getPeerFirmsData();
       this.getAnnotations();
     });
   }
+
   setUpFilters(): void {
     this.noFirmsSelected = false;
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
-    if (!this.filterSet.firms) {
-      this.noFirmsSelected = true;
-    }
-  }
-  getFirmNames(): void {
-    const params = { clientId: this.userService.currentUser.client_info_id, firms: null};
-    let arr = [];
-    if (this.firmId) {
-      arr.push(this.firmId);
-      if (this.filterSet.firms && this.filterSet.firms.length > 0) {
-        arr = arr.concat(JSON.parse(this.filterSet.firms));
-      }
-      params.firms = JSON.stringify(arr);
-    }
-    this.pendingRequest = this.httpService.makeGetRequest('getFirmNames', params).subscribe(
-      (data: any) => {
-        const records = data.result || [];
-        const found = records.find(e => e.bh_lawfirm_id === this.firmId);
-        if (found) {
-          this.firm = Object.assign({}, found);
-        }
-        const otherFirms = records.filter(e => e.bh_lawfirm_id !== this.firmId);
-        this.peerFirmsNames = otherFirms.map(e => e.firm_name);
-        this.checkSavedReports();
-      }
-    );
   }
 
   getPeerFirmsData(): void {
@@ -117,11 +93,9 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.isLoaded = false;
     const params = Object.assign({}, this.filterSet);
     let arr = [];
-    if (this.firmId) {
-      arr.push(this.firmId);
-      if (this.filterSet.firms) {
-        arr = arr.concat(JSON.parse(this.filterSet.firms));
-      }
+    arr.push(this.firmId);
+    if (this.filterSet.firms) {
+      arr = arr.concat(JSON.parse(this.filterSet.firms));
       params.firms = JSON.stringify(arr);
     }
     if (this.frcService.customReport) {
@@ -130,10 +104,16 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {
         this.isLoaded = true;
+        // for (const filter of this.elemFiltersService.filters) {
+        //  if (filter.fieldName === 'matterCost') {
+        //    filter.value = [];
+        //  }
+        // }
         if (data.result && data.result.length > 0) {
+          this.checkSavedReports();
           this.frcData = data.result || [];
           let found = this.frcData.find(e => e.bh_lawfirm_id === this.firmId);
-          if (!found){
+          if (!found) {
             found = this.frcService.createEmptySingleFirmData();
           }
           this.summaryData = Object.assign({}, found);
@@ -141,6 +121,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
           this.frcService.calculateSingleFirmData(this.summaryData);
           this.internalRecords = this.frcData.filter(e => e.bh_lawfirm_id !== this.firmId) || [];
           this.peerFirmsNames = this.internalRecords.map(e => e.firm_name);
+          this.formatPeerNames();
           this.internalData = this.frcService.calculatePeersData(this.internalRecords);
           const originals = this.frcService.calculatePeersData(this.frcData);
           this.frcMetrics = this.frcService.buildMetrics(this.summaryData, this.internalData, this.frcData);
@@ -151,9 +132,17 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   refreshData(evt: any): void {
     this.setUpFilters();
     this.getPeerFirmsData();
+  }
+
+  formatPeerNames(): void {
+      if (this.peerFirmsNames.length > 15) {
+        this.peerFirmsNames = this.peerFirmsNames.slice(0, 15);
+        this.peerFirmsNames.push('....');
+      }
   }
 
   saveInstance(chartInstance): void {
@@ -171,30 +160,34 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       this.resizeChart();
     });
   }
+
   resizeChart(): void {
-    const width = this.chartDiv.nativeElement.offsetWidth - 20;
-    const height =  250;
+    const width = this.chartDiv.nativeElement.offsetWidth - 40;
+    const height = 250;
 
     if (!this.chart || width <= 0) {
       return;
     }
     this.chart.setSize(width, height, false);
   }
+
   getPercentOfHoursWorkedChartData(chartMetricData: Array<IMetricDisplayData>, index: number): Array<number> {
     const result = [];
     result.push(chartMetricData[index].actual);
     result.push(chartMetricData[index].firms);
     return result;
   }
-  goBack(): void {
 
+  goBack(): void {
+    history.back();
   }
+
   viewSavedReports(): void {
-    const dialogConfig =  {
+    const dialogConfig = {
       width: '60vw',
     };
     const modalConfig = {...dialogConfig, data: Object.assign([], this.savedReports)};
-    const dialogRef = this.matDialog.open(SavedReportsModalComponent, {...modalConfig, disableClose: false });
+    const dialogRef = this.matDialog.open(SavedReportsModalComponent, {...modalConfig, disableClose: false});
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) {
@@ -214,6 +207,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   getAnnotations(): void {
     this.notes = [];
     const params = {
@@ -231,6 +225,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   checkSavedReports(): void {
     this.savedReports = [];
     const params = {} as any;
@@ -241,7 +236,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     }
     this.pendingRequest = this.httpService.makeGetRequest<IUiAnnotation>('getSavedExports', params).subscribe(
       (data: any) => {
-        this.savedReports = ( data.result || []).filter( e => e.page_name === this.commonServ.getPageId());
+        this.savedReports = (data.result || []).filter(e => e.page_name === this.commonServ.getPageId());
         for (const rep of this.savedReports) {
           if (this.firm) {
             rep.firm_name = this.firm.firm_name;
@@ -250,14 +245,15 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   addNotes(mode: string): void {
-    const packaged = { firmId: this.firmId, action: mode, note: this.note};
-    const dialogConfig =  {
+    const packaged = {firmId: this.firmId, action: mode, note: this.note};
+    const dialogConfig = {
       height: '400px',
       width: '60vw',
     };
     const modalConfig = {...dialogConfig, data: Object.assign([], packaged)};
-    const dialogRef = this.dialog.open(FrcNotesComponent, {...modalConfig, disableClose: false });
+    const dialogRef = this.dialog.open(FrcNotesComponent, {...modalConfig, disableClose: false});
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) {
@@ -269,16 +265,18 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   saveFrc(): void {
     this.commonServ.saveReport(this.firmId, this.filterSet).subscribe(
-        (data: any) => {
-          if (data && data.result) {
-            this.checkSavedReports();
-            this.frcCardSaved = true;
-          }
+      (data: any) => {
+        if (data && data.result) {
+          this.checkSavedReports();
+          this.frcCardSaved = true;
         }
-      );
+      }
+    );
   }
+
   export(): void {
     this.commonServ.pdfLoading = true;
     const exportName = this.firm.firm_name + '- Comparison Firms Report';

@@ -8,7 +8,7 @@
     ></lib-bd-filters>
   </div>
 </div>
-<div class="pt40 font-red" *ngIf="noFirmsSelected">No comparison firms selected.</div>
+
 <div class="pt40" id="frcDiv">
   <div class="justify-between mr20 mb15">
   <h1 class="roboto-bold">Firm Report Card Comparison</h1>
@@ -17,6 +17,7 @@
       <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
     </div>
   </div>
+  <div class="warning-banner" *ngIf="noFirmsSelected">No comparison firms selected.</div>
 <div *ngIf="!noFirmsSelected && formattedMetrics && formattedMetrics.length > 0">
   <ag-grid-angular
       #agGrid

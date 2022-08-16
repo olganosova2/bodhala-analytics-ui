@@ -1,10 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
-import {FrcServiceService, IPeerFirms} from '../frc-service.service';
+import {FrcServiceService, IPeerFirms, MetricType} from '../frc-service.service';
 import {MatDialog} from '@angular/material/dialog';
-import {AgGridService} from 'bodhala-ui-elements';
+import {AgGridService, FiltersComponent} from 'bodhala-ui-elements';
+import {FiltersService as FiltersServiceGlobal} from 'bodhala-ui-elements';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {Subscription} from 'rxjs';
 import {GridOptions} from 'ag-grid-community';
@@ -32,10 +33,16 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   pageName: string = 'analytics-ui/frc-dashboard/';
   excludeFilters: Array<string> = [];
   isLoaded: boolean = true;
+  selectedFiltersCount: number = 0;
+  noRecordsFound: boolean;
+  selectedFirms: Array<number> = [];
+
+  @ViewChild(FiltersComponent) filtersComp: FiltersComponent;
 
 
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
+              public router: Router,
               public commonServ: CommonService,
               public frcService: FrcServiceService,
               public userService: UserService,
@@ -53,15 +60,14 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
     this.savedState = this.agGridService.getSavedState('FRCGrid_Dashboard');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.gridOptions.headerHeight = 80;
-    this.initColumns();
     this.setUpFilters();
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn, floatingFilter: true, hide: true},
-      {headerName: '', headerCheckboxSelection: true,  field: 'selected', ...this.defaultColumn, suppressMenu: true, editable: true, headerClass: 'text-center', cellStyle: {textAlign: 'center'},
-        cellRendererFramework: CheckboxCellComponent, cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
-      {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer, filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
+      {headerName: '', headerCheckboxSelection: this.formattedMetrics.length <= 20,  field: 'selected', ...this.defaultColumn, suppressMenu: true, editable: true, headerClass: 'justify-center-header', cellStyle: {textAlign: 'center'},
+        cellRendererFramework: CheckboxCellComponent, resizable: false, cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
+      {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
       {headerName: 'Total Spend', field: 'total_billed', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer,  filter: 'number',  sort: 'desc'},
       {headerName: 'Total Hours', field: 'total_hours', ...this.defaultColumn,  filter: 'number',  cellRenderer: this.agGridService.roundToOneNumberCellRenderer},
       {headerName: '# Matters', field: 'total_matters', ... this.defaultColumn, width: 150},
@@ -72,12 +78,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   }
   setUpFilters(): void {
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
-    if (!this.filterSet.bdPracticeAreas && !this.filterSet.firms) {
-      return;
-    }
-    setTimeout(() => {
-      this.getPeerFirmsData();
-    });
+    this.getPeerFirmsData();
   }
   getPeerFirmsData(): void {
     this.formattedMetrics = [];
@@ -86,15 +87,29 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {
         this.isLoaded = true;
+        this.noRecordsFound = data.result && data.result.length === 0;
         if (data.result && data.result.length > 0) {
           this.frcData = data.result || [];
-          this.comparisonData = this.frcService.formatFRCComparisonFirmsData(this.frcData);
-          if (this.comparisonData.length > 0) {
-          this.formatMetrics();
+          if (this.frcData && this.frcData.length <= 100) {
+            this.comparisonData = this.frcService.formatFRCComparisonFirmsData(this.frcData);
+            if (this.comparisonData.length > 0) {
+              this.formatMetrics();
+            }
+          }else {
+            this.formatLargeData();
           }
+          this.initColumns();
         }
       }
     );
+  }
+  formatLargeData(): void {
+    this.formattedMetrics = [];
+    for (const rec of this.frcData) {
+      this.frcService.calculateSingleFirmData(rec);
+      this.formattedMetrics.push({id: rec.bh_lawfirm_id, firm_name: rec.firm_name, selected: null, total_billed: rec.total_billed, total_hours: Math.round(rec.total_hours_billed), total_matters: rec.total_matters,
+        avg_partner_rate: ' ... ', avg_associate_rate: ' ... ', blended_rate: ' ... '});
+    }
   }
   formatMetrics(): void {
     this.formattedMetrics = [];
@@ -109,21 +124,18 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       const avgPartnerRate = firm.frcMetrics.find(e => e.metricType === 'avg_partner_rate');
       const avgAssociateRate = firm.frcMetrics.find(e => e.metricType === 'avg_associate_rate');
       const blendedRate = firm.frcMetrics.find(e => e.metricType === 'blended_rate');
-      let selectedId = null;
-      if (selectedFirms.includes(firm.bh_lawfirm_id.toString())) {
-        selectedId = firm.bh_lawfirm_id;
-      }
+      const selectedId = null;
       this.formattedMetrics.push({id: firm.bh_lawfirm_id, firm_name: firm.firm_name, selected: selectedId, total_billed: totalBilled.actual, total_hours: totalHours.actual, total_matters: totalMatters.actual,
       avg_partner_rate: this.commonServ.capitalize(avgPartnerRate.grade), avg_associate_rate: this.commonServ.capitalize(avgAssociateRate.grade), blended_rate: this.commonServ.capitalize(blendedRate.grade)});
     }
   }
   refreshData(evt: any): void {
+    this.selectedFirms = [];
     this.formattedMetrics = [];
-    this.initColumns();
     this.setUpFilters();
   }
   bubbleCellRenderer(params: any) {
-    let gradeClass = 'oval-label-black';
+    let gradeClass = 'oval-label-light-gray';
     if (params.value === 'Good') {
       gradeClass = 'oval-label-green';
     }
@@ -141,31 +153,26 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
     return value;
   }
   addFirm(evt: any): void {
-    let parsed = [];
-    if (this.filterSet.firms) {
-      parsed = JSON.parse(this.filterSet.firms);
-    }
-    parsed.push(evt.data.id.toString());
-    this.filterSet.firms = JSON.stringify(parsed);
-    this.updateFiters();
+    this.selectedFirms.push(Number(evt.data.id));
   }
   deleteFirm(evt: any): void {
-    if (this.filterSet.firms) {
-      const parsed = JSON.parse(this.filterSet.firms);
-      const ix = parsed.indexOf(evt.data.id.toString());
-      if (ix > -1) {
-        parsed.splice(ix, 1);
-      }
-      this.filterSet.firms = JSON.stringify(parsed);
-      this.updateFiters();
+    const ix = this.selectedFirms.indexOf(Number(evt.data.id));
+    if (ix > -1) {
+      this.selectedFirms.splice(ix, 1);
     }
+  }
+  compare(): void {
+    this.updateFiters();
+    setTimeout(() => {
+      this.router.navigate(['/analytics-ui/frc-firm-comparison']);
+    });
   }
   updateFiters(): void {
     const savedFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
     const savedFiltersDict = JSON.parse(savedFilters);
     const firmFilter = savedFiltersDict.dataFilters.find(e => e.fieldName === 'firms');
     if (firmFilter) {
-      const parsedFilters = JSON.parse(this.filterSet.firms);
+      const parsedFilters = this.selectedFirms; // this.filterSet.firms ? JSON.parse(this.filterSet.firms) : [];
       const result = [];
       for (const entry of parsedFilters) {
         const firm = this.formattedMetrics.find(e => e.id === Number(entry));
@@ -174,7 +181,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       firmFilter.value = Object.assign([], result);
     }
     const serializedQs = savedFiltersDict.querystring.toString();
-    const pairs = serializedQs.split('&');
+    const pairs = serializedQs.split('&') || [];
     const newPairs = [];
     for (const pair of pairs) {
       const keys = pair.split('=');
@@ -185,37 +192,34 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       }
     }
     let newPairsStr = newPairs.join('&');
-    if (this.filterSet.firms && JSON.parse(this.filterSet.firms).length > 0) {
-      newPairsStr += '&firms=' + this.filterSet.firms;
+    if (this.selectedFirms && this.selectedFirms.length > 0) {
+      newPairsStr += '&firms=' + JSON.stringify(this.selectedFirms);
     }
     savedFiltersDict.querystring = newPairsStr;
     localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), JSON.stringify(savedFiltersDict));
   }
   checkFilterSet(): boolean {
-    if (!this.filterSet.firms) {
-      return false;
-    }
-    const parsed = JSON.parse(this.filterSet.firms) || [];
-    if (parsed.length === 0) {
-      return false;
-    }
-    return true;
+    return this.selectedFirms && this.selectedFirms.length > 1;
   }
   onSelectionChanged(evt: any): void {
     const nodes = evt.api.getSelectedNodes();
+    let selectedIDs = this.selectedFirms || [];
     for (const node of nodes) {
-     // node.data.selected = node.data.id;
-    }
-    if (nodes.length > 0) {
-      for (const firm of this.formattedMetrics) {
-        firm.selected = firm.id;
-      }
-    } else {
-      for (const firm of this.formattedMetrics) {
-        firm.selected = null;
+      node.data.selected = node.data.id;
+      node.setData(node.data);
+      if (selectedIDs.indexOf(Number(node.data.id)) < 0) {
+        selectedIDs.push(Number(node.data.id));
       }
     }
-    this.gridOptions.api.setRowData(this.formattedMetrics);
+    if (nodes.length === 0) {
+      // tslint:disable-next-line:only-arrow-functions
+      this.gridOptions.api.forEachNode(function(node) {
+        node.data.selected = null;
+        node.setData(node.data);
+      });
+      selectedIDs = [];
+    }
+    this.selectedFirms = Object.assign([], selectedIDs);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

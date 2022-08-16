@@ -287,7 +287,7 @@ export class FrcServiceService {
 
   calculateSingleFirmData(summaryData: IPeerFirms): void {
     const includeExpenses = this.filtersService.includeExpenses;
-    summaryData.total_tk_hours = (summaryData.partner_hours - summaryData.partner_writeoff) + (summaryData.associate_hours - summaryData.associate_writeoff_hours) +
+    summaryData.total_tk_hours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours) +
       (summaryData.legal_assistant_hours - summaryData.legal_assistant_writeoff_hours) + (summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours);
     summaryData.total_billed = includeExpenses ? summaryData.total_billed + summaryData.total_expenses : summaryData.total_billed;
     const billedByLawyers = summaryData.partner_billed + summaryData.associate_billed;
@@ -383,10 +383,14 @@ export class FrcServiceService {
     firmData.associate_hours = firmsRecords.reduce((a, b) => ({associate_hours: a.associate_hours + b.associate_hours})).associate_hours / firmsCount;
     firmData.paralegal_hours = firmsRecords.reduce((a, b) => ({paralegal_hours: a.paralegal_hours + b.paralegal_hours})).paralegal_hours / firmsCount;
     firmData.legal_assistant_hours = firmsRecords.reduce((a, b) => ({legal_assistant_hours: a.legal_assistant_hours + b.legal_assistant_hours})).legal_assistant_hours / firmsCount;
-    firmData.percent_partner_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmsCount);
-    firmData.percent_associate_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmsCount);
-    firmData.percent_paralegal_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount);
-    firmData.percent_legal_assistant_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount);
+    firmData.partner_writeoff_hours = firmsRecords.reduce((a, b) => ({partner_writeoff_hours: a.partner_writeoff_hours + b.partner_writeoff_hours})).partner_writeoff_hours / firmsCount;
+    firmData.associate_writeoff_hours = firmsRecords.reduce((a, b) => ({associate_writeoff_hours: a.associate_writeoff_hours + b.associate_writeoff_hours})).associate_writeoff_hours / firmsCount;
+    firmData.paralegal_writeoff_hours = firmsRecords.reduce((a, b) => ({paralegal_writeoff_hours: a.paralegal_writeoff_hours + b.paralegal_writeoff_hours})).paralegal_writeoff_hours / firmsCount;
+    firmData.legal_assistant_writeoff_hours = firmsRecords.reduce((a, b) => ({legal_assistant_writeoff_hours: a.legal_assistant_writeoff_hours + b.legal_assistant_writeoff_hours})).legal_assistant_writeoff_hours / firmsCount;
+   // firmData.percent_partner_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmsCount);
+   // firmData.percent_associate_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmsCount);
+   // firmData.percent_paralegal_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount);
+   // firmData.percent_legal_assistant_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount);
     firmData.total_matters = firmsRecords.reduce((a, b) => ({total_matters: a.total_matters + b.total_matters})).total_matters / firmsCount;
     firmData.avg_matter_cost = firmsRecords.reduce((a, b) => ({avg_matter_cost: a.avg_matter_cost + b.avg_matter_cost})).avg_matter_cost / firmsCount;
     firmData.avg_matter_hours = firmsRecords.reduce((a, b) => ({avg_matter_hours: a.avg_matter_hours + b.avg_matter_hours})).avg_matter_hours / firmsCount;
@@ -397,6 +401,12 @@ export class FrcServiceService {
     firmData.percent_minority_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_minority_hours: a.percent_minority_hours + b.percent_minority_hours})).percent_minority_hours / firmsCount);
     firmData.percent_female_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_female_hours: a.percent_female_hours + b.percent_female_hours})).percent_female_hours / firmsCount);
     firmData.score = Math.round(firmsRecords.reduce((a, b) => ({score: a.score + b.score})).score / firmsCount);
+    const totalTkHours = (firmData.partner_hours - firmData.partner_writeoff_hours) + (firmData.associate_hours - firmData.associate_writeoff_hours) +
+     (firmData.legal_assistant_hours - firmData.legal_assistant_writeoff_hours) + (firmData.paralegal_hours - firmData.paralegal_writeoff_hours);
+    firmData.percent_partner_hours = Math.round(firmData.partner_hours / (totalTkHours || 1) * 100);
+    firmData.percent_associate_hours = Math.round(firmData.associate_hours / (totalTkHours || 1) * 100);
+    firmData.percent_legal_assistant_hours = Math.round(firmData.legal_assistant_hours / (totalTkHours || 1) * 100);
+    firmData.percent_paralegal_hours = Math.round(firmData.paralegal_hours / (totalTkHours || 1) * 100);
 
     return firmData;
   }
@@ -472,9 +482,6 @@ export class FrcServiceService {
     const stdRec = this.commonServ.getStandardDeviation(values);
     const avgRec = values.reduce((a, b) => a + b) / (values.length || 1);
     const zRec = (actual - avgRec) / (stdRec || 1);
-    const minRec = compareRecords[0];
-    const maxRec = compareRecords[compareRecords.length - 1];
-    const bmDiff = maxRec[prop] - minRec[prop];
     if (prop === 'percent_minority_hours' || prop === 'percent_female_hours') {
       if (zRec <= -0.5) {
         tk.grade = MetricGrade.POOR;

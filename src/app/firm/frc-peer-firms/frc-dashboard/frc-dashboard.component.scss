@@ -1,7 +1,6 @@
 @import "../../../../assets/styles/colors.scss";
-.no-selection-div {
-  background-color: $body-color;
-  color: #fff;
-  border-radius: 4px;
-  padding: 20px;
+.justify-center {
+  display: flex;
+  justify-content: center;
+  left: 40px !important;
 }
