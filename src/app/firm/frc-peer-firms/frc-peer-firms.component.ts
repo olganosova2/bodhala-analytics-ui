@@ -12,8 +12,6 @@ import {MatDialog} from '@angular/material/dialog';
 import {FrcNotesComponent} from './frc-notes/frc-notes.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
-import {BillingTotalsComponent} from '../billing-totals/billing-totals.component';
-import {DatesPickerComponent} from 'bodhala-ui-elements';
 import * as _moment from 'moment';
 
 const moment = _moment;
@@ -104,11 +102,6 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {
         this.isLoaded = true;
-        // for (const filter of this.elemFiltersService.filters) {
-        //  if (filter.fieldName === 'matterCost') {
-        //    filter.value = [];
-        //  }
-        // }
         if (data.result && data.result.length > 0) {
           this.checkSavedReports();
           this.frcData = data.result || [];
