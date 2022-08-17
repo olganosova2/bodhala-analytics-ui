@@ -60,7 +60,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
               public utilServ: UtilService,
               public appStateService: AppStateService,
               public filtersService: FiltersService) {
-    this.commonServ.pageTitle = 'Firm Report Card';
+    this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Trends Analysis Report';
   }
 

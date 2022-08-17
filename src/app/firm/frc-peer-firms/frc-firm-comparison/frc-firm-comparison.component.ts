@@ -45,7 +45,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
               public appStateService: AppStateService,
               public agGridService: AgGridService,
               public filtersService: FiltersService) {
-    this.commonServ.pageTitle = 'Firm Report Card';
+    this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Firm Comparison';
   }
 

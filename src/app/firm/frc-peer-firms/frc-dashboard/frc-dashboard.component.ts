@@ -51,7 +51,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
               public appStateService: AppStateService,
               public agGridService: AgGridService,
               public filtersService: FiltersService) {
-    this.commonServ.pageTitle = 'Firm Report Card';
+    this.commonServ.pageTitle = 'Firm Report Cards';
   }
 
   ngOnInit(): void {

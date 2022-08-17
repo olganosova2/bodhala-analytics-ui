@@ -61,7 +61,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService,
               public elemFiltersService: ElementsFiltersService
   ) {
-    this.commonServ.pageTitle = 'Firm Report Card';
+    this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Comparison Firms Report';
   }
 
