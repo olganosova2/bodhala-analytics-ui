@@ -257,8 +257,9 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
           if (!data.result) {
             return;
           }
+          const filtered = ( data.result || []).filter( e => e.page_name === this.commonServ.pageTitle);
           this.savedReportsAvailable = true;
-          this.savedReports = data.result;
+          this.savedReports = filtered;
           resolve();
         }
       );

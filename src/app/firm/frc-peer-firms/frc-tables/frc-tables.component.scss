@@ -1,0 +1,10 @@
+@import "../../../../assets/styles/colors.scss";
+td, th {
+  padding: 15px 10px;
+}
+td {
+  border: 1px solid $light-gray;
+}
+.matters-table {
+  min-height: 200px;
+}

@@ -59,6 +59,15 @@ export const END_POINTS_URLS = {
   spendByQuarter: {url: BASE_URL + 'analytics/playbook/spendByQuarter', showLoading: true},
   getFirmsWithGroupId: {url: BASE_URL + 'analytics/getFirmsWithGroupId', showLoading: false},
   getDiversityChartData: {url: BASE_URL + 'analytics/getDiversityChartData', showLoading: true},
+  getFRCKeyMetrics: {url: BASE_URL + 'analytics/getFRCKeyMetrics', showLoading: false},
+  getFRCTimekeepers: {url: BASE_URL + 'analytics/getFRCTimekeepers', showLoading: false},
+  getConfigByNameAndUserRecent: {url: BASE_URL + 'analytics/getConfigByNameAndUserRecent', showLoading: false},
+  saveClientEntityConfig: {url: BASE_URL + 'analytics/saveClientConfig', showLoading: true},
+  getSpendByMatterTable: {url: BASE_URL + 'analytics/getSpendByMatterTable', showLoading: false},
+  getComparisonFRCKeyMetrics: {url: BASE_URL + 'analytics/getComparisonFRCKeyMetrics', showLoading: false},
+  getFirmNames:  {url: BASE_URL + 'analytics/getFirmNames', showLoading: false},
+  getSpendByYear:  {url: BASE_URL + 'analytics/getSpendByYear', showLoading: false},
+
   // executive summary
   getExecutiveSummaryBillingTotals: {url: BASE_URL + 'analytics/executiveSummaryBillingTotals', showLoading: false},
   getExecutiveSummaryData: {url: BASE_URL + 'analytics/getExecutiveSummaryData', showLoading: false},
@@ -225,6 +234,7 @@ export const ROUTES = [
   {name: 'app.ledes.imports', routePath: 'analytics-ui/admin/ledes-imports', fragment: '/ledes-imports'},
   {name: 'analytics.qbrs.dashboard', routePath: 'analytics-ui/qbrs/dashboard', fragment: '/qbrs/'},
   {name: 'app.matter.benchmarking', routePath: 'analytics-ui/matter-benchmarking', fragment: '/matter-benchmarking'},
+  {name: 'analytics.frc.dashboard', routePath: 'analytics-ui/frc-dashboard', fragment: '/frc'},
   {name: 'app.uploads-manage-launchpad', routePath: 'analytics-ui/admin/insights', fragment: '/admin/insights'},
   // app.client.recommendations
   // {name: 'app.client-dashboard.task-cost', routePath: 'analytics-ui/task-cost', fragment: '/task-cost'} analytics.pastsavings

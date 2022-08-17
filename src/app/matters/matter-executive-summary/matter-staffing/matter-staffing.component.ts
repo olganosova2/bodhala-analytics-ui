@@ -57,12 +57,10 @@ export class MatterStaffingComponent implements OnInit, OnDestroy {
   }
   selectFirm(evt: number) {
     this.firmId = evt; // 8668; // 8635;
-    if (this.firmId) {
-      this.summaryData = null;
-      this.timekeepers = [];
-      this.getMatterSummary();
-      this.getNamedTKforBMMatter();
-    }
+    this.summaryData = null;
+    this.timekeepers = [];
+    this.getMatterSummary();
+    this.getNamedTKforBMMatter();
   }
 
   getMatterSummary(): void {

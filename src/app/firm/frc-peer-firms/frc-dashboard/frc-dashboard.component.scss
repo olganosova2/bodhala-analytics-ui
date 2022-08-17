@@ -1,0 +1,10 @@
+@import "../../../../assets/styles/colors.scss";
+.justify-center {
+  display: flex;
+  justify-content: center;
+  left: 40px !important;
+}
+button {
+  font-family: Roboto Mono, "Helvetica Neue", sans-serif;
+  font-size: 14px;
+}

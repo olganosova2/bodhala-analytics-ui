@@ -65,6 +65,9 @@ export class MatterTitleBarComponent implements OnInit, OnDestroy {
     if (evt.value && evt.value.id) {
       this.firmId = Number(this.firm.id);
       this.firmSelected.emit(this.firmId);
+    } else {
+      this.firmId = null;
+      this.firmSelected.emit(this.firmId);
     }
   }
 

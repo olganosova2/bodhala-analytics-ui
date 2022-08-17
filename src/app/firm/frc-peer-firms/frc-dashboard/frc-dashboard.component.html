@@ -1,0 +1,39 @@
+<div>
+  <div>
+    <lib-bd-filters #filters
+      (sendFilters)="refreshData($event)"
+      [pageName]="pageName"
+      [excludeFilters]="excludeFilters"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+</div>
+<div class="pt40" id="frcDiv">
+    <h1 class="roboto-bold">Firm Report Cards</h1>
+  <div *ngIf="noRecordsFound">No records found.</div>
+<!--  <div class="warning-banner" *ngIf="selectedFiltersCount === 0">-->
+<!--    The data shown in the table below corresponds to the filters selected at the top of the window. Use the filters to modify or populate the list of firms.-->
+<!--  </div>-->
+  <div class="mt20" *ngIf="formattedMetrics && formattedMetrics.length > 0">
+    <div class="mt10 mb20">
+      <button [ngClass]="{ 'button-disabled': !this.checkFilterSet() }" [disabled]="!this.checkFilterSet()" (click)="compare()"  class="primary-button mr10"><span>Compare Firms</span><em class="fa fa-chevron-right ml10"></em></button>
+    </div>
+    <ag-grid-angular
+      #agGrid
+      style="width: 100%; height:700px"
+      [pagination]="true"
+      [paginationPageSize]="paginationPageSize"
+      class="ag-theme-alpine"
+      [sideBar]="sideBarConfig"
+      [rowData]="formattedMetrics"
+      [suppressAggFuncInHeader]="true"
+      [suppressRowClickSelection]="true"
+      (selectionChanged)="onSelectionChanged($event)"
+      [gridOptions]="gridOptions">
+    </ag-grid-angular>
+
+  </div>
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
+</div>

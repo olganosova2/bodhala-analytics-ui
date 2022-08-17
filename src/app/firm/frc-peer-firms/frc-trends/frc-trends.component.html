@@ -1,0 +1,61 @@
+<div>
+  <div>
+    <lib-bd-filters
+      (sendFilters)="refreshData($event)"
+      [pageName]="pageName"
+      [firmId]="firmId"
+      [excludeFilters]="excludeFilters"
+      [collapsed]="appStateService.layout.isCollapsed"
+    ></lib-bd-filters>
+  </div>
+</div>
+<div class="exs-div" id="frcDiv">
+  <div class="mb20">
+    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10"  [routerLink]="['/analytics-ui/firm/frc-peer-firms', firmId]"><em class="fa fa-chevron-left mr10"></em>Back</span>Trend Analysis Report Page</div>
+    <ngb-alert type="success" *ngIf="frcCardSaved" (close)="frcCardSaved=false">
+      <div class="font-green font-bold">
+        Report has been saved successfully.
+      </div>
+    </ngb-alert>
+    <div class="justify-between mr20">
+      <div class="left-titles">
+        <div class="frc-page-title roboto-bold mb15">{{ firm?.firm_name}}</div>
+
+        <div><span class="roboto-bold mr10">Report Timeframe:</span> <span class="text-underline font-gray">
+          {{ this.filterSet.startdate | date: 'MMM dd, yyyy' }} - {{ this.filterSet.enddate | date: 'MMM dd, yyyy' }}</span></div>
+        <div class="mt10 width-70"><div class="justify-start">
+          <div class="roboto-bold mr10 mt7">Compare Timeframe:</div>
+          <div *ngIf="dpFilter && !dialogOpened">
+            <lib-dates-picker #dpDates class="filter-button" [filter]="dpFilter" [allFilters]="[]" [isExternal]="true" (datesChangeRequested)="setUpCompareDates()"></lib-dates-picker>
+          </div>
+        </div>
+        </div>
+      </div>
+      <div class="mt20">
+        <div class="text-right">
+          <button (click)="viewSavedReports()" class="primary-button mr10" *ngIf="savedReports.length > 0"><span class="mr10">View Historical Report Cards</span> <em class="fa fa-chevron-right"></em></button>
+          <button (click)="saveFrc()" class="primary-button mr10"><span>Save</span></button>
+          <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
+        </div>
+          <div class="mt20">
+            <span class="totals-badge oval-label-white pointer-hand mr5" [routerLink]="['/analytics-ui/firm/frc-peer-firms', firmId]">Comparison Firms Report</span>
+            <span class="totals-badge oval-label-black"   >Trend Analysis Report</span>
+          </div>
+      </div>
+    </div>
+  </div>
+  <bd-frc-key-metrics *ngIf="summaryData && keyMetrics.length > 0" [keyMetrics]="keyMetrics"></bd-frc-key-metrics>
+  <div class="mt20" *ngIf="quarterData && quarterData.length > 0">
+    <div class="text-right pointer-hand mb20 mr20">
+      <span class="mode-switch mode-switch-left"  [ngClass]="{'mode-switch-selected': trendsChartMode === 'QoQ'}" (click)="switchChartMode()">QoQ</span>
+      <span class="mode-switch mode-switch-right" [ngClass]="{'mode-switch-selected': trendsChartMode === 'YoY'}" (click)="switchChartMode()">YoY</span>
+    </div>
+    <div *ngFor="let chart of charts">
+      <bd-frc-trends-chart [quarterData]="quarterData" [yearData]="yearData" [selectedChart]="chart" [trendsChartMode]="trendsChartMode"></bd-frc-trends-chart>
+    </div>
+  </div>
+
+  <div class="spinner-card" [hidden]="isLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
+</div>

@@ -465,9 +465,12 @@ export class MatterAnalysisService {
     }
     return result;
   }
-  processTks(timekeepers: Array<INamedTimekeepersBM>): void {
+  processTks(timekeepers: Array<any>): void {
     for (const tk of timekeepers) {
       tk.bodhala_classification = this.yoyRateIncreaseService.tkNameCellRenderer({ value: tk.tk_level});
+      if (!tk.tk_level && tk.bh_classification) {
+        tk.bodhala_classification = this.commonServ.capitalize(tk.bh_classification);
+      }
       const includeExpenses = this.filtersService.includeExpenses;
       tk.total_billed = includeExpenses ? tk.total_billed + tk.total_expenses : tk.total_billed;
     }

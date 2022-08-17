@@ -9,6 +9,10 @@ import {IUiAnnotation} from '../components/annotations/model';
 import {HELP_MODAL_CONFIG} from './config';
 import {HelpModalComponent} from '../components/help-modal/help-modal.component';
 import {MatDialog} from '@angular/material/dialog';
+import * as _moment from 'moment';
+
+const moment = _moment;
+
 export interface IClient {
   bh_client_id: number;
   org_id: number;
@@ -355,6 +359,60 @@ export class CommonService {
       return '';
     }
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  getClientConfigJson(setting: string): any {
+    let result = null; // make default
+    if (this.userService.config !== undefined) {
+      const prop = this.userService.config[setting];
+      if (!prop) {
+        return result;
+      }
+      result = prop.configs[0] ? prop.configs[0].json_config : null;
+    }
+    return result;
+  }
+  getPageId(): string {
+    return this.pageTitle + ' > ' + this.pageSubtitle;
+  }
+  saveReport(firmId: number, filterSet: any): any {
+    const params = {} as any;
+    params.filter_set = filterSet;
+    params.firmId = firmId;
+    params.pageName = this.getPageId();
+    const savedView = null;
+    params.savedView = savedView;
+    return this.httpService.makePostRequest('saveExport', params);
+  }
+  formatDatesPickerFilter(startDate: string, endDate: string): any {
+    const tempFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    const tempFiltersDict = JSON.parse(tempFilters);
+    let savedMaxDate = moment().format('YYYT-MM-DD');
+    let savedMinDate = moment().add(-10, 'years').format('YYYT-MM-DD');
+    const found = tempFiltersDict.dataFilters.find(e => e.fieldName === 'dateRange');
+    if (found) {
+      savedMaxDate = found.maxDate;
+      savedMinDate = found.minDate;
+    }
+    return {
+      display: true,
+      displayName: 'Date Range',
+      exclude: false,
+      fieldName: 'dateRange',
+      filterGroup: 'Dates',
+      isCapped: false,
+      isMatterTag: false,
+      matterCollection: '',
+      maxDate: savedMaxDate,
+      maxRange: 0,
+      minDate: savedMinDate,
+      minRange: 0,
+      options: null,
+      ordered: false,
+      preload: 0,
+      step: null,
+      type: 'DATERANGE',
+      value: { startDate: moment(startDate), endDate: moment(endDate) }
+    };
   }
 }
 

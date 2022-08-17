@@ -1,0 +1,19 @@
+<div  class="full-width relative-pos mr10 panel-wrapper">
+  <div class="justify-between" *ngIf="!isTrends">
+    <h4>Key Metrics</h4>
+    <button (click)="openDetails()" class="primary-button"><span class="mr10">Edit Visible Metrics</span> <em class="fa fa-chevron-right"></em></button>
+  </div>
+  <div class="flex-container bottom-border" [ngClass]="{'bottom-border' : this.filteredMetrics.length > 5}">
+    <div *ngFor="let item of filteredMetrics.slice(0, itemTopRowCount);let i=index;" class="flex-item" [ngClass]="{'flex-item-border-right': !item?.lastCell}">
+      <bd-key-metric-item [item]="item" [isLastCell]="item?.lastCell" [totalMetrics]="this.filteredMetrics.length"></bd-key-metric-item>
+    </div>
+  </div>
+  <div class="flex-container" *ngIf="this.filteredMetrics.length > 5">
+    <div *ngFor="let item of filteredMetrics.slice(itemTopRowCount);let i=index;" class="flex-item" [ngClass]="{'flex-item-border-right': !item?.lastCell}">
+      <bd-key-metric-item [item]="item" [isLastCell]="item?.lastCell" [totalMetrics]="this.filteredMetrics.length"></bd-key-metric-item>
+    </div>
+  </div>
+<!--  <div class="spinner-card" [hidden]="isLoaded">-->
+<!--    <mat-spinner diameter="50" color="primary"></mat-spinner>-->
+<!--  </div>-->
+</div>

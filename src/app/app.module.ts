@@ -46,6 +46,8 @@ import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
 import borderRadius from 'highcharts-border-radius';
 import rounded from 'highcharts-rounded-corners/rounded-corners.js';
+import HC_exporting from 'highcharts/modules/exporting';
+import HC_exportData from 'highcharts/modules/export-data';
 import { ChartModule } from 'angular2-highcharts';
 import { DropdownModule } from 'primeng/dropdown';
 import * as CONFIG from './shared/services/config';
@@ -88,6 +90,7 @@ import { BenchmarkRowComponent } from './benchmarks/benchmark-row/benchmark-row.
 import { BenchmarksGridComponent } from './benchmarks/benchmarks-grid/benchmarks-grid.component';
 import { TwoBarsComponent } from './benchmarks/two-bars/two-bars.component';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {PanelModule} from 'primeng/panel';
 import { BenchmarkFirmDetailComponent } from './benchmarks/benchmark-firm-detail/benchmark-firm-detail.component';
 import { IeBannerComponent } from './shared/components/ie-banner/ie-banner.component';
 import { ErrorMessagesComponent } from './shared/components/error-messages/error-messages.component';
@@ -155,6 +158,8 @@ import { QbrExecutiveSummaryComponent } from './qbr/qbr-executive-summary/qbr-ex
 import { YoyNumberWidgetComponent } from './qbr/yoy-number-widget/yoy-number-widget.component';
 import { QbrExecutiveSummaryRightComponent } from './qbr/qbr-executive-summary/qbr-executive-summary-right/qbr-executive-summary-right.component';
 rounded(highcharts);
+// HC_exporting(highcharts);
+// HC_exportData(highcharts);
 import { QbrComponent } from './qbr/qbr.component';
 import { QbrCreationComponent } from './qbr/qbr-creation/qbr-creation.component';
 import { QbrDeckComponent } from './qbr/qbr-deck/qbr-deck.component';
@@ -207,8 +212,19 @@ import { NamedTkAnalysisComponent } from './rates-analysis/view-rate-analysis/na
 import { PeerFirmsModalComponent } from './admin/admin-rate-benchmarks/peer-firms-modal/peer-firms-modal.component';
 import { ComparisonFirmsComponent } from './rates-analysis/view-rate-analysis/comparison-firms/comparison-firms.component';
 import { EditFirmsModalComponent } from './rates-analysis/view-rate-analysis/comparison-firms/edit-firms-modal/edit-firms-modal.component';
+import { FrcPeerFirmsComponent } from './firm/frc-peer-firms/frc-peer-firms.component';
+import { FrcKeyMetricsComponent } from './firm/frc-peer-firms/frc-key-metrics/frc-key-metrics.component';
+import { KeyMetricItemComponent } from './firm/frc-peer-firms/key-metric-item/key-metric-item.component';
+import { VisibleKeyMetricsComponent } from './firm/frc-peer-firms/visible-key-metrics/visible-key-metrics.component';
+import { FrcNotesComponent } from './firm/frc-peer-firms/frc-notes/frc-notes.component';
+import { FrcTablesComponent } from './firm/frc-peer-firms/frc-tables/frc-tables.component';
+import { FrcFirmComparisonComponent } from './firm/frc-peer-firms/frc-firm-comparison/frc-firm-comparison.component';
+import { FrcComparisonCellComponent } from './firm/frc-peer-firms/frc-firm-comparison/frc-comparison-cell/frc-comparison-cell.component';
 import { QaDashboardComponent } from './admin/qa-dashboard/qa-dashboard.component';
 import { QaDashboardGridComponent } from './admin/qa-dashboard/qa-dashboard-grid/qa-dashboard-grid.component';
+import { FrcTrendsComponent } from './firm/frc-peer-firms/frc-trends/frc-trends.component';
+import { FrcTrendsChartComponent } from './firm/frc-peer-firms/frc-trends-chart/frc-trends-chart.component';
+import { FrcDashboardComponent } from './firm/frc-peer-firms/frc-dashboard/frc-dashboard.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -369,8 +385,20 @@ highcharts.setOptions({
     PeerFirmsModalComponent,
     ComparisonFirmsComponent,
     EditFirmsModalComponent,
+    FrcPeerFirmsComponent,
+    FrcKeyMetricsComponent,
+    KeyMetricItemComponent,
+    VisibleKeyMetricsComponent,
+    FrcNotesComponent,
+    FrcTablesComponent,
+    FrcFirmComparisonComponent,
+    FrcComparisonCellComponent,
+    EditFirmsModalComponent,
     QaDashboardComponent,
-    QaDashboardGridComponent
+    QaDashboardGridComponent,
+    FrcTrendsComponent,
+    FrcTrendsChartComponent,
+    FrcDashboardComponent
   ],
   entryComponents: [
     PillComponent,
@@ -380,7 +408,9 @@ highcharts.setOptions({
     HelpModalComponent,
     SavingsFirmGridComponent,
     AddEditConfigComponent,
-    FirmDiscountsComponent
+    FirmDiscountsComponent,
+    VisibleKeyMetricsComponent,
+    FrcNotesComponent
   ],
   imports: [
     HttpClientModule,
@@ -432,7 +462,8 @@ highcharts.setOptions({
     QuillModule.forRoot(),
     ClickOutsideModule,
     MultiSelectModule,
-    AceEditorModule
+    AceEditorModule,
+    PanelModule
   ],
   providers: [CookieService,
     UserService,

@@ -11,7 +11,7 @@ import {CommonService} from '../../shared/services/common.service';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {IBmSetupType} from './model';
 
-describe('BenchmarkMattersComponent', () => {
+xdescribe('BenchmarkMattersComponent', () => {
   let component: BenchmarkMattersComponent;
   let fixture: ComponentFixture<BenchmarkMattersComponent>;
 
@@ -126,7 +126,7 @@ describe('BenchmarkMattersComponent', () => {
     component.deleteConfig(3);
     expect(component.bmSetupType).toBe(IBmSetupType.SelectedMatters);
   });
-  it('should selectAll', () => {
+  xit('should selectAll', () => {
     component.clientBmConfig = Object.assign({}, component.createNewBmConfig());
     component.selectAll();
     expect(component.clientBmConfig.json_config).toBeUndefined();

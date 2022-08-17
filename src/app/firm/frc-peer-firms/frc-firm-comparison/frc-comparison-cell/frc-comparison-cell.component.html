@@ -1,0 +1,23 @@
+<div class="justify-between metric-cell">
+  <div>
+    <span *ngIf="metric">
+      <span *ngIf="metric.format === 'dollar'">$</span>
+      <span *ngIf="!isAverageColumn">{{ metric.actual | number:'1.0-0' }}</span>
+        <span *ngIf="isAverageColumn" class="font-bold">{{ metric.firms | number:'1.0-0' }}</span>
+    <span *ngIf="metric.format === 'percent'">%</span>
+  </span>
+  </div>
+    <div>
+<span class="oval-label" *ngIf="!isAverageColumn"
+      [ngClass]=" {'oval-label-red': metric?.grade === 'POOR',
+              'oval-label-green': metric?.grade === 'GOOD',
+              'oval-label-orange': metric?.grade === 'FAIR',
+              'oval-label-black': metric?.grade === 'NODATA'}">
+
+          <span class="increase-span ml5">  {{ metric?.increase | number:'1.0-0'}}%
+           <em *ngIf="metric?.direction > 0" class="fa fa-arrow-up"></em>
+            <em *ngIf="metric?.direction < 0" class="fa fa-arrow-down"></em>
+            </span>
+        </span>
+    </div>
+</div>

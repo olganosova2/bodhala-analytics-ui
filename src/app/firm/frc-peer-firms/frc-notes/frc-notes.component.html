@@ -1,0 +1,20 @@
+<div class = "justify-between mb15">
+  <div class="roboto-bold dialog-title">{{action}} Notes</div>
+
+  <div ><mat-icon  mat-dialog-close>close</mat-icon></div>
+
+</div>
+<mat-dialog-content>
+  <quill-editor *ngIf="note" [styles]="commonServ.editorStyle" [(ngModel)]="note.notes"
+                [modules]="quillConfig"></quill-editor>
+</mat-dialog-content>
+
+<div mat-dialog-actions class="justify-between mt10">
+  <div>
+    <button class="primary-button mr10"  (click)="saveNote(note)" [disabled]="validateSave()" [ngClass]="{'disabled-button' : validateSave()}">Save</button>
+    <button mat-button mat-dialog-close class="cancel-button">Cancel</button>
+  </div>
+  <div>
+    <button class="primary-button"  (click)="openDialog(note)" *ngIf="note && note.id">Delete</button>
+  </div>
+</div>
