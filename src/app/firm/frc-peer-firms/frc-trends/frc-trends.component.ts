@@ -104,6 +104,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
         this.checkSavedReports();
         if (data.result) {
           if (data.result.report_timeframe && data.result.report_timeframe.length > 0) {
+            this.frcService.processExpenses(data.result.report_timeframe);
             this.summaryData = Object.assign({}, data.result.report_timeframe[0]);
             this.firm = Object.assign({}, data.result.report_timeframe[0]);
           }else{
@@ -112,6 +113,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
           this.frcService.calculateSingleFirmData(this.summaryData);
 
           if (data.result.comparison_timeframe && data.result.comparison_timeframe.length > 0) {
+            this.frcService.processExpenses(data.result.comparison_timeframe);
             this.internalData = Object.assign({}, data.result.comparison_timeframe[0]);
           }else{
             this.internalData = this.frcService.createEmptySingleFirmData();

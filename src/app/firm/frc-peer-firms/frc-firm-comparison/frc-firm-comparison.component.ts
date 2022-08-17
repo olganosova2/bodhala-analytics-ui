@@ -106,6 +106,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.isLoaded = true;
         if (data.result && data.result.length > 0) {
+          this.frcService.processExpenses(data.result);
           this.frcData = data.result || [];
           this.comparisonData = this.frcService.formatFRCComparisonFirmsData(this.frcData);
           if (this.comparisonData.length > 0) {

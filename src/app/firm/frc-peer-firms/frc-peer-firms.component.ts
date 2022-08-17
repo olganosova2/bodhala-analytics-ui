@@ -103,6 +103,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.isLoaded = true;
         if (data.result && data.result.length > 0) {
+          this.frcService.processExpenses(data.result);
           this.checkSavedReports();
           this.frcData = data.result || [];
           let found = this.frcData.find(e => e.bh_lawfirm_id === this.firmId);

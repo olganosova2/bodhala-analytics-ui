@@ -89,6 +89,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
         this.isLoaded = true;
         this.noRecordsFound = data.result && data.result.length === 0;
         if (data.result && data.result.length > 0) {
+          this.frcService.processExpenses(data.result);
           this.frcData = data.result || [];
           if (this.frcData && this.frcData.length <= 100) {
             this.comparisonData = this.frcService.formatFRCComparisonFirmsData(this.frcData);

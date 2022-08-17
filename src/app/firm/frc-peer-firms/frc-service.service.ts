@@ -285,19 +285,13 @@ export class FrcServiceService {
     }
   }
 
-  calculateSingleFirmData(summaryData: IPeerFirms, excludeCurrent: boolean = false): void {
+  calculateSingleFirmData(summaryData: IPeerFirms): void {
     const includeExpenses = this.filtersService.includeExpenses;
-    summaryData.total_tk_hours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours) +
-      (summaryData.legal_assistant_hours - summaryData.legal_assistant_writeoff_hours) + (summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours);
-    summaryData.total_billed = includeExpenses && !excludeCurrent ? summaryData.total_billed + summaryData.total_expenses : summaryData.total_billed;
     const billedByLawyers = summaryData.partner_billed + summaryData.associate_billed;
     summaryData.percent_total_block_billed = summaryData.total_block_billed / (billedByLawyers || 1) * 100;
     const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
     const lawyerHours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours);
     summaryData.blended_rate = lawyerBilled / (lawyerHours || 1);
-    summaryData.partner_hours = !excludeCurrent ? summaryData.partner_hours - summaryData.partner_writeoff : summaryData.partner_hours;
-    summaryData.associate_hours = !excludeCurrent ? summaryData.associate_hours - summaryData.associate_writeoff_hours : summaryData.associate_hours;
-    summaryData.paralegal_hours = !excludeCurrent ? summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours : summaryData.paralegal_hours;
     summaryData.percent_partner_hours = Math.round(summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100);
     summaryData.percent_associate_hours = Math.round(summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100);
     summaryData.percent_legal_assistant_hours = Math.round(summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100);
@@ -306,6 +300,17 @@ export class FrcServiceService {
     summaryData.percent_female_hours = Math.round(summaryData.female_hours / (summaryData.total_tk_hours || 1) * 100);
     if (includeExpenses) {
       summaryData.avg_matter_cost = summaryData.avg_matter_cost_including_expenses;
+    }
+  }
+  processExpenses(firmsRecords: Array<IPeerFirms>): void {
+    const includeExpenses = this.filtersService.includeExpenses;
+    for (const summaryData of firmsRecords) {
+      summaryData.total_tk_hours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours) +
+        (summaryData.legal_assistant_hours - summaryData.legal_assistant_writeoff_hours) + (summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours);
+      summaryData.total_billed = includeExpenses ? summaryData.total_billed + summaryData.total_expenses : summaryData.total_billed;
+      summaryData.partner_hours = summaryData.partner_hours - summaryData.partner_writeoff_hours;
+      summaryData.associate_hours = summaryData.associate_hours - summaryData.associate_writeoff_hours;
+      summaryData.paralegal_hours = summaryData.paralegal_hours - summaryData.paralegal_writeoff_hours;
     }
   }
 
@@ -357,14 +362,14 @@ export class FrcServiceService {
     };
   }
 
-  calculatePeersData(firmsRecords: Array<any>, excludeCurrent: boolean = false): IPeerFirms {
+  calculatePeersData(firmsRecords: Array<any>): IPeerFirms {
     const firmData = this.createEmptySingleFirmData();
     const firmsCount = firmsRecords.length;
     if (!firmsCount) {
       return firmData;
     }
     for (const rec of firmsRecords) {
-      this.calculateSingleFirmData(rec, excludeCurrent);
+      this.calculateSingleFirmData(rec);
     }
     firmData.firm_name = 'Comparison Firms';
     const reducerTotalBilled = (previousValue, currentValue) => previousValue.total_billed + currentValue.total_billed;
@@ -419,7 +424,7 @@ export class FrcServiceService {
       const summaryData = originals.find(e => e.bh_lawfirm_id === rec.bh_lawfirm_id);
       this.calculateSingleFirmData(summaryData);
       const filtered = Object.assign([], originals); //  originals.filter(e => e.bh_lawfirm_id !== rec.bh_lawfirm_id) || [];
-      const internalData = this.calculatePeersData(filtered, true);
+      const internalData = this.calculatePeersData(filtered);
       currentFirm.frcMetrics = this.buildMetrics(summaryData, internalData, filtered);
       result.push(currentFirm);
     }
