@@ -46,7 +46,6 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   noFirmsSelected: boolean = false;
   isLoaded: boolean = true;
   chart: any;
-  customReport: boolean = false;
   options: any = Object.assign({}, barTkPercentOptions);
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
 
