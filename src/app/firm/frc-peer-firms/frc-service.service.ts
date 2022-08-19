@@ -143,7 +143,7 @@ export interface IPeerFirms {
   avg_matter_cost: number;
   avg_matter_cost_including_expenses: number;
   avg_matter_hours: number;
-  percent_total_block_billed: number;
+  percent_total_block_billed?: number;
   total_tk_hours?: number;
   blended_rate?: number;
   percent_partner_hours?: number;

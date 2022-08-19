@@ -41,6 +41,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
   metrics: any = MetricTypeTrends;
   excludeFilters: Array<string> = ['firms'];
   pageName: string = 'analytics-ui/frc-trends/';
+  pageType: string = 'FRC';
   isLoaded: boolean = false;
   dialogOpened: boolean = false;
   trendsChartMode: TrendsChartMode = TrendsChartMode.YoY;

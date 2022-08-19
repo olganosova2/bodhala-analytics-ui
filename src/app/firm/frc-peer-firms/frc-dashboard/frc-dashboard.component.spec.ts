@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../shared/services/filters.service';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
+import {MOCK_FRC_TRENDS_DATA, MOCK_PEER_FIRMS_ARRAY} from '../../../shared/unit-tests/mock-data/frc';
 
 describe('FrcDashboardComponent', () => {
   let component: FrcDashboardComponent;
@@ -45,5 +46,24 @@ describe('FrcDashboardComponent', () => {
 
   it('should create FrcDashboardComponent', () => {
     expect(component).toBeTruthy();
+  });
+  it('should addFirm', () => {
+    component.selectedFirms = [];
+    component.addFirm({ data: {id: 1}});
+    expect(component.selectedFirms.length).toBe(1);
+  });
+  it('should refreshData', () => {
+    component.refreshData({ data: {id: 1}});
+    expect(component.selectedFirms.length).toBe(0);
+  });
+  it('should deleteFirm', () => {
+    component.selectedFirms = [ 1, 2, 3];
+    component.deleteFirm({ data: {id: 1}});
+    expect(component.selectedFirms.length).toBe(2);
+  });
+  it('should formatLargeData', () => {
+    component.frcData = MOCK_PEER_FIRMS_ARRAY.result;
+    component.formatLargeData();
+    expect(component.formattedMetrics.length).toBeGreaterThan(0);
   });
 });

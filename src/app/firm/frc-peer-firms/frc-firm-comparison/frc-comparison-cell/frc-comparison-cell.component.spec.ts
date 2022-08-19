@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {ActivatedRouteMock} from '../../../../shared/unit-tests/mock-services';
 import * as mockServices from '../../../../shared/unit-tests/mock-services';
 import {FiltersService} from '../../../../shared/services/filters.service';
+import {ICellRendererParams} from 'ag-grid-community';
 
 describe('FrcComparisonCellComponent', () => {
   let component: FrcComparisonCellComponent;
@@ -45,7 +46,15 @@ describe('FrcComparisonCellComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create FrcComparisonCellComponent', () => {
-    expect(component).toBeTruthy();
+  it('should agInit', () => {
+    const params = { context: { frcMetrics: [ { metricType: 'avg_partner_rate', actual: 100, firms: 120}] },
+    data: { metricType: 'avg_partner_rate'}, colDef: { field: 'firms' }} as ICellRendererParams;
+    component.agInit(params);
+    expect(component.metric).toBeTruthy();
+  });
+  it('should refresh', () => {
+    const params = { checked: false};
+    const result = component.refresh(params);
+    expect(result).toBe(false);
   });
 });

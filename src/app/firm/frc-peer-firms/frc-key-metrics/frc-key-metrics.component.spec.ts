@@ -47,4 +47,8 @@ describe('FrcKeyMetricsComponent', () => {
   it('should create FrcKeyMetricsComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should openDetails', () => {
+    component.openDetails();
+    expect(component.dialog).toBeTruthy();
+  });
 });

@@ -47,4 +47,8 @@ describe('FrcFirmComparisonComponent', () => {
   it('should create FrcFirmComparisonComponent', () => {
     expect(component).toBeTruthy();
   });
+  it('should refreshData', () => {
+    component.refreshData({});
+    expect(component).toBeTruthy();
+  });
 });

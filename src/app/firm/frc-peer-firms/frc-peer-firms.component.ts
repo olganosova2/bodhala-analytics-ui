@@ -42,6 +42,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   filterSet: any = {};
   excludeFilters: Array<string> = [];
   pageName: string = 'analytics-ui/frc-peer-firms/';
+  pageType: string = 'FRC';
   noFirmsSelected: boolean = false;
   isLoaded: boolean = true;
   chart: any;

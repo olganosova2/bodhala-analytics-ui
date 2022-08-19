@@ -144,9 +144,6 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   getFieldName(id: number): string {
     return 'firm_' + id.toString();
   }
-  goBack(): void {
-
-  }
   export(): void {
     this.commonServ.pdfLoading = true;
     const exportName = 'Firm Report Card Comparison';

@@ -37,7 +37,7 @@ import {CLIENT_BM_MATTERS, MOCK_BM_CLIENT_PAS, MOCK_BM_CONFIG, MOCK_BM_MATTERS, 
 import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT,
   MOCK_RATE_BENCHMARK_RESULT, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA, MOCK_GRANULARITY_PAGE_RESULT, MOCK_RATE_BM_NAMED_TK_DATA, MOCK_PEER_FIRMS_ADMIN_RESPONSE} from './mock-data/rate-benchmarking';
 import {MOCK_FIRM_CLUSTER} from './mock-data/firm-cluster';
-import {MOCK_PEER_FIRMS_ARRAY} from './mock-data/frc';
+import {MOCK_FRC_TRENDS_DATA, MOCK_PEER_FIRMS_ARRAY, MOCK_SAVED_FRC_REPORTS} from './mock-data/frc';
 
 export const ngWindow = {
   location: {
@@ -72,7 +72,7 @@ export class FiltersStub {
   }
 
   public getCurrentUserCombinedFilters() {
-    return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
+    return {clientId: 190, startdate: this.startDate, enddate: this.endDate, firms: JSON.stringify([4, 8, 724, 9353])};
   }
 
   public getCommonFilters() {
@@ -366,6 +366,12 @@ export class DataStub {
         return of (MOCK_RATE_BM_NAMED_TK_DATA);
       case 'getFRCKeyMetrics':
         return of (MOCK_PEER_FIRMS_ARRAY);
+      case 'getComparisonFRCKeyMetrics':
+        return of (MOCK_FRC_TRENDS_DATA);
+      case 'getSavedExports':
+        return of (MOCK_SAVED_FRC_REPORTS);
+      case 'getSpendByYear':
+        return of (MOCK_SAVED_FRC_REPORTS);
 
 
       default:
