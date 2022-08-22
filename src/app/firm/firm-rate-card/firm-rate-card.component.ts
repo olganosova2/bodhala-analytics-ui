@@ -79,7 +79,7 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
               public matDialog: MatDialog,
               public appStateService: AppStateService) {
     this.commonServ.pageTitle = 'Firms > Report Card';
-    this.logoUrl = this.formatLogoUrl(this.userService.currentUser.client_info.org.logo_url);
+    this.logoUrl = this.userService.currentUser.client_info.org.logo_url;
     this.selectedFilters =  Object.assign([], this.filtersService.getSelectedFilters());
     const userFilters = this.filtersService.getCurrentUserCombinedFilters();
     if (userFilters) {
@@ -279,8 +279,9 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
           if (!data.result) {
             return;
           }
+          const filtered = ( data.result || []).filter( e => e.page_name === this.commonServ.pageTitle);
           this.savedReportsAvailable = true;
-          this.savedReports = data.result;
+          this.savedReports = filtered;
           resolve();
         }
       );
@@ -312,19 +313,6 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
   }
   goToTop(): void {
     window.scroll(0, 0);
-  }
-  formatLogoUrl(url: string): string {
-    let result = '';
-    if (!url) {
-      return result;
-    }
-    const ix = url.indexOf('/img/clients/');
-    if (config.IS_LOCAL) {
-      result = config.HOST + url.substring(ix);
-    } else {
-      result = 'https://' + window.location.host + url.substring(ix);
-    }
-    return result;
   }
   loadNotes(notes: Array<IUiAnnotation>): void {
     this.notes = Object.assign([], notes);
