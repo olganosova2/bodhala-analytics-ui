@@ -7,8 +7,8 @@ export interface IUiAnnotation {
   notes: string;
   is_public: boolean;
   json_config: any;
-  deleted_on: string;
-  deleted_by: string;
+  deleted_on?: string;
+  deleted_by?: string;
   created_on?: string;
   created_by?: string;
   modified_on?: string;

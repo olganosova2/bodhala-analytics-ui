@@ -22,7 +22,7 @@ export const barTkPercentOptions = {
     categories: ['Firm', 'Comparison Firms'],
     labels: {
       style: {
-        fontSize: 16
+        fontSize: 16,
       }
     }
   },
@@ -54,7 +54,7 @@ export const barTkPercentOptions = {
         enabled: true,
         // format: '{point.y:,.0f} %',
         formatter() {
-          return (this.y !== 0) ? this.y + '%' : '';
+          return (this.y !== 0) ? Math.round(this.y) + '%' : '';
         },
         style: {
           textOutline: 'none'
@@ -292,10 +292,16 @@ export class FrcServiceService {
     const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
     const lawyerHours = (summaryData.partner_hours - summaryData.partner_writeoff_hours) + (summaryData.associate_hours - summaryData.associate_writeoff_hours);
     summaryData.blended_rate = lawyerBilled / (lawyerHours || 1);
-    summaryData.percent_partner_hours = Math.round(summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100);
-    summaryData.percent_associate_hours = Math.round(summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100);
-    summaryData.percent_legal_assistant_hours = Math.round(summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100);
-    summaryData.percent_paralegal_hours = Math.round(summaryData.paralegal_hours / (summaryData.total_tk_hours || 1) * 100);
+    // summaryData.percent_partner_hours = Math.round(summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100);
+    // summaryData.percent_associate_hours = Math.round(summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100);
+    // summaryData.percent_legal_assistant_hours = Math.round(summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100);
+    // summaryData.percent_paralegal_hours = Math.round(summaryData.paralegal_hours / (summaryData.total_tk_hours || 1) * 100);
+
+    summaryData.percent_partner_hours = summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100;
+    summaryData.percent_associate_hours = summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100;
+    summaryData.percent_legal_assistant_hours = summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100;
+    summaryData.percent_paralegal_hours = summaryData.paralegal_hours / (summaryData.total_tk_hours || 1) * 100;
+
     summaryData.percent_minority_hours = Math.round(summaryData.minority_hours / (summaryData.total_tk_hours || 1) * 100);
     summaryData.percent_female_hours = Math.round(summaryData.female_hours / (summaryData.total_tk_hours || 1) * 100);
     if (includeExpenses) {
@@ -392,10 +398,17 @@ export class FrcServiceService {
     firmData.associate_writeoff_hours = firmsRecords.reduce((a, b) => ({associate_writeoff_hours: a.associate_writeoff_hours + b.associate_writeoff_hours})).associate_writeoff_hours / firmsCount;
     firmData.paralegal_writeoff_hours = firmsRecords.reduce((a, b) => ({paralegal_writeoff_hours: a.paralegal_writeoff_hours + b.paralegal_writeoff_hours})).paralegal_writeoff_hours / firmsCount;
     firmData.legal_assistant_writeoff_hours = firmsRecords.reduce((a, b) => ({legal_assistant_writeoff_hours: a.legal_assistant_writeoff_hours + b.legal_assistant_writeoff_hours})).legal_assistant_writeoff_hours / firmsCount;
-   // firmData.percent_partner_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmsCount);
-   // firmData.percent_associate_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmsCount);
-   // firmData.percent_paralegal_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount);
-   // firmData.percent_legal_assistant_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount);
+    // firmData.percent_partner_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmsCount);
+    // firmData.percent_associate_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmsCount);
+    // firmData.percent_paralegal_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount);
+    // firmData.percent_legal_assistant_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount);
+
+    firmData.percent_partner_hours = firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmsCount;
+    firmData.percent_associate_hours = firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmsCount;
+    firmData.percent_paralegal_hours = firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount;
+    firmData.percent_legal_assistant_hours = firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount;
+
+
     firmData.total_matters = firmsRecords.reduce((a, b) => ({total_matters: a.total_matters + b.total_matters})).total_matters / firmsCount;
     firmData.avg_matter_cost = firmsRecords.reduce((a, b) => ({avg_matter_cost: a.avg_matter_cost + b.avg_matter_cost})).avg_matter_cost / firmsCount;
     firmData.avg_matter_hours = firmsRecords.reduce((a, b) => ({avg_matter_hours: a.avg_matter_hours + b.avg_matter_hours})).avg_matter_hours / firmsCount;
@@ -408,10 +421,6 @@ export class FrcServiceService {
     firmData.score = Math.round(firmsRecords.reduce((a, b) => ({score: a.score + b.score})).score / firmsCount);
     const totalTkHours = (firmData.partner_hours - firmData.partner_writeoff_hours) + (firmData.associate_hours - firmData.associate_writeoff_hours) +
      (firmData.legal_assistant_hours - firmData.legal_assistant_writeoff_hours) + (firmData.paralegal_hours - firmData.paralegal_writeoff_hours);
-    firmData.percent_partner_hours = Math.round(firmData.partner_hours / (totalTkHours || 1) * 100);
-    firmData.percent_associate_hours = Math.round(firmData.associate_hours / (totalTkHours || 1) * 100);
-    firmData.percent_legal_assistant_hours = Math.round(firmData.legal_assistant_hours / (totalTkHours || 1) * 100);
-    firmData.percent_paralegal_hours = Math.round(firmData.paralegal_hours / (totalTkHours || 1) * 100);
 
     return firmData;
   }

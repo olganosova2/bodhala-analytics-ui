@@ -80,7 +80,9 @@ export class FrcNotesComponent implements OnInit, OnDestroy {
     this.pendingRequest = this.httpService.makePostRequest<IUiAnnotation>('getAnnotations', params).subscribe(
       (data: any) => {
         const responseObj = data.result;
-        this.dialogRef.close(responseObj);
+        if (this.dialogRef) {
+          this.dialogRef.close(responseObj);
+        }
       }
     );
   }
