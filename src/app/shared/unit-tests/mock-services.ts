@@ -1,5 +1,5 @@
 import {CURRENT_USER} from './mock-data/user';
-import {Observable, of, throwError} from 'rxjs';
+import {Observable, of, Subscription, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
 import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY, MOCK_PHASE_TAXONOMY, MOCK_UTBMS_CODES, MOCK_SPEND_BY_QUARTER_DATA} from './mock-data/firm';
@@ -145,6 +145,8 @@ export class DataStub {
         return of (MOCK_SAVED_BENCHMARK);
       case 'saveClientInsight':
         return of ( {result: { id: 1}});
+      case 'saveExport':
+        return of({result: { id: 1}});
       default:
         return of([]);
     }
@@ -673,6 +675,7 @@ export class ActivatedRouteMock {
   });
 }
 export class CommonServiceStub {
+  pdfLoading: boolean;
   public getTrainingMaterialsArticle(id: string): void {
     return;
   }
@@ -681,6 +684,29 @@ export class CommonServiceStub {
   }
   public capitalize(word: string): string {
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  public saveReport(firmId: number, filters: any): any {
+    return of({result: { id: 1}});
+  }
+  public generatePDF(title: string, divId: string, firmId: string, orientation: string = 'p') {
+  }
+  public  generatePdfOuter(title: string, divId: string, firmId: string) {
+    this.pdfLoading = true;
+    this.generatePDF(title, divId, firmId);
+  }
+  public getPageId(): string {
+    return 'XXX';
+  }
+  public clearTitles(): void {
+
+  }
+  public formatPath(path: string): string {
+    let result = path;
+    const ix = path.indexOf('?');
+    if (ix >= 0) {
+      result = path.substring(0, ix);
+    }
+    return result;
   }
 }
 
