@@ -36,9 +36,13 @@
                   #paStep [hasError]="paStep.interacted && paStep.isErrorState && benchmarkForm.value.smartPracticeArea === null">
           <ng-template matStepLabel>Select a practice area<span *ngIf="benchmarkForm.value.smartPracticeArea"> - {{benchmarkForm.value.smartPracticeArea}}</span></ng-template>
 
-          <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="smartPracticeArea" [options]="smartPAOptions"
+          <!-- <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="smartPracticeArea" [options]="smartPAOptions"
                         [filter]="true" placeholder="Select practice area">
-          </p-dropdown>
+          </p-dropdown> -->
+
+          <p-multiSelect class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="smartPracticeArea" [options]="smartPAOptions"
+                          [filter]="false" placeholder="Select practice area(s)" [showToggleAll]="true" [showHeader]="true">
+          </p-multiSelect>
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button matStepperNext>Next</button>
@@ -49,9 +53,12 @@
                   #yearStep [hasError]="yearStep.interacted && yearStep.isErrorState && benchmarkForm.value.year === null">
           <ng-template matStepLabel>Select a year<span *ngIf="benchmarkForm.value.year"> - {{benchmarkForm.value.year}}</span></ng-template>
 
-          <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="year" [options]="yearOptions"
+          <!-- <p-dropdown class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="year" [options]="yearOptions"
                         placeholder="Select a year">
-          </p-dropdown>
+          </p-dropdown> -->
+          <p-multiSelect class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="year" [options]="yearOptions"
+                          placeholder="Select year(s)" [showToggleAll]="false" [showHeader]="false" [filter]="false">
+          </p-multiSelect>
           <div>
             <button mat-button matStepperPrevious>Back</button>
             <button mat-button matStepperNext>Next</button>

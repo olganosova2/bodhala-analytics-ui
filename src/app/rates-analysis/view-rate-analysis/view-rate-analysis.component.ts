@@ -21,10 +21,10 @@ export class ViewRateAnalysisComponent implements OnInit {
   benchmark: IRateBenchmark;
   loaded: boolean = false;
   diffsCalculated: boolean = false;
-  practiceArea: string;
+  practiceArea: Array<string> = [];
   firmName: string;
   firmId: number;
-  year: number;
+  year: Array<number> = [];
   firmYearData: any;
   internalYearData: any;
   marketAverageData: any;
@@ -70,6 +70,7 @@ export class ViewRateAnalysisComponent implements OnInit {
   numPartnerTiers: number;
   marketAvgFirms: Array<any>;
   internalFirms: Array<any>;
+  lastUpdated: string;
 
 
   constructor(private route: ActivatedRoute,
@@ -109,6 +110,12 @@ export class ViewRateAnalysisComponent implements OnInit {
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
+        this.year.sort();
+        if (this.benchmark.modified_on === null) {
+          this.lastUpdated = this.benchmark.created_on;
+        } else {
+          this.lastUpdated = this.benchmark.modified_on;
+        }
 
         const insightResult = await this.ratesService.getBenchmarkInsight(this.benchmark);
         if (insightResult.result) {

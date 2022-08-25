@@ -1,17 +1,39 @@
 <div style="padding: 0px 16px 16px 24px; background: #E9F1F4;" id="exportDiv">
-  <div style="padding: 12px 28px 8px 0px;">
-    <button class="back-button" (click)="goBack()" data-html2canvas-ignore="true"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
 
-    <div style="display: inline !important; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
+  <div style="display: inline-flex;">
+    <button class="back-button" (click)="goBack()" data-html2canvas-ignore="true" style="height: 42px;"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
 
-      <span class="header-span" style="padding-left: 0em !important; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
-      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;"> {{firmName}}</span>
+    <div style="display: inline !important; background: white; border-radius: 16px; margin: 0px 32px; padding: 8px 16px; max-height: 124px; width: 480px;" *ngIf="benchmark">
+      <div style="display: inline !important; background: white; border-radius: 16px;">
+        <p style="margin-bottom: 0px; line-height: 1.5em;">
+          <span style="padding-left: 0em !important; font-family: 'Roboto Bold'; font-size: 16px !important;">Firm: </span>
+          <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;"> {{firmName}}</span>
+        </p>
 
-      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
-      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;"> {{practiceArea}}</span>
+        <p style="margin-bottom: 0px; line-height: 1.5em;">
+          <span style="padding-left: 0em !important; font-family: 'Roboto Bold'; font-size: 16px !important;">Practice Area(s): </span>
+          <span *ngIf="practiceArea.length < 12" style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">
+            <!-- {{practiceArea}} -->
+            <div style="display: inline;" *ngFor="let pa of practiceArea; let last = last;">
+              <span *ngIf="!last">{{pa}}, </span>
+              <span *ngIf="last">{{pa}}</span>
+            </div>
+          </span>
+          <span *ngIf="practiceArea.length === 12" style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">All PAs</span>
+        </p>
 
-      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
-      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;"> {{year}}</span>
+        <p style="margin-bottom: 0px; line-height: 1.5em;">
+          <span class="header-span" style="padding-left: 0em !important; font-family: 'Roboto Bold'; font-size: 16px !important;">Year(s): </span>
+          <span *ngIf="year.length === 1" style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;"> {{year}}</span>
+          <span *ngIf="year.length > 1" style="display: inline; color: #000000; font-family: 'Roboto' !important; font-size: 16px;">
+            <div style="display: inline;" *ngFor="let y of year; let last = last;">
+              <span *ngIf="!last">{{y}}, </span>
+              <span *ngIf="last">{{y}}</span>
+            </div>
+          </span>
+        </p>
+
+      </div>
     </div>
 
     <div class="peer-firms" *ngIf="loaded">
@@ -41,11 +63,13 @@
     <!-- [ngStyle]="{'background-color': costImpactColor} -->
     <div class="p-md-12 p-lg-6 pl8 pr15" [ngStyle]="setStyle()" style="width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px; border-radius: 24px 24px 24px 24px; height: 175px;"> <!-- [ngStyle]="{'background-color': costImpactColor}"-->
       <img src="assets/images/bills-white.svg" alt="icon" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px;"/>
-      <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">{{year}} Cost Impact: <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">{{costImpactGrade}}</span></span>
+      <span class="header-span" style="font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">
+        <span *ngIf="year.length === 1">{{year}}</span><span *ngIf="year.length > 1">Total</span> Cost Impact:
+        <span class="header-span" style="font-size: 24px !important; color: white; padding-left: 0px !important; font-weight: 600;">
+          {{costImpactGrade}}
+        </span>
+      </span>
       <div style="display: flex; justify-content: center; align-items: center; font-size: 40px; font-family: 'Roboto Bold'" [ngStyle]="{'color': costImpactColor}">
-
-
-
 
         <span style="padding-top: 8px;" *ngIf="blendedWithinRange && loaded">
           <span style="font-size: 22px; color: black; font-family: 'Roboto';">You paid</span>
@@ -65,7 +89,8 @@
 
     <div class="p-md-12 p-lg-6 pl8 pr15" style="width: 48% !important; margin-right: 20px; margin-left: 0.5em; padding: 16px; border-radius: 24px 24px 24px 24px; height: 175px; background-image: linear-gradient(bottom, #FFFFFF 67%, #000000 33%); background-image: -o-linear-gradient(bottom, #FFFFFF 67%, #000000 33%); background-image: -moz-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);  background-image: -webkit-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);  background-image: -ms-linear-gradient(bottom, #FFFFFF 67%, #000000 33%);">
       <em class="icon-note" style="margin-left: 1em; margin-bottom: 0.5em; height: 36px; color: white;"></em>
-      <span style="font-size: 24px; font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">{{year}} Spend: {{firmTotalSpendFormatted}}</span>
+      <!-- <span style="font-size: 24px; font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;">{{year}} Spend: {{firmTotalSpendFormatted}}</span> -->
+      <span style="font-size: 24px; font-family: 'Roboto'; font-weight: 600; padding-left: 1em; color: white;"><span *ngIf="year.length === 1">{{year}}</span><span *ngIf="year.length > 1">Total</span> Spend: {{firmTotalSpendFormatted}}</span>
       <span class="ml10 pointer-hand" placement="bottom"
                 [ngbPopover]="totalSpendText"
                 popoverTitle="Total Spend"
@@ -89,7 +114,8 @@
           </div>
           <div style="display: inline; padding-top: 1em;">
             <span style="font-size: 32px; font-family: 'Roboto Bold';">{{pctOfPASpend}}</span><br>
-            <span style="font-size: 16px; font-family: 'Roboto';">of {{year}} {{practiceArea}} Spend</span>
+            <span style="font-size: 16px; font-family: 'Roboto';" *ngIf="practiceArea.length === 1">of {{year}} {{practiceArea}} Spend</span>
+            <span style="font-size: 16px; font-family: 'Roboto';" *ngIf="practiceArea.length > 1">of {{year}} Combined PA Spend</span>
           </div>
 
         </div>
@@ -143,6 +169,9 @@
       <bd-rate-analysis-chart *ngIf="loaded" [benchmark]="benchmark" [selectedFirm]="firmName" [selectedFirmData]="firmYearData"
                               [rateType]="'Blended'"></bd-rate-analysis-chart>
     </div>
+  </div>
+  <div class="mt10" style="font-family: 'Roboto';">
+    Benchmark Data Last Refreshed: {{lastUpdated | date: 'longDate'}}
   </div>
 
 </div>
