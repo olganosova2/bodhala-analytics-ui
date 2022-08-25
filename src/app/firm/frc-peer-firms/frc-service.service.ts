@@ -374,9 +374,14 @@ export class FrcServiceService {
     if (!firmsCount) {
       return firmData;
     }
+    let noTKpercentCount = 0;
     for (const rec of firmsRecords) {
       this.calculateSingleFirmData(rec);
+      if (rec.percent_associate_hours === 0 && rec.percent_partner_hours === 0 && rec.percent_paralegal_hours === 0) {
+        noTKpercentCount++;
+      }
     }
+    const firmTKCount = firmsCount - noTKpercentCount;
     firmData.firm_name = 'Comparison Firms';
     const reducerTotalBilled = (previousValue, currentValue) => previousValue.total_billed + currentValue.total_billed;
     firmData.total_billed = firmsRecords.reduce((a, b) => ({total_billed: a.total_billed + b.total_billed})).total_billed / firmsCount;
@@ -403,10 +408,10 @@ export class FrcServiceService {
     // firmData.percent_paralegal_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount);
     // firmData.percent_legal_assistant_hours = Math.round(firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount);
 
-    firmData.percent_partner_hours = firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmsCount;
-    firmData.percent_associate_hours = firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmsCount;
-    firmData.percent_paralegal_hours = firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmsCount;
-    firmData.percent_legal_assistant_hours = firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmsCount;
+    firmData.percent_partner_hours = firmsRecords.reduce((a, b) => ({percent_partner_hours: a.percent_partner_hours + b.percent_partner_hours})).percent_partner_hours / firmTKCount;
+    firmData.percent_associate_hours = firmsRecords.reduce((a, b) => ({percent_associate_hours: a.percent_associate_hours + b.percent_associate_hours})).percent_associate_hours / firmTKCount;
+    firmData.percent_paralegal_hours = firmsRecords.reduce((a, b) => ({percent_paralegal_hours: a.percent_paralegal_hours + b.percent_paralegal_hours})).percent_paralegal_hours / firmTKCount;
+    firmData.percent_legal_assistant_hours = firmsRecords.reduce((a, b) => ({percent_legal_assistant_hours: a.percent_legal_assistant_hours + b.percent_legal_assistant_hours})).percent_legal_assistant_hours / firmTKCount;
 
 
     firmData.total_matters = firmsRecords.reduce((a, b) => ({total_matters: a.total_matters + b.total_matters})).total_matters / firmsCount;
