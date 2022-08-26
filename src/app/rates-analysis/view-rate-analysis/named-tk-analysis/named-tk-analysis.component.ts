@@ -18,10 +18,10 @@ export class NamedTkAnalysisComponent implements OnInit {
   pendingRequest: Subscription;
   benchmarkId: number;
   benchmark: IRateBenchmark;
-  practiceArea: string;
+  practiceArea: Array<string> = [];
   firmName: string;
   firmId: number;
-  year: number;
+  year: Array<number> = [];
   firmYearData: any;
   overallSpendData: any;
   loaded: boolean = false;
@@ -56,6 +56,7 @@ export class NamedTkAnalysisComponent implements OnInit {
   firmAssocSeniorRate: number;
   marketAvgFirms: Array<any>;
   internalFirms: Array<any>;
+  lastUpdated: string;
 
   constructor(private route: ActivatedRoute,
               public router: Router,
@@ -181,9 +182,16 @@ export class NamedTkAnalysisComponent implements OnInit {
       this.firmId = this.benchmark.bh_lawfirm_id;
       this.practiceArea = this.benchmark.smart_practice_area;
       this.year = this.benchmark.year;
+      this.year.sort();
+      if (this.benchmark.modified_on === null) {
+        this.lastUpdated = this.benchmark.created_on;
+      } else {
+        this.lastUpdated = this.benchmark.modified_on;
+      }
       this.getNamedTKData(needAllData);
       this.loaded = true;
     } else {
+
       this.route.paramMap.subscribe(async params => {
         this.benchmarkId = Number(params.get('id'));
         const result = await this.ratesService.getBenchmark(this.benchmarkId);
@@ -201,12 +209,21 @@ export class NamedTkAnalysisComponent implements OnInit {
         }
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
+
         this.year = this.benchmark.year;
+        this.year.sort();
+
+        if (this.benchmark.modified_on === null) {
+          this.lastUpdated = this.benchmark.created_on;
+        } else {
+          this.lastUpdated = this.benchmark.modified_on;
+        }
         this.numTiers = result.num_tiers;
         this.getNamedTKData(true);
         this.loaded = true;
       });
     }
+
   }
 
   initColumns(): void {

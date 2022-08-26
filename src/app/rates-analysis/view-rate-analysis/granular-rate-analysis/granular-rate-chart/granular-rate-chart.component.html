@@ -37,7 +37,12 @@
 </div>
 
 <div *ngIf="!validFirmData" style="font-family: 'Roboto'; padding: 12px 0px 8px 32px;">
-  No data for this classification/seniority level for {{firmName}} in {{benchmark.year}}, {{benchmark.smart_practice_area}} spend.
+  No data for this classification/seniority level for {{firmName}} in
+  <span *ngIf="benchmark.year.length === 1">{{benchmark.year}},</span>
+  <span *ngIf="benchmark.year.length > 1">Rate BM years,</span>
+  <span *ngIf="benchmark.smart_practice_area.length === 1"> {{benchmark.smart_practice_area}} </span>
+  <span *ngIf="benchmark.smart_practice_area.length > 1"> Combined PA </span>
+   spend.
 </div>
 
 <div class="p-grid full-width" style="padding-top: 56px; padding-bottom: 40px;" *ngIf="validFirmData">

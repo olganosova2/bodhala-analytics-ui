@@ -53,8 +53,8 @@ export class RatesAnalysisComponent implements OnInit {
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, width: 190, filter: 'text'},
-      {headerName: 'Practice Area', field: 'smart_practice_area', ...this.defaultColumn},
-      {headerName: 'Year', field: 'year', ...this.defaultColumn, width: 75, cellStyle: {fontFamily: 'Roboto'}},
+      {headerName: 'Practice Area(s)', field: 'smart_practice_area', ...this.defaultColumn},
+      {headerName: 'Year(s)', field: 'year', ...this.defaultColumn, width: 75, cellStyle: {fontFamily: 'Roboto'}},
       {headerName: 'Cost Impact', field: 'cost_impact', ...this.defaultColumn, cellRenderer: this.costImpactCellRenderer.bind(this)},
       {headerName: 'Historical Cost Impact', field: 'year', ...this.defaultColumn, width: 165, cellRenderer: this.historicalCostRenderer.bind(this)},
       {headerName: 'Average Assoc. Rate', field: 'firm_associate_rate', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer, width: 105},

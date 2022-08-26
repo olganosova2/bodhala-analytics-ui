@@ -13,8 +13,8 @@ describe('RatesAnalysisService', () => {
     id: 8,
     bh_client_id: 167,
     bh_lawfirm_id: 25,
-    smart_practice_area: 'M&A',
-    year: 2019,
+    smart_practice_area: ['M&A'],
+    year: [2019],
     peers: [
         'Skadden, Arps, Slate, Meagher & Flom',
         'Gibson, Dunn & Crutcher',

@@ -58,8 +58,8 @@ export class AdminRateBenchmarksComponent implements OnInit {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn},
       {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn,  filter: 'text', flex: 1},
-      {headerName: 'Smart Practice Area', field: 'smart_practice_area', ...this.defaultColumn, flex: 1},
-      {headerName: 'Year', field: 'year', ...this.defaultColumn, flex: 1},
+      {headerName: 'Smart Practice Area(s)', field: 'smart_practice_area', ...this.defaultColumn, flex: 1},
+      {headerName: 'Year(s)', field: 'year', ...this.defaultColumn, flex: 1},
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Add Recommendations', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1, cellRenderer: this.editActionCellRenderer, onCellClicked: this.openRecommendationModal.bind(this)},
       {headerName: 'View/Modify Comparison Peer Firms', ...this.defaultColumn, flex: 1, cellRenderer: this.editActionCellRenderer, onCellClicked: this.openPeerFirmsModal.bind(this)},
