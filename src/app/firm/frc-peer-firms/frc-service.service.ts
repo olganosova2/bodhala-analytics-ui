@@ -703,7 +703,7 @@ export class FrcServiceService {
   processTotalSpend(records: Array<any>): void {
     for (const rec of records) {
       const includeExpenses = this.filtersService.includeExpenses;
-      rec.total_billed = includeExpenses ? rec.total_billed + rec.total_expenses : rec.total_billed;
+      rec.total_billed = includeExpenses ? rec.total_billed + rec.total_afa + rec.total_expenses : rec.total_billed + rec.total_afa;
     }
   }
 

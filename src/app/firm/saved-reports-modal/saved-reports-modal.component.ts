@@ -103,6 +103,9 @@ export class SavedReportsModalComponent implements OnInit {
     );
   }
   view(data): void {
+    if (data.saved_view === null) {
+      localStorage.removeItem('saved_filter_' + this.userService.currentUser.id.toString());
+    }
     this.dialogRef.close({ exportedData: data});
   }
 }

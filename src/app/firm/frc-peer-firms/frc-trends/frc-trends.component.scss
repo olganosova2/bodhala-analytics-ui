@@ -2,24 +2,6 @@
 .left-titles {
   min-width: 60%;
 }
-.mode-switch {
-  font-size: 16px;
-  padding: 10px 15px;
-  background-color: #fff;
-  color: #000;
-}
-.mode-switch-left {
-  border-bottom-left-radius: 21.5px;
-  border-top-left-radius: 21.5px;
-}
-.mode-switch-right {
-  border-bottom-right-radius: 21.5px;
-  border-top-right-radius: 21.5px;
-}
-.mode-switch-selected {
-  background-color: #000;
-  color: #fff;
-}
 :host ::ng-deep {
   .filters-panel {
     height: 430px !important;

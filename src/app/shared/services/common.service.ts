@@ -379,7 +379,8 @@ export class CommonService {
     params.filter_set = filterSet;
     params.firmId = firmId;
     params.pageName = this.getPageId();
-    const savedView = null;
+    const saved = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());
+    const savedView = saved ? saved : null;
     params.savedView = savedView;
     return this.httpService.makePostRequest('saveExport', params);
   }

@@ -534,8 +534,29 @@ export const taxonomyAdditionalOptions = {
   }]
 };
 
+export const yearOverYearChartOptions = {
+  tooltip: {
+    formatter() {
+      const quarterNumber = '';
+      let result = '';
+      if (this.series.yAxis.axisTitle.textStr === 'Avg. Days') {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + quarterNumber + ': ' + formatter.format(this.y);
+      } else if (this.series.yAxis.axisTitle.textStr === 'Dollars') {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + quarterNumber + ': ' + moneyFormatter.format(this.y);
+      } else if (this.series.yAxis.axisTitle.textStr === 'Percent') {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + quarterNumber + ': ' + formatter.format(this.y) + '%';
+      } else {
+        result = (Highcharts.dateFormat('%Y', this.x, true)) + quarterNumber + ': ' + formatter.format(this.y);
+      }
+      return result;
+    }
+  }
+};
+
+
 export const spendByMonthOptions = { ... lineChartOptions, ...spendByMonthChartAdditionalOptions};
 export const spendByQuarterOptions = { ... lineChartOptions, ...spendByQuarterChartAdditionalOptions};
+export const spendByYearOptions = { ... lineChartOptions, ...spendByQuarterChartAdditionalOptions, ... yearOverYearChartOptions};
 export const genderChartOptions = {...pieDonut, ...genderAdditionalOptions};
 export const minorityChartOptions = {...pieDonut, ...minorityAdditionalOptions};
 export const UTBMSChartOptions = {...utbmsPieDonut, ...UTBMSAdditionalOptions};

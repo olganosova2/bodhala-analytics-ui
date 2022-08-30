@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FrcServiceService, IPeerFirms, MetricType, MetricTypeComparison, MOCK_PEER_FIRMS, MOCK_PEER_FIRMS_ALL} from '../frc-service.service';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {MatDialog} from '@angular/material/dialog';
 import {FiltersService} from '../../../shared/services/filters.service';
@@ -14,7 +14,7 @@ import {FrcComparisonCellComponent} from './frc-comparison-cell/frc-comparison-c
 @Component({
   selector: 'bd-frc-firm-comparison',
   templateUrl: './frc-firm-comparison.component.html',
-  styleUrls: ['./frc-firm-comparison.component.scss']
+  styleUrls: ['../frc-peer-firms.component.scss', './frc-firm-comparison.component.scss']
 })
 export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
@@ -31,12 +31,14 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   firstLoad: boolean = true;
   paginationPageSize: any = 10;
   metrics: any = MetricTypeComparison;
-  excludeFilters: Array<string> = [];
+  excludeFilters: Array<string> = ['firms'];
   pageName: string = 'analytics-ui/frc-firm-comparison/';
   noFirmsSelected: boolean = false;
+  selectedFirms: Array<number> = [];
   isLoaded: boolean = true;
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
+              public router: Router,
               public commonServ: CommonService,
               public frcService: FrcServiceService,
               public userService: UserService,
@@ -58,26 +60,26 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.setUpFilters();
   }
   setUpFilters(): void {
-    this.noFirmsSelected = true;
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
-    if (!this.filterSet.firms) {
-      return;
-    }
-    const jsonFirms = JSON.parse(this.filterSet.firms);
-    if (jsonFirms.length === 0){
-      return;
-    }
+    const savedFRCCompare = localStorage.getItem('frc_compare_' + this.userService.currentUser.id.toString());
     this.noFirmsSelected = false;
+    if (savedFRCCompare) {
+     this.selectedFirms = JSON.parse(savedFRCCompare);
+    }  else {
+      // this.router.navigate(['analytics-ui/frc-dashboard']);
+      this.noFirmsSelected = true;
+      return;
+    }
     setTimeout(() => {
       this.getPeerFirmsData();
     });
   }
   initColumns(): void {
     const defs = [];
-    let column = {headerName: '', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  pinned: true, cellStyle: {'font-weight': '600' }};
+    let column = {headerName: 'Metric', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  pinned: true, cellStyle: {'font-weight': '600' }};
     defs.push(column);
     const averageColumn = Object.assign({}, this.comparisonData[0]);
-    column = {headerName: 'Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  pinned: true, headerClass: 'text-underline',
+    column = {headerName: 'Metric Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  pinned: true, headerClass: 'text-underline',
       cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: averageColumn}};
     defs.push(column);
     for (const sub of this.comparisonData) {
@@ -99,7 +101,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.isLoaded = false;
     const params = Object.assign({}, this.filterSet);
     let arr = [];
-    arr = arr.concat(JSON.parse(this.filterSet.firms));
+    arr = arr.concat(this.selectedFirms);
     params.firms = JSON.stringify(arr);
 
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
