@@ -727,6 +727,24 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 4px;
   padding: 20px;
 }
+.mode-switch {
+  font-size: 16px;
+  padding: 10px 15px;
+  background-color: #fff;
+  color: #000;
+}
+.mode-switch-left {
+  border-bottom-left-radius: 21.5px;
+  border-top-left-radius: 21.5px;
+}
+.mode-switch-right {
+  border-bottom-right-radius: 21.5px;
+  border-top-right-radius: 21.5px;
+}
+.mode-switch-selected {
+  background-color: #000;
+  color: #fff;
+}
 //.filters-panel {
 //  height: 430px !important;
 //}

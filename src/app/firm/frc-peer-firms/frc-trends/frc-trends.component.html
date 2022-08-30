@@ -12,7 +12,7 @@
 </div>
 <div class="exs-div" id="frcDiv">
   <div class="mb20">
-    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10"  [routerLink]="['/analytics-ui/firm/frc-peer-firms', firmId]"><em class="fa fa-chevron-left mr10"></em>Back</span>Trend Analysis Report Page</div>
+    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10"  [routerLink]="['/analytics-ui/frc-dashboard']"><em class="fa fa-chevron-left mr10"></em>Back</span></div>
     <ngb-alert type="success" *ngIf="frcCardSaved" (close)="frcCardSaved=false">
       <div class="font-green font-bold">
         Report has been saved successfully.
@@ -52,7 +52,7 @@
       <span class="mode-switch mode-switch-right" [ngClass]="{'mode-switch-selected': trendsChartMode === 'YoY'}" (click)="switchChartMode()">YoY</span>
     </div>
     <div *ngFor="let chart of charts">
-      <bd-frc-trends-chart [quarterData]="quarterData" [yearData]="yearData" [selectedChart]="chart" [trendsChartMode]="trendsChartMode"></bd-frc-trends-chart>
+      <bd-frc-trends-chart [firmName]="firm.firm_name" [quarterData]="quarterData" [yearData]="yearData" [selectedChart]="chart" [trendsChartMode]="trendsChartMode"></bd-frc-trends-chart>
     </div>
   </div>
 

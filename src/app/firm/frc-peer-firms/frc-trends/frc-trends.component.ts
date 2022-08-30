@@ -47,7 +47,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
   trendsChartMode: TrendsChartMode = TrendsChartMode.YoY;
   quarterData: Array<any> = [];
   yearData: Array<any> = [];
-  charts: Array<string> = [];
+  charts: Array<any> = [];
   @ViewChild('dpDates') dpDates: DatesPickerComponent;
   @ViewChildren(FrcTrendsChartComponent) chartPanels !: QueryList<FrcTrendsChartComponent>;
 
@@ -108,6 +108,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
             this.frcService.processExpenses(data.result.report_timeframe);
             this.summaryData = Object.assign({}, data.result.report_timeframe[0]);
             this.firm = Object.assign({}, data.result.report_timeframe[0]);
+            this.commonServ.pageSubtitle += ' > ' + this.firm.firm_name;
           }else{
             this.summaryData = this.frcService.createEmptySingleFirmData();
           }

@@ -21,7 +21,9 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
   smartPAs: Array<any> = [];
   matters: Array<any> = [];
   isSmartPA: boolean = false;
+  hasBodhalaPAs: boolean = false;
   mattersLoaded: boolean = true;
+  pasLoaded: boolean = true;
 
   constructor( private httpService: HttpService,
                public commonServ: CommonService,
@@ -35,14 +37,18 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const strSmartPAs = this.commonServ.getClientPASetting();
     this.isSmartPA = strSmartPAs === 'Smart Practice Areas' || strSmartPAs === 'Both';
+    this.hasBodhalaPAs = this.isSmartPA;
     this.getMatters();
     this.getTimekeepers();
     this.getSmartPAs();
   }
   getSmartPAs(): void {
+    this.smartPAs = [];
+    this.pasLoaded = false;
     const params = { ... this.getParams(), ... {bodhalaPAs: this.isSmartPA }};
     this.pendingRequest = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
       (data: any) => {
+        this.pasLoaded = true;
         if (data.result && data.result.length > 0) {
           this.smartPAs = (data.result || []).sort(this.utilService.dynamicSort('-total_billed'));
           this.frcService.processTotalSpend(this.smartPAs);
@@ -63,8 +69,7 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.mattersLoaded = true;
         if (data.result && data.result.length > 0) {
-          this.matters = data.result || [];
-          this.processMatters(this.matters);
+          this.processMatters(data.result || []);
         }
       }
     );
@@ -94,7 +99,7 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
     return params;
   }
   processMatters(matters: Array<any>): void {
-    for (const rec of this.matters) {
+    for (const rec of matters) {
       rec.matter_cost = rec.total_billed + rec.total_afa;
       rec.matter_cost_including_expenses = rec.total_billed + rec.total_afa + rec.total_expenses;
       rec.matter_cost = this.filtersService.includeExpenses ? rec.matter_cost_including_expenses : rec.matter_cost;
@@ -113,10 +118,17 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
       const clientPa = rec.client_matter_type && rec.client_matter_type.length > 0 ? rec.client_matter_type[0] : 'N/A';
       rec.practice_area = this.isSmartPA ? rec.bodhala_practice_area : clientPa;
     }
-    this.matters = this.matters.sort(this.utilService.dynamicSort('-matter_cost')).slice(0, 5);
+    this.matters = matters.sort(this.utilService.dynamicSort('-matter_cost')).slice(0, 5);
   }
   formamMatterPercentOfWork(rec: any): void {
     rec.staffing_leverage = Math.round(rec.partner_hours_per) + '% Partner / ' + Math.round(rec.associate_hours_per) + '% Associate / ' + Math.round(rec.others_hours_per) + '% Other';
+  }
+  switchPaMode(): void {
+    this.isSmartPA = !this.isSmartPA;
+    this.getSmartPAs();
+    const previousMatters = Object.assign([], this.matters);
+    this.matters = [];
+    this.processMatters(previousMatters);
   }
   ngOnDestroy() {
     if (this.pendingRequest) {

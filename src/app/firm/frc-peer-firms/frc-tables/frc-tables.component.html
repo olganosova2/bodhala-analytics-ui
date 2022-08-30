@@ -1,6 +1,10 @@
-<div class="panel-wrapper mt20">
-  <h4>Share of work by Practice Area</h4>
-  <table class="full-width mt20">
+<div class="text-right pointer-hand mb20 mr20 mt20" *ngIf="hasBodhalaPAs">
+  <span class="mode-switch mode-switch-left"  [ngClass]="{'mode-switch-selected': isSmartPA === true}" (click)="switchPaMode()">Smart Practice Area</span>
+  <span class="mode-switch mode-switch-right" [ngClass]="{'mode-switch-selected': isSmartPA === false}" (click)="switchPaMode()">Client Practice Area</span>
+</div>
+<div class="panel-wrapper position-relative mt20">
+  <h4>Share of work by<span *ngIf="this.isSmartPA"> Smart</span><span *ngIf="!this.isSmartPA"> Client</span> Practice Area</h4>
+  <table class="full-width mt20" *ngIf="smartPAs.length > 0">
     <thead>
     <tr class="roboto-bold">
       <th>Timekeeper</th>
@@ -10,18 +14,21 @@
     </thead>
     <tr *ngFor="let tk of smartPAs">
       <td>{{ tk.client_matter_type}}</td>
-      <td>{{tk.percent_of_spend | number:'1.2-2'}}%</td>
-      <td>{{tk.percent_of_hours | number:'1.2-2'}}%</td>
+      <td>{{tk.percent_of_spend | number:'1.1-1'}}%</td>
+      <td>{{tk.percent_of_hours | number:'1.1-1'}}%</td>
     </tr>
   </table>
+  <div class="spinner-card" [hidden]="pasLoaded">
+    <mat-spinner diameter="50" color="primary"></mat-spinner>
+  </div>
 </div>
 <div class="panel-wrapper mt20 position-relative matters-table">
   <h4>Top 5 Matters</h4>
-  <table class="full-width mt20">
+  <table class="full-width mt20" *ngIf="matters.length > 0">
     <thead>
     <tr class="roboto-bold">
       <th>Matter Name</th>
-      <th >Practice Area</th>
+      <th ><span *ngIf="this.isSmartPA">Smart </span><span *ngIf="!this.isSmartPA">Client </span>Practice Area</th>
       <th>Total Billed</th>
       <th>Total Hours</th>
       <th>Blended Rate</th>
@@ -57,7 +64,7 @@
       <td>{{ tk.last_name }}, {{ tk.first_name}}</td>
       <td >{{ tk.bodhala_classification}}</td>
       <td>${{tk.avg_rate | number:'1.0-0'}}</td>
-      <td>${{tk.total_billed | number:'1.2-2'}}</td>
+      <td>${{tk.total_billed | number:'1.0-0'}}</td>
       <td>{{tk.total_hours_billed| number:'1.0-0'}}</td>
     </tr>
   </table>

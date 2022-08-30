@@ -5,7 +5,7 @@ import {CommonService} from '../../../shared/services/common.service';
 import {FrcServiceService, TrendChart, TrendsChartMode} from '../frc-service.service';
 import {MatDialog} from '@angular/material/dialog';
 import {FiltersService} from '../../../shared/services/filters.service';
-import {spendByQuarterOptions} from '../../firm.model';
+import {spendByQuarterOptions, spendByYearOptions} from '../../firm.model';
 import * as _moment from 'moment';
 
 const moment = _moment;
@@ -24,6 +24,7 @@ export class FrcTrendsChartComponent implements OnInit {
   increase: number = 0;
   direction: number = 0;
   modeDefined: boolean = true;
+  @Input() firmName: string;
   @Input() quarterData: Array<any> = [];
   @Input() yearData: Array<any> = [];
   @Input() trendsChartMode: TrendsChartMode = TrendsChartMode.YoY;
@@ -45,9 +46,9 @@ export class FrcTrendsChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.options = Object.assign({}, spendByQuarterOptions);
+    const tempOptions = this.trendsChartMode === TrendsChartMode.QoQ ? spendByQuarterOptions : spendByYearOptions;
+    this.options = Object.assign({}, tempOptions);
     this.options.series[0].data = [];
-
   }
   resizeChart(): void {
     const width = this.spendByQuarterDiv.nativeElement.offsetWidth - 50;
@@ -176,6 +177,7 @@ export class FrcTrendsChartComponent implements OnInit {
     }
     this.calculateIncrease(records, result);
     this.chart.yAxis[0].setTitle({text: result});
+    this.chart.series[0].options.name = this.firmName;
     this.chart.series[0].update(this.chart.series[0].options);
   }
   saveInstance(chartInstance): void {
@@ -187,6 +189,9 @@ export class FrcTrendsChartComponent implements OnInit {
   }
   switchMode(): void {
     this.modeDefined = false;
+    const tempOptions = this.trendsChartMode === TrendsChartMode.QoQ ? spendByQuarterOptions : spendByYearOptions;
+    this.options = Object.assign({}, tempOptions);
+    this.options.series[0].data = [];
     const chartData = this.trendsChartMode === TrendsChartMode.QoQ ? this.quarterData : this.yearData;
     setTimeout(() => {
       this.modeDefined = true;

@@ -66,13 +66,13 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn, floatingFilter: true, hide: true},
       {headerName: '', headerCheckboxSelection: this.formattedMetrics.length <= 20,  field: 'selected', ...this.defaultColumn, suppressMenu: true, editable: true, headerClass: 'justify-center-header', cellStyle: {textAlign: 'center'},
-        cellRendererFramework: CheckboxCellComponent, resizable: false, cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
+        cellRendererFramework: CheckboxCellComponent, resizable: false, suppressMovable: true, lockPosition: 'left', cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
       {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
       {headerName: 'Total Spend', field: 'total_billed', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer,  filter: 'number',  sort: 'desc'},
-      {headerName: 'Total Hours', field: 'total_hours', ...this.defaultColumn,  filter: 'number',  cellRenderer: this.agGridService.roundToOneNumberCellRenderer},
+      {headerName: 'Total Hours', field: 'total_hours', ...this.defaultColumn,  filter: 'number',  cellRenderer: this.agGridService.roundNumberCellRenderer},
       {headerName: '# Matters', field: 'total_matters', ... this.defaultColumn, width: 150},
-      {headerName: 'Avgerage Partner Rate', field: 'avg_partner_rate', ... this.defaultColumn, width: 150, cellRenderer: this.bubbleCellRenderer},
-      {headerName: 'Avgerage Associate Rate', field: 'avg_associate_rate', ... this.defaultColumn, width: 150, cellRenderer: this.bubbleCellRenderer},
+      {headerName: 'Average Partner Rate', field: 'avg_partner_rate', ... this.defaultColumn, width: 150,  cellRenderer: this.bubbleCellRenderer},
+      {headerName: 'Average Associate Rate', field: 'avg_associate_rate', ... this.defaultColumn, width: 150, cellRenderer: this.bubbleCellRenderer},
       {headerName: 'Blended Rate', field: 'blended_rate', ... this.defaultColumn, width: 150, cellRenderer: this.bubbleCellRenderer},
     ];
   }
@@ -221,6 +221,10 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       selectedIDs = [];
     }
     this.selectedFirms = Object.assign([], selectedIDs);
+  }
+  changePageSize(evt: any): void {
+    this.paginationPageSize = evt.value;
+    this.gridOptions.api.paginationSetPageSize(this.paginationPageSize);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

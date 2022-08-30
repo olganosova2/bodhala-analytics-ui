@@ -12,7 +12,7 @@
 </div>
 <div class="exs-div" id="frcDiv">
   <div class="mb20">
-    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10" (click)="goBack()"><em class="fa fa-chevron-left mr10"></em>Back</span>Firm Report Card</div>
+    <div class="roboto-bold mb15"><span class="frc-button-oval pointer-hand mr10" [routerLink]="['/analytics-ui/frc-dashboard']"><em class="fa fa-chevron-left mr10"></em>Back</span></div>
     <ngb-alert type="success" *ngIf="frcCardSaved" (close)="frcCardSaved=false">
       <div class="font-green font-bold">
         Report has been saved successfully.

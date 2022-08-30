@@ -14,7 +14,7 @@ import {FrcComparisonCellComponent} from './frc-comparison-cell/frc-comparison-c
 @Component({
   selector: 'bd-frc-firm-comparison',
   templateUrl: './frc-firm-comparison.component.html',
-  styleUrls: ['./frc-firm-comparison.component.scss']
+  styleUrls: ['../frc-peer-firms.component.scss', './frc-firm-comparison.component.scss']
 })
 export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
@@ -74,10 +74,10 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   }
   initColumns(): void {
     const defs = [];
-    let column = {headerName: '', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  pinned: true, cellStyle: {'font-weight': '600' }};
+    let column = {headerName: 'Metric', field: 'metric_name', ...this.defaultColumn, width: 200, filter: 'agTextColumnFilter',  pinned: true, cellStyle: {'font-weight': '600' }};
     defs.push(column);
     const averageColumn = Object.assign({}, this.comparisonData[0]);
-    column = {headerName: 'Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  pinned: true, headerClass: 'text-underline',
+    column = {headerName: 'Metric Average', field: 'firms', ...this.defaultColumn, width: 120, filter: 'number',  pinned: true, headerClass: 'text-underline',
       cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: averageColumn}};
     defs.push(column);
     for (const sub of this.comparisonData) {
