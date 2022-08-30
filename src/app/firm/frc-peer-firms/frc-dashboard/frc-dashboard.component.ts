@@ -60,6 +60,10 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
     this.savedState = this.agGridService.getSavedState('FRCGrid_Dashboard');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
     this.gridOptions.headerHeight = 80;
+    const savedFRCCompare = localStorage.getItem('frc_compare_' + this.userService.currentUser.id.toString());
+    if (savedFRCCompare) {
+      localStorage.removeItem('frc_compare_' + this.userService.currentUser.id.toString());
+    }
     this.setUpFilters();
   }
   initColumns(): void {
@@ -163,10 +167,18 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
     }
   }
   compare(): void {
-    this.updateFiters();
+    // this.updateFiters();
+    this.saveComparedFirms();
     setTimeout(() => {
       this.router.navigate(['/analytics-ui/frc-firm-comparison']);
     });
+  }
+  saveComparedFirms(): void {
+    let newPairsStr = '';
+    if (this.selectedFirms && this.selectedFirms.length > 0) {
+      newPairsStr = JSON.stringify(this.selectedFirms);
+    }
+    localStorage.setItem('frc_compare_' + this.userService.currentUser.id.toString(), newPairsStr);
   }
   updateFiters(): void {
     const savedFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());

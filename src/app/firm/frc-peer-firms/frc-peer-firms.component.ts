@@ -112,7 +112,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
           }
           this.summaryData = Object.assign({}, found);
           this.firm = Object.assign({}, found);
-          this.commonServ.pageSubtitle += ' > ' + this.firm.firm_name;
+          this.commonServ.pageSubtitle = 'Comparison Firms Report > ' + this.firm.firm_name;
           this.frcService.calculateSingleFirmData(this.summaryData);
           this.internalRecords = this.frcData.filter(e => e.bh_lawfirm_id !== this.firmId) || [];
           this.peerFirmsNames = this.internalRecords.map(e => e.firm_name);

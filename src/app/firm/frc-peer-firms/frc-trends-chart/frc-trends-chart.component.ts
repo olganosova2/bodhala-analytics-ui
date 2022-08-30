@@ -177,6 +177,9 @@ export class FrcTrendsChartComponent implements OnInit {
     }
     this.calculateIncrease(records, result);
     this.chart.yAxis[0].setTitle({text: result});
+    if (result === 'Percent') {
+      this.chart.yAxis[0].setExtremes(0, 100);
+    }
     this.chart.series[0].options.name = this.firmName;
     this.chart.series[0].update(this.chart.series[0].options);
   }

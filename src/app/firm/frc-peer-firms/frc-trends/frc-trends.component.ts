@@ -108,7 +108,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
             this.frcService.processExpenses(data.result.report_timeframe);
             this.summaryData = Object.assign({}, data.result.report_timeframe[0]);
             this.firm = Object.assign({}, data.result.report_timeframe[0]);
-            this.commonServ.pageSubtitle += ' > ' + this.firm.firm_name;
+            this.commonServ.pageSubtitle = 'Trends Analysis Report > ' + this.firm.firm_name;
           }else{
             this.summaryData = this.frcService.createEmptySingleFirmData();
           }

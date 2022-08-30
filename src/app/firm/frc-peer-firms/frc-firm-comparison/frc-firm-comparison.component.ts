@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FrcServiceService, IPeerFirms, MetricType, MetricTypeComparison, MOCK_PEER_FIRMS, MOCK_PEER_FIRMS_ALL} from '../frc-service.service';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {MatDialog} from '@angular/material/dialog';
 import {FiltersService} from '../../../shared/services/filters.service';
@@ -31,12 +31,14 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   firstLoad: boolean = true;
   paginationPageSize: any = 10;
   metrics: any = MetricTypeComparison;
-  excludeFilters: Array<string> = [];
+  excludeFilters: Array<string> = ['firms'];
   pageName: string = 'analytics-ui/frc-firm-comparison/';
   noFirmsSelected: boolean = false;
+  selectedFirms: Array<number> = [];
   isLoaded: boolean = true;
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
+              public router: Router,
               public commonServ: CommonService,
               public frcService: FrcServiceService,
               public userService: UserService,
@@ -58,16 +60,16 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.setUpFilters();
   }
   setUpFilters(): void {
-    this.noFirmsSelected = true;
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
-    if (!this.filterSet.firms) {
-      return;
-    }
-    const jsonFirms = JSON.parse(this.filterSet.firms);
-    if (jsonFirms.length === 0){
-      return;
-    }
+    const savedFRCCompare = localStorage.getItem('frc_compare_' + this.userService.currentUser.id.toString());
     this.noFirmsSelected = false;
+    if (savedFRCCompare) {
+     this.selectedFirms = JSON.parse(savedFRCCompare);
+    }  else {
+      // this.router.navigate(['analytics-ui/frc-dashboard']);
+      this.noFirmsSelected = true;
+      return;
+    }
     setTimeout(() => {
       this.getPeerFirmsData();
     });
@@ -99,7 +101,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     this.isLoaded = false;
     const params = Object.assign({}, this.filterSet);
     let arr = [];
-    arr = arr.concat(JSON.parse(this.filterSet.firms));
+    arr = arr.concat(this.selectedFirms);
     params.firms = JSON.stringify(arr);
 
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
