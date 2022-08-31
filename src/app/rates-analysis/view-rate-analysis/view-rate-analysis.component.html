@@ -104,7 +104,9 @@
           <chart [options]="optionsTotal" (load)="saveInstanceTotal($event.context)"></chart>
           <div style="display: inline; padding-top: 1em">
             <span style="font-size: 32px; font-family: 'Roboto Bold';">{{pctOfTotalSpend}}</span><br>
-            <span style="font-size: 16px; font-family: 'Roboto';">of {{year}} Total Spend</span>
+            <span style="font-size: 16px; font-family: 'Roboto';">of
+              <span *ngIf="year.length === 1">{{year}}</span>
+              Total Spend</span>
           </div>
 
         </div>
@@ -114,8 +116,8 @@
           </div>
           <div style="display: inline; padding-top: 1em;">
             <span style="font-size: 32px; font-family: 'Roboto Bold';">{{pctOfPASpend}}</span><br>
-            <span style="font-size: 16px; font-family: 'Roboto';" *ngIf="practiceArea.length === 1">of {{year}} {{practiceArea}} Spend</span>
-            <span style="font-size: 16px; font-family: 'Roboto';" *ngIf="practiceArea.length > 1">of {{year}} Combined PA Spend</span>
+            <span style="font-size: 16px; font-family: 'Roboto';" *ngIf="practiceArea.length === 1">of <span *ngIf="year.length === 1">{{year}}</span> {{practiceArea}} <span *ngIf="year.length > 1"> Total </span>Spend</span>
+            <span style="font-size: 16px; font-family: 'Roboto';" *ngIf="practiceArea.length > 1">of <span *ngIf="year.length === 1">{{year}}</span>  Combined PA <span *ngIf="year.length > 1">Total </span>Spend</span>
           </div>
 
         </div>
