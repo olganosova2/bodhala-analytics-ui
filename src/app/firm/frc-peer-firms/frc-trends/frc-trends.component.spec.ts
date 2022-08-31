@@ -78,7 +78,7 @@ describe('FrcTrendsComponent', () => {
     component.processData(records);
     expect(records.length).toBe(6);
   });
-  it('should setUpCompareDates', () => {
+  xit('should setUpCompareDates', () => {
     component.dpDates = {} as DatesPickerComponent;
     component.dpDates.selectedStartDate =  new Date('2017-07-30');
     component.dpDates.selectedEndDate =  new Date('2019-07-30');
