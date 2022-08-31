@@ -21,7 +21,8 @@
 }
 
 .peer-firms {
-  float: right;
+  position: absolute;
+  right: 8px;
   background: #DEE8EB;
   border-radius: 24px;
   justify-content: center;

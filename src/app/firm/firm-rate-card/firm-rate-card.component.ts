@@ -81,6 +81,28 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
     this.commonServ.pageTitle = 'Firms > Report Card';
     this.logoUrl = this.userService.currentUser.client_info.org.logo_url;
     this.selectedFilters =  Object.assign([], this.filtersService.getSelectedFilters());
+    const userFilters = this.filtersService.getCurrentUserCombinedFilters();
+    if (userFilters) {
+      if ('invoicestartdate' in userFilters && 'invoiceenddate' in userFilters) {
+        const invoiceDateFilter = {
+          filterName: 'Invoice Date Range',
+          filters: []
+        };
+        invoiceDateFilter.filters.push(userFilters.invoicestartdate + ' to ' + userFilters.invoiceenddate);
+        this.selectedFilters.push(invoiceDateFilter);
+        this.selectedFilters = this.selectedFilters.filter(f => f.filterName !== 'Date Range');
+      }
+      if ('datepaidstartdate' in userFilters && 'datepaidenddate' in userFilters) {
+        const datePaidFilter = {
+          filterName: 'Date Paid Date Range',
+          filters: []
+        };
+        datePaidFilter.filters.push(userFilters.paidstartdate + ' to ' + userFilters.datepaidenddate);
+        this.selectedFilters.push(datePaidFilter);
+        this.selectedFilters = this.selectedFilters.filter(f => f.filterName !== 'Date Range');
+      }
+
+    }
   }
 
   async ngOnInit() {
@@ -257,8 +279,9 @@ export class FirmRateCardComponent implements OnInit, OnDestroy {
           if (!data.result) {
             return;
           }
+          const filtered = ( data.result || []).filter( e => e.page_name === this.commonServ.pageTitle);
           this.savedReportsAvailable = true;
-          this.savedReports = data.result;
+          this.savedReports = filtered;
           resolve();
         }
       );

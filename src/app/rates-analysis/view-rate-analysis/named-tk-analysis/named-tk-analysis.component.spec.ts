@@ -52,22 +52,22 @@ describe('NamedTkAnalysisComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(NamedTkAnalysisComponent);
     component = fixture.componentInstance;
-    component.benchmark = MOCK_BENCHMARK.benchmark;
-    component.internalFirms = MOCK_INTERNAL_FIRMS;
-    component.marketAvgFirms = MOCK_MARKET_FIRMS;
-    component.seniorAssociateMarketData = MOCK_SENIOR_ASSOCIATE_MARKET_DATA;
-    component.midAssociateMarketData = MOCK_MID_ASSOCIATE_MARKET_DATA;
-    component.juniorAssociateMarketData = MOCK_JUNIOR_ASSOCIATE_MARKET_DATA;
-    component.seniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[1];
-    component.midPartnerMarketData = MOCK_PARTNER_MARKET_DATA[0];
-    component.juniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[2];
+    // component.benchmark = MOCK_BENCHMARK.benchmark;
+    // component.internalFirms = MOCK_INTERNAL_FIRMS;
+    // component.marketAvgFirms = MOCK_MARKET_FIRMS;
+    // component.seniorAssociateMarketData = MOCK_SENIOR_ASSOCIATE_MARKET_DATA;
+    // component.midAssociateMarketData = MOCK_MID_ASSOCIATE_MARKET_DATA;
+    // component.juniorAssociateMarketData = MOCK_JUNIOR_ASSOCIATE_MARKET_DATA;
+    // component.seniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[1];
+    // component.midPartnerMarketData = MOCK_PARTNER_MARKET_DATA[0];
+    // component.juniorPartnerMarketData = MOCK_PARTNER_MARKET_DATA[2];
 
-    component.seniorAssociateInternalData = MOCK_SENIOR_ASSOCIATE_INTERNAL_DATA;
-    component.midAssociateInternalData = MOCK_MID_ASSOCIATE_INTERNAL_DATA;
-    component.juniorAssociateInternalData = MOCK_JUNIOR_ASSOCIATE_INTERNAL_DATA;
-    component.seniorPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[1];
-    component.midPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[0];
-    component.juniorPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[2];
+    // component.seniorAssociateInternalData = MOCK_SENIOR_ASSOCIATE_INTERNAL_DATA;
+    // component.midAssociateInternalData = MOCK_MID_ASSOCIATE_INTERNAL_DATA;
+    // component.juniorAssociateInternalData = MOCK_JUNIOR_ASSOCIATE_INTERNAL_DATA;
+    // component.seniorPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[1];
+    // component.midPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[0];
+    // component.juniorPartnerInternalData = MOCK_PARTNER_INTERNAL_DATA[2];
     fixture.detectChanges();
   });
 

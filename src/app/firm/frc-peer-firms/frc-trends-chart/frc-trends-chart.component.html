@@ -1,0 +1,18 @@
+<div  *ngIf="options" class="panel-wrapper mb20"  #spendByQuarterDiv>
+  <div class="justify-between">
+    <h2 class="mb15">{{chartHeader}}</h2>
+    <span><span class="totals-badge mr20">
+      <em *ngIf=" direction > 0" class="fa fa-arrow-up"></em>
+                  <em *ngIf=" direction < 0" class="fa fa-arrow-down"></em>
+      {{increase}}% since last
+      <span *ngIf="trendsChartMode === 'YoY'">year</span>
+      <span *ngIf="trendsChartMode === 'QoQ'">quarter</span>
+    </span>
+      <em class="fa fa-chevron-up mr20 mt20 pointer-hand" *ngIf="!isCollapsed" (click)="isCollapsed = !isCollapsed"></em>
+      <em class="fa fa-chevron-down mr20 mt20 pointer-hand" *ngIf="isCollapsed" (click)="isCollapsed = !isCollapsed"></em>
+    </span>
+  </div>
+
+  <chart [options]="options" *ngIf="modeDefined" (load)="saveInstance($event.context)" width="100%" [hidden]="isCollapsed"></chart>
+</div>
+

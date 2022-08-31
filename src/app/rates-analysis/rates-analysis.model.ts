@@ -22,8 +22,8 @@ export interface IRateBenchmark {
   id: number;
   bh_client_id?: number;
   bh_lawfirm_id?: number;
-  smart_practice_area: string;
-  year: number;
+  smart_practice_area: Array<string>;
+  year: Array<number>;
   peers: Array<string>;
   created_by?: string;
   created_on?: string;
@@ -62,6 +62,7 @@ export interface INamedTimekeepersRateBM {
 }
 
 export const smartPracticeAreas = [
+  // {label: 'All PAs', value: 'All PAs'},
   {label: 'Banking & Credit', value: 'Banking & Credit'},
   {label: 'Bankruptcy', value: 'Bankruptcy'},
   {label: 'Capital Markets', value: 'Capital Markets'},

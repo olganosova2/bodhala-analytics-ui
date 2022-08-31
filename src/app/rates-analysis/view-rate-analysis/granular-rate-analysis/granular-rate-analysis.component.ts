@@ -16,10 +16,10 @@ export class GranularRateAnalysisComponent implements OnInit {
   pendingRequest: Subscription;
   benchmarkId: number;
   benchmark: IRateBenchmark;
-  practiceArea: string;
+  practiceArea: Array<string> = [];
   firmName: string;
   firmId: number;
-  year: number;
+  year: Array<number> = [];
   firmYearData: any;
   marketAverageData: any;
   internalData: any;
@@ -47,6 +47,7 @@ export class GranularRateAnalysisComponent implements OnInit {
   seniorAssocFirmRate: number;
   marketAvgFirms: Array<any>;
   internalFirms: Array<any>;
+  lastUpdated: string;
 
 
   constructor(private route: ActivatedRoute,
@@ -68,6 +69,11 @@ export class GranularRateAnalysisComponent implements OnInit {
     if (history.state.data) {
       if (history.state.data.bm) {
         this.benchmark = history.state.data.bm;
+        if (this.benchmark.modified_on === null) {
+          this.lastUpdated = this.benchmark.created_on;
+        } else {
+          this.lastUpdated = this.benchmark.modified_on;
+        }
       }
       if (history.state.data.cluster) {
         this.cluster = history.state.data.cluster;
@@ -98,6 +104,7 @@ export class GranularRateAnalysisComponent implements OnInit {
       this.firmId = this.benchmark.bh_lawfirm_id;
       this.practiceArea = this.benchmark.smart_practice_area;
       this.year = this.benchmark.year;
+      this.year.sort();
 
       const granularResult = await this.ratesService.getGranularityPageData(this.benchmark, this.numPartnerTiers);
       this.setData(granularResult);
@@ -120,6 +127,12 @@ export class GranularRateAnalysisComponent implements OnInit {
         this.firmId = this.benchmark.bh_lawfirm_id;
         this.practiceArea = this.benchmark.smart_practice_area;
         this.year = this.benchmark.year;
+        this.year.sort();
+        if (this.benchmark.modified_on === null) {
+          this.lastUpdated = this.benchmark.created_on;
+        } else {
+          this.lastUpdated = this.benchmark.modified_on;
+        }
         const rateAnalysisData = await this.ratesService.getRateAnalysisData(this.benchmark);
         if (rateAnalysisData.result.firm_data) {
           if (rateAnalysisData.result.firm_data.length > 0) {

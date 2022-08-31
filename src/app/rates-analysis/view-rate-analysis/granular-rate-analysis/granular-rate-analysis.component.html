@@ -1,21 +1,44 @@
 <div style="padding: 0px 16px 16px 24px; background: #E9F1F4;" id="exportDiv">
-  <div style="padding: 12px 28px 8px 0px;">
-    <button data-html2canvas-ignore="true" class="back-button" (click)="goBack()"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
+  <div style="display: inline-flex;">
+    <button class="back-button" (click)="goBack()" data-html2canvas-ignore="true" style="height: 42px;"><i class="fa fa-chevron-left" style="font-size: 12px; margin-right: 6px !important;"></i> Back</button>
 
-    <div style="display: inline; background: white; border-radius: 100px; padding: 8px 28px 8px 28px;">
-      <span class="header-span" style="padding-left: 0em !important; font-size: 16px !important; font-weight: 400 !important;">Firm: </span>
-      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{firmName}}</span>
+    <div style="display: inline !important; background: white; border-radius: 16px; margin: 0px 32px; padding: 8px 16px; max-height: 124px; width: 480px;" *ngIf="benchmark">
+      <div style="display: inline !important; background: white; border-radius: 16px;">
+        <p style="margin-bottom: 0px; line-height: 1.5em;">
+          <span style="padding-left: 0em !important; font-family: 'Roboto Bold'; font-size: 16px !important;">Firm: </span>
+          <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;"> {{firmName}}</span>
+        </p>
 
-      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Practice Area: </span>
-      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{practiceArea}}</span>
+        <p style="margin-bottom: 0px; line-height: 1.5em;">
+          <span style="padding-left: 0em !important; font-family: 'Roboto Bold'; font-size: 16px !important;">Practice Area(s): </span>
+          <span *ngIf="practiceArea.length < 12" style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">
+            <!-- {{practiceArea}} -->
+            <div style="display: inline;" *ngFor="let pa of practiceArea; let last = last;">
+              <span *ngIf="!last">{{pa}}, </span>
+              <span *ngIf="last">{{pa}}</span>
+            </div>
+          </span>
+          <span *ngIf="practiceArea.length === 12" style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">All PAs</span>
+        </p>
 
-      <span class="header-span" style="margin-left: 2em; font-size: 16px !important; font-weight: 400 !important;">Year: </span>
-      <span style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;">{{year}}</span>
+        <p style="margin-bottom: 0px; line-height: 1.5em;">
+          <span class="header-span" style="padding-left: 0em !important; font-family: 'Roboto Bold'; font-size: 16px !important;">Year(s): </span>
+          <span *ngIf="year.length === 1" style="color: #000000; font-family: 'Roboto' !important; font-size: 16px;"> {{year}}</span>
+          <span *ngIf="year.length > 1" style="display: inline; color: #000000; font-family: 'Roboto' !important; font-size: 16px;">
+            <div style="display: inline;" *ngFor="let y of year; let last = last;">
+              <span *ngIf="!last">{{y}}, </span>
+              <span *ngIf="last">{{y}}</span>
+            </div>
+          </span>
+        </p>
+
+      </div>
     </div>
 
     <div class="peer-firms" *ngIf="loaded">
       <bd-comparison-firms [marketFirms]="marketAvgFirms" [panelFirms]="internalFirms" [benchmark]="benchmark"></bd-comparison-firms>
     </div>
+
   </div>
 
   <h3 style="padding-bottom: 20px;">Timekeeper Level Benchmarks<br>& Cost Analysis</h3>
@@ -64,6 +87,10 @@
       <bd-granular-rate-chart *ngIf="loaded" [classification]="'associate'" [seniority]="'Senior'" [marketData]="seniorAssociateMarketData" [internalData]="seniorAssociateInternalData"
                               [firmName]="firmName" [totalSeniorityHours]="seniorAssocFirmHours" [seniorityFirmRate]="seniorAssocFirmRate" [firmAssociateSeniorityData]="firmAssociateSeniorityData" [benchmark]="benchmark" [cluster]="cluster" [totalHours]="totalHours"></bd-granular-rate-chart>
     </div>
+  </div>
+
+  <div class="mt10" style="font-family: 'Roboto';">
+    Benchmark Data Last Refreshed: {{lastUpdated | date: 'longDate'}}
   </div>
 
 </div>

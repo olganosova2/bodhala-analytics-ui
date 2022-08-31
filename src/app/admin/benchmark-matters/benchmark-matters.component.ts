@@ -113,7 +113,7 @@ export class BenchmarkMattersComponent implements OnInit, OnDestroy {
     }
   }
   getMattersData(): void {
-    if (this.clientBmConfig.json_config.matters.length === 0) {
+    if (!this.clientBmConfig.json_config || this.clientBmConfig.json_config.matters.length === 0) {
       return;
     }
     const params = {clientId: this.selectedClient.bh_client_id, matters: JSON.stringify(this.clientBmConfig.json_config.matters), score: 0};

@@ -1,5 +1,5 @@
 import {CURRENT_USER} from './mock-data/user';
-import {Observable, of, throwError} from 'rxjs';
+import {Observable, of, Subscription, throwError} from 'rxjs';
 import {TOP_MATTERS} from './mock-data/top-matters';
 import {TOP_FIRMS} from './mock-data/top-firms';
 import {MOCK_DIVERSITY_DATA, MOCK_FIRM, MOCK_FIRM_DATA, MOCK_FIRMS, MOCK_TOP_FIRM_SUMMARY, MOCK_PHASE_TAXONOMY, MOCK_UTBMS_CODES, MOCK_SPEND_BY_QUARTER_DATA} from './mock-data/firm';
@@ -37,6 +37,7 @@ import {CLIENT_BM_MATTERS, MOCK_BM_CLIENT_PAS, MOCK_BM_CONFIG, MOCK_BM_MATTERS, 
 import {MOCK_ASSOC_DATA, MOCK_PARTNER_DATA, MOCK_RATE_BENCHMARKS, MOCK_ADMIN_RATE_BENCHMARKS, MOCK_FIRM_CLUSTER_RES, MOCK_SAVED_BENCHMARK, MOCK_RATE_ANALYSIS_RESULT,
   MOCK_RATE_BENCHMARK_RESULT, MOCK_GET_BENCHMARK, MOCK_RATE_ANALYSIS_DATA, MOCK_GRANULARITY_PAGE_RESULT, MOCK_RATE_BM_NAMED_TK_DATA, MOCK_PEER_FIRMS_ADMIN_RESPONSE} from './mock-data/rate-benchmarking';
 import {MOCK_FIRM_CLUSTER} from './mock-data/firm-cluster';
+import {MOCK_FRC_TRENDS_DATA, MOCK_PEER_FIRMS_ARRAY, MOCK_SAVED_FRC_REPORTS} from './mock-data/frc';
 
 export const ngWindow = {
   location: {
@@ -71,7 +72,7 @@ export class FiltersStub {
   }
 
   public getCurrentUserCombinedFilters() {
-    return {clientId: 190, startdate: this.startDate, enddate: this.endDate};
+    return {clientId: 190, startdate: this.startDate, enddate: this.endDate, firms: JSON.stringify([4, 8, 724, 9353])};
   }
 
   public getCommonFilters() {
@@ -144,6 +145,8 @@ export class DataStub {
         return of (MOCK_SAVED_BENCHMARK);
       case 'saveClientInsight':
         return of ( {result: { id: 1}});
+      case 'saveExport':
+        return of({result: { id: 1}});
       default:
         return of([]);
     }
@@ -363,6 +366,15 @@ export class DataStub {
         return of (MOCK_FIRM_CLUSTER);
       case 'getRateBMNamedTKData':
         return of (MOCK_RATE_BM_NAMED_TK_DATA);
+      case 'getFRCKeyMetrics':
+        return of (MOCK_PEER_FIRMS_ARRAY);
+      case 'getComparisonFRCKeyMetrics':
+        return of (MOCK_FRC_TRENDS_DATA);
+      case 'getSavedExports':
+        return of (MOCK_SAVED_FRC_REPORTS);
+      case 'getSpendByYear':
+        return of (MOCK_SAVED_FRC_REPORTS);
+
 
       default:
         return of([]);
@@ -663,6 +675,7 @@ export class ActivatedRouteMock {
   });
 }
 export class CommonServiceStub {
+  pdfLoading: boolean;
   public getTrainingMaterialsArticle(id: string): void {
     return;
   }
@@ -671,6 +684,29 @@ export class CommonServiceStub {
   }
   public capitalize(word: string): string {
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  public saveReport(firmId: number, filters: any): any {
+    return of({result: { id: 1}});
+  }
+  public generatePDF(title: string, divId: string, firmId: string, orientation: string = 'p') {
+  }
+  public  generatePdfOuter(title: string, divId: string, firmId: string) {
+    this.pdfLoading = true;
+    this.generatePDF(title, divId, firmId);
+  }
+  public getPageId(): string {
+    return 'XXX';
+  }
+  public clearTitles(): void {
+
+  }
+  public formatPath(path: string): string {
+    let result = path;
+    const ix = path.indexOf('?');
+    if (ix >= 0) {
+      result = path.substring(0, ix);
+    }
+    return result;
   }
 }
 

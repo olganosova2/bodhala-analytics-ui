@@ -1,6 +1,9 @@
-<h1 mat-dialog-title>Saved Reports for {{commonServ.pageSubtitle}}</h1>
-<div mat-dialog-content>
-    <table>
+<div class="justify-between">
+  <h1 mat-dialog-title>Saved Reports for {{ firmName }}</h1>
+  <div ><mat-icon  mat-dialog-close>close</mat-icon></div>
+</div>
+<div mat-dialog-content >
+    <table class="full-width mb20">
         <tr>
             <th>Save Date</th>
             <th>Saved By</th>
@@ -16,9 +19,14 @@
             <td>{{item.enddate}}</td>
             <td *ngIf="item.saved_view">{{item.saved_view}}</td>
             <td *ngIf="!item.saved_view">N/A</td>
-            <td><button #tooltip="matTooltip" matTooltip="View this report" class="action-button" (click)="loadSavedExport(item)"><i class="fa fa-eye"></i></button>
+            <td *ngIf="!isFRC"><button #tooltip="matTooltip" matTooltip="View this report" class="action-button" (click)="loadSavedExport(item)"><i class="fa fa-eye"></i></button>
                 <button #tooltip="matTooltip" matTooltip="Delete this report" class="action-button" (click)="deleteSavedExport(item)"><i class="fa fa-trash-o"></i></button>
             </td>
+          <td *ngIf="isFRC">
+            <button *ngIf="item.filter_set" #tooltip="matTooltip" matTooltip="View this report" class="primary-button mr10" (click)="view(item)">View <em class="fa fa-chevron-right"></em></button>
+            <button #tooltip="matTooltip" matTooltip="Delete this report" mat-button class="cancel-button" (click)="deleteSavedExport(item)">Delete</button>
+
+          </td>
         </tr>
     </table>
 </div>
