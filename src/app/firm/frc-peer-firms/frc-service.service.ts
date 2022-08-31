@@ -266,7 +266,19 @@ export interface IFRCTimekeeper {
   avg_rate: number;
   bodhala_classification?: string;
 }
-
+export interface IFRCSmartPAs {
+  client_matter_type: string;
+  total: number;
+  expenses: number;
+  total_hours: number;
+  firm_total: number;
+  firm_expenses: number;
+  firm_hours: number;
+  percent_of_hours?: number;
+  percent_of_spend?: number;
+  percent_of_firm_hours?: number;
+  percent_of_firm_spend?: number;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -703,7 +715,8 @@ export class FrcServiceService {
   processTotalSpend(records: Array<any>): void {
     for (const rec of records) {
       const includeExpenses = this.filtersService.includeExpenses;
-      rec.total_billed = includeExpenses ? rec.total_billed + rec.total_afa + rec.total_expenses : rec.total_billed + rec.total_afa;
+      rec.firm_total = includeExpenses ? rec.firm_total + rec.firm_expenses : rec.firm_total;
+      rec.total = includeExpenses ? rec.total + rec.expenses : rec.total;
     }
   }
 

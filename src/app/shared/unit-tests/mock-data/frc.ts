@@ -688,6 +688,91 @@ export const MOCK_SPEND_BY_YEAR = {
   }],
   "error": null
 }
+export const MOCK_FRC_SMART_PAS = {
+  "result": [{
+    "client_matter_type": "Funds",
+    "total": 9476008.3897,
+    "expenses": 63752.8684,
+    "total_hours": 14387,
+    "firm_total": 1166184.08,
+    "firm_expenses": 6685.26,
+    "firm_hours": 2014.2
+  }, {
+    "client_matter_type": "Capital Markets",
+    "total": 8877522.1707,
+    "expenses": 28225.9078,
+    "total_hours": 15272.7,
+    "firm_total": 4179069.46,
+    "firm_expenses": 4018.09,
+    "firm_hours": 7002.4
+  }, {
+    "client_matter_type": "Litigation",
+    "total": 7111192.81,
+    "expenses": 357217.02,
+    "total_hours": 14209,
+    "firm_total": 5481331.28,
+    "firm_expenses": 132400.28,
+    "firm_hours": 10453.9
+  }, {
+    "client_matter_type": "M&A",
+    "total": 4409671.45,
+    "expenses": 165734.17,
+    "total_hours": 6119.2,
+    "firm_total": 3129026.96,
+    "firm_expenses": 16370.22,
+    "firm_hours": 4241.6
+  }, {
+    "client_matter_type": "General/Other",
+    "total": 2179309.0335,
+    "expenses": 49644.105,
+    "total_hours": 3376.4,
+    "firm_total": 220821.29,
+    "firm_expenses": 302.44,
+    "firm_hours": 622.5
+  }, {
+    "client_matter_type": "Real Estate",
+    "total": 2033243.849,
+    "expenses": 2733.2555,
+    "total_hours": 1295,
+    "firm_total": 5571.23,
+    "firm_expenses": 0,
+    "firm_hours": 6.3
+  }, {
+    "client_matter_type": "Energy",
+    "total": 810565.29,
+    "expenses": 19163.02,
+    "total_hours": 1553.2,
+    "firm_total": 5156.67,
+    "firm_expenses": 0,
+    "firm_hours": 11.8
+  }, {
+    "client_matter_type": "IP",
+    "total": 646132.6,
+    "expenses": 219664.2,
+    "total_hours": 1598.2,
+    "firm_total": 0,
+    "firm_expenses": 0,
+    "firm_hours": 0
+  }, {
+    "client_matter_type": "Banking & Credit",
+    "total": 367886.2647,
+    "expenses": 5413.1,
+    "total_hours": 848.3,
+    "firm_total": 5140.98,
+    "firm_expenses": 0,
+    "firm_hours": 9.8
+  }, {
+    "client_matter_type": "Labor & Employment",
+    "total": 106849.8,
+    "expenses": 0,
+    "total_hours": 235.2,
+    "firm_total": 0,
+    "firm_expenses": 0,
+    "firm_hours": 0
+  }],
+  "error": null
+}
+
 
 
 
