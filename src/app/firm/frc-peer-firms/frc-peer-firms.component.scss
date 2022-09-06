@@ -57,4 +57,12 @@ button {
 .div-notes-text {
   width: 78%;
 }
+.edit-button {
+  min-width: 70px;
+}
+.show-firms {
+  border: 1px solid $body-color;
+  color: $body-color;
+  cursor: pointer;
+}
 

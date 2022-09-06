@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {AgGridService} from 'bodhala-ui-elements';
 import {CommonService} from '../../shared/services/common.service';
 import {Router} from '@angular/router';
+import {FrcServiceService} from '../frc-peer-firms/frc-service.service';
 
 
 @Component({
@@ -25,17 +26,20 @@ export class SavedReportsModalComponent implements OnInit {
   defaultState: any;
   firmName: string;
   isFRC: boolean = false;
+  url: string;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public agGridService: AgGridService,
               public commonServ: CommonService,
               public userService: UserService,
               public httpService: HttpService,
+              public frcService: FrcServiceService,
               public datepipe: DatePipe,
               public dialogRef: MatDialogRef<SavedReportsModalComponent>,
               public router: Router) { }
 
   ngOnInit(): void {
+    this.url = this.router.url;
     this.savedReportData = this.data;
     this.processData();
 
@@ -59,6 +63,7 @@ export class SavedReportsModalComponent implements OnInit {
         rec.enddate = this.dateFormatter(rec.filter_set.enddate);
         this.firmName = rec.firm_name;
       }
+      rec.pageName = this.frcService.getReportPageName(rec);
 
     }
   }
@@ -105,6 +110,16 @@ export class SavedReportsModalComponent implements OnInit {
   view(data): void {
     if (data.saved_view === null) {
       localStorage.removeItem('saved_filter_' + this.userService.currentUser.id.toString());
+    }
+    if (this.url.includes('frc-peer-firms') && data.pageName === 'Trends') {
+      this.router.navigateByUrl('/analytics-ui/frc-trends/' + data.lawfirm_id.toString(), { state: { filterSet: data.filter_set } });
+      this.dialogRef.close(null);
+      return;
+    }
+    if (this.url.includes('frc-trends') && data.pageName === 'Comparison') {
+      this.router.navigateByUrl('/analytics-ui/firm/frc-peer-firms/' + data.lawfirm_id.toString(), { state: { filterSet: data.filter_set } });
+      this.dialogRef.close(null);
+      return;
     }
     this.dialogRef.close({ exportedData: data});
   }

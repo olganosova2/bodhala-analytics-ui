@@ -8,16 +8,16 @@
     <thead>
     <tr class="roboto-bold">
       <th>Practice Area</th>
-      <th >Spend</th>
-      <th >% of Firm Spend</th>
-      <th>% of Firm Hours</th>
+<!--      <th >Spend</th>-->
+      <th >% of {{summaryData.firm_name}} Spend</th>
+      <th>% of {{summaryData.firm_name}} Hours</th>
       <th >% of all Practice Area Spend</th>
       <th>% of all Practice Area Hours </th>
     </tr>
     </thead>
     <tr *ngFor="let tk of smartPAs">
       <td>{{ tk.client_matter_type}}</td>
-      <td>{{tk.firm_total | number:'1.1-1'}}</td>
+<!--      <td>{{tk.firm_total | number:'1.1-1'}}</td>-->
       <td>{{tk.percent_of_firm_spend | number:'1.1-1'}}%</td>
       <td>{{tk.percent_of_firm_hours | number:'1.1-1'}}%</td>
       <td>{{tk.percent_of_spend | number:'1.1-1'}}%</td>

@@ -6,7 +6,7 @@ import {Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
 import {FiltersService as ElementsFiltersService} from 'bodhala-ui-elements';
 import {barTkPercentOptions} from './frc-service.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {VisibleKeyMetricsComponent} from './visible-key-metrics/visible-key-metrics.component';
 import {MatDialog} from '@angular/material/dialog';
 import {FrcNotesComponent} from './frc-notes/frc-notes.component';
@@ -39,12 +39,13 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   savedReports: Array<any> = [];
   url: string;
   frcCardSaved: boolean = false;
-  filterSet: any = {};
+  filterSet: any;
   excludeFilters: Array<string> = [];
   pageName: string = 'analytics-ui/frc-peer-firms/';
   pageType: string = 'FRC';
   noFirmsSelected: boolean = false;
   isLoaded: boolean = true;
+  hideFirms: boolean = false;
   chart: any;
   options: any = Object.assign({}, barTkPercentOptions);
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
@@ -52,6 +53,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
+              public router: Router,
               public commonServ: CommonService,
               public frcService: FrcServiceService,
               public userService: UserService,
@@ -63,6 +65,10 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   ) {
     this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Comparison Firms Report';
+    if (this.router.getCurrentNavigation().extras.state) {
+      this.noFirmsSelected = false;
+      this.filterSet = this.router.getCurrentNavigation().extras.state.filterSet;
+    }
   }
 
   ngOnInit(): void {
@@ -70,7 +76,9 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     this.url = this.commonServ.formatPath(window.location.pathname);
     this.route.paramMap.subscribe(params => {
       this.firmId = Number(params.get('id'));
-      this.setUpFilters();
+      if (!this.filterSet) {
+        this.setUpFilters();
+      }
       this.getPeerFirmsData();
       this.getAnnotations();
     });
@@ -229,9 +237,9 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       arr.push(this.firmId.toString());
       params.firmId = JSON.stringify(arr);
     }
-    this.pendingRequest = this.httpService.makeGetRequest<IUiAnnotation>('getSavedExports', params).subscribe(
+    this.pendingRequest = this.httpService.makeGetRequest('getSavedExports', params).subscribe(
       (data: any) => {
-        this.savedReports = (data.result || []).filter(e => e.page_name === this.commonServ.getPageId());
+        this.savedReports = (data.result || []).filter(e => e.page_name.includes('Firm Report Card'));
         for (const rep of this.savedReports) {
           if (this.firm) {
             rep.firm_name = this.firm.firm_name;

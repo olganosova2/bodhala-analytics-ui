@@ -7,6 +7,7 @@
         <tr>
             <th>Save Date</th>
             <th>Saved By</th>
+            <th *ngIf="isFRC">Page</th>
             <th>Report Start Date</th>
             <th>Report End Date</th>
             <th>Saved View</th>
@@ -15,6 +16,7 @@
         <tr *ngFor="let item of savedReportData">
             <td>{{item.print_date}}</td>
             <td>{{item.username}}</td>
+            <td *ngIf="isFRC">{{item.pageName}}</td>
             <td>{{item.startdate}}</td>
             <td>{{item.enddate}}</td>
             <td *ngIf="item.saved_view">{{item.saved_view}}</td>
@@ -23,7 +25,7 @@
                 <button #tooltip="matTooltip" matTooltip="Delete this report" class="action-button" (click)="deleteSavedExport(item)"><i class="fa fa-trash-o"></i></button>
             </td>
           <td *ngIf="isFRC">
-            <button *ngIf="item.filter_set" #tooltip="matTooltip" matTooltip="View this report" class="primary-button mr10" (click)="view(item)">View <em class="fa fa-chevron-right"></em></button>
+            <button *ngIf="item.filter_set" class="primary-button mr10" (click)="view(item)">View <em class="fa fa-chevron-right"></em></button>
             <button #tooltip="matTooltip" matTooltip="Delete this report" mat-button class="cancel-button" (click)="deleteSavedExport(item)">Delete</button>
 
           </td>
