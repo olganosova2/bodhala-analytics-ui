@@ -17,9 +17,10 @@
   color: $body-color !important;
 }
 .p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link .p-menuitem-text {
-  letter-spacing: 0.4px;
-  font-weight: 400;
-  font-family: 'Source Sans Pro', sans-serif;
+  letter-spacing: 0.2px;
+  font-weight: 300 !important;
+  font-size: 12.5px;
+  font-family: "Roboto","Arial",sans-serif; // "Source Sans Pro", sans-serif !important;
 }
 .p-panelmenu .p-panelmenu-content .p-submenu-list:not(.p-panelmenu-root-submenu) {
   padding-left: 10px !important;
@@ -55,4 +56,10 @@ input.hoursmins {
   h5 {
     font-size: 14px !important;
   }
+}
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link {
+  padding: 0 0 0 3px !important;
+}
+.new-item {
+  font-size: 10px !important;
 }

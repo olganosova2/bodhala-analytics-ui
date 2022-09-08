@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../../../shared/services/common.service';
-import {FrcServiceService, IFRCTimekeeper} from '../frc-service.service';
+import {FrcServiceService, IFRCSmartPAs, IFRCTimekeeper, IPeerFirms} from '../frc-service.service';
 import {FiltersService} from '../../../shared/services/filters.service';
 import {Subscription} from 'rxjs';
 import {MatterAnalysisService} from '../../../matters/matter-executive-summary/matter-analysis.service';
@@ -17,8 +17,9 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
   pendingRequestMatters: Subscription;
   @Input() filterSet: any;
   @Input() firmId: number;
+  @Input() summaryData: IPeerFirms;
   timekeepers: Array<IFRCTimekeeper> = [];
-  smartPAs: Array<any> = [];
+  smartPAs: Array<IFRCSmartPAs> = [];
   matters: Array<any> = [];
   isSmartPA: boolean = false;
   hasBodhalaPAs: boolean = false;
@@ -45,18 +46,20 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
   getSmartPAs(): void {
     this.smartPAs = [];
     this.pasLoaded = false;
-    const params = { ... this.getParams(), ... {bodhalaPAs: this.isSmartPA }};
-    this.pendingRequest = this.httpService.makeGetRequest('getPracticeArea', params).subscribe(
+    const datesParams =  this.filtersService.getCurrentUserCombinedFilters(true);
+    datesParams.selectedFirmId = this.firmId;
+    const params = { ... datesParams, ... {bodhalaPAs: this.isSmartPA }};
+    this.pendingRequest = this.httpService.makeGetRequest('getFRCFirmPracticeAreas', params).subscribe(
       (data: any) => {
         this.pasLoaded = true;
         if (data.result && data.result.length > 0) {
-          this.smartPAs = (data.result || []).sort(this.utilService.dynamicSort('-total_billed'));
+          this.smartPAs = (data.result || []).sort(this.utilService.dynamicSort('-firm_total')).filter(e => e.firm_total > 0) || [];
           this.frcService.processTotalSpend(this.smartPAs);
-          const totalHours = this.frcService.processTotals(this.smartPAs, 'total_hours');
-          const totalSpend = this.frcService.processTotals(this.smartPAs, 'total_billed');
           for (const rec of this.smartPAs) {
-            rec.percent_of_hours = this.frcService.getPercentOfWork(rec.total_hours, totalHours);
-            rec.percent_of_spend = this.frcService.getPercentOfWork(rec.total_billed, totalSpend);
+            rec.percent_of_firm_hours = this.frcService.getPercentOfWork(rec.firm_hours, this.summaryData.total_hours_billed);
+            rec.percent_of_firm_spend = this.frcService.getPercentOfWork(rec.firm_total, this.summaryData.total_billed);
+            rec.percent_of_hours = this.frcService.getPercentOfWork(rec.firm_hours, rec.total_hours);
+            rec.percent_of_spend = this.frcService.getPercentOfWork(rec.firm_total, rec.total);
           }
         }
       }

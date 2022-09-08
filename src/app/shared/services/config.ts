@@ -79,6 +79,7 @@ export const END_POINTS_URLS = {
   getPracticeAreaTrends: {url: BASE_URL + 'analytics/playbook/practice-area/{client_matter_type}/trends', showLoading: false},
   getPracticeAreas: {url: BASE_URL + 'client/getPracticeAreas', showLoading: true},
   getPracticeAreasAndId: {url: BASE_URL + 'client/getPracticeAreasAndId', showLoading: true},
+  getFRCFirmPracticeAreas: {url: BASE_URL + 'analytics/getFRCFirmPracticeAreas', showLoading: false},
   // benchmarks
   getBenchmarks: {url: BASE_URL + 'analytics/getBenchmarks', showLoading: true},
   deleteBenchmark: { url: BASE_URL + 'client/benchmarking/deleteBenchmark/{id}', showLoading: true},

@@ -66,7 +66,6 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     if (savedFRCCompare) {
      this.selectedFirms = JSON.parse(savedFRCCompare);
     }  else {
-      // this.router.navigate(['analytics-ui/frc-dashboard']);
       this.noFirmsSelected = true;
       return;
     }
@@ -124,6 +123,9 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     const firstFirm = this.comparisonData[0].frcMetrics;
     for (const metricName of Object.keys(this.metrics)) {
       if (typeof MetricType[metricName] !== 'string') {
+        continue;
+      }
+      if (!this.userService.hasEntitlement('data.analytics.diversity') && (metricName === 'FemaleHours' || metricName === 'MinorityHours')) {
         continue;
       }
       const prop = this.metrics[metricName];

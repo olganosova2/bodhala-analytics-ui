@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {FrcServiceService, IMetricDisplayData, IPeerFirms, MetricType, MetricTypeTrends, TrendChart, TrendsChartMode} from '../frc-service.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -36,7 +36,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
   savedReports: Array<any> = [];
   url: string;
   frcCardSaved: boolean = false;
-  filterSet: any = {};
+  filterSet: any;
   dpFilter: any;
   metrics: any = MetricTypeTrends;
   excludeFilters: Array<string> = ['firms'];
@@ -53,6 +53,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
+              public router: Router,
               public commonServ: CommonService,
               public frcService: FrcServiceService,
               public userService: UserService,
@@ -63,13 +64,19 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService) {
     this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Trends Analysis Report';
+    if (this.router.getCurrentNavigation() && this.router.getCurrentNavigation().extras.state) {
+      this.filterSet = this.router.getCurrentNavigation().extras.state.filterSet;
+      this.dpFilter =  Object.assign({}, this.commonServ.formatDatesPickerFilter(this.filterSet.compareStartDate, this.filterSet.compareEndDate));
+    }
   }
 
   ngOnInit(): void {
     this.url = this.commonServ.formatPath(window.location.pathname);
     this.route.paramMap.subscribe(params => {
       this.firmId = Number(params.get('id'));
-      this.setUpFilters(true);
+      if (!this.filterSet) {
+        this.setUpFilters(true);
+      }
       this.getComparisonFirmsData();
       this.getYearQuarterData();
       // tslint:disable-next-line:forin
@@ -201,7 +208,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
     }
     this.pendingRequest = this.httpService.makeGetRequest<IUiAnnotation>('getSavedExports', params).subscribe(
       (data: any) => {
-        this.savedReports = ( data.result || []).filter( e => e.page_name === this.commonServ.getPageId());
+        this.savedReports = ( data.result || []).filter( e => e.page_name.includes('Firm Report Card'));
         for (const rep of this.savedReports) {
           if (this.firm) {
             rep.firm_name = this.firm.firm_name;

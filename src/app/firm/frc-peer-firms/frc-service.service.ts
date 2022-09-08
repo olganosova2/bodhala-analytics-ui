@@ -4,6 +4,11 @@ import {IMatterExecSummary, MetricCardType, MetricGrade} from '../../matters/mat
 import {CommonService} from '../../shared/services/common.service';
 import {HttpService, UtilService, UserService} from 'bodhala-ui-common';
 import {forkJoin} from 'rxjs';
+import {IUiAnnotation} from '../../shared/components/annotations/model';
+import * as config from '../../shared/services/config';
+import * as _moment from 'moment';
+
+const moment = _moment;
 
 export const MOCK_PEER_FIRMS_ALL = [4, 724, 8, 23, 59, 92, 20, 292, 63, 924];
 export const MOCK_PEER_FIRMS = [4, 8, 23, 59, 92, 20, 292, 63, 924];
@@ -266,12 +271,25 @@ export interface IFRCTimekeeper {
   avg_rate: number;
   bodhala_classification?: string;
 }
-
+export interface IFRCSmartPAs {
+  client_matter_type: string;
+  total: number;
+  expenses: number;
+  total_hours: number;
+  firm_total: number;
+  firm_expenses: number;
+  firm_hours: number;
+  percent_of_hours?: number;
+  percent_of_spend?: number;
+  percent_of_firm_hours?: number;
+  percent_of_firm_spend?: number;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class FrcServiceService {
   customReport: boolean;
+  hasDiversity: boolean = false;
 
   constructor(public filtersService: FiltersService,
               public utilService: UtilService,
@@ -283,6 +301,7 @@ export class FrcServiceService {
         this.customReport = true;
       }
     }
+    this.hasDiversity =  userService.hasEntitlement('data.analytics.diversity');
   }
 
   calculateSingleFirmData(summaryData: IPeerFirms): void {
@@ -292,11 +311,6 @@ export class FrcServiceService {
     const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
     const lawyerHours = (summaryData.partner_hours) + (summaryData.associate_hours);
     summaryData.blended_rate = lawyerBilled / (lawyerHours || 1);
-    // summaryData.percent_partner_hours = Math.round(summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100);
-    // summaryData.percent_associate_hours = Math.round(summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100);
-    // summaryData.percent_legal_assistant_hours = Math.round(summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100);
-    // summaryData.percent_paralegal_hours = Math.round(summaryData.paralegal_hours / (summaryData.total_tk_hours || 1) * 100);
-
     summaryData.percent_partner_hours = summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100;
     summaryData.percent_associate_hours = summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100;
     summaryData.percent_legal_assistant_hours = summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100;
@@ -453,6 +467,9 @@ export class FrcServiceService {
         continue;
       }
       if (!this.customReport && metricName === 'Score') {
+        continue;
+      }
+      if (!this.hasDiversity && (metricName === 'FemaleHours' || metricName === 'MinorityHours')) {
         continue;
       }
       const metric = {
@@ -703,7 +720,8 @@ export class FrcServiceService {
   processTotalSpend(records: Array<any>): void {
     for (const rec of records) {
       const includeExpenses = this.filtersService.includeExpenses;
-      rec.total_billed = includeExpenses ? rec.total_billed + rec.total_afa + rec.total_expenses : rec.total_billed + rec.total_afa;
+      rec.firm_total = includeExpenses ? rec.firm_total + rec.firm_expenses : rec.firm_total;
+      rec.total = includeExpenses ? rec.total + rec.expenses : rec.total;
     }
   }
 
@@ -735,6 +753,73 @@ export class FrcServiceService {
     }
     return (rec.total_partner_billed + rec.total_associate_billed - rec.total_partner_writeoff - rec.total_associate_writeoff) / (rec.partner_hours + rec.associate_hours - rec.partner_writeoff_hours - rec.associate_writeoff_hours);
   }
+  getReportPageName(report: any): string {
+    let result = 'Comparison';
+    if (report && report.page_name && report.page_name.includes('Trends')) {
+      result = 'Trends';
+    }
+    return result;
+  }
+  formatAppliedFilters(): Array<any> {
+    let result =  Object.assign([], this.filtersService.getSelectedFilters());
+    const userFilters = this.filtersService.getCurrentUserCombinedFilters();
+    if (userFilters) {
+      if ('invoicestartdate' in userFilters && 'invoiceenddate' in userFilters) {
+        const invoiceDateFilter = {
+          filterName: 'Invoice Date Range',
+          filters: []
+        };
+        invoiceDateFilter.filters.push(userFilters.invoicestartdate + ' to ' + userFilters.invoiceenddate);
+        result.push(invoiceDateFilter);
+        result = result.filter(f => f.filterName !== 'Date Range');
+      }
+      if ('datepaidstartdate' in userFilters && 'datepaidenddate' in userFilters) {
+        const datePaidFilter = {
+          filterName: 'Date Paid Date Range',
+          filters: []
+        };
+        datePaidFilter.filters.push(userFilters.paidstartdate + ' to ' + userFilters.datepaidenddate);
+        result.push(datePaidFilter);
+        result = result.filter(f => f.filterName !== 'Date Range');
+      }
 
+    }
+    return result;
+  }
+  formatHistoricalAppliedFilters(filterSet: any): Array<any> {
+    const result = [];
+    const savedFilters = localStorage.getItem(config.SAVED_FILTERS_NAME + this.userService.currentUser.id);
+    if (!savedFilters) {
+      return result;
+    }
+    const serializedQs = JSON.parse(savedFilters);
+    const storageFilters = serializedQs.dataFilters || [];
+    const excludes = ['threshold', 'clientId', 'firms', 'expenses'];
+    for (const propName of Object.keys(filterSet)) {
+     if (excludes.includes(propName)) {
+       continue;
+     }
+     let  updatedPropName = propName;
+     const exclStr = propName.indexOf('exclude') >= 0 ? ' (Excluded)' : '';
+     updatedPropName = updatedPropName.replace('exclude', '');
+     updatedPropName = this.commonServ.lowCaseFirstLetter(updatedPropName);
+     const found = storageFilters.find(e => e.fieldName === updatedPropName);
+     if (found) {
+       const currentFilter = { filterName: found.displayName + exclStr, filters: this.filtersService.formatHistoricalAppliedFiltersValues(found, filterSet[propName])};
+       result.push(currentFilter);
+      }
+    }
+    if (filterSet.maxMatterCost && filterSet.minMatterCost) {
+      const val = filterSet.minMatterCost + ' thru ' + filterSet.maxMatterCost;
+      const currentFilter = { filterName: 'Total Matter Cost' , filters: [val]};
+      result.push(currentFilter);
+    }
+    if (filterSet.startdate && filterSet.enddate) {
+      const val = moment(filterSet.startdate).format('YYYY-MM-DD') + ' to ' + moment(filterSet.enddate).format('YYYY-MM-DD');
+      const currentFilter = { filterName: 'Date Range' , filters: [val]};
+      result.push(currentFilter);
+    }
+    return result;
+  }
 
 }

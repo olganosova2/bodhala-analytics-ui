@@ -33,8 +33,21 @@
       </div>
     </div>
     <div class="justify-between">
-      <div class="mt10 width-65"><span class="roboto-bold mr10">Comparison Firms:</span>
-        <span class="totals-badge oval-label-white mr5 mb5" *ngFor="let firm of peerFirmsNames">{{firm}}</span>
+      <div class="mt10 width-60">
+        <div ><span class="roboto-bold mr10">Comparison Firms:</span>
+          <span class="totals-badge show-firms mr5 mb5" *ngIf="!hideFirms && peerFirmsNames.length>0" (click)="hideFirms =!hideFirms">Hide Firms  <em class="fa fa-chevron-up ml5"></em></span>
+          <span class="totals-badge show-firms mr5 mb5" *ngIf="hideFirms" (click)="hideFirms =!hideFirms">Show Firms <em class="fa fa-chevron-down ml5"></em></span>
+          <ng-container *ngIf="!hideFirms"><span class="totals-badge oval-label-white mr5 mb5" *ngFor="let firm of peerFirmsNames">{{firm}}</span></ng-container>
+        </div>
+        <div class="roboto-bold  mb10 mt10" *ngIf="selectedFilters.length > 0">
+          <span class="roboto-bold mr15">Applied Filters:</span>
+          <span *ngFor="let fltr of selectedFilters; let i = index" class="totals-badge oval-label-white mr5 mb5">
+            <span *ngIf="fltr.filters.length>0">
+              <span><span class="mr10">{{ fltr.filterName}}:</span> <span *ngFor="let f of fltr.filters; let i = index" class="roboto-div mr10">{{f}}</span> </span>
+            </span>
+          </span>
+        </div>
+        <div class="roboto-bold mt15">Rank: <span *ngIf="rank <= 20" class="roboto-div">{{ rank }}</span><span *ngIf="rank > 20" class="roboto-div"> > 20</span> <span class="roboto-div"> ({{percentOfTotal * 100 | number:'1.2-2'}}% of total spend)</span></div>
       </div>
       <div class="mr20">
         <span class="totals-badge oval-label-black mr5">Comparison Firms Report</span>
@@ -90,7 +103,7 @@
       <div class="ml20 div-notes-text" [innerHTML]="note.notes | safe: 'html'"></div>
       <div>
         <div class="text-right">
-          <button (click)="addNotes('Edit')" class="primary-button button-disabled ml10"><span class="mr10">Edit</span> <em class="fa fa-chevron-right"></em></button>
+          <button (click)="addNotes('Edit')" class="primary-button edit-button ml10"><span class="mr10">Edit</span> <em class="fa fa-chevron-right"></em></button>
         </div>
       </div>
     </div>
@@ -98,7 +111,7 @@
     <bd-frc-key-metrics *ngIf="summaryData && keyMetrics.length > 0" [keyMetrics]="keyMetrics"></bd-frc-key-metrics>
     </div>
     <div class="mr20" *ngIf="firmId && summaryData && filterSet.startdate">
-      <bd-frc-timekeepers [firmId]="firmId" [filterSet] = "filterSet"></bd-frc-timekeepers>
+      <bd-frc-timekeepers [summaryData]="summaryData" [firmId]="firmId" [filterSet] = "filterSet"></bd-frc-timekeepers>
     </div>
   </div>
   <div class="spinner-card" [hidden]="isLoaded">
