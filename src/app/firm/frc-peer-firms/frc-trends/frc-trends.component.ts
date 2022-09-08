@@ -64,7 +64,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService) {
     this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Trends Analysis Report';
-    if (this.router.getCurrentNavigation().extras.state) {
+    if (this.router.getCurrentNavigation() && this.router.getCurrentNavigation().extras.state) {
       this.filterSet = this.router.getCurrentNavigation().extras.state.filterSet;
       this.dpFilter =  Object.assign({}, this.commonServ.formatDatesPickerFilter(this.filterSet.compareStartDate, this.filterSet.compareEndDate));
     }

@@ -599,5 +599,54 @@ export class FiltersService {
     }
     return result;
   }
+  formatHistoricalAppliedFiltersValues(filter: any, filterValues: any): any {
+    let formatted = [];
+    switch (filter.type) {
+      case FILTERTYPE.RANGESLIDER:
+        try {
+          filterValues = JSON.parse(filterValues);
+          if (filterValues && filterValues.length > 1) {
+            const val = filterValues[0] + ' thru ' + filterValues[1];
+            formatted.push(val);
+          }
+        } catch (e) {
+          formatted.push(filterValues);
+        }
+        break;
+      case  FILTERTYPE.SELECT:
+        if (filterValues) {
+          formatted.push(filterValues);
+        }
+        break;
+      case FILTERTYPE.DATE:
+        if (filterValues) {
+          formatted.push(moment(filterValues).format('YYYY-MM-DD'));
+        }
+        break;
+      // case FILTERTYPE.DAYOFMATTER:
+      //   if (filter.value && filter.value.dayOfMatterRange && filter.value.dayOfMatter1) {
+      //     let val = filter.value.dayOfMatterRange + ' ' + filter.value.dayOfMatter1;
+      //     if (filter.value.dayOfMatter2 && filter.value.dayOfMatterRange === 'Between') {
+      //       val += ' and ' + filter.value.dayOfMatter2;
+      //     }
+      //     filterObj.filters.push(val);
+      //     result.push(filterObj);
+      //   }
+      //   break;
+      case  FILTERTYPE.NUMERIC:
+        if (filterValues) {
+          formatted.push(filterValues);
+        }
+        break;
+      default:
+        try {
+          formatted = JSON.parse(filterValues);
+        } catch (e) {
+          formatted.push(filterValues);
+        }
+        break;
+    }
+    return formatted;
+  }
 }
 

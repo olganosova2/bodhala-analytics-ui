@@ -278,6 +278,12 @@ export class CommonService {
     word = word.toLowerCase();
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
+  lowCaseFirstLetter(word: string): string {
+    if (!word) {
+      return '';
+    }
+    return word.charAt(0).toLowerCase() + word.slice(1);
+  }
   formatPath(path: string): string {
     let result = path;
     const ix = path.indexOf('?');

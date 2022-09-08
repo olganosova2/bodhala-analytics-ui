@@ -2,7 +2,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
 import {FrcServiceService, IMetricDisplayData, IPeerFirms, MOCK_PEER_FIRMS} from './frc-service.service';
-import {Subscription} from 'rxjs';
+import {forkJoin, Observable, Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
 import {FiltersService as ElementsFiltersService} from 'bodhala-ui-elements';
 import {barTkPercentOptions} from './frc-service.service';
@@ -26,6 +26,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   firmId: number; // = 292;
   firm: any;
   peerFirmsNames: Array<string> = [];
+  allFirms: Array<any> = [];
   frcData: Array<IPeerFirms> = [];
   summaryData: IPeerFirms;
   internalData: IPeerFirms;
@@ -46,6 +47,10 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   noFirmsSelected: boolean = false;
   isLoaded: boolean = true;
   hideFirms: boolean = false;
+  selectedFilters: Array<any> = [];
+  percentOfTotal: number = 0;
+  rank: number = 1;
+  otherFirms: boolean = false;
   chart: any;
   options: any = Object.assign({}, barTkPercentOptions);
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
@@ -65,9 +70,11 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   ) {
     this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Comparison Firms Report';
-    if (this.router.getCurrentNavigation().extras.state) {
+    this.selectedFilters = this.frcService.formatAppliedFilters();
+    if (this.router.getCurrentNavigation() && this.router.getCurrentNavigation().extras.state) {
       this.noFirmsSelected = false;
       this.filterSet = this.router.getCurrentNavigation().extras.state.filterSet;
+      this.selectedFilters = this.frcService.formatHistoricalAppliedFilters(this.filterSet);
     }
   }
 
@@ -118,6 +125,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
           if (!found) {
             found = this.frcService.createEmptySingleFirmData();
           }
+          this.calculateRankAndPercent();
           this.summaryData = Object.assign({}, found);
           this.firm = Object.assign({}, found);
           this.commonServ.pageSubtitle = 'Comparison Firms Report > ' + this.firm.firm_name;
@@ -139,6 +147,20 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   refreshData(evt: any): void {
     this.setUpFilters();
     this.getPeerFirmsData();
+    this.selectedFilters = this.frcService.formatAppliedFilters();
+  }
+
+  calculateRankAndPercent(): void {
+    let total = 0;
+    const found =  this.frcData.find(e => e.bh_lawfirm_id === this.firmId);
+    for (const rec of this.frcData) {
+      total += rec.total_billed;
+    }
+    if (found) {
+      this.rank = this.frcData.indexOf(found);
+      this.rank ++;
+      this.percentOfTotal = found.total_billed / (total || 1);
+    }
   }
 
   formatPeerNames(): void {
@@ -201,6 +223,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
         return;
       }
       if (result.exportedData && result.exportedData.filter_set) {
+        this.selectedFilters = this.frcService.formatHistoricalAppliedFilters(result.exportedData.filter_set);
         this.filterSet = Object.assign({}, result.exportedData.filter_set);
         this.noFirmsSelected = false;
         if (!this.filterSet.firms || this.filterSet.firms.lenght === 0) {
@@ -288,7 +311,6 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       this.commonServ.generatePdfOuter(exportName, 'frcDiv', null);
     }, 200);
   }
-
   ngOnDestroy() {
     this.commonServ.clearTitles();
     if (this.pendingRequest) {
