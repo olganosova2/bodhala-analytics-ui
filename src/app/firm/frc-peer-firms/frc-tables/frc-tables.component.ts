@@ -53,11 +53,13 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.pasLoaded = true;
         if (data.result && data.result.length > 0) {
+          const totalHours = this.frcService.processTotals(data.result, 'firm_hours');
+          const totalSpend = this.frcService.processTotals(data.result, 'firm_total');
           this.smartPAs = (data.result || []).sort(this.utilService.dynamicSort('-firm_total')).filter(e => e.firm_total > 0) || [];
           this.frcService.processTotalSpend(this.smartPAs);
           for (const rec of this.smartPAs) {
-            rec.percent_of_firm_hours = this.frcService.getPercentOfWork(rec.firm_hours, this.summaryData.total_hours_billed);
-            rec.percent_of_firm_spend = this.frcService.getPercentOfWork(rec.firm_total, this.summaryData.total_billed);
+            rec.percent_of_firm_hours = this.frcService.getPercentOfWork(rec.firm_hours, totalHours);
+            rec.percent_of_firm_spend = this.frcService.getPercentOfWork(rec.firm_total, totalSpend);
             rec.percent_of_hours = this.frcService.getPercentOfWork(rec.firm_hours, rec.total_hours);
             rec.percent_of_spend = this.frcService.getPercentOfWork(rec.firm_total, rec.total);
           }
