@@ -4,16 +4,16 @@
 </div>
 <div class="panel-wrapper position-relative mt20">
   <h4>Share of work by<span *ngIf="this.isSmartPA"> Smart</span><span *ngIf="!this.isSmartPA"> Client</span> Practice Area</h4>
-  <div class="roboto-bold mt15"> ALL DATA IN SELECTED TIMEFRAME</div>
+  <div class="roboto-bold mt15">ALL DATA IN SELECTED TIMEFRAME</div>
   <table class="full-width mt20" *ngIf="smartPAs.length > 0">
     <thead>
     <tr class="roboto-bold">
       <th>Practice Area</th>
 <!--      <th >Spend</th>-->
-      <th >% of {{summaryData?.firm_name}} Spend</th>
-      <th>% of {{summaryData?.firm_name}} Hours</th>
-      <th >% of all Practice Area Spend</th>
-      <th>% of all Practice Area Hours </th>
+      <th ><span matTooltip="Firm Spend in that PA divided by Total Firm Spend">% of {{summaryData?.firm_name}} Spend</span></th>
+      <th><span matTooltip="Firm Hours in that PA divided by Total Firm Hours">% of {{summaryData?.firm_name}} Hours</span></th>
+      <th ><span matTooltip="Firm Spend in that PA divided by Total Spend in that PA">% of Practice Area Spend</span></th>
+      <th><span matTooltip="Firm Hours in that PA divided by Total Hours in that PA">% of Practice Area Hours</span></th>
     </tr>
     </thead>
     <tr *ngFor="let tk of smartPAs">
@@ -31,6 +31,7 @@
 </div>
 <div class="panel-wrapper mt20 position-relative matters-table">
   <h4>Top 5 Matters</h4>
+  <div class="roboto-bold mt15">FILTERED DATA</div>
   <table class="full-width mt20" *ngIf="matters.length > 0">
     <thead>
     <tr class="roboto-bold">
@@ -57,6 +58,7 @@
 </div>
 <div class="panel-wrapper mt20">
   <h4>Top 10 Timekeepers</h4>
+  <div class="roboto-bold mt15">FILTERED DATA</div>
   <table class="full-width mt20">
     <thead>
     <tr class="roboto-bold">
