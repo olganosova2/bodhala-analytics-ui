@@ -70,7 +70,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   ) {
     this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Comparison Firms Report';
-    this.selectedFilters = this.frcService.formatAppliedFilters();
+    this.selectedFilters = this.frcService.formatAppliedFilters(true);
     if (this.router.getCurrentNavigation() && this.router.getCurrentNavigation().extras.state) {
       this.noFirmsSelected = false;
       this.filterSet = this.router.getCurrentNavigation().extras.state.filterSet;
@@ -147,7 +147,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   refreshData(evt: any): void {
     this.setUpFilters();
     this.getPeerFirmsData();
-    this.selectedFilters = this.frcService.formatAppliedFilters();
+    this.selectedFilters = this.frcService.formatAppliedFilters(true);
   }
 
   calculateRankAndPercent(): void {

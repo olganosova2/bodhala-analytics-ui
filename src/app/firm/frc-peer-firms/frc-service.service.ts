@@ -760,7 +760,7 @@ export class FrcServiceService {
     }
     return result;
   }
-  formatAppliedFilters(): Array<any> {
+  formatAppliedFilters(filterFirms: boolean = false): Array<any> {
     let result =  Object.assign([], this.filtersService.getSelectedFilters());
     const userFilters = this.filtersService.getCurrentUserCombinedFilters();
     if (userFilters) {
@@ -783,6 +783,9 @@ export class FrcServiceService {
         result = result.filter(f => f.filterName !== 'Date Range');
       }
 
+    }
+    if (filterFirms) {
+      result = result.filter(f => f.filterName !== 'Firms') || [];
     }
     return result;
   }
