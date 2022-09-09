@@ -819,6 +819,16 @@ export class FrcServiceService {
       const currentFilter = { filterName: 'Date Range' , filters: [val]};
       result.push(currentFilter);
     }
+    if (filterSet.invoicestartdate && filterSet.invoiceenddate) {
+      const val = moment(filterSet.invoicestartdate).format('YYYY-MM-DD') + ' to ' + moment(filterSet.invoiceenddate).format('YYYY-MM-DD');
+      const currentFilter = { filterName: 'Invoice Date Range' , filters: [val]};
+      result.push(currentFilter);
+    }
+    if (filterSet.datepaidstartdate && filterSet.datepaidenddate) {
+      const val = moment(filterSet.datepaidstartdate).format('YYYY-MM-DD') + ' to ' + moment(filterSet.datepaidenddate).format('YYYY-MM-DD');
+      const currentFilter = { filterName: 'Paid Date Range' , filters: [val]};
+      result.push(currentFilter);
+    }
     return result;
   }
 
