@@ -154,7 +154,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   }
   firmCellRenderer(params: any) {
     const firmId = params.node.data.id;
-    const value = '<a class="href-link-primary" href="/analytics-ui/firm/frc-peer-firms/' + firmId + '">' + params.value + '</a>';
+    const value = '<a class="href-link-primary" href="/analytics-ui/frc-peer-firms/' + firmId + '">' + params.value + '</a>';
     return value;
   }
   addFirm(evt: any): void {

@@ -117,7 +117,7 @@ export class SavedReportsModalComponent implements OnInit {
       return;
     }
     if (this.url.includes('frc-trends') && data.pageName === 'Comparison') {
-      this.router.navigateByUrl('/analytics-ui/firm/frc-peer-firms/' + data.lawfirm_id.toString(), { state: { filterSet: data.filter_set } });
+      this.router.navigateByUrl('/analytics-ui/frc-peer-firms/' + data.lawfirm_id.toString(), { state: { filterSet: data.filter_set } });
       this.dialogRef.close(null);
       return;
     }

@@ -785,7 +785,7 @@ export class FrcServiceService {
 
     }
     if (filterFirms) {
-      result = result.filter(f => f.filterName !== 'Firms') || [];
+      result = result.filter(f => f.filterName !== 'Firms' && f.filterName !== 'Date Range') || [];
     }
     return result;
   }
@@ -833,6 +833,31 @@ export class FrcServiceService {
       result.push(currentFilter);
     }
     return result;
+  }
+  processTks(timekeepers: Array<any>): void {
+    for (const tk of timekeepers) {
+      tk.bodhala_classification = this.commonServ.capitalize(tk.bh_classification);
+      if (tk.bh_classification === 'partner') {
+        if (tk.partner_level === 1) {
+          tk.bodhala_classification = 'Junior Partner';
+        } else if (tk.partner_level === 2) {
+          tk.bodhala_classification = 'Mid-Level Partner';
+        } else if (tk.partner_level === 3) {
+          tk.bodhala_classification = 'Senior Partner';
+        }
+      }
+      if (tk.bh_classification === 'associate') {
+        if (tk.associate_level < 4 && tk.associate_level > 0) {
+          tk.bodhala_classification = 'Junior Associate';
+        }else if (tk.associate_level >= 4 && tk.associate_level < 7) {
+          tk.bodhala_classification = 'Mid-Level Associate';
+        } else if (tk.associate_level >= 7) {
+          tk.bodhala_classification = 'Senior Associate';
+        }
+      }
+      const includeExpenses = this.filtersService.includeExpenses;
+      tk.total_billed = includeExpenses ? tk.total_billed + tk.total_expenses : tk.total_billed;
+    }
   }
 
 }

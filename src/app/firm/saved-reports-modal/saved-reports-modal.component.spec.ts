@@ -31,7 +31,7 @@ describe('SavedReportsModalComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(SavedReportsModalComponent);
     component = fixture.componentInstance;
-    component.url = '/analytics-ui/firm/frc-peer-firms/4';
+    component.url = '/analytics-ui/frc-peer-firms/4';
     component.data = MOCK_SAVED_REPORT_DATA;
     component.savedReportData = MOCK_SAVED_REPORT_DATA;
     fixture.detectChanges();
