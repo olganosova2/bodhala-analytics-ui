@@ -58,11 +58,11 @@
             ]
           },
           "configurations": {
-            "production": {
+            "master": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.master.ts"
                 }
               ],
               "optimization": true,
@@ -81,12 +81,11 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "10mb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "10mb"
                 }
               ]
             },
-            "int": {
+            "develop": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -96,11 +95,11 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.dev.ts"
+                  "with": "src/environments/environment.develop.ts"
                 }
               ]
             },
-            "stage": {
+            "release": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -110,21 +109,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.stage.ts"
-                }
-              ]
-            },
-            "prod": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "10mb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "with": "src/environments/environment.release.ts"
                 }
               ]
             }
@@ -168,7 +153,6 @@
               "src/app/task-cost/task-cost.component.ts"
             ],
             "styles": [
-
               "src/styles.scss"
             ],
             "scripts": []

@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
+  production: true,
   apiUrl: '/ui-api/',
   host: '/',
   gaAccount: 'UA-4735512-6',
