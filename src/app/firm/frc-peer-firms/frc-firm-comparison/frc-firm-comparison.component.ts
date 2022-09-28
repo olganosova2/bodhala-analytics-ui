@@ -35,6 +35,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   pageName: string = 'analytics-ui/frc-firm-comparison/';
   noFirmsSelected: boolean = false;
   selectedFirms: Array<number> = [];
+  selectedFilters: Array<any> = [];
   isLoaded: boolean = true;
   constructor(private httpService: HttpService,
               private route: ActivatedRoute,
@@ -61,6 +62,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   }
   setUpFilters(): void {
     this.filterSet = this.filtersService.getCurrentUserCombinedFilters();
+    this.selectedFilters = this.frcService.formatAppliedFilters(true);
     const savedFRCCompare = localStorage.getItem('frc_compare_' + this.userService.currentUser.id.toString());
     this.noFirmsSelected = false;
     if (savedFRCCompare) {

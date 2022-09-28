@@ -48,6 +48,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
   quarterData: Array<any> = [];
   yearData: Array<any> = [];
   charts: Array<any> = [];
+  selectedFilters: Array<any> = [];
   @ViewChild('dpDates') dpDates: DatesPickerComponent;
   @ViewChildren(FrcTrendsChartComponent) chartPanels !: QueryList<FrcTrendsChartComponent>;
 
@@ -64,8 +65,10 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
               public filtersService: FiltersService) {
     this.commonServ.pageTitle = 'Firm Report Cards';
     this.commonServ.pageSubtitle = 'Trends Analysis Report';
+    this.selectedFilters = this.frcService.formatAppliedFilters(true);
     if (this.router.getCurrentNavigation() && this.router.getCurrentNavigation().extras.state) {
       this.filterSet = this.router.getCurrentNavigation().extras.state.filterSet;
+      this.selectedFilters = this.frcService.formatHistoricalAppliedFilters(this.filterSet);
       this.dpFilter =  Object.assign({}, this.commonServ.formatDatesPickerFilter(this.filterSet.compareStartDate, this.filterSet.compareEndDate));
     }
   }
@@ -152,6 +155,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
     this.filterSet.compareStartDate = compStartDate;
     this.filterSet.compareEndDate = compEndDate;
     this.getComparisonFirmsData();
+    this.selectedFilters = this.frcService.formatAppliedFilters(true);
   }
   goBack(): void {
 
@@ -182,6 +186,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
         return;
       }
       if (result.exportedData && result.exportedData.filter_set) {
+        this.selectedFilters = this.frcService.formatHistoricalAppliedFilters(result.exportedData.filter_set);
         this.filterSet = Object.assign({}, result.exportedData.filter_set);
         this.dpFilter =  Object.assign({}, this.commonServ.formatDatesPickerFilter(this.filterSet.compareStartDate, this.filterSet.compareEndDate));
         this.getComparisonFirmsData();

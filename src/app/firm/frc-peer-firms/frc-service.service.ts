@@ -116,6 +116,10 @@ export enum TrendChart {
   ASSOCIATE_RATE = 'ASSOCIATE_RATE',
   BLOCK_BILLING = 'BLOCK_BILLING'
 }
+export interface IComparisonFirm {
+  id: number;
+  name: string;
+}
 
 export interface IPeerFirms {
   bh_lawfirm_id: number;
@@ -161,6 +165,8 @@ export interface IPeerFirms {
   percent_female_hours?: number;
   score?: number;
   assessment?: string;
+  total_billed_perc?: number;
+  total_hours_perc?: number;
 }
 export interface IYearQuarterSpend {
   year: number;

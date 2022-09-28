@@ -37,7 +37,8 @@
         <div ><span class="roboto-bold mr10">Comparison Firms:</span>
           <span class="totals-badge show-firms mr5 mb5" *ngIf="!hideFirms && peerFirmsNames.length>0" (click)="hideFirms =!hideFirms">Hide Firms  <em class="fa fa-chevron-up ml5"></em></span>
           <span class="totals-badge show-firms mr5 mb5" *ngIf="hideFirms" (click)="hideFirms =!hideFirms">Show Firms <em class="fa fa-chevron-down ml5"></em></span>
-          <ng-container *ngIf="!hideFirms"><span class="totals-badge oval-label-white mr5 mb5" *ngFor="let firm of peerFirmsNames">{{firm}}</span></ng-container>
+          <ng-container *ngIf="!hideFirms"><span class="totals-badge oval-label-white mr5 mb5" [ngClass]=" {'pointer-hand': firm.id}"
+                                                 (click)=showFirm(firm.id) *ngFor="let firm of peerFirmsNames">{{firm.name}}</span></ng-container>
         </div>
         <div class="roboto-bold  mb10 mt10" *ngIf="selectedFilters.length > 0">
           <span class="roboto-bold mr15">Applied Filters:</span>

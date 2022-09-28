@@ -36,6 +36,8 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   selectedFiltersCount: number = 0;
   noRecordsFound: boolean;
   selectedFirms: Array<number> = [];
+  totalSpend: number = 0;
+  totalHours: number = 0;
 
   @ViewChild(FiltersComponent) filtersComp: FiltersComponent;
 
@@ -73,7 +75,9 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
         cellRendererFramework: CheckboxCellComponent, resizable: false, suppressMovable: true, lockPosition: 'left', cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
       {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
       {headerName: 'Total Spend', field: 'total_billed', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer,  filter: 'number',  sort: 'desc'},
+      {headerName: '% of Total Spend', field: 'total_billed_perc', ...this.defaultColumn, cellRenderer: this.agGridService.roundToPercentNumberCellRenderer,  filter: 'number'},
       {headerName: 'Total Hours', field: 'total_hours', ...this.defaultColumn,  filter: 'number',  cellRenderer: this.agGridService.roundNumberCellRenderer},
+      {headerName: '% of Total Hours', field: 'total_hours_perc', ...this.defaultColumn, cellRenderer: this.agGridService.roundToPercentNumberCellRenderer,  filter: 'number'},
       {headerName: '# Matters', field: 'total_matters', ... this.defaultColumn, width: 150},
       {headerName: 'Average Partner Rate', field: 'avg_partner_rate', ... this.defaultColumn, width: 150,  cellRenderer: this.bubbleCellRenderer},
       {headerName: 'Average Associate Rate', field: 'avg_associate_rate', ... this.defaultColumn, width: 150, cellRenderer: this.bubbleCellRenderer},
@@ -87,6 +91,8 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   getPeerFirmsData(): void {
     this.formattedMetrics = [];
     this.isLoaded = false;
+    this.totalSpend = 0;
+    this.totalHours = 0;
     const params = Object.assign({}, this.filterSet);
     this.pendingRequest = this.httpService.makeGetRequest('getFRCKeyMetrics', params).subscribe(
       (data: any) => {
@@ -95,6 +101,11 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
         if (data.result && data.result.length > 0) {
           this.frcService.processExpenses(data.result);
           this.frcData = data.result || [];
+          for (const firm of this.frcData) {
+            this.totalSpend += firm.total_billed;
+            this.totalHours += firm.total_hours_billed;
+          }
+          this.calculatePercentOfWork(this.frcData);
           if (this.frcData && this.frcData.length <= 100) {
             this.comparisonData = this.frcService.formatFRCComparisonFirmsData(this.frcData);
             if (this.comparisonData.length > 0) {
@@ -108,11 +119,19 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
+  calculatePercentOfWork(records: Array<IPeerFirms>): void {
+    for (const firm of records) {
+     firm.total_billed_perc = this.frcService.getPercentOfWork(firm.total_billed, this.totalSpend);
+     firm.total_hours_perc = this.frcService.getPercentOfWork(firm.total_hours_billed, this.totalHours);
+    }
+  }
   formatLargeData(): void {
     this.formattedMetrics = [];
     for (const rec of this.frcData) {
       this.frcService.calculateSingleFirmData(rec);
-      this.formattedMetrics.push({id: rec.bh_lawfirm_id, firm_name: rec.firm_name, selected: null, total_billed: rec.total_billed, total_hours: Math.round(rec.total_hours_billed), total_matters: rec.total_matters,
+      this.formattedMetrics.push({id: rec.bh_lawfirm_id, firm_name: rec.firm_name, selected: null,
+        total_billed: rec.total_billed, total_hours: Math.round(rec.total_hours_billed), total_matters: rec.total_matters,
+        total_billed_perc: rec.total_billed_perc, total_hours_perc: rec.total_hours_perc,
         avg_partner_rate: ' ... ', avg_associate_rate: ' ... ', blended_rate: ' ... '});
     }
   }
@@ -130,7 +149,9 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       const avgAssociateRate = firm.frcMetrics.find(e => e.metricType === 'avg_associate_rate');
       const blendedRate = firm.frcMetrics.find(e => e.metricType === 'blended_rate');
       const selectedId = null;
-      this.formattedMetrics.push({id: firm.bh_lawfirm_id, firm_name: firm.firm_name, selected: selectedId, total_billed: totalBilled.actual, total_hours: totalHours.actual, total_matters: totalMatters.actual,
+      this.formattedMetrics.push({id: firm.bh_lawfirm_id, firm_name: firm.firm_name, selected: selectedId, total_billed: totalBilled.actual,
+        total_hours: totalHours.actual, total_matters: totalMatters.actual,
+        total_billed_perc: this.frcService.getPercentOfWork(totalBilled.actual, this.totalSpend), total_hours_perc: this.frcService.getPercentOfWork(totalHours.actual, this.totalHours),
       avg_partner_rate: this.commonServ.capitalize(avgPartnerRate.grade), avg_associate_rate: this.commonServ.capitalize(avgAssociateRate.grade), blended_rate: this.commonServ.capitalize(blendedRate.grade)});
     }
   }

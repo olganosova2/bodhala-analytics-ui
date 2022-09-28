@@ -18,7 +18,7 @@
         Report has been saved successfully.
       </div>
     </ngb-alert>
-    <div class="justify-between mr20">
+    <div class="justify-between">
       <div class="left-titles">
         <div class="frc-page-title roboto-bold mb15">{{ firm?.firm_name}}</div>
 
@@ -30,6 +30,14 @@
             <lib-dates-picker #dpDates class="filter-button" [filter]="dpFilter" [allFilters]="[]" [isExternal]="true" (datesChangeRequested)="setUpCompareDates()"></lib-dates-picker>
           </div>
         </div>
+        </div>
+        <div class="roboto-bold  mb10 mt10" *ngIf="selectedFilters.length > 0">
+          <span class="roboto-bold mr15">Applied Filters:</span>
+          <span *ngFor="let fltr of selectedFilters; let i = index" class="totals-badge oval-label-white mr5 mb5">
+            <span *ngIf="fltr.filters.length>0">
+              <span><span class="mr10">{{ fltr.filterName}}:</span> <span *ngFor="let f of fltr.filters; let i = index" class="roboto-div mr10">{{f}}</span> </span>
+            </span>
+          </span>
         </div>
       </div>
       <div class="mt20">

@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
-import {FrcServiceService, IMetricDisplayData, IPeerFirms, MOCK_PEER_FIRMS} from './frc-service.service';
+import {FrcServiceService, IComparisonFirm, IMetricDisplayData, IPeerFirms, MOCK_PEER_FIRMS} from './frc-service.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
 import {FiltersService as ElementsFiltersService} from 'bodhala-ui-elements';
@@ -25,7 +25,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   pendingRequest: Subscription;
   firmId: number; // = 292;
   firm: any;
-  peerFirmsNames: Array<string> = [];
+  peerFirmsNames: Array<IComparisonFirm> = [];
   allFirms: Array<any> = [];
   frcData: Array<IPeerFirms> = [];
   summaryData: IPeerFirms;
@@ -131,7 +131,9 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
           this.commonServ.pageSubtitle = 'Comparison Firms Report > ' + this.firm.firm_name;
           this.frcService.calculateSingleFirmData(this.summaryData);
           this.internalRecords = this.frcData.filter(e => e.bh_lawfirm_id !== this.firmId) || [];
-          this.peerFirmsNames = this.internalRecords.map(e => e.firm_name);
+          for (const firm of this.internalRecords) {
+            this.peerFirmsNames.push({ id: firm.bh_lawfirm_id, name: firm.firm_name});
+          }
           this.formatPeerNames();
           this.internalData = this.frcService.calculatePeersData(this.internalRecords);
           const originals = this.frcService.calculatePeersData(this.frcData);
@@ -166,7 +168,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   formatPeerNames(): void {
       if (this.peerFirmsNames.length > 15) {
         this.peerFirmsNames = this.peerFirmsNames.slice(0, 15);
-        this.peerFirmsNames.push('....');
+        this.peerFirmsNames.push({ id: null, name: '...'});
       }
   }
 
@@ -310,6 +312,10 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'frcDiv', null);
     }, 200);
+  }
+  showFirm(id: number) {
+    this.router.navigateByUrl('/', {skipLocationChange: true})
+      .then(() => this.router.navigate(['/analytics-ui/frc-peer-firms/', id]));
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
