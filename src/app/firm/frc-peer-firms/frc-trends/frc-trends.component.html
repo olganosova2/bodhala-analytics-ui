@@ -18,7 +18,7 @@
         Report has been saved successfully.
       </div>
     </ngb-alert>
-    <div class="justify-between mr20">
+    <div class="justify-between">
       <div class="left-titles">
         <div class="frc-page-title roboto-bold mb15">{{ firm?.firm_name}}</div>
 
@@ -31,6 +31,14 @@
           </div>
         </div>
         </div>
+        <div class="roboto-bold  mb10 mt10" *ngIf="selectedFilters.length > 0">
+          <span class="roboto-bold mr15">Applied Filters:</span>
+          <span *ngFor="let fltr of selectedFilters; let i = index" class="totals-badge oval-label-white mr5 mb5">
+            <span *ngIf="fltr.filters.length>0">
+              <span><span class="mr10">{{ fltr.filterName}}:</span> <span *ngFor="let f of fltr.filters; let i = index" class="roboto-div mr10">{{f}}</span> </span>
+            </span>
+          </span>
+        </div>
       </div>
       <div class="mt20">
         <div class="text-right">
@@ -39,7 +47,7 @@
           <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
         </div>
           <div class="mt20">
-            <span class="totals-badge oval-label-white pointer-hand mr5" [routerLink]="['/analytics-ui/firm/frc-peer-firms', firmId]">Comparison Firms Report</span>
+            <span class="totals-badge oval-label-white pointer-hand mr5" [routerLink]="['/analytics-ui/frc-peer-firms', firmId]">Comparison Firms Report</span>
             <span class="totals-badge oval-label-black"   >Trend Analysis Report</span>
           </div>
       </div>

@@ -96,7 +96,7 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/matter-benchmarking', component: MatterBenchmarkingLandingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   // FRC
   {path: 'analytics-ui/frc-peer-firms', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
-  {path: 'analytics-ui/firm/frc-peer-firms/:id', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/frc-peer-firms/:id', component: FrcPeerFirmsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/frc-firm-comparison', component: FrcFirmComparisonComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/frc-trends/:id', component: FrcTrendsComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/frc-dashboard', component: FrcDashboardComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},

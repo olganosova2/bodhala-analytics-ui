@@ -85,7 +85,7 @@ export class FrcTablesComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data.result && data.result.length > 0) {
          this.timekeepers = data.result || [];
-         this.matterAnalysisService.processTks(this.timekeepers);
+         this.frcService.processTks(this.timekeepers);
         }
       }
     );
