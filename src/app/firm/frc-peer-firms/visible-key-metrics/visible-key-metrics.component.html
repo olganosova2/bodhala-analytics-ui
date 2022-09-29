@@ -19,6 +19,7 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  <button class="primary-button mr10"  (click)="save()" [disabled]="validate()" [ngClass]="{'disabled-button' : validate()}">Save</button>
+  <button class="primary-button mr10" *ngIf="doNotSave"  (click)="update()" [disabled]="validate()" [ngClass]="{'disabled-button' : validate()}">Update</button>
+  <button class="primary-button mr10" *ngIf="!doNotSave"  (click)="save()" [disabled]="validate()" [ngClass]="{'disabled-button' : validate()}">Save</button>
   <button mat-button mat-dialog-close class="cancel-button">Cancel</button>
 </div>
