@@ -11,6 +11,7 @@ import {DatesPickerComponent} from 'bodhala-ui-elements';
 import {SavedReportsModalComponent} from '../../saved-reports-modal/saved-reports-modal.component';
 import * as _moment from 'moment';
 import {FrcTrendsChartComponent} from '../frc-trends-chart/frc-trends-chart.component';
+import {FrcReportTitleComponent} from '../frc-report-title/frc-report-title.component';
 
 const moment = _moment;
 
@@ -49,6 +50,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
   yearData: Array<any> = [];
   charts: Array<any> = [];
   selectedFilters: Array<any> = [];
+  reportTitle: string = '';
   @ViewChild('dpDates') dpDates: DatesPickerComponent;
   @ViewChildren(FrcTrendsChartComponent) chartPanels !: QueryList<FrcTrendsChartComponent>;
 
@@ -59,6 +61,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
               public frcService: FrcServiceService,
               public userService: UserService,
               public dialog: MatDialog,
+              public reportTitleDialog: MatDialog,
               public matDialog: MatDialog,
               public utilServ: UtilService,
               public appStateService: AppStateService,
@@ -193,10 +196,28 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
       }
     });
   }
+  openReportTitleModal(): void {
+    const packaged = { reportTitle: this.reportTitle};
+    const dialogConfig =  {
+      height: '250px',
+      width: '40vw',
+    };
+    const modalConfig = {...dialogConfig, data: Object.assign([], packaged)};
+    const dialogRef = this.reportTitleDialog.open(FrcReportTitleComponent, {...modalConfig, disableClose: false });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.reportTitle = result;
+      this.saveFrc();
+    });
+  }
   saveFrc(): void {
-    this.commonServ.saveReport(this.firmId, this.filterSet).subscribe(
+    this.commonServ.saveReport(this.firmId, this.filterSet, this.reportTitle).subscribe(
       (data: any) => {
         if (data && data.result) {
+          this.reportTitle = '';
           this.checkSavedReports();
           this.frcCardSaved = true;
         }

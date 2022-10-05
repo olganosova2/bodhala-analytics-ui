@@ -27,7 +27,7 @@
         <button (click)="viewSavedReports()" class="primary-button mr10" *ngIf="savedReports.length > 0"><span class="mr10">View Historical Report Cards</span> <em class="fa fa-chevron-right"></em></button>
         <ng-container>
         <button (click)="addNotes('Add')" class="primary-button mr10"><span class="mr10">Add Notes</span> <em class="fa fa-chevron-right"></em></button>
-        <button  (click)="saveFrc()" class="primary-button mr10"><span>Save</span></button>
+        <button  (click)="openReportTitleModal()" class="primary-button mr10"><span>Save</span></button>
         <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
         </ng-container>
       </div>

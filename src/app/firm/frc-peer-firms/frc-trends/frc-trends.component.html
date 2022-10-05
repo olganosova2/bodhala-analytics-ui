@@ -43,7 +43,7 @@
       <div class="mt20">
         <div class="text-right">
           <button (click)="viewSavedReports()" class="primary-button mr10" *ngIf="savedReports.length > 0"><span class="mr10">View Historical Report Cards</span> <em class="fa fa-chevron-right"></em></button>
-          <button (click)="saveFrc()" class="primary-button mr10"><span>Save</span></button>
+          <button (click)="openReportTitleModal()" class="primary-button mr10"><span>Save</span></button>
           <span class="pointer-hand" tooltip="Download" (click)="export()"> <img src="assets/images/downloads.png" width="36px" height="36px" alt="download"/></span>
         </div>
           <div class="mt20">

@@ -5,6 +5,7 @@
 <div mat-dialog-content >
     <table class="full-width mb20">
         <tr>
+            <th>Report Title</th>
             <th>Save Date</th>
             <th>Saved By</th>
             <th *ngIf="isFRC">Page</th>
@@ -14,6 +15,7 @@
             <th>Actions</th>
         </tr>
         <tr *ngFor="let item of savedReportData">
+          <td>{{item.report_title}}</td>
             <td>{{item.print_date}}</td>
             <td>{{item.username}}</td>
             <td *ngIf="isFRC">{{item.pageName}}</td>

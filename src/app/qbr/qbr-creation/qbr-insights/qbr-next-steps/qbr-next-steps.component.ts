@@ -50,6 +50,7 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
       if (rec.type === 'Custom Recommendation') {
         this.nextStepsForm.addControl(rec.sort_order + 'savings', new FormControl(rec.potential_savings, Validators.required));
       }
+      this.nextStepsForm.addControl(rec.sort_order + 'show_potential_savings', new FormControl(rec.show_potential_savings));
     }
     // still needed?
     this.nextStepsForm.statusChanges.subscribe(result => {
@@ -69,6 +70,7 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
           this.nextStepsForm.controls[insight.sort_order + 'title'].setValue(insight.title);
           this.nextStepsForm.controls[insight.sort_order + 'opportunity'].setValue(insight.opportunity);
           this.nextStepsForm.controls[insight.sort_order + 'action'].setValue(insight.action);
+          this.nextStepsForm.controls[insight.sort_order + 'show_potential_savings'].setValue(insight.show_potential_savings);
           if (insight.type === 'Custom Recommendation') {
             this.nextStepsForm.addControl(insight.sort_order + 'savings', new FormControl(insight.potential_savings, Validators.required));
             this.nextStepsForm.controls[insight.sort_order + 'savings'].setValue(insight.potential_savings);
@@ -110,6 +112,7 @@ export class QbrNextStepsComponent implements OnInit, OnChanges {
     rec.opportunity = this.nextStepsForm.controls[rec.sort_order.toString() + 'opportunity'].value;
     rec.title = this.nextStepsForm.controls[rec.sort_order.toString() + 'title'].value;
     rec.action = this.nextStepsForm.controls[rec.sort_order.toString() + 'action'].value;
+    rec.show_potential_savings = this.nextStepsForm.controls[rec.sort_order + 'show_potential_savings'].value;
     if (this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'action'].hasError('minlength')
         || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'title'].hasError('minlength')
         || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('maxlength') || this.nextStepsForm.controls[rec.sort_order + 'opportunity'].hasError('minlength')) {
