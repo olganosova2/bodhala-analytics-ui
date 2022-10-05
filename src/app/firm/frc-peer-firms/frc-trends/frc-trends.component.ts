@@ -196,7 +196,7 @@ export class FrcTrendsComponent implements OnInit, OnDestroy {
       }
     });
   }
-  openReportTitleModal(firmId: number, filterSet: any): void {
+  openReportTitleModal(): void {
     const packaged = { reportTitle: this.reportTitle};
     const dialogConfig =  {
       height: '250px',
