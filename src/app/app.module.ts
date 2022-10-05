@@ -225,6 +225,7 @@ import { QaDashboardGridComponent } from './admin/qa-dashboard/qa-dashboard-grid
 import { FrcTrendsComponent } from './firm/frc-peer-firms/frc-trends/frc-trends.component';
 import { FrcTrendsChartComponent } from './firm/frc-peer-firms/frc-trends-chart/frc-trends-chart.component';
 import { FrcDashboardComponent } from './firm/frc-peer-firms/frc-dashboard/frc-dashboard.component';
+import { FrcReportTitleComponent } from './firm/frc-peer-firms/frc-report-title/frc-report-title.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -398,7 +399,8 @@ highcharts.setOptions({
     QaDashboardGridComponent,
     FrcTrendsComponent,
     FrcTrendsChartComponent,
-    FrcDashboardComponent
+    FrcDashboardComponent,
+    FrcReportTitleComponent
   ],
   entryComponents: [
     PillComponent,

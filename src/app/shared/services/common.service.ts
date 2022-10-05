@@ -10,6 +10,7 @@ import {HELP_MODAL_CONFIG} from './config';
 import {HelpModalComponent} from '../components/help-modal/help-modal.component';
 import {MatDialog} from '@angular/material/dialog';
 import * as _moment from 'moment';
+import {FrcReportTitleComponent} from '../../firm/frc-peer-firms/frc-report-title/frc-report-title.component';
 
 const moment = _moment;
 
@@ -380,9 +381,10 @@ export class CommonService {
   getPageId(): string {
     return this.pageTitle + ' > ' + this.pageSubtitle;
   }
-  saveReport(firmId: number, filterSet: any): any {
+  saveReport(firmId: number, filterSet: any, reportTitle: string): any {
     const params = {} as any;
     params.filter_set = filterSet;
+    params.reportTitle = reportTitle.trim();
     params.firmId = firmId;
     params.pageName = this.getPageId();
     const saved = localStorage.getItem('saved_filter_' + this.userService.currentUser.id.toString());

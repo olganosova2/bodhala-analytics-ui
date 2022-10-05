@@ -71,6 +71,7 @@ describe('FrcTrendsComponent', () => {
   it('should saveFrc', () => {
     component.firmId = 87;
     component.filterSet =  filtersSet;
+    component.reportTitle = 'Title1';
     component.saveFrc();
     expect(component.filterSet.startdate).toBe('2019-01-01');
   });

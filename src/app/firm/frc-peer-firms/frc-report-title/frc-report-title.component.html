@@ -1,0 +1,16 @@
+<div class = "justify-between">
+  <div class="roboto-bold dialog-title">Report Title</div>
+
+  <div ><mat-icon  mat-dialog-close>close</mat-icon></div>
+
+</div>
+<div class="mt20">
+  <mat-form-field appearance="outline">
+    <input type="text" matInput [(ngModel)]="reportTitle" autocomplete="chrome-off"  required
+           maxlength="200" name="reportTitle">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button class="primary-button mr10"  (click)="save()"  [disabled]="!reportTitle || reportTitle.length === 0" [ngClass]="{'disabled-button' : !reportTitle || reportTitle.length === 0}">Save</button>
+  <button mat-button mat-dialog-close class="cancel-button">Cancel</button>
+</div>
