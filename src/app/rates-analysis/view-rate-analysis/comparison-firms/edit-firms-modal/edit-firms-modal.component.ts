@@ -79,7 +79,7 @@ export class EditFirmsModalComponent implements OnInit {
       this.cluster = result.cluster;
     }
 
-    if (this.selectedPanelFirms.length > 2) {
+    if (this.selectedPanelFirms.length >= 1) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;
@@ -282,7 +282,7 @@ export class EditFirmsModalComponent implements OnInit {
     }
 
     this.selectedPanelFirms = this.clusterDefaultFirms;
-    if (this.selectedPanelFirms.length > 2) {
+    if (this.selectedPanelFirms.length >= 1) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;
@@ -307,7 +307,7 @@ export class EditFirmsModalComponent implements OnInit {
     } else {
       this.selectedPanelFirms = this.selectedPanelFirms.filter(f => f.firm_id !== item.firm_id);
     }
-    if (this.selectedPanelFirms.length > 2) {
+    if (this.selectedPanelFirms.length >= 1) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;

@@ -43,8 +43,8 @@
         <button #tooltip="matTooltip" matTooltip="{{resetTooltip}}"
                 class="primary-button ml10" [ngClass]="{'button-disabled': !loaded}" [disabled]="!loaded"
                 (click)="resetFirmOptions()" style="margin-bottom: 1em;">Reset to Bodhala Default</button>
-        <button #tooltip="matTooltip" matTooltip="Saves list of panel firms. Must have at least 3
-                  firms in the grid to save. Saving clears the cache for each API call related to this Rate BM"
+        <button #tooltip="matTooltip" matTooltip="Saves list of panel firms. Must have at least 1
+                  firm in the grid to save. Saving clears the cache for each API call related to this Rate BM"
                 class="primary-button ml10" [ngClass]="{'button-disabled': !validFirmSelection || !loaded}"
                 [disabled]="!validFirmSelection || !loaded" (click)="savePanelFirmData()">Save</button>
         <button tooltip="Remove all firms from the list (disables save button)"

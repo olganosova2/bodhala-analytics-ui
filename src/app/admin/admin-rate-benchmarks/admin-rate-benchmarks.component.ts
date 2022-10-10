@@ -13,6 +13,7 @@ import {IRateBenchmark} from '../../rates-analysis/rates-analysis.model';
 import {AddRateBenchmarkComponent} from './add-rate-benchmark/add-rate-benchmark.component';
 import { RateInsightModalComponent } from './rate-insight-modal/rate-insight-modal.component';
 import { PeerFirmsModalComponent } from './peer-firms-modal/peer-firms-modal.component';
+import {RefreshDataCheckboxComponent} from './refresh-data-checkbox/refresh-data-checkbox.component';
 
 @Component({
   selector: 'bd-admin-rate-benchmarks',
@@ -63,6 +64,7 @@ export class AdminRateBenchmarksComponent implements OnInit {
       {headerName: 'Created On', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1},
       {headerName: 'Add Recommendations', field: 'created_on', ...this.defaultColumn,  filter: 'text', flex: 1, cellRenderer: this.editActionCellRenderer, onCellClicked: this.openRecommendationModal.bind(this)},
       {headerName: 'View/Modify Comparison Peer Firms', ...this.defaultColumn, flex: 1, cellRenderer: this.editActionCellRenderer, onCellClicked: this.openPeerFirmsModal.bind(this)},
+      {headerName: 'Refresh Data', field: 'refresh_data', flex: 1, suppressMenu: true,  cellRendererFramework: RefreshDataCheckboxComponent},
       {headerName: 'Delete', cellRenderer: this.deleteCellRenderer,  ...this.defaultColumn, width: 100, suppressMenu: true,  onCellClicked: this.openDeleteDialog.bind(this)},
     ];
   }

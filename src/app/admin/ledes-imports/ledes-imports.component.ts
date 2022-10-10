@@ -86,7 +86,7 @@ export class LedesImportsComponent implements OnInit {
     this.gridOptions.detailRowHeight = 450;
 
     this.gridOptions.columnDefs = [
-      {headerName: 'Client', field: 'client_name', ...this.defaultColumn, floatingFilter: true, width: 350, pinned: true, cellRenderer: 'agGroupCellRenderer'},
+      {headerName: 'Client', field: 'client_name', ...this.defaultColumn, floatingFilter: true, width: 350, pinned: true, cellRenderer: 'agGroupCellRenderer', filter: 'text'},
       {headerName: '# Successful Uploads', field: 'num_imported_uploads', ...this.defaultColumn, floatingFilter: true, width: 180},
       {headerName: '# Failed Uploads', field: 'num_failed_uploads', ...this.defaultColumn, floatingFilter: true, width: 180},
       {headerName: '# Successful Ingests', field: 'num_imported_ingests', ...this.defaultColumn, floatingFilter: true, width: 180},

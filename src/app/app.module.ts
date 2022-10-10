@@ -226,6 +226,7 @@ import { FrcTrendsComponent } from './firm/frc-peer-firms/frc-trends/frc-trends.
 import { FrcTrendsChartComponent } from './firm/frc-peer-firms/frc-trends-chart/frc-trends-chart.component';
 import { FrcDashboardComponent } from './firm/frc-peer-firms/frc-dashboard/frc-dashboard.component';
 import { FrcReportTitleComponent } from './firm/frc-peer-firms/frc-report-title/frc-report-title.component';
+import { RefreshDataCheckboxComponent } from './admin/admin-rate-benchmarks/refresh-data-checkbox/refresh-data-checkbox.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -400,7 +401,8 @@ highcharts.setOptions({
     FrcTrendsComponent,
     FrcTrendsChartComponent,
     FrcDashboardComponent,
-    FrcReportTitleComponent
+    FrcReportTitleComponent,
+    RefreshDataCheckboxComponent
   ],
   entryComponents: [
     PillComponent,
