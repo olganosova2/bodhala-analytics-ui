@@ -98,7 +98,7 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         this.validMarketAverage = false;
       }
       if (this.internalData) {
-        if (this.internalData.internal_num_firms < 3) {
+        if (this.internalData.internal_num_firms < 1) {
           this.validInternalBM = false;
           this.marketAverageHeight = '84px';
         }
@@ -172,7 +172,7 @@ export class GranularRateChartComponent implements OnInit, AfterViewInit {
         this.internalData = internalData[0];
       }
       if ('seniority' in this.internalData) {
-        if (this.internalData.internal_num_firms < 3) {
+        if (this.internalData.internal_num_firms < 1) {
           this.validInternalBM = false;
           this.marketAverageHeight = '84px';
         }

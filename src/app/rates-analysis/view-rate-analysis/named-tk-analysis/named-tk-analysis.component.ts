@@ -430,7 +430,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           partner.market_upper_diff = null;
         }
         if (this.juniorPartnerInternalData) {
-          if (this.juniorPartnerInternalData.internal_num_firms >= 3) {
+          if (this.juniorPartnerInternalData.internal_num_firms >= 1) {
             partner.internal_rate = this.juniorPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / this.juniorPartnerInternalData.internal_avg_partner_rate;
@@ -471,7 +471,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           partner.market_upper_diff = null;
         }
         if (this.midPartnerInternalData) {
-          if (this.midPartnerInternalData.internal_num_firms >= 3) {
+          if (this.midPartnerInternalData.internal_num_firms >= 1) {
             partner.internal_rate = this.midPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / this.midPartnerInternalData.internal_avg_partner_rate;
@@ -513,7 +513,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           partner.market_upper_diff = null;
         }
         if (this.seniorPartnerInternalData) {
-          if (this.seniorPartnerInternalData.internal_num_firms >= 3) {
+          if (this.seniorPartnerInternalData.internal_num_firms >= 1) {
             partner.internal_rate = this.seniorPartnerInternalData.internal_avg_partner_rate;
             const diff = partner.rate - partner.internal_rate;
             partner.internal_rate_diff = diff / this.seniorPartnerInternalData.internal_avg_partner_rate;
@@ -573,7 +573,7 @@ export class NamedTkAnalysisComponent implements OnInit {
         }
 
         if (this.juniorAssociateInternalData) {
-          if (this.juniorAssociateInternalData.internal_num_firms >= 3) {
+          if (this.juniorAssociateInternalData.internal_num_firms >= 1) {
             associate.internal_rate = this.juniorAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
             associate.internal_rate_diff = diff / this.juniorAssociateInternalData.internal_avg_associate_rate;
@@ -618,7 +618,7 @@ export class NamedTkAnalysisComponent implements OnInit {
         }
 
         if (this.midAssociateInternalData) {
-          if (this.midAssociateInternalData.internal_num_firms >= 3) {
+          if (this.midAssociateInternalData.internal_num_firms >= 1) {
             associate.internal_rate = this.midAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
             associate.internal_rate_diff = diff / this.midAssociateInternalData.internal_avg_associate_rate;
@@ -660,7 +660,7 @@ export class NamedTkAnalysisComponent implements OnInit {
           associate.market_upper_diff = null;
         }
         if (this.seniorAssociateInternalData) {
-          if (this.seniorAssociateInternalData.internal_num_firms >= 3) {
+          if (this.seniorAssociateInternalData.internal_num_firms >= 1) {
             associate.internal_rate = this.seniorAssociateInternalData.internal_avg_associate_rate;
             const diff = associate.rate - associate.internal_rate;
             associate.internal_rate_diff = diff / this.seniorAssociateInternalData.internal_avg_associate_rate;
