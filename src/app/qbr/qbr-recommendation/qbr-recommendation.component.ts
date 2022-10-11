@@ -18,6 +18,7 @@ export class QbrRecommendationComponent implements OnInit {
   practiceAreaSetting: string;
   section: IQbrRecommendationSection;
   pageNumber: number;
+  hidePotentialSavings: boolean = false;
   @Input() qbrRecommendationType: QbrRecommendationsType;
   @Input() recommendations: Array<any> = [];
   @Input() qbrData: any;
@@ -55,8 +56,18 @@ export class QbrRecommendationComponent implements OnInit {
         break;
     }
     for (const recommendation of this.recommendations) {
-      this.section.total_savings += (recommendation.potential_savings || 0);
+      if (recommendation.show_potential_savings) {
+        this.section.total_savings += (recommendation.potential_savings || 0);
+      }
       this.section.recommendations.push(this.buildRecommendation(recommendation, this.qbrRecommendationType));
+    }
+    if (this.qbrRecommendationType === QbrRecommendationsType.NextSteps) {
+      const found = this.recommendations.find(e => e.show_potential_savings === true);
+      if (found) {
+        this.hidePotentialSavings = false;
+      } else {
+        this.hidePotentialSavings = true;
+      }
     }
   }
   buildRecommendation(recommendation: any, recType: QbrRecommendationsType): IQbrRecommendation {
@@ -65,6 +76,8 @@ export class QbrRecommendationComponent implements OnInit {
     rec.opportunity = recommendation.opportunity;
     this.formatIconLine(rec, recommendation, recType);
     rec.subhead = recommendation.subtitle;
+    rec.show_potential_savings = recommendation.show_potential_savings;
+    rec.recommendationType = recommendation.recommendation_type_id;
     rec.notableMetrics = [];
     if (recType === QbrRecommendationsType.Insights) {
       rec.recommendation = this.qbrService.formatRecommendationString(recommendation.why_it_matters);

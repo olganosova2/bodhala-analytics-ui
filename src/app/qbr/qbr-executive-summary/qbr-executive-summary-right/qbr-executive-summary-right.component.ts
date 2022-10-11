@@ -26,7 +26,7 @@ export class QbrExecutiveSummaryRightComponent implements OnInit {
     this.chart = chartInstance;
     const result = this.metrics.map(e => e.amount);
     const resultToCompare = this.metrics.map(e => e.amountToCompare);
-    const width = this.metrics.length * 205;
+    const width = this.metrics.length * 273;
     this.chart.setSize(width, 460, false);
     this.chart.series[1].setData(result);
     if (!this.noComparisonData) {

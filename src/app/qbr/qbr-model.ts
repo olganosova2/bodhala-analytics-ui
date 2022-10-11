@@ -31,6 +31,8 @@ export interface IQbrRecommendation {
   recommendation: string;
   notableMetrics?: Array<INotableMetric>;
   potential_savings?: Array<INotableMetric>;
+  show_potential_savings?: boolean;
+  recommendationType?: number;
 }
 export interface IQbrRecommendationSection {
   sectionTitle: string;
@@ -249,7 +251,13 @@ const metricsColumnESOptions = {
       cursor: 'pointer',
       colors: [ '#FFC327', '#000000', '#00D1FF', '#FF650F'],
       dataLabels: {
-        enabled: false
+        enabled: true,
+        crop: false,
+        overflow: 'none',
+        style: {
+          fontSize: '12px'
+        },
+       pointFormat: '<span style="text-align: center">{series.name}: <br/><b>${point.y:,.0f}</b></span>'
       },
       showInLegend: true,
       // borderRadiusTopLeft: '50%',
@@ -274,10 +282,7 @@ const metricsColumnESOptions = {
       text: undefined
     }
   }],
-  tooltip: {
-    headerFormat: null,
-    pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
-  },
+  tooltip : { enabled: false },
   series: [{
     name: 'Previous',
     colorByPoint: true,
@@ -306,14 +311,18 @@ const metricsColumnOptions = {
       allowPointSelect: true,
       cursor: 'pointer',
       dataLabels: {
-        enabled: false
+        enabled: true,
+        crop: false,
+        overflow: 'none',
+        style: {
+          fontSize: '12px'
+        },
+        pointFormat: '${point.y:,.0f}'
       },
-      showInLegend: true,
-      // borderRadiusTopLeft: '50%',
-      // borderRadiusTopRight: '50%'
+      showInLegend: true
     },
     series: {
-      pointWidth: 25,
+      pointWidth: 40,
       groupPadding: 0.3
     }
   },
@@ -335,10 +344,7 @@ const metricsColumnOptions = {
       text: undefined
     }
   }],
-  tooltip: {
-    headerFormat: null,
-    pointFormat: '{series.name}: <b>${point.y:,.0f}</b><br/>',
-  },
+  tooltip : { enabled: false },
   series: [{
     type: 'column',
     name: 'Current',
