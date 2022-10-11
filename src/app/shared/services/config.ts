@@ -216,6 +216,7 @@ export const END_POINTS_URLS = {
   saveMarketFirmData: {url: BASE_URL + 'admin/saveMarketFirmData', showLoading: true},
   getQAHealthChecks: {url: BASE_URL + 'admin/getQAHealthChecks', showLoading: true},
   updateBMRefreshStatus: {url: BASE_URL + 'admin/updateBMRefreshStatus', showLoading: true},
+  getFirmPAs: {url: BASE_URL + 'admin/getFirmPAs', showLoading: true},
 };
 
 export const ROUTES = [
