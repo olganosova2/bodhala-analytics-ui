@@ -41,7 +41,7 @@
           </p-dropdown> -->
 
           <p-multiSelect class="dropdown ml5" appendTo="body" [style]="{width:'400px'}" formControlName="smartPracticeArea" [options]="smartPAOptions"
-                          [filter]="false" placeholder="Select practice area(s)" [showToggleAll]="true" [showHeader]="true">
+                          [filter]="false" placeholder="Select practice area(s)" [showToggleAll]="true" [showHeader]="true" (onChange)="getOptions()">
           </p-multiSelect>
           <div>
             <button mat-button matStepperPrevious>Back</button>
@@ -49,7 +49,7 @@
           </div>
         </mat-step>
 
-        <mat-step [stepControl]="benchmarkForm" errorMessage="Year is required." *ngIf="benchmarkForm.value.firm !== null"
+        <mat-step [stepControl]="benchmarkForm" errorMessage="Year is required." *ngIf="benchmarkForm.value.firm !== null && benchmarkForm.value.smartPracticeArea !== null"
                   #yearStep [hasError]="yearStep.interacted && yearStep.isErrorState && benchmarkForm.value.year === null">
           <ng-template matStepLabel>Select a year<span *ngIf="benchmarkForm.value.year"> - {{benchmarkForm.value.year}}</span></ng-template>
 
