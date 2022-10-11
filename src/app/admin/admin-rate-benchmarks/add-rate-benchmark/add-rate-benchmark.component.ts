@@ -2,12 +2,10 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from 'bodhala-ui-common';
 import { Subscription } from 'rxjs';
-import {IRateBenchmark, smartPracticeAreas, peerFirmMapping} from '../../../rates-analysis/rates-analysis.model';
+import {IRateBenchmark, peerFirmMapping} from '../../../rates-analysis/rates-analysis.model';
 import {SelectItem, SelectItemGroup} from 'primeng/api';
 import {FormGroup, Validators, FormControl} from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
-import { FirmDiscountsComponent } from 'src/app/firm/firm-discounts/firm-discounts.component';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -32,7 +30,6 @@ export class AddRateBenchmarkComponent implements OnInit, OnDestroy {
   inProgress: boolean = false;
   formInvalid: boolean = false;
   firmOptions: SelectItemGroup[] = [];
-  // smartPAOptions: SelectItem[] = smartPracticeAreas;
   smartPAOptions: SelectItem[] = [];
   allFirmsCluster: Array<any>;
   yearOptions: SelectItem[] = [];
