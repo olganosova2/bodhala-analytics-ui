@@ -100,7 +100,7 @@ export class QbrTopPasFirmsComponent implements OnInit {
       }
       this.tkHours.push(resultTKs);
       const result = { label: this.currentOverviewMetric[ix].firm_name, metrics: []};
-      result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'bpi',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
+      // result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'bpi',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
       result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'blended_rate',  'Blended Rate', 'bills.svg', IQbrMetricType.BlendedRate));
       result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg', IQbrMetricType.PartnerAvgHourlyCost));
       result.metrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric[ix], this.compareOverviewMetric[ix], 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg', IQbrMetricType.AssociateAvgHourlyCost));

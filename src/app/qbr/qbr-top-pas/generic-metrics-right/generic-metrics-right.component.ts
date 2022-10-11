@@ -34,7 +34,7 @@ export class GenericMetricsRightComponent implements OnInit {
     this.chart = chartInstance;
     if (this.rightSideMetrics.length > 0) {
       const result = this.rightSideMetrics[0].metrics.map(e => e.amount);
-      const width = this.rightSideMetrics[0].metrics.length * 210;
+      const width = this.rightSideMetrics[0].metrics.length * 280; // 210 PLAT-1335;
       this.chart.setSize(width, 380, false);
       this.chart.series[0].options.name = this.rightSideMetrics[0].label;
       this.chart.series[0].update(this.chart.series[0].options);
