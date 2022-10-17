@@ -317,10 +317,10 @@ export class FrcServiceService {
     const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
     const lawyerHours = (summaryData.partner_hours) + (summaryData.associate_hours);
     summaryData.blended_rate = lawyerBilled / (lawyerHours || 1);
-    summaryData.percent_partner_hours = summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100;
-    summaryData.percent_associate_hours = summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100;
-    summaryData.percent_legal_assistant_hours = summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100;
-    summaryData.percent_paralegal_hours = summaryData.paralegal_hours / (summaryData.total_tk_hours || 1) * 100;
+    summaryData.percent_partner_hours = summaryData.partner_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_associate_hours = summaryData.associate_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_legal_assistant_hours = summaryData.legal_assistant_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_paralegal_hours = summaryData.paralegal_hours / (summaryData.total_hours_billed || 1) * 100;
 
     summaryData.percent_minority_hours = Math.round(summaryData.minority_hours / (summaryData.total_hours_billed || 1) * 100);
     summaryData.percent_female_hours = Math.round(summaryData.female_hours / (summaryData.total_hours_billed || 1) * 100);
