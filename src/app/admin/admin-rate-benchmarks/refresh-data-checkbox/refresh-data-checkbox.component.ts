@@ -12,7 +12,7 @@ import * as config from '../../../shared/services/config';
     <input
       type="checkbox"
       (click)="checkedHandler($event)"
-      [checked]="params.value"
+      [checked]="params?.value"
     />
   `
 })

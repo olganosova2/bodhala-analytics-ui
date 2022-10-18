@@ -1,17 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RefreshDataCheckboxComponent } from './refresh-data-checkbox.component';
-import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
-import {FrcComparisonHeaderComponent} from '../../../firm/frc-peer-firms/frc-firm-comparison/frc-comparison-header/frc-comparison-header.component';
+import { FrcComparisonHeaderComponent } from './frc-comparison-header.component';
+import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../../shared/unit-tests/mock-app.imports';
+import {FrcComparisonCellComponent} from '../frc-comparison-cell/frc-comparison-cell.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ActivatedRouteMock} from '../../../shared/unit-tests/mock-services';
-import {FiltersService} from '../../../shared/services/filters.service';
-import * as mockServices from '../../../shared/unit-tests/mock-services';
+import {ActivatedRouteMock} from '../../../../shared/unit-tests/mock-services';
+import {FiltersService} from '../../../../shared/services/filters.service';
+import * as mockServices from '../../../../shared/unit-tests/mock-services';
+import {ICellRendererParams, IHeaderParams} from 'ag-grid-community';
 
-describe('RefreshDataCheckboxComponent', () => {
-  let component: RefreshDataCheckboxComponent;
-  let fixture: ComponentFixture<RefreshDataCheckboxComponent>;
+describe('FrcComparisonHeaderComponent', () => {
+  let component: FrcComparisonHeaderComponent;
+  let fixture: ComponentFixture<FrcComparisonHeaderComponent>;
 
   const mockRouter = {
     navigate: jasmine.createSpy('navigate')
@@ -23,7 +24,7 @@ describe('RefreshDataCheckboxComponent', () => {
       declarations: DECLARATIONS,
       providers: PROVIDERS,
       schemas: SCHEMAS
-    }).overrideComponent(RefreshDataCheckboxComponent, {
+    }).overrideComponent(FrcComparisonHeaderComponent, {
       set: {
         providers: [
           AppStateService,
@@ -39,12 +40,13 @@ describe('RefreshDataCheckboxComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RefreshDataCheckboxComponent);
+    fixture = TestBed.createComponent(FrcComparisonHeaderComponent);
     component = fixture.componentInstance;
+    component.params = { column: { colId: 'firm_1'}} as any;
     fixture.detectChanges();
   });
 
-  it('should create RefreshDataCheckboxComponent', () => {
+  it('should create FrcComparisonHeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 });
