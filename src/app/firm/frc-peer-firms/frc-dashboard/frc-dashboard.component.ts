@@ -201,37 +201,6 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
     }
     localStorage.setItem('frc_compare_' + this.userService.currentUser.id.toString(), newPairsStr);
   }
-  updateFiters(): void {
-    const savedFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
-    const savedFiltersDict = JSON.parse(savedFilters);
-    const firmFilter = savedFiltersDict.dataFilters.find(e => e.fieldName === 'firms');
-    if (firmFilter) {
-      const parsedFilters = this.selectedFirms; // this.filterSet.firms ? JSON.parse(this.filterSet.firms) : [];
-      const result = [];
-      for (const entry of parsedFilters) {
-        const firm = this.formattedMetrics.find(e => e.id === Number(entry));
-        result.push({ id: Number(entry), name: firm.firm_name});
-      }
-      firmFilter.value = Object.assign([], result);
-    }
-    const serializedQs = savedFiltersDict.querystring.toString();
-    const pairs = serializedQs.split('&') || [];
-    const newPairs = [];
-    for (const pair of pairs) {
-      const keys = pair.split('=');
-      if (keys.length === 2) {
-        if (keys[0] !== 'firms') {
-          newPairs.push(pair);
-        }
-      }
-    }
-    let newPairsStr = newPairs.join('&');
-    if (this.selectedFirms && this.selectedFirms.length > 0) {
-      newPairsStr += '&firms=' + JSON.stringify(this.selectedFirms);
-    }
-    savedFiltersDict.querystring = newPairsStr;
-    localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), JSON.stringify(savedFiltersDict));
-  }
   checkFilterSet(): boolean {
     return this.selectedFirms && this.selectedFirms.length > 1;
   }

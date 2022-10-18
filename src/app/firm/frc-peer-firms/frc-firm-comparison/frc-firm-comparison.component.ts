@@ -11,6 +11,7 @@ import {AgGridService} from 'bodhala-ui-elements';
 import {CheckboxCellComponent} from '../../../shared/components/checkbox-cell/checkbox-cell.component';
 import {FrcComparisonCellComponent} from './frc-comparison-cell/frc-comparison-cell.component';
 import {VisibleKeyMetricsComponent} from '../visible-key-metrics/visible-key-metrics.component';
+import {FrcComparisonHeaderComponent} from './frc-comparison-header/frc-comparison-header.component';
 
 @Component({
   selector: 'bd-frc-firm-comparison',
@@ -87,7 +88,9 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
       cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: averageColumn}};
     defs.push(column);
     for (const sub of this.comparisonData) {
-      const col = {headerName: sub.firm_name, field: this.getFieldName(sub.bh_lawfirm_id), ...this.defaultColumn, width: 180, suppressMenu: true, editable: true, headerClass: 'text-underline',
+      const col = {headerName: sub.firm_name, field: this.getFieldName(sub.bh_lawfirm_id), headerComponentFramework: FrcComparisonHeaderComponent,
+        headerComponentParams : { goTo: this.goToView.bind(this)},
+        ...this.defaultColumn, width: 180, suppressMenu: true, editable: true,
          cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: sub}, cellStyle: {'border-left-color': '#cccccc'} };
       defs.push(col);
     }
@@ -202,6 +205,49 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
       }
     }
     return result;
+  }
+  goToView(colData: any): void {
+    const firmId = this.getFirmId(colData.colDef.field);
+   //  const comparisonFirms = this.selectedFirms.filter(e => e !== firmId) || [];
+    const comparisonFirms = Object.assign([], this.selectedFirms);
+    this.updateFiters(comparisonFirms);
+    setTimeout(() => {
+      this.router.navigate(['/analytics-ui/frc-peer-firms/' + firmId]);
+    });
+  }
+  getFirmId(colName: string): number {
+    return Number(colName.substring(5));
+  }
+  updateFiters(comparisonFirms: Array<number>): void {
+    const savedFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    const savedFiltersDict = JSON.parse(savedFilters);
+    const firmFilter = savedFiltersDict.dataFilters.find(e => e.fieldName === 'firms');
+    if (firmFilter) {
+      const parsedFilters = comparisonFirms; // this.filterSet.firms ? JSON.parse(this.filterSet.firms) : [];
+      const result = [];
+      for (const entry of parsedFilters) {
+        const firm = this.comparisonData.find(e => e.bh_lawfirm_id === Number(entry));
+        result.push({ id: Number(entry), name: firm.firm_name});
+      }
+      firmFilter.value = Object.assign([], result);
+    }
+    const serializedQs = savedFiltersDict.querystring.toString();
+    const pairs = serializedQs.split('&') || [];
+    const newPairs = [];
+    for (const pair of pairs) {
+      const keys = pair.split('=');
+      if (keys.length === 2) {
+        if (keys[0] !== 'firms') {
+          newPairs.push(pair);
+        }
+      }
+    }
+    let newPairsStr = newPairs.join('&');
+    if (comparisonFirms && comparisonFirms.length > 0) {
+      newPairsStr += '&firms=' + JSON.stringify(comparisonFirms);
+    }
+    savedFiltersDict.querystring = newPairsStr;
+    localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), JSON.stringify(savedFiltersDict));
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
