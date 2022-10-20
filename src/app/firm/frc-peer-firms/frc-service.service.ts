@@ -167,6 +167,7 @@ export interface IPeerFirms {
   assessment?: string;
   total_billed_perc?: number;
   total_hours_perc?: number;
+  cluster?: number;
 }
 export interface IYearQuarterSpend {
   year: number;
@@ -454,7 +455,7 @@ export class FrcServiceService {
     const result = [];
     const originals = Object.assign([], records);
     for (const rec of records) {
-      const currentFirm = {bh_lawfirm_id: rec.bh_lawfirm_id, firm_name: rec.firm_name, frcMetrics: []};
+      const currentFirm = {bh_lawfirm_id: rec.bh_lawfirm_id, firm_name: rec.firm_name, cluster: rec.cluster, frcMetrics: []};
       const summaryData = originals.find(e => e.bh_lawfirm_id === rec.bh_lawfirm_id);
       this.calculateSingleFirmData(summaryData);
       const filtered = Object.assign([], originals); //  originals.filter(e => e.bh_lawfirm_id !== rec.bh_lawfirm_id) || [];

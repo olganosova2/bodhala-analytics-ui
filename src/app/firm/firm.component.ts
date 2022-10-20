@@ -91,6 +91,10 @@ export class FirmComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pendingRequest = this.httpService.makeGetRequest('getFirmographicInfo', params).subscribe(
       (data: any) => {
         this.firmData = data.result;
+        if (data.result && data.result.cluster && data.result.cluster.length > 0) {
+          const cluster = data.result.cluster[0].cluster;
+          this.firmData.cluster = cluster !== 0 ? cluster : 'N/A';
+        }
         this.rightColsCount = this.firmData !== null && this.firmData.num_attorneys_range !== null ? 9 : 12;
       }
     );
