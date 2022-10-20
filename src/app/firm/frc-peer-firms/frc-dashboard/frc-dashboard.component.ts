@@ -71,10 +71,10 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn, floatingFilter: true, hide: true},
-      {headerName: '', headerCheckboxSelection: true,  field: 'selected', ...this.defaultColumn, suppressMenu: true,  headerClass: 'justify-center-header', cellStyle: {textAlign: 'center'},
+      {headerName: '', headerCheckboxSelection: this.formattedMetrics.length <= 20,  field: 'selected', ...this.defaultColumn, suppressMenu: true, editable: true, headerClass: 'justify-center-header', cellStyle: {textAlign: 'center'},
         cellRendererFramework: CheckboxCellComponent, resizable: false, suppressMovable: true, lockPosition: 'left', cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
       {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
-      {headerName: 'Bodhala Firm Cluster', field: 'cluster', ...this.defaultColumn, cellRenderer: this.clusterCellRenderer,  filter: 'agTextColumnFilter', floatingFilter: true},
+      {headerName: 'Bodhala Firm Cluster', field: 'cluster', ...this.defaultColumn, cellRenderer: this.clusterCellRenderer,  filter: 'agTextColumnFilter'},
       {headerName: 'Total Spend', field: 'total_billed', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer,  filter: 'number',  sort: 'desc'},
       {headerName: '% of Total Spend', field: 'total_billed_perc', ...this.defaultColumn, cellRenderer: this.agGridService.roundToPercentNumberCellRenderer,  filter: 'number'},
       {headerName: 'Total Hours', field: 'total_hours', ...this.defaultColumn,  filter: 'number',  cellRenderer: this.agGridService.roundNumberCellRenderer},
