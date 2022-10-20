@@ -1,3 +1,8 @@
 .primary-button {
   height: 30px;
 }
+:host ::ng-deep {
+  .ag-header-container {
+    white-space: break-spaces !important;
+  }
+}
