@@ -74,6 +74,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       {headerName: '', headerCheckboxSelection: this.formattedMetrics.length <= 20,  field: 'selected', ...this.defaultColumn, suppressMenu: true, editable: true, headerClass: 'justify-center-header', cellStyle: {textAlign: 'center'},
         cellRendererFramework: CheckboxCellComponent, resizable: false, suppressMovable: true, lockPosition: 'left', cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
       {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
+      {headerName: 'Bodhala Firm Cluster', field: 'cluster', ...this.defaultColumn, cellRenderer: this.clusterCellRenderer,  filter: 'agTextColumnFilter'},
       {headerName: 'Total Spend', field: 'total_billed', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer,  filter: 'number',  sort: 'desc'},
       {headerName: '% of Total Spend', field: 'total_billed_perc', ...this.defaultColumn, cellRenderer: this.agGridService.roundToPercentNumberCellRenderer,  filter: 'number'},
       {headerName: 'Total Hours', field: 'total_hours', ...this.defaultColumn,  filter: 'number',  cellRenderer: this.agGridService.roundNumberCellRenderer},
@@ -131,7 +132,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       this.frcService.calculateSingleFirmData(rec);
       this.formattedMetrics.push({id: rec.bh_lawfirm_id, firm_name: rec.firm_name, selected: null,
         total_billed: rec.total_billed, total_hours: Math.round(rec.total_hours_billed), total_matters: rec.total_matters,
-        total_billed_perc: rec.total_billed_perc, total_hours_perc: rec.total_hours_perc,
+        total_billed_perc: rec.total_billed_perc, total_hours_perc: rec.total_hours_perc, cluster: rec.cluster,
         avg_partner_rate: ' ... ', avg_associate_rate: ' ... ', blended_rate: ' ... '});
     }
   }
@@ -149,7 +150,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       const avgAssociateRate = firm.frcMetrics.find(e => e.metricType === 'avg_associate_rate');
       const blendedRate = firm.frcMetrics.find(e => e.metricType === 'blended_rate');
       const selectedId = null;
-      this.formattedMetrics.push({id: firm.bh_lawfirm_id, firm_name: firm.firm_name, selected: selectedId, total_billed: totalBilled.actual,
+      this.formattedMetrics.push({id: firm.bh_lawfirm_id, firm_name: firm.firm_name, cluster: firm.cluster, selected: selectedId, total_billed: totalBilled.actual,
         total_hours: totalHours.actual, total_matters: totalMatters.actual,
         total_billed_perc: this.frcService.getPercentOfWork(totalBilled.actual, this.totalSpend), total_hours_perc: this.frcService.getPercentOfWork(totalHours.actual, this.totalHours),
       avg_partner_rate: this.commonServ.capitalize(avgPartnerRate.grade), avg_associate_rate: this.commonServ.capitalize(avgAssociateRate.grade), blended_rate: this.commonServ.capitalize(blendedRate.grade)});
@@ -176,6 +177,11 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   firmCellRenderer(params: any) {
     const firmId = params.node.data.id;
     const value = '<a class="href-link-primary" href="/analytics-ui/frc-peer-firms/' + firmId + '">' + params.value + '</a>';
+    return value;
+  }
+  clusterCellRenderer(params: any) {
+    const cluster = params.node.data.cluster;
+    const value = cluster !== 0 ? cluster : 'N/A';
     return value;
   }
   addFirm(evt: any): void {
