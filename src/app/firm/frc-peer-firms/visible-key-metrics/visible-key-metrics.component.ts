@@ -15,6 +15,7 @@ import {Subscription} from 'rxjs';
 export class VisibleKeyMetricsComponent implements OnInit {
   filteredMetrics: Array<IMetricDisplayData> = [];
   keyMetrics: Array<IMetricDisplayData> = [];
+  doNotSave: boolean = false;
   savedMetrics: Array<string> = [];
   itemTopRowCount: number = 6;
   pendingRequest: Subscription;
@@ -31,11 +32,14 @@ export class VisibleKeyMetricsComponent implements OnInit {
   ) {
     this.keyMetrics = Object.assign([], data.keyMetrics);
     this.filteredMetrics = data.filteredMetrics;
+    this.doNotSave = data.doNotSave;
     this.itemTopRowCount = Math.ceil(this.keyMetrics.length / 2);
   }
 
   ngOnInit(): void {
-    this.getClientMetricsConfig();
+    if (!this.doNotSave) {
+      this.getClientMetricsConfig();
+    }
   }
   save(): void {
     const params = Object.assign({}, this.createConfig());
@@ -51,6 +55,10 @@ export class VisibleKeyMetricsComponent implements OnInit {
       }
     );
 
+  }
+  update(): void {
+    const params = Object.assign({}, this.createConfig());
+    this.dialogRef.close(this.filteredMetrics);
   }
   getClientMetricsConfig(): void {
     const params = { userId: this.userService.currentUser.id, configName: CLIENT_CONFIG_KEY_METRICS_NAME};

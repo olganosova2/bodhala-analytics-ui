@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FrcServiceService, IPeerFirms, MetricType, MetricTypeComparison, MOCK_PEER_FIRMS, MOCK_PEER_FIRMS_ALL} from '../frc-service.service';
+import {CLIENT_CONFIG_KEY_METRICS_NAME, FrcServiceService, IMetricDisplayData, IPeerFirms, MetricType, MetricTypeComparison, MOCK_PEER_FIRMS, MOCK_PEER_FIRMS_ALL} from '../frc-service.service';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
@@ -10,6 +10,8 @@ import {GridOptions} from 'ag-grid-community';
 import {AgGridService} from 'bodhala-ui-elements';
 import {CheckboxCellComponent} from '../../../shared/components/checkbox-cell/checkbox-cell.component';
 import {FrcComparisonCellComponent} from './frc-comparison-cell/frc-comparison-cell.component';
+import {VisibleKeyMetricsComponent} from '../visible-key-metrics/visible-key-metrics.component';
+import {FrcComparisonHeaderComponent} from './frc-comparison-header/frc-comparison-header.component';
 
 @Component({
   selector: 'bd-frc-firm-comparison',
@@ -31,6 +33,8 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   firstLoad: boolean = true;
   paginationPageSize: any = 10;
   metrics: any = MetricTypeComparison;
+  filteredMetrics: Array<IMetricDisplayData> = [];
+  keyMetrics: Array<IMetricDisplayData> = [];
   excludeFilters: Array<string> = ['firms'];
   pageName: string = 'analytics-ui/frc-firm-comparison/';
   noFirmsSelected: boolean = false;
@@ -84,7 +88,9 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
       cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: averageColumn}};
     defs.push(column);
     for (const sub of this.comparisonData) {
-      const col = {headerName: sub.firm_name, field: this.getFieldName(sub.bh_lawfirm_id), ...this.defaultColumn, width: 180, suppressMenu: true, editable: true, headerClass: 'text-underline',
+      const col = {headerName: sub.firm_name, field: this.getFieldName(sub.bh_lawfirm_id), headerComponentFramework: FrcComparisonHeaderComponent,
+        headerComponentParams : { goTo: this.goToView.bind(this)},
+        ...this.defaultColumn, width: 180, suppressMenu: true, editable: true,
          cellRendererFramework: FrcComparisonCellComponent, cellRendererParams: { context: sub}, cellStyle: {'border-left-color': '#cccccc'} };
       defs.push(col);
     }
@@ -122,9 +128,13 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
   }
   formatDataForGrid(): Array<any> {
     const result = [];
-    const firstFirm = this.comparisonData[0].frcMetrics;
+    this.keyMetrics = Object.assign([], this.comparisonData[0].frcMetrics) || [];
+    if (this.filteredMetrics.length === 0) {
+      this.filteredMetrics = Object.assign([], this.formatKeyMetrics(this.keyMetrics, true));
+    }
     for (const metricName of Object.keys(this.metrics)) {
-      if (typeof MetricType[metricName] !== 'string') {
+      const foundMetric = this.filteredMetrics.find(e => e.metricType === this.metrics[metricName]);
+      if (!foundMetric) {
         continue;
       }
       if (!this.userService.hasEntitlement('data.analytics.diversity') && (metricName === 'FemaleHours' || metricName === 'MinorityHours')) {
@@ -132,7 +142,7 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
       }
       const prop = this.metrics[metricName];
       const row = { metric_name: metricName, firms: 0, metricType: prop};
-      const found = firstFirm.find(e => e.metricType === prop);
+      const found = this.keyMetrics.find(e => e.metricType === prop);
       if (found) {
         row.firms = found.firms;
         row.metric_name = found.label;
@@ -157,6 +167,87 @@ export class FrcFirmComparisonComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.commonServ.generatePdfOuter(exportName, 'frcDiv', null);
     }, 200);
+  }
+  openDetails(): void {
+    const packaged = { filteredMetrics: [],  keyMetrics: this.formatKeyMetrics(this.keyMetrics, false), doNotSave: true};
+    const dialogConfig =  {
+      height: '450px',
+      width: '40vw',
+    };
+    const modalConfig = {...dialogConfig, data: Object.assign([], packaged)};
+    const dialogRef = this.dialog.open(VisibleKeyMetricsComponent, {...modalConfig, disableClose: false });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.formattedMetrics = [];
+      this.filteredMetrics = Object.assign([], this.formatKeyMetrics(result, true));
+      this.formattedMetrics = this.formatDataForGrid();
+    });
+  }
+  formatKeyMetrics(metrics: Array<IMetricDisplayData>, toSelect: boolean): Array<any> {
+    const result = [];
+    for (const metricName of Object.keys(this.metrics)) {
+      if (!this.userService.hasEntitlement('data.analytics.diversity') && (metricName === 'FemaleHours' || metricName === 'MinorityHours')) {
+        continue;
+      }
+      const prop = this.metrics[metricName];
+      const found = metrics.find(e => e.metricType === prop);
+      if (found) {
+        if (toSelect) {
+          found.selected = toSelect;
+        } else {
+          const found2 = this.filteredMetrics.find(e => e.fieldName === this.metrics[metricName]);
+          found.selected = found2 ? true : false;
+        }
+        result.push(found);
+      }
+    }
+    return result;
+  }
+  goToView(colData: any): void {
+    const firmId = this.getFirmId(colData.colDef.field);
+   //  const comparisonFirms = this.selectedFirms.filter(e => e !== firmId) || [];
+    const comparisonFirms = Object.assign([], this.selectedFirms);
+    this.updateFiters(comparisonFirms);
+    setTimeout(() => {
+      this.router.navigate(['/analytics-ui/frc-peer-firms/' + firmId]);
+    });
+  }
+  getFirmId(colName: string): number {
+    return Number(colName.substring(5));
+  }
+  updateFiters(comparisonFirms: Array<number>): void {
+    const savedFilters = localStorage.getItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString());
+    const savedFiltersDict = JSON.parse(savedFilters);
+    const firmFilter = savedFiltersDict.dataFilters.find(e => e.fieldName === 'firms');
+    if (firmFilter) {
+      const parsedFilters = comparisonFirms; // this.filterSet.firms ? JSON.parse(this.filterSet.firms) : [];
+      const result = [];
+      for (const entry of parsedFilters) {
+        const firm = this.comparisonData.find(e => e.bh_lawfirm_id === Number(entry));
+        result.push({ id: Number(entry), name: firm.firm_name});
+      }
+      firmFilter.value = Object.assign([], result);
+    }
+    const serializedQs = savedFiltersDict.querystring.toString();
+    const pairs = serializedQs.split('&') || [];
+    const newPairs = [];
+    for (const pair of pairs) {
+      const keys = pair.split('=');
+      if (keys.length === 2) {
+        if (keys[0] !== 'firms') {
+          newPairs.push(pair);
+        }
+      }
+    }
+    let newPairsStr = newPairs.join('&');
+    if (comparisonFirms && comparisonFirms.length > 0) {
+      newPairsStr += '&firms=' + JSON.stringify(comparisonFirms);
+    }
+    savedFiltersDict.querystring = newPairsStr;
+    localStorage.setItem('ELEMENTS_dataFilters_' + this.userService.currentUser.id.toString(), JSON.stringify(savedFiltersDict));
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

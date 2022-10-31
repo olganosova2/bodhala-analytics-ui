@@ -709,6 +709,9 @@ export class CommonServiceStub {
     }
     return result;
   }
+  public getClientPASetting(): string {
+    return 'Client Practice Areas';
+  }
 }
 
 export class MatDialogMock {

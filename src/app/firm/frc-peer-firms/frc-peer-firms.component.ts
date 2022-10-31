@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
-import {FrcServiceService, IComparisonFirm, IMetricDisplayData, IPeerFirms, MOCK_PEER_FIRMS} from './frc-service.service';
+import {CLIENT_CONFIG_KEY_METRICS_NAME, FrcServiceService, IComparisonFirm, IMetricDisplayData, IPeerFirms, MOCK_PEER_FIRMS} from './frc-service.service';
 import {forkJoin, Observable, Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
 import {FiltersService as ElementsFiltersService} from 'bodhala-ui-elements';
@@ -13,6 +13,7 @@ import {FrcNotesComponent} from './frc-notes/frc-notes.component';
 import {IUiAnnotation} from '../../shared/components/annotations/model';
 import {SavedReportsModalComponent} from '../saved-reports-modal/saved-reports-modal.component';
 import * as _moment from 'moment';
+import {FrcReportTitleComponent} from './frc-report-title/frc-report-title.component';
 
 const moment = _moment;
 
@@ -52,6 +53,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
   rank: number = 1;
   otherFirms: boolean = false;
   chart: any;
+  reportTitle: string = '';
   options: any = Object.assign({}, barTkPercentOptions);
   @ViewChild('chartDiv') chartDiv: ElementRef<HTMLElement>;
 
@@ -64,6 +66,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
               public userService: UserService,
               public dialog: MatDialog,
               public matDialog: MatDialog,
+              public reportTitleDialog: MatDialog,
               public appStateService: AppStateService,
               public filtersService: FiltersService,
               public elemFiltersService: ElementsFiltersService
@@ -211,7 +214,7 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
 
   viewSavedReports(): void {
     const dialogConfig = {
-      width: '60vw',
+      width: '80vw',
     };
     const modalConfig = {...dialogConfig, data: Object.assign([], this.savedReports)};
     const dialogRef = this.matDialog.open(SavedReportsModalComponent, {...modalConfig, disableClose: false});
@@ -293,11 +296,29 @@ export class FrcPeerFirmsComponent implements OnInit, OnDestroy {
       }
     });
   }
+  openReportTitleModal(): void {
+    const packaged = { reportTitle: this.reportTitle};
+    const dialogConfig =  {
+      height: '250px',
+      width: '40vw',
+    };
+    const modalConfig = {...dialogConfig, data: Object.assign([], packaged)};
+    const dialogRef = this.reportTitleDialog.open(FrcReportTitleComponent, {...modalConfig, disableClose: false });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        return;
+      }
+      this.reportTitle = result;
+      this.saveFrc();
+    });
+  }
 
   saveFrc(): void {
-    this.commonServ.saveReport(this.firmId, this.filterSet).subscribe(
+    this.commonServ.saveReport(this.firmId, this.filterSet, this.reportTitle).subscribe(
       (data: any) => {
         if (data && data.result) {
+          this.reportTitle = '';
           this.checkSavedReports();
           this.frcCardSaved = true;
         }

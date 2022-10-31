@@ -84,7 +84,7 @@ export class QbrExecutiveSummaryComponent implements OnInit, OnDestroy {
   }
   processRightSideMetrics(): void {
     this.rightSideMetrics = [];
-    this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bodhala_price_index',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
+    // this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'bodhala_price_index',  'BPI', 'bpi.svg', IQbrMetricType.BPI));
     this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_blended_rate',  'Blended Rate', 'bills.svg', IQbrMetricType.BlendedRate));
     this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_partner_rate',  'Avg. Partner hourly cost',  'partners.svg', IQbrMetricType.PartnerAvgHourlyCost));
     this.rightSideMetrics.push(this.qbrService.getGenericMetric(this.currentOverviewMetric, this.compareOverviewMetric, 'avg_associate_rate',  'Avg. Associate hourly cost', 'avg_ass_matter.svg', IQbrMetricType.AssociateAvgHourlyCost));

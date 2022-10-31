@@ -279,7 +279,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       }
       this.nextSteps = [];
     } else {
-      savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null, corresponding_insight_id: r.id, previouslySaved: false, section: 'Next Steps'}));
+      savedInsights = this.recommendations.map(r => Object.assign({}, r, {id: null, corresponding_insight_id: r.id, previouslySaved: false, section: 'Next Steps', show_potential_savings: true}));
     }
 
     for (const rec of this.recommendations) {
@@ -607,6 +607,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
       why_it_matters: recommendationPlaceholderMapping[recType].why_it_matters_placeholder,
       action: recommendationPlaceholderMapping[recType].action_placeholder,
       potential_savings: 0,
+      show_potential_savings: true,
       title: recType,
       type: recType,
       included: false,
@@ -732,6 +733,7 @@ export class QbrInsightsComponent implements OnInit, OnChanges {
 
   async checkboxClicked(evt, rec) {
     rec.included = evt.checked;
+    rec.show_potential_savings = true;
     const tempSortOrder = rec.sort_order;
     let alreadySaved = false;
     if (rec.id !== null) {

@@ -60,7 +60,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       if (this.benchmark.blended_market_num_firms < 3) {
         this.validMarketAverage = false;
       }
-      if (this.benchmark.blended_internal_num_firms < 3) {
+      if (this.benchmark.blended_internal_num_firms < 1) {
         this.validInternalBM = false;
         this.marketAverageHeight = '84px';
       }
@@ -68,7 +68,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       if (this.benchmark.associate_market_num_firms < 3) {
         this.validMarketAverage = false;
       }
-      if (this.benchmark.associate_internal_num_firms < 3) {
+      if (this.benchmark.associate_internal_num_firms < 1) {
         this.validInternalBM = false;
         this.marketAverageHeight = '84px';
       }
@@ -76,7 +76,7 @@ export class RateAnalysisChartComponent implements OnInit, AfterViewInit {
       if (this.benchmark.partner_market_num_firms < 3) {
         this.validMarketAverage = false;
       }
-      if (this.benchmark.partner_internal_num_firms < 3) {
+      if (this.benchmark.partner_internal_num_firms < 1) {
         this.validInternalBM = false;
         this.marketAverageHeight = '84px';
       }

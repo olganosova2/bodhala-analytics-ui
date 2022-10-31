@@ -175,6 +175,8 @@ import {QaDashboardComponent} from '../../admin/qa-dashboard/qa-dashboard.compon
 import {FrcTrendsComponent} from '../../firm/frc-peer-firms/frc-trends/frc-trends.component';
 import {FrcTrendsChartComponent} from '../../firm/frc-peer-firms/frc-trends-chart/frc-trends-chart.component';
 import {FrcDashboardComponent} from '../../firm/frc-peer-firms/frc-dashboard/frc-dashboard.component';
+import {FrcReportTitleComponent} from '../../firm/frc-peer-firms/frc-report-title/frc-report-title.component';
+import {FrcComparisonHeaderComponent} from '../../firm/frc-peer-firms/frc-firm-comparison/frc-comparison-header/frc-comparison-header.component';
 
 
 
@@ -345,7 +347,9 @@ export const DECLARATIONS = [
   QaDashboardComponent,
   FrcTrendsComponent,
   FrcTrendsChartComponent,
-  FrcDashboardComponent
+  FrcDashboardComponent,
+  FrcReportTitleComponent,
+  FrcComparisonHeaderComponent
 ];
 
 export const PROVIDERS = [

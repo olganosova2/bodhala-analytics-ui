@@ -132,7 +132,7 @@ export class BillingTotalsComponent implements OnInit, OnDestroy {
       format: 'currency',
       svg: 'bills'
     });
-    this.totals.push({icon: 'icon-bar-chart', total: this.totalsRaw.bodhala_price_index, name: 'BPI', format: 'currency', svg: 'bpi'});
+    // this.totals.push({icon: 'icon-bar-chart', total: this.totalsRaw.bodhala_price_index, name: 'BPI', format: 'currency', svg: 'bpi'});
     this.itemTopRowCount = Math.ceil(this.totals.length / 2);
     this.totals[this.itemTopRowCount - 1].lastCell = true;
     this.totals[this.totals.length - 1].lastCell = true;

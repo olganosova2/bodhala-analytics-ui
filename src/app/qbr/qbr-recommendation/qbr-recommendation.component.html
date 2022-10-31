@@ -1,7 +1,7 @@
 <div>
   <div class="qbr-wrapper">
     <div class="qbr-panel position-relative bg-2" [ngClass]="{'qbr-panel-zoomed': zoom }" id="exportPage" #exportPage>
-      <div class="black-money-badge justify-around" *ngIf="section.total_savings">
+      <div class="black-money-badge justify-around" *ngIf="section.total_savings && !hidePotentialSavings">
         <img src="assets/images/qbr-images/money_bag.png" width="85px" height="80px" alt="$"/>
         <div>
           <div class="label">TOTAL ESTIMATED SAVINGS</div>
@@ -29,23 +29,27 @@
             <span class="font-bold" *ngIf="qbrRecommendationType === 'Insights'">Why it matters: </span>
             <span [innerHTML]="rec?.recommendation"></span>
           </div>
-          <div class="blue-line-labels full-width">
+          <div class="blue-line-labels full-width" [hidden]="qbrRecommendationType === 'Next Steps' && hidePotentialSavings">
             <div class="" *ngIf="rec.notableMetrics.length > 0" [ngClass]="{'justify-around': qbrRecommendationType === 'Insights', 'ml10': qbrRecommendationType === 'Next Steps' }">
+              <ng-container *ngIf="qbrRecommendationType === 'Insights' || rec.show_potential_savings">
               <div *ngFor="let item of rec.notableMetrics;let i=index" [ngClass]="{'font-white': i % 2 != 0 }">
                 <div class="numbers" *ngIf="qbrRecommendationType === 'Insights'">{{item?.amount}}
+                  <ng-container *ngIf="rec.recommendationType != 5">
                   <em *ngIf="item.direction && item.direction > 0" class="fa fa-arrow-up"></em>
                   <em *ngIf="item.direction && item.direction < 0" class="fa fa-arrow-down"></em>
+                  </ng-container>
                 </div>
                 <div class="numbers font-white" *ngIf="qbrRecommendationType === 'Next Steps'">~${{item?.amount | number:'1.0-0'}}</div>
                 <div class="labels" [ngStyle]="{'font-size': getLabelfontSize(item?.label) +'px'}">{{item?.label}}</div>
               </div>
+              </ng-container>
             </div>
           </div>
 
 
         </div>
       </div>
-      <div class="blue-bottom-line"></div>
+      <div class="blue-bottom-line" [hidden]="qbrRecommendationType === 'Next Steps' && hidePotentialSavings"></div>
       <div class="page-number-circle page-number-circle-wh">
         <div class="page-number">{{pageNumber}}</div>
       </div>

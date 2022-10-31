@@ -167,6 +167,7 @@ export interface IPeerFirms {
   assessment?: string;
   total_billed_perc?: number;
   total_hours_perc?: number;
+  cluster?: number;
 }
 export interface IYearQuarterSpend {
   year: number;
@@ -317,10 +318,10 @@ export class FrcServiceService {
     const lawyerBilled = (summaryData.partner_billed - summaryData.partner_writeoff) + (summaryData.associate_billed - summaryData.associate_writeoff);
     const lawyerHours = (summaryData.partner_hours) + (summaryData.associate_hours);
     summaryData.blended_rate = lawyerBilled / (lawyerHours || 1);
-    summaryData.percent_partner_hours = summaryData.partner_hours / (summaryData.total_tk_hours || 1) * 100;
-    summaryData.percent_associate_hours = summaryData.associate_hours / (summaryData.total_tk_hours || 1) * 100;
-    summaryData.percent_legal_assistant_hours = summaryData.legal_assistant_hours / (summaryData.total_tk_hours || 1) * 100;
-    summaryData.percent_paralegal_hours = summaryData.paralegal_hours / (summaryData.total_tk_hours || 1) * 100;
+    summaryData.percent_partner_hours = summaryData.partner_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_associate_hours = summaryData.associate_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_legal_assistant_hours = summaryData.legal_assistant_hours / (summaryData.total_hours_billed || 1) * 100;
+    summaryData.percent_paralegal_hours = summaryData.paralegal_hours / (summaryData.total_hours_billed || 1) * 100;
 
     summaryData.percent_minority_hours = Math.round(summaryData.minority_hours / (summaryData.total_hours_billed || 1) * 100);
     summaryData.percent_female_hours = Math.round(summaryData.female_hours / (summaryData.total_hours_billed || 1) * 100);
@@ -454,7 +455,7 @@ export class FrcServiceService {
     const result = [];
     const originals = Object.assign([], records);
     for (const rec of records) {
-      const currentFirm = {bh_lawfirm_id: rec.bh_lawfirm_id, firm_name: rec.firm_name, frcMetrics: []};
+      const currentFirm = {bh_lawfirm_id: rec.bh_lawfirm_id, firm_name: rec.firm_name, cluster: rec.cluster, frcMetrics: []};
       const summaryData = originals.find(e => e.bh_lawfirm_id === rec.bh_lawfirm_id);
       this.calculateSingleFirmData(summaryData);
       const filtered = Object.assign([], originals); //  originals.filter(e => e.bh_lawfirm_id !== rec.bh_lawfirm_id) || [];

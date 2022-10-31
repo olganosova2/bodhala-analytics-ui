@@ -96,6 +96,7 @@ export interface IFirmData {
   num_attorneys_range: string;
   firmographic_leverage: number;
   url: string;
+  cluster?: string;
 }
 
 export interface IDiversityData {

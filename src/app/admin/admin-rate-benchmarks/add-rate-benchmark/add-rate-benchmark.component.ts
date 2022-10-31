@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { HttpService } from 'bodhala-ui-common';
 import { Subscription } from 'rxjs';
-import {IRateBenchmark, smartPracticeAreas, peerFirmMapping} from '../../../rates-analysis/rates-analysis.model';
+import {IRateBenchmark, peerFirmMapping} from '../../../rates-analysis/rates-analysis.model';
 import {SelectItem, SelectItemGroup} from 'primeng/api';
 import {FormGroup, Validators, FormControl} from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
@@ -30,7 +30,7 @@ export class AddRateBenchmarkComponent implements OnInit, OnDestroy {
   inProgress: boolean = false;
   formInvalid: boolean = false;
   firmOptions: SelectItemGroup[] = [];
-  smartPAOptions: SelectItem[] = smartPracticeAreas;
+  smartPAOptions: SelectItem[] = [];
   allFirmsCluster: Array<any>;
   yearOptions: SelectItem[] = [];
   selectedFirmCluster: number = 1;
@@ -103,9 +103,37 @@ export class AddRateBenchmarkComponent implements OnInit, OnDestroy {
 
   firmSelected($evt): void {
     const temp = this.allFirmsCluster.filter(f => f.firm_id === $evt.value);
+    this.getOptions();
     if (temp.length > 0) {
       this.selectedFirmCluster = temp[0].cluster;
     }
+  }
+
+  getOptions(): void {
+    const params = {
+      firm: this.benchmarkForm.controls.firm.value,
+      pa: this.benchmarkForm.controls.smartPracticeArea.value,
+      client: this.rateBenchmark.bh_client_id
+    };
+    this.benchmarkForm.controls.smartPracticeArea.disable();
+    this.pendingRequest = this.httpService.makeGetRequest('getFirmPAs', params).subscribe(
+      (data: any) => {
+        this.benchmarkForm.controls.smartPracticeArea.enable();
+        if (data.result.practice_areas) {
+          this.smartPAOptions = [];
+          for (const pa of data.result.practice_areas) {
+            this.smartPAOptions.push({value: pa.id, label: pa.id});
+          }
+        }
+        if (data.result.years) {
+          this.yearOptions = [];
+          data.result.years = data.result.years.sort((a, b) => a.year > b.year ? -1 : 1);
+          for (const y of data.result.years) {
+            this.yearOptions.push({value: y.year, label: y.year});
+          }
+        }
+      }
+    );
   }
 
   saveBenchmark(): void {
