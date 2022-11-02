@@ -149,6 +149,8 @@ export class RatesAnalysisComponent implements OnInit {
           bm.cost_impact = null;
           bm.blended_within_range = null;
         }
+      } else {
+        bm.cost_impact = null;
       }
     }
   }
@@ -213,12 +215,12 @@ export class RatesAnalysisComponent implements OnInit {
     let result = '';
     // round to nearest 10,000
     if (params.value !== null) {
-      if (params.data.blended_rate_lower_diff >= 10000) {
+      if (params.data.blended_rate_lower_diff >= 100000) {
         params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 10000) * 10000;
       } else {
         params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 1000) * 1000;
       }
-      if (params.data.blended_rate_upper_diff >= 10000) {
+      if (params.data.blended_rate_upper_diff >= 100000) {
         params.data.blended_rate_upper_diff = Math.ceil(params.data.blended_rate_upper_diff / 10000) * 10000;
       } else {
         params.data.blended_rate_upper_diff = Math.ceil(params.data.blended_rate_upper_diff / 1000) * 1000;
