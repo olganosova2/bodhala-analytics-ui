@@ -11,9 +11,6 @@ import {FiltersService} from '../../shared/services/filters.service';
 describe('AdminBenchmarksComponent', () => {
   let component: AdminBenchmarksComponent;
   let fixture: ComponentFixture<AdminBenchmarksComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -25,7 +22,7 @@ describe('AdminBenchmarksComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},
@@ -81,6 +78,6 @@ describe('AdminBenchmarksComponent', () => {
 
   it('should addNew', () => {
     component.addNew();
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmark-add' ]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmark-add' ]);
   });
 });
