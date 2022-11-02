@@ -9,9 +9,6 @@ import * as mockServices from '../../../shared/unit-tests/mock-services';
 describe('PeerFirmsModalComponent', () => {
   let component: PeerFirmsModalComponent;
   let fixture: ComponentFixture<PeerFirmsModalComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   const mockClient = {
     bh_client_id: 167,
@@ -30,7 +27,7 @@ describe('PeerFirmsModalComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: HttpService, useClass: mockServices.DataStub},
           {provide: UserService, useClass: mockServices.UserStub}

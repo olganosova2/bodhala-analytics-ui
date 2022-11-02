@@ -12,9 +12,7 @@ describe('SubscriptionListComponent', () => {
   let component: SubscriptionListComponent;
   let fixture: ComponentFixture<SubscriptionListComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -26,7 +24,7 @@ describe('SubscriptionListComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},

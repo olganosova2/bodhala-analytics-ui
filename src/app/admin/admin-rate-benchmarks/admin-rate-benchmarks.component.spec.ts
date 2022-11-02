@@ -11,9 +11,6 @@ import {FiltersService} from '../../shared/services/filters.service';
 describe('AdminRateBenchmarksComponent', () => {
   let component: AdminRateBenchmarksComponent;
   let fixture: ComponentFixture<AdminRateBenchmarksComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   const mockClient = {
     bh_client_id: 167,
@@ -32,7 +29,7 @@ describe('AdminRateBenchmarksComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},

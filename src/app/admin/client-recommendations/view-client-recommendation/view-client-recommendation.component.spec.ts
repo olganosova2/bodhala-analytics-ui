@@ -16,10 +16,6 @@ describe('ViewClientRecommendationComponent', () => {
   let component: ViewClientRecommendationComponent;
   let fixture: ComponentFixture<ViewClientRecommendationComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -31,7 +27,7 @@ describe('ViewClientRecommendationComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: RecommendationService, useClass: mockServices.RecommendationsServicesStub},

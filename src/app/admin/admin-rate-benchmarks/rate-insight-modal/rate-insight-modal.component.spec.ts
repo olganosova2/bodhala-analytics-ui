@@ -11,9 +11,6 @@ describe('RateInsightModalComponent', () => {
   let component: RateInsightModalComponent;
   let fixture: ComponentFixture<RateInsightModalComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -25,7 +22,7 @@ describe('RateInsightModalComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},
