@@ -216,9 +216,9 @@ export class RatesAnalysisComponent implements OnInit {
     // round to nearest 10,000
     if (params.value !== null) {
       if (params.data.blended_rate_lower_diff >= 100000) {
-        params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 10000) * 10000;
+        params.data.blended_rate_lower_diff = Math.floor(params.data.blended_rate_lower_diff / 10000) * 10000;
       } else {
-        params.data.blended_rate_lower_diff = Math.ceil(params.data.blended_rate_lower_diff / 1000) * 1000;
+        params.data.blended_rate_lower_diff = Math.floor(params.data.blended_rate_lower_diff / 1000) * 1000;
       }
       if (params.data.blended_rate_upper_diff >= 100000) {
         params.data.blended_rate_upper_diff = Math.ceil(params.data.blended_rate_upper_diff / 10000) * 10000;
