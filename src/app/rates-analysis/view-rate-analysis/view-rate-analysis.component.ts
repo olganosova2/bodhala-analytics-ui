@@ -191,12 +191,12 @@ export class ViewRateAnalysisComponent implements OnInit {
       } else {
         this.costImpactColor = COST_IMPACT_GRADES[this.costImpactGrade].color;
       }
-      if (this.costImpactLower >= 10000) {
-        this.costImpactLower = Math.ceil(this.costImpactLower / 10000) * 10000;
+      if (this.costImpactLower >= 100000) {
+        this.costImpactLower = Math.floor(this.costImpactLower / 10000) * 10000;
       } else {
-        this.costImpactLower = Math.ceil(this.costImpactLower / 1000) * 1000;
+        this.costImpactLower = Math.floor(this.costImpactLower / 1000) * 1000;
       }
-      if (this.costImpactUpper >= 10000) {
+      if (this.costImpactUpper >= 100000) {
         this.costImpactUpper = Math.ceil(this.costImpactUpper / 10000) * 10000;
       } else {
         this.costImpactUpper = Math.ceil(this.costImpactUpper / 1000) * 1000;
