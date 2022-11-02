@@ -12,9 +12,7 @@ import {MOCK_INSIGHTS} from '../../shared/unit-tests/mock-data/insights';
 describe('InsightsComponent', () => {
   let component: InsightsComponent;
   let fixture: ComponentFixture<InsightsComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -26,7 +24,7 @@ describe('InsightsComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

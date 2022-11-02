@@ -15,9 +15,7 @@ describe('MatterBenchmarkingLandingComponent', () => {
   let component: MatterBenchmarkingLandingComponent;
   let fixture: ComponentFixture<MatterBenchmarkingLandingComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -29,7 +27,7 @@ describe('MatterBenchmarkingLandingComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: ActivatedRoute, useClass: ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },

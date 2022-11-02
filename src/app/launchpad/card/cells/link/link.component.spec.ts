@@ -15,9 +15,7 @@ describe('LinkComponent', () => {
   let component: LinkComponent;
   let fixture: ComponentFixture<LinkComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -29,7 +27,7 @@ describe('LinkComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }
@@ -64,7 +62,7 @@ describe('LinkComponent', () => {
     const data = {param1: 87};
     component.column = { route: '/firm', route_params: 'param1'};
     component.onClick(data);
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ '/firm', 87]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ '/firm', 87]);
   });
   it('should onclick action', () => {
     spyOn(component.clicked, 'emit');

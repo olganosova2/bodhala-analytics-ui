@@ -17,10 +17,7 @@ describe('CustomInternalMattersComponent', () => {
   let component: CustomInternalMattersComponent;
   let fixture: ComponentFixture<CustomInternalMattersComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate'),
-    navigateByUrl: jasmine.createSpy('navigateByUrl')
-  };
+
   const dialogMock = {
     close: () => { }
   };
@@ -35,7 +32,6 @@ describe('CustomInternalMattersComponent', () => {
       set: {
         providers: [
           AppStateService,
-         // { provide: Router, useValue: mockRouter},
           { provide: ActivatedRoute, useClass: ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },

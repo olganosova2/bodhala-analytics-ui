@@ -14,9 +14,7 @@ describe('FrcComparisonCellComponent', () => {
   let component: FrcComparisonCellComponent;
   let fixture: ComponentFixture<FrcComparisonCellComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -28,7 +26,7 @@ describe('FrcComparisonCellComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: ActivatedRoute, useClass: ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },

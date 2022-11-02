@@ -14,9 +14,7 @@ import {FiltersService} from '../shared/services/filters.service';
 describe('LaunchpadComponent', () => {
   let component: LaunchpadComponent;
   let fixture: ComponentFixture<LaunchpadComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -28,7 +26,7 @@ describe('LaunchpadComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: LaunchPadService, useClass: mockServices.LaunchPadServiceStub },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },

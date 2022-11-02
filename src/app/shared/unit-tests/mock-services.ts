@@ -659,6 +659,9 @@ export class RatesAnalysisServiceStub {
 }
 export  class MockRouter  {
   public navigate = jasmine.createSpy('navigate');
+  public url = 'benchmarking/firm';
+  public navigateByUrl = jasmine.createSpy('navigateByUrl');
+  public getCurrentNavigation = jasmine.createSpy('getCurrentNavigation');
 }
 export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
