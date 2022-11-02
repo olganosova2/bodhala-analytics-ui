@@ -19,10 +19,6 @@ describe('QbrNextStepsComponent', () => {
   let component: QbrNextStepsComponent;
   let fixture: ComponentFixture<QbrNextStepsComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-
   const custom = {
     id: 359,
     qbr_id: 276,
@@ -72,7 +68,7 @@ describe('QbrNextStepsComponent', () => {
           AppStateService,
           QbrCreationComponent,
           QbrInsightsComponent,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: QbrService, useClass: mockServices.QbrServiceStub},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},

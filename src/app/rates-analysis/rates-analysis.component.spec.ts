@@ -19,9 +19,6 @@ import {IRateBenchmark, moneyFormatter, percentFormatter, COST_IMPACT_GRADES} fr
 describe('RatesAnalysisComponent', () => {
   let component: RatesAnalysisComponent;
   let fixture: ComponentFixture<RatesAnalysisComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,7 +30,7 @@ describe('RatesAnalysisComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: RatesAnalysisService, useClass: mockServices.RatesAnalysisServiceStub},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},

@@ -15,11 +15,7 @@ describe('PracticeAreaDropdownComponent', () => {
   let component: PracticeAreaDropdownComponent;
   let fixture: ComponentFixture<PracticeAreaDropdownComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate'),
-    // navigateByUrl: jasmine.createSpy('navigateByUrl'),
-    // url: 'benchmarking/firm'
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -31,7 +27,7 @@ describe('PracticeAreaDropdownComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: ActivatedRoute, useClass: ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },

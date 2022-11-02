@@ -14,9 +14,7 @@ describe('AddEditBenchmarkComponent', () => {
   let component: AddEditBenchmarkComponent;
   let fixture: ComponentFixture<AddEditBenchmarkComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -28,7 +26,7 @@ describe('AddEditBenchmarkComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
@@ -71,12 +69,12 @@ describe('AddEditBenchmarkComponent', () => {
   it('should save', () => {
     component.benchmark = MOCK_ADMIN_BENCHMARK.result;
     component.save();
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
   });
   it('should cancel', () => {
     component.benchmark = MOCK_ADMIN_BENCHMARK.result;
     component.cancel();
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
   });
   it('should displayProperty', () => {
     const result = component.displayProperty({id: 1, name: 'AAA'});

@@ -14,10 +14,6 @@ describe('AddEditRecommendationComponent', () => {
   let component: AddEditRecommendationComponent;
   let fixture: ComponentFixture<AddEditRecommendationComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -29,7 +25,7 @@ describe('AddEditRecommendationComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: RecommendationService, useClass: mockServices.RecommendationsServicesStub},
           {provide: FiltersService, useClass: mockServices.FiltersStub},

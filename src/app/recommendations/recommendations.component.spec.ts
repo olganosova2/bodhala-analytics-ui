@@ -13,9 +13,7 @@ describe('RecommendationsComponent', () => {
   let component: RecommendationsComponent;
   let fixture: ComponentFixture<RecommendationsComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({

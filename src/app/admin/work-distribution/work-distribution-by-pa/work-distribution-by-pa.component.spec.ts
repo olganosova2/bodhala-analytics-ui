@@ -12,9 +12,6 @@ describe('WorkDistributionByPaComponent', () => {
   let component: WorkDistributionByPaComponent;
   let fixture: ComponentFixture<WorkDistributionByPaComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -26,7 +23,7 @@ describe('WorkDistributionByPaComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},

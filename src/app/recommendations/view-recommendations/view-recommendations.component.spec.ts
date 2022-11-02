@@ -15,9 +15,6 @@ describe('ViewRecommendationsComponent', () => {
   let component: ViewRecommendationsComponent;
   let fixture: ComponentFixture<ViewRecommendationsComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   beforeEach(async(() => {
 
@@ -30,7 +27,7 @@ describe('ViewRecommendationsComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: RecommendationService, useClass: mockServices.RecommendationsServicesStub},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
