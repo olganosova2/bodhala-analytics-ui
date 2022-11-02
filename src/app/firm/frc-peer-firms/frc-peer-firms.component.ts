@@ -6,7 +6,7 @@ import {forkJoin, Observable, Subscription} from 'rxjs';
 import {FiltersService} from '../../shared/services/filters.service';
 import {FiltersService as ElementsFiltersService} from 'bodhala-ui-elements';
 import {barTkPercentOptions} from './frc-service.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {VisibleKeyMetricsComponent} from './visible-key-metrics/visible-key-metrics.component';
 import {MatDialog} from '@angular/material/dialog';
 import {FrcNotesComponent} from './frc-notes/frc-notes.component';

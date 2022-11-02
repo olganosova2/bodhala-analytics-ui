@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationExtras, Router} from '@angular/router';
 import {CommonService} from '../../../shared/services/common.service';
 import {FrcServiceService, IPeerFirms, MetricType} from '../frc-service.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -58,6 +58,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.defaultColumn = this.agGridService.getDefaultColumn();
+    this.defaultColumn.width = 100;
     this.sideBarConfig = this.agGridService.getDefaultSideBar();
     this.savedState = this.agGridService.getSavedState('FRCGrid_Dashboard');
     this.gridOptions = this.agGridService.getDefaultGridOptions();
@@ -71,15 +72,15 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   initColumns(): void {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'id', ...this.defaultColumn, floatingFilter: true, hide: true},
-      {headerName: '', headerCheckboxSelection: this.formattedMetrics.length <= 20,  field: 'selected', ...this.defaultColumn, suppressMenu: true, editable: true, headerClass: 'justify-center-header', cellStyle: {textAlign: 'center'},
+      {headerName: '', headerCheckboxSelection: this.formattedMetrics.length <= 20,  field: 'selected', ...this.defaultColumn, width: 130,  suppressMenu: true, editable: true, headerClass: 'justify-center-header', cellStyle: {textAlign: 'center'},
         cellRendererFramework: CheckboxCellComponent, resizable: false, suppressMovable: true, lockPosition: 'left', cellRendererParams: { onAdd: this.addFirm.bind(this), onDelete: this.deleteFirm.bind(this)}},
-      {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer,  filter: 'agTextColumnFilter', flex: 1, floatingFilter: true},
+      {headerName: 'Firm', field: 'firm_name', ...this.defaultColumn, cellRenderer: this.firmCellRenderer,  filter: 'agTextColumnFilter', width: 250, floatingFilter: true},
       {headerName: 'Bodhala Firm Cluster', field: 'cluster', ...this.defaultColumn, cellRenderer: this.clusterCellRenderer,  filter: 'agTextColumnFilter'},
-      {headerName: 'Total Spend', field: 'total_billed', ...this.defaultColumn, cellRenderer: this.agGridService.roundCurrencyCellRenderer,  filter: 'number',  sort: 'desc'},
+      {headerName: 'Total Spend', field: 'total_billed', ...this.defaultColumn, width: 150, cellRenderer: this.agGridService.roundCurrencyCellRenderer,  filter: 'number',  sort: 'desc'},
       {headerName: '% of Total Spend', field: 'total_billed_perc', ...this.defaultColumn, cellRenderer: this.agGridService.roundToPercentNumberCellRenderer,  filter: 'number'},
       {headerName: 'Total Hours', field: 'total_hours', ...this.defaultColumn,  filter: 'number',  cellRenderer: this.agGridService.roundNumberCellRenderer},
       {headerName: '% of Total Hours', field: 'total_hours_perc', ...this.defaultColumn, cellRenderer: this.agGridService.roundToPercentNumberCellRenderer,  filter: 'number'},
-      {headerName: '# Matters', field: 'total_matters', ... this.defaultColumn, width: 150},
+      {headerName: '# Matters', field: 'total_matters', ... this.defaultColumn},
       {headerName: 'Average Partner Rate', field: 'avg_partner_rate', ... this.defaultColumn, width: 150,  cellRenderer: this.bubbleCellRenderer},
       {headerName: 'Average Associate Rate', field: 'avg_associate_rate', ... this.defaultColumn, width: 150, cellRenderer: this.bubbleCellRenderer},
       {headerName: 'Blended Rate', field: 'blended_rate', ... this.defaultColumn, width: 150, cellRenderer: this.bubbleCellRenderer},
@@ -233,6 +234,15 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   changePageSize(evt: any): void {
     this.paginationPageSize = evt.value;
     this.gridOptions.api.paginationSetPageSize(this.paginationPageSize);
+  }
+  goToCreateBenchmark(): void {
+    const queryParams: any = {};
+    // queryParams.smartPAs = JSON.stringify(['Banking & Credit', 'Capital Markets']);
+    queryParams.firmId = 4;
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+    this.router.navigate(['analytics-ui/rate-benchmarking/view-in-iframe'], navigationExtras);
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();
