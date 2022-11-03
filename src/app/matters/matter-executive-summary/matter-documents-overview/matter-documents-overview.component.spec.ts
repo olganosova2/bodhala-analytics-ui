@@ -27,7 +27,7 @@ describe('MatterDocumentsOverviewComponent', () => {
         providers: [
           AppStateService,
           { provide: Router, useClass: mockServices.MockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+          { provide: ActivatedRoute, useClass:mockServices.ActivatedRouteMock},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

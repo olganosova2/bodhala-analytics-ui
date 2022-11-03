@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RateInsightModalComponent } from './rate-insight-modal.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
