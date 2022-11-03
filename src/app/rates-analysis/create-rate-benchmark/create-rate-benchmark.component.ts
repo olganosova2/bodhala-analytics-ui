@@ -54,7 +54,7 @@ export class CreateRateBenchmarkComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data.result) {
           if (this.smartPAs.length === 0) {
-            this.smartPAs = (data.result.smart_pas || []).map(e => e.name);
+            this.smartPAs = (data.result.smart_pas || []).map(e => e.pa);
             this.error = this.smartPAs && this.smartPAs.length === 0 ? 'No Smart PAs set up for year ' + this.year.toString() : null;
           }
           this.smartPAs = this.smartPAs.sort();
