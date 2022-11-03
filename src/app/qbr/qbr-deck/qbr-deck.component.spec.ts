@@ -15,9 +15,6 @@ describe('QbrDeckComponent', () => {
   let component: QbrDeckComponent;
   let fixture: ComponentFixture<QbrDeckComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -29,8 +26,8 @@ describe('QbrDeckComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+          { provide: Router, useClass: mockServices.MockRouter},
+          { provide: ActivatedRoute, useClass:mockServices.ActivatedRouteMock},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }
@@ -58,12 +55,12 @@ describe('QbrDeckComponent', () => {
   });
   it('should goBack', () => {
     component.goBack();
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ '/analytics-ui/qbrs/dashboard' ]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ '/analytics-ui/qbrs/dashboard' ]);
   });
   it('should goToEdit', () => {
     component.qbr.id = 4;
     component.goToEdit();
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ '/analytics-ui/qbrs/edit/4' ]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ '/analytics-ui/qbrs/edit/4' ]);
   });
   it('should finalize', () => {
     spyOn(component.dialog, 'open').and.callThrough();

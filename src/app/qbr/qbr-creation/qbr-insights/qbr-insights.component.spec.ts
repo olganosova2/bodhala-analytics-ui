@@ -24,9 +24,6 @@ describe('QbrInsightsComponent', () => {
   let component: QbrInsightsComponent;
   let fixture: ComponentFixture<QbrInsightsComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   const mockInsightsForm = new FormGroup({
     '0metrics': new FormControl('metric', [Validators.required]),
@@ -105,7 +102,7 @@ describe('QbrInsightsComponent', () => {
         providers: [
           AppStateService,
           QbrCreationComponent,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: QbrService, useClass: mockServices.QbrServiceStub},
           {provide: RecommendationService, useClass: mockServices.RecommendationsServicesStub},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},

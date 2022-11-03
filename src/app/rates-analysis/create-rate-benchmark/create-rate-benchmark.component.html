@@ -1,0 +1,40 @@
+<div>
+
+  <div *ngIf="!showMoreOpened && firmId">
+    <div class="header-wrapper">
+      <div class="header-div">
+        <div class="p-grid">
+          <div class="p-md-1">
+            <img alt="Bodhala Logo" src="assets/images/logo-single.svg" class="small-logo">
+          </div>
+          <div class="p-md-8 text-center pt20">
+            Unleash the power of your data with analytics and benchmarking from Bodhala.
+          </div>
+          <div class="p-md-3 pr20">
+            <div class="text-right"><span (click)="showMore()" class="orange-button pointer-hand">SEE MORE IN BODHALA</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!showMoreOpened">
+    <ngb-alert type="danger" *ngIf="!firmId">
+      <div class="font-red font-bold">
+        <span>No Firm ID has been passed</span>
+      </div>
+    </ngb-alert>
+    <div>Placeholder for Landing Page</div>
+  </div>
+  <div *ngIf="showMoreOpened && firmId" class="position-relative loading-div">
+    <ngb-alert type="danger" *ngIf="error">
+      <div class="font-red font-bold">
+        <span>{{error}}</span>
+      </div>
+    </ngb-alert>
+    <div class="loading-message" [hidden]="!inProgress">Rate Benchmark is being created ... </div>
+    <div class="spinner-card" [hidden]="!inProgress">
+      <mat-spinner diameter="50" color="primary"></mat-spinner>
+    </div>
+
+  </div>
+</div>

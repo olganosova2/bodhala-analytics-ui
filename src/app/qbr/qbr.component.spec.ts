@@ -16,10 +16,6 @@ describe('QbrComponent', () => {
   let component: QbrComponent;
   let fixture: ComponentFixture<QbrComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: IMPORTS,
@@ -30,7 +26,7 @@ describe('QbrComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: QbrService, useClass: mockServices.QbrServiceStub},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},

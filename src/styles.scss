@@ -353,6 +353,14 @@ body .ui-dropdown, .ui-inputtext {
   z-index: 1234;
   opacity: 1 !important;
 }
+.loading-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  z-index: 1234;
+}
 .primary-pill {
   font-size: 0.8rem;
   border-radius: 25px;

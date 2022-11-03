@@ -9,9 +9,7 @@ import {Router} from '@angular/router';
 import {FiltersService} from './shared/services/filters.service';
 
 describe('AppComponent', () => {
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: IMPORTS,

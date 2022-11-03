@@ -10,9 +10,7 @@ import * as mockServices from '../../unit-tests/mock-services';
 describe('TableHeaderSortComponent', () => {
   let component: TableHeaderSortComponent;
   let fixture: ComponentFixture<TableHeaderSortComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -24,7 +22,7 @@ describe('TableHeaderSortComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

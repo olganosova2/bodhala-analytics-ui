@@ -7,9 +7,7 @@ import {UserService, UserType} from 'bodhala-ui-common';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
 
 describe('AuthService', () => {
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   const routeMock: any = {
     snapshot: {},
     params: {
@@ -26,7 +24,7 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
       providers: [
-        { provide: Router, useValue: mockRouter},
+        { provide: Router, useClass: mockServices.MockRouter},
         { provide: UserService, useClass: mockServices.UserStub }
       ]
     });

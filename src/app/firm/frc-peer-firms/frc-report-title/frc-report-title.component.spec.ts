@@ -12,9 +12,7 @@ describe('FrcReportTitleComponent', () => {
   let component: FrcReportTitleComponent;
   let fixture: ComponentFixture<FrcReportTitleComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -26,8 +24,8 @@ describe('FrcReportTitleComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+          { provide: Router, useClass: mockServices.MockRouter},
+          { provide: ActivatedRoute, useClass:mockServices.ActivatedRouteMock},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

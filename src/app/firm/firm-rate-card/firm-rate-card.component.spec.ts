@@ -18,9 +18,7 @@ import { SpendTrendChartComponent } from './spend-trend-chart/spend-trend-chart.
 describe('FirmRateCardComponent', () => {
   let component: FirmRateCardComponent;
   let fixture: ComponentFixture<FirmRateCardComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -33,7 +31,7 @@ describe('FirmRateCardComponent', () => {
         providers: [
           AppStateService,
           SpendTrendChartComponent,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },

@@ -13,9 +13,7 @@ describe('EsTotalItemComponent', () => {
   let component: EsTotalItemComponent;
   let fixture: ComponentFixture<EsTotalItemComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   const MOCK_ES_ITEM = {
     total: 100,
     priorYearTotal: 95,
@@ -35,7 +33,7 @@ describe('EsTotalItemComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},

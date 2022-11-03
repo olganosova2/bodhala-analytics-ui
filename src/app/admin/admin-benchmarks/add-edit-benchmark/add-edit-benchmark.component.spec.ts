@@ -2,7 +2,6 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { AddEditBenchmarkComponent } from './add-edit-benchmark.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
-import {AdminBenchmarksComponent} from '../admin-benchmarks.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
@@ -14,9 +13,7 @@ describe('AddEditBenchmarkComponent', () => {
   let component: AddEditBenchmarkComponent;
   let fixture: ComponentFixture<AddEditBenchmarkComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -28,7 +25,7 @@ describe('AddEditBenchmarkComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock },
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
@@ -71,12 +68,12 @@ describe('AddEditBenchmarkComponent', () => {
   it('should save', () => {
     component.benchmark = MOCK_ADMIN_BENCHMARK.result;
     component.save();
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
   });
   it('should cancel', () => {
     component.benchmark = MOCK_ADMIN_BENCHMARK.result;
     component.cancel();
-    expect (mockRouter.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
+    expect (component.router.navigate).toHaveBeenCalledWith([ 'analytics-ui/admin/benchmarks' ]);
   });
   it('should displayProperty', () => {
     const result = component.displayProperty({id: 1, name: 'AAA'});

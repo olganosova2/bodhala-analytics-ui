@@ -15,10 +15,6 @@ describe('RerunUploadComponent', () => {
   let component: RerunUploadComponent;
   let fixture: ComponentFixture<RerunUploadComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: IMPORTS,
@@ -29,7 +25,7 @@ describe('RerunUploadComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},

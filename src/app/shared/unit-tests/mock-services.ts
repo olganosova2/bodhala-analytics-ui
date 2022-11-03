@@ -657,13 +657,22 @@ export class RatesAnalysisServiceStub {
     return (MOCK_PEER_FIRMS_ADMIN_RESPONSE.result);
   }
 }
-
+export  class MockRouter  {
+  public navigate = jasmine.createSpy('navigate');
+  public url = 'benchmarking/firm';
+  public navigateByUrl = jasmine.createSpy('navigateByUrl');
+  public getCurrentNavigation = jasmine.createSpy('getCurrentNavigation');
+}
 export class ActivatedRouteMock {
   public paramMap = of(convertToParamMap({
     id: '4702',
     anotherId: 'd31e8b48-7309-4c83-9884-4142efdf7271',
     client_matter_type: 'LITIGATION'
   }));
+  public snapshot = {
+    queryParamMap: {
+      get: () => 1
+  }};
   queryParams = new Observable(observer => {
     const urlParams = {
       year: '2020',

@@ -228,6 +228,8 @@ import { FrcDashboardComponent } from './firm/frc-peer-firms/frc-dashboard/frc-d
 import { FrcReportTitleComponent } from './firm/frc-peer-firms/frc-report-title/frc-report-title.component';
 import { RefreshDataCheckboxComponent } from './admin/admin-rate-benchmarks/refresh-data-checkbox/refresh-data-checkbox.component';
 import { FrcComparisonHeaderComponent } from './firm/frc-peer-firms/frc-firm-comparison/frc-comparison-header/frc-comparison-header.component';
+import { CreateRateBenchmarkComponent } from './rates-analysis/create-rate-benchmark/create-rate-benchmark.component';
+import { IframeWrapperComponent } from './shared/components/iframe-wrapper/iframe-wrapper.component';
 
 export const WindowToken = new InjectionToken('Window');
 export function windowProvider() { return window; }
@@ -404,7 +406,9 @@ highcharts.setOptions({
     FrcDashboardComponent,
     FrcReportTitleComponent,
     RefreshDataCheckboxComponent,
-    FrcComparisonHeaderComponent
+    FrcComparisonHeaderComponent,
+    CreateRateBenchmarkComponent,
+    IframeWrapperComponent
   ],
   entryComponents: [
     PillComponent,

@@ -12,9 +12,7 @@ import {MOCK_FIRM} from '../../shared/unit-tests/mock-data/firm';
 describe('TopTimekeepersComponent', () => {
   let component: TopTimekeepersComponent;
   let fixture: ComponentFixture<TopTimekeepersComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -26,7 +24,7 @@ describe('TopTimekeepersComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

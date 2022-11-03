@@ -1,0 +1,29 @@
+@import "../../../assets/styles/colors.scss";
+.loading-div {
+  height: 70vh;
+}
+.orange-button {
+  font-family: Roboto Mono, "Helvetica Neue", sans-serif;
+  background-color: $brand-orange;
+  padding: 10px 20px;
+  border-radius: 24px;
+  color: $body-color;
+  font-size: 14px;
+}
+.header-wrapper {
+  background-color: $body-color;
+  padding: 20px;
+  color: #fff;
+  font-size: 20px;
+}
+.header-div {
+  font-family: "Source Sans Pro", sans-serif;
+  border: 1px solid #fff;
+  border-radius: 36px;
+  padding: 16px;
+}
+.small-logo {
+  width: 40px;
+  margin-left: 40px;
+  margin-top: 10px;
+}

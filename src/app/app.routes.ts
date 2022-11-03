@@ -50,6 +50,8 @@ import {FrcFirmComparisonComponent} from './firm/frc-peer-firms/frc-firm-compari
 import {QaDashboardComponent} from './admin/qa-dashboard/qa-dashboard.component';
 import {FrcTrendsComponent} from './firm/frc-peer-firms/frc-trends/frc-trends.component';
 import {FrcDashboardComponent} from './firm/frc-peer-firms/frc-dashboard/frc-dashboard.component';
+import {CreateRateBenchmarkComponent} from './rates-analysis/create-rate-benchmark/create-rate-benchmark.component';
+import {IframeWrapperComponent} from './shared/components/iframe-wrapper/iframe-wrapper.component';
 
 export const appRouterConfig: Routes = [
   {path: '', redirectTo: 'launchpad', pathMatch: 'full'},
@@ -89,6 +91,8 @@ export const appRouterConfig: Routes = [
   {path: 'analytics-ui/rate-benchmarking/view/:id', component: ViewRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/rate-benchmarking/view/detail/:id', component: GranularRateAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/rate-benchmarking/view/named/:id', component: NamedTkAnalysisComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking/view-in-iframe', component: CreateRateBenchmarkComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
+  {path: 'analytics-ui/rate-benchmarking/iframe', component: IframeWrapperComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
 
   {path: 'analytics-ui/matter-executive-summary', component: MatterExecutiveSummaryComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},
   {path: 'analytics-ui/matter-staffing', component: MatterStaffingComponent,  canActivate: [AuthService], data: {expectedRoles: ['CLIENT']}},

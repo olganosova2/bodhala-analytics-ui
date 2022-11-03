@@ -14,11 +14,6 @@ describe('RateCardTablesComponent', () => {
   let component: RateCardTablesComponent;
   let fixture: ComponentFixture<RateCardTablesComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate'),
-    navigateByUrl: jasmine.createSpy('navigateByUrl'),
-    url: 'benchmarking/firm'
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -30,8 +25,8 @@ describe('RateCardTablesComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+          { provide: Router, useClass: mockServices.MockRouter},
+          { provide: ActivatedRoute, useClass:mockServices.ActivatedRouteMock},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

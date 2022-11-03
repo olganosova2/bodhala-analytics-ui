@@ -13,10 +13,6 @@ describe('MatterTotalPanelComponent', () => {
   let component: MatterTotalPanelComponent;
   let fixture: ComponentFixture<MatterTotalPanelComponent>;
 
-
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -28,8 +24,8 @@ describe('MatterTotalPanelComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
-          { provide: ActivatedRoute, useClass: ActivatedRouteMock },
+          { provide: Router, useClass: mockServices.MockRouter},
+          { provide: ActivatedRoute, useClass:mockServices.ActivatedRouteMock},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub }

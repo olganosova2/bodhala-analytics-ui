@@ -13,9 +13,6 @@ describe('SubscriptionGridComponent', () => {
   let component: SubscriptionGridComponent;
   let fixture: ComponentFixture<SubscriptionGridComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
   const colData = { value: 1127, data: { org_id: 232}, colDef: {field: 'feature_1117'}};
   beforeEach(async(() => {
 
@@ -28,7 +25,7 @@ describe('SubscriptionGridComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},

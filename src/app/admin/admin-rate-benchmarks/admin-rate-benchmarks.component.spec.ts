@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminRateBenchmarksComponent } from './admin-rate-benchmarks.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../shared/unit-tests/mock-app.imports';
-import {AddRateBenchmarkComponent} from './add-rate-benchmark/add-rate-benchmark.component';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
 import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../shared/unit-tests/mock-services';
@@ -11,9 +10,6 @@ import {FiltersService} from '../../shared/services/filters.service';
 describe('AdminRateBenchmarksComponent', () => {
   let component: AdminRateBenchmarksComponent;
   let fixture: ComponentFixture<AdminRateBenchmarksComponent>;
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   const mockClient = {
     bh_client_id: 167,
@@ -32,7 +28,7 @@ describe('AdminRateBenchmarksComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},

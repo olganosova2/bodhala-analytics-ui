@@ -423,5 +423,14 @@ export class CommonService {
       value: { startDate: moment(startDate), endDate: moment(endDate) }
     };
   }
+  showWrapper(): boolean {
+    let result = true;
+    const path = window.location.pathname;
+    const notInIframe =  (window === window.parent) ? true : false;
+    if (!notInIframe) {
+      result = false;
+    }
+    return result;
+  }
 }
 

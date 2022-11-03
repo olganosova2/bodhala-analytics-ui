@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpService} from 'bodhala-ui-common';
+import {HttpService, UserService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {tkClassifications, IClassification} from '../savings-calculator/savings-calculator.service';
 import { IRateBenchmark } from './rates-analysis.model';
@@ -12,7 +12,8 @@ export class RatesAnalysisService {
   pendingRequest: Subscription;
   errorMessage: any;
 
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService,
+              public userService: UserService) { }
 
   getBenchmark(bmId: number): Promise<any> {
     const params = {benchmarkId: bmId};
@@ -356,5 +357,12 @@ export class RatesAnalysisService {
         }
       );
     });
+  }
+  createNewBenchmark(): IRateBenchmark {
+    return { id: null, bh_client_id: this.userService.currentUser.client_info_id, bh_lawfirm_id: null, year: null, smart_practice_area: null, peers: [],
+      blended_market_hi: null, blended_market_lo: null, blended_market_internal: null, blended_market_num_firms: null,
+      blended_internal_num_firms: null, partner_market_lo: null, partner_market_hi: null, partner_internal: null, partner_market_num_firms: null, partner_internal_num_firms: null,
+      associate_market_lo: null, associate_market_hi: null, associate_internal: null, associate_market_num_firms: null, associate_internal_num_firms: null,
+      created_on: null, created_by: null, modified_by: null, modified_on: null, deleted_by: null, deleted_on: null, market_avg_firms: null, internal_firms: null};
   }
 }

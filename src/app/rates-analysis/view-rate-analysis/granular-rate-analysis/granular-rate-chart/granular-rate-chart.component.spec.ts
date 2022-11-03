@@ -21,9 +21,6 @@ describe('GranularRateChartComponent', () => {
     .compileComponents();
   }));
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,7 +32,7 @@ describe('GranularRateChartComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: RatesAnalysisService, useClass: mockServices.RatesAnalysisServiceStub},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},

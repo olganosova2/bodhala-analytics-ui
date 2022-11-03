@@ -1,15 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AddRateBenchmarkComponent } from './add-rate-benchmark.component';
 import {DECLARATIONS, IMPORTS, PROVIDERS, SCHEMAS} from '../../../shared/unit-tests/mock-app.imports';
 import {AppStateService, HttpService, UserService} from 'bodhala-ui-common';
-import {ActivatedRoute, Router} from '@angular/router';
 import * as mockServices from '../../../shared/unit-tests/mock-services';
-import {FiltersService} from '../../../shared/services/filters.service';
 import {MOCK_ADMIN_BENCHMARK} from '../../../shared/unit-tests/mock-data/benchmarking';
 import {MOCK_FIRM_CLUSTER_RES} from '../../../shared/unit-tests/mock-data/rate-benchmarking';
-import {FormGroup, Validators, FormControl} from '@angular/forms';
-
 
 
 describe('AddRateBenchmarkComponent', () => {
@@ -40,9 +35,6 @@ describe('AddRateBenchmarkComponent', () => {
       .compileComponents();
   }));
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({

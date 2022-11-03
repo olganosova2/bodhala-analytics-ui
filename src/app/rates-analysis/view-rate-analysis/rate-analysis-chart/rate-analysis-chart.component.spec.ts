@@ -24,9 +24,7 @@ describe('RateAnalysisChartComponent', () => {
     .compileComponents();
   }));
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
+
   const mockBM = {
     id: 8,
     bh_client_id: 167,
@@ -75,7 +73,7 @@ describe('RateAnalysisChartComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: RatesAnalysisService, useClass: mockServices.RatesAnalysisServiceStub},
           {provide: ActivatedRoute, useClass: mockServices.ActivatedRouteMock},
           {provide: HttpService, useClass: mockServices.DataStub},

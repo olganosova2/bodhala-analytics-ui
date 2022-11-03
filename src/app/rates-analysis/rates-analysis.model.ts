@@ -136,6 +136,7 @@ export const peerFirmMapping = [
 ];
 
 export const COST_IMPACT_GRADES = {
+  TBD: {color: '#CCCCCC', width: '48px'},
   NONE: {color: '#3EDB73', width: '48px'},
   LOW: {color: '#FFC327', width: '42px'},
   MODERATE: {color: '#FF8B4A', width: '78px'},

@@ -13,9 +13,6 @@ xdescribe('RouterLinkRendererComponent', () => {
   let component: RouterLinkRendererComponent;
   let fixture: ComponentFixture<RouterLinkRendererComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   beforeEach(async(() => {
 
@@ -28,7 +25,7 @@ xdescribe('RouterLinkRendererComponent', () => {
       set: {
         providers: [
           AppStateService,
-          { provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           { provide: FiltersService, useClass: mockServices.FiltersStub },
           { provide: HttpService, useClass: mockServices.DataStub },
           { provide: UserService, useClass: mockServices.UserStub },

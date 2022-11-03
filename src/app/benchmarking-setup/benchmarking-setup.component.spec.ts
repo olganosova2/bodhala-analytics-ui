@@ -18,10 +18,6 @@ describe('BenchmarkingSetupComponent', () => {
   let component: BenchmarkingSetupComponent;
   let fixture: ComponentFixture<BenchmarkingSetupComponent>;
 
-  const mockRouter = {
-    navigate: jasmine.createSpy('navigate'),
-    url: 'benchmarking/firm'
-  };
   beforeEach(async(() => {
 
     TestBed.configureTestingModule({
@@ -33,7 +29,7 @@ describe('BenchmarkingSetupComponent', () => {
       set: {
         providers: [
           AppStateService,
-          {provide: Router, useValue: mockRouter},
+          { provide: Router, useClass: mockServices.MockRouter},
           {provide: ActivatedRoute, useClass: ActivatedRouteMock},
           {provide: FiltersService, useClass: mockServices.FiltersStub},
           {provide: HttpService, useClass: mockServices.DataStub},
