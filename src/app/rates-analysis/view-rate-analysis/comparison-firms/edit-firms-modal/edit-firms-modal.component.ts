@@ -242,7 +242,7 @@ export class EditFirmsModalComponent implements OnInit {
 
     this.selectedFirm = null;
     this.firmOptionsDropdown.clear(null);
-    if (this.selectedPanelFirms.length >= 3) {
+    if (this.selectedPanelFirms.length >= 1) {
       this.validFirmSelection = true;
     } else {
       this.validFirmSelection = false;
