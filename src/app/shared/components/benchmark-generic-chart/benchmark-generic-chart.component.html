@@ -1,0 +1,30 @@
+<div class="bm-panel" *ngIf="benchmark">
+<div class="chart-title roboto-bold">Proposed Rate vs {{commonServ.capitalize(benchmark?.chartType)}} Benchmark</div>
+<div class="mt20" *ngIf="!benchmark.low || !benchmark.high">No data for {{commonServ.capitalize(benchmark.seniority)}} {{commonServ.capitalize(benchmark.thClassification)}}
+  </div>
+
+<div class="p-grid full-width mt20">
+  <div class="chart-panel-left">
+
+    <div class="labels mb10">Proposed Rate</div>
+    <div class="labels mb5"></div>
+  </div>
+  <div #chartPanel class="chart-panel">
+    <div *ngIf="benchmark?.low > 0 && benchmark?.high > 0" class="market-average" [ngStyle]="{'left': marketAverageLeft, 'width': marketAverageWidth, 'height': marketAverageHeight}">
+      <div class="range-average-wrapper">
+
+        <span class="average-title">{{commonServ.capitalize(benchmark?.chartType)}} Average</span>
+
+        <p class="market-average-range">${{benchmark?.low | number:'1.0-0'}} - ${{benchmark?.high | number:'1.0-0'}}</p>
+      </div>
+
+    </div>
+    <div *ngIf="benchmark.actual" class="bar-div" [ngStyle]="{'background-color': actualBarColor, 'width': actualBarWidth, 'margin-bottom': '10px'}">
+      ${{benchmark.actual | number:'1.0-0'}}</div>
+    <div *ngIf="benchmark.compare" class="bar-div" [ngStyle]="{'background-color': '#8A8A8A', 'width': compareBarWidth}">
+      ${{benchmark.compare | number:'1.0-0'}}</div>
+  </div>
+
+
+</div>
+</div>

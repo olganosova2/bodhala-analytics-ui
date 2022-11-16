@@ -61,6 +61,28 @@ export interface INamedTimekeepersRateBM {
   num_matters: number;
 }
 
+export enum OneTkChartType {
+  Firm = 'firm',
+  Internal = 'internal',
+  Market = 'market'
+}
+export interface IOneTkSummaryCard {
+  label: string;
+  format: string;
+  amount: any;
+}
+export interface IGenericBMChart {
+  chartType: OneTkChartType;
+  thClassification: string;
+  seniority: string;
+  color: string;
+  actual: number;
+  compare?: number;
+  low: number;
+  high: number;
+  highest?: number;
+}
+
 export const smartPracticeAreas = [
   // {label: 'All PAs', value: 'All PAs'},
   {label: 'Banking & Credit', value: 'Banking & Credit'},

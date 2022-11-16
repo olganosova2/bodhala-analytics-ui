@@ -1,6 +1,6 @@
 <div>
 
-  <div *ngIf="!showMoreOpened && firmId">
+  <div *ngIf="!showMoreOpened">
     <div class="header-wrapper">
       <div class="header-div">
         <div class="p-grid">
@@ -17,18 +17,43 @@
       </div>
     </div>
   </div>
-  <div *ngIf="!showMoreOpened">
-    <ngb-alert type="danger" *ngIf="!firmId">
-      <div class="font-red font-bold">
-        <span>No Firm ID has been passed</span>
-      </div>
+  <div *ngIf="!showMoreOpened" class="bm-div-wrapper position-relative">
+    <ngb-alert type="danger" *ngIf="inputParametersError">
+      <div class="font-red font-bold" [innerHTML]="inputParametersError"></div>
     </ngb-alert>
-    <div>Placeholder for Landing Page</div>
-  </div>
-  <div *ngIf="showMoreOpened && firmId" class="position-relative loading-div">
     <ngb-alert type="danger" *ngIf="error">
       <div class="font-red font-bold">
-        <span>{{error}}</span>
+        <span>{{vendorFirmName}}: {{error}}</span>
+      </div>
+    </ngb-alert>
+    <div *ngIf="tkTotalHours" class="p-grid">
+      <div class="p-col-4 pr20" *ngFor="let metric of summaryMetrics">
+        <div class="summary-card" >
+          <div class="summary-card-title oval-label-black">
+            {{metric.label}}
+          </div>
+          <div class="summary-card-content" *ngIf="metric.format !== 'string'">
+           <span *ngIf="metric.format === 'dollar'">$</span>{{metric.amount | number:'1.0-0'}}
+          </div>
+          <div class="summary-card-content" *ngIf="metric.format === 'string'">
+              {{ metric.amount }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt20" *ngIf="charts && charts.length > 0 && highestRate">
+      <div *ngFor="let chart of charts">
+        <bd-benchmark-generic-chart  [benchmark]="chart" [highestRate]="highestRate"></bd-benchmark-generic-chart>
+      </div>
+    </div>
+    <div class="spinner-card" [hidden]="!tkRequestInProgress">
+      <mat-spinner diameter="50" color="primary"></mat-spinner>
+    </div>
+  </div>
+  <div *ngIf="showMoreOpened && firmId" class="position-relative loading-div">
+    <ngb-alert type="danger" *ngIf="errorBM">
+      <div class="font-red font-bold">
+        <span>{{errorBM}}</span>
       </div>
     </ngb-alert>
     <div class="loading-message" [hidden]="!inProgress">Saving the Rate BM and calculating market averages and panel rates ... </div>

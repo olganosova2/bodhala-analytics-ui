@@ -1,4 +1,9 @@
 @import "../../../assets/styles/colors.scss";
+.bm-div-wrapper {
+  background-color: #fff;
+  padding: 20px;
+  min-height: 70vh;
+}
 .loading-div {
   height: 70vh;
 }
@@ -18,7 +23,7 @@
 }
 .header-div {
   font-family: "Source Sans Pro", sans-serif;
-  border: 1px solid #fff;
+  border: 1px solid $gray-blue-bg;
   border-radius: 36px;
   padding: 16px;
 }
@@ -26,4 +31,13 @@
   width: 40px;
   margin-left: 40px;
   margin-top: 10px;
+}
+.summary-card-title {
+  font-size: 16px;
+}
+.summary-card-content {
+  font-size: 32px;
+  font-weight: 600;
+  padding-top: 25px;
+  background-color: $gray-blue-bg;
 }

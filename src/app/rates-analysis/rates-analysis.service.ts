@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import {HttpService, UserService} from 'bodhala-ui-common';
+import {Injectable} from '@angular/core';
+import {HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {Subscription} from 'rxjs';
 import {tkClassifications, IClassification} from '../savings-calculator/savings-calculator.service';
-import { IRateBenchmark } from './rates-analysis.model';
+import {IGenericBMChart, IRateBenchmark, OneTkChartType} from './rates-analysis.model';
+import {MetricType} from '../firm/frc-peer-firms/frc-service.service';
 
 
 @Injectable({
@@ -13,7 +14,9 @@ export class RatesAnalysisService {
   errorMessage: any;
 
   constructor(private httpService: HttpService,
-              public userService: UserService) { }
+              public utilService: UtilService,
+              public userService: UserService) {
+  }
 
   getBenchmark(bmId: number): Promise<any> {
     const params = {benchmarkId: bmId};
@@ -102,7 +105,6 @@ export class RatesAnalysisService {
   }
 
 
-
   calculateRateIncreasePctClassification(classificationRateIncreaseData: Array<any>, clientMaxYear: number, firmData: boolean, validRange: boolean, bmYear: number): any {
     const result = 0;
     const distinctYears = [];
@@ -167,9 +169,9 @@ export class RatesAnalysisService {
       }
 
       if (classifications.length > 0) {
-        classificationRecords.push({ rate_increase: classifications});
+        classificationRecords.push({rate_increase: classifications});
       } else {
-        classificationRecords.push({ rate_increase: []});
+        classificationRecords.push({rate_increase: []});
       }
     }
     const classificationsProcessed = [];
@@ -204,26 +206,26 @@ export class RatesAnalysisService {
       const year = {} as IClassification;
       year.title = clientMaxYear.toString();
       const year1 = records[0].rate_increase || [];
-      const year2 =  records[1].rate_increase || [];
+      const year2 = records[1].rate_increase || [];
       const year1Rec = year1.find(e => e.year === clientMaxYear) || {} as any;
       const year2Rec = year2.find(e => e.year === (clientMaxYear - 1)) || {} as any;
       const divider1 = year2Rec.effective_rate ? year2Rec.effective_rate : 1;
       const year1Increase = ((year1Rec.effective_rate || 0) - (year2Rec.effective_rate || 0)) / divider1;
       year.avgRateIncrease = year1Increase;
-      year.totalHours = year1Rec.total_hours ||  0;
+      year.totalHours = year1Rec.total_hours || 0;
       year.lastYearRate = year1Rec.effective_rate || 0;
       return year;
     } else {
       const classification = {} as IClassification;
       classification.title = level;
       const year1 = records[0].rate_increase || [];
-      const year2 =  records[1].rate_increase || [];
+      const year2 = records[1].rate_increase || [];
       const year1Rec = year1.find(e => e.bh_classification === level) || {} as any;
       const year2Rec = year2.find(e => e.bh_classification === level) || {} as any;
       const divider1 = year2Rec.effective_rate ? year2Rec.effective_rate : 1;
       const year1Increase = ((year1Rec.effective_rate || 0) - (year2Rec.effective_rate || 0)) / divider1;
       classification.avgRateIncrease = year1Increase;
-      classification.totalHours = year1Rec.total_hours ||  0;
+      classification.totalHours = year1Rec.total_hours || 0;
       classification.lastYearRate = year1Rec.effective_rate || 0;
       return classification;
     }
@@ -358,11 +360,96 @@ export class RatesAnalysisService {
       );
     });
   }
+
   createNewBenchmark(): IRateBenchmark {
-    return { id: null, bh_client_id: this.userService.currentUser.client_info_id, bh_lawfirm_id: null, year: null, smart_practice_area: null, peers: [],
+    return {
+      id: null, bh_client_id: this.userService.currentUser.client_info_id, bh_lawfirm_id: null, year: null, smart_practice_area: null, peers: [],
       blended_market_hi: null, blended_market_lo: null, blended_market_internal: null, blended_market_num_firms: null,
       blended_internal_num_firms: null, partner_market_lo: null, partner_market_hi: null, partner_internal: null, partner_market_num_firms: null, partner_internal_num_firms: null,
       associate_market_lo: null, associate_market_hi: null, associate_internal: null, associate_market_num_firms: null, associate_internal_num_firms: null,
-      created_on: null, created_by: null, modified_by: null, modified_on: null, deleted_by: null, deleted_on: null, market_avg_firms: null, internal_firms: null};
+      created_on: null, created_by: null, modified_by: null, modified_on: null, deleted_by: null, deleted_on: null, market_avg_firms: null, internal_firms: null
+    };
+  }
+
+  buildOneTkChartData(classification: string, subClassification: string, rate: number, data: any): Array<IGenericBMChart> {
+    const result = [];
+    for (const metricName of Object.keys(OneTkChartType)) {
+      const chartData = {chartType: metricName, thClassification: classification, seniority: subClassification, color: 'TBD', actual: rate, high: 0, low: 0, highest: rate};
+      const records  = data['granular_' + OneTkChartType[metricName]] || [];
+      const propName = OneTkChartType[metricName] + '_' + classification;
+      const found = records.find(e => e.seniority === subClassification);
+      if (found) {
+        chartData.high = found[propName + '_rate_hi'];
+        chartData.low = found[propName + '_rate_lo'];
+      }
+      chartData.highest = chartData.actual > chartData.high ? chartData.actual : chartData.high;
+      result.push(chartData);
+    }
+    return result;
+  }
+  calculateHighestChartNumber(charts: Array<IGenericBMChart>): number {
+    let result = 0;
+    if (!charts || charts.length === 0) {
+      return result;
+    }
+    const highs = charts.map(e => e.highest) || [];
+    highs.sort();
+    result = highs[highs.length - 1];
+    return result;
+  }
+  getBarColor(benchmark: IGenericBMChart): string {
+    let result = '#8A8A8A';
+    if (!benchmark.low || !benchmark.high) {
+      return result;
+    }
+    if ((benchmark.actual / benchmark.high >= 1.2)) {
+      result = '#FE3F56';
+    } else if ((benchmark.actual / benchmark.high) < 1.2 && benchmark.actual > benchmark.high) {
+      result = '#FF8B4A';
+    } else if (benchmark.actual <= benchmark.high && benchmark.actual >= benchmark.low) {
+      result = '#FFC327';
+    } else if ((benchmark.actual / benchmark.low) < 1) {
+      result = '#3EDB73';
+    } else {
+      result = '#8A8A8A';
+    }
+    return result;
+  }
+  processMatchFirmResponse(data: any): any {
+    const result = { id: null, name: null};
+    if (data.match_type === 'EXACT') {
+      result.id = data.id;
+      result.name =  data.name;
+    } else if (data.match_type === 'SIMILAR') {
+      const sorted = (data.hits || []).sort(this.utilService.dynamicSort('-score'));
+      if (sorted.length > 0) {
+        result.id = sorted[0].id;
+        result.name =  sorted[0].name;
+      }
+    }
+    return result;
+  }
+  calculateGranularClassificatiion(year: number, graduationYear: number, classification: string): string {
+    let result = '';
+    const seniority = year - graduationYear;
+    if (classification === 'partner') {
+      if (seniority <= 12) {
+        result = 'Junior';
+      }else if (seniority > 12 && seniority <= 18) {
+        result = 'Mid-Level';
+      }else {
+        result = 'Senior';
+      }
+    }
+    if (classification === 'associate') {
+      if (seniority <= 5) {
+        result = 'Junior';
+      }else if (seniority > 5 && seniority < 8) {
+        result = 'Mid-Level';
+      }else {
+        result = 'Senior';
+      }
+    }
+    return result;
   }
 }

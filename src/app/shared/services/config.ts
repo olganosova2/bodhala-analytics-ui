@@ -137,8 +137,10 @@ export const END_POINTS_URLS = {
   getGranularityPageData: {url: BASE_URL + 'analytics/getGranularityPageData', showLoading: true},
   getPanelFirmData: {url: BASE_URL + 'analytics/getPanelFirmData', showLoading: true},
   savePanelFirmData: {url: BASE_URL + 'analytics/savePanelFirmData', showLoading: true},
-  getSmartPAsByFirmIdAndYear: {url: BASE_URL + 'analytics/getSmartPAsByFirmIdAndYear', showLoading: true},
+  getSmartPAsByFirmIdAndYear: {url: BASE_URL + 'analytics/getSmartPAsByFirmIdAndYear', showLoading: false},
   saveRateBenchmarkByClient: { url: BASE_URL + 'analytics/saveRateBenchmarkByClient', showLoading: false},
+  getOneTkBenchmark: {url: BASE_URL + 'analytics/getOneTkBenchmark', showLoading: true},
+  matchFirm: { url: BASE_URL + 'analytics/matchFirm', showLoading: true},
 
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},

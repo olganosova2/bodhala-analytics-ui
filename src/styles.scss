@@ -759,6 +759,26 @@ h1, h2, h3, h4, h5, h6 {
 //.filters-panel {
 //  height: 430px !important;
 //}
+.summary-card-title {
+  font-size: 24px;
+  padding: 10px 0;
+  border: 0.5px solid transparent;
+  border-top-right-radius: 24px;
+  border-top-left-radius: 24px;
+}
+.summary-card {
+  text-align: center;
+}
+.summary-card-content {
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+  background-color: #fff;
+  min-height: 113px;
+  padding: 10px;
+  .text-gray {
+    color: $medium-gray;
+  }
+}
 
 
 

@@ -228,6 +228,7 @@ export class NamedTkAnalysisComponent implements OnInit {
 
   initColumns(): void {
     this.gridOptions.columnDefs = [
+      {headerName: 'ID', field: 'tk_id', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, hide: true},
       {headerName: 'Timekeeper Name', field: 'timekeeper_name', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, width: 150},
       {headerName: 'Bodhala TK Classification', field: 'classification', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, width: 150},
       {headerName: 'Original TK Classification', field: 'bh_classification', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, hide: true},
