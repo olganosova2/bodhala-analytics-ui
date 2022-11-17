@@ -392,8 +392,8 @@ export class RatesAnalysisService {
     if (!charts || charts.length === 0) {
       return result;
     }
-    const highs = charts.map(e => e.highest) || [];
-    highs.sort();
+    let highs = charts.map(e => e.highest) || [];
+    highs = highs.sort((n1, n2) => n1 - n2);
     result = highs[highs.length - 1];
     return result;
   }

@@ -7,6 +7,7 @@ import * as _moment from 'moment';
 import {Subscription} from 'rxjs';
 import * as config from '../../shared/services/config';
 import {IGenericBMChart, IOneTkSummaryCard, IRateBenchmark, moneyFormatter, OneTkChartType, peerFirmMapping} from '../rates-analysis.model';
+import {MOCK_ONE_TK} from '../../shared/unit-tests/mock-data/one-tk';
 
 const moment = _moment;
 
@@ -137,6 +138,7 @@ export class CreateRateBenchmarkComponent implements OnInit, OnDestroy {
           this.error = data.error;
           return;
         }
+        // data = MOCK_ONE_TK;
         if (data.result) {
           this.tkClassification = data.result.tk_classification;
           if (data.result.seniority) {
