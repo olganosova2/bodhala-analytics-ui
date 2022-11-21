@@ -179,6 +179,7 @@ import {FrcReportTitleComponent} from '../../firm/frc-peer-firms/frc-report-titl
 import {FrcComparisonHeaderComponent} from '../../firm/frc-peer-firms/frc-firm-comparison/frc-comparison-header/frc-comparison-header.component';
 import {CreateRateBenchmarkComponent} from '../../rates-analysis/create-rate-benchmark/create-rate-benchmark.component';
 import {BenchmarkGenericChartComponent} from '../components/benchmark-generic-chart/benchmark-generic-chart.component';
+import {FrcMetricDefinitionsComponent} from '../../firm/frc-peer-firms/frc-metric-definitions/frc-metric-definitions.component';
 
 
 
@@ -353,7 +354,8 @@ export const DECLARATIONS = [
   FrcReportTitleComponent,
   FrcComparisonHeaderComponent,
   CreateRateBenchmarkComponent,
-  BenchmarkGenericChartComponent
+  BenchmarkGenericChartComponent,
+  FrcMetricDefinitionsComponent
 ];
 
 export const PROVIDERS = [

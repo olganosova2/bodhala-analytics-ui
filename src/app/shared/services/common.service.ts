@@ -114,22 +114,22 @@ export class CommonService {
     }
     const footerDiv = document.createElement('DIV');
     const logo = new Image();
-    if (title === 'Executive Summary' || title.includes('Report Card')) {
-      footerDiv.innerHTML = 'Powered by';
-      footerDiv.style.fontSize = '22px';
-      footerDiv.style.fontFamily = 'Sharp Sans';
-      footerDiv.style.textAlign = 'center';
-
-      logo.src = '../../../analytics-ui/assets/images/new_logo.png';
-      logo.style.height = '40px';
-      logo.style.width = 'auto';
-      logo.style.display = 'block';
-      logo.style.marginLeft = 'auto';
-      logo.style.marginRight = 'auto';
-      footerDiv.appendChild(logo);
-
-      exportElement.appendChild(footerDiv);
-    }
+    // if (title === 'Executive Summary' || title.includes('Report Card')) {
+    //   footerDiv.innerHTML = 'Powered by';
+    //   footerDiv.style.fontSize = '22px';
+    //   footerDiv.style.fontFamily = 'Sharp Sans';
+    //   footerDiv.style.textAlign = 'center';
+    //
+    //   logo.src = '../../../analytics-ui/assets/images/new_logo.png';
+    //   logo.style.height = '40px';
+    //   logo.style.width = 'auto';
+    //   logo.style.display = 'block';
+    //   logo.style.marginLeft = 'auto';
+    //   logo.style.marginRight = 'auto';
+    //   footerDiv.appendChild(logo);
+    //
+    //   exportElement.appendChild(footerDiv);
+    // }
 
     const htmlWidth = exportElement.offsetWidth;
     const htmlHeight = exportElement.offsetHeight;
