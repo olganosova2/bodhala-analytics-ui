@@ -230,8 +230,8 @@ export class NamedTkAnalysisComponent implements OnInit {
     this.gridOptions.columnDefs = [
       {headerName: 'ID', field: 'tk_id', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, hide: true},
       {headerName: 'Timekeeper Name', field: 'timekeeper_name', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, width: 150},
-      {headerName: 'Bodhala TK Classification', field: 'classification', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, width: 150},
-      {headerName: 'Original TK Classification', field: 'bh_classification', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, hide: true},
+      {headerName: 'Sub-Classification', field: 'classification', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, width: 150},
+      {headerName: 'Classification', field: 'bh_classification', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, hide: true},
       {headerName: 'Office Location', field: 'office_location', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, hide: true},
       {headerName: 'Graduation Date', field: 'graduation_date', ...this.defaultColumn,  filter: 'agTextColumnFilter', floatingFilter: true, hide: true},
       {headerName: 'Avg Effective Rate', field: 'rate',  cellRenderer: this.agGridService.roundCurrencyCellRenderer, ...this.defaultColumn, floatingFilter: true, width: 100 },
