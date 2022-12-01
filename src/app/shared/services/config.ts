@@ -139,8 +139,8 @@ export const END_POINTS_URLS = {
   savePanelFirmData: {url: BASE_URL + 'analytics/savePanelFirmData', showLoading: true},
   getSmartPAsByFirmIdAndYear: {url: BASE_URL + 'analytics/getSmartPAsByFirmIdAndYear', showLoading: false},
   saveRateBenchmarkByClient: { url: BASE_URL + 'analytics/saveRateBenchmarkByClient', showLoading: false},
-  getOneTkBenchmark: {url: BASE_URL + 'analytics/getOneTkBenchmark', showLoading: true},
-  matchFirm: { url: BASE_URL + 'analytics/matchFirm', showLoading: true},
+  getOneTkBenchmark: {url: BASE_URL + 'analytics/getOneTkBenchmark', showLoading: false},
+  matchFirm: { url: BASE_URL + 'analytics/matchFirm', showLoading: false},
 
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},
