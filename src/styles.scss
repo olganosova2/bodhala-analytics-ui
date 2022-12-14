@@ -251,6 +251,9 @@ h1, h2, h3, h4, h5, h6, th {
 .relative-pos {
   position: relative;
 }
+.full-height {
+  height: 100%;
+}
 
 .full-width {
   width: 100%;
@@ -768,7 +771,7 @@ h1, h2, h3, h4, h5, h6 {
   border-top-left-radius: 24px;
 }
 .summary-card {
-  text-align: center;
+  // text-align: center;
 }
 .summary-card-content {
   border-bottom-right-radius: 24px;

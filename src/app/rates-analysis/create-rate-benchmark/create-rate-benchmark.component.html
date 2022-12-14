@@ -2,19 +2,21 @@
 
   <div *ngIf="!showMoreOpened">
     <div class="header-wrapper">
-      <div class="header-div">
+
         <div class="p-grid">
-          <div class="p-md-1">
-            <img alt="Bodhala Logo" src="assets/images/logo-single.svg" class="small-logo">
-          </div>
-          <div class="p-md-8 text-center pt20">
-            Unleash the power of your data with analytics and benchmarking from Bodhala.
+          <div class="p-md-9">
+            <i class="fa fa-chevron-down"></i>
+            <span class="ml10">Metrics</span>
           </div>
           <div class="p-md-3 pr20">
-            <div class="text-right"><span (click)="showMore()" class="orange-button pointer-hand">SEE MORE IN BODHALA</span></div>
+            <div class="text-right">
+              <span (click)="showMore()" class="orange-button pointer-hand">
+              <img alt="Bodhala Logo" src="assets/images/favicon.png" class="small-logo">
+              See more on Bodhala
+                <em class="icon-note"></em>
+              </span>
+              </div>
           </div>
-        </div>
-      </div>
     </div>
   </div>
   <div *ngIf="!showMoreOpened" class="bm-div-wrapper position-relative">
@@ -26,24 +28,34 @@
         <span>{{vendorFirmName}}: {{error}}</span>
       </div>
     </ngb-alert>
-    <div *ngIf="tkTotalHours" class="p-grid">
-      <div class="p-col-4 pr20" *ngFor="let metric of summaryMetrics">
-        <div class="summary-card" >
-          <div class="summary-card-title oval-label-black">
-            {{metric.label}}
-          </div>
-          <div class="summary-card-content" *ngIf="metric.format !== 'string'">
-           <span *ngIf="metric.format === 'dollar'">$</span>{{metric.amount | number:'1.0-0'}}
-          </div>
-          <div class="summary-card-content" *ngIf="metric.format === 'string'">
-              {{ metric.amount }}
+    <div class="p-grid">
+      <div class="p-col-2" *ngIf="tkTotalHours">
+        <div class="grid-inner full-height pl15 pt15">
+          <div >
+          <div class="pr20" *ngFor="let metric of summaryMetrics">
+            <div class="summary-card" >
+              <div class="summary-card-title">
+                {{metric.label}}
+              </div>
+              <div  *ngIf="metric.format !== 'string'">
+               <span *ngIf="metric.format === 'dollar'">$</span>{{metric.amount | number:'1.0-0'}}
+              </div>
+              <div  *ngIf="metric.format === 'string'">
+                  {{ metric.amount }}
+              </div>
+            </div>
           </div>
         </div>
+        </div>
+      </div>
+      <div class="p-col-10" [ngClass]="{'p-col-12': !tkTotalHours}">
+        <div class="grid-inner full-height pt20">
+          <div class="mt20 mr20" *ngIf="charts && charts.length > 0 && highestRate">
+      <div *ngFor="let chart of charts;let i=index;">
+        <bd-benchmark-generic-chart  [benchmark]="chart" [highestRate]="highestRate" [isFirst]="i === 0" [isLast]="i===(charts.length - 1)"></bd-benchmark-generic-chart>
       </div>
     </div>
-    <div class="mt20" *ngIf="charts && charts.length > 0 && highestRate">
-      <div *ngFor="let chart of charts">
-        <bd-benchmark-generic-chart  [benchmark]="chart" [highestRate]="highestRate"></bd-benchmark-generic-chart>
+        </div>
       </div>
     </div>
     <div class="spinner-card" [hidden]="!tkRequestInProgress">

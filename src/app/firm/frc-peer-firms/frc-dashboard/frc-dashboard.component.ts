@@ -38,6 +38,7 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
   selectedFirms: Array<number> = [];
   totalSpend: number = 0;
   totalHours: number = 0;
+  yearlyFirmsAndTimekeepers: Array<any> = [];
 
   @ViewChild(FiltersComponent) filtersComp: FiltersComponent;
 
@@ -68,6 +69,18 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       localStorage.removeItem('frc_compare_' + this.userService.currentUser.id.toString());
     }
     this.setUpFilters();
+    this.testRSA();
+  }
+  testRSA(): void {
+    const params = { firmId: 4, year: 2017};
+    let arr = [];
+    this.pendingRequest = this.httpService.makeGetRequest('getPqTimekeepers', params).subscribe(
+      (data: any) => {
+        if (data.result) {
+          arr = data.result;
+        }
+      }
+    );
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [

@@ -395,6 +395,7 @@ export class RatesAnalysisService {
     let highs = charts.map(e => e.highest) || [];
     highs = highs.sort((n1, n2) => n1 - n2);
     result = highs[highs.length - 1];
+    result += 100;
     return result;
   }
   getBarColor(benchmark: IGenericBMChart): string {

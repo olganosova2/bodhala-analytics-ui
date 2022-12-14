@@ -141,6 +141,8 @@ export const END_POINTS_URLS = {
   saveRateBenchmarkByClient: { url: BASE_URL + 'analytics/saveRateBenchmarkByClient', showLoading: false},
   getOneTkBenchmark: {url: BASE_URL + 'analytics/getOneTkBenchmark', showLoading: false},
   matchFirm: { url: BASE_URL + 'analytics/matchFirm', showLoading: false},
+  getYearlyFirmRates: {url: BASE_URL + 'analytics/getYearlyFirmRates', showLoading: false},
+  getPqTimekeepers: {url: BASE_URL + 'analytics/getPqTimekeepersCH', showLoading: false},
 
   // Matter Analysis
   getMatterExecSummary: {url: BASE_URL + 'analytics/getMatterExecSummary', showLoading: true},

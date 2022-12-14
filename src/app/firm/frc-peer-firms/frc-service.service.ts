@@ -291,6 +291,25 @@ export interface IFRCSmartPAs {
   percent_of_firm_hours?: number;
   percent_of_firm_spend?: number;
 }
+export interface IYearlyFirmTimekeeper {
+  year: number;
+  lawfirm_id: number;
+  firm_name: string;
+  firm_rank: number;
+  target_rate_pct: number;
+  bh_classification: string;
+  timekeeper_id: string;
+  timekeeper: string;
+  total_hours: number;
+  total_billed: number;
+  total_hours_for_rates: number;
+  total_billed_for_rates: number;
+  total_adjustments: number;
+  effective_rate: number;
+  effective_rate_mode: number;
+  unit_cost_mode: number;
+  effective_rate_adjusted?: number;
+}
 @Injectable({
   providedIn: 'root'
 })

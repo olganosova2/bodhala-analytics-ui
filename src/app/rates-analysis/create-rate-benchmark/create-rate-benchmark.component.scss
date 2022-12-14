@@ -8,17 +8,15 @@
   height: 70vh;
 }
 .orange-button {
-  font-family: Roboto Mono, "Helvetica Neue", sans-serif;
-  background-color: $brand-orange;
-  padding: 10px 20px;
-  border-radius: 24px;
+  padding: 10px;
+  border: 1px solid $body-color;
+  border-radius: 4px;
   color: $body-color;
   font-size: 14px;
 }
 .header-wrapper {
-  background-color: $body-color;
-  padding: 20px;
-  color: #fff;
+  background-color: #fff;
+  padding: 20px 20px 0 20px;
   font-size: 20px;
 }
 .header-div {
@@ -28,16 +26,24 @@
   padding: 16px;
 }
 .small-logo {
-  width: 40px;
-  margin-left: 40px;
-  margin-top: 10px;
+  width: 20px;
 }
 .summary-card-title {
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 700;
 }
 .summary-card-content {
   font-size: 32px;
   font-weight: 600;
   padding-top: 25px;
   background-color: $gray-blue-bg;
+}
+.icon-note {
+  margin-left: 10px;
+  color: $body-color;
+}
+.grid-inner {
+  margin: 10px;
+  border: 1px solid $light-gray;
+  border-radius: 4px;
 }

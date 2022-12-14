@@ -1,8 +1,8 @@
 @import "../../../../assets/styles/colors.scss";
 .bm-panel {
-  background-color:$gray-blue-bg;
-  margin: 15px 0;
   padding: 15px;
+  color: $middle-gray;
+  background-color: transparent;
 }
 .chart-title {
   font-size: 24px;
@@ -11,7 +11,7 @@
   font-size: 14px;
   height: 40px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  color: #000000;
+  color: $middle-gray;
   display: flex;
   justify-content: center;
   align-content: center;
@@ -20,8 +20,7 @@
 .bar-div {
   color: #fff;
   height: 35px;
-  border-top-right-radius: 40px;
-  border-bottom-right-radius: 40px;
+  border-radius: 10px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   font-size: 16px;
   padding: 8px 10px;
@@ -32,28 +31,35 @@
   z-index: 100;
 }
 
+
 .bar-div-gray {
-  color: $body-color;
+  color: $middle-gray;
 }
 .chart-panel-left {
   width: 12%;
-  padding: 32px 0px 32px 48px;
+  padding: 32px 32px 32px 20px;
 }
 .chart-panel {
   width: 88%;
   display: inline-block;
   position: relative; z-index: 1;
-  padding: 32px;
+  padding: 32px 32px 32px 0;
+}
+.chart-panel-last {
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  height: 120px;
+  border-bottom: 1px solid $medium-gray;
 }
 .range-average-wrapper {
   text-align: center;
   width: 100%;
   position: absolute;
-  top: -27px;
+  top: -42px;
 }
 .market-average {
   // margin-left: 32px;
-  border: 2px solid $body-color;
+  border: 2px solid $middle-gray;
   border-radius: 16px;
   display: inline-flex;
   z-index: 999;
@@ -71,6 +77,31 @@
   font-size: 12px;
   font-weight: 400;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  color: #000000;
-  padding-top: 9px;
+  color: $middle-gray;
+  white-space: nowrap;
+}
+.v-line{
+  width: 1px;
+  background-color: $light-gray;
+  position: absolute;
+  top: -10px;
+  z-index: -1;
+}
+.v-line-rate{
+  background-color: $darker-gray;
+  width: 3px;
+  z-index: 100;
+}
+.xAxis {
+  position: absolute;
+  top: 125px;
+}
+.rate-bubble {
+  font-size: 13px;
+  background-color: $darker-gray;
+  position: absolute;
+  top: -65px;
+  border-radius: 5px;
+  padding: 3px 5px;
+  color: #fff;
 }
