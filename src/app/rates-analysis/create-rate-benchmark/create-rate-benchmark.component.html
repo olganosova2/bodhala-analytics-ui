@@ -49,11 +49,11 @@
         </div>
       </div>
       <div class="p-col-10" [ngClass]="{'p-col-12': !tkTotalHours}">
-        <div class="grid-inner full-height pt20">
-          <div class="mt20 mr20" *ngIf="charts && charts.length > 0 && highestRate">
-      <div *ngFor="let chart of charts;let i=index;">
-        <bd-benchmark-generic-chart  [benchmark]="chart" [highestRate]="highestRate" [isFirst]="i === 0" [isLast]="i===(charts.length - 1)"></bd-benchmark-generic-chart>
-      </div>
+        <div class="grid-inner full-height pt20" *ngIf="charts && charts.length > 0 && highestRate">
+          <div class="mt20 mr20" >
+          <div *ngFor="let chart of charts;let i=index;">
+            <bd-benchmark-generic-chart  [benchmark]="chart" [highestRate]="highestRate" [isFirst]="i === 0" [isLast]="i===(charts.length - 1)"></bd-benchmark-generic-chart>
+          </div>
     </div>
         </div>
       </div>
