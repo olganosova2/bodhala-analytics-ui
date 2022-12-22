@@ -885,5 +885,34 @@ export class FrcServiceService {
       tk.total_billed = includeExpenses ? tk.total_billed + tk.total_expenses : tk.total_billed;
     }
   }
+  processTimekeepers(records: Array<any>): void {
+    for (const rec of records) {
+      rec.rates = [];
+      rec.effective_rates = [];
+      this.processTkRates(rec, 'rates');
+      this.processTkRates(rec, 'eff');
+      delete rec.rates_units_array;
+      delete rec.rates_cnts_array;
+      delete rec.rates_hours_array;
+      delete rec.eff_units_array;
+      delete rec.eff_cnts_array;
+      delete rec.eff_hours_array;
+    }
+  }
+  processTkRates(rec: any, arrayPrefix: string): void {
+    if (!rec[arrayPrefix + '_units_array'] || rec[arrayPrefix + '_units_array'].length === 0) {
+      return;
+    }
+    // tslint:disable-next-line:prefer-for-of
+    for (let ix = 0; ix < rec[arrayPrefix + '_units_array'].length; ix++) {
+      const rate = { rate: rec[arrayPrefix + '_units_array'][ix], cnt: rec[arrayPrefix + '_cnts_array'][ix], total_hours: rec[arrayPrefix + '_hours_array'][ix]};
+      if (arrayPrefix === 'rates') {
+        rec.rates.push(rate);
+      }
+      if (arrayPrefix === 'eff') {
+        rec.effective_rates.push(rate);
+      }
+    }
+  }
 
 }

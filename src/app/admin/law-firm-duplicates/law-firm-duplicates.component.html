@@ -1,5 +1,8 @@
 <div class="panel-wrapper pl10">
   <h4 class="mb20">Law Firm Duplicates</h4>
+  <ngb-alert type="danger" *ngIf="exceptionError">
+    <div class="font-red font-bold">{{exceptionError}}</div>
+  </ngb-alert>
   <ngb-alert type="danger" *ngIf="apiErrors.length > 0">
     <div class="font-red font-bold" *ngFor="let error of apiErrors">
       <span>{{error}}</span>

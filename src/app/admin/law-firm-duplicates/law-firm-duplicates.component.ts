@@ -14,6 +14,7 @@ import {Subscription} from 'rxjs';
 export class LawFirmDuplicatesComponent implements OnInit {
   pendingRequest: Subscription;
   apiErrors: Array<string> = [];
+  exceptionError: any;
   apiResults: Array<any> = [];
   primaryId: number;
   firmIds: Array<number> = [];
@@ -36,6 +37,7 @@ export class LawFirmDuplicatesComponent implements OnInit {
     if (this.firmIds.length < 1) {
       return;
     }
+    this.exceptionError = null;
     this.apiErrors = [];
     this.apiResults  = [];
     const params = {primaryId: Number(this.primaryId), firmIds : this.firmIds};
@@ -43,6 +45,9 @@ export class LawFirmDuplicatesComponent implements OnInit {
       (data: any) => {
         if (data.error && Array.isArray(data.error) && data.error.length > 0) {
           this.apiErrors =  Object.assign([], data.error);
+        }
+        if (data.error && !Array.isArray(data.error)) {
+          this.exceptionError =   data.error;
         }
         this.apiResults  = data.result || [];
         this.formatResults();
