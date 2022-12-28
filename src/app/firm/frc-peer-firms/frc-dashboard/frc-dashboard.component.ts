@@ -69,18 +69,6 @@ export class FrcDashboardComponent implements OnInit, OnDestroy {
       localStorage.removeItem('frc_compare_' + this.userService.currentUser.id.toString());
     }
     this.setUpFilters();
-    this.testRSA();
-  }
-  testRSA(): void {
-    const params = { firmId: 4, year: 2017};
-    this.pendingRequest = this.httpService.makeGetRequest('getPqTimekeepers', params).subscribe(
-      (data: any) => {
-        if (data.result) {
-          this.frcService.processTimekeepers(data.result);
-          this.ratesDistributions = Object.assign([], data.result);
-        }
-      }
-    );
   }
   initColumns(): void {
     this.gridOptions.columnDefs = [
