@@ -31,7 +31,7 @@ export class BmTimekeepersTableComponent implements OnInit, AfterViewInit {
   formatTableColumns(): void {
     this.columns.push({ label: 'Last Name', field: 'last_name', direction: null});
     this.columns.push({ label: 'First Name', field: 'first_name', direction: null});
-    this.columns.push({ label: 'Bodhala TK Classification', field: 'bodhala_classification'});
+    this.columns.push({ label: 'Classification', field: 'bodhala_classification'});
     this.columns.push({ label: 'Avg Rate', field: 'avg_rate', direction: null});
     this.columns.push({ label: '# Hours Worked', field: 'total_hours_billed',  direction: -1});
     this.columns.push({ label: 'Total Spend', field: 'total_billed', direction: null});
