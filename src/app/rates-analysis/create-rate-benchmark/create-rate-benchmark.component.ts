@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AppStateService, HttpService, UserService, UtilService} from 'bodhala-ui-common';
 import {CommonService} from '../../shared/services/common.service';
@@ -8,6 +8,7 @@ import {Subscription} from 'rxjs';
 import * as config from '../../shared/services/config';
 import {IGenericBMChart, IOneTkSummaryCard, IRateBenchmark, moneyFormatter, OneTkChartType, peerFirmMapping} from '../rates-analysis.model';
 import {MOCK_ONE_TK} from '../../shared/unit-tests/mock-data/one-tk';
+import {set} from 'ag-grid-community/dist/lib/utils/object';
 
 const moment = _moment;
 
@@ -44,6 +45,8 @@ export class CreateRateBenchmarkComponent implements OnInit, OnDestroy {
   error: any;
   errorBM: any;
   standAlonePage: boolean;
+  collapsed: boolean = false;
+  @ViewChild('iframeDiv') iframeDiv: ElementRef<HTMLElement>;
   constructor(private route: ActivatedRoute,
               public router: Router,
               private httpService: HttpService,
@@ -55,6 +58,9 @@ export class CreateRateBenchmarkComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.standAlonePage = (window === window.parent) ? true : false;
+    if (!this.standAlonePage) {
+      window.top.postMessage(74, '*');
+    }
     this.year = this.getYear();
     this.parseQueryString();
   }
@@ -153,6 +159,7 @@ export class CreateRateBenchmarkComponent implements OnInit, OnDestroy {
           this.charts = charts;
           this.calculatePotentialSaving();
           this.buildSummaryMetrics(data.result);
+          this.sendMessageToParent();
         }
       }
     );
@@ -230,7 +237,12 @@ export class CreateRateBenchmarkComponent implements OnInit, OnDestroy {
     if (!this.showMoreOpened || !this.rateBenchmark) {
       return;
     }
-    this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.rateBenchmark.id]);
+    // this.router.navigate(['/analytics-ui/rate-benchmarking/view/', this.rateBenchmark.id]);
+    window.open(
+      '/analytics-ui/rate-benchmarking/view/' + this.rateBenchmark.id,
+      '_blank' // <- This is what makes it open in a new window.
+    );
+    this.showMoreOpened = false;
   }
   calculatePotentialSaving(): void {
     const found = this.charts.find(e => e.chartType.toString() === 'Market');
@@ -259,6 +271,21 @@ export class CreateRateBenchmarkComponent implements OnInit, OnDestroy {
   getYear(): number {
     const year = moment().month() < 6 ? moment().add(-1, 'y').year() : moment().year();
     return config.IS_LOCAL ? 2017 : year;
+  }
+  collapseContent(): void {
+    this.collapsed = !this.collapsed;
+    if (this.standAlonePage) {
+      return;
+    }
+    this.sendMessageToParent();
+  }
+  sendMessageToParent(): void {
+    setTimeout(() => {
+      if (this.iframeDiv) {
+        const divHeight = this.iframeDiv.nativeElement.offsetHeight || 74;
+        window.top.postMessage(divHeight, '*');
+      }
+    });
   }
   ngOnDestroy() {
     this.commonServ.clearTitles();

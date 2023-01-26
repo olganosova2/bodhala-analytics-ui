@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import {ActivatedRoute} from '@angular/router';
 import {RatesAnalysisService} from '../../../rates-analysis/rates-analysis.service';
@@ -24,6 +24,10 @@ export class IframeWrapperComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               public ratesService: RatesAnalysisService,
               public sanitizer: DomSanitizer) {
+  }
+  @HostListener('window:message', ['$event'])
+  onMessage(e) {
+    const x = e;
   }
 
   ngOnInit(): void {

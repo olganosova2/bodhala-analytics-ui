@@ -1,25 +1,29 @@
-<div>
+<div #iframeDiv>
 
-  <div *ngIf="!showMoreOpened">
+  <div >
     <div class="header-wrapper">
 
         <div class="p-grid">
           <div class="p-md-9">
-            <i class="fa fa-chevron-down"></i>
+            <i class="fa fa-chevron-down pointer-hand" *ngIf="collapsed" (click)="collapseContent()"></i>
+            <i class="fa fa-chevron-up pointer-hand" *ngIf="!collapsed" (click)="collapseContent()"></i>
             <span class="ml10">Metrics</span>
           </div>
-          <div class="p-md-3 pr20">
+          <div class="p-md-3 pr20" *ngIf="rateBenchmark">
             <div class="text-right">
               <span (click)="showMore()" class="orange-button pointer-hand">
               <img alt="Bodhala Logo" src="assets/images/favicon.png" class="small-logo">
               See more on Bodhala
-                <em class="icon-note"></em>
+                <img alt="icon" src="assets/images/external-link.png" width="20" class="mb5">
               </span>
               </div>
           </div>
+          <div class="p-md-3 pr20 cr-message" *ngIf="!rateBenchmark">
+            Saving the Rate BM and calculating market averages and panel rates ...
+          </div>
     </div>
   </div>
-  <div *ngIf="!showMoreOpened" class="bm-div-wrapper position-relative">
+  <div *ngIf="!collapsed" class="bm-div-wrapper position-relative">
     <ngb-alert type="danger" *ngIf="inputParametersError">
       <div class="font-red font-bold" [innerHTML]="inputParametersError"></div>
     </ngb-alert>
@@ -62,16 +66,17 @@
       <mat-spinner diameter="50" color="primary"></mat-spinner>
     </div>
   </div>
-  <div *ngIf="showMoreOpened && firmId" class="position-relative loading-div">
-    <ngb-alert type="danger" *ngIf="errorBM">
-      <div class="font-red font-bold">
-        <span>{{errorBM}}</span>
-      </div>
-    </ngb-alert>
-    <div class="loading-message" [hidden]="!inProgress">Saving the Rate BM and calculating market averages and panel rates ... </div>
-    <div class="spinner-card" [hidden]="!inProgress">
-      <mat-spinner diameter="50" color="primary"></mat-spinner>
-    </div>
+<!--  <div *ngIf="showMoreOpened && firmId" class="position-relative loading-div">-->
+<!--    <ngb-alert type="danger" *ngIf="errorBM">-->
+<!--      <div class="font-red font-bold">-->
+<!--        <span>{{errorBM}}</span>-->
+<!--      </div>-->
+<!--    </ngb-alert>-->
+<!--    <div class="loading-message" [hidden]="!inProgress">Saving the Rate BM and calculating market averages and panel rates ... </div>-->
+<!--    <div class="spinner-card" [hidden]="!inProgress">-->
+<!--      <mat-spinner diameter="50" color="primary"></mat-spinner>-->
+<!--    </div>-->
 
-  </div>
+<!--  </div>-->
+</div>
 </div>
